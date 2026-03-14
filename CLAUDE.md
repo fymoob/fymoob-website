@@ -21,13 +21,14 @@ npm run test         # Testes
 ```
 
 ## Convenções de Código
+- Todo código da aplicação fica dentro de `src/`
 - Componentes em PascalCase, arquivos em kebab-case
 - Server Components por padrão, 'use client' apenas quando necessário
 - Todas as páginas públicas devem exportar `generateMetadata()`
 - Todas as páginas de imóvel devem incluir JSON-LD schema markup
 - Imagens sempre via `<Image />` do Next.js com alt descritivo
-- Dados da API Loft via `services/loft.ts` — nunca chamar API direto nos componentes
-- Mock data em `data/mock-properties.json` até a API key ser configurada
+- Dados da API Loft via `src/services/loft.ts` — nunca chamar API direto nos componentes
+- Mock data em `data/mock-properties.json` (raiz do projeto) até a API key ser configurada
 - Env vars: `LOFT_API_KEY`, `NEXT_PUBLIC_SITE_URL`, `NHOST_SUBDOMAIN`
 
 ## Arquitetura de URLs (SEO)
@@ -35,12 +36,16 @@ npm run test         # Testes
 /                                    → Home
 /imovel/[slug]                       → Página individual do imóvel
 /imoveis/[bairro]                    → Landing page por bairro
-/apartamentos-curitiba               → Landing page por tipo
-/casas-curitiba                      → Landing page por tipo
-/apartamentos-[bairro]-curitiba      → Landing combinada tipo+bairro
+/imoveis/[bairro]/[tipo]             → Landing combinada bairro+tipo
+/apartamentos-curitiba               → Landing page por tipo (estática)
+/casas-curitiba                      → Landing page por tipo (estática)
+/sobrados-curitiba                   → Landing page por tipo (estática)
+/terrenos-curitiba                   → Landing page por tipo (estática)
 /blog/[slug]                         → Artigo do blog
+/faq                                 → Perguntas frequentes
 /sobre                               → Sobre nós
 /contato                             → Contato
+/anuncie                             → Anunciar imóvel
 /busca                               → Busca com filtros (SSR)
 ```
 
@@ -71,3 +76,10 @@ Quando compactar, SEMPRE preservar:
 - Fase/sprint atual do plano de execução
 - Quaisquer decisões de arquitetura tomadas
 - Comandos de teste relevantes
+
+## Workflow de Sessão
+- **Início de sessão:** rodar `/project:resume` para saber onde parou
+- **Final de sessão:** rodar `/project:checkpoint` para salvar progresso
+- **Criar página:** rodar `/project:new-page` para seguir padrões SEO
+- **Revisar SEO:** invocar agente `seo-reviewer` para validar páginas
+- **Entre fases:** usar `/clear` para limpar contexto

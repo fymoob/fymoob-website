@@ -80,6 +80,49 @@
 
 ## Meta Tags — Padrões por Tipo de Página
 
+### BlogPosting (artigos do blog)
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "[Título do artigo]",
+  "description": "[Primeiros 155 chars]",
+  "url": "https://fymoob.com/blog/[slug]",
+  "datePublished": "[Data de publicação]",
+  "dateModified": "[Data de atualização]",
+  "author": {
+    "@type": "Organization",
+    "name": "FYMOOB Imobiliária"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "FYMOOB Imobiliária",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://fymoob.com/logo.png"
+    }
+  }
+}
+```
+
+### FAQPage (perguntas frequentes)
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "[Pergunta]",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "[Resposta]"
+      }
+    }
+  ]
+}
+```
+
 ### Página de imóvel
 ```
 title: "[Tipo] [Quartos] Quartos à Venda no [Bairro] | R$ [Preço] | FYMOOB"

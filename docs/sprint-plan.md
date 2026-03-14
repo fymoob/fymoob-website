@@ -23,16 +23,18 @@
 **Depende de API:** Não
 
 ### Tarefas
-- [ ] `create-next-app` com App Router, TypeScript, Tailwind
-- [ ] Estrutura de pastas: `/app`, `/lib`, `/services`, `/types`, `/data`, `/components`
-- [ ] Definir types em `types/property.ts` baseado nos campos da API Loft
-- [ ] Converter dados do scraper para `data/mock-properties.json` (244 imóveis)
-- [ ] Criar `services/loft.ts` com abstração (lê mock agora, API depois)
-- [ ] Criar `services/loft.ts` funções: `getProperties()`, `getPropertyBySlug()`, `getPropertiesByBairro()`, `getPropertiesByType()`
-- [ ] Configurar `.env.example` e `.env.local`
-- [ ] Configurar `next.config.ts` (domínios de imagem: vistahost, nhost)
-- [ ] Criar `lib/utils.ts` (formatPrice, slugify, generatePropertySlug)
-- [ ] Criar `lib/seo.ts` (generatePropertySchema, generateBreadcrumbs)
+- [ ] `create-next-app` com App Router, TypeScript, Tailwind (com `src/` directory)
+- [ ] Estrutura de pastas: `src/app`, `src/lib`, `src/services`, `src/types`, `src/components`
+- [ ] Mover `data/mock-properties.json` para raiz (já existe do scraper — validar formato)
+- [ ] Definir types em `src/types/property.ts` baseado nos campos do mock-properties.json
+- [ ] Criar `src/services/loft.ts` com abstração (lê mock agora, API depois)
+- [ ] Funções do service: `getProperties()`, `getPropertyBySlug()`, `getPropertiesByBairro()`, `getPropertiesByType()`, `getAllBairros()`, `getAllTypes()`
+- [ ] Configurar `.env.local` baseado no `.env.example`
+- [ ] Configurar `next.config.ts` (domínios de imagem: cdn.vistahost.com.br, ppbxdsyojwqujdrmnxdv.storage.sa-east-1.nhost.run)
+- [ ] Criar `src/lib/utils.ts` (formatPrice, slugify, generatePropertySlug)
+- [ ] Criar `src/lib/seo.ts` (generatePropertySchema, generateBreadcrumbs, generateOrganizationSchema)
+- [ ] `src/app/layout.tsx` — Layout raiz com: fontes, Tailwind, header placeholder, footer placeholder
+- [ ] Configurar Tailwind com palette de cores do projeto
 
 ### Critério de aceite
 - `npm run dev` roda sem erros
@@ -49,7 +51,7 @@
 **Depende de API:** Não
 
 #### Tarefas
-- [ ] `/app/imovel/[slug]/page.tsx` com `generateStaticParams()`
+- [ ] `src/app/imovel/[slug]/page.tsx` com `generateStaticParams()`
 - [ ] Componente `PropertyGallery` (galeria de fotos com lightbox)
 - [ ] Componente `PropertyDetails` (preço, tipo, quartos, área, vagas)
 - [ ] Componente `PropertyDescription` (descrição completa)
@@ -90,8 +92,8 @@
 **Depende de API:** Não
 
 #### Tarefas
-- [ ] `/app/page.tsx` — Home com: hero, destaques, lançamentos, bairros em destaque
-- [ ] `/app/busca/page.tsx` — SSR com filtros (tipo, bairro, preço, quartos)
+- [ ] `src/app/page.tsx` — Home com: hero, destaques, lançamentos, bairros em destaque
+- [ ] `src/app/busca/page.tsx` — SSR com filtros (tipo, bairro, preço, quartos)
 - [ ] Componente `SearchFilters` (sidebar ou top bar com filtros)
 - [ ] Componente `PropertyGrid` (grid de PropertyCards com paginação)
 - [ ] Componente `BairroCard` (card de bairro para home)
@@ -107,11 +109,12 @@
 **Depende de API:** Não
 
 #### Tarefas
-- [ ] `/app/imoveis/[bairro]/page.tsx` — Landing por bairro
-- [ ] `/app/apartamentos-curitiba/page.tsx` — Landing por tipo
-- [ ] `/app/casas-curitiba/page.tsx` — Landing por tipo
-- [ ] `/app/sobrados-curitiba/page.tsx` — Landing por tipo
-- [ ] `/app/[tipo]-[bairro]-curitiba/page.tsx` — Landing combinada (tipo+bairro)
+- [ ] `src/app/imoveis/[bairro]/page.tsx` — Landing por bairro
+- [ ] `src/app/apartamentos-curitiba/page.tsx` — Landing por tipo (estática)
+- [ ] `src/app/casas-curitiba/page.tsx` — Landing por tipo (estática)
+- [ ] `src/app/sobrados-curitiba/page.tsx` — Landing por tipo (estática)
+- [ ] `src/app/terrenos-curitiba/page.tsx` — Landing por tipo (estática)
+- [ ] `src/app/imoveis/[bairro]/[tipo]/page.tsx` — Landing combinada (bairro+tipo)
 - [ ] `generateStaticParams()` gerando todas as combinações válidas (mín. 3 imóveis por página)
 - [ ] `generateMetadata()` para cada landing page
 - [ ] Conteúdo automático por página: contagem de imóveis, faixa de preço, preço médio/m²
@@ -120,7 +123,7 @@
 #### Critério de aceite
 - `/imoveis/batel` mostra todos os imóveis do Batel com meta tags únicos
 - `/apartamentos-curitiba` lista todos os apartamentos
-- `/apartamentos-batel-curitiba` lista apartamentos no Batel
+- `/imoveis/batel/apartamentos` lista apartamentos no Batel
 - `npm run build` gera 500+ páginas sem erros
 - Nenhuma página tem menos de 3 imóveis (sem thin content)
 
@@ -131,15 +134,15 @@
 **Depende de API:** Não
 
 ### Tarefas
-- [ ] `/app/sitemap.ts` — Sitemap dinâmico com todas as páginas
-- [ ] `/app/robots.ts` — Allow all exceto /api, /favoritos, /comparar
+- [ ] `src/app/sitemap.ts` — Sitemap dinâmico com todas as páginas
+- [ ] `src/app/robots.ts` — Allow all exceto /api, /favoritos, /comparar
 - [ ] Schema `Organization` no layout raiz (nome, CRECI, endereço, telefone, logo)
 - [ ] Schema `LocalBusiness` no layout raiz (coordenadas, horário)
 - [ ] Canonical URLs em todas as páginas
 - [ ] Componente `<OptimizedImage />` wrapper do Next Image com alt automático
-- [ ] `next.config.ts` — remotePatterns para cdn.vistahost.com.br e nhost storage
-- [ ] Headers de segurança (X-Frame-Options, CSP básico)
-- [ ] Favicon e manifest.json
+- [ ] Headers de segurança via `next.config.ts` (X-Frame-Options, CSP básico)
+- [ ] Favicon e manifest.json em `/public`
+- [ ] Verificar que TODOS os remotePatterns de imagem estão configurados
 
 ### Critério de aceite
 - `/sitemap.xml` lista 500+ URLs com lastmod
@@ -154,8 +157,8 @@
 **Depende de API:** Não
 
 ### Tarefas
-- [ ] `/app/blog/page.tsx` — Lista de artigos
-- [ ] `/app/blog/[slug]/page.tsx` — Página de artigo
+- [ ] `src/app/blog/page.tsx` — Lista de artigos
+- [ ] `src/app/blog/[slug]/page.tsx` — Página de artigo
 - [ ] Sistema de conteúdo via MDX (arquivos em `/content/blog/`)
 - [ ] Schema `BlogPosting` em cada artigo
 - [ ] `generateMetadata()` para cada artigo
@@ -165,7 +168,7 @@
   - [ ] "Documentos necessários para comprar imóvel em Curitiba"
   - [ ] "Guia completo: apartamento ou casa em Curitiba?"
   - [ ] "Quanto custa morar no Batel, Curitiba"
-- [ ] `/app/faq/page.tsx` com schema `FAQPage`
+- [ ] `src/app/faq/page.tsx` com schema `FAQPage`
 - [ ] Linkagem interna: blog → bairros → imóveis
 
 ### Critério de aceite
@@ -184,9 +187,9 @@
 - [ ] Ajustar `services/loft.ts` para chamar API REST real
 - [ ] Mapear campos reais → types (ajustar nomes se diferente do mock)
 - [ ] Implementar paginação da API (max 50/request)
-- [ ] Criar `/app/api/webhooks/loft/route.ts` para revalidação on-demand
+- [ ] Criar `src/app/api/webhooks/loft/route.ts` para revalidação on-demand
 - [ ] Testar fluxo: imóvel atualizado no CRM → webhook → página regenerada
-- [ ] Criar `/app/api/revalidate/route.ts` como fallback manual
+- [ ] Criar `src/app/api/revalidate/route.ts` como fallback manual
 - [ ] Ajustar remotePatterns das imagens se URLs mudarem
 
 ### Critério de aceite
@@ -201,9 +204,9 @@
 **Depende de API:** Não (parcialmente)
 
 ### Tarefas
-- [ ] `/app/sobre/page.tsx` — Sobre nós com foto equipe, CRECI, história
-- [ ] `/app/contato/page.tsx` — Formulário de contato (integra com CRM se possível)
-- [ ] `/app/anuncie/page.tsx` — Página para anunciar imóvel
+- [ ] `src/app/sobre/page.tsx` — Sobre nós com foto equipe, CRECI, história
+- [ ] `src/app/contato/page.tsx` — Formulário de contato (integra com CRM se possível)
+- [ ] `src/app/anuncie/page.tsx` — Página para anunciar imóvel
 - [ ] Header e Footer definitivos com navegação completa
 - [ ] Design responsivo — teste em mobile, tablet, desktop
 - [ ] Loading states e skeleton loaders
@@ -246,9 +249,9 @@
 
 ### Gestão de Contexto (Claude Code)
 - Usar `/clear` entre fases
+- Usar `/project:resume` no início e `/project:checkpoint` no final de cada sessão
 - Usar subagentes para investigação (não polui contexto principal)
-- Skills em `.claude/skills/` para padrões reutilizáveis (API Loft, schema markup, SEO Next.js)
-- Worktrees paralelos limitados a 3-4 ativos
+- Skills em `.claude/skills/` para padrões reutilizáveis (API Loft, schema markup)
 
 ### Prioridade de Entrega
 1. Páginas de imóvel com SEO (maior impacto de indexação)
