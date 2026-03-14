@@ -1,0 +1,73 @@
+# FYMOOB — Site Imobiliário SEO-First
+
+## Projeto
+Reconstrução do site da imobiliária FYMOOB (Curitiba/PR) com foco em SEO e geração de leads orgânicos via Google. O site atual é invisível para o Google (5 visitas/mês, 5 páginas indexadas de 245 imóveis).
+
+## Stack
+- **Framework:** Next.js 15+ (App Router, TypeScript)
+- **Styling:** Tailwind CSS
+- **CRM:** Loft/Vista API REST (antigo Vista) — chave da API será configurada via env
+- **Banco:** Nhost (Hasura + PostgreSQL + GraphQL) — sa-east-1
+- **Imagens:** CDN Vistahost (`cdn.vistahost.com.br`) + Nhost Storage
+- **Deploy:** Vercel
+- **Domínio:** fymoob.com
+
+## Comandos
+```bash
+npm run dev          # Desenvolvimento local
+npm run build        # Build de produção
+npm run lint         # Linting
+npm run test         # Testes
+```
+
+## Convenções de Código
+- Componentes em PascalCase, arquivos em kebab-case
+- Server Components por padrão, 'use client' apenas quando necessário
+- Todas as páginas públicas devem exportar `generateMetadata()`
+- Todas as páginas de imóvel devem incluir JSON-LD schema markup
+- Imagens sempre via `<Image />` do Next.js com alt descritivo
+- Dados da API Loft via `services/loft.ts` — nunca chamar API direto nos componentes
+- Mock data em `data/mock-properties.json` até a API key ser configurada
+- Env vars: `LOFT_API_KEY`, `NEXT_PUBLIC_SITE_URL`, `NHOST_SUBDOMAIN`
+
+## Arquitetura de URLs (SEO)
+```
+/                                    → Home
+/imovel/[slug]                       → Página individual do imóvel
+/imoveis/[bairro]                    → Landing page por bairro
+/apartamentos-curitiba               → Landing page por tipo
+/casas-curitiba                      → Landing page por tipo
+/apartamentos-[bairro]-curitiba      → Landing combinada tipo+bairro
+/blog/[slug]                         → Artigo do blog
+/sobre                               → Sobre nós
+/contato                             → Contato
+/busca                               → Busca com filtros (SSR)
+```
+
+## SEO — Regras obrigatórias
+- Toda página pública: `generateMetadata()` com title, description, og:image únicos
+- Toda página de imóvel: JSON-LD `RealEstateListing` com preço, endereço, geo, quartos, área
+- Layout raiz: JSON-LD `Organization` + `LocalBusiness`
+- `sitemap.ts` dinâmico listando todos os imóveis + bairros + blog
+- `robots.ts` permitindo tudo exceto /api/, /favoritos, /comparar
+- Breadcrumbs com schema `BreadcrumbList` em todas as páginas
+- Imagens: alt = "Foto do [tipo] com [N] quartos no [bairro], Curitiba"
+
+## API Loft/Vista — Referência rápida
+- Endpoint: `https://[dominio].vistahost.com.br/imoveis/listar?key=KEY`
+- Paginação: max 50 resultados por request
+- Campos: Codigo, Categoria, Cidade, Bairro, ValorVenda, ValorLocacao, Dormitorio, Suites, Vagas, AreaTotal, AreaPrivativa, Descricao, FotoDestaque, fotos[], Status, Finalidade
+- Detalhes: `/imoveis/detalhes?key=KEY&imovel=CODIGO`
+- Mock data disponível em `data/mock-properties.json` (244 imóveis reais scrapeados)
+
+## Contexto de negócio
+- Ver `docs/project-context.md` para dados completos do cliente
+- Ver `docs/sprint-plan.md` para plano de execução por fases
+- Ver `docs/seo-strategy.md` para estratégia técnica detalhada de SEO
+
+## Compactação
+Quando compactar, SEMPRE preservar:
+- Lista de arquivos modificados na sessão atual
+- Fase/sprint atual do plano de execução
+- Quaisquer decisões de arquitetura tomadas
+- Comandos de teste relevantes
