@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e:*)",
+      "Bash(node --version:*)",
+      "Bash(npm:*)",
+      "Bash(npx --version)",
+      "Bash(npx create-next-app@latest:*)",
+      "Bash(npx shadcn@latest init:*)",
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(git status:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "WebSearch",
+      "WebFetch(domain:developers.google.com)",
+      "Bash(/c/Users/Vine/AgenticTI/Fymoob/public/blog/melhores-bairros-curitiba.jpg:*)",
+      "Bash(/c/Users/Vine/AgenticTI/Fymoob/public/blog/financiamento-mcmv.jpg:*)",
+      "Bash(/c/Users/Vine/AgenticTI/Fymoob/public/blog/documentos-compra-imovel.jpg:*)",
+      "Bash(/c/Users/Vine/AgenticTI/Fymoob/public/blog/apartamento-ou-casa.jpg:*)",
+      "Bash(/c/Users/Vine/AgenticTI/Fymoob/public/blog/custo-morar-batel.jpg:*)"
+    ]
+  }
+}

@@ -6,6 +6,10 @@ Reconstrução do site da imobiliária FYMOOB (Curitiba/PR) com foco em SEO e ge
 ## Stack
 - **Framework:** Next.js 15+ (App Router, TypeScript)
 - **Styling:** Tailwind CSS
+- **UI Components:** shadcn/ui (Radix + Tailwind)
+- **Icons:** Lucide React
+- **Fontes:** Poppins (headings/nav) + Inter (body)
+- **Paleta:** Azul FYMOOB (#29ABE2) + branco — identidade atual da marca
 - **CRM:** Loft/Vista API REST (antigo Vista) — chave da API será configurada via env
 - **Banco:** Nhost (Hasura + PostgreSQL + GraphQL) — sa-east-1
 - **Imagens:** CDN Vistahost (`cdn.vistahost.com.br`) + Nhost Storage
@@ -24,6 +28,8 @@ npm run test         # Testes
 - Todo código da aplicação fica dentro de `src/`
 - Componentes em PascalCase, arquivos em kebab-case
 - Server Components por padrão, 'use client' apenas quando necessário
+- UI components via shadcn/ui — nunca criar do zero se shadcn tem equivalente
+- Ver `.claude/skills/frontend-design/SKILL.md` para design system completo
 - Todas as páginas públicas devem exportar `generateMetadata()`
 - Todas as páginas de imóvel devem incluir JSON-LD schema markup
 - Imagens sempre via `<Image />` do Next.js com alt descritivo

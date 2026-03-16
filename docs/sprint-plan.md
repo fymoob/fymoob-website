@@ -7,11 +7,11 @@
 - **~70% do projeto executável sem chave da API**
 
 ## Status
-- [ ] Fase 0 — Fundação
-- [ ] Fase 1 — Páginas de imóvel
-- [ ] Fase 2 — Listagens e landing pages
-- [ ] Fase 3 — SEO técnico
-- [ ] Fase 4 — Blog e conteúdo
+- [x] Fase 0 — Fundação
+- [x] Fase 1 — Páginas de imóvel
+- [x] Fase 2 — Listagens e landing pages
+- [x] Fase 3 — SEO técnico
+- [x] Fase 4 — Blog e conteúdo
 - [ ] Fase 5 — API Loft real
 - [ ] Fase 6 — Institucional e polish
 - [ ] Fase 7 — QA e deploy
@@ -23,18 +23,23 @@
 **Depende de API:** Não
 
 ### Tarefas
-- [ ] `create-next-app` com App Router, TypeScript, Tailwind (com `src/` directory)
-- [ ] Estrutura de pastas: `src/app`, `src/lib`, `src/services`, `src/types`, `src/components`
-- [ ] Mover `data/mock-properties.json` para raiz (já existe do scraper — validar formato)
-- [ ] Definir types em `src/types/property.ts` baseado nos campos do mock-properties.json
-- [ ] Criar `src/services/loft.ts` com abstração (lê mock agora, API depois)
-- [ ] Funções do service: `getProperties()`, `getPropertyBySlug()`, `getPropertiesByBairro()`, `getPropertiesByType()`, `getAllBairros()`, `getAllTypes()`
-- [ ] Configurar `.env.local` baseado no `.env.example`
-- [ ] Configurar `next.config.ts` (domínios de imagem: cdn.vistahost.com.br, ppbxdsyojwqujdrmnxdv.storage.sa-east-1.nhost.run)
-- [ ] Criar `src/lib/utils.ts` (formatPrice, slugify, generatePropertySlug)
-- [ ] Criar `src/lib/seo.ts` (generatePropertySchema, generateBreadcrumbs, generateOrganizationSchema)
-- [ ] `src/app/layout.tsx` — Layout raiz com: fontes, Tailwind, header placeholder, footer placeholder
-- [ ] Configurar Tailwind com palette de cores do projeto
+- [x] `create-next-app` com App Router, TypeScript, Tailwind (com `src/` directory)
+- [x] `npx shadcn@latest init` (estilo: New York, cor base: Zinc, CSS variables: yes)
+- [x] Instalar componentes shadcn: button, card, input, select, badge, separator, dialog, sheet, carousel, tabs, accordion, form, label, textarea, breadcrumb, dropdown-menu, navigation-menu, skeleton
+- [x] Configurar fontes: Poppins + Inter via `next/font/google`
+- [x] Configurar design tokens FYMOOB azul (#29ABE2) em `globals.css` (ver `.claude/skills/frontend-design/SKILL.md`)
+- [x] Configurar `tailwind.config.ts` com cores fymoob e fontFamily
+- [x] Estrutura de pastas: `src/app`, `src/lib`, `src/services`, `src/types`, `src/components/{ui,layout,property,search,seo,shared}`
+- [x] Mover `data/mock-properties.json` para raiz (já existe do scraper — validar formato)
+- [x] Definir types em `src/types/property.ts` baseado nos campos do mock-properties.json
+- [x] Criar `src/services/loft.ts` com abstração (lê mock agora, API depois)
+- [x] Funções do service: `getProperties()`, `getPropertyBySlug()`, `getPropertiesByBairro()`, `getPropertiesByType()`, `getAllBairros()`, `getAllTypes()`
+- [x] Configurar `.env.local` baseado no `.env.example`
+- [x] Configurar `next.config.ts` (domínios de imagem: cdn.vistahost.com.br, ppbxdsyojwqujdrmnxdv.storage.sa-east-1.nhost.run)
+- [x] Criar `src/lib/utils.ts` (cn utility do shadcn + formatPrice, slugify, generatePropertySlug)
+- [x] Criar `src/lib/seo.ts` (generatePropertySchema, generateBreadcrumbs, generateOrganizationSchema)
+- [x] `src/app/layout.tsx` — Layout raiz com: fontes, Tailwind, Header placeholder, Footer placeholder
+- [x] Salvar logo FYMOOB em `public/logo.svg` (SVG placeholder)
 
 ### Critério de aceite
 - `npm run dev` roda sem erros
@@ -51,15 +56,22 @@
 **Depende de API:** Não
 
 #### Tarefas
-- [ ] `src/app/imovel/[slug]/page.tsx` com `generateStaticParams()`
-- [ ] Componente `PropertyGallery` (galeria de fotos com lightbox)
-- [ ] Componente `PropertyDetails` (preço, tipo, quartos, área, vagas)
-- [ ] Componente `PropertyDescription` (descrição completa)
-- [ ] Componente `PropertyContact` (formulário de contato / WhatsApp)
-- [ ] Componente `PropertyMap` (localização — pode ser estático inicialmente)
-- [ ] Componente `PropertyCard` (card reutilizável para listagens)
-- [ ] Componente `SimilarProperties` (imóveis semelhantes)
-- [ ] ISR configurado com `revalidate: 3600`
+- [x] `src/app/imovel/[slug]/page.tsx` com `generateStaticParams()`
+- [x] `src/components/property/PropertyGallery.tsx` (Carousel shadcn + Dialog lightbox + thumbnails)
+- [x] `src/components/property/PropertyDetails.tsx` (preço azul, tipo, quartos, área, vagas — ícones azuis)
+- [x] `src/components/property/PropertyDescription.tsx` (descrição completa)
+- [x] `src/components/property/PropertyContact.tsx` (Form proposta: nome, email, tel, dúvidas + botão azul)
+- [x] `src/components/property/PropertyMap.tsx` (OpenStreetMap embed via iframe no accordion)
+- [x] `src/components/property/PropertyCharacteristics.tsx` (Accordion shadcn — "Características", "Mapa")
+- [x] `src/components/property/PropertyCard.tsx` (Card com overlay badges + carousel por card)
+- [x] `src/components/property/PropertyCardFeatured.tsx` (Card grande: imagem esquerda + info direita)
+- [x] `src/components/property/SimilarProperties.tsx` (grid de cards semelhantes)
+- [x] `src/components/shared/PriceDisplay.tsx` (preço em azul FYMOOB)
+- [x] `src/components/shared/PropertyBadge.tsx` (Badge azul: Apartamento, Venda, Cód)
+- [x] `src/components/shared/PropertyFeatures.tsx` (ícones azuis: quartos, vagas, área, banheiros)
+- [x] `src/components/shared/WhatsAppButton.tsx` (bg verde #25D366 + ícone)
+- [x] `src/components/layout/WhatsAppFloat.tsx` (botão flutuante fixed bottom-right)
+- [x] ISR configurado com `revalidate: 3600`
 
 #### Critério de aceite
 - Navegando para `/imovel/[slug]` mostra página completa com dados do mock
@@ -71,12 +83,12 @@
 **Depende de API:** Não
 
 #### Tarefas
-- [ ] `generateMetadata()` com title, description, og:image dinâmicos
-- [ ] Title format: "[Tipo] [Quartos] Quartos à Venda no [Bairro] | R$ [Preço] | FYMOOB"
-- [ ] JSON-LD `RealEstateListing` com: name, description, offers.price, address, geo, numberOfRooms, floorSize
-- [ ] Componente `Breadcrumbs` com schema `BreadcrumbList`
-- [ ] Canonical URL configurada
-- [ ] Open Graph tags (og:title, og:description, og:image, og:type)
+- [x] `generateMetadata()` com title, description, og:image dinâmicos
+- [x] Title format: "[Tipo] [Quartos] Quartos à Venda no [Bairro] | R$ [Preço] | FYMOOB"
+- [x] JSON-LD `RealEstateListing` com: name, description, offers.price, address, geo, numberOfRooms, floorSize
+- [x] Componente `Breadcrumbs` com schema `BreadcrumbList`
+- [x] Canonical URL configurada
+- [x] Open Graph tags (og:title, og:description, og:image, og:type)
 
 #### Critério de aceite
 - Google Rich Results Test passa sem erros para qualquer página de imóvel
@@ -92,12 +104,12 @@
 **Depende de API:** Não
 
 #### Tarefas
-- [ ] `src/app/page.tsx` — Home com: hero, destaques, lançamentos, bairros em destaque
-- [ ] `src/app/busca/page.tsx` — SSR com filtros (tipo, bairro, preço, quartos)
-- [ ] Componente `SearchFilters` (sidebar ou top bar com filtros)
-- [ ] Componente `PropertyGrid` (grid de PropertyCards com paginação)
-- [ ] Componente `BairroCard` (card de bairro para home)
-- [ ] `generateMetadata()` dinâmico para busca baseado nos filtros
+- [x] `src/app/page.tsx` — Home com: hero, destaques, lançamentos, bairros em destaque
+- [x] `src/app/busca/page.tsx` — SSR com filtros (tipo, bairro, preço, quartos)
+- [x] Componente `SearchFilters` (sidebar ou top bar com filtros)
+- [x] Componente `PropertyGrid` (grid de PropertyCards com paginação)
+- [x] Componente `BairroCard` (card de bairro para home)
+- [x] `generateMetadata()` dinâmico para busca baseado nos filtros
 
 #### Critério de aceite
 - Home mostra imóveis em destaque
@@ -109,16 +121,16 @@
 **Depende de API:** Não
 
 #### Tarefas
-- [ ] `src/app/imoveis/[bairro]/page.tsx` — Landing por bairro
-- [ ] `src/app/apartamentos-curitiba/page.tsx` — Landing por tipo (estática)
-- [ ] `src/app/casas-curitiba/page.tsx` — Landing por tipo (estática)
-- [ ] `src/app/sobrados-curitiba/page.tsx` — Landing por tipo (estática)
-- [ ] `src/app/terrenos-curitiba/page.tsx` — Landing por tipo (estática)
-- [ ] `src/app/imoveis/[bairro]/[tipo]/page.tsx` — Landing combinada (bairro+tipo)
-- [ ] `generateStaticParams()` gerando todas as combinações válidas (mín. 3 imóveis por página)
-- [ ] `generateMetadata()` para cada landing page
-- [ ] Conteúdo automático por página: contagem de imóveis, faixa de preço, preço médio/m²
-- [ ] Linkagem interna entre páginas relacionadas
+- [x] `src/app/imoveis/[bairro]/page.tsx` — Landing por bairro
+- [x] `src/app/apartamentos-curitiba/page.tsx` — Landing por tipo (estática)
+- [x] `src/app/casas-curitiba/page.tsx` — Landing por tipo (estática)
+- [x] `src/app/sobrados-curitiba/page.tsx` — Landing por tipo (estática)
+- [x] `src/app/terrenos-curitiba/page.tsx` — Landing por tipo (estática)
+- [x] `src/app/imoveis/[bairro]/[tipo]/page.tsx` — Landing combinada (bairro+tipo)
+- [x] `generateStaticParams()` gerando todas as combinações válidas (mín. 3 imóveis por página)
+- [x] `generateMetadata()` para cada landing page
+- [x] Conteúdo automático por página: contagem de imóveis, faixa de preço, preço médio/m²
+- [x] Linkagem interna entre páginas relacionadas
 
 #### Critério de aceite
 - `/imoveis/batel` mostra todos os imóveis do Batel com meta tags únicos
@@ -134,15 +146,15 @@
 **Depende de API:** Não
 
 ### Tarefas
-- [ ] `src/app/sitemap.ts` — Sitemap dinâmico com todas as páginas
-- [ ] `src/app/robots.ts` — Allow all exceto /api, /favoritos, /comparar
-- [ ] Schema `Organization` no layout raiz (nome, CRECI, endereço, telefone, logo)
-- [ ] Schema `LocalBusiness` no layout raiz (coordenadas, horário)
-- [ ] Canonical URLs em todas as páginas
-- [ ] Componente `<OptimizedImage />` wrapper do Next Image com alt automático
-- [ ] Headers de segurança via `next.config.ts` (X-Frame-Options, CSP básico)
-- [ ] Favicon e manifest.json em `/public`
-- [ ] Verificar que TODOS os remotePatterns de imagem estão configurados
+- [x] `src/app/sitemap.ts` — Sitemap dinâmico com todas as páginas
+- [x] `src/app/robots.ts` — Allow all exceto /api, /favoritos, /comparar
+- [x] Schema `Organization` no layout raiz (nome, CRECI, endereço, telefone, logo)
+- [x] Schema `LocalBusiness` no layout raiz (coordenadas, horário)
+- [x] Canonical URLs em todas as páginas
+- [x] Componente `<OptimizedImage />` wrapper do Next Image com alt automático
+- [x] Headers de segurança via `next.config.ts` (X-Frame-Options, CSP básico)
+- [x] Favicon e manifest.json em `/public`
+- [x] Verificar que TODOS os remotePatterns de imagem estão configurados
 
 ### Critério de aceite
 - `/sitemap.xml` lista 500+ URLs com lastmod
@@ -157,19 +169,19 @@
 **Depende de API:** Não
 
 ### Tarefas
-- [ ] `src/app/blog/page.tsx` — Lista de artigos
-- [ ] `src/app/blog/[slug]/page.tsx` — Página de artigo
-- [ ] Sistema de conteúdo via MDX (arquivos em `/content/blog/`)
-- [ ] Schema `BlogPosting` em cada artigo
-- [ ] `generateMetadata()` para cada artigo
-- [ ] 5 artigos iniciais:
-  - [ ] "Melhores bairros para morar em Curitiba em 2026"
-  - [ ] "Como financiar seu imóvel pelo Minha Casa Minha Vida"
-  - [ ] "Documentos necessários para comprar imóvel em Curitiba"
-  - [ ] "Guia completo: apartamento ou casa em Curitiba?"
-  - [ ] "Quanto custa morar no Batel, Curitiba"
-- [ ] `src/app/faq/page.tsx` com schema `FAQPage`
-- [ ] Linkagem interna: blog → bairros → imóveis
+- [x] `src/app/blog/page.tsx` — Lista de artigos
+- [x] `src/app/blog/[slug]/page.tsx` — Página de artigo
+- [x] Sistema de conteúdo via MDX (arquivos em `/content/blog/`)
+- [x] Schema `BlogPosting` em cada artigo
+- [x] `generateMetadata()` para cada artigo
+- [x] 5 artigos iniciais:
+  - [x] "Melhores bairros para morar em Curitiba em 2026"
+  - [x] "Como financiar seu imóvel pelo Minha Casa Minha Vida"
+  - [x] "Documentos necessários para comprar imóvel em Curitiba"
+  - [x] "Guia completo: apartamento ou casa em Curitiba?"
+  - [x] "Quanto custa morar no Batel, Curitiba"
+- [x] `src/app/faq/page.tsx` com schema `FAQPage`
+- [x] Linkagem interna: blog → bairros → imóveis
 
 ### Critério de aceite
 - `/blog` lista os 5 artigos
