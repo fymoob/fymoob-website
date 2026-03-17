@@ -58,11 +58,12 @@ Manter o azul FYMOOB `#29ABE2` como cor de marca (accent/CTAs), mas construir um
 ## 2. Tipografia
 
 ### Fontes
-- **Display/Headings:** `Plus Jakarta Sans` (weight 600-800) — moderna, geométrica, premium
-  - CDN: `https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap`
-- **Body:** `Inter` (weight 400-500) — limpa, legível, profissional
-  - Já disponível via `next/font`
-- **Alternativa se quiser manter Poppins:** OK, mas trocar o body de Inter para `DM Sans` para melhor pairing
+- **Fonte única — Satoshi** (variable font, weight 300-900) — geométrica, moderna, premium
+  - Fonte local: `public/fonts/Satoshi-Variable.woff2` via `next/font/local`
+  - CSS variable: `--font-satoshi`
+  - **Headings:** weight 700-800 (bold/extrabold)
+  - **Body:** weight 400-500 (normal/medium)
+  - A Satoshi substitui Poppins, Inter e Plus Jakarta Sans como fonte única do site inteiro
 
 ### Escala tipográfica
 

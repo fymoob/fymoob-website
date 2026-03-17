@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { Building2, Home as HomeIcon, Landmark, TreePine } from "lucide-react"
+import { Building2, Home as HomeIcon, Landmark, TreePine, ChevronDown } from "lucide-react"
 import { getFeaturedProperties, getAllBairros, getAllTypes } from "@/services/loft"
 import { getRecentPosts } from "@/services/blog"
 import { SearchBar } from "@/components/search/SearchBar"
@@ -62,7 +62,7 @@ export default async function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative flex min-h-[85vh] items-center justify-center overflow-hidden bg-neutral-950">
+      <section id="hero" className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-neutral-950">
         {/* Background video with scale-in */}
         <video
           autoPlay
@@ -82,7 +82,7 @@ export default async function Home() {
           }}
         />
         {/* Content */}
-        <div className="relative z-10 mx-auto w-full max-w-4xl px-4 pt-16 text-center sm:px-6">
+        <div className="relative z-10 mx-auto w-full max-w-4xl px-4 text-center sm:px-6">
           <h1 className="hero-animate hero-animate-1 font-display text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-7xl leading-[1.05]">
             Encontre seu imóvel{"\n"}ideal
           </h1>
@@ -93,11 +93,19 @@ export default async function Home() {
             <SearchBar bairros={bairroNames} tipos={tipoNames} />
           </div>
         </div>
+        {/* Scroll indicator */}
+        <a
+          href="#oportunidade"
+          className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 animate-bounce text-white/60 transition hover:text-white/90"
+          aria-label="Rolar para próxima seção"
+        >
+          <ChevronDown className="h-8 w-8" />
+        </a>
       </section>
 
       {/* Oportunidade de hoje */}
       {highlight && (
-        <section className="py-16 md:py-20">
+        <section id="oportunidade" className="py-16 md:py-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <AnimateOnScroll>
               <div>

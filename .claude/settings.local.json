@@ -28,7 +28,9 @@
       "Bash(node -e \":*)",
       "WebFetch(domain:unsplash.com)",
       "WebFetch(domain:www.pexels.com)",
-      "WebFetch(domain:commons.wikimedia.org)"
+      "WebFetch(domain:commons.wikimedia.org)",
+      "Bash(ls:*)",
+      "WebFetch(domain:api.fontshare.com)"
     ]
   }
 }

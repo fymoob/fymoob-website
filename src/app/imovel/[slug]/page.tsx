@@ -17,6 +17,7 @@ import { PropertyDetails } from "@/components/property/PropertyDetails"
 import { PropertyDescription } from "@/components/property/PropertyDescription"
 import { PropertyContact } from "@/components/property/PropertyContact"
 import { PropertyCharacteristics } from "@/components/property/PropertyCharacteristics"
+import { PropertyAmenities } from "@/components/property/PropertyAmenities"
 import { SimilarProperties } from "@/components/property/SimilarProperties"
 import { PropertyMap } from "@/components/property/PropertyMap"
 import { MobileContactBar } from "@/components/property/MobileContactBar"
@@ -108,6 +109,7 @@ export default async function PropertyPage({ params }: PageProps) {
           <div className="space-y-10">
             <PropertyGallery fotos={filterPropertyPhotos(property.fotos)} alt={alt} />
             <PropertyDescription descricao={property.descricao} />
+            <PropertyAmenities descricao={property.descricao} />
             <PropertyCharacteristics property={property} />
             <PropertyMap
               latitude={property.latitude}
