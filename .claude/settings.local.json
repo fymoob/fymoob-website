@@ -25,7 +25,10 @@
       "WebFetch(domain:fymoob.com)",
       "Bash(mv:*)",
       "Bash(cmd.exe /c \"wmic process where ProcessId=11200 get Name,CommandLine\")",
-      "Bash(node -e \":*)"
+      "Bash(node -e \":*)",
+      "WebFetch(domain:unsplash.com)",
+      "WebFetch(domain:www.pexels.com)",
+      "WebFetch(domain:commons.wikimedia.org)"
     ]
   }
 }
