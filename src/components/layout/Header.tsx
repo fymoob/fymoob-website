@@ -111,9 +111,9 @@ export function Header() {
 
           {/* Mobile Menu */}
           <Sheet>
-            <SheetTrigger className="md:hidden">
+            <SheetTrigger className="md:hidden flex h-9 w-9 items-center justify-center rounded-lg">
               <Menu
-                size={24}
+                size={22}
                 className={cn(
                   "transition-colors duration-300",
                   isTransparent ? "text-white" : "text-neutral-950"
@@ -121,32 +121,52 @@ export function Header() {
               />
               <span className="sr-only">Abrir menu</span>
             </SheetTrigger>
-            <SheetContent side="right" className="w-72">
-              <SheetTitle className="font-display text-lg font-semibold text-neutral-950">
-                Menu
-              </SheetTitle>
-              <nav className="mt-6 flex flex-col gap-4">
+            <SheetContent side="right" className="flex w-[280px] flex-col p-0">
+              {/* Menu header */}
+              <div className="flex items-center border-b border-neutral-100 px-5 py-4">
+                <SheetTitle className="sr-only">Menu de navegação</SheetTitle>
+                <Link href="/">
+                  <Image
+                    src="/logo.png"
+                    alt="FYMOOB Imobiliária"
+                    width={110}
+                    height={70}
+                    className="h-8 w-auto"
+                  />
+                </Link>
+              </div>
+
+              {/* Nav links */}
+              <nav className="flex flex-1 flex-col px-3 py-4">
                 {navLinks.map((link) => (
                   <Link
                     key={link.href}
                     href={link.href}
                     className={cn(
-                      "font-display text-base font-medium transition-colors duration-200",
+                      "flex items-center rounded-lg px-3 py-3 font-display text-sm font-medium transition-colors duration-200",
                       pathname === link.href
-                        ? "text-neutral-950"
-                        : "text-neutral-600 hover:text-brand-primary"
+                        ? "bg-brand-primary/10 text-brand-primary"
+                        : "text-neutral-700 hover:bg-neutral-50 hover:text-neutral-950"
                     )}
                   >
                     {link.label}
                   </Link>
                 ))}
               </nav>
-              <div className="mt-8 border-t border-neutral-200 pt-6">
+
+              {/* CTA footer */}
+              <div className="border-t border-neutral-100 px-5 py-5 space-y-3">
+                <Link
+                  href="/busca"
+                  className="flex h-10 w-full items-center justify-center rounded-full bg-brand-primary text-sm font-semibold text-white transition-colors hover:bg-brand-primary-hover"
+                >
+                  Buscar imóvel
+                </Link>
                 <a
                   href="tel:+554199978-0517"
-                  className="flex items-center gap-2 text-sm font-medium text-neutral-950"
+                  className="flex items-center justify-center gap-2 text-sm font-medium text-neutral-500"
                 >
-                  <Phone size={14} className="text-brand-primary" />
+                  <Phone size={13} className="text-brand-primary" />
                   (41) 99978-0517
                 </a>
               </div>

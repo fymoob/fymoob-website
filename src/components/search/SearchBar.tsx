@@ -36,8 +36,8 @@ export function SearchBar({ bairros, tipos }: SearchBarProps) {
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div className="rounded-full bg-white p-2 shadow-2xl shadow-black/10">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-0">
+      <div className="rounded-2xl bg-white p-2 shadow-2xl shadow-black/10 sm:rounded-full">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:gap-0">
           <SearchSelect
             value={finalidade}
             onChange={setFinalidade}
@@ -45,7 +45,7 @@ export function SearchBar({ bairros, tipos }: SearchBarProps) {
             options={finalidadeOptions}
           />
 
-          <div className="hidden h-6 w-px bg-neutral-200 sm:block" />
+          <div className="mx-3 h-px bg-neutral-100 sm:mx-0 sm:h-6 sm:w-px sm:bg-neutral-200" />
 
           <SearchSelect
             value={bairro}
@@ -54,7 +54,7 @@ export function SearchBar({ bairros, tipos }: SearchBarProps) {
             options={bairroOptions}
           />
 
-          <div className="hidden h-6 w-px bg-neutral-200 sm:block" />
+          <div className="mx-3 h-px bg-neutral-100 sm:mx-0 sm:h-6 sm:w-px sm:bg-neutral-200" />
 
           <SearchSelect
             value={tipo}
@@ -63,13 +63,15 @@ export function SearchBar({ bairros, tipos }: SearchBarProps) {
             options={tipoOptions}
           />
 
-          <button
-            type="submit"
-            className="flex h-11 items-center justify-center gap-2 rounded-full bg-neutral-950 px-7 text-sm font-semibold text-white transition-all duration-200 hover:bg-neutral-800 active:scale-[0.98]"
-          >
-            <Search size={16} />
-            Buscar
-          </button>
+          <div className="mt-2 sm:mt-0 sm:ml-2">
+            <button
+              type="submit"
+              className="flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-neutral-950 px-7 text-sm font-semibold text-white transition-all duration-200 hover:bg-neutral-800 active:scale-[0.98] sm:w-auto sm:rounded-full"
+            >
+              <Search size={16} />
+              Buscar
+            </button>
+          </div>
         </div>
       </div>
 

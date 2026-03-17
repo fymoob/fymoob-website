@@ -84,7 +84,7 @@ export default async function Home() {
         {/* Content */}
         <div className="relative z-10 mx-auto w-full max-w-4xl px-4 pt-16 text-center sm:px-6">
           <h1 className="hero-animate hero-animate-1 font-display text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-7xl leading-[1.05]">
-            Encontre seu imóvel{"\n"}ideal em Curitiba
+            Encontre seu imóvel{"\n"}ideal
           </h1>
           <p className="hero-animate hero-animate-2 mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/70 sm:text-lg md:text-xl">
             Apartamentos, casas e sobrados à venda e para alugar nos melhores bairros da cidade.
