@@ -18,6 +18,7 @@ import { PropertyDescription } from "@/components/property/PropertyDescription"
 import { PropertyContact } from "@/components/property/PropertyContact"
 import { PropertyCharacteristics } from "@/components/property/PropertyCharacteristics"
 import { SimilarProperties } from "@/components/property/SimilarProperties"
+import { PropertyMap } from "@/components/property/PropertyMap"
 import { MobileContactBar } from "@/components/property/MobileContactBar"
 
 export const revalidate = 3600
@@ -108,6 +109,12 @@ export default async function PropertyPage({ params }: PageProps) {
             <PropertyGallery fotos={filterPropertyPhotos(property.fotos)} alt={alt} />
             <PropertyDescription descricao={property.descricao} />
             <PropertyCharacteristics property={property} />
+            <PropertyMap
+              latitude={property.latitude}
+              longitude={property.longitude}
+              bairro={property.bairro}
+              titulo={property.titulo}
+            />
           </div>
 
           {/* Right sidebar — desktop only */}

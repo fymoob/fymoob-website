@@ -49,7 +49,7 @@ const tipoLinks = [
 export default async function Home() {
   const [featured, bairros, types, recentPosts] = await Promise.all([
     getFeaturedProperties(8),
-    getAllBairros(),
+    getAllBairros(6),
     getAllTypes(),
     getRecentPosts(3),
   ])

@@ -155,7 +155,9 @@ export async function getPropertiesByType(
   return limit ? filtered.slice(0, limit) : filtered
 }
 
-export async function getAllBairros(): Promise<BairroSummary[]> {
+export async function getAllBairros(limit?: number): Promise<BairroSummary[]> {
+  const { bairroImages } = await import("@/lib/bairro-images")
+
   const bairroMap = new Map<
     string,
     { total: number; tipos: Map<PropertyType, number> }
@@ -171,15 +173,20 @@ export async function getAllBairros(): Promise<BairroSummary[]> {
     entry.tipos.set(p.tipo, (entry.tipos.get(p.tipo) ?? 0) + 1)
   }
 
-  return Array.from(bairroMap.entries()).map(([bairro, info]) => ({
-    bairro,
-    slug: slugify(bairro),
-    total: info.total,
-    tipos: Array.from(info.tipos.entries()).map(([tipo, count]) => ({
-      tipo,
-      count,
-    })),
-  }))
+  const result = Array.from(bairroMap.entries())
+    .map(([bairro, info]) => ({
+      bairro,
+      slug: slugify(bairro),
+      total: info.total,
+      tipos: Array.from(info.tipos.entries()).map(([tipo, count]) => ({
+        tipo,
+        count,
+      })),
+      imageUrl: bairroImages[bairro],
+    }))
+    .sort((a, b) => b.total - a.total)
+
+  return limit ? result.slice(0, limit) : result
 }
 
 export async function getSimilarProperties(

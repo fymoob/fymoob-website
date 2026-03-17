@@ -55,6 +55,7 @@ export interface BairroSummary {
   slug: string;
   total: number;
   tipos: { tipo: PropertyType; count: number }[];
+  imageUrl?: string;
 }
 
 export interface TypeSummary {
