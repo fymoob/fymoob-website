@@ -10,7 +10,7 @@ export function generateOrganizationSchema() {
     "@type": "Organization",
     name: "FYMOOB Imobiliária",
     url: SITE_URL,
-    logo: `${SITE_URL}/logo.svg`,
+    logo: `${SITE_URL}/logo.png`,
     description:
       "Imobiliária em Curitiba especializada em apartamentos, casas e sobrados. Encontre seu imóvel ideal com a FYMOOB.",
     telephone: ["+554199978-0517", "+554132655051"],
@@ -41,8 +41,8 @@ export function generateLocalBusinessSchema() {
     description:
       "Imobiliária em Curitiba — CRECI J 9420. Apartamentos, casas e sobrados à venda e para alugar.",
     url: SITE_URL,
-    logo: `${SITE_URL}/logo.svg`,
-    image: `${SITE_URL}/logo.svg`,
+    logo: `${SITE_URL}/logo.png`,
+    image: `${SITE_URL}/logo.png`,
     telephone: "+554199978-0517",
     email: "fymoob@gmail.com",
     priceRange: "R$ 15.000 - R$ 11.000.000",
@@ -268,7 +268,7 @@ export function generateBlogPostingSchema(post: BlogPost) {
       name: "FYMOOB Imobiliária",
       logo: {
         "@type": "ImageObject",
-        url: `${SITE_URL}/logo.svg`,
+        url: `${SITE_URL}/logo.png`,
       },
     },
     mainEntityOfPage: {

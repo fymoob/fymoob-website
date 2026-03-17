@@ -21,7 +21,9 @@
       "Bash(cd:*)",
       "WebFetch(domain:localhost)",
       "Bash(curl:*)",
-      "Bash(taskkill:*)"
+      "Bash(taskkill:*)",
+      "WebFetch(domain:fymoob.com)",
+      "Bash(mv:*)"
     ]
   }
 }

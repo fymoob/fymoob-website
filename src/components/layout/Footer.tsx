@@ -21,11 +21,11 @@ export function Footer() {
             {/* Column 1 — Logo + description */}
             <div className="space-y-4">
               <Image
-                src="/logo.svg"
+                src="/logo.png"
                 alt="FYMOOB Imobiliária"
-                width={120}
-                height={40}
-                className="brightness-0 invert"
+                width={130}
+                height={80}
+                className="h-9 w-auto brightness-0 invert"
               />
               <p className="text-sm leading-relaxed text-neutral-400">
                 Encontre seu imóvel ideal em Curitiba com atendimento

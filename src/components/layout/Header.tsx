@@ -60,13 +60,13 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="shrink-0">
           <Image
-            src="/logo.svg"
+            src="/logo.png"
             alt="FYMOOB Imobiliária"
-            width={120}
-            height={40}
+            width={130}
+            height={80}
             priority
             className={cn(
-              "transition-all duration-300",
+              "h-9 w-auto transition-all duration-300",
               isTransparent && "brightness-0 invert"
             )}
           />
