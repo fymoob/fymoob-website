@@ -23,7 +23,9 @@
       "Bash(curl:*)",
       "Bash(taskkill:*)",
       "WebFetch(domain:fymoob.com)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(cmd.exe /c \"wmic process where ProcessId=11200 get Name,CommandLine\")",
+      "Bash(node -e \":*)"
     ]
   }
 }
