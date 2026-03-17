@@ -17,7 +17,7 @@ export function PriceDisplay({
   className,
 }: PriceDisplayProps) {
   const price = precoVenda ?? precoAluguel
-  const label = finalidade === "Locação" ? "Aluguel" : "Venda"
+  const label = finalidade === "Locacao" ? "Aluguel" : "Venda"
 
   const sizeClasses = {
     sm: "text-base",
@@ -27,14 +27,14 @@ export function PriceDisplay({
 
   return (
     <div className={cn("space-y-1", className)}>
-      <p className="text-xs text-muted-foreground uppercase tracking-wide">
+      <p className="text-xs font-medium uppercase tracking-wider text-neutral-500">
         Valor {label}
       </p>
-      <p className={cn("font-bold text-fymoob-blue", sizeClasses[size])}>
+      <p className={cn("font-bold text-brand-primary", sizeClasses[size])}>
         {formatPrice(price)}
       </p>
-      {finalidade === "Venda e Locação" && precoAluguel && (
-        <p className="text-sm text-muted-foreground">
+      {finalidade === "Venda e Locacao" && precoAluguel && (
+        <p className="text-sm text-neutral-500">
           Aluguel: {formatPrice(precoAluguel)}
         </p>
       )}

@@ -8,6 +8,7 @@ import { BairroCard } from "@/components/search/BairroCard"
 import { PropertyCard } from "@/components/property/PropertyCard"
 import { PropertyCardFeatured } from "@/components/property/PropertyCardFeatured"
 import { BlogCard } from "@/components/blog/BlogCard"
+import { AnimateOnScroll } from "@/components/shared/AnimateOnScroll"
 
 export const metadata: Metadata = {
   title: "Imóveis à Venda e Aluguel em Curitiba | FYMOOB",
@@ -61,16 +62,34 @@ export default async function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-fymoob-blue-dark via-fymoob-blue to-fymoob-blue-dark py-20 sm:py-28">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
-        <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <h1 className="font-display text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-            Encontre seu imóvel ideal em Curitiba
+      <section className="relative flex min-h-[85vh] items-center justify-center overflow-hidden bg-neutral-950">
+        {/* Background video with scale-in */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="hero-video absolute inset-0 h-full w-full object-cover"
+        >
+          <source src="/videos/hero-bg.mp4" type="video/mp4" />
+        </video>
+        {/* Gradient overlay */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(11,17,32,0.8) 0%, rgba(11,17,32,0.35) 100%)",
+          }}
+        />
+        {/* Content */}
+        <div className="relative z-10 mx-auto w-full max-w-4xl px-4 pt-16 text-center sm:px-6">
+          <h1 className="hero-animate hero-animate-1 font-display text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-7xl leading-[1.05]">
+            Encontre seu imóvel{"\n"}ideal em Curitiba
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-white/80">
+          <p className="hero-animate hero-animate-2 mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/70 sm:text-lg md:text-xl">
             Apartamentos, casas e sobrados à venda e para alugar nos melhores bairros da cidade.
           </p>
-          <div className="mt-8">
+          <div className="hero-animate hero-animate-3 mt-10">
             <SearchBar bairros={bairroNames} tipos={tipoNames} />
           </div>
         </div>
@@ -78,101 +97,126 @@ export default async function Home() {
 
       {/* Oportunidade de hoje */}
       {highlight && (
-        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <h2 className="font-display text-2xl font-bold italic text-fymoob-blue">
-            Oportunidade de hoje
-          </h2>
-          <div className="mt-6">
-            <PropertyCardFeatured property={highlight} />
+        <section className="py-16 md:py-20">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <AnimateOnScroll>
+              <div>
+                <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
+                  Oportunidade de hoje
+                </h2>
+                <div className="mt-8">
+                  <PropertyCardFeatured property={highlight} />
+                </div>
+              </div>
+            </AnimateOnScroll>
           </div>
         </section>
       )}
 
       {/* Destaques de lançamento */}
       {destaques.length > 0 && (
-        <section className="bg-fymoob-bg-alt py-16">
+        <section className="bg-neutral-50 py-20 md:py-28">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between">
-              <h2 className="font-display text-2xl font-bold italic text-fymoob-blue">
-                Destaques de lançamento
-              </h2>
-              <Link
-                href="/busca"
-                className="text-sm font-medium text-fymoob-blue transition-colors hover:text-fymoob-blue-dark"
-              >
-                Ver todos
-              </Link>
-            </div>
-            <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <AnimateOnScroll>
+              <div className="flex items-center justify-between">
+                <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
+                  Destaques de lançamento
+                </h2>
+                <Link
+                  href="/busca"
+                  className="text-sm font-medium text-brand-primary transition-colors duration-200 hover:text-brand-primary-hover"
+                >
+                  Ver todos
+                </Link>
+              </div>
+            </AnimateOnScroll>
+            <AnimateOnScroll stagger className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
               {destaques.map((property) => (
-                <PropertyCard key={property.slug} property={property} />
+                <div key={property.slug} className="opacity-0">
+                  <PropertyCard property={property} />
+                </div>
               ))}
-            </div>
+            </AnimateOnScroll>
           </div>
         </section>
       )}
 
       {/* Bairros em destaque */}
       {bairros.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <h2 className="font-display text-2xl font-bold italic text-fymoob-blue">
-            Bairros em destaque
-          </h2>
-          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {bairros.map((bairro) => (
-              <BairroCard key={bairro.slug} bairro={bairro} />
-            ))}
+        <section className="py-20 md:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <AnimateOnScroll>
+              <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
+                Bairros em destaque
+              </h2>
+            </AnimateOnScroll>
+            <AnimateOnScroll stagger className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+              {bairros.map((bairro) => (
+                <div key={bairro.slug} className="opacity-0">
+                  <BairroCard bairro={bairro} />
+                </div>
+              ))}
+            </AnimateOnScroll>
           </div>
         </section>
       )}
 
       {/* Buscar por tipo */}
-      <section className="bg-fymoob-bg-alt py-16">
+      <section className="bg-neutral-50 py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-display text-2xl font-bold italic text-fymoob-blue">
-            Buscar por tipo de imóvel
-          </h2>
-          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <AnimateOnScroll>
+            <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
+              Buscar por tipo de imóvel
+            </h2>
+          </AnimateOnScroll>
+          <AnimateOnScroll stagger className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-6">
             {tipoLinks.map((item) => {
               const Icon = item.icon
               return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="flex flex-col items-center gap-3 rounded-lg bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-md"
-                >
-                  <Icon size={32} className="text-fymoob-blue" />
-                  <span className="font-display text-sm font-semibold text-fymoob-gray-dark">
-                    {item.label}
-                  </span>
-                  <span className="text-xs text-fymoob-gray-mid">
-                    {item.description}
-                  </span>
-                </Link>
+                <div key={item.href} className="opacity-0">
+                  <Link
+                    href={item.href}
+                    className="flex flex-col items-center gap-3 rounded-2xl border border-neutral-200 bg-white p-8 text-center transition-all duration-300 hover:-translate-y-1 hover:border-brand-primary-muted hover:shadow-xl"
+                  >
+                    <Icon size={32} className="text-brand-primary" />
+                    <span className="font-display text-sm font-semibold text-neutral-950">
+                      {item.label}
+                    </span>
+                    <span className="text-xs text-neutral-500">
+                      {item.description}
+                    </span>
+                  </Link>
+                </div>
               )
             })}
-          </div>
+          </AnimateOnScroll>
         </div>
       </section>
 
       {/* Do Blog */}
       {recentPosts.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <h2 className="font-display text-2xl font-bold italic text-fymoob-blue">
-              Do Blog
-            </h2>
-            <Link
-              href="/blog"
-              className="text-sm font-medium text-fymoob-blue transition-colors hover:text-fymoob-blue-dark"
-            >
-              Ver todos
-            </Link>
-          </div>
-          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {recentPosts.map((post) => (
-              <BlogCard key={post.slug} post={post} />
-            ))}
+        <section className="py-20 md:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <AnimateOnScroll>
+              <div className="flex items-center justify-between">
+                <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
+                  Do Blog
+                </h2>
+                <Link
+                  href="/blog"
+                  className="text-sm font-medium text-brand-primary transition-colors duration-200 hover:text-brand-primary-hover"
+                >
+                  Ver todos
+                </Link>
+              </div>
+            </AnimateOnScroll>
+            <AnimateOnScroll stagger className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+              {recentPosts.map((post) => (
+                <div key={post.slug} className="opacity-0">
+                  <BlogCard post={post} />
+                </div>
+              ))}
+            </AnimateOnScroll>
           </div>
         </section>
       )}

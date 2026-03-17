@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Search } from "lucide-react"
 import Link from "next/link"
+import { SearchSelect } from "./SearchSelect"
 
 interface SearchBarProps {
   bairros: string[]
@@ -25,58 +26,57 @@ export function SearchBar({ bairros, tipos }: SearchBarProps) {
     router.push(`/busca?${params.toString()}`)
   }
 
+  const finalidadeOptions = [
+    { value: "Venda", label: "Comprar" },
+    { value: "Locação", label: "Alugar" },
+  ]
+
+  const bairroOptions = bairros.map((b) => ({ value: b, label: b }))
+  const tipoOptions = tipos.map((t) => ({ value: t, label: t }))
+
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div className="flex flex-col gap-3 rounded-2xl bg-white/95 p-4 shadow-lg backdrop-blur-sm sm:flex-row sm:items-center sm:gap-2 sm:rounded-full sm:p-2">
-        <select
-          value={finalidade}
-          onChange={(e) => setFinalidade(e.target.value)}
-          className="h-11 flex-1 rounded-full border-0 bg-gray-50 px-4 text-sm text-fymoob-gray-dark outline-none focus:ring-2 focus:ring-fymoob-blue"
-        >
-          <option value="">Finalidade</option>
-          <option value="Venda">Comprar</option>
-          <option value="Locação">Alugar</option>
-        </select>
+      <div className="rounded-full bg-white p-2 shadow-2xl shadow-black/10">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-0">
+          <SearchSelect
+            value={finalidade}
+            onChange={setFinalidade}
+            placeholder="Finalidade"
+            options={finalidadeOptions}
+          />
 
-        <select
-          value={bairro}
-          onChange={(e) => setBairro(e.target.value)}
-          className="h-11 flex-1 rounded-full border-0 bg-gray-50 px-4 text-sm text-fymoob-gray-dark outline-none focus:ring-2 focus:ring-fymoob-blue"
-        >
-          <option value="">Bairro</option>
-          {bairros.map((b) => (
-            <option key={b} value={b}>
-              {b}
-            </option>
-          ))}
-        </select>
+          <div className="hidden h-6 w-px bg-neutral-200 sm:block" />
 
-        <select
-          value={tipo}
-          onChange={(e) => setTipo(e.target.value)}
-          className="h-11 flex-1 rounded-full border-0 bg-gray-50 px-4 text-sm text-fymoob-gray-dark outline-none focus:ring-2 focus:ring-fymoob-blue"
-        >
-          <option value="">Tipo</option>
-          {tipos.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
+          <SearchSelect
+            value={bairro}
+            onChange={setBairro}
+            placeholder="Bairro"
+            options={bairroOptions}
+          />
 
-        <button
-          type="submit"
-          className="flex h-11 items-center justify-center gap-2 rounded-full bg-fymoob-blue px-8 text-sm font-semibold text-white transition-colors hover:bg-fymoob-blue-dark"
-        >
-          <Search size={16} />
-          Buscar
-        </button>
+          <div className="hidden h-6 w-px bg-neutral-200 sm:block" />
+
+          <SearchSelect
+            value={tipo}
+            onChange={setTipo}
+            placeholder="Tipo"
+            options={tipoOptions}
+          />
+
+          <button
+            type="submit"
+            className="flex h-11 items-center justify-center gap-2 rounded-full bg-neutral-950 px-7 text-sm font-semibold text-white transition-all duration-200 hover:bg-neutral-800 active:scale-[0.98]"
+          >
+            <Search size={16} />
+            Buscar
+          </button>
+        </div>
       </div>
 
-      <div className="mt-3 text-center">
+      <div className="mt-4 text-center">
         <Link
           href="/busca"
-          className="text-sm text-white/80 underline-offset-2 transition-colors hover:text-white hover:underline"
+          className="text-sm text-white/70 underline-offset-2 transition-colors duration-200 hover:text-white hover:underline"
         >
           Busca avançada por código
         </Link>

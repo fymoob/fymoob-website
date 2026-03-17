@@ -15,18 +15,18 @@ export function PropertyDetails({ property }: PropertyDetailsProps) {
       <div className="flex flex-wrap gap-2">
         <PropertyBadge variant="type">{property.tipo}</PropertyBadge>
         <PropertyBadge variant="sale">{property.finalidade}</PropertyBadge>
-        <PropertyBadge variant="code">Cód: {property.codigo}</PropertyBadge>
+        <PropertyBadge variant="code">Cod: {property.codigo}</PropertyBadge>
       </div>
 
       {/* Title */}
-      <h1 className="text-2xl font-bold text-fymoob-gray-dark">
+      <h1 className="font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
         {property.titulo}
       </h1>
 
       {/* Address */}
       {(property.endereco || property.bairro) && (
-        <p className="flex items-center gap-1.5 text-sm text-fymoob-gray-mid">
-          <MapPin size={14} className="shrink-0" />
+        <p className="flex items-center gap-1.5 text-sm text-neutral-500">
+          <MapPin size={14} className="shrink-0 text-brand-primary" />
           {property.endereco
             ? `${property.endereco}, ${property.bairro}, ${property.cidade} - ${property.estado}`
             : `${property.bairro}, ${property.cidade} - ${property.estado}`}

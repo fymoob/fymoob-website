@@ -10,7 +10,7 @@ import {
   generatePropertyTitle,
   generatePropertyDescription,
 } from "@/lib/seo"
-import { generateImageAlt } from "@/lib/utils"
+import { generateImageAlt, getPropertyImage, filterPropertyPhotos } from "@/lib/utils"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyGallery } from "@/components/property/PropertyGallery"
 import { PropertyDetails } from "@/components/property/PropertyDetails"
@@ -18,6 +18,7 @@ import { PropertyDescription } from "@/components/property/PropertyDescription"
 import { PropertyContact } from "@/components/property/PropertyContact"
 import { PropertyCharacteristics } from "@/components/property/PropertyCharacteristics"
 import { SimilarProperties } from "@/components/property/SimilarProperties"
+import { MobileContactBar } from "@/components/property/MobileContactBar"
 
 export const revalidate = 3600
 
@@ -37,7 +38,7 @@ export async function generateMetadata({
   const property = await getPropertyBySlug(slug)
 
   if (!property) {
-    return { title: "Imóvel não encontrado" }
+    return { title: "Imovel nao encontrado" }
   }
 
   const title = generatePropertyTitle(property)
@@ -52,10 +53,10 @@ export async function generateMetadata({
       description,
       type: "website",
       url: `${siteUrl}/imovel/${property.slug}`,
-      images: property.fotoDestaque
+      images: getPropertyImage(property)
         ? [
             {
-              url: property.fotoDestaque,
+              url: getPropertyImage(property),
               width: 1200,
               height: 630,
               alt: generateImageAlt(property),
@@ -83,7 +84,7 @@ export default async function PropertyPage({ params }: PageProps) {
 
   const breadcrumbItems = [
     { name: "Home", url: "/" },
-    { name: "Buscar imóvel", url: "/busca" },
+    { name: property.bairro, url: `/imoveis/${property.bairro.toLowerCase().replace(/\s+/g, "-")}` },
     { name: property.titulo, url: `/imovel/${property.slug}` },
   ]
 
@@ -101,17 +102,17 @@ export default async function PropertyPage({ params }: PageProps) {
         <PropertyDetails property={property} />
 
         {/* Main content grid */}
-        <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_350px]">
+        <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_380px]">
           {/* Left column */}
-          <div className="space-y-8">
-            <PropertyGallery fotos={property.fotos} alt={alt} />
+          <div className="space-y-10">
+            <PropertyGallery fotos={filterPropertyPhotos(property.fotos)} alt={alt} />
             <PropertyDescription descricao={property.descricao} />
             <PropertyCharacteristics property={property} />
           </div>
 
-          {/* Right sidebar */}
+          {/* Right sidebar — desktop only */}
           <aside className="hidden lg:block">
-            <div className="sticky top-20">
+            <div className="sticky top-24">
               <PropertyContact
                 propertyTitle={property.titulo}
                 propertyCode={property.codigo}
@@ -122,21 +123,21 @@ export default async function PropertyPage({ params }: PageProps) {
             </div>
           </aside>
         </div>
-
-        {/* Mobile contact section */}
-        <div className="mt-8 lg:hidden">
-          <PropertyContact
-            propertyTitle={property.titulo}
-            propertyCode={property.codigo}
-            precoVenda={property.precoVenda}
-            precoAluguel={property.precoAluguel}
-            finalidade={property.finalidade}
-          />
-        </div>
       </div>
 
       {/* Similar properties */}
-      <SimilarProperties properties={similarProperties} />
+      <div className="mt-12">
+        <SimilarProperties properties={similarProperties} />
+      </div>
+
+      {/* Mobile fixed CTA bar — bottom of screen */}
+      <MobileContactBar
+        propertyTitle={property.titulo}
+        propertyCode={property.codigo}
+      />
+
+      {/* Spacer for mobile fixed bar */}
+      <div className="h-20 lg:hidden" />
     </>
   )
 }

@@ -49,7 +49,7 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
                   setCurrentIndex(index)
                   setLightboxOpen(true)
                 }}
-                className="relative aspect-[16/10] w-full cursor-zoom-in overflow-hidden rounded-lg"
+                className="relative aspect-[16/10] w-full cursor-zoom-in overflow-hidden rounded-2xl"
               >
                 <Image
                   src={foto}
@@ -65,11 +65,18 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
         </CarouselContent>
         {images.length > 1 && (
           <>
-            <CarouselPrevious className="left-2" />
-            <CarouselNext className="right-2" />
+            <CarouselPrevious className="left-3" />
+            <CarouselNext className="right-3" />
           </>
         )}
       </Carousel>
+
+      {/* Photo counter */}
+      {images.length > 1 && (
+        <div className="mt-2 text-center text-xs font-medium text-neutral-500">
+          {currentIndex + 1} / {images.length} fotos
+        </div>
+      )}
 
       {/* Thumbnails */}
       {images.length > 1 && (
@@ -80,9 +87,9 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
               type="button"
               onClick={() => api?.scrollTo(index)}
               className={cn(
-                "relative h-16 w-20 shrink-0 overflow-hidden rounded border-2 transition-colors",
+                "relative h-16 w-20 shrink-0 overflow-hidden rounded-lg border-2 transition-all duration-200",
                 currentIndex === index
-                  ? "border-fymoob-blue"
+                  ? "border-brand-primary ring-1 ring-brand-primary/30"
                   : "border-transparent opacity-70 hover:opacity-100"
               )}
             >
@@ -102,7 +109,7 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
                 setCurrentIndex(8)
                 setLightboxOpen(true)
               }}
-              className="flex h-16 w-20 shrink-0 items-center justify-center rounded border-2 border-transparent bg-fymoob-bg-alt text-sm text-fymoob-gray-mid"
+              className="flex h-16 w-20 shrink-0 items-center justify-center rounded-lg border-2 border-transparent bg-neutral-100 text-sm font-medium text-neutral-500 transition-colors hover:bg-neutral-200"
             >
               +{images.length - 8}
             </button>
@@ -120,7 +127,7 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
             <CarouselContent>
               {images.map((foto, index) => (
                 <CarouselItem key={index}>
-                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-lg">
                     <Image
                       src={foto}
                       alt={`${alt} - Foto ${index + 1}`}
@@ -139,7 +146,7 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
               </>
             )}
           </Carousel>
-          <p className="text-center text-sm text-fymoob-gray-mid">
+          <p className="text-center text-sm font-medium text-neutral-500">
             {currentIndex + 1} / {images.length}
           </p>
         </DialogContent>

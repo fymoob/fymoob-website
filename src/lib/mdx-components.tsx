@@ -15,12 +15,12 @@ function CTABox({
   label: string
 }) {
   return (
-    <div className="my-8 rounded-lg border border-fymoob-blue/20 bg-fymoob-blue/5 p-6">
-      <p className="font-display text-lg font-bold text-fymoob-blue">{title}</p>
-      <p className="mt-2 text-sm text-fymoob-gray-mid">{description}</p>
+    <div className="my-8 rounded-2xl border border-brand-primary-muted bg-brand-primary-light p-6">
+      <p className="font-display text-lg font-bold text-neutral-950">{title}</p>
+      <p className="mt-2 text-sm leading-relaxed text-neutral-600">{description}</p>
       <Link
         href={href}
-        className="mt-4 inline-flex items-center gap-2 rounded-lg bg-fymoob-blue px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-fymoob-blue-dark"
+        className="mt-4 inline-flex items-center gap-2 rounded-xl bg-brand-primary px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-brand-primary-hover hover:shadow-lg active:scale-[0.98]"
       >
         <MessageCircle size={16} />
         {label}
@@ -32,54 +32,54 @@ function CTABox({
 export const mdxComponents: MDXComponents = {
   h2: (props) => (
     <h2
-      className="mt-10 mb-4 font-display text-2xl font-bold text-fymoob-gray-dark"
+      className="mt-12 mb-4 font-display text-2xl font-bold tracking-tight text-neutral-950"
       {...props}
     />
   ),
   h3: (props) => (
     <h3
-      className="mt-8 mb-3 font-display text-xl font-semibold text-fymoob-gray-dark"
+      className="mt-8 mb-3 font-display text-xl font-semibold text-neutral-950"
       {...props}
     />
   ),
   p: (props) => (
-    <p className="mb-4 leading-relaxed text-fymoob-gray-mid" {...props} />
+    <p className="mb-4 text-base leading-relaxed text-neutral-700" {...props} />
   ),
   a: (props) => (
     <a
-      className="font-medium text-fymoob-blue underline underline-offset-2 transition-colors hover:text-fymoob-blue-dark"
+      className="font-medium text-brand-primary underline underline-offset-2 transition-colors duration-200 hover:text-brand-primary-hover"
       {...props}
     />
   ),
   ul: (props) => (
-    <ul className="mb-4 list-disc space-y-1 pl-6 text-fymoob-gray-mid" {...props} />
+    <ul className="mb-4 list-disc space-y-1.5 pl-6 text-neutral-700" {...props} />
   ),
   ol: (props) => (
-    <ol className="mb-4 list-decimal space-y-1 pl-6 text-fymoob-gray-mid" {...props} />
+    <ol className="mb-4 list-decimal space-y-1.5 pl-6 text-neutral-700" {...props} />
   ),
   li: (props) => <li className="leading-relaxed" {...props} />,
   blockquote: (props) => (
     <blockquote
-      className="my-6 border-l-4 border-fymoob-blue pl-4 italic text-fymoob-gray-mid"
+      className="my-6 border-l-4 border-brand-primary pl-4 italic text-neutral-600"
       {...props}
     />
   ),
   table: (props) => (
-    <div className="my-6 overflow-x-auto">
+    <div className="my-6 overflow-x-auto rounded-xl border border-neutral-200">
       <table
-        className="w-full border-collapse text-sm text-fymoob-gray-mid"
+        className="w-full border-collapse text-sm text-neutral-700"
         {...props}
       />
     </div>
   ),
   th: (props) => (
     <th
-      className="border-b border-fymoob-gray-light bg-fymoob-bg-alt px-4 py-2 text-left font-semibold text-fymoob-gray-dark"
+      className="border-b border-neutral-200 bg-neutral-50 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-neutral-500"
       {...props}
     />
   ),
   td: (props) => (
-    <td className="border-b border-fymoob-gray-light px-4 py-2" {...props} />
+    <td className="border-b border-neutral-100 px-4 py-3" {...props} />
   ),
   img: (props) => (
     <Image
@@ -87,11 +87,11 @@ export const mdxComponents: MDXComponents = {
       alt={props.alt || ""}
       width={800}
       height={450}
-      className="my-6 rounded-lg"
+      className="my-6 rounded-xl"
     />
   ),
   strong: (props) => (
-    <strong className="font-semibold text-fymoob-gray-dark" {...props} />
+    <strong className="font-semibold text-neutral-950" {...props} />
   ),
   CTABox,
 }

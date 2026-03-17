@@ -18,21 +18,21 @@ export function PropertyCharacteristics({
     { label: "Tipo", value: property.tipo },
     { label: "Finalidade", value: property.finalidade },
     {
-      label: "Dormitórios",
+      label: "Dormitorios",
       value: property.dormitorios?.toString() ?? null,
     },
-    { label: "Suítes", value: property.suites?.toString() ?? null },
+    { label: "Suites", value: property.suites?.toString() ?? null },
     {
       label: "Banheiros",
       value: property.banheiros?.toString() ?? null,
     },
     { label: "Vagas", value: property.vagas?.toString() ?? null },
     {
-      label: "Área total",
+      label: "Area total",
       value: property.areaTotal ? formatArea(property.areaTotal) : null,
     },
     {
-      label: "Área privativa",
+      label: "Area privativa",
       value: property.areaPrivativa
         ? formatArea(property.areaPrivativa)
         : null,
@@ -45,17 +45,17 @@ export function PropertyCharacteristics({
   return (
     <Accordion defaultValue={[0]}>
       <AccordionItem value={0}>
-        <AccordionTrigger className="text-base font-semibold">
-          Características
+        <AccordionTrigger className="font-display text-lg font-semibold text-neutral-950">
+          Caracteristicas
         </AccordionTrigger>
         <AccordionContent>
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
             {characteristics.map((item) => (
               <div key={item.label}>
-                <dt className="text-xs text-fymoob-gray-mid">
+                <dt className="text-xs font-medium uppercase tracking-wider text-neutral-500">
                   {item.label}
                 </dt>
-                <dd className="text-sm font-medium text-fymoob-gray-dark">
+                <dd className="mt-0.5 text-sm font-semibold text-neutral-950">
                   {item.value}
                 </dd>
               </div>
@@ -65,12 +65,12 @@ export function PropertyCharacteristics({
       </AccordionItem>
 
       <AccordionItem value={1}>
-        <AccordionTrigger className="text-base font-semibold">
-          Mapa do imóvel
+        <AccordionTrigger className="font-display text-lg font-semibold text-neutral-950">
+          Mapa do imovel
         </AccordionTrigger>
         <AccordionContent>
           {property.latitude && property.longitude ? (
-            <div className="aspect-[16/9] w-full overflow-hidden rounded-lg bg-fymoob-bg-alt">
+            <div className="aspect-[16/9] w-full overflow-hidden rounded-xl bg-neutral-100">
               <iframe
                 title={`Mapa - ${property.titulo}`}
                 width="100%"
@@ -81,8 +81,8 @@ export function PropertyCharacteristics({
               />
             </div>
           ) : (
-            <p className="py-4 text-center text-sm text-fymoob-gray-mid">
-              Localização não disponível para este imóvel.
+            <p className="py-4 text-center text-sm text-neutral-500">
+              Localizacao nao disponivel para este imovel.
             </p>
           )}
         </AccordionContent>

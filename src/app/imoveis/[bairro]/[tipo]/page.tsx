@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { getAllBairros, getProperties } from "@/services/loft"
-import { slugify, formatPrice } from "@/lib/utils"
+import { slugify } from "@/lib/utils"
 import type { PropertyType } from "@/types/property"
 import {
   generateLandingTitle,
@@ -107,47 +107,52 @@ export default async function CombinadaPage({ params }: CombinadaPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
 
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <Breadcrumbs
-          items={[
-            { name: "Home", url: "/" },
-            { name: "Imóveis", url: "/busca" },
-            { name: bairro.bairro, url: `/imoveis/${bairroSlug}` },
-            { name: plural, url: `/imoveis/${bairroSlug}/${tipoSlug}` },
-          ]}
-        />
+      {/* Hero */}
+      <section className="bg-neutral-950 py-12 md:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs
+            items={[
+              { name: "Home", url: "/" },
+              { name: bairro.bairro, url: `/imoveis/${bairroSlug}` },
+              { name: plural, url: `/imoveis/${bairroSlug}/${tipoSlug}` },
+            ]}
+          />
 
-        <h1 className="font-display text-2xl font-bold text-fymoob-gray-dark sm:text-3xl">
-          {plural} no {bairro.bairro}, Curitiba
-        </h1>
+          <h1 className="mt-2 font-display text-2xl font-extrabold tracking-tight text-white sm:text-4xl">
+            {plural} no {bairro.bairro}, Curitiba
+          </h1>
 
-        <p className="mt-2 text-sm text-fymoob-gray-mid">
-          <span className="font-semibold text-fymoob-gray-dark">
-            {properties.length}
-          </span>{" "}
-          {properties.length === 1 ? "imóvel encontrado" : "imóveis encontrados"}
-        </p>
+          <p className="mt-3 text-neutral-300">
+            <span className="font-semibold text-white">
+              {properties.length}
+            </span>{" "}
+            {properties.length === 1 ? "imovel encontrado" : "imoveis encontrados"}
+          </p>
 
-        {/* Internal links */}
-        <div className="mt-4 flex flex-wrap gap-3 text-sm">
-          <Link
-            href={`/imoveis/${bairroSlug}`}
-            className="text-fymoob-blue transition-colors hover:text-fymoob-blue-dark"
-          >
-            Todos os imóveis no {bairro.bairro}
-          </Link>
-          <Link
-            href={`/${tipoSlug}-curitiba`}
-            className="text-fymoob-blue transition-colors hover:text-fymoob-blue-dark"
-          >
-            {plural} em Curitiba
-          </Link>
+          {/* Internal links */}
+          <div className="mt-4 flex flex-wrap gap-4 text-sm">
+            <Link
+              href={`/imoveis/${bairroSlug}`}
+              className="text-brand-primary transition-colors duration-200 hover:text-brand-primary-hover"
+            >
+              Todos os imoveis no {bairro.bairro}
+            </Link>
+            <Link
+              href={`/${tipoSlug}-curitiba`}
+              className="text-brand-primary transition-colors duration-200 hover:text-brand-primary-hover"
+            >
+              {plural} em Curitiba
+            </Link>
+          </div>
         </div>
+      </section>
 
-        <div className="mt-8">
+      {/* Property grid */}
+      <section className="py-12 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <PropertyGrid properties={properties} />
         </div>
-      </div>
+      </section>
     </>
   )
 }

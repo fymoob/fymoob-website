@@ -37,9 +37,9 @@ export function PropertyFeatures({
         <div key={feature.label} className="flex items-center gap-1.5">
           <feature.icon
             size={iconSize}
-            className="text-fymoob-blue shrink-0"
+            className="shrink-0 text-brand-primary"
           />
-          <span className={cn("text-fymoob-gray-mid", textClass)}>
+          <span className={cn("text-neutral-600", textClass)}>
             {feature.value}
           </span>
         </div>

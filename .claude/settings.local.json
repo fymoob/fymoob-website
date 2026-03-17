@@ -17,7 +17,11 @@
       "Bash(/c/Users/Vine/AgenticTI/Fymoob/public/blog/financiamento-mcmv.jpg:*)",
       "Bash(/c/Users/Vine/AgenticTI/Fymoob/public/blog/documentos-compra-imovel.jpg:*)",
       "Bash(/c/Users/Vine/AgenticTI/Fymoob/public/blog/apartamento-ou-casa.jpg:*)",
-      "Bash(/c/Users/Vine/AgenticTI/Fymoob/public/blog/custo-morar-batel.jpg:*)"
+      "Bash(/c/Users/Vine/AgenticTI/Fymoob/public/blog/custo-morar-batel.jpg:*)",
+      "Bash(cd:*)",
+      "WebFetch(domain:localhost)",
+      "Bash(curl:*)",
+      "Bash(taskkill:*)"
     ]
   }
 }

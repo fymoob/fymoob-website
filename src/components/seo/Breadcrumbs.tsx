@@ -20,21 +20,21 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <nav aria-label="Breadcrumb" className="py-3">
-        <ol className="flex flex-wrap items-center gap-1 text-sm text-fymoob-gray-mid">
+      <nav aria-label="Breadcrumb" className="py-4">
+        <ol className="flex flex-wrap items-center gap-1 text-sm text-neutral-500">
           {items.map((item, index) => {
             const isLast = index === items.length - 1
             return (
               <li key={item.url} className="flex items-center gap-1">
                 {index > 0 && (
-                  <ChevronRight size={14} className="shrink-0" />
+                  <ChevronRight size={14} className="shrink-0 text-neutral-400" />
                 )}
                 {isLast ? (
-                  <span className="text-fymoob-gray-dark">{item.name}</span>
+                  <span className="font-medium text-neutral-950">{item.name}</span>
                 ) : (
                   <Link
                     href={item.url}
-                    className="transition-colors hover:text-fymoob-blue"
+                    className="transition-colors duration-200 hover:text-brand-primary"
                   >
                     {item.name}
                   </Link>

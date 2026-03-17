@@ -1,6 +1,35 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import type { PropertyType } from "@/types/property"
+import type { Property, PropertyType } from "@/types/property"
+
+/** Known logo / placeholder image hosted on Nhost */
+const NHOST_LOGO_FRAGMENT = "e86f2797-7ca6-4eff-bfb2-3e54a981399e"
+
+/**
+ * Returns the best available photo for a property.
+ * If fotoDestaque is the generic logo, fall back to the first real CDN photo.
+ */
+export function getPropertyImage(property: Property): string {
+  const isLogo =
+    !property.fotoDestaque || property.fotoDestaque.includes(NHOST_LOGO_FRAGMENT)
+
+  if (!isLogo) return property.fotoDestaque
+
+  // fotos[0] is usually the same logo; real photos start at index 1
+  const realPhoto = property.fotos.find(
+    (url) => url && !url.includes(NHOST_LOGO_FRAGMENT)
+  )
+  return realPhoto ?? property.fotoDestaque
+}
+
+/**
+ * Filters out the generic logo/placeholder from a fotos array,
+ * returning only real CDN photos.
+ */
+export function filterPropertyPhotos(fotos: string[]): string[] {
+  const real = fotos.filter((url) => url && !url.includes(NHOST_LOGO_FRAGMENT))
+  return real.length > 0 ? real : fotos
+}
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

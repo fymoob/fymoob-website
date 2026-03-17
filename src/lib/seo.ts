@@ -1,6 +1,6 @@
 import type { Property, PropertyType } from "@/types/property"
 import type { BlogPost } from "@/types/blog"
-import { formatPrice, formatArea } from "@/lib/utils"
+import { formatPrice, formatArea, getPropertyImage } from "@/lib/utils"
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
 
@@ -91,7 +91,7 @@ export function generatePropertySchema(property: Property) {
     name: property.titulo,
     description: property.descricao,
     url: `${SITE_URL}/imovel/${property.slug}`,
-    image: property.fotoDestaque,
+    image: getPropertyImage(property),
     datePosted: property.dataCadastro,
     ...(price && {
       offers: {
