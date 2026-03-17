@@ -5,7 +5,16 @@ export const alt = "FYMOOB Imobiliaria - Imoveis em Curitiba"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
-export default function OgImage() {
+async function loadSatoshi() {
+  const res = await fetch(
+    new URL("../../public/fonts/Satoshi-Variable.woff2", import.meta.url)
+  )
+  return res.arrayBuffer()
+}
+
+export default async function OgImage() {
+  const satoshiFont = await loadSatoshi()
+
   return new ImageResponse(
     (
       <div
@@ -17,7 +26,7 @@ export default function OgImage() {
           alignItems: "center",
           justifyContent: "center",
           background: "linear-gradient(135deg, #0B1120 0%, #1F2937 100%)",
-          fontFamily: "sans-serif",
+          fontFamily: "Satoshi",
         }}
       >
         <div
@@ -77,6 +86,15 @@ export default function OgImage() {
         </p>
       </div>
     ),
-    { ...size }
+    {
+      ...size,
+      fonts: [
+        {
+          name: "Satoshi",
+          data: satoshiFont,
+          style: "normal",
+        },
+      ],
+    }
   )
 }

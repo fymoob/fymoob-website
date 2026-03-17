@@ -47,7 +47,7 @@ export default function RootLayout({
   const localBusinessSchema = generateLocalBusinessSchema();
 
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className={satoshi.variable}>
       <head>
         <script
           type="application/ld+json"
@@ -59,7 +59,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${satoshi.variable} antialiased`}
+        className="antialiased"
       >
         <Header />
         <main className="min-h-screen">{children}</main>
