@@ -100,7 +100,7 @@ export default async function PropertyPage({ params }: PageProps) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Breadcrumbs items={breadcrumbItems} />
 
-        {/* Property header */}
+        {/* Property header + specs */}
         <PropertyDetails property={property} />
 
         {/* Main content grid */}
@@ -139,14 +139,16 @@ export default async function PropertyPage({ params }: PageProps) {
         <SimilarProperties properties={similarProperties} />
       </div>
 
-      {/* Mobile fixed CTA bar — bottom of screen */}
+      {/* Mobile fixed CTA bar */}
       <MobileContactBar
         propertyTitle={property.titulo}
         propertyCode={property.codigo}
+        precoVenda={property.precoVenda}
+        precoAluguel={property.precoAluguel}
       />
 
       {/* Spacer for mobile fixed bar */}
-      <div className="h-20 lg:hidden" />
+      <div className="h-20 md:hidden" />
     </>
   )
 }

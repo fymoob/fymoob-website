@@ -80,20 +80,20 @@ export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMap
       </button>
 
       {isOpen && (
-        <div className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
-          <div className="relative h-[350px] sm:h-[400px]">
-            {MapComponent || (
-              <div className="flex h-full items-center justify-center text-neutral-400">
-                <MapPin size={24} className="mr-2 animate-pulse" />
-                Carregando mapa...
-              </div>
-            )}
+        <div>
+          <div className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
+            <div className="relative h-[350px] sm:h-[400px]">
+              {MapComponent || (
+                <div className="flex h-full items-center justify-center text-neutral-400">
+                  <MapPin size={24} className="mr-2 animate-pulse" />
+                  Carregando mapa...
+                </div>
+              )}
+            </div>
           </div>
-          {!latitude && !longitude && (
-            <p className="px-4 py-2 text-xs text-neutral-400">
-              Localização aproximada do bairro {bairro}
-            </p>
-          )}
+          <p className="mt-2 text-xs text-neutral-500">
+            Localização aproximada
+          </p>
         </div>
       )}
     </section>

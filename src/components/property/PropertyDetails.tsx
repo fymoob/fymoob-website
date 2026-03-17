@@ -1,16 +1,22 @@
 import type { Property } from "@/types/property"
-import { MapPin } from "lucide-react"
+import { MapPin, Maximize2, BedDouble, Bath, Car } from "lucide-react"
 import { PropertyBadge } from "@/components/shared/PropertyBadge"
-import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
-import { PriceDisplay } from "@/components/shared/PriceDisplay"
+import { formatArea } from "@/lib/utils"
 
 interface PropertyDetailsProps {
   property: Property
 }
 
 export function PropertyDetails({ property }: PropertyDetailsProps) {
+  const specs = [
+    { icon: Maximize2, value: property.areaPrivativa ? formatArea(property.areaPrivativa) : null, label: "Área" },
+    { icon: BedDouble, value: property.dormitorios, label: property.dormitorios === 1 ? "Quarto" : "Quartos" },
+    { icon: Bath, value: property.banheiros, label: property.banheiros === 1 ? "Banheiro" : "Banheiros" },
+    { icon: Car, value: property.vagas, label: property.vagas === 1 ? "Vaga" : "Vagas" },
+  ].filter((s) => s.value !== null && s.value !== 0)
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {/* Badges */}
       <div className="flex flex-wrap gap-2">
         <PropertyBadge variant="type">{property.tipo}</PropertyBadge>
@@ -26,31 +32,29 @@ export function PropertyDetails({ property }: PropertyDetailsProps) {
       {/* Address */}
       {(property.endereco || property.bairro) && (
         <p className="flex items-center gap-1.5 text-sm text-neutral-500">
-          <MapPin size={14} className="shrink-0 text-brand-primary" />
+          <MapPin size={14} className="shrink-0 text-neutral-400" />
           {property.endereco
             ? `${property.endereco}, ${property.bairro}, ${property.cidade} - ${property.estado}`
             : `${property.bairro}, ${property.cidade} - ${property.estado}`}
         </p>
       )}
 
-      {/* Price (mobile) */}
-      <div className="lg:hidden">
-        <PriceDisplay
-          precoVenda={property.precoVenda}
-          precoAluguel={property.precoAluguel}
-          finalidade={property.finalidade}
-          size="lg"
-        />
-      </div>
-
-      {/* Features */}
-      <PropertyFeatures
-        dormitorios={property.dormitorios}
-        banheiros={property.banheiros}
-        vagas={property.vagas}
-        areaPrivativa={property.areaPrivativa}
-        size="md"
-      />
+      {/* Specs bar with separators */}
+      {specs.length > 0 && (
+        <div className="flex items-center gap-6">
+          {specs.map((spec, i) => (
+            <div key={spec.label} className="flex items-center gap-6">
+              {i > 0 && <div className="h-4 w-px bg-neutral-300" />}
+              <div className="flex items-center gap-2">
+                <spec.icon size={16} className="shrink-0 text-neutral-500" />
+                <span className="text-sm font-medium text-neutral-600">
+                  {spec.value} {spec.label}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
