@@ -21,13 +21,15 @@ const WISHLIST_STORAGE_KEY = "fymoob:wishlist"
 
 interface PropertyCardProps {
   property: Property
+  prioritizeFirstImage?: boolean
 }
 
 function getPropertyPhotos(property: Property): string[] {
   const merged = [getPropertyImage(property), ...filterPropertyPhotos(property.fotos)].filter(
     Boolean
   )
-  return Array.from(new Set(merged))
+  const uniquePhotos = Array.from(new Set(merged))
+  return uniquePhotos.length > 0 ? uniquePhotos : ["/logo.png"]
 }
 
 function getWishlistCodes(): Set<string> {
@@ -45,7 +47,10 @@ function getWishlistCodes(): Set<string> {
   }
 }
 
-export function PropertyCard({ property }: PropertyCardProps) {
+export function PropertyCard({
+  property,
+  prioritizeFirstImage = false,
+}: PropertyCardProps) {
   const articleRef = useRef<HTMLElement>(null)
   const alt = generateImageAlt(property)
   const price = property.precoVenda ?? property.precoAluguel
@@ -155,44 +160,43 @@ export function PropertyCard({ property }: PropertyCardProps) {
           opts={{ align: "start", loop: photos.length > 1 }}
         >
           <CarouselContent className="ml-0 h-full">
-            {photos.map((photo, index) => (
-              <CarouselItem key={`${property.codigo}-${index}`} className="h-full pl-0">
-                <div className="relative h-full w-full overflow-hidden">
-                  <Image
-                    src={photo}
-                    alt={`${alt} - foto ${index + 1}`}
-                    fill
-                    loading="lazy"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                  />
-                </div>
-              </CarouselItem>
-            ))}
+            {photos.map((photo, index) => {
+              const shouldPrioritize = prioritizeFirstImage && index === 0
+
+              return (
+                <CarouselItem key={`${property.codigo}-${index}`} className="h-full pl-0">
+                  <div className="relative h-full w-full overflow-hidden">
+                    <Image
+                      src={photo}
+                      alt={`${alt} - foto ${index + 1}`}
+                      fill
+                      priority={shouldPrioritize}
+                      loading={shouldPrioritize ? "eager" : "lazy"}
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                    />
+                  </div>
+                </CarouselItem>
+              )
+            })}
           </CarouselContent>
         </Carousel>
 
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-950/25 via-transparent to-transparent" />
-
-        <div className="absolute top-3 left-3 z-20 flex gap-2">
-          <span className="rounded-full bg-white/65 px-3 py-1 text-xs font-semibold tracking-tight text-neutral-950 backdrop-blur-md">
-            {property.tipo}
-          </span>
-          <span className="rounded-full bg-neutral-950/45 px-3 py-1 text-xs font-medium tracking-tight text-white backdrop-blur-md">
-            Cod {property.codigo}
-          </span>
-        </div>
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/40 to-transparent" />
 
         <button
           type="button"
           onClick={toggleFavorite}
-          className="absolute top-3 right-3 z-20 inline-flex size-9 items-center justify-center rounded-full bg-white/70 text-neutral-700 backdrop-blur-md transition-colors hover:text-red-500"
+          className="group/wishlist absolute top-3 right-3 z-20 inline-flex size-9 items-center justify-center transition-transform hover:scale-110"
           aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+          aria-pressed={isFavorite}
         >
           <Heart
             className={cn(
-              "size-4",
-              isFavorite ? "fill-red-500 text-red-500" : "fill-transparent"
+              "size-5 text-transparent stroke-white stroke-[2px] drop-shadow-lg transition-all duration-200",
+              isFavorite
+                ? "fill-brand-primary stroke-brand-primary text-brand-primary"
+                : "group-hover/wishlist:fill-brand-primary/90 group-hover/wishlist:stroke-brand-primary"
             )}
           />
         </button>
@@ -217,14 +221,14 @@ export function PropertyCard({ property }: PropertyCardProps) {
               <ChevronRight className="size-4" />
             </button>
 
-            <div className="absolute bottom-3 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-black/35 px-2 py-1 backdrop-blur-sm">
+            <div className="absolute bottom-2.5 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1 rounded-full bg-black/30 px-1.5 py-0.5 backdrop-blur-sm">
               {photos.map((_, index) => (
                 <button
                   key={index}
                   type="button"
                   onClick={(event) => goToSlide(index, event)}
                   className={cn(
-                    "size-1.5 rounded-full transition-all",
+                    "size-1 rounded-full transition-all",
                     index === currentSlide ? "bg-white" : "bg-white/50"
                   )}
                   aria-label={`Ir para foto ${index + 1}`}
@@ -242,6 +246,10 @@ export function PropertyCard({ property }: PropertyCardProps) {
       </div>
 
       <div className="space-y-3 p-5 md:p-6">
+        <p className="text-xs font-medium tracking-wide text-muted-foreground">
+          {property.tipo} | Cod: {property.codigo}
+        </p>
+
         <Link href={propertyHref} className="block">
           <h2 className="text-lg font-semibold tracking-tight text-neutral-950 transition-colors hover:text-brand-primary">
             {truncateText(property.titulo, 68)}
@@ -252,7 +260,10 @@ export function PropertyCard({ property }: PropertyCardProps) {
           {property.bairro}, {property.cidade}
         </p>
 
-        <p className="text-xl font-bold tracking-tight text-brand-primary">
+        <p
+          className="text-xl font-bold tracking-tight text-[#0B1120]"
+          style={{ fontFamily: "\"Plus Jakarta Sans\", var(--font-satoshi), sans-serif" }}
+        >
           {formatPrice(price)}
         </p>
 

@@ -5,6 +5,8 @@ interface PropertyGridProps {
   properties: Property[]
 }
 
+const ABOVE_THE_FOLD_PRIORITY_CARDS = 3
+
 export function PropertyGrid({ properties }: PropertyGridProps) {
   if (properties.length === 0) {
     return (
@@ -21,8 +23,12 @@ export function PropertyGrid({ properties }: PropertyGridProps) {
       aria-live="polite"
       className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8"
     >
-      {properties.map((property) => (
-        <PropertyCard key={property.slug} property={property} />
+      {properties.map((property, index) => (
+        <PropertyCard
+          key={property.slug}
+          property={property}
+          prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
+        />
       ))}
     </section>
   )

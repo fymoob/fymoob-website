@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { Suspense } from "react"
 
-import { FilterBar } from "@/components/search/FilterBar"
+import { HeaderSearch } from "@/components/search/HeaderSearch"
 import { PropertyGrid } from "@/components/search/PropertyGrid"
 import { SkeletonsGrid } from "@/components/search/SkeletonsGrid"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
@@ -328,18 +328,10 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
         ]}
       />
 
-      <header className="space-y-2">
-        <h1 className="text-3xl font-bold tracking-tight text-neutral-950 sm:text-4xl">
-          Busca de imoveis em Curitiba
-        </h1>
-        <p className="max-w-3xl text-neutral-500">
-          Descubra opcoes selecionadas com filtros inteligentes, visual premium e
-          resultado indexavel por URL para SEO de cauda longa.
-        </p>
-      </header>
+      <h1 className="sr-only">Busca de imoveis em Curitiba</h1>
 
       <div className="mt-6">
-        <FilterBar
+        <HeaderSearch
           bairros={bairros.map((item) => item.bairro)}
           tipos={tipos.map((item) => item.tipo)}
           cidades={cidades}

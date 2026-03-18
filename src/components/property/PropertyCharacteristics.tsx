@@ -1,3 +1,14 @@
+import {
+  Bath,
+  BedDouble,
+  Building2,
+  Car,
+  Home,
+  LucideIcon,
+  MapPin,
+  Square,
+} from "lucide-react"
+
 import type { Property } from "@/types/property"
 import { formatArea } from "@/lib/utils"
 
@@ -5,54 +16,74 @@ interface PropertyCharacteristicsProps {
   property: Property
 }
 
-export function PropertyCharacteristics({
-  property,
-}: PropertyCharacteristicsProps) {
-  const characteristics = [
-    { label: "Tipo", value: property.tipo },
-    { label: "Finalidade", value: property.finalidade },
+interface CharacteristicItem {
+  label: string
+  value: string | null
+  icon: LucideIcon
+}
+
+export function PropertyCharacteristics({ property }: PropertyCharacteristicsProps) {
+  const characteristics: CharacteristicItem[] = [
+    { label: "Tipo", value: property.tipo, icon: Home },
+    { label: "Finalidade", value: property.finalidade, icon: Building2 },
     {
-      label: "Dormitórios",
-      value: property.dormitorios?.toString() ?? null,
+      label: "Dormitorios",
+      value: property.dormitorios ? String(property.dormitorios) : null,
+      icon: BedDouble,
     },
-    { label: "Suítes", value: property.suites?.toString() ?? null },
     {
       label: "Banheiros",
-      value: property.banheiros?.toString() ?? null,
+      value: property.banheiros ? String(property.banheiros) : null,
+      icon: Bath,
     },
-    { label: "Vagas", value: property.vagas?.toString() ?? null },
     {
-      label: "Área total",
+      label: "Vagas",
+      value: property.vagas ? String(property.vagas) : null,
+      icon: Car,
+    },
+    {
+      label: "Area privativa",
+      value: property.areaPrivativa ? formatArea(property.areaPrivativa) : null,
+      icon: Square,
+    },
+    {
+      label: "Area total",
       value: property.areaTotal ? formatArea(property.areaTotal) : null,
+      icon: Square,
     },
     {
-      label: "Área privativa",
-      value: property.areaPrivativa
-        ? formatArea(property.areaPrivativa)
-        : null,
+      label: "Localizacao",
+      value: `${property.bairro}, ${property.cidade}`,
+      icon: MapPin,
     },
-    { label: "Cidade", value: property.cidade },
-    { label: "Bairro", value: property.bairro },
-    { label: "Estado", value: property.estado },
-  ].filter((c) => c.value !== null)
+  ].filter((item) => item.value !== null)
 
   return (
     <section>
-      <h2 className="text-xl font-semibold text-neutral-900">
-        Características
+      <h2 className="text-xl font-semibold tracking-tight text-[#0B1120]">
+        Caracteristicas
       </h2>
-      <dl className="mt-4 grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
+
+      <div className="mt-5 grid grid-cols-2 gap-6 md:grid-cols-3">
         {characteristics.map((item) => (
-          <div key={item.label}>
-            <dt className="text-xs font-medium uppercase tracking-wider text-neutral-500">
-              {item.label}
-            </dt>
-            <dd className="mt-0.5 text-sm font-semibold text-neutral-950">
-              {item.value}
-            </dd>
-          </div>
+          <article
+            key={item.label}
+            className="rounded-xl border border-neutral-200 bg-white p-4"
+          >
+            <div className="flex items-start gap-3">
+              <item.icon className="mt-0.5 size-4 shrink-0 text-neutral-500" />
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wider text-neutral-500">
+                  {item.label}
+                </p>
+                <p className="mt-1 text-sm font-semibold text-[#0B1120]">
+                  {item.value}
+                </p>
+              </div>
+            </div>
+          </article>
         ))}
-      </dl>
+      </div>
     </section>
   )
 }

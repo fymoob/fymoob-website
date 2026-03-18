@@ -14,7 +14,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyGallery } from "@/components/property/PropertyGallery"
 import { PropertyDetails } from "@/components/property/PropertyDetails"
 import { PropertyDescription } from "@/components/property/PropertyDescription"
-import { PropertyContact } from "@/components/property/PropertyContact"
+import { ContactSidebar } from "@/components/property/ContactSidebar"
 import { PropertyCharacteristics } from "@/components/property/PropertyCharacteristics"
 import { PropertyAmenities } from "@/components/property/PropertyAmenities"
 import { SimilarProperties } from "@/components/property/SimilarProperties"
@@ -127,15 +127,13 @@ export default async function PropertyPage({ params }: PageProps) {
 
           {/* Right sidebar — desktop only */}
           <aside className="hidden lg:block">
-            <div className="sticky top-24">
-              <PropertyContact
-                propertyTitle={property.titulo}
-                propertyCode={property.codigo}
-                precoVenda={property.precoVenda}
-                precoAluguel={property.precoAluguel}
-                finalidade={property.finalidade}
-              />
-            </div>
+            <ContactSidebar
+              propertyTitle={property.titulo}
+              propertyCode={property.codigo}
+              precoVenda={property.precoVenda}
+              precoAluguel={property.precoAluguel}
+              finalidade={property.finalidade}
+            />
           </aside>
         </div>
       </div>
