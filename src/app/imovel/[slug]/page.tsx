@@ -103,14 +103,14 @@ export default async function PropertyPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(propertySchema) }}
       />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-7xl px-4 pb-24 md:px-8 md:pb-0">
         <Breadcrumbs items={breadcrumbItems} />
 
         {/* Property header + specs */}
         <PropertyDetails property={property} shortTitle={shortTitle} />
 
         {/* Main content grid */}
-        <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_380px]">
+        <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">
           {/* Left column */}
           <div className="space-y-10">
             <PropertyGallery fotos={filterPropertyPhotos(property.fotos)} alt={alt} />
@@ -150,9 +150,6 @@ export default async function PropertyPage({ params }: PageProps) {
         precoVenda={property.precoVenda}
         precoAluguel={property.precoAluguel}
       />
-
-      {/* Spacer for mobile fixed bar */}
-      <div className="h-20 md:hidden" />
     </>
   )
 }

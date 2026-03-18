@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { Suspense } from "react"
 
-import { HeaderSearch } from "@/components/search/HeaderSearch"
+import { SearchBar } from "@/components/search/SearchBar"
 import { PropertyGrid } from "@/components/search/PropertyGrid"
 import { SkeletonsGrid } from "@/components/search/SkeletonsGrid"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
@@ -27,9 +27,10 @@ interface BuscaPageProps {
 interface ParsedSearchState {
   filters: PropertyFilters
   page: number
-  bairro?: string
-  cidade?: string
-  tipo?: PropertyType
+  bairros: string[]
+  cidades: string[]
+  tipos: PropertyType[]
+  finalidades: PropertyFinalidade[]
   quartos?: number
   busca?: string
   canonicalQuery: string
@@ -73,14 +74,34 @@ function parseNumberParam(value: string | undefined): number | undefined {
   return parsed
 }
 
-function normalizeType(value: string | undefined): PropertyType | undefined {
-  if (!value) return undefined
-  return TYPE_BY_SLUG[slugify(value)]
+function parseCsvParam(value: string | undefined): string[] {
+  if (!value) return []
+  return value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean)
 }
 
-function normalizeFinalidade(value: string | undefined): PropertyFinalidade | undefined {
-  if (!value) return undefined
-  return FINALIDADE_BY_SLUG[slugify(value)]
+function normalizeTypes(values: string[]): PropertyType[] {
+  const normalized = new Set<PropertyType>()
+
+  for (const value of values) {
+    const parsed = TYPE_BY_SLUG[slugify(value)]
+    if (parsed) normalized.add(parsed)
+  }
+
+  return Array.from(normalized)
+}
+
+function normalizeFinalidades(values: string[]): PropertyFinalidade[] {
+  const normalized = new Set<PropertyFinalidade>()
+
+  for (const value of values) {
+    const parsed = FINALIDADE_BY_SLUG[slugify(value)]
+    if (parsed) normalized.add(parsed)
+  }
+
+  return Array.from(normalized)
 }
 
 function normalizeOrderBy(
@@ -106,10 +127,12 @@ function toUrlSearchParams(searchParams: SearchParamsMap): URLSearchParams {
 }
 
 function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
-  const tipo = normalizeType(getParamValue(searchParams.tipo))
-  const finalidade = normalizeFinalidade(getParamValue(searchParams.finalidade))
-  const bairro = getParamValue(searchParams.bairro)
-  const cidade = getParamValue(searchParams.cidade)
+  const tipos = normalizeTypes(parseCsvParam(getParamValue(searchParams.tipo)))
+  const finalidades = normalizeFinalidades(
+    parseCsvParam(getParamValue(searchParams.finalidade))
+  )
+  const bairros = parseCsvParam(getParamValue(searchParams.bairro))
+  const cidades = parseCsvParam(getParamValue(searchParams.cidade))
   const codigo = getParamValue(searchParams.codigo)
   const busca = getParamValue(searchParams.busca)
   const precoMin = parseNumberParam(getParamValue(searchParams.precoMin))
@@ -128,10 +151,22 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
     limit: PAGE_SIZE,
   }
 
-  if (tipo) filters.tipo = tipo
-  if (finalidade) filters.finalidade = finalidade
-  if (bairro) filters.bairro = bairro
-  if (cidade) filters.cidade = cidade
+  if (tipos.length > 0) {
+    filters.tipos = tipos
+    if (tipos.length === 1) filters.tipo = tipos[0]
+  }
+  if (finalidades.length > 0) {
+    filters.finalidades = finalidades
+    if (finalidades.length === 1) filters.finalidade = finalidades[0]
+  }
+  if (bairros.length > 0) {
+    filters.bairros = bairros
+    if (bairros.length === 1) filters.bairro = bairros[0]
+  }
+  if (cidades.length > 0) {
+    filters.cidades = cidades
+    if (cidades.length === 1) filters.cidade = cidades[0]
+  }
   if (codigo) filters.codigo = codigo
   if (precoMin) filters.precoMin = precoMin
   if (precoMax) filters.precoMax = precoMax
@@ -148,10 +183,12 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
   const fullQuery = toUrlSearchParams(searchParams).toString()
 
   const canonicalParams = new URLSearchParams()
-  if (cidade) canonicalParams.set("cidade", cidade)
-  if (bairro) canonicalParams.set("bairro", bairro)
-  if (tipo) canonicalParams.set("tipo", tipo)
-  if (finalidade) canonicalParams.set("finalidade", finalidade)
+  if (cidades.length > 0) canonicalParams.set("cidade", cidades.join(","))
+  if (bairros.length > 0) canonicalParams.set("bairro", bairros.join(","))
+  if (tipos.length > 0) canonicalParams.set("tipo", tipos.map(slugify).join(","))
+  if (finalidades.length > 0) {
+    canonicalParams.set("finalidade", finalidades.map(slugify).join(","))
+  }
   if (quartos) canonicalParams.set("quartos", String(quartos))
   if (precoMin) canonicalParams.set("precoMin", String(precoMin))
   if (precoMax) canonicalParams.set("precoMax", String(precoMax))
@@ -160,9 +197,10 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
   return {
     filters,
     page,
-    bairro,
-    cidade,
-    tipo,
+    bairros,
+    cidades,
+    tipos,
+    finalidades,
     quartos,
     busca,
     canonicalQuery: canonicalParams.toString(),
@@ -178,11 +216,11 @@ export async function generateMetadata({
 
   const titleParts: string[] = ["Busca de imoveis"]
 
-  if (state.tipo) titleParts.push(state.tipo)
-  if (state.bairro) {
-    titleParts.push(`no ${state.bairro}`)
-  } else if (state.cidade) {
-    titleParts.push(`em ${state.cidade}`)
+  if (state.tipos.length > 0) titleParts.push(state.tipos[0])
+  if (state.bairros.length > 0) {
+    titleParts.push(`no ${state.bairros[0]}`)
+  } else if (state.cidades.length > 0) {
+    titleParts.push(`em ${state.cidades[0]}`)
   } else {
     titleParts.push("em Curitiba")
   }
@@ -217,6 +255,9 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
 
   const pagePath = state.fullQuery ? `/busca?${state.fullQuery}` : "/busca"
+  const appliedParams = new URLSearchParams(state.fullQuery)
+  appliedParams.delete("page")
+  const hasAppliedFilters = appliedParams.toString().length > 0
   const itemListSchema = generateItemListSchema(properties, pagePath)
   const searchResultsSchema = {
     "@context": "https://schema.org",
@@ -246,11 +287,19 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
         dangerouslySetInnerHTML={{ __html: JSON.stringify(searchResultsSchema) }}
       />
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <p id="search-results-title" className="text-sm text-neutral-500">
           <span className="font-semibold text-neutral-950">{total}</span>{" "}
           {total === 1 ? "imovel encontrado" : "imoveis encontrados"}
         </p>
+        {hasAppliedFilters && (
+          <Link
+            href="/busca"
+            className="text-sm text-muted-foreground underline decoration-muted-foreground/40 underline-offset-4 transition-colors hover:text-foreground"
+          >
+            Limpar filtros
+          </Link>
+        )}
       </div>
 
       <PropertyGrid properties={properties} />
@@ -320,7 +369,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
   const maxPrice = stats.precoMax ?? 5_000_000
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 md:px-8">
       <Breadcrumbs
         items={[
           { name: "Home", url: "/" },
@@ -331,11 +380,12 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
       <h1 className="sr-only">Busca de imoveis em Curitiba</h1>
 
       <div className="mt-6">
-        <HeaderSearch
+        <SearchBar
           bairros={bairros.map((item) => item.bairro)}
           tipos={tipos.map((item) => item.tipo)}
           cidades={cidades}
           priceBounds={{ min: minPrice, max: maxPrice }}
+          sticky
         />
       </div>
 

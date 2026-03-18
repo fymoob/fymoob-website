@@ -35,9 +35,13 @@ export interface Property {
 
 export interface PropertyFilters {
   tipo?: PropertyType;
+  tipos?: PropertyType[];
   finalidade?: PropertyFinalidade;
+  finalidades?: PropertyFinalidade[];
   bairro?: string;
+  bairros?: string[];
   cidade?: string;
+  cidades?: string[];
   codigo?: string;
   precoMin?: number;
   precoMax?: number;

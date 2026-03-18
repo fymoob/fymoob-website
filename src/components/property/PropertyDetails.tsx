@@ -42,10 +42,10 @@ export function PropertyDetails({ property, shortTitle }: PropertyDetailsProps) 
 
       {/* Specs bar with separators */}
       {specs.length > 0 && (
-        <div className="flex items-center gap-6">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-3 md:gap-x-6">
           {specs.map((spec, i) => (
-            <div key={spec.label} className="flex items-center gap-6">
-              {i > 0 && <div className="h-4 w-px bg-neutral-300" />}
+            <div key={spec.label} className="flex items-center gap-4 md:gap-6">
+              {i > 0 && <div className="hidden h-4 w-px bg-neutral-300 md:block" />}
               <div className="flex items-center gap-2">
                 <spec.icon size={16} className="shrink-0 text-neutral-500" />
                 <span className="text-sm font-medium text-neutral-600">

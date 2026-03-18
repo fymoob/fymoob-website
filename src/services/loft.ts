@@ -34,9 +34,30 @@ const indexedProperties: IndexedProperty[] = data.imoveis.map((property) => ({
 function applyFilters(properties: Property[], filters: PropertyFilters): Property[] {
   const includedSlugs = new Set(properties.map((property) => property.slug))
 
-  const bairroSlug = filters.bairro ? slugify(filters.bairro) : null
-  const cidadeSlug = filters.cidade ? slugify(filters.cidade) : null
-  const finalidadeSlug = filters.finalidade ? slugify(filters.finalidade) : null
+  const bairroSlugSet =
+    filters.bairros && filters.bairros.length > 0
+      ? new Set(filters.bairros.map((bairro) => slugify(bairro)))
+      : filters.bairro
+        ? new Set([slugify(filters.bairro)])
+        : null
+  const cidadeSlugSet =
+    filters.cidades && filters.cidades.length > 0
+      ? new Set(filters.cidades.map((cidade) => slugify(cidade)))
+      : filters.cidade
+        ? new Set([slugify(filters.cidade)])
+        : null
+  const finalidadeSlugSet =
+    filters.finalidades && filters.finalidades.length > 0
+      ? new Set(filters.finalidades.map((finalidade) => slugify(finalidade)))
+      : filters.finalidade
+        ? new Set([slugify(filters.finalidade)])
+        : null
+  const tipoSet =
+    filters.tipos && filters.tipos.length > 0
+      ? new Set(filters.tipos)
+      : filters.tipo
+        ? new Set([filters.tipo])
+        : null
   const quartosMin = filters.quartosMin ?? filters.dormitoriosMin ?? null
   const codigo = filters.codigo?.trim().toLowerCase() ?? null
   const searchTerms = filters.busca
@@ -51,10 +72,12 @@ function applyFilters(properties: Property[], filters: PropertyFilters): Propert
     const property = indexed.property
     if (!includedSlugs.has(property.slug)) continue
 
-    if (filters.tipo && property.tipo !== filters.tipo) continue
-    if (finalidadeSlug && indexed.finalidadeSlug !== finalidadeSlug) continue
-    if (bairroSlug && indexed.bairroSlug !== bairroSlug) continue
-    if (cidadeSlug && indexed.cidadeSlug !== cidadeSlug) continue
+    if (tipoSet && !tipoSet.has(property.tipo)) continue
+    if (finalidadeSlugSet && !finalidadeSlugSet.has(indexed.finalidadeSlug)) {
+      continue
+    }
+    if (bairroSlugSet && !bairroSlugSet.has(indexed.bairroSlug)) continue
+    if (cidadeSlugSet && !cidadeSlugSet.has(indexed.cidadeSlug)) continue
 
     if (codigo && !property.codigo.toLowerCase().includes(codigo)) continue
 

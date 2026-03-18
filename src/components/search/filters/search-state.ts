@@ -1,0 +1,109 @@
+import { slugify } from "@/lib/utils"
+import type { MultiSelectOption } from "./types"
+
+export interface PriceBounds {
+  min: number
+  max: number
+}
+
+export interface SearchDraftFilters {
+  bairros: string[]
+  cidades: string[]
+  tipos: string[]
+  finalidades: string[]
+  quartos: string
+  priceRange: [number, number]
+}
+
+export const PRICE_STEP = 50_000
+
+export const FINALIDADE_OPTIONS: MultiSelectOption[] = [
+  { value: "venda", label: "Comprar" },
+  { value: "locacao", label: "Alugar" },
+  { value: "venda-e-locacao", label: "Venda e Aluguel" },
+]
+
+function parseNumber(value: string | null): number | null {
+  if (!value) return null
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : null
+}
+
+export function parseCsvParam(value: string | null): string[] {
+  if (!value) return []
+  return value
+    .split(",")
+    .map((item) => slugify(item.trim()))
+    .filter(Boolean)
+}
+
+export function normalizeRange(
+  values: readonly number[],
+  bounds: PriceBounds
+): [number, number] {
+  const first = values[0] ?? bounds.min
+  const second = values[1] ?? bounds.max
+  const min = Math.max(bounds.min, Math.min(first, second))
+  const max = Math.min(bounds.max, Math.max(first, second))
+  return [min, max]
+}
+
+export function createDraftFromSearchParams(
+  params: URLSearchParams,
+  bounds: PriceBounds
+): SearchDraftFilters {
+  const minFromUrl = parseNumber(params.get("precoMin")) ?? bounds.min
+  const maxFromUrl = parseNumber(params.get("precoMax")) ?? bounds.max
+
+  return {
+    bairros: parseCsvParam(params.get("bairro")),
+    cidades: parseCsvParam(params.get("cidade")),
+    tipos: parseCsvParam(params.get("tipo")),
+    finalidades: parseCsvParam(params.get("finalidade")),
+    quartos: params.get("quartos") ?? params.get("dormitoriosMin") ?? "",
+    priceRange: normalizeRange([minFromUrl, maxFromUrl], bounds),
+  }
+}
+
+export function applyDraftToSearchParams(
+  params: URLSearchParams,
+  draft: SearchDraftFilters,
+  bounds: PriceBounds
+): URLSearchParams {
+  const setCsvParam = (key: string, values: string[]) => {
+    const uniqueValues = Array.from(new Set(values.filter(Boolean)))
+    if (uniqueValues.length === 0) {
+      params.delete(key)
+      return
+    }
+    params.set(key, uniqueValues.join(","))
+  }
+
+  setCsvParam("bairro", draft.bairros)
+  setCsvParam("cidade", draft.cidades)
+  setCsvParam("tipo", draft.tipos)
+  setCsvParam("finalidade", draft.finalidades)
+
+  if (draft.quartos) {
+    params.set("quartos", draft.quartos)
+  } else {
+    params.delete("quartos")
+  }
+  params.delete("dormitoriosMin")
+
+  const [minPrice, maxPrice] = draft.priceRange
+  if (minPrice > bounds.min) {
+    params.set("precoMin", String(minPrice))
+  } else {
+    params.delete("precoMin")
+  }
+
+  if (maxPrice < bounds.max) {
+    params.set("precoMax", String(maxPrice))
+  } else {
+    params.delete("precoMax")
+  }
+
+  params.delete("page")
+  return params
+}

@@ -124,7 +124,10 @@ export function Header() {
               />
               <span className="sr-only">Abrir menu</span>
             </SheetTrigger>
-            <SheetContent side="right" className="flex w-[280px] flex-col p-0">
+            <SheetContent
+              side="right"
+              className="z-50 flex h-screen w-full max-w-full flex-col p-0 sm:h-full sm:w-[320px]"
+            >
               {/* Menu header */}
               <div className="flex items-center border-b border-neutral-100 px-5 py-4">
                 <SheetTitle className="sr-only">Menu de navegação</SheetTitle>

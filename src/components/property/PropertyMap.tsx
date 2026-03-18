@@ -82,7 +82,7 @@ export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMap
       {isOpen && (
         <div>
           <div className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
-            <div className="relative h-[350px] sm:h-[400px]">
+            <div className="relative z-0 h-[350px] sm:h-[400px]">
               {MapComponent || (
                 <div className="flex h-full items-center justify-center text-neutral-400">
                   <MapPin size={24} className="mr-2 animate-pulse" />

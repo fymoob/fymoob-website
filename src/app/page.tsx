@@ -1,7 +1,14 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { Suspense } from "react"
 import { Building2, Home as HomeIcon, Landmark, TreePine, ChevronDown } from "lucide-react"
-import { getFeaturedProperties, getAllBairros, getAllTypes } from "@/services/loft"
+import {
+  getFeaturedProperties,
+  getAllBairros,
+  getAllCities,
+  getAllTypes,
+  getPropertyStats,
+} from "@/services/loft"
 import { getRecentPosts } from "@/services/blog"
 import { SearchBar } from "@/components/search/SearchBar"
 import { BairroCard } from "@/components/search/BairroCard"
@@ -47,17 +54,24 @@ const tipoLinks = [
 ]
 
 export default async function Home() {
-  const [featured, bairros, types, recentPosts] = await Promise.all([
+  const [featured, allBairros, cities, types, stats, recentPosts] = await Promise.all([
     getFeaturedProperties(8),
-    getAllBairros(6),
+    getAllBairros(),
+    getAllCities(),
     getAllTypes(),
+    getPropertyStats(),
     getRecentPosts(3),
   ])
 
   const highlight = featured[0]
   const destaques = featured.slice(1, 5)
-  const bairroNames = bairros.map((b) => b.bairro)
+  const bairros = allBairros.slice(0, 6)
+  const bairroNames = allBairros.map((b) => b.bairro)
   const tipoNames = types.map((t) => t.tipo)
+  const priceBounds = {
+    min: stats.precoMin ?? 50_000,
+    max: stats.precoMax ?? 5_000_000,
+  }
 
   return (
     <>
@@ -90,7 +104,15 @@ export default async function Home() {
             Apartamentos, casas e sobrados à venda e para alugar nos melhores bairros da cidade.
           </p>
           <div className="hero-animate hero-animate-3 mt-10">
-            <SearchBar bairros={bairroNames} tipos={tipoNames} />
+            <Suspense fallback={<div className="h-16 w-full rounded-2xl bg-white/20" />}>
+              <SearchBar
+                bairros={bairroNames}
+                cidades={cities}
+                tipos={tipoNames}
+                priceBounds={priceBounds}
+                targetPath="/busca"
+              />
+            </Suspense>
           </div>
         </div>
         {/* Scroll indicator */}

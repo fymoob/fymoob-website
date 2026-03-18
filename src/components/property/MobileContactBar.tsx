@@ -35,11 +35,11 @@ export function MobileContactBar({
 
   return (
     <div
-      className={`fixed bottom-0 left-0 right-0 z-40 border-t border-neutral-200 bg-white p-3 transition-transform duration-300 md:hidden ${
+      className={`fixed bottom-0 left-0 z-[100] w-full border-t border-neutral-200 bg-white p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] transition-transform duration-300 md:hidden ${
         visible ? "translate-y-0" : "translate-y-full"
       }`}
     >
-      <div className="mx-auto flex max-w-lg items-center gap-2">
+      <div className="mx-auto flex w-full max-w-lg items-center gap-2">
         {/* Price */}
         <div className="flex-1 min-w-0">
           <p className="truncate text-lg font-bold text-neutral-900">

@@ -64,7 +64,7 @@ export function PropertyCharacteristics({ property }: PropertyCharacteristicsPro
         Caracteristicas
       </h2>
 
-      <div className="mt-5 grid grid-cols-2 gap-6 md:grid-cols-3">
+      <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
         {characteristics.map((item) => (
           <article
             key={item.label}
