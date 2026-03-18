@@ -111,7 +111,10 @@ export function Header() {
 
           {/* Mobile Menu */}
           <Sheet>
-            <SheetTrigger className="md:hidden flex h-9 w-9 items-center justify-center rounded-lg">
+            <SheetTrigger
+              id="mobile-menu-trigger"
+              className="md:hidden flex h-9 w-9 items-center justify-center rounded-lg"
+            >
               <Menu
                 size={22}
                 className={cn(

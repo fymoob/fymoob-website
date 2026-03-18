@@ -11,77 +11,85 @@ import mockData from "../../data/mock-properties.json"
 
 const data = mockData as MockPropertyData
 
+interface IndexedProperty {
+  property: Property
+  bairroSlug: string
+  cidadeSlug: string
+  finalidadeSlug: string
+  searchableText: string
+  price: number | null
+}
+
+const indexedProperties: IndexedProperty[] = data.imoveis.map((property) => ({
+  property,
+  bairroSlug: slugify(property.bairro),
+  cidadeSlug: slugify(property.cidade),
+  finalidadeSlug: slugify(property.finalidade),
+  searchableText: slugify(
+    `${property.titulo} ${property.descricao} ${property.bairro} ${property.tipo} ${property.codigo}`
+  ),
+  price: property.precoVenda ?? property.precoAluguel,
+}))
+
 function applyFilters(properties: Property[], filters: PropertyFilters): Property[] {
-  let result = [...properties]
+  const includedSlugs = new Set(properties.map((property) => property.slug))
 
-  if (filters.tipo) {
-    result = result.filter((p) => p.tipo === filters.tipo)
-  }
+  const bairroSlug = filters.bairro ? slugify(filters.bairro) : null
+  const cidadeSlug = filters.cidade ? slugify(filters.cidade) : null
+  const finalidadeSlug = filters.finalidade ? slugify(filters.finalidade) : null
+  const quartosMin = filters.quartosMin ?? filters.dormitoriosMin ?? null
+  const codigo = filters.codigo?.trim().toLowerCase() ?? null
+  const searchTerms = filters.busca
+    ? slugify(filters.busca)
+        .split("-")
+        .filter(Boolean)
+    : []
 
-  if (filters.finalidade) {
-    result = result.filter((p) => p.finalidade === filters.finalidade)
-  }
+  const result: Property[] = []
 
-  if (filters.bairro) {
-    result = result.filter(
-      (p) => slugify(p.bairro) === slugify(filters.bairro!)
-    )
-  }
+  for (const indexed of indexedProperties) {
+    const property = indexed.property
+    if (!includedSlugs.has(property.slug)) continue
 
-  if (filters.cidade) {
-    result = result.filter(
-      (p) => slugify(p.cidade) === slugify(filters.cidade!)
-    )
-  }
+    if (filters.tipo && property.tipo !== filters.tipo) continue
+    if (finalidadeSlug && indexed.finalidadeSlug !== finalidadeSlug) continue
+    if (bairroSlug && indexed.bairroSlug !== bairroSlug) continue
+    if (cidadeSlug && indexed.cidadeSlug !== cidadeSlug) continue
 
-  if (filters.precoMin) {
-    result = result.filter((p) => {
-      const preco = p.precoVenda ?? p.precoAluguel
-      return preco !== null && preco >= filters.precoMin!
-    })
-  }
+    if (codigo && !property.codigo.toLowerCase().includes(codigo)) continue
 
-  if (filters.precoMax) {
-    result = result.filter((p) => {
-      const preco = p.precoVenda ?? p.precoAluguel
-      return preco !== null && preco <= filters.precoMax!
-    })
-  }
+    if (filters.precoMin && (indexed.price === null || indexed.price < filters.precoMin)) {
+      continue
+    }
 
-  if (filters.dormitoriosMin) {
-    result = result.filter(
-      (p) => p.dormitorios !== null && p.dormitorios >= filters.dormitoriosMin!
-    )
-  }
+    if (filters.precoMax && (indexed.price === null || indexed.price > filters.precoMax)) {
+      continue
+    }
 
-  if (filters.areaMin) {
-    result = result.filter(
-      (p) =>
-        p.areaPrivativa !== null && p.areaPrivativa >= filters.areaMin!
-    )
-  }
+    if (quartosMin && (property.dormitorios === null || property.dormitorios < quartosMin)) {
+      continue
+    }
 
-  if (filters.areaMax) {
-    result = result.filter(
-      (p) =>
-        p.areaPrivativa !== null && p.areaPrivativa <= filters.areaMax!
-    )
-  }
+    if (filters.areaMin && (property.areaPrivativa === null || property.areaPrivativa < filters.areaMin)) {
+      continue
+    }
 
-  if (filters.vagasMin) {
-    result = result.filter(
-      (p) => p.vagas !== null && p.vagas >= filters.vagasMin!
-    )
-  }
+    if (filters.areaMax && (property.areaPrivativa === null || property.areaPrivativa > filters.areaMax)) {
+      continue
+    }
 
-  if (filters.busca) {
-    const term = filters.busca.toLowerCase()
-    result = result.filter(
-      (p) =>
-        p.titulo.toLowerCase().includes(term) ||
-        p.descricao.toLowerCase().includes(term) ||
-        p.bairro.toLowerCase().includes(term)
-    )
+    if (filters.vagasMin && (property.vagas === null || property.vagas < filters.vagasMin)) {
+      continue
+    }
+
+    if (
+      searchTerms.length > 0 &&
+      !searchTerms.every((term) => indexed.searchableText.includes(term))
+    ) {
+      continue
+    }
+
+    result.push(property)
   }
 
   // Sorting
@@ -89,12 +97,16 @@ function applyFilters(properties: Property[], filters: PropertyFilters): Propert
     switch (filters.orderBy) {
       case "preco-asc":
         result.sort(
-          (a, b) => (a.precoVenda ?? a.precoAluguel ?? 0) - (b.precoVenda ?? b.precoAluguel ?? 0)
+          (a, b) =>
+            (a.precoVenda ?? a.precoAluguel ?? 0) -
+            (b.precoVenda ?? b.precoAluguel ?? 0)
         )
         break
       case "preco-desc":
         result.sort(
-          (a, b) => (b.precoVenda ?? b.precoAluguel ?? 0) - (a.precoVenda ?? a.precoAluguel ?? 0)
+          (a, b) =>
+            (b.precoVenda ?? b.precoAluguel ?? 0) -
+            (a.precoVenda ?? a.precoAluguel ?? 0)
         )
         break
       case "area-asc":
@@ -108,7 +120,14 @@ function applyFilters(properties: Property[], filters: PropertyFilters): Propert
         )
         break
       case "recente":
-        // Mock data doesn't have reliable dates, keep original order
+        result.sort((a, b) => {
+          const dateA = a.dataAtualizacao ?? a.dataCadastro
+          const dateB = b.dataAtualizacao ?? b.dataCadastro
+          if (!dateA && !dateB) return 0
+          if (!dateA) return 1
+          if (!dateB) return -1
+          return dateB.localeCompare(dateA)
+        })
         break
     }
   }
@@ -187,6 +206,16 @@ export async function getAllBairros(limit?: number): Promise<BairroSummary[]> {
     .sort((a, b) => b.total - a.total)
 
   return limit ? result.slice(0, limit) : result
+}
+
+export async function getAllCities(): Promise<string[]> {
+  const citySet = new Set<string>()
+
+  for (const property of data.imoveis) {
+    citySet.add(property.cidade)
+  }
+
+  return Array.from(citySet).sort((a, b) => a.localeCompare(b, "pt-BR"))
 }
 
 export async function getSimilarProperties(

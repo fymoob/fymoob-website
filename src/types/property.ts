@@ -38,9 +38,11 @@ export interface PropertyFilters {
   finalidade?: PropertyFinalidade;
   bairro?: string;
   cidade?: string;
+  codigo?: string;
   precoMin?: number;
   precoMax?: number;
   dormitoriosMin?: number;
+  quartosMin?: number;
   areaMin?: number;
   areaMax?: number;
   vagasMin?: number;
