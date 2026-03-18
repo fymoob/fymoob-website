@@ -1,9 +1,12 @@
 "use client"
 
-import { SearchBar, type SearchBarProps } from "@/components/search/SearchBar"
+import {
+  SearchPageSearchBar,
+  type SearchPageSearchBarProps,
+} from "@/components/search/SearchPageSearchBar"
 
-export type HeaderSearchProps = SearchBarProps
+export type HeaderSearchProps = SearchPageSearchBarProps
 
 export function HeaderSearch(props: HeaderSearchProps) {
-  return <SearchBar {...props} sticky={props.sticky ?? true} />
+  return <SearchPageSearchBar {...props} sticky={props.sticky ?? true} />
 }

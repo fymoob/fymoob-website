@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { Suspense } from "react"
 
-import { SearchBar } from "@/components/search/SearchBar"
+import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
 import { PropertyGrid } from "@/components/search/PropertyGrid"
 import { SkeletonsGrid } from "@/components/search/SkeletonsGrid"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
@@ -214,7 +214,7 @@ export async function generateMetadata({
   const params = await searchParams
   const state = parseSearchState(params)
 
-  const titleParts: string[] = ["Busca de imoveis"]
+  const titleParts: string[] = ["Busca de imóveis"]
 
   if (state.tipos.length > 0) titleParts.push(state.tipos[0])
   if (state.bairros.length > 0) {
@@ -233,7 +233,7 @@ export async function generateMetadata({
 
   const descriptionParts = [
     `${title}.`,
-    "Filtros por localizacao, faixa de preco, quartos e tipo.",
+    "Filtros por localização, faixa de preço, quartos e tipo.",
   ]
   if (state.busca) {
     descriptionParts.push(`Termo ativo: ${state.busca}.`)
@@ -262,7 +262,7 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
   const searchResultsSchema = {
     "@context": "https://schema.org",
     "@type": "SearchResultsPage",
-    name: "Resultados de busca de imoveis em Curitiba",
+    name: "Resultados de busca de imóveis em Curitiba",
     url: `${SITE_URL}${pagePath}`,
     mainEntity: {
       "@type": "ItemList",
@@ -289,8 +289,8 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
 
       <div className="flex items-center justify-between gap-4">
         <p id="search-results-title" className="text-sm text-neutral-500">
-          <span className="font-semibold text-neutral-950">{total}</span>{" "}
-          {total === 1 ? "imovel encontrado" : "imoveis encontrados"}
+          <span className="font-semibold text-brand-primary">{total}</span>{" "}
+          {total === 1 ? "imóvel encontrado" : "imóveis encontrados"}
         </p>
         {hasAppliedFilters && (
           <Link
@@ -306,7 +306,7 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
 
       {totalPages > 1 && (
         <nav
-          aria-label="Paginacao dos resultados"
+          aria-label="Paginação dos resultados"
           className="flex items-center justify-center gap-2"
         >
           {state.page > 1 && (
@@ -317,13 +317,13 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
             />
           )}
           <span className="px-4 text-sm text-neutral-500">
-            Pagina {state.page} de {totalPages}
+            Página {state.page} de {totalPages}
           </span>
           {state.page < totalPages && (
             <PaginationLink
               searchParams={searchParams}
               page={state.page + 1}
-              label="Proximo"
+              label="Próximo"
             />
           )}
         </nav>
@@ -377,10 +377,10 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
         ]}
       />
 
-      <h1 className="sr-only">Busca de imoveis em Curitiba</h1>
+      <h1 className="sr-only">Busca de imóveis em Curitiba</h1>
 
       <div className="mt-6">
-        <SearchBar
+        <SearchPageSearchBar
           bairros={bairros.map((item) => item.bairro)}
           tipos={tipos.map((item) => item.tipo)}
           cidades={cidades}
@@ -389,7 +389,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
         />
       </div>
 
-      <div className="mt-6">
+      <div className="mt-10">
         <Suspense key={state.fullQuery || "default-search"} fallback={<SkeletonsGrid />}>
           <SearchResults searchParams={params} />
         </Suspense>

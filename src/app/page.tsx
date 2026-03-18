@@ -10,7 +10,7 @@ import {
   getPropertyStats,
 } from "@/services/loft"
 import { getRecentPosts } from "@/services/blog"
-import { SearchBar } from "@/components/search/SearchBar"
+import { HomeSearchBar } from "@/components/search/HomeSearchBar"
 import { BairroCard } from "@/components/search/BairroCard"
 import { PropertyCard } from "@/components/property/PropertyCard"
 import { PropertyCardFeatured } from "@/components/property/PropertyCardFeatured"
@@ -100,12 +100,12 @@ export default async function Home() {
           <h1 className="hero-animate hero-animate-1 font-display text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-7xl leading-[1.05]">
             Encontre seu imóvel{"\n"}ideal
           </h1>
-          <p className="hero-animate hero-animate-2 mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/70 sm:text-lg md:text-xl">
+          <p className="hero-animate hero-animate-2 mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg md:text-xl">
             Apartamentos, casas e sobrados à venda e para alugar nos melhores bairros da cidade.
           </p>
           <div className="hero-animate hero-animate-3 mt-10">
             <Suspense fallback={<div className="h-16 w-full rounded-2xl bg-white/20" />}>
-              <SearchBar
+              <HomeSearchBar
                 bairros={bairroNames}
                 cidades={cities}
                 tipos={tipoNames}
@@ -118,7 +118,7 @@ export default async function Home() {
         {/* Scroll indicator */}
         <a
           href="#oportunidade"
-          className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 animate-bounce text-white/60 transition hover:text-white/90"
+          className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 animate-bounce text-white/40 transition hover:text-white/70"
           aria-label="Rolar para próxima seção"
         >
           <ChevronDown className="h-8 w-8" />

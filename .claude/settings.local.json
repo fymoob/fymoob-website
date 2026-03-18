@@ -30,7 +30,8 @@
       "WebFetch(domain:www.pexels.com)",
       "WebFetch(domain:commons.wikimedia.org)",
       "Bash(ls:*)",
-      "WebFetch(domain:api.fontshare.com)"
+      "WebFetch(domain:api.fontshare.com)",
+      "Bash(find /c/Users/Vine/demo -type f \\\\\\(-name *.mdx -o -name *.md \\\\\\))"
     ]
   }
 }

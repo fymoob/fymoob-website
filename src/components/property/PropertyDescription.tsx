@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { ChevronDown, ChevronUp } from "lucide-react"
 
 interface PropertyDescriptionProps {
   descricao: string
@@ -81,9 +82,19 @@ export function PropertyDescription({ descricao }: PropertyDescriptionProps) {
           <button
             type="button"
             onClick={() => setExpanded((v) => !v)}
-            className="mt-3 cursor-pointer text-sm font-semibold text-neutral-900 underline transition hover:no-underline"
+            className="mt-3 inline-flex cursor-pointer items-center gap-1 text-sm font-medium text-brand-primary transition-colors hover:text-brand-primary-hover"
           >
-            {expanded ? "Mostrar menos" : "Mostrar mais >"}
+            {expanded ? (
+              <>
+                Mostrar menos
+                <ChevronUp className="size-4" />
+              </>
+            ) : (
+              <>
+                Mostrar mais
+                <ChevronDown className="size-4" />
+              </>
+            )}
           </button>
         )}
       </div>

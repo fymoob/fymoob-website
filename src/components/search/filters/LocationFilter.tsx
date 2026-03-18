@@ -61,7 +61,7 @@ export function LocationFilter({
   const isEmpty = filteredBairros.length === 0 && filteredCidades.length === 0
 
   return (
-    <div className="space-y-3">
+    <div>
       <Command>
         <CommandInput
           placeholder="Buscar bairro ou cidade..."
@@ -70,7 +70,7 @@ export function LocationFilter({
         />
         <CommandList>
           {isEmpty ? (
-            <CommandEmpty>Nenhuma localizacao encontrada.</CommandEmpty>
+            <CommandEmpty>Nenhuma localização encontrada.</CommandEmpty>
           ) : (
             <>
               {filteredBairros.length > 0 && (
@@ -85,7 +85,7 @@ export function LocationFilter({
                         }
                       >
                         <Checkbox checked={checked} />
-                        <span className="text-sm text-[#0B1120]">{bairro.label}</span>
+                        <span className="text-sm">{bairro.label}</span>
                       </CommandItem>
                     )
                   })}
@@ -104,7 +104,7 @@ export function LocationFilter({
                         }
                       >
                         <Checkbox checked={checked} />
-                        <span className="text-sm text-[#0B1120]">{cidade.label}</span>
+                        <span className="text-sm">{cidade.label}</span>
                       </CommandItem>
                     )
                   })}

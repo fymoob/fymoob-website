@@ -4,6 +4,7 @@ import Image from "next/image"
 import { Calendar, Clock, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { MDXRemote } from "next-mdx-remote/rsc"
+import remarkGfm from "remark-gfm"
 import { getPostBySlug, getAllSlugs, getRelatedPosts } from "@/services/blog"
 import { generateBlogPostingSchema } from "@/lib/seo"
 import { mdxComponents } from "@/lib/mdx-components"
@@ -64,6 +65,38 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
 
+      {/* Hero Image with title overlay */}
+      <div className="relative overflow-hidden bg-neutral-950">
+        <div className="relative mx-auto aspect-[21/9] max-w-7xl sm:aspect-[21/8]">
+          <Image
+            src={post.image}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority
+            sizes="(max-width: 1280px) 100vw, 1280px"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-950/30 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
+            <div className="mx-auto max-w-7xl">
+              <div className="flex flex-wrap gap-2">
+                {post.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full bg-white/15 px-2.5 py-1 text-xs font-medium text-white/90 backdrop-blur-sm"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <h1 className="mt-3 max-w-3xl font-display text-2xl font-extrabold tracking-tight text-white sm:text-3xl lg:text-4xl leading-[1.1]">
+                {post.title}
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Breadcrumbs
           items={[
@@ -73,41 +106,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           ]}
         />
 
-        {/* Hero Image — full width */}
-        <div className="relative aspect-[21/9] overflow-hidden rounded-2xl">
-          <Image
-            src={post.image}
-            alt={post.title}
-            fill
-            className="object-cover"
-            priority
-            sizes="(max-width: 1280px) 100vw, 1280px"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/60 to-transparent" />
-        </div>
-
         {/* Layout: Content + TOC sidebar */}
-        <div className="mt-10 grid grid-cols-1 gap-12 xl:grid-cols-[1fr_220px]">
+        <div className="mt-4 grid grid-cols-1 gap-12 xl:grid-cols-[1fr_220px]">
           {/* Main content */}
           <article className="min-w-0">
             {/* Header */}
             <header className="mb-10">
-              <div className="mb-4 flex flex-wrap gap-2">
-                {post.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full bg-brand-primary-light px-3 py-1 text-xs font-semibold uppercase tracking-wider text-brand-primary"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              <h1 className="font-display text-3xl font-extrabold tracking-tight text-neutral-950 sm:text-4xl lg:text-5xl leading-[1.1]">
-                {post.title}
-              </h1>
-
-              <p className="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-600">
+              <p className="max-w-2xl text-lg leading-relaxed text-neutral-600">
                 {post.description}
               </p>
 
@@ -125,7 +130,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
             {/* MDX Content — editorial typography */}
             <div className="prose-fymoob mx-auto max-w-3xl">
-              <MDXRemote source={post.content} components={mdxComponents} />
+              <MDXRemote
+                source={post.content}
+                components={mdxComponents}
+                options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+              />
             </div>
 
             {/* Back link */}

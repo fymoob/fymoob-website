@@ -245,13 +245,19 @@ export function PropertyCard({
         />
       </div>
 
-      <div className="space-y-3 p-5 md:p-6">
-        <p className="text-xs font-medium tracking-wide text-muted-foreground">
-          {property.tipo} | Cod: {property.codigo}
-        </p>
+      <div className="space-y-2.5 p-5 md:p-6">
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-medium text-neutral-400">
+            {property.tipo}
+          </span>
+          <span className="text-neutral-200">·</span>
+          <span className="text-xs text-neutral-300">
+            {property.codigo}
+          </span>
+        </div>
 
         <Link href={propertyHref} className="block">
-          <h2 className="text-lg font-semibold tracking-tight text-neutral-950 transition-colors hover:text-brand-primary">
+          <h2 className="text-lg font-semibold leading-snug tracking-tight text-neutral-950 transition-colors hover:text-brand-primary">
             {truncateText(property.titulo, 68)}
           </h2>
         </Link>
@@ -261,17 +267,14 @@ export function PropertyCard({
         </p>
 
         <p
-          className="text-xl font-bold tracking-tight text-[#0B1120]"
+          className={cn(
+            "text-xl font-bold tracking-tight",
+            price ? "text-[#0B1120]" : "text-neutral-400"
+          )}
           style={{ fontFamily: "\"Plus Jakarta Sans\", var(--font-satoshi), sans-serif" }}
         >
           {formatPrice(price)}
         </p>
-
-        {property.descricao && (
-          <p className="line-clamp-2 text-sm leading-relaxed text-neutral-600">
-            {truncateText(property.descricao, 110)}
-          </p>
-        )}
 
         <PropertyFeatures
           dormitorios={property.dormitorios}

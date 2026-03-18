@@ -58,29 +58,31 @@ export function TableOfContents({ content }: TableOfContentsProps) {
 
   return (
     <nav className="hidden xl:block">
-      <div className="sticky top-24">
-        <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-neutral-500">
-          <List size={14} />
-          Neste artigo
+      <div className="sticky top-20">
+        <div className="rounded-xl border border-neutral-100 bg-neutral-50/50 p-4">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-neutral-400">
+            <List size={14} />
+            Neste artigo
+          </div>
+          <ul className="mt-3 space-y-0.5 border-l-2 border-neutral-200">
+            {headings.map((heading) => (
+              <li key={heading.id}>
+                <a
+                  href={`#${heading.id}`}
+                  className={`block border-l-2 -ml-0.5 py-1.5 text-[13px] leading-snug transition-colors duration-200 ${
+                    heading.level === 3 ? "pl-5" : "pl-3"
+                  } ${
+                    activeId === heading.id
+                      ? "border-brand-primary font-medium text-brand-primary"
+                      : "border-transparent text-neutral-500 hover:text-neutral-900"
+                  }`}
+                >
+                  {heading.text}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
-        <ul className="mt-3 space-y-1.5 border-l border-neutral-200">
-          {headings.map((heading) => (
-            <li key={heading.id}>
-              <a
-                href={`#${heading.id}`}
-                className={`block border-l-2 py-1 text-sm transition-colors duration-200 ${
-                  heading.level === 3 ? "pl-6" : "pl-4"
-                } ${
-                  activeId === heading.id
-                    ? "border-brand-primary font-medium text-brand-primary"
-                    : "border-transparent text-neutral-500 hover:text-neutral-950"
-                }`}
-              >
-                {heading.text}
-              </a>
-            </li>
-          ))}
-        </ul>
       </div>
     </nav>
   )

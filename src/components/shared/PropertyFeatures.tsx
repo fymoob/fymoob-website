@@ -32,15 +32,21 @@ export function PropertyFeatures({
   if (features.length === 0) return null
 
   return (
-    <div className={cn("flex items-center gap-4", className)}>
+    <div className={cn("flex flex-wrap items-center gap-2", className)}>
       {features.map((feature) => (
-        <div key={feature.label} className="flex items-center gap-1.5">
+        <div
+          key={feature.label}
+          className={cn(
+            "inline-flex items-center gap-1.5 rounded-full bg-neutral-50 text-neutral-600",
+            size === "sm" ? "px-2.5 py-1" : "px-3 py-1.5"
+          )}
+        >
           <feature.icon
             size={iconSize}
-            className="shrink-0 text-brand-primary"
+            className="shrink-0 text-neutral-400"
           />
-          <span className={cn("text-neutral-600", textClass)}>
-            {feature.value}
+          <span className={cn("font-medium", textClass)}>
+            {feature.value} {feature.label}
           </span>
         </div>
       ))}

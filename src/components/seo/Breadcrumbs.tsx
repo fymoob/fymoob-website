@@ -9,10 +9,12 @@ interface BreadcrumbItem {
 
 interface BreadcrumbsProps {
   items: BreadcrumbItem[]
+  variant?: "light" | "dark"
 }
 
-export function Breadcrumbs({ items }: BreadcrumbsProps) {
+export function Breadcrumbs({ items, variant = "light" }: BreadcrumbsProps) {
   const schema = generateBreadcrumbSchema(items)
+  const isDark = variant === "dark"
 
   return (
     <>
@@ -21,16 +23,16 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
       <nav aria-label="Breadcrumb" className="py-4">
-        <ol className="flex flex-wrap items-center gap-1 text-sm text-neutral-500">
+        <ol className={`flex flex-wrap items-center gap-1 text-sm ${isDark ? "text-neutral-400" : "text-neutral-500"}`}>
           {items.map((item, index) => {
             const isLast = index === items.length - 1
             return (
               <li key={item.url} className="flex items-center gap-1">
                 {index > 0 && (
-                  <ChevronRight size={14} className="shrink-0 text-neutral-400" />
+                  <ChevronRight size={14} className={`shrink-0 ${isDark ? "text-neutral-600" : "text-neutral-400"}`} />
                 )}
                 {isLast ? (
-                  <span className="inline-block max-w-[300px] truncate font-medium text-neutral-950">
+                  <span className={`inline-block max-w-[300px] truncate font-medium ${isDark ? "text-white" : "text-neutral-950"}`}>
                     {item.name}
                   </span>
                 ) : (

@@ -27,7 +27,7 @@ export function PropertyCharacteristics({ property }: PropertyCharacteristicsPro
     { label: "Tipo", value: property.tipo, icon: Home },
     { label: "Finalidade", value: property.finalidade, icon: Building2 },
     {
-      label: "Dormitorios",
+      label: "Dormitórios",
       value: property.dormitorios ? String(property.dormitorios) : null,
       icon: BedDouble,
     },
@@ -42,17 +42,17 @@ export function PropertyCharacteristics({ property }: PropertyCharacteristicsPro
       icon: Car,
     },
     {
-      label: "Area privativa",
+      label: "Área privativa",
       value: property.areaPrivativa ? formatArea(property.areaPrivativa) : null,
       icon: Square,
     },
     {
-      label: "Area total",
+      label: "Área total",
       value: property.areaTotal ? formatArea(property.areaTotal) : null,
       icon: Square,
     },
     {
-      label: "Localizacao",
+      label: "Localização",
       value: `${property.bairro}, ${property.cidade}`,
       icon: MapPin,
     },
@@ -61,7 +61,7 @@ export function PropertyCharacteristics({ property }: PropertyCharacteristicsPro
   return (
     <section>
       <h2 className="text-xl font-semibold tracking-tight text-[#0B1120]">
-        Caracteristicas
+        Características
       </h2>
 
       <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">

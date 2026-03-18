@@ -9,7 +9,7 @@ function Command({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="command"
       className={cn(
-        "flex h-full w-full flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white",
+        "flex h-full w-full flex-col overflow-hidden rounded-xl bg-white",
         className
       )}
       {...props}
@@ -27,12 +27,12 @@ function CommandInput({
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }) {
   return (
-    <div className="flex h-10 items-center border-b border-neutral-200 px-3">
-      <Search className="mr-2 size-4 text-neutral-400" />
+    <div className="flex h-10 items-center px-3">
+      <Search className="mr-2 size-4 text-neutral-300" />
       <input
         data-slot="command-input"
         className={cn(
-          "h-full w-full bg-transparent text-sm text-[#0B1120] placeholder:text-neutral-400 outline-none",
+          "h-full w-full bg-transparent text-sm text-[#0B1120] placeholder:text-neutral-300 outline-none",
           className
         )}
         onChange={(event) => {
@@ -47,11 +47,14 @@ function CommandInput({
 
 function CommandList({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <div
-      data-slot="command-list"
-      className={cn("max-h-64 overflow-y-auto p-1", className)}
-      {...props}
-    />
+    <>
+      <div className="mx-3 border-t border-neutral-100" />
+      <div
+        data-slot="command-list"
+        className={cn("max-h-64 overflow-y-auto p-1", className)}
+        {...props}
+      />
+    </>
   )
 }
 
@@ -75,7 +78,7 @@ function CommandGroup({
   return (
     <div data-slot="command-group" className={cn("p-1", className)} {...props}>
       {heading ? (
-        <p className="px-2 py-1 text-xs font-semibold uppercase tracking-wider text-neutral-400">
+        <p className="px-2 pb-1 pt-2 text-[11px] font-medium uppercase tracking-widest text-neutral-300">
           {heading}
         </p>
       ) : null}
@@ -90,7 +93,7 @@ function CommandItem({ className, ...props }: React.ComponentProps<"button">) {
       type="button"
       data-slot="command-item"
       className={cn(
-        "flex w-full items-center gap-2 rounded-lg px-2.5 py-2 text-left text-sm text-[#0B1120] transition-colors hover:bg-neutral-100",
+        "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-[#0B1120]",
         className
       )}
       {...props}

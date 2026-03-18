@@ -298,22 +298,29 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
       </div>
 
       {lightboxOpen && (
-        <div className="fixed inset-0 z-[9999] bg-black" onClick={closeLightbox}>
-          <button
-            type="button"
-            onClick={closeLightbox}
-            className="absolute top-4 right-4 z-[10000] text-white transition hover:text-neutral-300"
-            aria-label="Fechar galeria"
-          >
-            <X className="h-8 w-8" />
-          </button>
-
-          <div className="absolute top-4 left-1/2 z-[10000] -translate-x-1/2 text-sm text-white">
-            {currentIndex + 1} / {count} fotos
+        <div
+          className="fixed inset-0 z-[9999] flex h-[100dvh] w-screen flex-col bg-black/95 backdrop-blur-sm"
+          onClick={closeLightbox}
+        >
+          {/* Top bar */}
+          <div className="flex h-14 shrink-0 items-center justify-between px-4">
+            <div />
+            <span className="text-sm font-medium text-white/70">
+              {currentIndex + 1} / {count} fotos
+            </span>
+            <button
+              type="button"
+              onClick={closeLightbox}
+              className="flex size-10 items-center justify-center rounded-full text-white/70 transition hover:bg-white/10 hover:text-white"
+              aria-label="Fechar galeria"
+            >
+              <X className="size-6" />
+            </button>
           </div>
 
+          {/* Image area */}
           <div
-            className="flex h-full w-full items-center justify-center"
+            className="flex flex-1 items-center justify-center px-4"
             onClick={(event) => event.stopPropagation()}
           >
             <Image
@@ -321,11 +328,14 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
               alt={`${alt} - Foto ${currentIndex + 1}`}
               width={1400}
               height={900}
-              className="max-h-[85vh] w-auto max-w-[90vw] object-contain"
+              className="max-h-[calc(100dvh-7rem)] w-auto max-w-[90vw] rounded-lg object-contain"
               sizes="90vw"
               priority
             />
           </div>
+
+          {/* Bottom spacer */}
+          <div className="h-14 shrink-0" />
 
           {count > 1 && (
             <>
@@ -335,10 +345,10 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
                   event.stopPropagation()
                   goPrev()
                 }}
-                className="absolute top-1/2 left-4 z-[10000] flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg transition hover:bg-white"
+                className="absolute top-1/2 left-4 z-[10000] flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20"
                 aria-label="Foto anterior"
               >
-                <ChevronLeft className="h-5 w-5 text-neutral-900" />
+                <ChevronLeft className="size-5" />
               </button>
               <button
                 type="button"
@@ -346,10 +356,10 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
                   event.stopPropagation()
                   goNext()
                 }}
-                className="absolute top-1/2 right-4 z-[10000] flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg transition hover:bg-white"
-                aria-label="Proxima foto"
+                className="absolute top-1/2 right-4 z-[10000] flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20"
+                aria-label="Próxima foto"
               >
-                <ChevronRight className="h-5 w-5 text-neutral-900" />
+                <ChevronRight className="size-5" />
               </button>
             </>
           )}

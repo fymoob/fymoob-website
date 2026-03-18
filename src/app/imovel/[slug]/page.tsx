@@ -39,7 +39,7 @@ export async function generateMetadata({
   const property = await getPropertyBySlug(slug)
 
   if (!property) {
-    return { title: "Imovel nao encontrado" }
+    return { title: "Imóvel não encontrado" }
   }
 
   const shortTitle = generateShortTitle(property)
@@ -126,7 +126,7 @@ export default async function PropertyPage({ params }: PageProps) {
           </div>
 
           {/* Right sidebar — desktop only */}
-          <aside className="hidden lg:block">
+          <aside className="hidden self-start lg:block">
             <ContactSidebar
               propertyTitle={property.titulo}
               propertyCode={property.codigo}
