@@ -46,7 +46,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
           {property.bairro}, {property.cidade}
         </p>
 
-        <p className="text-xl font-bold text-brand-primary">
+        <p className="text-xl font-bold text-neutral-900">
           {formatPrice(price)}
         </p>
 

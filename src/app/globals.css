@@ -247,3 +247,11 @@
 .navbar-transparent .nav-logo {
   filter: brightness(0) invert(1);
 }
+
+/* ── Hide chat widgets when lightbox is open ── */
+.lightbox-open .crisp-client,
+.lightbox-open [data-chat-widget],
+.lightbox-open #whatsapp-float,
+.lightbox-open [aria-label="Fale conosco pelo WhatsApp"] {
+  display: none !important;
+}

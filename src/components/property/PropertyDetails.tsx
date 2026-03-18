@@ -5,9 +5,10 @@ import { formatArea } from "@/lib/utils"
 
 interface PropertyDetailsProps {
   property: Property
+  shortTitle?: string
 }
 
-export function PropertyDetails({ property }: PropertyDetailsProps) {
+export function PropertyDetails({ property, shortTitle }: PropertyDetailsProps) {
   const specs = [
     { icon: Maximize2, value: property.areaPrivativa ? formatArea(property.areaPrivativa) : null, label: "Área" },
     { icon: BedDouble, value: property.dormitorios, label: property.dormitorios === 1 ? "Quarto" : "Quartos" },
@@ -26,7 +27,7 @@ export function PropertyDetails({ property }: PropertyDetailsProps) {
 
       {/* Title */}
       <h1 className="font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
-        {property.titulo}
+        {shortTitle || property.titulo}
       </h1>
 
       {/* Address */}

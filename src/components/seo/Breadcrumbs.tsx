@@ -30,7 +30,9 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
                   <ChevronRight size={14} className="shrink-0 text-neutral-400" />
                 )}
                 {isLast ? (
-                  <span className="font-medium text-neutral-950">{item.name}</span>
+                  <span className="inline-block max-w-[300px] truncate font-medium text-neutral-950">
+                    {item.name}
+                  </span>
                 ) : (
                   <Link
                     href={item.url}

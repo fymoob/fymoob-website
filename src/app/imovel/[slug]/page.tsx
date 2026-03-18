@@ -7,10 +7,9 @@ import {
 } from "@/services/loft"
 import {
   generatePropertySchema,
-  generatePropertyTitle,
   generatePropertyDescription,
 } from "@/lib/seo"
-import { generateImageAlt, getPropertyImage, filterPropertyPhotos } from "@/lib/utils"
+import { generateImageAlt, getPropertyImage, filterPropertyPhotos, generateShortTitle } from "@/lib/utils"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyGallery } from "@/components/property/PropertyGallery"
 import { PropertyDetails } from "@/components/property/PropertyDetails"
@@ -43,15 +42,15 @@ export async function generateMetadata({
     return { title: "Imovel nao encontrado" }
   }
 
-  const title = generatePropertyTitle(property)
+  const shortTitle = generateShortTitle(property)
   const description = generatePropertyDescription(property)
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
 
   return {
-    title,
+    title: shortTitle,
     description,
     openGraph: {
-      title,
+      title: shortTitle,
       description,
       type: "website",
       url: `${siteUrl}/imovel/${property.slug}`,
@@ -83,12 +82,19 @@ export default async function PropertyPage({ params }: PageProps) {
   const similarProperties = await getSimilarProperties(property, 4)
   const propertySchema = generatePropertySchema(property)
   const alt = generateImageAlt(property)
+  const shortTitle = generateShortTitle(property)
+  const hasLongTitle = property.titulo.length > 60
 
   const breadcrumbItems = [
     { name: "Home", url: "/" },
     { name: property.bairro, url: `/imoveis/${property.bairro.toLowerCase().replace(/\s+/g, "-")}` },
-    { name: property.titulo, url: `/imovel/${property.slug}` },
+    { name: shortTitle, url: `/imovel/${property.slug}` },
   ]
+
+  // If the original title was truncated, prepend it to the description
+  const descricaoWithTitle = hasLongTitle
+    ? `${property.titulo}\n\n${property.descricao}`
+    : property.descricao
 
   return (
     <>
@@ -101,15 +107,15 @@ export default async function PropertyPage({ params }: PageProps) {
         <Breadcrumbs items={breadcrumbItems} />
 
         {/* Property header + specs */}
-        <PropertyDetails property={property} />
+        <PropertyDetails property={property} shortTitle={shortTitle} />
 
         {/* Main content grid */}
         <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_380px]">
           {/* Left column */}
           <div className="space-y-10">
             <PropertyGallery fotos={filterPropertyPhotos(property.fotos)} alt={alt} />
-            <PropertyDescription descricao={property.descricao} />
-            <PropertyAmenities descricao={property.descricao} />
+            <PropertyDescription descricao={descricaoWithTitle} />
+            <PropertyAmenities descricao={descricaoWithTitle} />
             <PropertyCharacteristics property={property} />
             <PropertyMap
               latitude={property.latitude}

@@ -77,6 +77,24 @@ export function truncateText(text: string, maxLength: number): string {
   return text.slice(0, maxLength).trimEnd() + "..."
 }
 
+/**
+ * Generates a short, clean title for display when the CRM title is too long.
+ * Format: "[Tipo] com [N] Quartos no [Bairro]"
+ * Falls back to original titulo if already short enough.
+ */
+export function generateShortTitle(property: {
+  tipo: string
+  dormitorios: number | null
+  bairro: string
+  titulo: string
+}): string {
+  if (property.titulo.length <= 60) return property.titulo
+  const quartos = property.dormitorios
+    ? ` com ${property.dormitorios} ${property.dormitorios === 1 ? "Quarto" : "Quartos"}`
+    : ""
+  return `${property.tipo}${quartos} no ${property.bairro}`
+}
+
 export function generateImageAlt(property: {
   tipo: PropertyType
   dormitorios: number | null

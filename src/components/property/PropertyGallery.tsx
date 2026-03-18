@@ -41,10 +41,15 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
   React.useEffect(() => {
     if (lightboxOpen) {
       document.body.style.overflow = "hidden"
+      document.documentElement.classList.add("lightbox-open")
     } else {
       document.body.style.overflow = ""
+      document.documentElement.classList.remove("lightbox-open")
     }
-    return () => { document.body.style.overflow = "" }
+    return () => {
+      document.body.style.overflow = ""
+      document.documentElement.classList.remove("lightbox-open")
+    }
   }, [lightboxOpen])
 
   return (
@@ -139,29 +144,29 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
         )}
       </div>
 
-      {/* Lightbox — fullscreen */}
+      {/* Lightbox — true fullscreen, above everything */}
       {lightboxOpen && (
-        <div className="fixed inset-0 z-50 bg-black" onClick={closeLightbox}>
+        <div className="fixed inset-0 z-[9999] bg-black" onClick={closeLightbox}>
           {/* Close */}
           <button type="button" onClick={closeLightbox}
-            className="absolute top-4 right-4 z-50 text-white transition hover:text-neutral-300"
+            className="absolute top-4 right-4 z-[10000] text-white transition hover:text-neutral-300"
             aria-label="Fechar galeria">
             <X className="h-8 w-8" />
           </button>
 
           {/* Counter */}
-          <div className="absolute top-4 left-1/2 z-50 -translate-x-1/2 text-sm text-white">
+          <div className="absolute top-4 left-1/2 z-[10000] -translate-x-1/2 text-sm text-white">
             {currentIndex + 1} / {count} fotos
           </div>
 
-          {/* Image — centered, no dead space */}
+          {/* Image — centered */}
           <div className="flex h-full w-full items-center justify-center" onClick={(e) => e.stopPropagation()}>
             <Image
               src={images[currentIndex]}
               alt={`${alt} - Foto ${currentIndex + 1}`}
               width={1400}
               height={900}
-              className="max-h-[90vh] w-auto max-w-[90vw] object-contain"
+              className="max-h-[85vh] w-auto max-w-[90vw] object-contain"
               sizes="90vw"
               priority
             />
@@ -172,13 +177,13 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
             <>
               <button type="button"
                 onClick={(e) => { e.stopPropagation(); goPrev() }}
-                className="absolute left-4 top-1/2 z-50 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg transition hover:bg-white"
+                className="absolute left-4 top-1/2 z-[10000] flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg transition hover:bg-white"
                 aria-label="Foto anterior">
                 <ChevronLeft className="h-5 w-5 text-neutral-900" />
               </button>
               <button type="button"
                 onClick={(e) => { e.stopPropagation(); goNext() }}
-                className="absolute right-4 top-1/2 z-50 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg transition hover:bg-white"
+                className="absolute right-4 top-1/2 z-[10000] flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 shadow-lg transition hover:bg-white"
                 aria-label="Próxima foto">
                 <ChevronRight className="h-5 w-5 text-neutral-900" />
               </button>

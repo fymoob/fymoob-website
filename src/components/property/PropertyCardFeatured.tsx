@@ -44,7 +44,7 @@ export function PropertyCardFeatured({ property }: PropertyCardFeaturedProps) {
           {truncateText(property.titulo, 80)}
         </h3>
 
-        <p className="text-2xl font-bold text-brand-primary">
+        <p className="text-2xl font-bold text-neutral-900">
           {formatPrice(price)}
         </p>
 
