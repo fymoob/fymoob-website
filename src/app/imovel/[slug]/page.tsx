@@ -110,7 +110,7 @@ export default async function PropertyPage({ params }: PageProps) {
         <PropertyDetails property={property} shortTitle={shortTitle} />
 
         {/* Main content grid */}
-        <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">
+        <div className="mt-4 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">
           {/* Left column */}
           <div className="space-y-10">
             <PropertyGallery fotos={filterPropertyPhotos(property.fotos)} alt={alt} />
@@ -126,7 +126,7 @@ export default async function PropertyPage({ params }: PageProps) {
           </div>
 
           {/* Right sidebar — desktop only */}
-          <aside className="hidden self-start lg:block">
+          <aside className="hidden lg:block">
             <ContactSidebar
               propertyTitle={property.titulo}
               propertyCode={property.codigo}

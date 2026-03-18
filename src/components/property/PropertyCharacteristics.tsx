@@ -59,8 +59,8 @@ export function PropertyCharacteristics({ property }: PropertyCharacteristicsPro
   ].filter((item) => item.value !== null)
 
   return (
-    <section>
-      <h2 className="text-xl font-semibold tracking-tight text-[#0B1120]">
+    <section className="border-t border-neutral-100 pt-10">
+      <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950">
         Características
       </h2>
 

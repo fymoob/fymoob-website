@@ -85,8 +85,8 @@ export function PropertyAmenities({ descricao }: PropertyAmenitiesProps) {
   const hasMore = amenities.length > VISIBLE_COUNT
 
   return (
-    <section>
-      <h2 className="font-display text-lg font-semibold text-neutral-950">
+    <section className="border-t border-neutral-100 pt-10">
+      <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950">
         O que este imóvel oferece
       </h2>
       <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3">

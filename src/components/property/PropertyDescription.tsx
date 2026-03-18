@@ -60,8 +60,8 @@ export function PropertyDescription({ descricao }: PropertyDescriptionProps) {
   const needsTruncation = fullText.length > 320
 
   return (
-    <section>
-      <h2 className="text-xl font-semibold text-neutral-900">
+    <section className="border-t border-neutral-100 pt-10">
+      <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950">
         Sobre este imóvel
       </h2>
       <div className="relative mt-4">

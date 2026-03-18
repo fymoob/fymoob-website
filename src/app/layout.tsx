@@ -62,7 +62,7 @@ export default function RootLayout({
         className="antialiased"
       >
         <Header />
-        <main className="min-h-screen overflow-x-hidden">{children}</main>
+        <main className="min-h-screen overflow-x-clip">{children}</main>
         <Footer />
         <WhatsAppFloat />
       </body>

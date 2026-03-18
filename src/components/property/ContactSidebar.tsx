@@ -1,6 +1,6 @@
 "use client"
 
-import { Phone } from "lucide-react"
+import { Phone, ShieldCheck } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -33,12 +33,13 @@ export function ContactSidebar({
 
   return (
     <Card className="sticky top-20 z-10 border border-neutral-200 py-0 shadow-xl">
-      <CardContent className="space-y-6 px-6 py-6">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500">
+      <CardContent className="px-6 py-7">
+        {/* Price block */}
+        <div className="mb-5">
+          <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
             {priceLabel}
           </p>
-          <p className="mt-1 text-3xl font-bold tracking-tight text-[#0B1120]">
+          <p className="mt-1.5 text-3xl font-bold tracking-tight text-[#0B1120]">
             {formatPrice(price)}
           </p>
           {finalidade === "Venda e Locação" && precoAluguel && (
@@ -48,7 +49,8 @@ export function ContactSidebar({
           )}
         </div>
 
-        <div className="grid gap-3">
+        {/* Action buttons — side by side */}
+        <div className="mb-6 grid grid-cols-2 gap-3">
           <a
             href={whatsUrl}
             target="_blank"
@@ -69,6 +71,7 @@ export function ContactSidebar({
           </a>
         </div>
 
+        {/* Lead form */}
         <form
           onSubmit={(event) => event.preventDefault()}
           className="space-y-3 border-t border-neutral-100 pt-5"
@@ -101,6 +104,10 @@ export function ContactSidebar({
           >
             Enviar proposta
           </Button>
+          <p className="flex items-center justify-center gap-1.5 pt-1 text-xs text-neutral-400">
+            <ShieldCheck size={13} className="shrink-0" />
+            Seus dados estão seguros. Resposta em até 2h.
+          </p>
         </form>
       </CardContent>
     </Card>

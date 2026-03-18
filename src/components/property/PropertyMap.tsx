@@ -67,9 +67,9 @@ export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMap
       <button
         type="button"
         onClick={() => setIsOpen((v) => !v)}
-        className="flex w-full items-center justify-between border-t border-neutral-200 pt-8 pb-4"
+        className="flex w-full items-center justify-between pt-2 pb-4"
       >
-        <h2 className="font-display text-lg font-semibold text-neutral-950">
+        <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950">
           Mapa do imóvel
         </h2>
         {isOpen ? (

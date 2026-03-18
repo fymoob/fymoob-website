@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { ChevronLeft, ChevronRight, Grid, X } from "lucide-react"
+import { ChevronLeft, ChevronRight, Grid, Maximize, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -76,7 +76,7 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
   }, [lightboxOpen])
 
   return (
-    <>
+    <div>
       <div
         className="group relative w-full overflow-hidden rounded-2xl md:hidden"
       >
@@ -297,30 +297,77 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
         )}
       </div>
 
+      {/* Thumbnail strip — desktop only */}
+      {count > 1 && (
+        <div className="mt-2 hidden gap-2 overflow-x-auto pb-1 md:flex">
+          {images.slice(0, 8).map((foto, index) => (
+            <button
+              key={index}
+              type="button"
+              onClick={() => openLightbox(index)}
+              className="relative h-16 w-24 shrink-0 overflow-hidden rounded-lg ring-2 ring-transparent transition-all hover:ring-brand-primary hover:scale-105"
+            >
+              <Image
+                src={foto}
+                alt={`${alt} - Miniatura ${index + 1}`}
+                fill
+                loading="lazy"
+                className="object-cover"
+                sizes="96px"
+              />
+            </button>
+          ))}
+          {count > 8 && (
+            <button
+              type="button"
+              onClick={() => openLightbox(8)}
+              className="flex h-16 w-24 shrink-0 items-center justify-center rounded-lg bg-neutral-100 text-xs font-semibold text-neutral-600 transition-colors hover:bg-neutral-200"
+            >
+              +{count - 8} fotos
+            </button>
+          )}
+        </div>
+      )}
+
       {lightboxOpen && (
         <div
-          className="fixed inset-0 z-[9999] flex h-[100dvh] w-screen flex-col bg-black/95 backdrop-blur-sm"
+          className="fixed inset-0 z-[9999] flex h-[100dvh] w-screen flex-col bg-black/95"
           onClick={closeLightbox}
         >
           {/* Top bar */}
-          <div className="flex h-14 shrink-0 items-center justify-between px-4">
-            <div />
+          <div className="flex h-12 shrink-0 items-center justify-between px-4">
             <span className="text-sm font-medium text-white/70">
-              {currentIndex + 1} / {count} fotos
+              {currentIndex + 1} / {count}
             </span>
-            <button
-              type="button"
-              onClick={closeLightbox}
-              className="flex size-10 items-center justify-center rounded-full text-white/70 transition hover:bg-white/10 hover:text-white"
-              aria-label="Fechar galeria"
-            >
-              <X className="size-6" />
-            </button>
+            <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+              <button
+                type="button"
+                onClick={() => {
+                  if (document.fullscreenElement) {
+                    document.exitFullscreen()
+                  } else {
+                    document.documentElement.requestFullscreen()
+                  }
+                }}
+                className="flex size-9 items-center justify-center rounded-full text-white/60 transition hover:bg-white/10 hover:text-white"
+                aria-label="Tela cheia"
+              >
+                <Maximize className="size-4" />
+              </button>
+              <button
+                type="button"
+                onClick={closeLightbox}
+                className="flex size-9 items-center justify-center rounded-full text-white/60 transition hover:bg-white/10 hover:text-white"
+                aria-label="Fechar galeria"
+              >
+                <X className="size-5" />
+              </button>
+            </div>
           </div>
 
           {/* Image area */}
           <div
-            className="flex flex-1 items-center justify-center px-4"
+            className="flex flex-1 items-center justify-center px-14"
             onClick={(event) => event.stopPropagation()}
           >
             <Image
@@ -328,15 +375,44 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
               alt={`${alt} - Foto ${currentIndex + 1}`}
               width={1400}
               height={900}
-              className="max-h-[calc(100dvh-7rem)] w-auto max-w-[90vw] rounded-lg object-contain"
+              className="max-h-[calc(100dvh-10rem)] w-auto max-w-[90vw] rounded-lg object-contain"
               sizes="90vw"
               priority
             />
           </div>
 
-          {/* Bottom spacer */}
-          <div className="h-14 shrink-0" />
+          {/* Thumbnail strip */}
+          {count > 1 && (
+            <div
+              className="flex h-20 shrink-0 items-center justify-center gap-1.5 overflow-x-auto px-4 pb-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {images.map((foto, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => setCurrentIndex(index)}
+                  className={cn(
+                    "relative h-14 w-20 shrink-0 overflow-hidden rounded-md transition-all",
+                    index === currentIndex
+                      ? "ring-2 ring-white opacity-100"
+                      : "opacity-40 hover:opacity-70"
+                  )}
+                >
+                  <Image
+                    src={foto}
+                    alt={`Miniatura ${index + 1}`}
+                    fill
+                    loading="lazy"
+                    className="object-cover"
+                    sizes="80px"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
 
+          {/* Navigation arrows */}
           {count > 1 && (
             <>
               <button
@@ -345,7 +421,7 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
                   event.stopPropagation()
                   goPrev()
                 }}
-                className="absolute top-1/2 left-4 z-[10000] flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20"
+                className="absolute top-1/2 left-3 z-[10000] flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
                 aria-label="Foto anterior"
               >
                 <ChevronLeft className="size-5" />
@@ -356,7 +432,7 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
                   event.stopPropagation()
                   goNext()
                 }}
-                className="absolute top-1/2 right-4 z-[10000] flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/20"
+                className="absolute top-1/2 right-3 z-[10000] flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
                 aria-label="Próxima foto"
               >
                 <ChevronRight className="size-5" />
@@ -365,6 +441,6 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
           )}
         </div>
       )}
-    </>
+    </div>
   )
 }
