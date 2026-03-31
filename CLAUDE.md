@@ -1,5 +1,16 @@
 # FYMOOB — Site Imobiliário SEO-First
 
+## REGRA ABSOLUTA — API LOFT/VISTA
+**NUNCA, em NENHUMA hipótese, executar operações de exclusão ou modificação destrutiva na API do Loft/Vista.**
+- NUNCA chamar endpoints de DELETE em imóveis, clientes, leads ou qualquer outro recurso
+- NUNCA chamar PUT/POST que remova, sobrescreva ou limpe dados existentes
+- NUNCA executar scripts que possam alterar ou apagar dados no CRM do cliente
+- Usar a API APENAS para LEITURA (GET) e envio de leads (POST /lead)
+- Se precisar testar escrita, usar APENAS o sandbox (sandbox-rest.vistahost.com.br), NUNCA produção
+- **Esta regra não tem exceção. Dados do cliente são sagrados.**
+
+---
+
 ## Projeto
 Reconstrução do site da imobiliária FYMOOB (Curitiba/PR) com foco em SEO e geração de leads orgânicos via Google. O site atual é invisível para o Google (5 visitas/mês, 5 páginas indexadas de 245 imóveis).
 
