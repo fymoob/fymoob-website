@@ -10,6 +10,7 @@ import type {
   LoftPropertyRaw,
 } from "@/types/property"
 import { slugify } from "@/lib/utils"
+import { unstable_cache } from "next/cache"
 
 // ---------------------------------------------------------------------------
 // Config
@@ -103,7 +104,18 @@ const INFRA_LABELS: Record<string, string> = {
 // API fields to request
 // ---------------------------------------------------------------------------
 
-const LISTING_FIELDS = [
+// Slim fields for cards/listings (~28KB per 50 properties vs ~134KB)
+const CARD_FIELDS = [
+  "Codigo", "Categoria", "Status", "BairroComercial", "Bairro", "Cidade", "UF",
+  "ValorVenda", "ValorLocacao", "Dormitorios", "Suites", "Vagas", "TotalBanheiros",
+  "AreaPrivativa", "AreaTotal", "FotoDestaque", "TituloSite",
+  "ExibirNoSite", "DestaqueWeb", "SuperDestaqueWeb", "Lancamento",
+  "Empreendimento", "Construtora", "DataCadastro", "DataAtualizacao",
+  "Latitude", "Longitude",
+]
+
+// Full fields for detail pages (single property)
+const DETAIL_FIELDS = [
   "Codigo", "Referencia", "Categoria", "Status", "Finalidade", "Situacao", "Ocupacao",
   "ValorVenda", "ValorLocacao", "ValorCondominio", "ValorIptu", "ValorM2",
   "Bairro", "BairroComercial", "Cidade", "Endereco", "Numero", "Complemento",
@@ -280,53 +292,68 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
 }
 
 // ---------------------------------------------------------------------------
-// Fetch all properties from API with pagination
+// Fetch all properties from API with parallel pagination
 // ---------------------------------------------------------------------------
 
-let cachedProperties: Property[] | null = null
-let cacheTimestamp = 0
-
-async function fetchAllProperties(): Promise<Property[]> {
-  // Return cache if fresh (within revalidate window)
-  const now = Date.now()
-  if (cachedProperties && now - cacheTimestamp < REVALIDATE_SECONDS * 1000) {
-    return cachedProperties
-  }
-
-  const allProperties: Property[] = []
-  let page = 1
-  let totalPages = 1
-
-  while (page <= totalPages) {
-    const pesquisa = JSON.stringify({
-      fields: LISTING_FIELDS,
-      filter: { ExibirNoSite: "Sim" },
-      paginacao: { pagina: page, quantidade: PAGE_SIZE },
-    })
-
-    const data = await fetchLoftAPI<Record<string, unknown>>("/imoveis/listar", {
-      pesquisa,
-      showtotal: "1",
-    })
-
-    const total = (data.total as number) || 0
-    totalPages = Math.ceil(total / PAGE_SIZE)
-
-    // Remove pagination metadata, keep only property entries
-    for (const [key, value] of Object.entries(data)) {
-      if (["total", "paginas", "pagina", "quantidade"].includes(key)) continue
-      if (value && typeof value === "object" && "Codigo" in (value as Record<string, unknown>)) {
-        allProperties.push(mapRawToProperty(value as LoftPropertyRaw))
-      }
+function extractProperties(data: Record<string, unknown>): LoftPropertyRaw[] {
+  const results: LoftPropertyRaw[] = []
+  for (const [key, value] of Object.entries(data)) {
+    if (["total", "paginas", "pagina", "quantidade"].includes(key)) continue
+    if (value && typeof value === "object" && "Codigo" in (value as Record<string, unknown>)) {
+      results.push(value as LoftPropertyRaw)
     }
+  }
+  return results
+}
 
-    page++
+async function fetchAllPropertiesRaw(): Promise<Property[]> {
+  // First request to get total count
+  const firstPesquisa = JSON.stringify({
+    fields: CARD_FIELDS,
+    filter: { ExibirNoSite: "Sim" },
+    paginacao: { pagina: 1, quantidade: PAGE_SIZE },
+  })
+
+  const firstData = await fetchLoftAPI<Record<string, unknown>>("/imoveis/listar", {
+    pesquisa: firstPesquisa,
+    showtotal: "1",
+  })
+
+  const total = (firstData.total as number) || 0
+  const totalPages = Math.ceil(total / PAGE_SIZE)
+  const allRaw = extractProperties(firstData)
+
+  // Fetch remaining pages in parallel
+  if (totalPages > 1) {
+    const pagePromises = []
+    for (let p = 2; p <= totalPages; p++) {
+      const pesquisa = JSON.stringify({
+        fields: CARD_FIELDS,
+        filter: { ExibirNoSite: "Sim" },
+        paginacao: { pagina: p, quantidade: PAGE_SIZE },
+      })
+      pagePromises.push(
+        fetchLoftAPI<Record<string, unknown>>("/imoveis/listar", {
+          pesquisa,
+          showtotal: "1",
+        })
+      )
+    }
+    const pages = await Promise.all(pagePromises)
+    for (const pageData of pages) {
+      allRaw.push(...extractProperties(pageData))
+    }
   }
 
-  cachedProperties = allProperties
-  cacheTimestamp = now
-  return allProperties
+  return allRaw.map(mapRawToProperty)
 }
+
+// Cached version using Next.js cache (persists across Vercel Lambdas)
+const getCachedProperties = unstable_cache(
+  fetchAllPropertiesRaw,
+  ["fymoob-all-properties"],
+  { revalidate: REVALIDATE_SECONDS }
+)
 
 // ---------------------------------------------------------------------------
 // Mock data fallback
@@ -383,7 +410,7 @@ async function getMockProperties(): Promise<Property[]> {
 async function getAllPropertiesInternal(): Promise<Property[]> {
   if (USE_API) {
     try {
-      return await fetchAllProperties()
+      return await getCachedProperties()
     } catch (error) {
       console.error("[Loft] API failed, falling back to mock data:", error)
       return getMockProperties()
@@ -522,6 +549,33 @@ export async function getProperties(
 }
 
 export async function getPropertyBySlug(slug: string): Promise<Property | null> {
+  // Extract property code from slug (last segment after final dash)
+  const parts = slug.split("-")
+  const codigo = parts[parts.length - 1]
+
+  if (USE_API && codigo) {
+    try {
+      // Fetch single property with full detail fields (1 request, not 250)
+      const pesquisa = JSON.stringify({
+        fields: [
+          ...DETAIL_FIELDS,
+          { Foto: ["Foto", "FotoPequena", "Ordem", "Destaque", "Descricao"] },
+        ],
+      })
+      const data = await fetchLoftAPI<Record<string, unknown>>("/imoveis/detalhes", {
+        imovel: codigo,
+        pesquisa,
+      })
+
+      if (data && "Codigo" in data) {
+        return mapRawToProperty(data as LoftPropertyRaw)
+      }
+    } catch {
+      // Fallback to list search below
+    }
+  }
+
+  // Fallback: search in all properties
   const all = await getAllPropertiesInternal()
   return all.find((p) => p.slug === slug) ?? null
 }
@@ -596,7 +650,7 @@ export async function getFeaturedProperties(limit: number = 8): Promise<Property
   if (USE_API) {
     try {
       const pesquisa = JSON.stringify({
-        fields: LISTING_FIELDS,
+        fields: CARD_FIELDS,
       })
       const data = await fetchLoftAPI<Record<string, unknown>>("/imoveis/destaques", { pesquisa })
 
