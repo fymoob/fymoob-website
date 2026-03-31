@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next"
-import { getAllBairros, getAllSlugs, getAllTypes } from "@/services/loft"
+import { getAllBairros, getAllSlugs, getAllTypes, getAllEmpreendimentos } from "@/services/loft"
 import { getAllSlugs as getAllBlogSlugs } from "@/services/blog"
 import type { PropertyType } from "@/types/property"
 
@@ -33,11 +33,12 @@ const TIPO_STATIC_PAGES: Partial<Record<PropertyType, string>> = {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [slugs, bairros, types, blogSlugs] = await Promise.all([
+  const [slugs, bairros, types, blogSlugs, empreendimentos] = await Promise.all([
     getAllSlugs(),
     getAllBairros(),
     getAllTypes(),
     getAllBlogSlugs(),
+    getAllEmpreendimentos(),
   ])
 
   const now = new Date()
@@ -58,13 +59,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
-  // Type landing pages (e.g., /apartamentos-curitiba)
-  const typePages: MetadataRoute.Sitemap = types.map((t) => ({
-    url: `${SITE_URL}/${TIPO_STATIC_PAGES[t.tipo]}`,
-    lastModified: now,
-    changeFrequency: "weekly" as const,
-    priority: 0.8,
-  }))
+  // Type landing pages (e.g., /apartamentos-curitiba) — only types with static pages
+  const typePages: MetadataRoute.Sitemap = types
+    .filter((t) => TIPO_STATIC_PAGES[t.tipo])
+    .map((t) => ({
+      url: `${SITE_URL}/${TIPO_STATIC_PAGES[t.tipo]}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    }))
 
   // Bairro landing pages (e.g., /imoveis/portao)
   const bairroPages: MetadataRoute.Sitemap = bairros.map((b) => ({
@@ -78,6 +81,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const combinedPages: MetadataRoute.Sitemap = bairros.flatMap((b) =>
     b.tipos
       .filter((t) => t.count >= 3)
+      .filter((t) => TIPO_SLUG_MAP[t.tipo])
       .map((t) => ({
         url: `${SITE_URL}/imoveis/${b.slug}/${TIPO_SLUG_MAP[t.tipo]}`,
         lastModified: now,
@@ -111,6 +115,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }))
 
+  // Empreendimento pages
+  const empreendimentoPages: MetadataRoute.Sitemap = empreendimentos.map((e) => ({
+    url: `${SITE_URL}/empreendimento/${e.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.8,
+  }))
+
   // FAQ page
   const faqPage: MetadataRoute.Sitemap = [
     {
@@ -126,6 +138,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...typePages,
     ...bairroPages,
     ...combinedPages,
+    ...empreendimentoPages,
     ...propertyPages,
     ...blogListingPage,
     ...blogPostPages,
