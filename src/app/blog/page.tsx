@@ -8,7 +8,7 @@ import { BlogCard } from "@/components/blog/BlogCard"
 import { AnimateOnScroll } from "@/components/shared/AnimateOnScroll"
 
 export const metadata: Metadata = {
-  title: "Blog | Dicas sobre Imóveis em Curitiba | FYMOOB",
+  title: "Blog | Dicas sobre Imóveis em Curitiba",
   description:
     "Dicas, guias e informações sobre o mercado imobiliário em Curitiba. Saiba tudo sobre financiamento, documentação, bairros e mais. Blog FYMOOB Imobiliária.",
   alternates: {

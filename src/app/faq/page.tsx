@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/accordion"
 
 export const metadata: Metadata = {
-  title: "Perguntas Frequentes | FAQ | FYMOOB Imobiliária",
+  title: "Perguntas Frequentes | FAQ",
   description:
     "Tire suas dúvidas sobre compra, venda, aluguel e financiamento de imóveis em Curitiba. Perguntas frequentes respondidas pela FYMOOB Imobiliária.",
   alternates: {
