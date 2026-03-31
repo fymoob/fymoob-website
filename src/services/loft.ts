@@ -5,11 +5,396 @@ import type {
   TypeSummary,
   MockPropertyData,
   PropertyType,
+  PropertyStats,
+  EmpreendimentoSummary,
+  LoftPropertyRaw,
 } from "@/types/property"
 import { slugify } from "@/lib/utils"
-import mockData from "../../data/mock-properties.json"
 
-const data = mockData as MockPropertyData
+// ---------------------------------------------------------------------------
+// Config
+// ---------------------------------------------------------------------------
+
+const LOFT_BASE_URL = "https://brunoces-rest.vistahost.com.br"
+const LOFT_API_KEY = process.env.LOFT_API_KEY || ""
+const USE_API = !!LOFT_API_KEY
+const PAGE_SIZE = 50 // API max per request
+const REVALIDATE_SECONDS = 900 // 15 minutes
+
+// ---------------------------------------------------------------------------
+// Characteristic field names (carac + infra) → human-readable labels
+// ---------------------------------------------------------------------------
+
+const CARAC_FIELDS = [
+  "AceitaPet", "Adega", "AguaQuente", "Alarme", "ArCentral", "ArCondicionado",
+  "AreaServico", "ArmarioEmbutido", "BanheiroSocial", "Bar", "Churrasqueira",
+  "Copa", "CopaCozinha", "Cozinha", "CozinhaAmericana", "CozinhaArmarios",
+  "CozinhaPlanejada", "Deck", "DependenciaDeEmpregada", "Despensa",
+  "DormitorioComArmario", "Edicula", "Escritorio", "EsperaSplit", "EstarIntimo",
+  "Hidromassagem", "HomeTheater", "Internet", "JardimInverno", "Lareira",
+  "Lavabo", "Mobiliado", "Piscina", "Quintal", "Reformado", "Sacada",
+  "SacadaComChurrasqueira", "SalaArmarios", "SalaEstar", "SalaJantar", "SalaTV",
+  "Sauna", "SemiMobiliado", "Split", "SuiteMaster", "Terraco", "VistaPanoramica",
+] as const
+
+const INFRA_FIELDS = [
+  "AquecimentoCentral", "Bicicletario", "Brinquedoteca", "ChurrasqueiraCondominio",
+  "CircuitoFechadoTV", "CondominioFechado", "Coworking", "Deposito", "Elevador",
+  "ElevadorServico", "EmpresaDeMonitoramento", "EspacoGourmet", "EspacoZen",
+  "Estacionamento", "EstacionamentoVisitantes", "GasCentral", "Guarita",
+  "HomeMarket", "HortaColetiva", "Interfone", "Jardim", "Lavanderia",
+  "PainelSolar", "Parque", "PetPlace", "Pilotis", "PiscinaAquecida",
+  "PiscinaColetiva", "PiscinaInfantil", "Playground", "PortaoEletronico",
+  "Portaria", "Portaria24Hrs", "PorteiroEletronico", "QuadraEsportes",
+  "Quiosque", "SalaFitness", "SalaoFestas", "SalaoJogos", "SaunaCondominio",
+  "SegurancaPatrimonial", "Spa", "TerracoColetivo", "Vigilancia24Horas", "Zelador",
+] as const
+
+const CARAC_LABELS: Record<string, string> = {
+  AceitaPet: "Aceita Pet", Adega: "Adega", AguaQuente: "Água Quente",
+  Alarme: "Alarme", ArCentral: "Ar Central", ArCondicionado: "Ar Condicionado",
+  AreaServico: "Área de Serviço", ArmarioEmbutido: "Armários Embutidos",
+  BanheiroSocial: "Banheiro Social", Bar: "Bar", Churrasqueira: "Churrasqueira",
+  Copa: "Copa", CopaCozinha: "Copa Cozinha", Cozinha: "Cozinha",
+  CozinhaAmericana: "Cozinha Americana", CozinhaArmarios: "Cozinha com Armários",
+  CozinhaPlanejada: "Cozinha Planejada", Deck: "Deck",
+  DependenciaDeEmpregada: "Dependência de Empregada", Despensa: "Despensa",
+  DormitorioComArmario: "Dormitório com Armário", Edicula: "Edícula",
+  Escritorio: "Escritório", EsperaSplit: "Espera para Split",
+  EstarIntimo: "Estar Íntimo", Hidromassagem: "Hidromassagem",
+  HomeTheater: "Home Theater", Internet: "Internet",
+  JardimInverno: "Jardim de Inverno", Lareira: "Lareira", Lavabo: "Lavabo",
+  Mobiliado: "Mobiliado", Piscina: "Piscina", Quintal: "Quintal",
+  Reformado: "Reformado", Sacada: "Sacada",
+  SacadaComChurrasqueira: "Sacada com Churrasqueira",
+  SalaArmarios: "Sala com Armários", SalaEstar: "Sala de Estar",
+  SalaJantar: "Sala de Jantar", SalaTV: "Sala de TV", Sauna: "Sauna",
+  SemiMobiliado: "Semi Mobiliado", Split: "Split",
+  SuiteMaster: "Suíte Master", Terraco: "Terraço",
+  VistaPanoramica: "Vista Panorâmica",
+}
+
+const INFRA_LABELS: Record<string, string> = {
+  AquecimentoCentral: "Aquecimento Central", Bicicletario: "Bicicletário",
+  Brinquedoteca: "Brinquedoteca", ChurrasqueiraCondominio: "Churrasqueira Coletiva",
+  CircuitoFechadoTV: "Circuito de TV", CondominioFechado: "Condomínio Fechado",
+  Coworking: "Coworking", Deposito: "Depósito", Elevador: "Elevador",
+  ElevadorServico: "Elevador de Serviço",
+  EmpresaDeMonitoramento: "Monitoramento", EspacoGourmet: "Espaço Gourmet",
+  EspacoZen: "Espaço Zen", Estacionamento: "Estacionamento",
+  EstacionamentoVisitantes: "Estacionamento Visitantes",
+  GasCentral: "Gás Central", Guarita: "Guarita", HomeMarket: "Home Market",
+  HortaColetiva: "Horta Coletiva", Interfone: "Interfone", Jardim: "Jardim",
+  Lavanderia: "Lavanderia", PainelSolar: "Painel Solar", Parque: "Parque",
+  PetPlace: "Pet Place", Pilotis: "Pilotis",
+  PiscinaAquecida: "Piscina Aquecida", PiscinaColetiva: "Piscina Coletiva",
+  PiscinaInfantil: "Piscina Infantil", Playground: "Playground",
+  PortaoEletronico: "Portão Eletrônico", Portaria: "Portaria",
+  Portaria24Hrs: "Portaria 24h", PorteiroEletronico: "Porteiro Eletrônico",
+  QuadraEsportes: "Quadra de Esportes", Quiosque: "Quiosque",
+  SalaFitness: "Sala Fitness", SalaoFestas: "Salão de Festas",
+  SalaoJogos: "Salão de Jogos", SaunaCondominio: "Sauna",
+  SegurancaPatrimonial: "Segurança", Spa: "Spa",
+  TerracoColetivo: "Terraço Coletivo", Vigilancia24Horas: "Vigilância 24h",
+  Zelador: "Zelador",
+}
+
+// ---------------------------------------------------------------------------
+// API fields to request
+// ---------------------------------------------------------------------------
+
+const LISTING_FIELDS = [
+  "Codigo", "Referencia", "Categoria", "Status", "Finalidade", "Situacao", "Ocupacao",
+  "ValorVenda", "ValorLocacao", "ValorCondominio", "ValorIptu", "ValorM2",
+  "Bairro", "BairroComercial", "Cidade", "Endereco", "Numero", "Complemento",
+  "Bloco", "CEP", "UF", "Latitude", "Longitude", "GMapsLatitude", "GMapsLongitude",
+  "AreaTotal", "AreaPrivativa", "AreaTerreno", "Dormitorios", "Suites",
+  "TotalBanheiros", "Vagas", "QtdVarandas", "Salas",
+  "Empreendimento", "CodigoEmpreendimento", "Construtora", "DescricaoEmpreendimento",
+  "DescricaoWeb", "TituloSite", "TextoAnuncio", "KeywordsWeb",
+  "FotoDestaque", "FotoDestaquePequena", "URLVideo", "TemTourVirtual",
+  "ExibirNoSite", "DestaqueWeb", "SuperDestaqueWeb", "Lancamento",
+  "AceitaFinanciamento", "AceitaPermuta",
+  "Face", "GaragemTipo", "Topografia", "AnoConstrucao",
+  "DataCadastro", "DataAtualizacao",
+  ...CARAC_FIELDS,
+  ...INFRA_FIELDS,
+]
+
+// ---------------------------------------------------------------------------
+// API fetch helper (GET only — NEVER POST/PUT/DELETE)
+// ---------------------------------------------------------------------------
+
+async function fetchLoftAPI<T>(endpoint: string, params: Record<string, string> = {}): Promise<T> {
+  const url = new URL(`${LOFT_BASE_URL}${endpoint}`)
+  url.searchParams.set("key", LOFT_API_KEY)
+  for (const [k, v] of Object.entries(params)) {
+    url.searchParams.set(k, v)
+  }
+
+  const res = await fetch(url.toString(), {
+    headers: { Accept: "application/json" },
+    next: { revalidate: REVALIDATE_SECONDS },
+  })
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => "")
+    console.error(`[Loft API] ${res.status} on ${endpoint}: ${text.slice(0, 200)}`)
+    throw new Error(`Loft API error: ${res.status}`)
+  }
+
+  return res.json() as Promise<T>
+}
+
+// ---------------------------------------------------------------------------
+// Map API raw → Property
+// ---------------------------------------------------------------------------
+
+function parseNumber(val: string | undefined | null): number | null {
+  if (!val) return null
+  const n = parseFloat(val)
+  return isNaN(n) || n === 0 ? null : n
+}
+
+function parseBool(val: string | undefined): boolean {
+  return val === "Sim"
+}
+
+function generateSlug(raw: LoftPropertyRaw): string {
+  const tipo = slugify(raw.Categoria || "imovel")
+  const bairro = slugify(raw.BairroComercial || raw.Bairro || "curitiba")
+  const cidade = slugify(raw.Cidade || "curitiba")
+  const uf = (raw.UF || "pr").toLowerCase()
+  const dorms = raw.Dormitorios && raw.Dormitorios !== "0" ? `${raw.Dormitorios}-quartos` : ""
+  const area = raw.AreaPrivativa ? `${raw.AreaPrivativa}m2` : ""
+  const parts = [tipo, bairro, cidade, uf, dorms, area, raw.Codigo].filter(Boolean)
+  return parts.join("-")
+}
+
+function mapRawToProperty(raw: LoftPropertyRaw): Property {
+  const slug = generateSlug(raw)
+  const lat = parseNumber(raw.Latitude) ?? parseNumber(raw.GMapsLatitude)
+  const lng = parseNumber(raw.Longitude) ?? parseNumber(raw.GMapsLongitude)
+
+  // Extract characteristics that are "Sim"
+  const caracteristicas: string[] = []
+  for (const field of CARAC_FIELDS) {
+    if ((raw as Record<string, unknown>)[field] === "Sim") {
+      caracteristicas.push(CARAC_LABELS[field] || field)
+    }
+  }
+
+  const infraestrutura: string[] = []
+  for (const field of INFRA_FIELDS) {
+    if ((raw as Record<string, unknown>)[field] === "Sim") {
+      infraestrutura.push(INFRA_LABELS[field] || field)
+    }
+  }
+
+  // Extract photo URLs from nested Foto object
+  const fotos: string[] = []
+  if (raw.Foto && typeof raw.Foto === "object") {
+    const sorted = Object.values(raw.Foto).sort(
+      (a, b) => parseInt(a.Ordem || "0") - parseInt(b.Ordem || "0")
+    )
+    for (const foto of sorted) {
+      if (foto.Foto) fotos.push(foto.Foto)
+    }
+  }
+
+  // Map Status to finalidade
+  let finalidade: Property["finalidade"] = "Venda"
+  const status = raw.Status || ""
+  if (status === "Aluguel") finalidade = "Aluguel"
+  else if (status === "Venda e Aluguel") finalidade = "Venda e Aluguel"
+  else if (status === "Venda") finalidade = "Venda"
+
+  const titulo = raw.TituloSite
+    || raw.TextoAnuncio
+    || `${raw.Categoria || "Imóvel"} no ${raw.BairroComercial || raw.Bairro || "Curitiba"}`
+
+  return {
+    codigo: raw.Codigo,
+    referencia: raw.Referencia || null,
+    slug,
+    url: `/imovel/${slug}`,
+    titulo,
+    tituloSite: raw.TituloSite || null,
+    textoAnuncio: raw.TextoAnuncio || null,
+    tipo: (raw.Categoria || "Apartamento") as PropertyType,
+    finalidade,
+    status: "Disponível",
+    situacao: raw.Situacao || null,
+    ocupacao: raw.Ocupacao || null,
+    precoVenda: parseNumber(raw.ValorVenda),
+    precoAluguel: parseNumber(raw.ValorLocacao),
+    valorCondominio: parseNumber(raw.ValorCondominio),
+    valorIptu: parseNumber(raw.ValorIptu),
+    valorM2: parseNumber(raw.ValorM2),
+    bairro: raw.BairroComercial || raw.Bairro || "",
+    bairroComercial: raw.BairroComercial || raw.Bairro || "",
+    cidade: raw.Cidade || "Curitiba",
+    estado: raw.UF || "PR",
+    endereco: raw.Endereco || "",
+    numero: raw.Numero || null,
+    complemento: raw.Complemento || null,
+    bloco: raw.Bloco || null,
+    cep: raw.CEP || null,
+    latitude: lat,
+    longitude: lng,
+    areaTotal: parseNumber(raw.AreaTotal),
+    areaPrivativa: parseNumber(raw.AreaPrivativa),
+    areaTerreno: parseNumber(raw.AreaTerreno),
+    dormitorios: parseNumber(raw.Dormitorios),
+    suites: parseNumber(raw.Suites),
+    banheiros: parseNumber(raw.TotalBanheiros),
+    vagas: parseNumber(raw.Vagas),
+    varandas: parseNumber(raw.QtdVarandas),
+    salas: parseNumber(raw.Salas),
+    empreendimento: raw.Empreendimento || null,
+    codigoEmpreendimento: raw.CodigoEmpreendimento || null,
+    construtora: raw.Construtora || null,
+    descricaoEmpreendimento: raw.DescricaoEmpreendimento || null,
+    descricao: raw.DescricaoWeb || raw.TextoAnuncio || "",
+    keywordsWeb: raw.KeywordsWeb || null,
+    fotoDestaque: raw.FotoDestaque || "",
+    fotoDestaquePequena: raw.FotoDestaquePequena || null,
+    fotos,
+    urlVideo: raw.URLVideo || null,
+    temTourVirtual: parseBool(raw.TemTourVirtual),
+    exibirNoSite: parseBool(raw.ExibirNoSite),
+    destaqueWeb: parseBool(raw.DestaqueWeb),
+    superDestaqueWeb: parseBool(raw.SuperDestaqueWeb),
+    lancamento: parseBool(raw.Lancamento),
+    aceitaFinanciamento: parseBool(raw.AceitaFinanciamento),
+    aceitaPermuta: parseBool(raw.AceitaPermuta),
+    face: raw.Face || null,
+    garagemTipo: raw.GaragemTipo || null,
+    topografia: raw.Topografia || null,
+    anoConstrucao: raw.AnoConstrucao || null,
+    caracteristicas,
+    infraestrutura,
+    dataCadastro: raw.DataCadastro || null,
+    dataAtualizacao: raw.DataAtualizacao || null,
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Fetch all properties from API with pagination
+// ---------------------------------------------------------------------------
+
+let cachedProperties: Property[] | null = null
+let cacheTimestamp = 0
+
+async function fetchAllProperties(): Promise<Property[]> {
+  // Return cache if fresh (within revalidate window)
+  const now = Date.now()
+  if (cachedProperties && now - cacheTimestamp < REVALIDATE_SECONDS * 1000) {
+    return cachedProperties
+  }
+
+  const allProperties: Property[] = []
+  let page = 1
+  let totalPages = 1
+
+  while (page <= totalPages) {
+    const pesquisa = JSON.stringify({
+      fields: LISTING_FIELDS,
+      filter: { ExibirNoSite: "Sim" },
+      paginacao: { pagina: page, quantidade: PAGE_SIZE },
+    })
+
+    const data = await fetchLoftAPI<Record<string, unknown>>("/imoveis/listar", {
+      pesquisa,
+      showtotal: "1",
+    })
+
+    const total = (data.total as number) || 0
+    totalPages = Math.ceil(total / PAGE_SIZE)
+
+    // Remove pagination metadata, keep only property entries
+    for (const [key, value] of Object.entries(data)) {
+      if (["total", "paginas", "pagina", "quantidade"].includes(key)) continue
+      if (value && typeof value === "object" && "Codigo" in (value as Record<string, unknown>)) {
+        allProperties.push(mapRawToProperty(value as LoftPropertyRaw))
+      }
+    }
+
+    page++
+  }
+
+  cachedProperties = allProperties
+  cacheTimestamp = now
+  return allProperties
+}
+
+// ---------------------------------------------------------------------------
+// Mock data fallback
+// ---------------------------------------------------------------------------
+
+async function getMockProperties(): Promise<Property[]> {
+  const mockData = (await import("../../data/mock-properties.json")).default as MockPropertyData
+  return mockData.imoveis.map((p) => ({
+    ...p,
+    // Fill new fields with defaults for mock data compatibility
+    referencia: null,
+    tituloSite: null,
+    textoAnuncio: null,
+    bairroComercial: p.bairro,
+    numero: null,
+    complemento: null,
+    bloco: null,
+    cep: null,
+    areaTerreno: null,
+    varandas: null,
+    salas: null,
+    empreendimento: null,
+    codigoEmpreendimento: null,
+    construtora: null,
+    descricaoEmpreendimento: null,
+    keywordsWeb: null,
+    fotoDestaquePequena: null,
+    urlVideo: null,
+    temTourVirtual: false,
+    exibirNoSite: true,
+    destaqueWeb: false,
+    superDestaqueWeb: false,
+    lancamento: false,
+    aceitaFinanciamento: false,
+    aceitaPermuta: false,
+    face: null,
+    garagemTipo: null,
+    topografia: null,
+    anoConstrucao: null,
+    caracteristicas: [],
+    infraestrutura: [],
+    valorCondominio: null,
+    valorIptu: null,
+    valorM2: null,
+    situacao: null,
+    ocupacao: null,
+  }))
+}
+
+// ---------------------------------------------------------------------------
+// Get all properties (API or mock)
+// ---------------------------------------------------------------------------
+
+async function getAllPropertiesInternal(): Promise<Property[]> {
+  if (USE_API) {
+    try {
+      return await fetchAllProperties()
+    } catch (error) {
+      console.error("[Loft] API failed, falling back to mock data:", error)
+      return getMockProperties()
+    }
+  }
+  return getMockProperties()
+}
+
+// ---------------------------------------------------------------------------
+// Indexed property for fast filtering
+// ---------------------------------------------------------------------------
 
 interface IndexedProperty {
   property: Property
@@ -20,40 +405,44 @@ interface IndexedProperty {
   price: number | null
 }
 
-const indexedProperties: IndexedProperty[] = data.imoveis.map((property) => ({
-  property,
-  bairroSlug: slugify(property.bairro),
-  cidadeSlug: slugify(property.cidade),
-  finalidadeSlug: slugify(property.finalidade),
-  searchableText: slugify(
-    `${property.titulo} ${property.descricao} ${property.bairro} ${property.tipo} ${property.codigo}`
-  ),
-  price: property.precoVenda ?? property.precoAluguel,
-}))
+function indexProperties(properties: Property[]): IndexedProperty[] {
+  return properties.map((property) => ({
+    property,
+    bairroSlug: slugify(property.bairro),
+    cidadeSlug: slugify(property.cidade),
+    finalidadeSlug: slugify(property.finalidade),
+    searchableText: slugify(
+      `${property.titulo} ${property.descricao} ${property.bairro} ${property.tipo} ${property.codigo}`
+    ),
+    price: property.precoVenda ?? property.precoAluguel,
+  }))
+}
 
-function applyFilters(properties: Property[], filters: PropertyFilters): Property[] {
-  const includedSlugs = new Set(properties.map((property) => property.slug))
+// ---------------------------------------------------------------------------
+// Apply filters (in-memory, same logic as before)
+// ---------------------------------------------------------------------------
 
+function applyFilters(indexed: IndexedProperty[], filters: PropertyFilters): Property[] {
   const bairroSlugSet =
-    filters.bairros && filters.bairros.length > 0
-      ? new Set(filters.bairros.map((bairro) => slugify(bairro)))
+    filters.bairros?.length
+      ? new Set(filters.bairros.map((b) => slugify(b)))
       : filters.bairro
         ? new Set([slugify(filters.bairro)])
         : null
   const cidadeSlugSet =
-    filters.cidades && filters.cidades.length > 0
-      ? new Set(filters.cidades.map((cidade) => slugify(cidade)))
+    filters.cidades?.length
+      ? new Set(filters.cidades.map((c) => slugify(c)))
       : filters.cidade
         ? new Set([slugify(filters.cidade)])
         : null
   const finalidadeSlugSet =
-    filters.finalidades && filters.finalidades.length > 0
-      ? new Set(filters.finalidades.map((finalidade) => slugify(finalidade)))
+    filters.finalidades?.length
+      ? new Set(filters.finalidades.map((f) => slugify(f)))
       : filters.finalidade
         ? new Set([slugify(filters.finalidade)])
         : null
   const tipoSet =
-    filters.tipos && filters.tipos.length > 0
+    filters.tipos?.length
       ? new Set(filters.tipos)
       : filters.tipo
         ? new Set([filters.tipo])
@@ -61,95 +450,51 @@ function applyFilters(properties: Property[], filters: PropertyFilters): Propert
   const quartosMin = filters.quartosMin ?? filters.dormitoriosMin ?? null
   const codigo = filters.codigo?.trim().toLowerCase() ?? null
   const searchTerms = filters.busca
-    ? slugify(filters.busca)
-        .split("-")
-        .filter(Boolean)
+    ? slugify(filters.busca).split("-").filter(Boolean)
     : []
 
   const result: Property[] = []
 
-  for (const indexed of indexedProperties) {
-    const property = indexed.property
-    if (!includedSlugs.has(property.slug)) continue
-
-    if (tipoSet && !tipoSet.has(property.tipo)) continue
-    if (finalidadeSlugSet && !finalidadeSlugSet.has(indexed.finalidadeSlug)) {
-      continue
-    }
-    if (bairroSlugSet && !bairroSlugSet.has(indexed.bairroSlug)) continue
-    if (cidadeSlugSet && !cidadeSlugSet.has(indexed.cidadeSlug)) continue
-
-    if (codigo && !property.codigo.toLowerCase().includes(codigo)) continue
-
-    if (filters.precoMin && (indexed.price === null || indexed.price < filters.precoMin)) {
-      continue
-    }
-
-    if (filters.precoMax && (indexed.price === null || indexed.price > filters.precoMax)) {
-      continue
-    }
-
-    if (quartosMin && (property.dormitorios === null || property.dormitorios < quartosMin)) {
-      continue
-    }
-
-    if (filters.areaMin && (property.areaPrivativa === null || property.areaPrivativa < filters.areaMin)) {
-      continue
-    }
-
-    if (filters.areaMax && (property.areaPrivativa === null || property.areaPrivativa > filters.areaMax)) {
-      continue
-    }
-
-    if (filters.vagasMin && (property.vagas === null || property.vagas < filters.vagasMin)) {
-      continue
-    }
-
-    if (
-      searchTerms.length > 0 &&
-      !searchTerms.every((term) => indexed.searchableText.includes(term))
-    ) {
-      continue
-    }
-
-    result.push(property)
+  for (const item of indexed) {
+    const p = item.property
+    if (tipoSet && !tipoSet.has(p.tipo)) continue
+    if (finalidadeSlugSet && !finalidadeSlugSet.has(item.finalidadeSlug)) continue
+    if (bairroSlugSet && !bairroSlugSet.has(item.bairroSlug)) continue
+    if (cidadeSlugSet && !cidadeSlugSet.has(item.cidadeSlug)) continue
+    if (filters.empreendimento && p.empreendimento !== filters.empreendimento) continue
+    if (codigo && !p.codigo.toLowerCase().includes(codigo)) continue
+    if (filters.precoMin && (item.price === null || item.price < filters.precoMin)) continue
+    if (filters.precoMax && (item.price === null || item.price > filters.precoMax)) continue
+    if (quartosMin && (p.dormitorios === null || p.dormitorios < quartosMin)) continue
+    if (filters.areaMin && (p.areaPrivativa === null || p.areaPrivativa < filters.areaMin)) continue
+    if (filters.areaMax && (p.areaPrivativa === null || p.areaPrivativa > filters.areaMax)) continue
+    if (filters.vagasMin && (p.vagas === null || p.vagas < filters.vagasMin)) continue
+    if (searchTerms.length > 0 && !searchTerms.every((t) => item.searchableText.includes(t))) continue
+    result.push(p)
   }
 
-  // Sorting
   if (filters.orderBy) {
     switch (filters.orderBy) {
       case "preco-asc":
-        result.sort(
-          (a, b) =>
-            (a.precoVenda ?? a.precoAluguel ?? 0) -
-            (b.precoVenda ?? b.precoAluguel ?? 0)
-        )
+        result.sort((a, b) => (a.precoVenda ?? a.precoAluguel ?? 0) - (b.precoVenda ?? b.precoAluguel ?? 0))
         break
       case "preco-desc":
-        result.sort(
-          (a, b) =>
-            (b.precoVenda ?? b.precoAluguel ?? 0) -
-            (a.precoVenda ?? a.precoAluguel ?? 0)
-        )
+        result.sort((a, b) => (b.precoVenda ?? b.precoAluguel ?? 0) - (a.precoVenda ?? a.precoAluguel ?? 0))
         break
       case "area-asc":
-        result.sort(
-          (a, b) => (a.areaPrivativa ?? 0) - (b.areaPrivativa ?? 0)
-        )
+        result.sort((a, b) => (a.areaPrivativa ?? 0) - (b.areaPrivativa ?? 0))
         break
       case "area-desc":
-        result.sort(
-          (a, b) => (b.areaPrivativa ?? 0) - (a.areaPrivativa ?? 0)
-        )
+        result.sort((a, b) => (b.areaPrivativa ?? 0) - (a.areaPrivativa ?? 0))
         break
       case "recente":
         result.sort((a, b) => {
-          const dateA = a.dataAtualizacao ?? a.dataCadastro
-          const dateB = b.dataAtualizacao ?? b.dataCadastro
-          if (!dateA && !dateB) return 0
-          if (!dateA) return 1
-          if (!dateB) return -1
-          return dateB.localeCompare(dateA)
+          const da = a.dataAtualizacao ?? a.dataCadastro
+          const db = b.dataAtualizacao ?? b.dataCadastro
+          if (!da && !db) return 0
+          if (!da) return 1
+          if (!db) return -1
+          return db.localeCompare(da)
         })
         break
     }
@@ -158,58 +503,50 @@ function applyFilters(properties: Property[], filters: PropertyFilters): Propert
   return result
 }
 
+// ---------------------------------------------------------------------------
+// Public API — same signatures as before
+// ---------------------------------------------------------------------------
+
 export async function getProperties(
   filters: PropertyFilters = {}
 ): Promise<{ properties: Property[]; total: number }> {
-  const filtered = applyFilters(data.imoveis, filters)
+  const all = await getAllPropertiesInternal()
+  const indexed = indexProperties(all)
+  const filtered = applyFilters(indexed, filters)
   const page = filters.page ?? 1
   const limit = filters.limit ?? 20
   const start = (page - 1) * limit
   const paginated = filtered.slice(start, start + limit)
 
-  return {
-    properties: paginated,
-    total: filtered.length,
-  }
+  return { properties: paginated, total: filtered.length }
 }
 
-export async function getPropertyBySlug(
-  slug: string
-): Promise<Property | null> {
-  return data.imoveis.find((p) => p.slug === slug) ?? null
+export async function getPropertyBySlug(slug: string): Promise<Property | null> {
+  const all = await getAllPropertiesInternal()
+  return all.find((p) => p.slug === slug) ?? null
 }
 
-export async function getPropertiesByBairro(
-  bairro: string,
-  limit?: number
-): Promise<Property[]> {
-  const filtered = data.imoveis.filter(
-    (p) => slugify(p.bairro) === slugify(bairro)
-  )
+export async function getPropertiesByBairro(bairro: string, limit?: number): Promise<Property[]> {
+  const all = await getAllPropertiesInternal()
+  const filtered = all.filter((p) => slugify(p.bairro) === slugify(bairro))
   return limit ? filtered.slice(0, limit) : filtered
 }
 
-export async function getPropertiesByType(
-  tipo: PropertyType,
-  limit?: number
-): Promise<Property[]> {
-  const filtered = data.imoveis.filter((p) => p.tipo === tipo)
+export async function getPropertiesByType(tipo: PropertyType, limit?: number): Promise<Property[]> {
+  const all = await getAllPropertiesInternal()
+  const filtered = all.filter((p) => p.tipo === tipo)
   return limit ? filtered.slice(0, limit) : filtered
 }
 
 export async function getAllBairros(limit?: number): Promise<BairroSummary[]> {
+  const all = await getAllPropertiesInternal()
   const { bairroImages } = await import("@/lib/bairro-images")
 
-  const bairroMap = new Map<
-    string,
-    { total: number; tipos: Map<PropertyType, number> }
-  >()
-
-  for (const p of data.imoveis) {
+  const bairroMap = new Map<string, { total: number; tipos: Map<PropertyType, number> }>()
+  for (const p of all) {
     const key = p.bairro
-    if (!bairroMap.has(key)) {
-      bairroMap.set(key, { total: 0, tipos: new Map() })
-    }
+    if (!key) continue
+    if (!bairroMap.has(key)) bairroMap.set(key, { total: 0, tipos: new Map() })
     const entry = bairroMap.get(key)!
     entry.total++
     entry.tipos.set(p.tipo, (entry.tipos.get(p.tipo) ?? 0) + 1)
@@ -220,10 +557,7 @@ export async function getAllBairros(limit?: number): Promise<BairroSummary[]> {
       bairro,
       slug: slugify(bairro),
       total: info.total,
-      tipos: Array.from(info.tipos.entries()).map(([tipo, count]) => ({
-        tipo,
-        count,
-      })),
+      tipos: Array.from(info.tipos.entries()).map(([tipo, count]) => ({ tipo, count })),
       imageUrl: bairroImages[bairro],
     }))
     .sort((a, b) => b.total - a.total)
@@ -232,77 +566,111 @@ export async function getAllBairros(limit?: number): Promise<BairroSummary[]> {
 }
 
 export async function getAllCities(): Promise<string[]> {
+  const all = await getAllPropertiesInternal()
   const citySet = new Set<string>()
-
-  for (const property of data.imoveis) {
-    citySet.add(property.cidade)
-  }
-
+  for (const p of all) citySet.add(p.cidade)
   return Array.from(citySet).sort((a, b) => a.localeCompare(b, "pt-BR"))
 }
 
-export async function getSimilarProperties(
-  property: Property,
-  limit: number = 4
-): Promise<Property[]> {
-  // Find similar properties by type first, then by bairro
-  const similar = data.imoveis.filter(
-    (p) =>
-      p.slug !== property.slug &&
-      (p.tipo === property.tipo || p.bairro === property.bairro)
+export async function getSimilarProperties(property: Property, limit: number = 4): Promise<Property[]> {
+  const all = await getAllPropertiesInternal()
+  const similar = all.filter(
+    (p) => p.slug !== property.slug && (p.tipo === property.tipo || p.bairro === property.bairro)
   )
   return similar.slice(0, limit)
 }
 
 export async function getAllSlugs(): Promise<string[]> {
-  return data.imoveis.map((p) => p.slug)
+  const all = await getAllPropertiesInternal()
+  return all.map((p) => p.slug)
 }
 
 export async function getAllTypes(): Promise<TypeSummary[]> {
+  const all = await getAllPropertiesInternal()
   const typeMap = new Map<PropertyType, number>()
-
-  for (const p of data.imoveis) {
-    typeMap.set(p.tipo, (typeMap.get(p.tipo) ?? 0) + 1)
-  }
-
-  return Array.from(typeMap.entries()).map(([tipo, total]) => ({
-    tipo,
-    slug: slugify(tipo),
-    total,
-  }))
+  for (const p of all) typeMap.set(p.tipo, (typeMap.get(p.tipo) ?? 0) + 1)
+  return Array.from(typeMap.entries()).map(([tipo, total]) => ({ tipo, slug: slugify(tipo), total }))
 }
 
 export async function getFeaturedProperties(limit: number = 8): Promise<Property[]> {
-  const withPhotos = data.imoveis.filter(
-    (p) => p.fotoDestaque && p.fotos.length > 0
-  )
+  if (USE_API) {
+    try {
+      const pesquisa = JSON.stringify({
+        fields: LISTING_FIELDS,
+      })
+      const data = await fetchLoftAPI<Record<string, unknown>>("/imoveis/destaques", { pesquisa })
+
+      const featured: Property[] = []
+      for (const [key, value] of Object.entries(data)) {
+        if (value && typeof value === "object" && "Codigo" in (value as Record<string, unknown>)) {
+          featured.push(mapRawToProperty(value as LoftPropertyRaw))
+        }
+      }
+      return featured.slice(0, limit)
+    } catch {
+      // Fallback below
+    }
+  }
+
+  const all = await getAllPropertiesInternal()
+  const withPhotos = all.filter((p) => p.fotoDestaque && p.fotos.length > 0)
   return withPhotos.slice(0, limit)
 }
 
-export interface PropertyStats {
-  total: number
-  precoMin: number | null
-  precoMax: number | null
-  porTipo: { tipo: PropertyType; count: number }[]
-}
-
 export async function getPropertyStats(): Promise<PropertyStats> {
-  const precos = data.imoveis
+  const all = await getAllPropertiesInternal()
+  const precos = all
     .map((p) => p.precoVenda ?? p.precoAluguel)
     .filter((p): p is number => p !== null && p > 0)
 
   const tipoMap = new Map<PropertyType, number>()
-  for (const p of data.imoveis) {
-    tipoMap.set(p.tipo, (tipoMap.get(p.tipo) ?? 0) + 1)
-  }
+  for (const p of all) tipoMap.set(p.tipo, (tipoMap.get(p.tipo) ?? 0) + 1)
 
   return {
-    total: data.imoveis.length,
+    total: all.length,
     precoMin: precos.length > 0 ? Math.min(...precos) : null,
     precoMax: precos.length > 0 ? Math.max(...precos) : null,
-    porTipo: Array.from(tipoMap.entries()).map(([tipo, count]) => ({
-      tipo,
-      count,
-    })),
+    porTipo: Array.from(tipoMap.entries()).map(([tipo, count]) => ({ tipo, count })),
   }
+}
+
+// ---------------------------------------------------------------------------
+// New: Empreendimentos
+// ---------------------------------------------------------------------------
+
+export async function getAllEmpreendimentos(): Promise<EmpreendimentoSummary[]> {
+  const all = await getAllPropertiesInternal()
+  const empMap = new Map<string, Property[]>()
+
+  for (const p of all) {
+    if (!p.empreendimento) continue
+    if (!empMap.has(p.empreendimento)) empMap.set(p.empreendimento, [])
+    empMap.get(p.empreendimento)!.push(p)
+  }
+
+  return Array.from(empMap.entries())
+    .map(([nome, properties]) => {
+      const precos = properties
+        .map((p) => p.precoVenda ?? p.precoAluguel)
+        .filter((p): p is number => p !== null && p > 0)
+      const bairros = [...new Set(properties.map((p) => p.bairro).filter(Boolean))]
+
+      return {
+        nome,
+        slug: slugify(nome),
+        total: properties.length,
+        construtora: properties.find((p) => p.construtora)?.construtora ?? null,
+        bairros,
+        imageUrl: properties[0]?.fotoDestaque || null,
+        precoMin: precos.length > 0 ? Math.min(...precos) : null,
+        precoMax: precos.length > 0 ? Math.max(...precos) : null,
+      }
+    })
+    .filter((e) => e.nome.trim() !== "")
+    .sort((a, b) => b.total - a.total)
+}
+
+export async function getPropertiesByEmpreendimento(empreendimento: string): Promise<Property[]> {
+  const all = await getAllPropertiesInternal()
+  return all.filter((p) => p.empreendimento === empreendimento)
 }
