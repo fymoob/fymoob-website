@@ -5,14 +5,27 @@ import type { PropertyType } from "@/types/property"
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
 
-const TIPO_SLUG_MAP: Record<PropertyType, string> = {
+const TIPO_SLUG_MAP: Partial<Record<PropertyType, string>> = {
   Apartamento: "apartamentos",
+  "Apartamento Duplex": "apartamentos-duplex",
   Casa: "casas",
+  "Casa em Condomínio": "casas-em-condominio",
+  Chácara: "chacaras",
+  Cobertura: "coberturas",
+  Kitnet: "kitnets",
+  Loja: "lojas",
+  "Ponto Comercial": "pontos-comerciais",
+  "Prédio Comercial": "predios-comerciais",
+  "Sala Comercial": "salas-comerciais",
+  "Salas/Conjuntos": "salas-conjuntos",
   Sobrado: "sobrados",
+  Studio: "studios",
   Terreno: "terrenos",
+  "Terreno Comercial": "terrenos-comerciais",
+  Empreendimento: "empreendimentos",
 }
 
-const TIPO_STATIC_PAGES: Record<PropertyType, string> = {
+const TIPO_STATIC_PAGES: Partial<Record<PropertyType, string>> = {
   Apartamento: "apartamentos-curitiba",
   Casa: "casas-curitiba",
   Sobrado: "sobrados-curitiba",

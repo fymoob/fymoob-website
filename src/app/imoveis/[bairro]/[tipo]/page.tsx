@@ -19,11 +19,24 @@ const TIPO_SLUG_MAP: Record<string, PropertyType> = {
   terrenos: "Terreno",
 }
 
-const TIPO_PLURAL: Record<PropertyType, string> = {
+const TIPO_PLURAL: Partial<Record<PropertyType, string>> = {
   Apartamento: "Apartamentos",
+  "Apartamento Duplex": "Apartamentos Duplex",
   Casa: "Casas",
+  "Casa em Condomínio": "Casas em Condomínio",
+  Chácara: "Chácaras",
+  Cobertura: "Coberturas",
+  Kitnet: "Kitnets",
+  Loja: "Lojas",
+  "Ponto Comercial": "Pontos Comerciais",
+  "Prédio Comercial": "Prédios Comerciais",
+  "Sala Comercial": "Salas Comerciais",
+  "Salas/Conjuntos": "Salas/Conjuntos",
   Sobrado: "Sobrados",
+  Studio: "Studios",
   Terreno: "Terrenos",
+  "Terreno Comercial": "Terrenos Comerciais",
+  Empreendimento: "Empreendimentos",
 }
 
 interface CombinadaPageProps {
@@ -94,7 +107,7 @@ export default async function CombinadaPage({ params }: CombinadaPageProps) {
     limit: 1000,
   })
 
-  const plural = TIPO_PLURAL[tipoKey]
+  const plural = TIPO_PLURAL[tipoKey] || `${tipoKey}s`
   const itemListSchema = generateItemListSchema(
     properties,
     `/imoveis/${bairroSlug}/${tipoSlug}`
