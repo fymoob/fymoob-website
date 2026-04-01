@@ -16,10 +16,15 @@ interface EmpreendimentoPageProps {
 }
 
 export const revalidate = 900 // 15 minutes
+export const dynamicParams = true
 
 export async function generateStaticParams() {
-  const empreendimentos = await getAllEmpreendimentos()
-  return empreendimentos.map((e) => ({ slug: e.slug }))
+  try {
+    const empreendimentos = await getAllEmpreendimentos()
+    return empreendimentos.map((e) => ({ slug: e.slug }))
+  } catch {
+    return []
+  }
 }
 
 export async function generateMetadata({

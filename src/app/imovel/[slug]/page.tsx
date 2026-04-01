@@ -21,7 +21,8 @@ import { SimilarProperties } from "@/components/property/SimilarProperties"
 import { PropertyMap } from "@/components/property/PropertyMap"
 import { MobileContactBar } from "@/components/property/MobileContactBar"
 
-export const revalidate = 3600
+export const revalidate = 900
+export const dynamicParams = true
 
 interface PageProps {
   params: Promise<{ slug: string }>
