@@ -384,34 +384,44 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
             </div>
           </div>
 
-          {/* Thumbnail strip */}
+          {/* Thumbnail strip — only render nearby thumbnails for performance */}
           {count > 1 && (
             <div
               className="flex h-20 shrink-0 items-center justify-center gap-1.5 overflow-x-auto px-4 pb-2"
               onClick={(e) => e.stopPropagation()}
             >
-              {images.map((foto, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={() => setCurrentIndex(index)}
-                  className={cn(
-                    "relative h-14 w-20 shrink-0 overflow-hidden rounded-md transition-all",
-                    index === currentIndex
-                      ? "ring-2 ring-white opacity-100"
-                      : "opacity-40 hover:opacity-70"
-                  )}
-                >
-                  <Image
-                    src={foto}
-                    alt={`Miniatura ${index + 1}`}
-                    fill
-                    loading="lazy"
-                    className="object-cover"
-                    sizes="80px"
-                  />
-                </button>
-              ))}
+              {images.map((foto, index) => {
+                // Only render thumbnails within 5 positions of current for performance
+                const distance = Math.abs(index - currentIndex)
+                const shouldRender = distance <= 5 || index === 0 || index === count - 1
+
+                return (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => setCurrentIndex(index)}
+                    className={cn(
+                      "relative h-14 w-20 shrink-0 overflow-hidden rounded-md transition-all",
+                      index === currentIndex
+                        ? "ring-2 ring-white opacity-100"
+                        : "opacity-40 hover:opacity-70"
+                    )}
+                  >
+                    {shouldRender ? (
+                      <Image
+                        src={foto}
+                        alt={`Miniatura ${index + 1}`}
+                        fill
+                        loading="lazy"
+                        className="object-cover"
+                        sizes="80px"
+                      />
+                    ) : (
+                      <div className="h-full w-full bg-white/10" />
+                    )}
+                  </button>
+                )
+              })}
             </div>
           )}
 
