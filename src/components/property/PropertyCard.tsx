@@ -158,11 +158,13 @@ function getPropertyPhotos(property: Property): string[] {
 interface PropertyCardProps {
   property: Property
   prioritizeFirstImage?: boolean
+  variant?: "vertical" | "horizontal"
 }
 
 export function PropertyCard({
   property,
   prioritizeFirstImage = false,
+  variant = "vertical",
 }: PropertyCardProps) {
   const articleRef = useRef<HTMLElement>(null)
   const hoverTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -285,69 +287,98 @@ export function PropertyCard({
     carouselApi?.scrollTo(index)
   }
 
+  const isHorizontal = variant === "horizontal"
+
   return (
     <article
       ref={articleRef}
-      onMouseEnter={startHoverCycle}
-      onMouseLeave={stopHoverCycle}
+      onMouseEnter={isHorizontal ? undefined : startHoverCycle}
+      onMouseLeave={isHorizontal ? undefined : stopHoverCycle}
       className={cn(
-        "group overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1.5 hover:border-brand-primary/30 hover:shadow-2xl",
+        "group overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-300",
+        isHorizontal
+          ? "flex flex-row hover:shadow-lg"
+          : "hover:-translate-y-1.5 hover:border-brand-primary/30 hover:shadow-2xl",
         isVisible ? "animate-fade-in-up" : "opacity-0"
       )}
     >
-      <div className="relative aspect-[4/3] overflow-hidden">
-        <Carousel
-          className="h-full [&>div]:h-full"
-          setApi={setCarouselApi}
-          opts={{ align: "start", loop: photos.length > 1 }}
-        >
-          <CarouselContent className="ml-0 h-full">
-            {photos.map((photo, index) => {
-              const shouldPrioritize = prioritizeFirstImage && index === 0
+      {/* Photo section */}
+      <div className={cn(
+        "relative overflow-hidden",
+        isHorizontal ? "w-28 shrink-0 self-stretch sm:w-32" : "aspect-[4/3]"
+      )}>
+        {isHorizontal ? (
+          /* Horizontal: single image, no carousel */
+          <Image
+            src={photos[0]}
+            alt={alt}
+            fill
+            priority={prioritizeFirstImage}
+            loading={prioritizeFirstImage ? "eager" : "lazy"}
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="144px"
+          />
+        ) : (
+          /* Vertical: full carousel */
+          <Carousel
+            className="h-full [&>div]:h-full"
+            setApi={setCarouselApi}
+            opts={{ align: "start", loop: photos.length > 1 }}
+          >
+            <CarouselContent className="ml-0 h-full">
+              {photos.map((photo, index) => {
+                const shouldPrioritize = prioritizeFirstImage && index === 0
 
-              return (
-                <CarouselItem key={`${property.codigo}-${index}`} className="h-full pl-0">
-                  <div className="relative h-full w-full overflow-hidden">
-                    <Image
-                      src={photo}
-                      alt={`${alt} - foto ${index + 1}`}
-                      fill
-                      priority={shouldPrioritize}
-                      loading={shouldPrioritize ? "eager" : "lazy"}
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                    />
-                  </div>
-                </CarouselItem>
-              )
-            })}
-          </CarouselContent>
-        </Carousel>
+                return (
+                  <CarouselItem key={`${property.codigo}-${index}`} className="h-full pl-0">
+                    <div className="relative h-full w-full overflow-hidden">
+                      <Image
+                        src={photo}
+                        alt={`${alt} - foto ${index + 1}`}
+                        fill
+                        priority={shouldPrioritize}
+                        loading={shouldPrioritize ? "eager" : "lazy"}
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                      />
+                    </div>
+                  </CarouselItem>
+                )
+              })}
+            </CarouselContent>
+          </Carousel>
+        )}
 
         <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/40 to-transparent" />
 
-        {/* Badge — Feature 1 */}
+        {/* Badge */}
         {badge && (
           <span
             className={cn(
-              "absolute top-3 left-3 z-20 rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow-md",
-              badge.color
+              "absolute z-20 rounded-full text-[11px] font-bold uppercase tracking-wider text-white shadow-md",
+              badge.color,
+              isHorizontal ? "top-2 left-2 px-1.5 py-0.5 text-[9px]" : "top-3 left-3 px-2.5 py-1"
             )}
           >
             {badge.text}
           </span>
         )}
 
+        {/* Wishlist heart */}
         <button
           type="button"
           onClick={toggleFavorite}
-          className="group/wishlist absolute top-3 right-3 z-20 inline-flex size-9 items-center justify-center transition-transform hover:scale-110"
+          className={cn(
+            "group/wishlist absolute z-20 inline-flex items-center justify-center transition-transform hover:scale-110",
+            isHorizontal ? "top-2 right-2 size-7" : "top-3 right-3 size-9"
+          )}
           aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
           aria-pressed={isFavorite}
         >
           <Heart
             className={cn(
-              "size-5 text-transparent stroke-white stroke-[2px] drop-shadow-lg transition-all duration-200",
+              "text-transparent stroke-white stroke-[2px] drop-shadow-lg transition-all duration-200",
+              isHorizontal ? "size-4" : "size-5",
               isFavorite
                 ? "fill-brand-primary stroke-brand-primary text-brand-primary scale-110"
                 : "group-hover/wishlist:fill-brand-primary/90 group-hover/wishlist:stroke-brand-primary"
@@ -355,7 +386,8 @@ export function PropertyCard({
           />
         </button>
 
-        {photos.length > 1 && (
+        {/* Carousel controls — only vertical */}
+        {!isHorizontal && photos.length > 1 && (
           <>
             <button
               type="button"
@@ -402,38 +434,38 @@ export function PropertyCard({
         />
       </div>
 
-      <div className="space-y-2.5 p-5 md:p-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-medium text-neutral-400">
-              {property.tipo}
-            </span>
-            <span className="text-neutral-200">·</span>
-            <span className="text-xs text-neutral-300">
-              {property.codigo}
-            </span>
+      {/* Content section */}
+      <div className={cn(
+        isHorizontal
+          ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3"
+          : "space-y-2.5 p-5 md:p-6"
+      )}>
+        {/* Meta row — vertical only */}
+        {!isHorizontal && (
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-medium text-neutral-400">
+                {property.tipo}
+              </span>
+              <span className="text-neutral-200">·</span>
+              <span className="text-xs text-neutral-300">
+                {property.codigo}
+              </span>
+            </div>
+            {daysAgo && (
+              <span className="flex items-center gap-1 text-[11px] text-neutral-400">
+                <Clock className="size-3" />
+                {daysAgo}
+              </span>
+            )}
           </div>
-          {daysAgo && (
-            <span className="flex items-center gap-1 text-[11px] text-neutral-400">
-              <Clock className="size-3" />
-              {daysAgo}
-            </span>
-          )}
-        </div>
+        )}
 
-        <Link href={propertyHref} className="block">
-          <h2 className="text-lg font-semibold leading-snug tracking-tight text-neutral-950 transition-colors hover:text-brand-primary">
-            {truncateText(property.titulo, 68)}
-          </h2>
-        </Link>
-
-        <p className="text-sm text-neutral-500">
-          {property.bairro}, {property.cidade}
-        </p>
-
+        {/* Price */}
         <p
           className={cn(
-            "text-xl font-bold tracking-tight",
+            "font-bold tracking-tight",
+            isHorizontal ? "text-base" : "text-xl",
             price ? "text-[#0B1120]" : "text-neutral-400"
           )}
           style={{ fontFamily: '"Plus Jakarta Sans", var(--font-satoshi), sans-serif' }}
@@ -441,13 +473,33 @@ export function PropertyCard({
           {formatPrice(price)}
         </p>
 
+        {/* Title */}
+        <Link href={propertyHref} className="block">
+          <h2 className={cn(
+            "font-semibold leading-snug tracking-tight text-neutral-950 transition-colors hover:text-brand-primary",
+            isHorizontal ? "line-clamp-2 text-sm" : "text-lg"
+          )}>
+            {truncateText(property.titulo, isHorizontal ? 55 : 68)}
+          </h2>
+        </Link>
+
+        {/* Location */}
+        <p className={cn(
+          "text-neutral-500",
+          isHorizontal ? "text-xs" : "text-sm"
+        )}>
+          {property.bairro}, {property.cidade}
+        </p>
+
+        {/* Features */}
         <PropertyFeatures
           dormitorios={property.dormitorios}
           banheiros={property.banheiros}
           vagas={property.vagas}
           areaPrivativa={property.areaPrivativa}
           size="sm"
-          className="pt-1"
+          compact={isHorizontal}
+          className={isHorizontal ? "pt-0" : "pt-1"}
         />
       </div>
     </article>

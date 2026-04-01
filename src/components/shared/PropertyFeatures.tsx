@@ -8,6 +8,7 @@ interface PropertyFeaturesProps {
   vagas: number | null
   areaPrivativa: number | null
   size?: "sm" | "md"
+  compact?: boolean
   className?: string
 }
 
@@ -17,6 +18,7 @@ export function PropertyFeatures({
   vagas,
   areaPrivativa,
   size = "md",
+  compact = false,
   className,
 }: PropertyFeaturesProps) {
   const iconSize = size === "sm" ? 14 : 18
@@ -32,21 +34,22 @@ export function PropertyFeatures({
   if (features.length === 0) return null
 
   return (
-    <div className={cn("flex flex-wrap items-center gap-2", className)}>
+    <div className={cn("flex flex-wrap items-center", compact ? "gap-1.5" : "gap-2", className)}>
       {features.map((feature) => (
         <div
           key={feature.label}
           className={cn(
-            "inline-flex items-center gap-1.5 rounded-full bg-neutral-50 text-neutral-600",
-            size === "sm" ? "px-2.5 py-1" : "px-3 py-1.5"
+            "inline-flex items-center rounded-full bg-neutral-50 text-neutral-600",
+            compact ? "gap-1 px-2 py-0.5" : "gap-1.5",
+            !compact && (size === "sm" ? "px-2.5 py-1" : "px-3 py-1.5")
           )}
         >
           <feature.icon
-            size={iconSize}
+            size={compact ? 12 : iconSize}
             className="shrink-0 text-neutral-400"
           />
-          <span className={cn("font-medium", textClass)}>
-            {feature.value} {feature.label}
+          <span className={cn("font-medium", compact ? "text-[11px]" : textClass)}>
+            {compact ? feature.value : `${feature.value} ${feature.label}`}
           </span>
         </div>
       ))}
