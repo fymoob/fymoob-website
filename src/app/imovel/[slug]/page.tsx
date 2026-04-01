@@ -22,6 +22,7 @@ import { PropertyMap } from "@/components/property/PropertyMap"
 import { MobileContactBar } from "@/components/property/MobileContactBar"
 import { RecentlyViewedTracker } from "@/components/property/RecentlyViewedTracker"
 import { ShareButton } from "@/components/shared/ShareButton"
+import { ViewCounter } from "@/components/property/ViewCounter"
 
 export const revalidate = 900
 export const dynamicParams = true
@@ -121,6 +122,7 @@ export default async function PropertyPage({ params }: PageProps) {
 
         {/* Property header + specs */}
         <PropertyDetails property={property} shortTitle={shortTitle} />
+        <ViewCounter codigo={property.codigo} />
 
         {/* Main content grid */}
         <div className="mt-4 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">

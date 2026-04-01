@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { Suspense } from "react"
-import { Building2, Home as HomeIcon, Landmark, TreePine, ChevronDown } from "lucide-react"
+import { Building2, Home as HomeIcon, Landmark, TreePine, ChevronDown, TrendingUp, MapPin, LayoutGrid } from "lucide-react"
 import {
   getFeaturedProperties,
   getAllBairros,
@@ -17,6 +17,8 @@ import { PropertyCardFeatured } from "@/components/property/PropertyCardFeatured
 import { BlogCard } from "@/components/blog/BlogCard"
 import { AnimateOnScroll } from "@/components/shared/AnimateOnScroll"
 import { RecentlyViewed } from "@/components/shared/RecentlyViewed"
+import { WelcomeBack } from "@/components/shared/WelcomeBack"
+import { SavedSearchBanner } from "@/components/search/SavedSearchBanner"
 
 export const metadata: Metadata = {
   title: "Imóveis à Venda e Aluguel em Curitiba | FYMOOB",
@@ -77,7 +79,7 @@ export default async function Home() {
   return (
     <>
       {/* Hero */}
-      <section id="hero" className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-neutral-950">
+      <section id="hero" className="relative flex min-h-[75dvh] items-center justify-center overflow-hidden bg-neutral-950 md:min-h-[100dvh]">
         {/* Background video with scale-in */}
         <video
           autoPlay
@@ -126,12 +128,47 @@ export default async function Home() {
         </a>
       </section>
 
+      {/* Welcome back banner (returning visitors) */}
+      <WelcomeBack />
+
+      {/* Saved search banner */}
+      <SavedSearchBanner />
+
+      {/* Stats Bar — Social Proof */}
+      <section className="border-b border-neutral-100 bg-white py-6">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-6 px-4 sm:gap-10 sm:px-6 lg:gap-16 lg:px-8">
+          <div className="flex items-center gap-2.5">
+            <LayoutGrid className="size-5 text-brand-primary" />
+            <div>
+              <span className="text-lg font-bold text-neutral-950">{stats.total}</span>
+              <span className="ml-1.5 text-sm text-neutral-500">imóveis disponíveis</span>
+            </div>
+          </div>
+          <div className="hidden h-8 w-px bg-neutral-200 sm:block" />
+          <div className="flex items-center gap-2.5">
+            <MapPin className="size-5 text-brand-primary" />
+            <div>
+              <span className="text-lg font-bold text-neutral-950">{allBairros.length}</span>
+              <span className="ml-1.5 text-sm text-neutral-500">bairros em Curitiba</span>
+            </div>
+          </div>
+          <div className="hidden h-8 w-px bg-neutral-200 sm:block" />
+          <div className="flex items-center gap-2.5">
+            <TrendingUp className="size-5 text-brand-primary" />
+            <div>
+              <span className="text-lg font-bold text-neutral-950">{types.length}</span>
+              <span className="ml-1.5 text-sm text-neutral-500">tipos de imóvel</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Vistos recentemente */}
       <RecentlyViewed />
 
       {/* Oportunidade de hoje */}
       {highlight && (
-        <section id="oportunidade" className="py-16 md:py-20">
+        <section id="oportunidade" className="py-10 md:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <AnimateOnScroll>
               <div>
@@ -149,7 +186,7 @@ export default async function Home() {
 
       {/* Destaques de lançamento */}
       {destaques.length > 0 && (
-        <section className="bg-neutral-50 py-20 md:py-28">
+        <section className="bg-neutral-50 py-12 md:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <AnimateOnScroll>
               <div className="flex items-center justify-between">
@@ -177,7 +214,7 @@ export default async function Home() {
 
       {/* Bairros em destaque */}
       {bairros.length > 0 && (
-        <section className="py-20 md:py-28">
+        <section className="py-12 md:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <AnimateOnScroll>
               <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
@@ -196,7 +233,7 @@ export default async function Home() {
       )}
 
       {/* Buscar por tipo */}
-      <section className="bg-neutral-50 py-20 md:py-28">
+      <section className="bg-neutral-50 py-12 md:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimateOnScroll>
             <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
@@ -229,7 +266,7 @@ export default async function Home() {
 
       {/* Do Blog */}
       {recentPosts.length > 0 && (
-        <section className="py-20 md:py-28">
+        <section className="py-12 md:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <AnimateOnScroll>
               <div className="flex items-center justify-between">

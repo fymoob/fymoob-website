@@ -6,6 +6,7 @@ import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
 import { PropertyGrid } from "@/components/search/PropertyGrid"
 import { SkeletonsGrid } from "@/components/search/SkeletonsGrid"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
+import { SaveSearchButton } from "@/components/search/SaveSearchButton"
 import { generateItemListSchema } from "@/lib/seo"
 import { slugify } from "@/lib/utils"
 import {
@@ -37,7 +38,7 @@ interface ParsedSearchState {
   fullQuery: string
 }
 
-const PAGE_SIZE = 12
+const PAGE_SIZE = 24
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
 
 const TYPE_BY_SLUG: Record<string, PropertyType> = {
@@ -292,14 +293,19 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
           <span className="font-semibold text-brand-primary">{total}</span>{" "}
           {total === 1 ? "imóvel encontrado" : "imóveis encontrados"}
         </p>
-        {hasAppliedFilters && (
-          <Link
-            href="/busca"
-            className="text-sm text-muted-foreground underline decoration-muted-foreground/40 underline-offset-4 transition-colors hover:text-foreground"
-          >
-            Limpar filtros
-          </Link>
-        )}
+        <div className="flex items-center gap-3">
+          <Suspense fallback={null}>
+            <SaveSearchButton />
+          </Suspense>
+          {hasAppliedFilters && (
+            <Link
+              href="/busca"
+              className="text-sm text-muted-foreground underline decoration-muted-foreground/40 underline-offset-4 transition-colors hover:text-foreground"
+            >
+              Limpar filtros
+            </Link>
+          )}
+        </div>
       </div>
 
       <PropertyGrid properties={properties} />

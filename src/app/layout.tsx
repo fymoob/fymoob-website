@@ -5,6 +5,8 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { NavigationProgress } from "@/components/layout/NavigationProgress";
+import { Suspense } from "react";
 import "./globals.css";
 
 const satoshi = localFont({
@@ -62,6 +64,9 @@ export default function RootLayout({
       <body
         className="antialiased"
       >
+        <Suspense fallback={null}>
+          <NavigationProgress />
+        </Suspense>
         <Header />
         <main className="min-h-screen overflow-x-clip">{children}</main>
         <Footer />

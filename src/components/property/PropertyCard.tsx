@@ -16,6 +16,7 @@ import {
 } from "@/lib/utils"
 import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel"
+import { getTopViewedCodes } from "@/lib/view-tracker"
 
 const WISHLIST_STORAGE_KEY = "fymoob:wishlist"
 const RECENT_STORAGE_KEY = "fymoob:recent"
@@ -25,8 +26,8 @@ const RECENT_MAX = 8
 // Badge logic
 // ---------------------------------------------------------------------------
 
-function getBadge(property: Property): { text: string; color: string } | null {
-  // Priority: NOVO > EXCLUSIVO
+function getBadge(property: Property, topViewed?: Set<string>): { text: string; color: string } | null {
+  // Priority: NOVO > LANÇAMENTO > MAIS VISTO
   if (property.dataCadastro) {
     const days = Math.floor(
       (Date.now() - new Date(property.dataCadastro).getTime()) / (1000 * 60 * 60 * 24)
@@ -35,6 +36,8 @@ function getBadge(property: Property): { text: string; color: string } | null {
   }
 
   if (property.lancamento) return { text: "LANÇAMENTO", color: "bg-amber-500" }
+
+  if (topViewed?.has(property.codigo)) return { text: "MAIS VISTO", color: "bg-orange-500" }
 
   return null
 }
@@ -166,8 +169,13 @@ export function PropertyCard({
   const alt = generateImageAlt(property)
   const price = property.precoVenda ?? property.precoAluguel
   const photos = useMemo(() => getPropertyPhotos(property), [property])
-  const badge = useMemo(() => getBadge(property), [property])
   const daysAgo = useMemo(() => getDaysAgo(property.dataCadastro), [property.dataCadastro])
+
+  const [topViewed, setTopViewed] = useState<Set<string>>(new Set())
+  useEffect(() => {
+    setTopViewed(getTopViewedCodes())
+  }, [])
+  const badge = useMemo(() => getBadge(property, topViewed), [property, topViewed])
 
   const [carouselApi, setCarouselApi] = useState<CarouselApi>()
   const [currentSlide, setCurrentSlide] = useState(0)
