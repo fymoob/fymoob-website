@@ -365,22 +365,17 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
             </div>
           </div>
 
-          {/* Image area */}
+          {/* Image area — native img for instant rendering (no Next.js optimization overhead) */}
           <div
             className="flex flex-1 items-center justify-center px-14"
             onClick={(event) => event.stopPropagation()}
           >
-            <div className="relative h-[calc(100dvh-10rem)] w-[90vw]">
-              <Image
-                src={images[currentIndex]}
-                alt={`${alt} - Foto ${currentIndex + 1}`}
-                fill
-                className="rounded-lg object-contain"
-                sizes="(min-width: 1536px) 1920px, (min-width: 1280px) 1536px, (min-width: 768px) 1280px, 100vw"
-                quality={85}
-                priority
-              />
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={images[currentIndex]}
+              alt={`${alt} - Foto ${currentIndex + 1}`}
+              className="max-h-[calc(100dvh-10rem)] max-w-[90vw] rounded-lg object-contain"
+            />
           </div>
 
           {/* Thumbnail strip — only render nearby thumbnails for performance */}
