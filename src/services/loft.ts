@@ -3,7 +3,6 @@ import type {
   PropertyFilters,
   BairroSummary,
   TypeSummary,
-  MockPropertyData,
   PropertyType,
   PropertyStats,
   EmpreendimentoSummary,
@@ -18,7 +17,6 @@ import { unstable_cache } from "next/cache"
 
 const LOFT_BASE_URL = "https://brunoces-rest.vistahost.com.br"
 const LOFT_API_KEY = process.env.LOFT_API_KEY || ""
-const USE_API = !!LOFT_API_KEY
 const PAGE_SIZE = 50 // API max per request
 const REVALIDATE_SECONDS = 900 // 15 minutes
 
@@ -356,67 +354,15 @@ const getCachedProperties = unstable_cache(
 )
 
 // ---------------------------------------------------------------------------
-// Mock data fallback
-// ---------------------------------------------------------------------------
-
-async function getMockProperties(): Promise<Property[]> {
-  const mockData = (await import("../../data/mock-properties.json")).default as MockPropertyData
-  return mockData.imoveis.map((p) => ({
-    ...p,
-    // Fill new fields with defaults for mock data compatibility
-    referencia: null,
-    tituloSite: null,
-    textoAnuncio: null,
-    bairroComercial: p.bairro,
-    numero: null,
-    complemento: null,
-    bloco: null,
-    cep: null,
-    areaTerreno: null,
-    varandas: null,
-    salas: null,
-    empreendimento: null,
-    codigoEmpreendimento: null,
-    construtora: null,
-    descricaoEmpreendimento: null,
-    keywordsWeb: null,
-    fotoDestaquePequena: null,
-    urlVideo: null,
-    temTourVirtual: false,
-    exibirNoSite: true,
-    destaqueWeb: false,
-    superDestaqueWeb: false,
-    lancamento: false,
-    aceitaFinanciamento: false,
-    aceitaPermuta: false,
-    face: null,
-    garagemTipo: null,
-    topografia: null,
-    anoConstrucao: null,
-    caracteristicas: [],
-    infraestrutura: [],
-    valorCondominio: null,
-    valorIptu: null,
-    valorM2: null,
-    situacao: null,
-    ocupacao: null,
-  }))
-}
-
-// ---------------------------------------------------------------------------
-// Get all properties (API or mock)
+// Get all properties (API only)
 // ---------------------------------------------------------------------------
 
 async function getAllPropertiesInternal(): Promise<Property[]> {
-  if (USE_API) {
-    try {
-      return await getCachedProperties()
-    } catch (error) {
-      console.error("[Loft] API failed, falling back to mock data:", error)
-      return getMockProperties()
-    }
+  if (!LOFT_API_KEY) {
+    console.warn("[Loft] LOFT_API_KEY not set — returning empty list")
+    return []
   }
-  return getMockProperties()
+  return getCachedProperties()
 }
 
 // ---------------------------------------------------------------------------
@@ -553,7 +499,7 @@ export async function getPropertyBySlug(slug: string): Promise<Property | null> 
   const parts = slug.split("-")
   const codigo = parts[parts.length - 1]
 
-  if (USE_API && codigo) {
+  if (LOFT_API_KEY && codigo) {
     try {
       // Fetch property details and photos in parallel (2 small requests, not 250 properties)
       const [detailData, photoData] = await Promise.all([
@@ -649,7 +595,7 @@ export async function getAllTypes(): Promise<TypeSummary[]> {
 }
 
 export async function getFeaturedProperties(limit: number = 8): Promise<Property[]> {
-  if (USE_API) {
+  if (LOFT_API_KEY) {
     try {
       const pesquisa = JSON.stringify({
         fields: CARD_FIELDS,
@@ -657,7 +603,7 @@ export async function getFeaturedProperties(limit: number = 8): Promise<Property
       const data = await fetchLoftAPI<Record<string, unknown>>("/imoveis/destaques", { pesquisa })
 
       const featured: Property[] = []
-      for (const [key, value] of Object.entries(data)) {
+      for (const [, value] of Object.entries(data)) {
         if (value && typeof value === "object" && "Codigo" in (value as Record<string, unknown>)) {
           featured.push(mapRawToProperty(value as LoftPropertyRaw))
         }

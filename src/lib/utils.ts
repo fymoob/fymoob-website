@@ -63,7 +63,7 @@ export function generatePropertySlug(property: {
   areaPrivativa?: number | null
   slug: string
 }): string {
-  // Use existing slug from mock data as the canonical slug
+  // Use existing slug as the canonical slug
   return property.slug
 }
 

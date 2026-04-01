@@ -45,7 +45,7 @@ npm run test         # Testes
 - Todas as páginas de imóvel devem incluir JSON-LD schema markup
 - Imagens sempre via `<Image />` do Next.js com alt descritivo
 - Dados da API Loft via `src/services/loft.ts` — nunca chamar API direto nos componentes
-- Mock data em `data/mock-properties.json` (raiz do projeto) até a API key ser configurada
+- Sem mock data — API Loft é a única fonte de dados (LOFT_API_KEY obrigatória)
 - Env vars: `LOFT_API_KEY`, `NEXT_PUBLIC_SITE_URL`, `NHOST_SUBDOMAIN`
 
 ## Arquitetura de URLs (SEO)
@@ -80,7 +80,7 @@ npm run test         # Testes
 - Paginação: max 50 resultados por request
 - Campos: Codigo, Categoria, Cidade, Bairro, ValorVenda, ValorLocacao, Dormitorio, Suites, Vagas, AreaTotal, AreaPrivativa, Descricao, FotoDestaque, fotos[], Status, Finalidade
 - Detalhes: `/imoveis/detalhes?key=KEY&imovel=CODIGO`
-- Mock data disponível em `data/mock-properties.json` (244 imóveis reais scrapeados)
+- 249 imóveis ativos via API REST (dados ao vivo do CRM)
 
 ## Contexto de negócio
 - Ver `docs/project-context.md` para dados completos do cliente

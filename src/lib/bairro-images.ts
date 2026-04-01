@@ -1,7 +1,7 @@
 /**
  * Imagens dos bairros em destaque.
  * Substituir por fotos reais quando disponíveis.
- * Chave = nome exato do bairro no mock data.
+ * Chave = nome exato do bairro na API Loft.
  */
 export const bairroImages: Record<string, string> = {
   "Portão": "/images/bairros/portao.jpg",

@@ -167,13 +167,6 @@ export interface PropertyStats {
   porTipo: { tipo: PropertyType; count: number }[];
 }
 
-export interface MockPropertyData {
-  total: number;
-  dataExtracao: string;
-  fonte: string;
-  imoveis: Property[];
-}
-
 /** Raw response from Loft/Vista API — campos em português */
 export interface LoftPropertyRaw {
   Codigo: string;
