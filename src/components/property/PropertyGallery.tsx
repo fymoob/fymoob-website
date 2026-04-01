@@ -370,15 +370,16 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
             className="flex flex-1 items-center justify-center px-14"
             onClick={(event) => event.stopPropagation()}
           >
-            <Image
-              src={images[currentIndex]}
-              alt={`${alt} - Foto ${currentIndex + 1}`}
-              width={1400}
-              height={900}
-              className="max-h-[calc(100dvh-10rem)] w-auto max-w-[90vw] rounded-lg object-contain"
-              sizes="90vw"
-              priority
-            />
+            <div className="relative h-[calc(100dvh-10rem)] w-[90vw]">
+              <Image
+                src={images[currentIndex]}
+                alt={`${alt} - Foto ${currentIndex + 1}`}
+                fill
+                className="rounded-lg object-contain"
+                sizes="90vw"
+                priority
+              />
+            </div>
           </div>
 
           {/* Thumbnail strip */}
