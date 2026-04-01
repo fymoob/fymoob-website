@@ -82,7 +82,12 @@ export default async function PropertyPage({ params }: PageProps) {
     notFound()
   }
 
-  const similarProperties = await getSimilarProperties(property, 4)
+  const rawSimilar = await getSimilarProperties(property, 4)
+  // Limit photos on similar properties to reduce RSC payload (312 → ~50 image URLs)
+  const similarProperties = rawSimilar.map((p) => ({
+    ...p,
+    fotos: p.fotos.slice(0, 3),
+  }))
   const propertySchema = generatePropertySchema(property)
   const alt = generateImageAlt(property)
   const shortTitle = generateShortTitle(property)
@@ -121,7 +126,7 @@ export default async function PropertyPage({ params }: PageProps) {
         <div className="mt-4 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">
           {/* Left column */}
           <div className="space-y-10">
-            <PropertyGallery fotos={filterPropertyPhotos(property.fotos).slice(0, 20)} alt={alt} />
+            <PropertyGallery fotos={filterPropertyPhotos(property.fotos).slice(0, 15)} alt={alt} />
             <PropertyDescription descricao={descricaoWithTitle} />
             <PropertyAmenities descricao={descricaoWithTitle} />
             <PropertyCharacteristics property={property} />

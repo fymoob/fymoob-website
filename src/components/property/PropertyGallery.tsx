@@ -377,9 +377,8 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
                 fill
                 className="rounded-lg object-contain"
                 sizes="(min-width: 1536px) 1920px, (min-width: 1280px) 1536px, (min-width: 768px) 1280px, 100vw"
-                quality={90}
+                quality={85}
                 priority
-                unoptimized
               />
             </div>
           </div>
