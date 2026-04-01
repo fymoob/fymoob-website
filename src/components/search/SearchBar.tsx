@@ -23,8 +23,17 @@ import { FINALIDADE_OPTIONS, type PriceBounds } from "@/components/search/filter
 import { TypeFilter } from "@/components/search/filters/TypeFilter"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetFooter,
+} from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
 import { useSearchBarController } from "./useSearchBarController"
+import { SlidersHorizontal } from "lucide-react"
 
 type SearchMode = "filters" | "code"
 
@@ -169,6 +178,8 @@ export function SearchBar({
     minPrice > priceBounds.min ||
     maxPrice < priceBounds.max
 
+  const [sheetOpen, setSheetOpen] = useState(false)
+
   const clearAllFilters = () =>
     setPendingFilters({
       bairros: [],
@@ -179,6 +190,39 @@ export function SearchBar({
       priceRange: [priceBounds.min, priceBounds.max],
     })
 
+  const activeFilterCount =
+    (pendingFilters.bairros.length > 0 || pendingFilters.cidades.length > 0 ? 1 : 0) +
+    (minPrice > priceBounds.min || maxPrice < priceBounds.max ? 1 : 0) +
+    (pendingFilters.quartos ? 1 : 0) +
+    (pendingFilters.tipos.length > 0 || pendingFilters.finalidades.length > 0 ? 1 : 0)
+
+  // Chip definitions for mobile
+  const chips = [
+    {
+      label: pendingFilters.bairros.length > 0 || pendingFilters.cidades.length > 0
+        ? locationLabel : "Localização",
+      active: pendingFilters.bairros.length > 0 || pendingFilters.cidades.length > 0,
+      icon: MapPin,
+    },
+    {
+      label: minPrice > priceBounds.min || maxPrice < priceBounds.max
+        ? priceLabel : "Preço",
+      active: minPrice > priceBounds.min || maxPrice < priceBounds.max,
+      icon: Tag,
+    },
+    {
+      label: pendingFilters.quartos ? quartosLabel : "Quartos",
+      active: Boolean(pendingFilters.quartos),
+      icon: BedDouble,
+    },
+    {
+      label: pendingFilters.tipos.length > 0 || pendingFilters.finalidades.length > 0
+        ? typeLabel : "Tipo",
+      active: pendingFilters.tipos.length > 0 || pendingFilters.finalidades.length > 0,
+      icon: Building2,
+    },
+  ]
+
   return (
     <aside
       className={cn(
@@ -187,6 +231,150 @@ export function SearchBar({
       )}
     >
       <div className="w-full">
+        {/* ── Mobile: Chips + Bottom Sheet ── */}
+        {!isHome && (
+          <div className="md:hidden">
+            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+              {/* Filter button */}
+              <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+                <SheetTrigger
+                  render={
+                    <button
+                      type="button"
+                      className={cn(
+                        "relative inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-2 text-xs font-semibold transition-colors",
+                        activeFilterCount > 0
+                          ? "border-brand-primary bg-brand-primary-light text-brand-primary"
+                          : "border-neutral-200 bg-white text-neutral-700"
+                      )}
+                    />
+                  }
+                >
+                  <SlidersHorizontal className="size-3.5" />
+                  Filtros
+                  {activeFilterCount > 0 && (
+                    <span className="flex size-4 items-center justify-center rounded-full bg-brand-primary text-[10px] font-bold text-white">
+                      {activeFilterCount}
+                    </span>
+                  )}
+                </SheetTrigger>
+
+                <SheetContent side="bottom" className="max-h-[85dvh] overflow-y-auto rounded-t-2xl">
+                  <SheetHeader>
+                    <SheetTitle>Filtros</SheetTitle>
+                  </SheetHeader>
+
+                  <div className="space-y-6 px-4 pb-4">
+                    {/* Location */}
+                    <div>
+                      <h3 className="mb-2 text-sm font-semibold text-neutral-700">Localização</h3>
+                      <LocationFilter
+                        bairros={bairroOptions}
+                        cidades={cidadeOptions}
+                        selectedBairros={pendingFilters.bairros}
+                        selectedCidades={pendingFilters.cidades}
+                        onBairrosChange={(values) =>
+                          setPendingFilters((c) => ({ ...c, bairros: values }))
+                        }
+                        onCidadesChange={(values) =>
+                          setPendingFilters((c) => ({ ...c, cidades: values }))
+                        }
+                      />
+                    </div>
+
+                    {/* Price */}
+                    <div>
+                      <h3 className="mb-2 text-sm font-semibold text-neutral-700">Preço</h3>
+                      <PriceFilter
+                        value={pendingFilters.priceRange}
+                        bounds={priceBounds}
+                        onChange={(value) =>
+                          setPendingFilters((c) => ({ ...c, priceRange: value }))
+                        }
+                      />
+                    </div>
+
+                    {/* Bedrooms */}
+                    <div>
+                      <h3 className="mb-2 text-sm font-semibold text-neutral-700">Quartos</h3>
+                      <BedroomsFilter
+                        value={pendingFilters.quartos}
+                        onChange={(value) =>
+                          setPendingFilters((c) => ({ ...c, quartos: value }))
+                        }
+                      />
+                    </div>
+
+                    {/* Type */}
+                    <div>
+                      <h3 className="mb-2 text-sm font-semibold text-neutral-700">Tipo de imóvel</h3>
+                      <TypeFilter
+                        typeOptions={tipoOptions}
+                        finalidadeOptions={FINALIDADE_OPTIONS}
+                        selectedTipos={pendingFilters.tipos}
+                        selectedFinalidades={pendingFilters.finalidades}
+                        onTiposChange={(values) =>
+                          setPendingFilters((c) => ({ ...c, tipos: values }))
+                        }
+                        onFinalidadesChange={(values) =>
+                          setPendingFilters((c) => ({ ...c, finalidades: values }))
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <SheetFooter>
+                    <div className="flex gap-3">
+                      {hasAnyFilter && (
+                        <button
+                          type="button"
+                          onClick={clearAllFilters}
+                          className="flex-1 rounded-xl border border-neutral-200 py-3 text-sm font-medium text-neutral-600 transition-colors hover:bg-neutral-50"
+                        >
+                          Limpar
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          applyFilters()
+                          setSheetOpen(false)
+                        }}
+                        className="flex-[2] rounded-xl bg-[#0B1120] py-3 text-sm font-semibold text-white transition-colors hover:bg-[#111827]"
+                      >
+                        Aplicar filtros
+                      </button>
+                    </div>
+                  </SheetFooter>
+                </SheetContent>
+              </Sheet>
+
+              {/* Chips */}
+              {chips.map((chip) => {
+                const Icon = chip.icon
+                return (
+                  <button
+                    key={chip.label}
+                    type="button"
+                    onClick={() => setSheetOpen(true)}
+                    className={cn(
+                      "inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-2 text-xs font-medium whitespace-nowrap transition-colors",
+                      chip.active
+                        ? "border-brand-primary bg-brand-primary-light text-brand-primary"
+                        : "border-neutral-200 bg-white text-neutral-600"
+                    )}
+                  >
+                    <Icon className="size-3.5" />
+                    {chip.label}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* ── Desktop: Full search bar (also mobile for home context) ── */}
+        <div className={cn(!isHome && "hidden md:block")}>
         <div className="relative">
           <div
             className={cn(
@@ -428,6 +616,7 @@ export function SearchBar({
               </button>
             </>
           )}
+        </div>
         </div>
       </div>
     </aside>

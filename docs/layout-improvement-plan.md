@@ -59,9 +59,9 @@ Análise visual completa feita via Playwright MCP em desktop (1440x900) e mobile
 - **Problema:** Cards verticais (imagem em cima, info embaixo) ocupam muito espaço vertical
 - **Fix:** No mobile, opção de card horizontal (imagem à esquerda 40%, info à direita 60%)
 
-### B6. Filtros Mobile — Chips ao invés de dropdowns
+### B6. Filtros Mobile — Chips ao invés de dropdowns ✅ IMPLEMENTADO
 - **Problema:** Dropdowns de filtro ocupam muito espaço vertical no mobile
-- **Fix:** Usar filter chips horizontais com scroll-x. Botão "Filtros" abre bottom sheet
+- **Fix:** Chips horizontais com scroll-x + botão "Filtros" abre bottom sheet. Bairros ordenados A-Z.
 
 ---
 

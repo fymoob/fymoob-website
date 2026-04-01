@@ -98,28 +98,34 @@ export function useSearchBarController({
 
   const bairroOptions = useMemo<MultiSelectOption[]>(
     () =>
-      bairros.map((bairro) => ({
-        value: slugify(bairro),
-        label: bairro,
-      })),
+      [...bairros]
+        .sort((a, b) => a.localeCompare(b, "pt-BR"))
+        .map((bairro) => ({
+          value: slugify(bairro),
+          label: bairro,
+        })),
     [bairros]
   )
 
   const cidadeOptions = useMemo<MultiSelectOption[]>(
     () =>
-      cidades.map((cidade) => ({
-        value: slugify(cidade),
-        label: cidade,
-      })),
+      [...cidades]
+        .sort((a, b) => a.localeCompare(b, "pt-BR"))
+        .map((cidade) => ({
+          value: slugify(cidade),
+          label: cidade,
+        })),
     [cidades]
   )
 
   const tipoOptions = useMemo<MultiSelectOption[]>(
     () =>
-      tipos.map((tipo) => ({
-        value: slugify(tipo),
-        label: tipo,
-      })),
+      [...tipos]
+        .sort((a, b) => a.localeCompare(b, "pt-BR"))
+        .map((tipo) => ({
+          value: slugify(tipo),
+          label: tipo,
+        })),
     [tipos]
   )
 
