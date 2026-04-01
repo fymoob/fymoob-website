@@ -555,20 +555,22 @@ export async function getPropertyBySlug(slug: string): Promise<Property | null> 
 
   if (USE_API && codigo) {
     try {
-      // Fetch single property with full detail fields (1 request, not 250)
-      const pesquisa = JSON.stringify({
-        fields: [
-          ...DETAIL_FIELDS,
-          { Foto: ["Foto", "FotoPequena", "Ordem", "Destaque", "Descricao"] },
-        ],
-      })
-      const data = await fetchLoftAPI<Record<string, unknown>>("/imoveis/detalhes", {
-        imovel: codigo,
-        pesquisa,
-      })
+      // Fetch property details and photos in parallel (2 small requests, not 250 properties)
+      const [detailData, photoData] = await Promise.all([
+        fetchLoftAPI<Record<string, unknown>>("/imoveis/detalhes", {
+          imovel: codigo,
+          pesquisa: JSON.stringify({ fields: DETAIL_FIELDS }),
+        }),
+        fetchLoftAPI<Record<string, unknown>>("/imoveis/detalhes", {
+          imovel: codigo,
+          pesquisa: JSON.stringify({ fields: ["Codigo", { Foto: ["Foto", "Ordem"] }] }),
+        }),
+      ])
 
-      if (data && "Codigo" in data) {
-        return mapRawToProperty(data as LoftPropertyRaw)
+      if (detailData && "Codigo" in detailData) {
+        // Merge photo data into detail data
+        const merged = { ...detailData, Foto: photoData?.Foto } as LoftPropertyRaw
+        return mapRawToProperty(merged)
       }
     } catch {
       // Fallback to list search below
