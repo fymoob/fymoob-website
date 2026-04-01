@@ -49,20 +49,19 @@ export function MobileContactBar({
 
         {/* Buttons */}
         <a
-          href="tel:+554199978-0517"
-          className="flex items-center justify-center gap-1.5 rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-neutral-800"
-        >
-          <Phone size={14} />
-          Ligar
-        </a>
-        <a
           href={whatsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-1.5 rounded-lg bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-600"
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-[#25D366] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#1da851]"
         >
-          <MessageCircle size={14} />
-          WhatsApp
+          <MessageCircle size={16} />
+          Quero visitar
+        </a>
+        <a
+          href="tel:+554199978-0517"
+          className="flex items-center justify-center gap-1.5 rounded-xl border border-neutral-200 px-4 py-3 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-50"
+        >
+          <Phone size={16} />
         </a>
       </div>
     </div>

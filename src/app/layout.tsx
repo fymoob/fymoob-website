@@ -4,6 +4,7 @@ import { generateOrganizationSchema, generateLocalBusinessSchema } from "@/lib/s
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
+import { BottomNav } from "@/components/layout/BottomNav";
 import "./globals.css";
 
 const satoshi = localFont({
@@ -65,6 +66,7 @@ export default function RootLayout({
         <main className="min-h-screen overflow-x-clip">{children}</main>
         <Footer />
         <WhatsAppFloat />
+        <BottomNav />
       </body>
     </html>
   );

@@ -16,6 +16,7 @@ import { PropertyCard } from "@/components/property/PropertyCard"
 import { PropertyCardFeatured } from "@/components/property/PropertyCardFeatured"
 import { BlogCard } from "@/components/blog/BlogCard"
 import { AnimateOnScroll } from "@/components/shared/AnimateOnScroll"
+import { RecentlyViewed } from "@/components/shared/RecentlyViewed"
 
 export const metadata: Metadata = {
   title: "Imóveis à Venda e Aluguel em Curitiba | FYMOOB",
@@ -124,6 +125,9 @@ export default async function Home() {
           <ChevronDown className="h-8 w-8" />
         </a>
       </section>
+
+      {/* Vistos recentemente */}
+      <RecentlyViewed />
 
       {/* Oportunidade de hoje */}
       {highlight && (

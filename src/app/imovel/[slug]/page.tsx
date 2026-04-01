@@ -20,6 +20,8 @@ import { PropertyAmenities } from "@/components/property/PropertyAmenities"
 import { SimilarProperties } from "@/components/property/SimilarProperties"
 import { PropertyMap } from "@/components/property/PropertyMap"
 import { MobileContactBar } from "@/components/property/MobileContactBar"
+import { RecentlyViewedTracker } from "@/components/property/RecentlyViewedTracker"
+import { ShareButton } from "@/components/shared/ShareButton"
 
 export const revalidate = 900
 export const dynamicParams = true
@@ -104,8 +106,13 @@ export default async function PropertyPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(propertySchema) }}
       />
 
+      <RecentlyViewedTracker property={property} />
+
       <div className="mx-auto w-full max-w-7xl px-4 pb-24 md:px-8 md:pb-0">
-        <Breadcrumbs items={breadcrumbItems} />
+        <div className="flex items-center justify-between">
+          <Breadcrumbs items={breadcrumbItems} />
+          <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} />
+        </div>
 
         {/* Property header + specs */}
         <PropertyDetails property={property} shortTitle={shortTitle} />

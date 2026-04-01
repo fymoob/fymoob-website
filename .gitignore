@@ -11,6 +11,9 @@ out/
 build/
 dist/
 
+# backups (dados sensíveis do cliente)
+data/backups/
+
 # env files
 .env
 .env.local
