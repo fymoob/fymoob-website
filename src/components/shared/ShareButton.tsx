@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Share2, Link2, MessageCircle, Check } from "lucide-react"
 
 interface ShareButtonProps {
@@ -10,6 +10,7 @@ interface ShareButtonProps {
 
 export function ShareButton({ title, url }: ShareButtonProps) {
   const [copied, setCopied] = useState(false)
+  const [canNativeShare, setCanNativeShare] = useState(false)
   const fullUrl = `https://fymoob.com${url}`
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${title} — ${fullUrl}`)}`
 
@@ -22,6 +23,11 @@ export function ShareButton({ title, url }: ShareButtonProps) {
       }
     }
   }
+
+  useEffect(() => {
+    // Must detect browser API post-hydration to avoid server/client mismatch
+    setCanNativeShare(typeof navigator !== "undefined" && "share" in navigator) // eslint-disable-line react-hooks/set-state-in-effect
+  }, [])
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(fullUrl)
@@ -59,7 +65,7 @@ export function ShareButton({ title, url }: ShareButtonProps) {
         )}
       </button>
 
-      {typeof navigator !== "undefined" && "share" in navigator && (
+      {canNativeShare && (
         <button
           type="button"
           onClick={handleShare}

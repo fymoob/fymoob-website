@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { ChevronUp, ChevronDown, MapPin } from "lucide-react"
 import { getPropertyCoordinates } from "@/lib/bairro-coordinates"
 import "leaflet/dist/leaflet.css"
@@ -16,7 +16,11 @@ export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMap
   const [isOpen, setIsOpen] = useState(true)
   const [MapComponent, setMapComponent] = useState<React.ReactNode>(null)
 
-  const coords = getPropertyCoordinates(latitude, longitude, bairro)
+  // Memoize coords to avoid re-running the effect on every parent re-render
+  const coords = useMemo(
+    () => getPropertyCoordinates(latitude, longitude, bairro),
+    [latitude, longitude, bairro]
+  )
 
   useEffect(() => {
     if (!coords || !isOpen) return
