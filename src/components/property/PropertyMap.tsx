@@ -27,9 +27,10 @@ export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMap
       const L = (await import("leaflet")).default
       const { MapContainer, TileLayer, Marker } = await import("react-leaflet")
 
-      // Custom marker icon
+      // Custom marker icon — inline SVG data URI to avoid 403 on static files
+      const markerSvg = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40"><path d="M16 0C7.16 0 0 7.16 0 16c0 12 16 24 16 24s16-12 16-24C32 7.16 24.84 0 16 0zm0 22a6 6 0 110-12 6 6 0 010 12z" fill="%2329ABE2"/></svg>')}`
       const icon = L.icon({
-        iconUrl: "/images/map-marker.svg",
+        iconUrl: markerSvg,
         iconSize: [32, 40],
         iconAnchor: [16, 40],
         popupAnchor: [0, -40],
