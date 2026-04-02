@@ -55,7 +55,14 @@
       "mcp__playwright__browser_take_screenshot",
       "mcp__playwright__browser_resize",
       "mcp__playwright__browser_snapshot",
-      "mcp__playwright__browser_click"
+      "mcp__playwright__browser_click",
+      "WebFetch(domain:matteus.dev)",
+      "WebFetch(domain:diegocastroadvogado.com.br)",
+      "WebFetch(domain:www.wonder.legal)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:www.jusbrasil.com.br)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:juristas.com.br)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Vine\\.claude\\projects\\c--Users-Vine-demo\\memory"

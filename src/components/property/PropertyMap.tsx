@@ -1,9 +1,9 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { ChevronUp, ChevronDown, MapPin } from "lucide-react"
 import { getPropertyCoordinates } from "@/lib/bairro-coordinates"
-import "leaflet/dist/leaflet.css"
+import "maplibre-gl/dist/maplibre-gl.css"
 
 interface PropertyMapProps {
   latitude: number | null
@@ -14,56 +14,68 @@ interface PropertyMapProps {
 
 export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMapProps) {
   const [isOpen, setIsOpen] = useState(true)
-  const [MapComponent, setMapComponent] = useState<React.ReactNode>(null)
+  const [loaded, setLoaded] = useState(false)
+  const mapContainerRef = useRef<HTMLDivElement>(null)
+  const mapRef = useRef<unknown>(null)
 
-  // Memoize coords to avoid re-running the effect on every parent re-render
   const coords = useMemo(
     () => getPropertyCoordinates(latitude, longitude, bairro),
     [latitude, longitude, bairro]
   )
 
   useEffect(() => {
-    if (!coords || !isOpen) return
+    if (!coords || !isOpen || !mapContainerRef.current || mapRef.current) return
 
     let cancelled = false
 
-    async function loadMap() {
-      const L = (await import("leaflet")).default
-      const { MapContainer, TileLayer, Marker } = await import("react-leaflet")
+    async function initMap() {
+      const maplibregl = (await import("maplibre-gl")).default
 
-      // Custom marker icon — inline SVG data URI to avoid 403 on static files
-      const markerSvg = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 32 40"><path d="M16 0C7.16 0 0 7.16 0 16c0 12 16 24 16 24s16-12 16-24C32 7.16 24.84 0 16 0zm0 22a6 6 0 110-12 6 6 0 010 12z" fill="%2329ABE2"/></svg>')}`
-      const icon = L.icon({
-        iconUrl: markerSvg,
-        iconSize: [32, 40],
-        iconAnchor: [16, 40],
-        popupAnchor: [0, -40],
+      if (cancelled || !mapContainerRef.current) return
+
+      const map = new maplibregl.Map({
+        container: mapContainerRef.current,
+        style: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+        center: [coords!.lng, coords!.lat],
+        zoom: 15,
+        attributionControl: false,
       })
 
-      if (cancelled) return
+      map.addControl(new maplibregl.NavigationControl(), "top-right")
+      map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-left")
 
-      setMapComponent(
-        <MapContainer
-          center={[coords!.lat, coords!.lng]}
-          zoom={15}
-          scrollWheelZoom={false}
-          style={{ height: "100%", width: "100%", borderRadius: "0.75rem" }}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          <Marker position={[coords!.lat, coords!.lng]} icon={icon} />
-        </MapContainer>
-      )
+      // Custom marker
+      const markerEl = document.createElement("div")
+      markerEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="44" viewBox="0 0 32 40"><path d="M16 0C7.16 0 0 7.16 0 16c0 12 16 24 16 24s16-12 16-24C32 7.16 24.84 0 16 0zm0 22a6 6 0 110-12 6 6 0 010 12z" fill="#29ABE2"/></svg>`
+      markerEl.style.cursor = "pointer"
+
+      new maplibregl.Marker({ element: markerEl })
+        .setLngLat([coords!.lng, coords!.lat])
+        .addTo(map)
+
+      mapRef.current = map
+      setLoaded(true)
+
+      // Disable scroll zoom for better UX
+      map.scrollZoom.disable()
     }
 
-    loadMap()
+    initMap()
 
     return () => {
       cancelled = true
     }
   }, [coords, isOpen])
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (mapRef.current && typeof (mapRef.current as { remove: () => void }).remove === "function") {
+        (mapRef.current as { remove: () => void }).remove()
+        mapRef.current = null
+      }
+    }
+  }, [])
 
   if (!coords) return null
 
@@ -88,8 +100,9 @@ export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMap
         <div>
           <div className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
             <div className="relative z-0 h-[350px] sm:h-[400px]">
-              {MapComponent || (
-                <div className="flex h-full items-center justify-center text-neutral-400">
+              <div ref={mapContainerRef} className="h-full w-full rounded-xl" />
+              {!loaded && (
+                <div className="absolute inset-0 flex items-center justify-center text-neutral-400">
                   <MapPin size={24} className="mr-2 animate-pulse" />
                   Carregando mapa...
                 </div>
