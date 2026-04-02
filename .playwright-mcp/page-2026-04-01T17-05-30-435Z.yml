@@ -1,0 +1,114 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "FYMOOB Imobiliária" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - img "FYMOOB Imobiliária" [ref=e6]
+      - button "Abrir menu" [ref=e8]:
+        - img [ref=e9]
+        - generic [ref=e10]: Abrir menu
+  - main [ref=e11]:
+    - generic [ref=e12]:
+      - navigation "Breadcrumb" [ref=e13]:
+        - list [ref=e14]:
+          - listitem [ref=e15]:
+            - link "Home" [ref=e16] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e17]:
+            - img [ref=e18]
+            - generic [ref=e20]: Busca
+      - heading "Busca de imóveis em Curitiba" [level=1] [ref=e21]
+      - complementary [ref=e23]:
+        - generic [ref=e26]:
+          - button "Filtros" [ref=e27]:
+            - img [ref=e28]
+            - text: Filtros
+          - button "Localização" [ref=e29]:
+            - img [ref=e30]
+            - text: Localização
+          - button "Preço" [ref=e33]:
+            - img [ref=e34]
+            - text: Preço
+          - button "Quartos" [ref=e37]:
+            - img [ref=e38]
+            - text: Quartos
+          - button "Tipo" [ref=e41]:
+            - img [ref=e42]
+            - text: Tipo
+  - contentinfo [ref=e147]:
+    - generic [ref=e149]:
+      - generic [ref=e150]:
+        - generic [ref=e151]:
+          - img "FYMOOB Imobiliária" [ref=e152]
+          - paragraph [ref=e153]: Encontre seu imóvel ideal em Curitiba com atendimento personalizado e as melhores oportunidades do mercado.
+        - generic [ref=e154]:
+          - heading "FYMOOB" [level=3] [ref=e155]
+          - generic [ref=e156]:
+            - paragraph [ref=e157]: "CRECI: J 9420"
+            - link "(41) 99978-0517" [ref=e158] [cursor=pointer]:
+              - /url: tel:+554199978-0517
+              - img [ref=e159]
+              - text: (41) 99978-0517
+            - link "contato@fymoob.com" [ref=e161] [cursor=pointer]:
+              - /url: mailto:contato@fymoob.com
+              - img [ref=e162]
+              - text: contato@fymoob.com
+            - paragraph [ref=e165]:
+              - img [ref=e166]
+              - text: Curitiba, PR
+        - generic [ref=e169]:
+          - heading "Navegação" [level=3] [ref=e170]
+          - navigation [ref=e171]:
+            - link "Home" [ref=e172] [cursor=pointer]:
+              - /url: /
+            - link "Sobre nós" [ref=e173] [cursor=pointer]:
+              - /url: /sobre
+            - link "Buscar imóvel" [ref=e174] [cursor=pointer]:
+              - /url: /busca
+            - link "Anunciar" [ref=e175] [cursor=pointer]:
+              - /url: /anuncie
+            - link "Contato" [ref=e176] [cursor=pointer]:
+              - /url: /contato
+            - link "Blog" [ref=e177] [cursor=pointer]:
+              - /url: /blog
+            - link "FAQ" [ref=e178] [cursor=pointer]:
+              - /url: /faq
+        - generic [ref=e179]:
+          - heading "Imóveis" [level=3] [ref=e180]
+          - navigation [ref=e181]:
+            - link "Apartamentos em Curitiba" [ref=e182] [cursor=pointer]:
+              - /url: /apartamentos-curitiba
+            - link "Casas em Curitiba" [ref=e183] [cursor=pointer]:
+              - /url: /casas-curitiba
+            - link "Sobrados em Curitiba" [ref=e184] [cursor=pointer]:
+              - /url: /sobrados-curitiba
+            - link "Terrenos em Curitiba" [ref=e185] [cursor=pointer]:
+              - /url: /terrenos-curitiba
+      - generic [ref=e186]:
+        - paragraph [ref=e187]: © 2026 FYMOOB Imobiliária. Todos os direitos reservados.
+        - paragraph [ref=e188]: Imobiliária Certificada
+  - link "Fale conosco pelo WhatsApp" [ref=e189] [cursor=pointer]:
+    - /url: https://wa.me/5541999780517?text=Ol%C3%A1!%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20im%C3%B3veis%20da%20FYMOOB.
+    - img [ref=e190]
+    - generic [ref=e192]: "1"
+  - navigation [ref=e193]:
+    - generic [ref=e194]:
+      - link "Início" [ref=e195] [cursor=pointer]:
+        - /url: /
+        - img [ref=e196]
+        - generic [ref=e199]: Início
+      - link "Buscar" [ref=e200] [cursor=pointer]:
+        - /url: /busca
+        - img [ref=e201]
+        - generic [ref=e204]: Buscar
+      - link "Favoritos" [ref=e205] [cursor=pointer]:
+        - /url: /favoritos
+        - img [ref=e206]
+        - generic [ref=e208]: Favoritos
+      - link "Mais" [ref=e209] [cursor=pointer]:
+        - /url: /blog
+        - img [ref=e210]
+        - generic [ref=e211]: Mais
+  - button "Open Next.js Dev Tools" [ref=e217] [cursor=pointer]:
+    - img [ref=e218]
+  - alert [ref=e221]

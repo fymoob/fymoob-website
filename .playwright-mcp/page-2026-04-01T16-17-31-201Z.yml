@@ -1,0 +1,411 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "FYMOOB Imobiliária" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img "FYMOOB Imobiliária" [ref=e5]
+      - button "Abrir menu" [ref=e7]:
+        - img [ref=e8]
+        - generic [ref=e9]: Abrir menu
+  - main [ref=e10]:
+    - generic [ref=e11]:
+      - generic [ref=e14]:
+        - heading "Encontre seu imóvel ideal" [level=1] [ref=e15]
+        - paragraph [ref=e16]: Apartamentos, casas e sobrados à venda e para alugar nos melhores bairros da cidade.
+        - complementary [ref=e18]:
+          - generic [ref=e19]:
+            - generic [ref=e20]:
+              - generic [ref=e22]:
+                - generic [ref=e23]:
+                  - button "Localização" [ref=e25]:
+                    - img [ref=e26]
+                    - paragraph [ref=e30]: Localização
+                    - img [ref=e31]
+                  - button "Preço" [ref=e34]:
+                    - img [ref=e35]
+                    - paragraph [ref=e39]: Preço
+                    - img [ref=e40]
+                  - button "Quartos" [ref=e43]:
+                    - img [ref=e44]
+                    - paragraph [ref=e48]: Quartos
+                    - img [ref=e49]
+                  - button "Tipo" [ref=e52]:
+                    - img [ref=e53]
+                    - paragraph [ref=e58]: Tipo
+                    - img [ref=e59]
+                - button "Buscar" [ref=e61]
+              - generic:
+                - generic:
+                  - generic:
+                    - textbox "Digite o código do imóvel..."
+                    - button "Buscar": Buscar
+            - button "Buscar por código" [ref=e63]:
+              - img [ref=e64]
+              - text: Buscar por código
+      - link "Rolar para próxima seção" [ref=e67] [cursor=pointer]:
+        - /url: "#oportunidade"
+        - img [ref=e68]
+    - generic [ref=e73]:
+      - heading "Oportunidade de hoje" [level=2] [ref=e74]
+      - 'link "Foto do Apartamento no Batel, Curitiba Apartamento Cód: 69803405 Batel - Curitiba / PR Apartamento mobiliado com 03 suítes, face norte, localizado no 11º andar do BW R... R$ 7.000.000,00 263 m² Área 8 Banheiros 3 Vagas" [ref=e76] [cursor=pointer]':
+        - /url: /imovel/apartamento-batel-curitiba-pr-263m2-69803405
+        - img "Foto do Apartamento no Batel, Curitiba" [ref=e78]
+        - generic [ref=e79]:
+          - generic [ref=e80]:
+            - generic [ref=e81]: Apartamento
+            - generic [ref=e82]: "Cód: 69803405"
+          - paragraph [ref=e83]: Batel - Curitiba / PR
+          - heading "Apartamento mobiliado com 03 suítes, face norte, localizado no 11º andar do BW R..." [level=3] [ref=e84]
+          - paragraph [ref=e85]: R$ 7.000.000,00
+          - generic [ref=e86]:
+            - generic [ref=e87]:
+              - img [ref=e88]
+              - generic [ref=e93]: 263 m² Área
+            - generic [ref=e94]:
+              - img [ref=e95]
+              - generic [ref=e98]: 8 Banheiros
+            - generic [ref=e99]:
+              - img [ref=e100]
+              - generic [ref=e104]: 3 Vagas
+    - generic [ref=e106]:
+      - generic [ref=e108]:
+        - heading "Destaques de lançamento" [level=2] [ref=e109]
+        - link "Ver todos" [ref=e110] [cursor=pointer]:
+          - /url: /busca
+      - generic [ref=e111]:
+        - article [ref=e113]:
+          - generic [ref=e114]:
+            - region [ref=e115]:
+              - group [ref=e118]:
+                - img "Foto do Sobrado com 3 quartos no Santa Quitéria, Curitiba - foto 1" [ref=e120]
+            - button "Adicionar aos favoritos" [ref=e121]:
+              - img [ref=e122]
+            - link "Ver detalhes de Sobrado com 3 quartos à venda no bairro Santa Quitéria!" [ref=e124] [cursor=pointer]:
+              - /url: /imovel/sobrado-santa-quiteria-curitiba-pr-3-quartos-107m2-69804095
+          - generic [ref=e125]:
+            - generic [ref=e127]:
+              - generic [ref=e128]: Sobrado
+              - generic [ref=e129]: ·
+              - generic [ref=e130]: "69804095"
+            - link "Sobrado com 3 quartos à venda no bairro Santa Quitéria!" [ref=e131] [cursor=pointer]:
+              - /url: /imovel/sobrado-santa-quiteria-curitiba-pr-3-quartos-107m2-69804095
+              - heading "Sobrado com 3 quartos à venda no bairro Santa Quitéria!" [level=2] [ref=e132]
+            - paragraph [ref=e133]: Santa Quitéria, Curitiba
+            - paragraph [ref=e134]: R$ 945.000,00
+            - generic [ref=e135]:
+              - generic [ref=e136]:
+                - img [ref=e137]
+                - generic [ref=e142]: 107 m² Área
+              - generic [ref=e143]:
+                - img [ref=e144]
+                - generic [ref=e147]: 3 Quartos
+              - generic [ref=e148]:
+                - img [ref=e149]
+                - generic [ref=e152]: 1 Banheiro
+              - generic [ref=e153]:
+                - img [ref=e154]
+                - generic [ref=e158]: 2 Vagas
+        - article [ref=e160]:
+          - generic [ref=e161]:
+            - region [ref=e162]:
+              - group [ref=e165]:
+                - img "Foto do Apartamento Duplex com 2 quartos no Mossunguê, Curitiba - foto 1" [ref=e167]
+            - generic [ref=e168]: LANÇAMENTO
+            - button "Adicionar aos favoritos" [ref=e169]:
+              - img [ref=e170]
+            - link "Ver detalhes de [REVENDA] Reserva Lago - Duplex Cobertura 2 suítes à venda no bairro Mossunguê, em frente ao Parque Barigui e ao lado do Park Shopping Barigui em Curitiba." [ref=e172] [cursor=pointer]:
+              - /url: /imovel/apartamento-duplex-mossungue-curitiba-pr-2-quartos-116.83m2-69804720
+          - generic [ref=e173]:
+            - generic [ref=e175]:
+              - generic [ref=e176]: Apartamento Duplex
+              - generic [ref=e177]: ·
+              - generic [ref=e178]: "69804720"
+            - link "[REVENDA] Reserva Lago - Duplex Cobertura 2 suítes à venda no bairro..." [ref=e179] [cursor=pointer]:
+              - /url: /imovel/apartamento-duplex-mossungue-curitiba-pr-2-quartos-116.83m2-69804720
+              - heading "[REVENDA] Reserva Lago - Duplex Cobertura 2 suítes à venda no bairro..." [level=2] [ref=e180]
+            - paragraph [ref=e181]: Mossunguê, Curitiba
+            - paragraph [ref=e182]: R$ 2.091.257,00
+            - generic [ref=e183]:
+              - generic [ref=e184]:
+                - img [ref=e185]
+                - generic [ref=e190]: 116,83 m² Área
+              - generic [ref=e191]:
+                - img [ref=e192]
+                - generic [ref=e195]: 2 Quartos
+              - generic [ref=e196]:
+                - img [ref=e197]
+                - generic [ref=e200]: 3 Banheiros
+              - generic [ref=e201]:
+                - img [ref=e202]
+                - generic [ref=e206]: 2 Vagas
+        - article [ref=e208]:
+          - generic [ref=e209]:
+            - region [ref=e210]:
+              - group [ref=e213]:
+                - img "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - foto 1" [ref=e215]
+            - button "Adicionar aos favoritos" [ref=e216]:
+              - img [ref=e217]
+            - link "Ver detalhes de Apto Mobiliado com 02 Suítes no Água Verde" [ref=e219] [cursor=pointer]:
+              - /url: /imovel/apartamento-agua-verde-curitiba-pr-2-quartos-96m2-69804752
+          - generic [ref=e220]:
+            - generic [ref=e222]:
+              - generic [ref=e223]: Apartamento
+              - generic [ref=e224]: ·
+              - generic [ref=e225]: "69804752"
+            - link "Apto Mobiliado com 02 Suítes no Água Verde" [ref=e226] [cursor=pointer]:
+              - /url: /imovel/apartamento-agua-verde-curitiba-pr-2-quartos-96m2-69804752
+              - heading "Apto Mobiliado com 02 Suítes no Água Verde" [level=2] [ref=e227]
+            - paragraph [ref=e228]: Água Verde, Curitiba
+            - paragraph [ref=e229]: R$ 1.933.700,00
+            - generic [ref=e230]:
+              - generic [ref=e231]:
+                - img [ref=e232]
+                - generic [ref=e237]: 96 m² Área
+              - generic [ref=e238]:
+                - img [ref=e239]
+                - generic [ref=e242]: 2 Quartos
+              - generic [ref=e243]:
+                - img [ref=e244]
+                - generic [ref=e247]: 5 Banheiros
+              - generic [ref=e248]:
+                - img [ref=e249]
+                - generic [ref=e253]: 2 Vagas
+        - article [ref=e255]:
+          - generic [ref=e256]:
+            - region [ref=e257]:
+              - group [ref=e260]:
+                - img "Foto do Apartamento com 2 quartos no Batel, Curitiba - foto 1" [ref=e262]
+            - button "Adicionar aos favoritos" [ref=e263]:
+              - img [ref=e264]
+            - link "Ver detalhes de Apartamento 2 Suítes Mobiliado no Batel" [ref=e266] [cursor=pointer]:
+              - /url: /imovel/apartamento-batel-curitiba-pr-2-quartos-106.86m2-69804925
+          - generic [ref=e267]:
+            - generic [ref=e269]:
+              - generic [ref=e270]: Apartamento
+              - generic [ref=e271]: ·
+              - generic [ref=e272]: "69804925"
+            - link "Apartamento 2 Suítes Mobiliado no Batel" [ref=e273] [cursor=pointer]:
+              - /url: /imovel/apartamento-batel-curitiba-pr-2-quartos-106.86m2-69804925
+              - heading "Apartamento 2 Suítes Mobiliado no Batel" [level=2] [ref=e274]
+            - paragraph [ref=e275]: Batel, Curitiba
+            - paragraph [ref=e276]: R$ 950.000,00
+            - generic [ref=e277]:
+              - generic [ref=e278]:
+                - img [ref=e279]
+                - generic [ref=e284]: 106,86 m² Área
+              - generic [ref=e285]:
+                - img [ref=e286]
+                - generic [ref=e289]: 2 Quartos
+              - generic [ref=e290]:
+                - img [ref=e291]
+                - generic [ref=e294]: 5 Banheiros
+              - generic [ref=e295]:
+                - img [ref=e296]
+                - generic [ref=e300]: 1 Vaga
+    - generic [ref=e302]:
+      - heading "Bairros em destaque" [level=2] [ref=e304]
+      - generic [ref=e305]:
+        - link "Foto do bairro Portão, Curitiba Portão 25 imóveis" [ref=e307] [cursor=pointer]:
+          - /url: /imoveis/portao
+          - img "Foto do bairro Portão, Curitiba" [ref=e308]
+          - generic [ref=e310]:
+            - generic [ref=e311]:
+              - img [ref=e312]
+              - heading "Portão" [level=3] [ref=e315]
+            - paragraph [ref=e316]: 25 imóveis
+        - link "Foto do bairro Mossunguê, Curitiba Mossunguê 17 imóveis" [ref=e318] [cursor=pointer]:
+          - /url: /imoveis/mossungue
+          - img "Foto do bairro Mossunguê, Curitiba" [ref=e319]
+          - generic [ref=e321]:
+            - generic [ref=e322]:
+              - img [ref=e323]
+              - heading "Mossunguê" [level=3] [ref=e326]
+            - paragraph [ref=e327]: 17 imóveis
+        - link "Foto do bairro Cidade Industrial, Curitiba Cidade Industrial 16 imóveis" [ref=e329] [cursor=pointer]:
+          - /url: /imoveis/cidade-industrial
+          - img "Foto do bairro Cidade Industrial, Curitiba" [ref=e330]
+          - generic [ref=e332]:
+            - generic [ref=e333]:
+              - img [ref=e334]
+              - heading "Cidade Industrial" [level=3] [ref=e337]
+            - paragraph [ref=e338]: 16 imóveis
+        - link "Foto do bairro Tatuquara, Curitiba Tatuquara 13 imóveis" [ref=e340] [cursor=pointer]:
+          - /url: /imoveis/tatuquara
+          - img "Foto do bairro Tatuquara, Curitiba" [ref=e341]
+          - generic [ref=e343]:
+            - generic [ref=e344]:
+              - img [ref=e345]
+              - heading "Tatuquara" [level=3] [ref=e348]
+            - paragraph [ref=e349]: 13 imóveis
+        - link "Foto do bairro Água Verde, Curitiba Água Verde 12 imóveis" [ref=e351] [cursor=pointer]:
+          - /url: /imoveis/agua-verde
+          - img "Foto do bairro Água Verde, Curitiba" [ref=e352]
+          - generic [ref=e354]:
+            - generic [ref=e355]:
+              - img [ref=e356]
+              - heading "Água Verde" [level=3] [ref=e359]
+            - paragraph [ref=e360]: 12 imóveis
+        - link "Foto do bairro Sítio Cercado, Curitiba Sítio Cercado 10 imóveis" [ref=e362] [cursor=pointer]:
+          - /url: /imoveis/sitio-cercado
+          - img "Foto do bairro Sítio Cercado, Curitiba" [ref=e363]
+          - generic [ref=e365]:
+            - generic [ref=e366]:
+              - img [ref=e367]
+              - heading "Sítio Cercado" [level=3] [ref=e370]
+            - paragraph [ref=e371]: 10 imóveis
+    - generic [ref=e373]:
+      - heading "Buscar por tipo de imóvel" [level=2] [ref=e375]
+      - generic [ref=e376]:
+        - link "Apartamentos Apartamentos à venda e aluguel" [ref=e378] [cursor=pointer]:
+          - /url: /apartamentos-curitiba
+          - img [ref=e379]
+          - generic [ref=e383]: Apartamentos
+          - generic [ref=e384]: Apartamentos à venda e aluguel
+        - link "Casas Casas à venda e aluguel" [ref=e386] [cursor=pointer]:
+          - /url: /casas-curitiba
+          - img [ref=e387]
+          - generic [ref=e390]: Casas
+          - generic [ref=e391]: Casas à venda e aluguel
+        - link "Sobrados Sobrados à venda e aluguel" [ref=e393] [cursor=pointer]:
+          - /url: /sobrados-curitiba
+          - img [ref=e394]
+          - generic [ref=e396]: Sobrados
+          - generic [ref=e397]: Sobrados à venda e aluguel
+        - link "Terrenos Terrenos à venda" [ref=e399] [cursor=pointer]:
+          - /url: /terrenos-curitiba
+          - img [ref=e400]
+          - generic [ref=e402]: Terrenos
+          - generic [ref=e403]: Terrenos à venda
+    - generic [ref=e405]:
+      - generic [ref=e407]:
+        - heading "Do Blog" [level=2] [ref=e408]
+        - link "Ver todos" [ref=e409] [cursor=pointer]:
+          - /url: /blog
+      - generic [ref=e410]:
+        - link "Melhores Bairros de Curitiba para Morar em 2026 bairros curitiba morar Melhores Bairros de Curitiba para Morar em 2026 Descubra os melhores bairros de Curitiba para morar em 2026. Análise completa com infraestrutura, transporte, segurança e preços médios de imóveis. 14 de fevereiro de 2026 6 min de leitura" [ref=e412] [cursor=pointer]:
+          - /url: /blog/melhores-bairros-curitiba-2026
+          - img "Melhores Bairros de Curitiba para Morar em 2026" [ref=e414]
+          - generic [ref=e415]:
+            - generic [ref=e416]:
+              - generic [ref=e417]: bairros
+              - generic [ref=e418]: curitiba
+              - generic [ref=e419]: morar
+            - heading "Melhores Bairros de Curitiba para Morar em 2026" [level=3] [ref=e420]
+            - paragraph [ref=e421]: Descubra os melhores bairros de Curitiba para morar em 2026. Análise completa com infraestrutura, transporte, segurança e preços médios de imóveis.
+            - generic [ref=e422]:
+              - generic [ref=e423]:
+                - img [ref=e424]
+                - text: 14 de fevereiro de 2026
+              - generic [ref=e426]:
+                - img [ref=e427]
+                - text: 6 min de leitura
+        - link "Quanto Custa Morar no Batel em Curitiba? batel custo de vida curitiba Quanto Custa Morar no Batel em Curitiba? Descubra quanto custa morar no Batel, bairro mais valorizado de Curitiba. Preços de imóveis, condomínio, IPTU, custo de vida e alternativas acessíveis. 09 de fevereiro de 2026 5 min de leitura" [ref=e431] [cursor=pointer]:
+          - /url: /blog/quanto-custa-morar-batel-curitiba
+          - img "Quanto Custa Morar no Batel em Curitiba?" [ref=e433]
+          - generic [ref=e434]:
+            - generic [ref=e435]:
+              - generic [ref=e436]: batel
+              - generic [ref=e437]: custo de vida
+              - generic [ref=e438]: curitiba
+            - heading "Quanto Custa Morar no Batel em Curitiba?" [level=3] [ref=e439]
+            - paragraph [ref=e440]: Descubra quanto custa morar no Batel, bairro mais valorizado de Curitiba. Preços de imóveis, condomínio, IPTU, custo de vida e alternativas acessíveis.
+            - generic [ref=e441]:
+              - generic [ref=e442]:
+                - img [ref=e443]
+                - text: 09 de fevereiro de 2026
+              - generic [ref=e445]:
+                - img [ref=e446]
+                - text: 5 min de leitura
+        - link "Como Financiar pelo Minha Casa Minha Vida em 2026 financiamento minha casa minha vida curitiba Como Financiar pelo Minha Casa Minha Vida em 2026 Guia completo sobre como financiar um imóvel pelo programa Minha Casa Minha Vida em Curitiba. Faixas de renda, taxas de juros, documentos e passo a passo. 31 de janeiro de 2026 5 min de leitura" [ref=e450] [cursor=pointer]:
+          - /url: /blog/como-financiar-minha-casa-minha-vida
+          - img "Como Financiar pelo Minha Casa Minha Vida em 2026" [ref=e452]
+          - generic [ref=e453]:
+            - generic [ref=e454]:
+              - generic [ref=e455]: financiamento
+              - generic [ref=e456]: minha casa minha vida
+              - generic [ref=e457]: curitiba
+            - heading "Como Financiar pelo Minha Casa Minha Vida em 2026" [level=3] [ref=e458]
+            - paragraph [ref=e459]: Guia completo sobre como financiar um imóvel pelo programa Minha Casa Minha Vida em Curitiba. Faixas de renda, taxas de juros, documentos e passo a passo.
+            - generic [ref=e460]:
+              - generic [ref=e461]:
+                - img [ref=e462]
+                - text: 31 de janeiro de 2026
+              - generic [ref=e464]:
+                - img [ref=e465]
+                - text: 5 min de leitura
+  - contentinfo [ref=e468]:
+    - generic [ref=e470]:
+      - generic [ref=e471]:
+        - generic [ref=e472]:
+          - img "FYMOOB Imobiliária" [ref=e473]
+          - paragraph [ref=e474]: Encontre seu imóvel ideal em Curitiba com atendimento personalizado e as melhores oportunidades do mercado.
+        - generic [ref=e475]:
+          - heading "FYMOOB" [level=3] [ref=e476]
+          - generic [ref=e477]:
+            - paragraph [ref=e478]: "CRECI: J 9420"
+            - link "(41) 99978-0517" [ref=e479] [cursor=pointer]:
+              - /url: tel:+554199978-0517
+              - img [ref=e480]
+              - text: (41) 99978-0517
+            - link "contato@fymoob.com" [ref=e482] [cursor=pointer]:
+              - /url: mailto:contato@fymoob.com
+              - img [ref=e483]
+              - text: contato@fymoob.com
+            - paragraph [ref=e486]:
+              - img [ref=e487]
+              - text: Curitiba, PR
+        - generic [ref=e490]:
+          - heading "Navegação" [level=3] [ref=e491]
+          - navigation [ref=e492]:
+            - link "Home" [ref=e493] [cursor=pointer]:
+              - /url: /
+            - link "Sobre nós" [ref=e494] [cursor=pointer]:
+              - /url: /sobre
+            - link "Buscar imóvel" [ref=e495] [cursor=pointer]:
+              - /url: /busca
+            - link "Anunciar" [ref=e496] [cursor=pointer]:
+              - /url: /anuncie
+            - link "Contato" [ref=e497] [cursor=pointer]:
+              - /url: /contato
+            - link "Blog" [ref=e498] [cursor=pointer]:
+              - /url: /blog
+            - link "FAQ" [ref=e499] [cursor=pointer]:
+              - /url: /faq
+        - generic [ref=e500]:
+          - heading "Imóveis" [level=3] [ref=e501]
+          - navigation [ref=e502]:
+            - link "Apartamentos em Curitiba" [ref=e503] [cursor=pointer]:
+              - /url: /apartamentos-curitiba
+            - link "Casas em Curitiba" [ref=e504] [cursor=pointer]:
+              - /url: /casas-curitiba
+            - link "Sobrados em Curitiba" [ref=e505] [cursor=pointer]:
+              - /url: /sobrados-curitiba
+            - link "Terrenos em Curitiba" [ref=e506] [cursor=pointer]:
+              - /url: /terrenos-curitiba
+      - generic [ref=e507]:
+        - paragraph [ref=e508]: © 2026 FYMOOB Imobiliária. Todos os direitos reservados.
+        - paragraph [ref=e509]: Imobiliária Certificada
+  - link "Fale conosco pelo WhatsApp" [ref=e510] [cursor=pointer]:
+    - /url: https://wa.me/5541999780517?text=Ol%C3%A1!%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20im%C3%B3veis%20da%20FYMOOB.
+    - img [ref=e511]
+    - generic [ref=e513]: "1"
+  - navigation [ref=e514]:
+    - generic [ref=e515]:
+      - link "Início" [ref=e516] [cursor=pointer]:
+        - /url: /
+        - img [ref=e517]
+        - generic [ref=e520]: Início
+      - link "Buscar" [ref=e521] [cursor=pointer]:
+        - /url: /busca
+        - img [ref=e522]
+        - generic [ref=e525]: Buscar
+      - link "Favoritos" [ref=e526] [cursor=pointer]:
+        - /url: /favoritos
+        - img [ref=e527]
+        - generic [ref=e529]: Favoritos
+      - link "Mais" [ref=e530] [cursor=pointer]:
+        - /url: /blog
+        - img [ref=e531]
+        - generic [ref=e532]: Mais
+  - button "Open Next.js Dev Tools" [ref=e538] [cursor=pointer]:
+    - img [ref=e539]

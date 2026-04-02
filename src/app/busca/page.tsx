@@ -7,6 +7,7 @@ import { PropertyGrid } from "@/components/search/PropertyGrid"
 import { SkeletonsGrid } from "@/components/search/SkeletonsGrid"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { SaveSearchButton } from "@/components/search/SaveSearchButton"
+import { SortDropdown } from "@/components/search/SortDropdown"
 import { generateItemListSchema } from "@/lib/seo"
 import { slugify } from "@/lib/utils"
 import {
@@ -294,6 +295,9 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
           {total === 1 ? "imóvel encontrado" : "imóveis encontrados"}
         </p>
         <div className="flex items-center gap-3">
+          <Suspense fallback={null}>
+            <SortDropdown />
+          </Suspense>
           <Suspense fallback={null}>
             <SaveSearchButton />
           </Suspense>

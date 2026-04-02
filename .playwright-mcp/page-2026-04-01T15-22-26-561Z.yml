@@ -1,0 +1,414 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "FYMOOB Imobiliária" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - img "FYMOOB Imobiliária" [ref=e6]
+      - navigation [ref=e7]:
+        - link "Home" [ref=e8] [cursor=pointer]:
+          - /url: /
+        - link "Sobre nós" [ref=e9] [cursor=pointer]:
+          - /url: /sobre
+        - link "Buscar" [ref=e10] [cursor=pointer]:
+          - /url: /busca
+        - link "Blog" [ref=e11] [cursor=pointer]:
+          - /url: /blog
+        - link "Anunciar" [ref=e12] [cursor=pointer]:
+          - /url: /anuncie
+        - link "Contato" [ref=e13] [cursor=pointer]:
+          - /url: /contato
+      - link "(41) 99978-0517" [ref=e15] [cursor=pointer]:
+        - /url: tel:+554199978-0517
+        - img [ref=e16]
+        - text: (41) 99978-0517
+  - main [ref=e18]:
+    - generic [ref=e19]:
+      - generic [ref=e20]:
+        - navigation "Breadcrumb" [ref=e21]:
+          - list [ref=e22]:
+            - listitem [ref=e23]:
+              - link "Home" [ref=e24] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e25]:
+              - img [ref=e26]
+              - link "Água Verde" [ref=e28] [cursor=pointer]:
+                - /url: /imoveis/água-verde
+            - listitem [ref=e29]:
+              - img [ref=e30]
+              - generic [ref=e32]: Apto Mobiliado com 02 Suítes no Água Verde
+        - generic [ref=e33]:
+          - link "Compartilhar" [ref=e34] [cursor=pointer]:
+            - /url: https://wa.me/?text=Apto%20Mobiliado%20com%2002%20Su%C3%ADtes%20no%20%C3%81gua%20Verde%20%E2%80%94%20https%3A%2F%2Ffymoob.com%2Fimovel%2Fapartamento-agua-verde-curitiba-pr-2-quartos-96m2-69804752
+            - img [ref=e35]
+            - generic [ref=e37]: Compartilhar
+          - button "Copiar link" [ref=e38]:
+            - img [ref=e39]
+            - generic [ref=e42]: Copiar link
+          - button [ref=e43]:
+            - img [ref=e44]
+      - generic [ref=e50]:
+        - generic [ref=e51]:
+          - generic [ref=e52]: Apartamento
+          - generic [ref=e53]: Venda
+          - generic [ref=e54]: "69804752"
+        - heading "Apto Mobiliado com 02 Suítes no Água Verde" [level=1] [ref=e55]
+        - paragraph [ref=e56]:
+          - img [ref=e57]
+          - text: Iguaçu, Água Verde, Curitiba - PR
+        - generic [ref=e60]:
+          - generic [ref=e61]:
+            - img [ref=e62]
+            - generic [ref=e67]: 96 m² Área
+          - generic [ref=e68]:
+            - img [ref=e69]
+            - generic [ref=e72]: 2 Quartos
+          - generic [ref=e73]:
+            - img [ref=e74]
+            - generic [ref=e77]: 5 Banheiros
+          - generic [ref=e78]:
+            - img [ref=e79]
+            - generic [ref=e83]: 2 Vagas
+      - generic [ref=e84]:
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - generic [ref=e87]:
+              - button "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Foto 1" [ref=e88] [cursor=pointer]:
+                - img "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Foto 1" [ref=e89]
+              - button "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Foto 2" [ref=e90] [cursor=pointer]:
+                - img "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Foto 2" [ref=e91]
+              - button "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Foto 3" [ref=e92] [cursor=pointer]:
+                - img "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Foto 3" [ref=e93]
+              - button "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Foto 4" [ref=e94] [cursor=pointer]:
+                - img "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Foto 4" [ref=e95]
+              - button "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Foto 5" [ref=e96] [cursor=pointer]:
+                - img "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Foto 5" [ref=e97]
+              - button "Mostrar todas as fotos" [ref=e98]:
+                - img [ref=e99]
+                - text: Mostrar todas as fotos
+            - generic [ref=e101]:
+              - button "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Miniatura 1" [ref=e102]:
+                - img "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Miniatura 1" [ref=e103]
+              - button "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Miniatura 2" [ref=e104]:
+                - img "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Miniatura 2" [ref=e105]
+              - button "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Miniatura 3" [ref=e106]:
+                - img "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Miniatura 3" [ref=e107]
+              - button "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Miniatura 4" [ref=e108]:
+                - img "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Miniatura 4" [ref=e109]
+              - button "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Miniatura 5" [ref=e110]:
+                - img "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Miniatura 5" [ref=e111]
+              - button "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Miniatura 6" [ref=e112]:
+                - img "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Miniatura 6" [ref=e113]
+              - button "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Miniatura 7" [ref=e114]:
+                - img "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Miniatura 7" [ref=e115]
+              - button "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Miniatura 8" [ref=e116]:
+                - img "Foto do Apartamento com 2 quartos no Água Verde, Curitiba - Miniatura 8" [ref=e117]
+              - button "+7 fotos" [ref=e118]
+          - generic [ref=e119]:
+            - heading "Sobre este imóvel" [level=2] [ref=e120]
+            - generic [ref=e121]:
+              - generic [ref=e122]:
+                - paragraph [ref=e123]: Apartamento mobiliado e decorado com 02 suítes, 96m² privativos, localizado na Av. Iguaçu, no bairro Seminário, próximo à Pizzaria Anos 30 e ao supermercado Casa Fiesta.
+                - paragraph [ref=e124]: Residencial Clube Chateau Latour, condomínio de alto padrão entregue em 2023, com completa infraestrutura de lazer e segurança, incluindo portaria 24 horas, piscina descoberta e aquecida, academia, salões de festas, espaço kids, home office e muito mais.
+                - paragraph [ref=e125]: "Unidade disponível com 96m² privativos, totalmente mobiliada e decorada, composta por:"
+                - paragraph [ref=e126]: Estamos à disposição para esclarecer qualquer dúvida.
+                - paragraph [ref=e127]: Confira também outras opções disponíveis em nosso site.
+              - button "Mostrar mais" [ref=e128] [cursor=pointer]:
+                - text: Mostrar mais
+                - img [ref=e129]
+          - generic [ref=e131]:
+            - heading "O que este imóvel oferece" [level=2] [ref=e132]
+            - generic [ref=e133]:
+              - generic [ref=e134]:
+                - img [ref=e135]
+                - generic [ref=e139]: Piscina
+              - generic [ref=e140]:
+                - img [ref=e141]
+                - generic [ref=e143]: Churrasqueira
+              - generic [ref=e144]:
+                - img [ref=e145]
+                - generic [ref=e147]: Portaria 24h
+              - generic [ref=e148]:
+                - img [ref=e149]
+                - generic [ref=e153]: Garagem
+              - generic [ref=e154]:
+                - img [ref=e155]
+                - generic [ref=e161]: Academia
+              - generic [ref=e162]:
+                - img [ref=e163]
+                - generic [ref=e166]: Sacada/Varanda
+              - generic [ref=e167]:
+                - img [ref=e168]
+                - generic [ref=e172]: Segurança
+          - generic [ref=e173]:
+            - heading "Características" [level=2] [ref=e174]
+            - generic [ref=e175]:
+              - article [ref=e176]:
+                - generic [ref=e177]:
+                  - img [ref=e178]
+                  - generic [ref=e181]:
+                    - paragraph [ref=e182]: Tipo
+                    - paragraph [ref=e183]: Apartamento
+              - article [ref=e184]:
+                - generic [ref=e185]:
+                  - img [ref=e186]
+                  - generic [ref=e190]:
+                    - paragraph [ref=e191]: Finalidade
+                    - paragraph [ref=e192]: Venda
+              - article [ref=e193]:
+                - generic [ref=e194]:
+                  - img [ref=e195]
+                  - generic [ref=e198]:
+                    - paragraph [ref=e199]: Dormitórios
+                    - paragraph [ref=e200]: "2"
+              - article [ref=e201]:
+                - generic [ref=e202]:
+                  - img [ref=e203]
+                  - generic [ref=e206]:
+                    - paragraph [ref=e207]: Banheiros
+                    - paragraph [ref=e208]: "5"
+              - article [ref=e209]:
+                - generic [ref=e210]:
+                  - img [ref=e211]
+                  - generic [ref=e215]:
+                    - paragraph [ref=e216]: Vagas
+                    - paragraph [ref=e217]: "2"
+              - article [ref=e218]:
+                - generic [ref=e219]:
+                  - img [ref=e220]
+                  - generic [ref=e222]:
+                    - paragraph [ref=e223]: Área privativa
+                    - paragraph [ref=e224]: 96 m²
+              - article [ref=e225]:
+                - generic [ref=e226]:
+                  - img [ref=e227]
+                  - generic [ref=e229]:
+                    - paragraph [ref=e230]: Área total
+                    - paragraph [ref=e231]: 138 m²
+              - article [ref=e232]:
+                - generic [ref=e233]:
+                  - img [ref=e234]
+                  - generic [ref=e237]:
+                    - paragraph [ref=e238]: Localização
+                    - paragraph [ref=e239]: Água Verde, Curitiba
+          - generic [ref=e240]:
+            - button "Mapa do imóvel" [ref=e241]:
+              - heading "Mapa do imóvel" [level=2] [ref=e242]
+              - img [ref=e243]
+            - generic [ref=e245]:
+              - generic [ref=e248]:
+                - img [ref=e249]
+                - text: Carregando mapa...
+              - paragraph [ref=e252]: Localização aproximada
+        - complementary [ref=e253]:
+          - generic [ref=e255]:
+            - generic [ref=e256]:
+              - paragraph [ref=e257]: VALOR VENDA
+              - paragraph [ref=e258]: R$ 1.933.700,00
+            - generic [ref=e259]:
+              - link "WhatsApp" [ref=e260] [cursor=pointer]:
+                - /url: https://wa.me/5541999780517?text=Ola!%20Tenho%20interesse%20no%20imovel%20Apto%20Mobiliado%20com%2002%20Su%C3%ADtes%20no%20%C3%81gua%20Verde%20(Cod%3A%2069804752).
+                - img [ref=e261]
+                - text: WhatsApp
+              - link "Ligar" [ref=e263] [cursor=pointer]:
+                - /url: tel:+554199978-0517
+                - img [ref=e264]
+                - text: Ligar
+            - generic [ref=e266]:
+              - textbox "Seu nome" [ref=e267]
+              - textbox "Seu e-mail" [ref=e268]
+              - textbox "Seu telefone" [ref=e269]
+              - textbox "Quero saber mais sobre este imóvel..." [ref=e270]
+              - button "Enviar proposta" [ref=e271]
+              - paragraph [ref=e272]:
+                - img [ref=e273]
+                - text: Seus dados estão seguros. Resposta em até 2h.
+    - generic [ref=e278]:
+      - heading "Imóveis semelhantes" [level=2] [ref=e279]
+      - generic [ref=e280]:
+        - article [ref=e281]:
+          - generic [ref=e282]:
+            - region [ref=e283]:
+              - group [ref=e286]:
+                - img "Foto do Apartamento com 3 quartos no Cabral, Curitiba - foto 1" [ref=e288]
+            - button "Adicionar aos favoritos" [ref=e289]:
+              - img [ref=e290]
+            - link "Ver detalhes de Cabrall Hills - Apartamento à venda com 3 quartos, varanda gourmet e 2 vagas de garagem em excelente localização no bairro Cabral em Curitiba" [ref=e292] [cursor=pointer]:
+              - /url: /imovel/apartamento-cabral-curitiba-pr-3-quartos-106.2m2-AP00296
+          - generic [ref=e293]:
+            - generic [ref=e295]:
+              - generic [ref=e296]: Apartamento
+              - generic [ref=e297]: ·
+              - generic [ref=e298]: AP00296
+            - link "Cabrall Hills - Apartamento à venda com 3 quartos, varanda gourmet e..." [ref=e299] [cursor=pointer]:
+              - /url: /imovel/apartamento-cabral-curitiba-pr-3-quartos-106.2m2-AP00296
+              - heading "Cabrall Hills - Apartamento à venda com 3 quartos, varanda gourmet e..." [level=2] [ref=e300]
+            - paragraph [ref=e301]: Cabral, Curitiba
+            - paragraph [ref=e302]: R$ 1.212.925,00
+            - generic [ref=e303]:
+              - generic [ref=e304]:
+                - img [ref=e305]
+                - generic [ref=e310]: 106,2 m² Área
+              - generic [ref=e311]:
+                - img [ref=e312]
+                - generic [ref=e315]: 3 Quartos
+              - generic [ref=e316]:
+                - img [ref=e317]
+                - generic [ref=e320]: 3 Banheiros
+              - generic [ref=e321]:
+                - img [ref=e322]
+                - generic [ref=e326]: 2 Vagas
+        - article [ref=e327]:
+          - generic [ref=e328]:
+            - region [ref=e329]:
+              - group [ref=e332]:
+                - img "Foto do Apartamento com 2 quartos no Bigorrilho, Curitiba - foto 1" [ref=e334]
+            - generic [ref=e335]: LANÇAMENTO
+            - button "Adicionar aos favoritos" [ref=e336]:
+              - img [ref=e337]
+            - link "Ver detalhes de Casa Milano - Empreendimento de Alto Padrão com 2 suítes à venda no bairro Bigorrilho, rua martim afonso, 2888." [ref=e339] [cursor=pointer]:
+              - /url: /imovel/apartamento-bigorrilho-curitiba-pr-2-quartos-126m2-AP00539
+          - generic [ref=e340]:
+            - generic [ref=e342]:
+              - generic [ref=e343]: Apartamento
+              - generic [ref=e344]: ·
+              - generic [ref=e345]: AP00539
+            - link "Casa Milano - Empreendimento de Alto Padrão com 2 suítes à venda no..." [ref=e346] [cursor=pointer]:
+              - /url: /imovel/apartamento-bigorrilho-curitiba-pr-2-quartos-126m2-AP00539
+              - heading "Casa Milano - Empreendimento de Alto Padrão com 2 suítes à venda no..." [level=2] [ref=e347]
+            - paragraph [ref=e348]: Bigorrilho, Curitiba
+            - paragraph [ref=e349]: R$ 2.468.680,00
+            - generic [ref=e350]:
+              - generic [ref=e351]:
+                - img [ref=e352]
+                - generic [ref=e357]: 126 m² Área
+              - generic [ref=e358]:
+                - img [ref=e359]
+                - generic [ref=e362]: 2 Quartos
+              - generic [ref=e363]:
+                - img [ref=e364]
+                - generic [ref=e367]: 3 Banheiros
+              - generic [ref=e368]:
+                - img [ref=e369]
+                - generic [ref=e373]: 2 Vagas
+        - article [ref=e374]:
+          - generic [ref=e375]:
+            - region [ref=e376]:
+              - group [ref=e379]:
+                - img "Foto do Apartamento com 3 quartos no Bigorrilho, Curitiba - foto 1" [ref=e381]
+            - generic [ref=e382]: LANÇAMENTO
+            - button "Adicionar aos favoritos" [ref=e383]:
+              - img [ref=e384]
+            - link "Ver detalhes de Apartamento à Venda no Edifício Varanda Barigui com 03 Suítes, no Champagnat." [ref=e386] [cursor=pointer]:
+              - /url: /imovel/apartamento-bigorrilho-curitiba-pr-3-quartos-165.85m2-AP00650
+          - generic [ref=e387]:
+            - generic [ref=e389]:
+              - generic [ref=e390]: Apartamento
+              - generic [ref=e391]: ·
+              - generic [ref=e392]: AP00650
+            - link "Apartamento à Venda no Edifício Varanda Barigui com 03 Suítes, no Ch..." [ref=e393] [cursor=pointer]:
+              - /url: /imovel/apartamento-bigorrilho-curitiba-pr-3-quartos-165.85m2-AP00650
+              - heading "Apartamento à Venda no Edifício Varanda Barigui com 03 Suítes, no Ch..." [level=2] [ref=e394]
+            - paragraph [ref=e395]: Bigorrilho, Curitiba
+            - paragraph [ref=e396]: R$ 2.742.098,83
+            - generic [ref=e397]:
+              - generic [ref=e398]:
+                - img [ref=e399]
+                - generic [ref=e404]: 165,85 m² Área
+              - generic [ref=e405]:
+                - img [ref=e406]
+                - generic [ref=e409]: 3 Quartos
+              - generic [ref=e410]:
+                - img [ref=e411]
+                - generic [ref=e414]: 6 Banheiros
+              - generic [ref=e415]:
+                - img [ref=e416]
+                - generic [ref=e420]: 3 Vagas
+        - article [ref=e421]:
+          - generic [ref=e422]:
+            - region [ref=e423]:
+              - group [ref=e426]:
+                - img "Foto do Apartamento com 2 quartos no Portão, Curitiba - foto 1" [ref=e428]
+            - button "Adicionar aos favoritos" [ref=e429]:
+              - img [ref=e430]
+            - link "Ver detalhes de Easy Vila Izabel - Lindos apartamentos com dois quartos à venda no bairro Vila Izabel" [ref=e432] [cursor=pointer]:
+              - /url: /imovel/apartamento-portao-curitiba-pr-2-quartos-33.97m2-AP00657
+          - generic [ref=e433]:
+            - generic [ref=e435]:
+              - generic [ref=e436]: Apartamento
+              - generic [ref=e437]: ·
+              - generic [ref=e438]: AP00657
+            - link "Easy Vila Izabel - Lindos apartamentos com dois quartos à venda no b..." [ref=e439] [cursor=pointer]:
+              - /url: /imovel/apartamento-portao-curitiba-pr-2-quartos-33.97m2-AP00657
+              - heading "Easy Vila Izabel - Lindos apartamentos com dois quartos à venda no b..." [level=2] [ref=e440]
+            - paragraph [ref=e441]: Portão, Curitiba
+            - paragraph [ref=e442]: R$ 475.000,00
+            - generic [ref=e443]:
+              - generic [ref=e444]:
+                - img [ref=e445]
+                - generic [ref=e450]: 33,97 m² Área
+              - generic [ref=e451]:
+                - img [ref=e452]
+                - generic [ref=e455]: 2 Quartos
+              - generic [ref=e456]:
+                - img [ref=e457]
+                - generic [ref=e460]: 1 Banheiro
+              - generic [ref=e461]:
+                - img [ref=e462]
+                - generic [ref=e466]: 1 Vaga
+  - contentinfo [ref=e467]:
+    - generic [ref=e469]:
+      - generic [ref=e470]:
+        - generic [ref=e471]:
+          - img "FYMOOB Imobiliária" [ref=e472]
+          - paragraph [ref=e473]: Encontre seu imóvel ideal em Curitiba com atendimento personalizado e as melhores oportunidades do mercado.
+        - generic [ref=e474]:
+          - heading "FYMOOB" [level=3] [ref=e475]
+          - generic [ref=e476]:
+            - paragraph [ref=e477]: "CRECI: J 9420"
+            - link "(41) 99978-0517" [ref=e478] [cursor=pointer]:
+              - /url: tel:+554199978-0517
+              - img [ref=e479]
+              - text: (41) 99978-0517
+            - link "contato@fymoob.com" [ref=e481] [cursor=pointer]:
+              - /url: mailto:contato@fymoob.com
+              - img [ref=e482]
+              - text: contato@fymoob.com
+            - paragraph [ref=e485]:
+              - img [ref=e486]
+              - text: Curitiba, PR
+        - generic [ref=e489]:
+          - heading "Navegação" [level=3] [ref=e490]
+          - navigation [ref=e491]:
+            - link "Home" [ref=e492] [cursor=pointer]:
+              - /url: /
+            - link "Sobre nós" [ref=e493] [cursor=pointer]:
+              - /url: /sobre
+            - link "Buscar imóvel" [ref=e494] [cursor=pointer]:
+              - /url: /busca
+            - link "Anunciar" [ref=e495] [cursor=pointer]:
+              - /url: /anuncie
+            - link "Contato" [ref=e496] [cursor=pointer]:
+              - /url: /contato
+            - link "Blog" [ref=e497] [cursor=pointer]:
+              - /url: /blog
+            - link "FAQ" [ref=e498] [cursor=pointer]:
+              - /url: /faq
+        - generic [ref=e499]:
+          - heading "Imóveis" [level=3] [ref=e500]
+          - navigation [ref=e501]:
+            - link "Apartamentos em Curitiba" [ref=e502] [cursor=pointer]:
+              - /url: /apartamentos-curitiba
+            - link "Casas em Curitiba" [ref=e503] [cursor=pointer]:
+              - /url: /casas-curitiba
+            - link "Sobrados em Curitiba" [ref=e504] [cursor=pointer]:
+              - /url: /sobrados-curitiba
+            - link "Terrenos em Curitiba" [ref=e505] [cursor=pointer]:
+              - /url: /terrenos-curitiba
+      - generic [ref=e506]:
+        - paragraph [ref=e507]: © 2026 FYMOOB Imobiliária. Todos os direitos reservados.
+        - paragraph [ref=e508]: Imobiliária Certificada
+  - link "Fale conosco pelo WhatsApp" [ref=e509] [cursor=pointer]:
+    - /url: https://wa.me/5541999780517?text=Ol%C3%A1!%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20im%C3%B3veis%20da%20FYMOOB.
+    - img [ref=e510]
+    - generic [ref=e512]: "1"
+  - alert [ref=e513]

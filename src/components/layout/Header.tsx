@@ -26,6 +26,12 @@ export function Header() {
   const pathname = usePathname()
   const isHome = pathname === "/"
   const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  // Auto-close menu on navigation
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [pathname])
 
   useEffect(() => {
     if (!isHome) {
@@ -110,7 +116,7 @@ export function Header() {
           </a>
 
           {/* Mobile Menu */}
-          <Sheet>
+          <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger
               id="mobile-menu-trigger"
               className="md:hidden flex h-9 w-9 items-center justify-center rounded-lg"

@@ -1,0 +1,890 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - link "FYMOOB Imobiliária" [ref=e5] [cursor=pointer]:
+        - /url: /
+        - img "FYMOOB Imobiliária" [ref=e6]
+      - button "Abrir menu" [ref=e8]:
+        - img [ref=e9]
+        - generic [ref=e10]: Abrir menu
+  - main [ref=e11]:
+    - generic [ref=e12]:
+      - navigation "Breadcrumb" [ref=e13]:
+        - list [ref=e14]:
+          - listitem [ref=e15]:
+            - link "Home" [ref=e16] [cursor=pointer]:
+              - /url: /
+          - listitem [ref=e17]:
+            - img [ref=e18]
+            - generic [ref=e20]: Busca
+      - heading "Busca de imóveis em Curitiba" [level=1] [ref=e21]
+      - complementary [ref=e23]:
+        - generic [ref=e24]:
+          - generic [ref=e25]:
+            - generic [ref=e27]:
+              - generic [ref=e28]:
+                - button "Localização" [ref=e30]:
+                  - img [ref=e31]
+                  - paragraph [ref=e35]: Localização
+                  - img [ref=e36]
+                - button "Preço" [ref=e39]:
+                  - img [ref=e40]
+                  - paragraph [ref=e44]: Preço
+                  - img [ref=e45]
+                - button "Quartos" [ref=e48]:
+                  - img [ref=e49]
+                  - paragraph [ref=e53]: Quartos
+                  - img [ref=e54]
+                - button "Tipo" [ref=e57]:
+                  - img [ref=e58]
+                  - paragraph [ref=e63]: Tipo
+                  - img [ref=e64]
+              - button "Buscar" [ref=e66]
+            - generic:
+              - generic:
+                - generic:
+                  - textbox "Digite o código do imóvel..."
+                  - button "Buscar":
+                    - img
+                    - text: Buscar
+          - button "Buscar por código" [ref=e68]:
+            - img [ref=e69]
+            - text: Buscar por código
+      - region "249 imóveis encontrados" [ref=e73]:
+        - paragraph [ref=e75]: 249 imóveis encontrados
+        - generic [ref=e76]:
+          - article [ref=e77]:
+            - generic [ref=e78]:
+              - region [ref=e79]:
+                - group [ref=e82]:
+                  - img "Foto do Apartamento com 3 quartos no Cabral, Curitiba - foto 1" [ref=e84]
+              - button "Adicionar aos favoritos" [ref=e85]:
+                - img [ref=e86]
+              - link "Ver detalhes de Cabrall Hills - Apartamento à venda com 3 quartos, varanda gourmet e 2 vagas de garagem em excelente localização no bairro Cabral em Curitiba" [ref=e88] [cursor=pointer]:
+                - /url: /imovel/apartamento-cabral-curitiba-pr-3-quartos-106.2m2-AP00296
+            - generic [ref=e89]:
+              - generic [ref=e91]:
+                - generic [ref=e92]: Apartamento
+                - generic [ref=e93]: ·
+                - generic [ref=e94]: AP00296
+              - paragraph [ref=e95]: R$ 1.212.925,00
+              - link "Cabrall Hills - Apartamento à venda com 3 quartos, varanda gourmet e..." [ref=e96] [cursor=pointer]:
+                - /url: /imovel/apartamento-cabral-curitiba-pr-3-quartos-106.2m2-AP00296
+                - heading "Cabrall Hills - Apartamento à venda com 3 quartos, varanda gourmet e..." [level=2] [ref=e97]
+              - paragraph [ref=e98]: Cabral, Curitiba
+              - generic [ref=e99]:
+                - generic [ref=e100]:
+                  - img [ref=e101]
+                  - generic [ref=e106]: 106,2 m² Área
+                - generic [ref=e107]:
+                  - img [ref=e108]
+                  - generic [ref=e111]: 3 Quartos
+                - generic [ref=e112]:
+                  - img [ref=e113]
+                  - generic [ref=e116]: 3 Banheiros
+                - generic [ref=e117]:
+                  - img [ref=e118]
+                  - generic [ref=e122]: 2 Vagas
+          - article [ref=e123]:
+            - generic [ref=e124]:
+              - region [ref=e125]:
+                - group [ref=e128]:
+                  - img "Foto do Apartamento com 2 quartos no Bigorrilho, Curitiba - foto 1" [ref=e130]
+              - generic [ref=e131]: LANÇAMENTO
+              - button "Adicionar aos favoritos" [ref=e132]:
+                - img [ref=e133]
+              - link "Ver detalhes de Casa Milano - Empreendimento de Alto Padrão com 2 suítes à venda no bairro Bigorrilho, rua martim afonso, 2888." [ref=e135] [cursor=pointer]:
+                - /url: /imovel/apartamento-bigorrilho-curitiba-pr-2-quartos-126m2-AP00539
+            - generic [ref=e136]:
+              - generic [ref=e138]:
+                - generic [ref=e139]: Apartamento
+                - generic [ref=e140]: ·
+                - generic [ref=e141]: AP00539
+              - paragraph [ref=e142]: R$ 2.468.680,00
+              - link "Casa Milano - Empreendimento de Alto Padrão com 2 suítes à venda no..." [ref=e143] [cursor=pointer]:
+                - /url: /imovel/apartamento-bigorrilho-curitiba-pr-2-quartos-126m2-AP00539
+                - heading "Casa Milano - Empreendimento de Alto Padrão com 2 suítes à venda no..." [level=2] [ref=e144]
+              - paragraph [ref=e145]: Bigorrilho, Curitiba
+              - generic [ref=e146]:
+                - generic [ref=e147]:
+                  - img [ref=e148]
+                  - generic [ref=e153]: 126 m² Área
+                - generic [ref=e154]:
+                  - img [ref=e155]
+                  - generic [ref=e158]: 2 Quartos
+                - generic [ref=e159]:
+                  - img [ref=e160]
+                  - generic [ref=e163]: 3 Banheiros
+                - generic [ref=e164]:
+                  - img [ref=e165]
+                  - generic [ref=e169]: 2 Vagas
+          - article [ref=e170]:
+            - generic [ref=e171]:
+              - region [ref=e172]:
+                - group [ref=e175]:
+                  - img "Foto do Apartamento com 3 quartos no Bigorrilho, Curitiba - foto 1" [ref=e177]
+              - generic [ref=e178]: LANÇAMENTO
+              - button "Adicionar aos favoritos" [ref=e179]:
+                - img [ref=e180]
+              - link "Ver detalhes de Apartamento à Venda no Edifício Varanda Barigui com 03 Suítes, no Champagnat." [ref=e182] [cursor=pointer]:
+                - /url: /imovel/apartamento-bigorrilho-curitiba-pr-3-quartos-165.85m2-AP00650
+            - generic [ref=e183]:
+              - generic [ref=e185]:
+                - generic [ref=e186]: Apartamento
+                - generic [ref=e187]: ·
+                - generic [ref=e188]: AP00650
+              - paragraph [ref=e189]: R$ 2.742.098,83
+              - link "Apartamento à Venda no Edifício Varanda Barigui com 03 Suítes, no Ch..." [ref=e190] [cursor=pointer]:
+                - /url: /imovel/apartamento-bigorrilho-curitiba-pr-3-quartos-165.85m2-AP00650
+                - heading "Apartamento à Venda no Edifício Varanda Barigui com 03 Suítes, no Ch..." [level=2] [ref=e191]
+              - paragraph [ref=e192]: Bigorrilho, Curitiba
+              - generic [ref=e193]:
+                - generic [ref=e194]:
+                  - img [ref=e195]
+                  - generic [ref=e200]: 165,85 m² Área
+                - generic [ref=e201]:
+                  - img [ref=e202]
+                  - generic [ref=e205]: 3 Quartos
+                - generic [ref=e206]:
+                  - img [ref=e207]
+                  - generic [ref=e210]: 6 Banheiros
+                - generic [ref=e211]:
+                  - img [ref=e212]
+                  - generic [ref=e216]: 3 Vagas
+          - article [ref=e217]:
+            - generic [ref=e218]:
+              - region [ref=e219]:
+                - group [ref=e222]:
+                  - img "Foto do Apartamento com 2 quartos no Portão, Curitiba - foto 1" [ref=e224]
+              - button "Adicionar aos favoritos" [ref=e225]:
+                - img [ref=e226]
+              - link "Ver detalhes de Easy Vila Izabel - Lindos apartamentos com dois quartos à venda no bairro Vila Izabel" [ref=e228] [cursor=pointer]:
+                - /url: /imovel/apartamento-portao-curitiba-pr-2-quartos-33.97m2-AP00657
+            - generic [ref=e229]:
+              - generic [ref=e231]:
+                - generic [ref=e232]: Apartamento
+                - generic [ref=e233]: ·
+                - generic [ref=e234]: AP00657
+              - paragraph [ref=e235]: R$ 475.000,00
+              - link "Easy Vila Izabel - Lindos apartamentos com dois quartos à venda no b..." [ref=e236] [cursor=pointer]:
+                - /url: /imovel/apartamento-portao-curitiba-pr-2-quartos-33.97m2-AP00657
+                - heading "Easy Vila Izabel - Lindos apartamentos com dois quartos à venda no b..." [level=2] [ref=e237]
+              - paragraph [ref=e238]: Portão, Curitiba
+              - generic [ref=e239]:
+                - generic [ref=e240]:
+                  - img [ref=e241]
+                  - generic [ref=e246]: 33,97 m² Área
+                - generic [ref=e247]:
+                  - img [ref=e248]
+                  - generic [ref=e251]: 2 Quartos
+                - generic [ref=e252]:
+                  - img [ref=e253]
+                  - generic [ref=e256]: 1 Banheiro
+                - generic [ref=e257]:
+                  - img [ref=e258]
+                  - generic [ref=e262]: 1 Vaga
+          - article [ref=e263]:
+            - generic [ref=e264]:
+              - region [ref=e265]:
+                - group [ref=e268]:
+                  - img "Foto do Apartamento com 3 quartos no Ecoville, Curitiba - foto 1" [ref=e270]
+              - generic [ref=e271]: LANÇAMENTO
+              - button "Adicionar aos favoritos" [ref=e272]:
+                - img [ref=e273]
+              - link "Ver detalhes de Signature - Arquitetura imponente, autêntica e exclusiva no prestigiado bairro do Ecoville." [ref=e275] [cursor=pointer]:
+                - /url: /imovel/apartamento-ecoville-curitiba-pr-3-quartos-227.72m2-AP00671
+            - generic [ref=e276]:
+              - generic [ref=e278]:
+                - generic [ref=e279]: Apartamento
+                - generic [ref=e280]: ·
+                - generic [ref=e281]: AP00671
+              - paragraph [ref=e282]: R$ 4.023.920,00
+              - link "Signature - Arquitetura imponente, autêntica e exclusiva no prestigi..." [ref=e283] [cursor=pointer]:
+                - /url: /imovel/apartamento-ecoville-curitiba-pr-3-quartos-227.72m2-AP00671
+                - heading "Signature - Arquitetura imponente, autêntica e exclusiva no prestigi..." [level=2] [ref=e284]
+              - paragraph [ref=e285]: Ecoville, Curitiba
+              - generic [ref=e286]:
+                - generic [ref=e287]:
+                  - img [ref=e288]
+                  - generic [ref=e293]: 227,72 m² Área
+                - generic [ref=e294]:
+                  - img [ref=e295]
+                  - generic [ref=e298]: 3 Quartos
+                - generic [ref=e299]:
+                  - img [ref=e300]
+                  - generic [ref=e303]: 4 Banheiros
+                - generic [ref=e304]:
+                  - img [ref=e305]
+                  - generic [ref=e309]: 4 Vagas
+          - article [ref=e310]:
+            - generic [ref=e311]:
+              - region [ref=e312]:
+                - group [ref=e315]:
+                  - img "Foto do Apartamento com 3 quartos no Alto da Glória, Curitiba - foto 1" [ref=e317]
+              - generic [ref=e318]: LANÇAMENTO
+              - button "Adicionar aos favoritos" [ref=e319]:
+                - img [ref=e320]
+              - link "Ver detalhes de Palm 235 - Apartamento com 3 suítes à venda no bairro Alto da glória em Curitiba." [ref=e322] [cursor=pointer]:
+                - /url: /imovel/apartamento-alto-da-gloria-curitiba-pr-3-quartos-148.42m2-AP00751
+            - generic [ref=e323]:
+              - generic [ref=e325]:
+                - generic [ref=e326]: Apartamento
+                - generic [ref=e327]: ·
+                - generic [ref=e328]: AP00751
+              - paragraph [ref=e329]: R$ 2.482.970,00
+              - link "Palm 235 - Apartamento com 3 suítes à venda no bairro Alto da glória..." [ref=e330] [cursor=pointer]:
+                - /url: /imovel/apartamento-alto-da-gloria-curitiba-pr-3-quartos-148.42m2-AP00751
+                - heading "Palm 235 - Apartamento com 3 suítes à venda no bairro Alto da glória..." [level=2] [ref=e331]
+              - paragraph [ref=e332]: Alto da Glória, Curitiba
+              - generic [ref=e333]:
+                - generic [ref=e334]:
+                  - img [ref=e335]
+                  - generic [ref=e340]: 148,42 m² Área
+                - generic [ref=e341]:
+                  - img [ref=e342]
+                  - generic [ref=e345]: 3 Quartos
+                - generic [ref=e346]:
+                  - img [ref=e347]
+                  - generic [ref=e350]: 5 Banheiros
+                - generic [ref=e351]:
+                  - img [ref=e352]
+                  - generic [ref=e356]: 3 Vagas
+          - article [ref=e357]:
+            - generic [ref=e358]:
+              - region [ref=e359]:
+                - group [ref=e362]:
+                  - img "Foto do Apartamento com 1 quartos no Batel, Curitiba - foto 1" [ref=e364]
+              - generic [ref=e365]: LANÇAMENTO
+              - button "Adicionar aos favoritos" [ref=e366]:
+                - img [ref=e367]
+              - link "Ver detalhes de Temple Batel - Studio à venda no bairro Batel em Curitiba." [ref=e369] [cursor=pointer]:
+                - /url: /imovel/apartamento-batel-curitiba-pr-1-quartos-34.73m2-AP00754
+            - generic [ref=e370]:
+              - generic [ref=e372]:
+                - generic [ref=e373]: Apartamento
+                - generic [ref=e374]: ·
+                - generic [ref=e375]: AP00754
+              - paragraph [ref=e376]: R$ 656.200,00
+              - link "Temple Batel - Studio à venda no bairro Batel em Curitiba." [ref=e377] [cursor=pointer]:
+                - /url: /imovel/apartamento-batel-curitiba-pr-1-quartos-34.73m2-AP00754
+                - heading "Temple Batel - Studio à venda no bairro Batel em Curitiba." [level=2] [ref=e378]
+              - paragraph [ref=e379]: Batel, Curitiba
+              - generic [ref=e380]:
+                - generic [ref=e381]:
+                  - img [ref=e382]
+                  - generic [ref=e387]: 34,73 m² Área
+                - generic [ref=e388]:
+                  - img [ref=e389]
+                  - generic [ref=e392]: 1 Quarto
+                - generic [ref=e393]:
+                  - img [ref=e394]
+                  - generic [ref=e397]: 1 Banheiro
+          - article [ref=e398]:
+            - generic [ref=e399]:
+              - region [ref=e400]:
+                - group [ref=e403]:
+                  - img "Foto do Apartamento com 3 quartos no Portão, Curitiba - foto 1" [ref=e405]
+              - button "Adicionar aos favoritos" [ref=e406]:
+                - img [ref=e407]
+              - link "Ver detalhes de Door - Apartamento com 3 quartos à venda no bairro Portão em Curitiba. Próximo ao Shoping Palladium" [ref=e409] [cursor=pointer]:
+                - /url: /imovel/apartamento-portao-curitiba-pr-3-quartos-67.24m2-AP00758
+            - generic [ref=e410]:
+              - generic [ref=e412]:
+                - generic [ref=e413]: Apartamento
+                - generic [ref=e414]: ·
+                - generic [ref=e415]: AP00758
+              - paragraph [ref=e416]: R$ 815.997,00
+              - link "Door - Apartamento com 3 quartos à venda no bairro Portão em Curitib..." [ref=e417] [cursor=pointer]:
+                - /url: /imovel/apartamento-portao-curitiba-pr-3-quartos-67.24m2-AP00758
+                - heading "Door - Apartamento com 3 quartos à venda no bairro Portão em Curitib..." [level=2] [ref=e418]
+              - paragraph [ref=e419]: Portão, Curitiba
+              - generic [ref=e420]:
+                - generic [ref=e421]:
+                  - img [ref=e422]
+                  - generic [ref=e427]: 67,24 m² Área
+                - generic [ref=e428]:
+                  - img [ref=e429]
+                  - generic [ref=e432]: 3 Quartos
+                - generic [ref=e433]:
+                  - img [ref=e434]
+                  - generic [ref=e437]: 2 Banheiros
+                - generic [ref=e438]:
+                  - img [ref=e439]
+                  - generic [ref=e443]: 1 Vaga
+          - article [ref=e444]:
+            - generic [ref=e445]:
+              - region [ref=e446]:
+                - group [ref=e449]:
+                  - img "Foto do Apartamento com 1 quartos no Mossunguê, Curitiba - foto 1" [ref=e451]
+              - generic [ref=e452]: LANÇAMENTO
+              - button "Adicionar aos favoritos" [ref=e453]:
+                - img [ref=e454]
+              - link "Ver detalhes de Reserva Barigui - Cobertura Loft à venda no bairro Mossunguê, em frente ao Parque Barigui e ao lado do Park Shopping Barigui em Curitiba." [ref=e456] [cursor=pointer]:
+                - /url: /imovel/apartamento-mossungue-curitiba-pr-1-quartos-61.91m2-AP00762
+            - generic [ref=e457]:
+              - generic [ref=e459]:
+                - generic [ref=e460]: Apartamento
+                - generic [ref=e461]: ·
+                - generic [ref=e462]: AP00762
+              - paragraph [ref=e463]: R$ 1.108.189,00
+              - link "Reserva Barigui - Cobertura Loft à venda no bairro Mossunguê, em fre..." [ref=e464] [cursor=pointer]:
+                - /url: /imovel/apartamento-mossungue-curitiba-pr-1-quartos-61.91m2-AP00762
+                - heading "Reserva Barigui - Cobertura Loft à venda no bairro Mossunguê, em fre..." [level=2] [ref=e465]
+              - paragraph [ref=e466]: Mossunguê, Curitiba
+              - generic [ref=e467]:
+                - generic [ref=e468]:
+                  - img [ref=e469]
+                  - generic [ref=e474]: 61,91 m² Área
+                - generic [ref=e475]:
+                  - img [ref=e476]
+                  - generic [ref=e479]: 1 Quarto
+                - generic [ref=e480]:
+                  - img [ref=e481]
+                  - generic [ref=e485]: 1 Vaga
+          - article [ref=e486]:
+            - generic [ref=e487]:
+              - region [ref=e488]:
+                - group [ref=e491]:
+                  - img "Foto do Apartamento Duplex com 2 quartos no Mossunguê, Curitiba - foto 1" [ref=e493]
+              - generic [ref=e494]: LANÇAMENTO
+              - button "Adicionar aos favoritos" [ref=e495]:
+                - img [ref=e496]
+              - link "Ver detalhes de Reserva Barigui - Duplex 2 quartos à venda no bairro Mossunguê, em frente ao Parque Barigui e ao lado do Park Shopping Barigui em Curitiba." [ref=e498] [cursor=pointer]:
+                - /url: /imovel/apartamento-duplex-mossungue-curitiba-pr-2-quartos-96.58m2-AP00772
+            - generic [ref=e499]:
+              - generic [ref=e501]:
+                - generic [ref=e502]: Apartamento Duplex
+                - generic [ref=e503]: ·
+                - generic [ref=e504]: AP00772
+              - paragraph [ref=e505]: R$ 1.725.644,00
+              - link "Reserva Barigui - Duplex 2 quartos à venda no bairro Mossunguê, em f..." [ref=e506] [cursor=pointer]:
+                - /url: /imovel/apartamento-duplex-mossungue-curitiba-pr-2-quartos-96.58m2-AP00772
+                - heading "Reserva Barigui - Duplex 2 quartos à venda no bairro Mossunguê, em f..." [level=2] [ref=e507]
+              - paragraph [ref=e508]: Mossunguê, Curitiba
+              - generic [ref=e509]:
+                - generic [ref=e510]:
+                  - img [ref=e511]
+                  - generic [ref=e516]: 96,58 m² Área
+                - generic [ref=e517]:
+                  - img [ref=e518]
+                  - generic [ref=e521]: 2 Quartos
+                - generic [ref=e522]:
+                  - img [ref=e523]
+                  - generic [ref=e526]: 3 Banheiros
+                - generic [ref=e527]:
+                  - img [ref=e528]
+                  - generic [ref=e532]: 2 Vagas
+          - article [ref=e533]:
+            - generic [ref=e534]:
+              - region [ref=e535]:
+                - group [ref=e538]:
+                  - img "Foto do Apartamento com 4 quartos no Mossunguê, Curitiba - foto 1" [ref=e540]
+              - generic [ref=e541]: LANÇAMENTO
+              - button "Adicionar aos favoritos" [ref=e542]:
+                - img [ref=e543]
+              - link "Ver detalhes de Reserva Colina - Apartamento com 4 quartos à venda no bairro Mossunguê, em frente ao Parque Barigui e ao lado do Park Shopping Barigui em Curitiba." [ref=e545] [cursor=pointer]:
+                - /url: /imovel/apartamento-mossungue-curitiba-pr-4-quartos-185.31m2-AP00773
+            - generic [ref=e546]:
+              - generic [ref=e548]:
+                - generic [ref=e549]: Apartamento
+                - generic [ref=e550]: ·
+                - generic [ref=e551]: AP00773
+              - paragraph [ref=e552]: R$ 3.187.673,00
+              - link "Reserva Colina - Apartamento com 4 quartos à venda no bairro Mossung..." [ref=e553] [cursor=pointer]:
+                - /url: /imovel/apartamento-mossungue-curitiba-pr-4-quartos-185.31m2-AP00773
+                - heading "Reserva Colina - Apartamento com 4 quartos à venda no bairro Mossung..." [level=2] [ref=e554]
+              - paragraph [ref=e555]: Mossunguê, Curitiba
+              - generic [ref=e556]:
+                - generic [ref=e557]:
+                  - img [ref=e558]
+                  - generic [ref=e563]: 185,31 m² Área
+                - generic [ref=e564]:
+                  - img [ref=e565]
+                  - generic [ref=e568]: 4 Quartos
+                - generic [ref=e569]:
+                  - img [ref=e570]
+                  - generic [ref=e573]: 3 Banheiros
+                - generic [ref=e574]:
+                  - img [ref=e575]
+                  - generic [ref=e579]: 3 Vagas
+          - article [ref=e580]:
+            - generic [ref=e581]:
+              - region [ref=e582]:
+                - group [ref=e585]:
+                  - img "Foto do Apartamento com 3 quartos no Cristo Rei, Curitiba - foto 1" [ref=e587]
+              - generic [ref=e588]: LANÇAMENTO
+              - button "Adicionar aos favoritos" [ref=e589]:
+                - img [ref=e590]
+              - link "Ver detalhes de Apartamento de 03 quartos (01 suíte) no Cristo Rei, ao lado do Jardim Botânico" [ref=e592] [cursor=pointer]:
+                - /url: /imovel/apartamento-cristo-rei-curitiba-pr-3-quartos-81.22m2-AP00798
+            - generic [ref=e593]:
+              - generic [ref=e595]:
+                - generic [ref=e596]: Apartamento
+                - generic [ref=e597]: ·
+                - generic [ref=e598]: AP00798
+              - paragraph [ref=e599]: R$ 949.070,00
+              - link "Apartamento de 03 quartos (01 suíte) no Cristo Rei, ao lado do Jardi..." [ref=e600] [cursor=pointer]:
+                - /url: /imovel/apartamento-cristo-rei-curitiba-pr-3-quartos-81.22m2-AP00798
+                - heading "Apartamento de 03 quartos (01 suíte) no Cristo Rei, ao lado do Jardi..." [level=2] [ref=e601]
+              - paragraph [ref=e602]: Cristo Rei, Curitiba
+              - generic [ref=e603]:
+                - generic [ref=e604]:
+                  - img [ref=e605]
+                  - generic [ref=e610]: 81,22 m² Área
+                - generic [ref=e611]:
+                  - img [ref=e612]
+                  - generic [ref=e615]: 3 Quartos
+                - generic [ref=e616]:
+                  - img [ref=e617]
+                  - generic [ref=e620]: 3 Banheiros
+                - generic [ref=e621]:
+                  - img [ref=e622]
+                  - generic [ref=e626]: 1 Vaga
+          - article [ref=e627]:
+            - generic [ref=e628]:
+              - region [ref=e629]:
+                - group [ref=e632]:
+                  - img "Foto do Apartamento com 1 quartos no Água Verde, Curitiba - foto 1" [ref=e634]
+              - button "Adicionar aos favoritos" [ref=e635]:
+                - img [ref=e636]
+              - link "Ver detalhes de Lunetto - Studios com sacada e churrasqueira à venda no bairro Água Verde, em Curitiba." [ref=e638] [cursor=pointer]:
+                - /url: /imovel/apartamento-agua-verde-curitiba-pr-1-quartos-25.67m2-AP00807
+            - generic [ref=e639]:
+              - generic [ref=e641]:
+                - generic [ref=e642]: Apartamento
+                - generic [ref=e643]: ·
+                - generic [ref=e644]: AP00807
+              - paragraph [ref=e645]: R$ 422.700,00
+              - link "Lunetto - Studios com sacada e churrasqueira à venda no bairro Água..." [ref=e646] [cursor=pointer]:
+                - /url: /imovel/apartamento-agua-verde-curitiba-pr-1-quartos-25.67m2-AP00807
+                - heading "Lunetto - Studios com sacada e churrasqueira à venda no bairro Água..." [level=2] [ref=e647]
+              - paragraph [ref=e648]: Água Verde, Curitiba
+              - generic [ref=e649]:
+                - generic [ref=e650]:
+                  - img [ref=e651]
+                  - generic [ref=e656]: 25,67 m² Área
+                - generic [ref=e657]:
+                  - img [ref=e658]
+                  - generic [ref=e661]: 1 Quarto
+          - article [ref=e662]:
+            - generic [ref=e663]:
+              - region [ref=e664]:
+                - group [ref=e667]:
+                  - img "Foto do Apartamento com 2 quartos no Portão, Curitiba - foto 1" [ref=e669]
+              - generic [ref=e670]: LANÇAMENTO
+              - button "Adicionar aos favoritos" [ref=e671]:
+                - img [ref=e672]
+              - link "Ver detalhes de Le Monde - Apartamento em condomínio clube de 2 quartos à venda no bairro Portão em Curitiba!" [ref=e674] [cursor=pointer]:
+                - /url: /imovel/apartamento-portao-curitiba-pr-2-quartos-51m2-AP00821
+            - generic [ref=e675]:
+              - generic [ref=e677]:
+                - generic [ref=e678]: Apartamento
+                - generic [ref=e679]: ·
+                - generic [ref=e680]: AP00821
+              - paragraph [ref=e681]: R$ 560.000,00
+              - link "Le Monde - Apartamento em condomínio clube de 2 quartos à venda no b..." [ref=e682] [cursor=pointer]:
+                - /url: /imovel/apartamento-portao-curitiba-pr-2-quartos-51m2-AP00821
+                - heading "Le Monde - Apartamento em condomínio clube de 2 quartos à venda no b..." [level=2] [ref=e683]
+              - paragraph [ref=e684]: Portão, Curitiba
+              - generic [ref=e685]:
+                - generic [ref=e686]:
+                  - img [ref=e687]
+                  - generic [ref=e692]: 51 m² Área
+                - generic [ref=e693]:
+                  - img [ref=e694]
+                  - generic [ref=e697]: 2 Quartos
+                - generic [ref=e698]:
+                  - img [ref=e699]
+                  - generic [ref=e702]: 1 Banheiro
+                - generic [ref=e703]:
+                  - img [ref=e704]
+                  - generic [ref=e708]: 1 Vaga
+          - article [ref=e709]:
+            - generic [ref=e710]:
+              - region [ref=e711]:
+                - group [ref=e714]:
+                  - img "Foto do Apartamento com 2 quartos no Portão, Curitiba - foto 1" [ref=e716]
+              - button "Adicionar aos favoritos" [ref=e717]:
+                - img [ref=e718]
+              - link "Ver detalhes de Le Monde - Apartamento em condomínio clube com 2 quartos à venda no bairro Portão em Curitiba!" [ref=e720] [cursor=pointer]:
+                - /url: /imovel/apartamento-portao-curitiba-pr-2-quartos-56.09m2-AP00822
+            - generic [ref=e721]:
+              - generic [ref=e723]:
+                - generic [ref=e724]: Apartamento
+                - generic [ref=e725]: ·
+                - generic [ref=e726]: AP00822
+              - paragraph [ref=e727]: R$ 697.545,00
+              - link "Le Monde - Apartamento em condomínio clube com 2 quartos à venda no..." [ref=e728] [cursor=pointer]:
+                - /url: /imovel/apartamento-portao-curitiba-pr-2-quartos-56.09m2-AP00822
+                - heading "Le Monde - Apartamento em condomínio clube com 2 quartos à venda no..." [level=2] [ref=e729]
+              - paragraph [ref=e730]: Portão, Curitiba
+              - generic [ref=e731]:
+                - generic [ref=e732]:
+                  - img [ref=e733]
+                  - generic [ref=e738]: 56,09 m² Área
+                - generic [ref=e739]:
+                  - img [ref=e740]
+                  - generic [ref=e743]: 2 Quartos
+                - generic [ref=e744]:
+                  - img [ref=e745]
+                  - generic [ref=e748]: 2 Banheiros
+                - generic [ref=e749]:
+                  - img [ref=e750]
+                  - generic [ref=e754]: 1 Vaga
+          - article [ref=e755]:
+            - generic [ref=e756]:
+              - region [ref=e757]:
+                - group [ref=e760]:
+                  - img "Foto do Apartamento com 3 quartos no Portão, Curitiba - foto 1" [ref=e762]
+              - button "Adicionar aos favoritos" [ref=e763]:
+                - img [ref=e764]
+              - link "Ver detalhes de Le Monde - Apartamento em condomínio clube de 3 quartos à venda no bairro Portão em Curitiba!" [ref=e766] [cursor=pointer]:
+                - /url: /imovel/apartamento-portao-curitiba-pr-3-quartos-63.77m2-AP00824
+            - generic [ref=e767]:
+              - generic [ref=e769]:
+                - generic [ref=e770]: Apartamento
+                - generic [ref=e771]: ·
+                - generic [ref=e772]: AP00824
+              - paragraph [ref=e773]: R$ 779.525,00
+              - link "Le Monde - Apartamento em condomínio clube de 3 quartos à venda no b..." [ref=e774] [cursor=pointer]:
+                - /url: /imovel/apartamento-portao-curitiba-pr-3-quartos-63.77m2-AP00824
+                - heading "Le Monde - Apartamento em condomínio clube de 3 quartos à venda no b..." [level=2] [ref=e775]
+              - paragraph [ref=e776]: Portão, Curitiba
+              - generic [ref=e777]:
+                - generic [ref=e778]:
+                  - img [ref=e779]
+                  - generic [ref=e784]: 63,77 m² Área
+                - generic [ref=e785]:
+                  - img [ref=e786]
+                  - generic [ref=e789]: 3 Quartos
+                - generic [ref=e790]:
+                  - img [ref=e791]
+                  - generic [ref=e794]: 2 Banheiros
+                - generic [ref=e795]:
+                  - img [ref=e796]
+                  - generic [ref=e800]: 2 Vagas
+          - article [ref=e801]:
+            - generic [ref=e802]:
+              - region [ref=e803]:
+                - group [ref=e806]:
+                  - img "Foto do Apartamento com 3 quartos no Portão, Curitiba - foto 1" [ref=e808]
+              - button "Adicionar aos favoritos" [ref=e809]:
+                - img [ref=e810]
+              - link "Ver detalhes de Le Monde - Apartamento em condomínio clube de 3 quartos à venda no bairro Portão em Curitiba!" [ref=e812] [cursor=pointer]:
+                - /url: /imovel/apartamento-portao-curitiba-pr-3-quartos-70m2-AP00825
+            - generic [ref=e813]:
+              - generic [ref=e815]:
+                - generic [ref=e816]: Apartamento
+                - generic [ref=e817]: ·
+                - generic [ref=e818]: AP00825
+              - paragraph [ref=e819]: R$ 899.000,00
+              - link "Le Monde - Apartamento em condomínio clube de 3 quartos à venda no b..." [ref=e820] [cursor=pointer]:
+                - /url: /imovel/apartamento-portao-curitiba-pr-3-quartos-70m2-AP00825
+                - heading "Le Monde - Apartamento em condomínio clube de 3 quartos à venda no b..." [level=2] [ref=e821]
+              - paragraph [ref=e822]: Portão, Curitiba
+              - generic [ref=e823]:
+                - generic [ref=e824]:
+                  - img [ref=e825]
+                  - generic [ref=e830]: 70 m² Área
+                - generic [ref=e831]:
+                  - img [ref=e832]
+                  - generic [ref=e835]: 3 Quartos
+                - generic [ref=e836]:
+                  - img [ref=e837]
+                  - generic [ref=e840]: 2 Banheiros
+                - generic [ref=e841]:
+                  - img [ref=e842]
+                  - generic [ref=e846]: 2 Vagas
+          - article [ref=e847]:
+            - generic [ref=e848]:
+              - region [ref=e849]:
+                - group [ref=e852]:
+                  - img "Foto do Apartamento com 3 quartos no Água Verde, Curitiba - foto 1" [ref=e854]
+              - generic [ref=e855]: LANÇAMENTO
+              - button "Adicionar aos favoritos" [ref=e856]:
+                - img [ref=e857]
+              - link "Ver detalhes de Le Sense - Apartamento com 3 quartos no bairro Água Verde." [ref=e859] [cursor=pointer]:
+                - /url: /imovel/apartamento-agua-verde-curitiba-pr-3-quartos-115.83m2-AP00828
+            - generic [ref=e860]:
+              - generic [ref=e862]:
+                - generic [ref=e863]: Apartamento
+                - generic [ref=e864]: ·
+                - generic [ref=e865]: AP00828
+              - paragraph [ref=e866]: R$ 1.750.000,00
+              - link "Le Sense - Apartamento com 3 quartos no bairro Água Verde." [ref=e867] [cursor=pointer]:
+                - /url: /imovel/apartamento-agua-verde-curitiba-pr-3-quartos-115.83m2-AP00828
+                - heading "Le Sense - Apartamento com 3 quartos no bairro Água Verde." [level=2] [ref=e868]
+              - paragraph [ref=e869]: Água Verde, Curitiba
+              - generic [ref=e870]:
+                - generic [ref=e871]:
+                  - img [ref=e872]
+                  - generic [ref=e877]: 115,83 m² Área
+                - generic [ref=e878]:
+                  - img [ref=e879]
+                  - generic [ref=e882]: 3 Quartos
+                - generic [ref=e883]:
+                  - img [ref=e884]
+                  - generic [ref=e887]: 3 Banheiros
+                - generic [ref=e888]:
+                  - img [ref=e889]
+                  - generic [ref=e893]: 2 Vagas
+          - article [ref=e894]:
+            - generic [ref=e895]:
+              - region [ref=e896]:
+                - group [ref=e899]:
+                  - img "Foto do Apartamento com 2 quartos no Tatuquara, Curitiba - foto 1" [ref=e901]
+              - button "Adicionar aos favoritos" [ref=e902]:
+                - img [ref=e903]
+              - link "Ver detalhes de Apto 2 quartos sacada e churrasqueira no Tatuquara" [ref=e905] [cursor=pointer]:
+                - /url: /imovel/apartamento-tatuquara-curitiba-pr-2-quartos-47m2-AP00831
+            - generic [ref=e906]:
+              - generic [ref=e908]:
+                - generic [ref=e909]: Apartamento
+                - generic [ref=e910]: ·
+                - generic [ref=e911]: AP00831
+              - paragraph [ref=e912]: R$ 250.000,00
+              - link "Apto 2 quartos sacada e churrasqueira no Tatuquara" [ref=e913] [cursor=pointer]:
+                - /url: /imovel/apartamento-tatuquara-curitiba-pr-2-quartos-47m2-AP00831
+                - heading "Apto 2 quartos sacada e churrasqueira no Tatuquara" [level=2] [ref=e914]
+              - paragraph [ref=e915]: Tatuquara, Curitiba
+              - generic [ref=e916]:
+                - generic [ref=e917]:
+                  - img [ref=e918]
+                  - generic [ref=e923]: 47 m² Área
+                - generic [ref=e924]:
+                  - img [ref=e925]
+                  - generic [ref=e928]: 2 Quartos
+                - generic [ref=e929]:
+                  - img [ref=e930]
+                  - generic [ref=e933]: 1 Banheiro
+                - generic [ref=e934]:
+                  - img [ref=e935]
+                  - generic [ref=e939]: 1 Vaga
+          - article [ref=e940]:
+            - generic [ref=e941]:
+              - region [ref=e942]:
+                - group [ref=e945]:
+                  - img "Foto do Apartamento com 2 quartos no Portão, Curitiba - foto 1" [ref=e947]
+              - button "Adicionar aos favoritos" [ref=e948]:
+                - img [ref=e949]
+              - link "Ver detalhes de Apartamento com 2 quartos à venda no bairro Portão em Curitiba." [ref=e951] [cursor=pointer]:
+                - /url: /imovel/apartamento-portao-curitiba-pr-2-quartos-39.72m2-AP00863
+            - generic [ref=e952]:
+              - generic [ref=e954]:
+                - generic [ref=e955]: Apartamento
+                - generic [ref=e956]: ·
+                - generic [ref=e957]: AP00863
+              - paragraph [ref=e958]: R$ 422.700,00
+              - link "Apartamento com 2 quartos à venda no bairro Portão em Curitiba." [ref=e959] [cursor=pointer]:
+                - /url: /imovel/apartamento-portao-curitiba-pr-2-quartos-39.72m2-AP00863
+                - heading "Apartamento com 2 quartos à venda no bairro Portão em Curitiba." [level=2] [ref=e960]
+              - paragraph [ref=e961]: Portão, Curitiba
+              - generic [ref=e962]:
+                - generic [ref=e963]:
+                  - img [ref=e964]
+                  - generic [ref=e969]: 39,72 m² Área
+                - generic [ref=e970]:
+                  - img [ref=e971]
+                  - generic [ref=e974]: 2 Quartos
+                - generic [ref=e975]:
+                  - img [ref=e976]
+                  - generic [ref=e979]: 1 Banheiro
+          - article [ref=e980]:
+            - generic [ref=e981]:
+              - region [ref=e982]:
+                - group [ref=e985]:
+                  - img "Foto do Studio com 1 quartos no Mossunguê, Curitiba - foto 1" [ref=e987]
+              - generic [ref=e988]: LANÇAMENTO
+              - button "Adicionar aos favoritos" [ref=e989]:
+                - img [ref=e990]
+              - link "Ver detalhes de Reserva Barigui - Studio à venda no bairro Mossunguê, em frente ao Parque Barigui e ao lado do Park Shopping Barigui em Curitiba." [ref=e992] [cursor=pointer]:
+                - /url: /imovel/studio-mossungue-curitiba-pr-1-quartos-35.25m2-AP00900
+            - generic [ref=e993]:
+              - generic [ref=e995]:
+                - generic [ref=e996]: Studio
+                - generic [ref=e997]: ·
+                - generic [ref=e998]: AP00900
+              - paragraph [ref=e999]: R$ 616.056,00
+              - link "Reserva Barigui - Studio à venda no bairro Mossunguê, em frente ao P..." [ref=e1000] [cursor=pointer]:
+                - /url: /imovel/studio-mossungue-curitiba-pr-1-quartos-35.25m2-AP00900
+                - heading "Reserva Barigui - Studio à venda no bairro Mossunguê, em frente ao P..." [level=2] [ref=e1001]
+              - paragraph [ref=e1002]: Mossunguê, Curitiba
+              - generic [ref=e1003]:
+                - generic [ref=e1004]:
+                  - img [ref=e1005]
+                  - generic [ref=e1010]: 35,25 m² Área
+                - generic [ref=e1011]:
+                  - img [ref=e1012]
+                  - generic [ref=e1015]: 1 Quarto
+          - article [ref=e1016]:
+            - generic [ref=e1017]:
+              - region [ref=e1018]:
+                - group [ref=e1021]:
+                  - img "Foto do Apartamento com 2 quartos no Portão, Curitiba - foto 1" [ref=e1023]
+              - generic [ref=e1024]: LANÇAMENTO
+              - button "Adicionar aos favoritos" [ref=e1025]:
+                - img [ref=e1026]
+              - link "Ver detalhes de Apartamento com 2 quartos à venda no bairro Portão em Curitiba!" [ref=e1028] [cursor=pointer]:
+                - /url: /imovel/apartamento-portao-curitiba-pr-2-quartos-54.38m2-AP00902
+            - generic [ref=e1029]:
+              - generic [ref=e1031]:
+                - generic [ref=e1032]: Apartamento
+                - generic [ref=e1033]: ·
+                - generic [ref=e1034]: AP00902
+              - paragraph [ref=e1035]: R$ 605.200,00
+              - link "Apartamento com 2 quartos à venda no bairro Portão em Curitiba!" [ref=e1036] [cursor=pointer]:
+                - /url: /imovel/apartamento-portao-curitiba-pr-2-quartos-54.38m2-AP00902
+                - heading "Apartamento com 2 quartos à venda no bairro Portão em Curitiba!" [level=2] [ref=e1037]
+              - paragraph [ref=e1038]: Portão, Curitiba
+              - generic [ref=e1039]:
+                - generic [ref=e1040]:
+                  - img [ref=e1041]
+                  - generic [ref=e1046]: 54,38 m² Área
+                - generic [ref=e1047]:
+                  - img [ref=e1048]
+                  - generic [ref=e1051]: 2 Quartos
+                - generic [ref=e1052]:
+                  - img [ref=e1053]
+                  - generic [ref=e1056]: 2 Banheiros
+                - generic [ref=e1057]:
+                  - img [ref=e1058]
+                  - generic [ref=e1062]: 1 Vaga
+          - article [ref=e1063]:
+            - generic [ref=e1064]:
+              - region [ref=e1065]:
+                - group [ref=e1068]:
+                  - img "Foto do Kitnet com 1 quartos no Portão, Curitiba - foto 1" [ref=e1070]
+              - button "Adicionar aos favoritos" [ref=e1071]:
+                - img [ref=e1072]
+              - link "Ver detalhes de Apartamento Studio à venda no bairro Portão em Curitiba!" [ref=e1074] [cursor=pointer]:
+                - /url: /imovel/kitnet-portao-curitiba-pr-1-quartos-26.2m2-AP00903
+            - generic [ref=e1075]:
+              - generic [ref=e1077]:
+                - generic [ref=e1078]: Kitnet
+                - generic [ref=e1079]: ·
+                - generic [ref=e1080]: AP00903
+              - paragraph [ref=e1081]: R$ 334.300,00
+              - link "Apartamento Studio à venda no bairro Portão em Curitiba!" [ref=e1082] [cursor=pointer]:
+                - /url: /imovel/kitnet-portao-curitiba-pr-1-quartos-26.2m2-AP00903
+                - heading "Apartamento Studio à venda no bairro Portão em Curitiba!" [level=2] [ref=e1083]
+              - paragraph [ref=e1084]: Portão, Curitiba
+              - generic [ref=e1085]:
+                - generic [ref=e1086]:
+                  - img [ref=e1087]
+                  - generic [ref=e1092]: 26,2 m² Área
+                - generic [ref=e1093]:
+                  - img [ref=e1094]
+                  - generic [ref=e1097]: 1 Quarto
+                - generic [ref=e1098]:
+                  - img [ref=e1099]
+                  - generic [ref=e1102]: 2 Banheiros
+          - article [ref=e1103]:
+            - generic [ref=e1104]:
+              - region [ref=e1105]:
+                - group [ref=e1108]:
+                  - img "Foto do Apartamento com 2 quartos no Seminário, Curitiba - foto 1" [ref=e1110]
+              - button "Adicionar aos favoritos" [ref=e1111]:
+                - img [ref=e1112]
+              - link "Ver detalhes de Équi - Apartamento com 2 quartos á venda no bairro Seminário em Curitiba!" [ref=e1114] [cursor=pointer]:
+                - /url: /imovel/apartamento-seminario-curitiba-pr-2-quartos-66.85m2-AP00904
+            - generic [ref=e1115]:
+              - generic [ref=e1117]:
+                - generic [ref=e1118]: Apartamento
+                - generic [ref=e1119]: ·
+                - generic [ref=e1120]: AP00904
+              - paragraph [ref=e1121]: R$ 873.997,00
+              - link "Équi - Apartamento com 2 quartos á venda no bairro Seminário em Curi..." [ref=e1122] [cursor=pointer]:
+                - /url: /imovel/apartamento-seminario-curitiba-pr-2-quartos-66.85m2-AP00904
+                - heading "Équi - Apartamento com 2 quartos á venda no bairro Seminário em Curi..." [level=2] [ref=e1123]
+              - paragraph [ref=e1124]: Seminário, Curitiba
+              - generic [ref=e1125]:
+                - generic [ref=e1126]:
+                  - img [ref=e1127]
+                  - generic [ref=e1132]: 66,85 m² Área
+                - generic [ref=e1133]:
+                  - img [ref=e1134]
+                  - generic [ref=e1137]: 2 Quartos
+                - generic [ref=e1138]:
+                  - img [ref=e1139]
+                  - generic [ref=e1143]: 1 Vaga
+        - navigation "Paginação dos resultados" [ref=e1144]:
+          - generic [ref=e1145]: Página 1 de 11
+          - link "Próximo" [ref=e1146] [cursor=pointer]:
+            - /url: /busca?page=2
+  - contentinfo [ref=e1147]:
+    - generic [ref=e1149]:
+      - generic [ref=e1150]:
+        - generic [ref=e1151]:
+          - img "FYMOOB Imobiliária" [ref=e1152]
+          - paragraph [ref=e1153]: Encontre seu imóvel ideal em Curitiba com atendimento personalizado e as melhores oportunidades do mercado.
+        - generic [ref=e1154]:
+          - heading "FYMOOB" [level=3] [ref=e1155]
+          - generic [ref=e1156]:
+            - paragraph [ref=e1157]: "CRECI: J 9420"
+            - link "(41) 99978-0517" [ref=e1158] [cursor=pointer]:
+              - /url: tel:+554199978-0517
+              - img [ref=e1159]
+              - text: (41) 99978-0517
+            - link "contato@fymoob.com" [ref=e1161] [cursor=pointer]:
+              - /url: mailto:contato@fymoob.com
+              - img [ref=e1162]
+              - text: contato@fymoob.com
+            - paragraph [ref=e1165]:
+              - img [ref=e1166]
+              - text: Curitiba, PR
+        - generic [ref=e1169]:
+          - heading "Navegação" [level=3] [ref=e1170]
+          - navigation [ref=e1171]:
+            - link "Home" [ref=e1172] [cursor=pointer]:
+              - /url: /
+            - link "Sobre nós" [ref=e1173] [cursor=pointer]:
+              - /url: /sobre
+            - link "Buscar imóvel" [ref=e1174] [cursor=pointer]:
+              - /url: /busca
+            - link "Anunciar" [ref=e1175] [cursor=pointer]:
+              - /url: /anuncie
+            - link "Contato" [ref=e1176] [cursor=pointer]:
+              - /url: /contato
+            - link "Blog" [ref=e1177] [cursor=pointer]:
+              - /url: /blog
+            - link "FAQ" [ref=e1178] [cursor=pointer]:
+              - /url: /faq
+        - generic [ref=e1179]:
+          - heading "Imóveis" [level=3] [ref=e1180]
+          - navigation [ref=e1181]:
+            - link "Apartamentos em Curitiba" [ref=e1182] [cursor=pointer]:
+              - /url: /apartamentos-curitiba
+            - link "Casas em Curitiba" [ref=e1183] [cursor=pointer]:
+              - /url: /casas-curitiba
+            - link "Sobrados em Curitiba" [ref=e1184] [cursor=pointer]:
+              - /url: /sobrados-curitiba
+            - link "Terrenos em Curitiba" [ref=e1185] [cursor=pointer]:
+              - /url: /terrenos-curitiba
+      - generic [ref=e1186]:
+        - paragraph [ref=e1187]: © 2026 FYMOOB Imobiliária. Todos os direitos reservados.
+        - paragraph [ref=e1188]: Imobiliária Certificada
+  - link "Fale conosco pelo WhatsApp" [ref=e1189] [cursor=pointer]:
+    - /url: https://wa.me/5541999780517?text=Ol%C3%A1!%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20os%20im%C3%B3veis%20da%20FYMOOB.
+    - img [ref=e1190]
+    - generic [ref=e1192]: "1"
+  - navigation [ref=e1193]:
+    - generic [ref=e1194]:
+      - link "Início" [ref=e1195] [cursor=pointer]:
+        - /url: /
+        - img [ref=e1196]
+        - generic [ref=e1199]: Início
+      - link "Buscar" [ref=e1200] [cursor=pointer]:
+        - /url: /busca
+        - img [ref=e1201]
+        - generic [ref=e1204]: Buscar
+      - link "Favoritos" [ref=e1205] [cursor=pointer]:
+        - /url: /favoritos
+        - img [ref=e1206]
+        - generic [ref=e1208]: Favoritos
+      - link "Mais" [ref=e1209] [cursor=pointer]:
+        - /url: /blog
+        - img [ref=e1210]
+        - generic [ref=e1211]: Mais
+  - button "Open Next.js Dev Tools" [ref=e1217] [cursor=pointer]:
+    - img [ref=e1218]
+  - alert [ref=e1221]

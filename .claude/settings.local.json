@@ -48,7 +48,14 @@
       "WebFetch(domain:www.jbaimoveis.com.br)",
       "WebFetch(domain:premium.fymoob.com)",
       "WebFetch(domain:blog.grupoavantti.com)",
-      "WebFetch(domain:demo-blue-beta.vercel.app)"
+      "WebFetch(domain:demo-blue-beta.vercel.app)",
+      "mcp__playwright__browser_evaluate",
+      "mcp__playwright__browser_console_messages",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_resize",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_click"
     ],
     "additionalDirectories": [
       "c:\\Users\\Vine\\.claude\\projects\\c--Users-Vine-demo\\memory"
