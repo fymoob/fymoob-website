@@ -16,14 +16,14 @@
 | 4 | Blog e Conteudo | 8 | 8 | 0 | CONCLUIDA |
 | 5 | API Loft Real | 8 | 8 | 0 | CONCLUIDA |
 | 5.6 | Sessao 02/04 | 17 | 17 | 0 | CONCLUIDA |
-| 6 | Institucional e Polish | 6 | 1 | 5 | PENDENTE |
+| 6 | Institucional e Polish | 7 | 6 | 1 | CONCLUIDA |
 | 7 | QA, Deploy, Go-Live | 10 | 0 | 10 | PENDENTE |
 | 8 | SEO Programatico | 18 | 0 | 18 | PENDENTE |
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
 | -- | Bugs | 1 | 0 | 1 | ABERTO |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **136** | **82** | **54** | **60%** |
+| | **TOTAL** | **137** | **88** | **49** | **64%** |
 
 ---
 
@@ -179,13 +179,14 @@
 
 ---
 
-## Fase 6 — Institucional e Polish [PENDENTE]
+## Fase 6 — Institucional e Polish [CONCLUIDA]
 
-- [ ] `src/app/sobre/page.tsx` — Pagina Sobre Nos com historia FYMOOB, equipe, CRECI
-- [ ] `src/app/contato/page.tsx` — Formulario de contato + mapa + dados
-- [ ] `src/app/anuncie/page.tsx` — Landing para captar novos imoveis
+- [x] `src/app/sobre/page.tsx` — Pagina Sobre Nos (historia, valores, diferenciais, localizacao, CRECI)
+- [x] `src/app/contato/page.tsx` — Cards de contato, formulario com envio ao CRM, mapa Google, WhatsApp CTA
+- [x] `src/app/anuncie/page.tsx` — Landing captacao (4 etapas, 6 beneficios, tipos aceitos, formulario)
+- [x] `src/components/shared/ContactForm.tsx` — Formulario reutilizavel com envio POST /api/lead
 - [x] Header definitivo — nav responsivo, logo, busca rapida, CTA, menu dropdown
-- [ ] Footer definitivo — links, contato, redes sociais, CRECI
+- [x] Footer definitivo — 5 colunas (info+CRECI, institucional, tipos, bairros populares, area cliente)
 - [ ] GA4 + event tracking (pageview, lead_form, whatsapp_click, share)
 
 ---
