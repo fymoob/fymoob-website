@@ -16,10 +16,10 @@ export function PropertyBadge({
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium",
-        variant === "type" && "bg-white/90 text-neutral-900 shadow-sm backdrop-blur",
-        variant === "sale" && "bg-success/90 text-white backdrop-blur",
-        variant === "code" && "bg-neutral-950/50 text-white backdrop-blur",
+        "inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold",
+        variant === "type" && "bg-neutral-100 text-neutral-800",
+        variant === "sale" && "bg-emerald-500 text-white",
+        variant === "code" && "text-neutral-400",
         className
       )}
     >

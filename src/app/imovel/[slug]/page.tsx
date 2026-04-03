@@ -116,7 +116,8 @@ export default async function PropertyPage({ params }: PageProps) {
 
       <RecentlyViewedTracker property={property} />
 
-      <div className="mx-auto w-full max-w-7xl px-4 pb-[160px] md:px-8 md:pb-0">
+      {/* Section 1: Header + Info (white bg) */}
+      <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
         {/* Mobile: header with back + actions */}
         <div className="flex items-center justify-between py-2 md:hidden">
           <BackButton />
@@ -135,36 +136,66 @@ export default async function PropertyPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Property header + specs + price */}
+        {/* Property header + specs */}
         <PropertyDetails property={property} shortTitle={shortTitle} />
 
-        {/* Mobile: price highlight */}
-        <p className="mt-3 font-display text-2xl font-bold text-neutral-950 md:hidden">
-          {formatPrice(property.precoVenda ?? property.precoAluguel)}
-        </p>
-
-        {/* Mobile gallery — after title, rounded, with padding */}
-        <div className="mt-5 overflow-hidden rounded-xl md:hidden">
-          <PropertyGallery fotos={filterPropertyPhotos(property.fotos).slice(0, 15)} alt={alt} />
+        {/* Price highlight */}
+        <div className="mt-3 flex items-baseline gap-2 md:hidden">
+          <p className="font-display text-2xl font-bold text-brand-primary">
+            {formatPrice(property.precoVenda ?? property.precoAluguel)}
+          </p>
+          {property.valorCondominio && property.valorCondominio > 0 && (
+            <span className="text-xs text-neutral-400">
+              + {formatPrice(property.valorCondominio)}/cond.
+            </span>
+          )}
         </div>
+      </div>
 
-        {/* Main content grid */}
+      {/* Section 2: Gallery (stone-50 bg on mobile) */}
+      <div className="mt-4 bg-stone-50 py-4 md:bg-transparent md:py-0">
+        <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
+          {/* Mobile gallery */}
+          <div className="overflow-hidden rounded-xl md:hidden">
+            <PropertyGallery fotos={filterPropertyPhotos(property.fotos).slice(0, 15)} alt={alt} />
+          </div>
+        </div>
+      </div>
+
+      {/* Section 3: Content (white bg) */}
+      <div className="mx-auto w-full max-w-7xl px-4 pb-[160px] md:px-8 md:pb-0">
         <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">
           {/* Left column */}
-          <div className="space-y-10">
+          <div>
             {/* Desktop gallery */}
             <div className="hidden md:block">
               <PropertyGallery fotos={filterPropertyPhotos(property.fotos).slice(0, 15)} alt={alt} />
             </div>
-            <PropertyDescription descricao={descricaoWithTitle} />
-            <PropertyAmenities descricao={descricaoWithTitle} />
-            <PropertyCharacteristics property={property} />
-            <PropertyMap
-              latitude={property.latitude}
-              longitude={property.longitude}
-              bairro={property.bairro}
-              titulo={property.titulo}
-            />
+
+            {/* Description (white) */}
+            <div className="mt-8 border-t border-neutral-100 pt-8">
+              <PropertyDescription descricao={descricaoWithTitle} />
+            </div>
+
+            {/* Amenities (stone-50 bg) */}
+            <div className="-mx-4 mt-8 bg-stone-50 px-4 py-8 md:mx-0 md:rounded-xl">
+              <PropertyAmenities descricao={descricaoWithTitle} />
+            </div>
+
+            {/* Characteristics (white) */}
+            <div className="mt-8 border-t border-neutral-100 pt-8">
+              <PropertyCharacteristics property={property} />
+            </div>
+
+            {/* Map (stone-50 bg) */}
+            <div className="-mx-4 mt-8 bg-stone-50 px-4 py-8 md:mx-0 md:rounded-xl">
+              <PropertyMap
+                latitude={property.latitude}
+                longitude={property.longitude}
+                bairro={property.bairro}
+                titulo={property.titulo}
+              />
+            </div>
           </div>
 
           {/* Right sidebar — desktop only */}
