@@ -28,38 +28,61 @@ A CONTRATADA se compromete a entregar os seguintes serviços e funcionalidades:
 
 ### 2.1 — Desenvolvimento do Website
 a) Site responsivo e otimizado para desktop, tablet e dispositivos móveis;
-b) **Geração automática de páginas para imóveis:** o site criará automaticamente páginas individuais para todos os imóveis cadastrados no CRM Loft/Vista (atualmente ~249 imóveis), incluindo galeria de fotos, descrição, características, localização e formulário de contato. Novos imóveis adicionados ao CRM serão automaticamente publicados no site, sem necessidade de intervenção manual;
+b) **Geração automática de páginas para imóveis:** o site criará automaticamente páginas individuais para todos os imóveis cadastrados no CRM Loft/Vista (atualmente ~249 imóveis), incluindo galeria de fotos, descrição, características, localização no mapa e formulário de contato. Novos imóveis adicionados ao CRM serão automaticamente publicados no site, sem necessidade de intervenção manual;
 c) **Geração automática de landing pages por bairro:** o site criará e atualizará automaticamente páginas otimizadas para SEO para cada bairro com imóveis ativos (atualmente 65 bairros), incluindo novos bairros que surgirem conforme imóveis forem cadastrados;
-d) Landing pages por tipo de imóvel (apartamentos, casas, sobrados, terrenos, entre outros);
-e) Página de busca com filtros avançados (tipo, bairro, faixa de preço, dormitórios, área);
-f) Blog com 5 (cinco) artigos iniciais otimizados para SEO e **painel administrativo** para que a CONTRATANTE possa criar, editar e publicar novos artigos de forma autônoma, sem necessidade de conhecimento técnico;
-g) Páginas institucionais: Sobre, Contato, FAQ (Perguntas Frequentes) e Anuncie seu Imóvel;
-h) Página inicial (Home) com destaques, busca rápida e chamadas para ação.
+d) **Landing pages por tipo de imóvel** (apartamentos, casas, sobrados, terrenos, entre outros);
+e) **Landing pages combinadas bairro + tipo:** páginas automáticas para cada combinação existente (ex: "Apartamentos no Batel"), gerando aproximadamente 260 páginas adicionais indexáveis pelo Google;
+f) **Páginas de empreendimentos:** páginas individuais para cada empreendimento cadastrado no CRM (atualmente ~113 empreendimentos), com unidades disponíveis, faixa de preço, localização e fotos;
+g) **Landing pages por faixa de preço:** páginas segmentadas por valor (até R$ 300 mil, R$ 300-500 mil, R$ 500 mil-1 milhão, R$ 1-3 milhões, acima de R$ 3 milhões);
+h) Página de busca com filtros avançados (tipo, bairro, faixa de preço, dormitórios, área);
+i) Blog com 5 (cinco) artigos iniciais otimizados para SEO e **painel administrativo** para que a CONTRATANTE possa criar, editar e publicar novos artigos de forma autônoma, sem necessidade de conhecimento técnico;
+j) Páginas institucionais: Sobre Nós (história, valores, CRECI), Contato (formulário, mapa, WhatsApp), FAQ (19 perguntas frequentes com schema) e Anuncie seu Imóvel (landing de captação com formulário);
+k) Página inicial (Home) com destaques, estatísticas em tempo real, busca rápida e chamadas para ação.
 
 ### 2.2 — Automação e Autonomia
-a) **Sincronização automática de imóveis:** todas as páginas de imóveis, bairros e tipos são geradas dinamicamente a partir do CRM. Ao cadastrar, editar ou remover um imóvel no CRM Loft/Vista, o site reflete as alterações automaticamente, sem intervenção técnica;
-b) **Painel de blog:** área administrativa onde a CONTRATANTE poderá criar, editar, publicar e despublicar artigos do blog de forma independente, com editor de texto intuitivo e suporte a imagens;
-c) **Sitemap auto-atualizável:** o mapa do site para o Google será atualizado automaticamente conforme novos imóveis e artigos forem publicados, garantindo indexação contínua.
+a) **Sincronização automática de imóveis:** todas as páginas de imóveis, bairros, tipos, empreendimentos e combinações são geradas dinamicamente a partir do CRM. Ao cadastrar, editar ou remover um imóvel no CRM Loft/Vista, o site reflete as alterações automaticamente, sem intervenção técnica;
+b) **Geração programática de páginas SEO:** o sistema gera automaticamente mais de **800 páginas indexáveis** a partir dos dados do CRM, incluindo combinações de bairro+tipo, bairro+finalidade, empreendimentos e faixas de preço. Cada nova combinação é criada automaticamente conforme novos imóveis são cadastrados;
+c) **Painel de blog:** área administrativa onde a CONTRATANTE poderá criar, editar, publicar e despublicar artigos do blog de forma independente, com editor de texto intuitivo e suporte a imagens;
+d) **Sitemap auto-atualizável:** o mapa do site para o Google será atualizado automaticamente conforme novos imóveis, empreendimentos e artigos forem publicados, garantindo indexação contínua de todas as 800+ páginas.
 
-### 2.3 — Otimização SEO
-a) Meta tags únicas (title, description, Open Graph) para todas as páginas;
-b) Schema markup estruturado (JSON-LD) para imóveis, organização e breadcrumbs;
-c) Sitemap XML dinâmico com todos os imóveis, bairros e artigos;
-d) Arquivo robots.txt configurado;
-e) Otimização de performance (Core Web Vitals) e carregamento de imagens.
+### 2.3 — Experiência do Usuário (UX)
+a) **Navegação mobile otimizada:** barra de navegação inferior fixa, menu responsivo com acesso rápido e layout adaptado para telas pequenas;
+b) **Sistema de favoritos:** os visitantes podem salvar imóveis de interesse com um clique, com contador visível e página dedicada de favoritos;
+c) **Compartilhamento de imóveis:** botão de compartilhar em cada imóvel via WhatsApp, redes sociais e link direto;
+d) **Indicadores de popularidade:** badges automáticos de "Novo", "Lançamento", "Mais Visto" e contadores de visualização para gerar senso de urgência;
+e) **Barra de urgência:** sinalização inteligente estilo Airbnb em imóveis recém-anunciados, com preço abaixo da média do bairro ou com alta procura;
+f) **Galeria de fotos profissional:** navegação por setas, contador de fotos, visualização otimizada;
+g) **Skeleton loaders e transições:** carregamento suave entre páginas com indicadores visuais de progresso;
+h) **Área do Cliente integrada:** acesso direto ao portal Loft para inquilinos e proprietários (boletos, contratos, 2ª via).
 
-### 2.4 — Integrações
+### 2.4 — Otimização SEO (800+ páginas indexáveis)
+a) Meta tags únicas (title, description, Open Graph) para **todas** as 800+ páginas;
+b) Schema markup estruturado (JSON-LD) para imóveis (RealEstateListing), empreendimentos, organização (Organization, LocalBusiness), breadcrumbs (BreadcrumbList), artigos (BlogPosting) e FAQ (FAQPage);
+c) Sitemap XML dinâmico e segmentado com todos os imóveis, bairros, empreendimentos, combinações e artigos;
+d) Arquivo robots.txt configurado para permitir indexação otimizada;
+e) Otimização de performance (Core Web Vitals: LCP, INP, CLS) e carregamento inteligente de imagens;
+f) URLs amigáveis e semânticas para todas as páginas (ex: `/imoveis/batel/apartamentos`);
+g) Breadcrumbs com schema em todas as páginas para navegação e SEO;
+h) Links internos automáticos entre imóveis, bairros, tipos e empreendimentos relacionados.
+
+### 2.5 — Integrações
 a) Integração com CRM Loft/Vista para sincronização automática dos imóveis;
 b) Formulário de contato com envio de leads diretamente ao CRM;
 c) Botão de WhatsApp integrado para atendimento direto;
-d) Integração com Google Analytics e Google Search Console.
+d) Integração com Google Analytics e Google Search Console;
+e) Link para Área do Cliente do portal Loft (boletos e contratos).
 
-### 2.5 — Implantação
+### 2.6 — Implantação e Go-Live
 a) Deploy do site em ambiente de produção (plataforma Vercel);
 b) Configuração do domínio fymoob.com;
-c) Testes de funcionamento em diferentes navegadores e dispositivos.
+c) Testes de funcionamento em diferentes navegadores e dispositivos;
+d) Submissão do sitemap ao Google Search Console;
+e) Verificação da propriedade no Google Search Console;
+f) Monitoramento de indexação nos primeiros 7 dias após o lançamento.
 
-**Parágrafo único:** Quaisquer funcionalidades, páginas ou serviços não listados nesta cláusula estão fora do escopo deste contrato e, se solicitados, serão objeto de orçamento complementar aprovado por ambas as partes antes da execução.
+**Parágrafo 1º:** O escopo descrito nesta cláusula resulta em um site com mais de **800 (oitocentas) páginas indexáveis pelo Google**, geradas automaticamente a partir dos dados do CRM, incluindo: ~249 páginas de imóveis, ~113 de empreendimentos, ~65 de bairros, ~260 de combinações bairro+tipo, ~5 de faixas de preço, além de páginas institucionais, blog e FAQ. Este volume representa uma vantagem competitiva significativa em relação a sites imobiliários convencionais.
+
+**Parágrafo 2º:** Quaisquer funcionalidades, páginas ou serviços não listados nesta cláusula estão fora do escopo deste contrato e, se solicitados, serão objeto de orçamento complementar aprovado por ambas as partes antes da execução.
 
 ---
 
