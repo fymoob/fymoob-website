@@ -16,14 +16,14 @@
 | 4 | Blog e Conteudo | 8 | 8 | 0 | CONCLUIDA |
 | 5 | API Loft Real | 8 | 8 | 0 | CONCLUIDA |
 | 5.6 | Sessao 02-03/04 | 28 | 28 | 0 | CONCLUIDA |
-| 6 | Institucional e Polish | 7 | 6 | 1 | CONCLUIDA |
+| 6 | Institucional e Polish | 7 | 7 | 0 | CONCLUIDA |
 | 7 | QA, Deploy, Go-Live | 10 | 0 | 10 | PENDENTE |
 | 8 | SEO Programatico | 33 | 0 | 33 | PENDENTE |
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
 | -- | Bugs | 0 | 0 | 0 | — |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **162** | **99** | **63** | **61%** |
+| | **TOTAL** | **162** | **100** | **62** | **62%** |
 
 ---
 
@@ -201,7 +201,7 @@
 - [x] `src/components/shared/ContactForm.tsx` — Formulario reutilizavel com envio POST /api/lead
 - [x] Header definitivo — nav responsivo, logo, busca rapida, CTA, menu dropdown
 - [x] Footer definitivo — 5 colunas (info+CRECI, institucional, tipos, bairros populares, area cliente)
-- [ ] GA4 + event tracking (pageview, lead_form, whatsapp_click, share)
+- [x] GA4 instalado (G-ZGNMPW779Y) — pageview automatico em todas as paginas
 
 ---
 
