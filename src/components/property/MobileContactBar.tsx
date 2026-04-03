@@ -66,17 +66,8 @@ export function MobileContactBar({
   bairro,
   precoMedioBairro,
 }: MobileContactBarProps) {
-  const [visible, setVisible] = useState(false)
   const [viewCount, setViewCount] = useState(0)
   const price = precoVenda ?? precoAluguel ?? null
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setVisible(window.scrollY > 400)
-    }
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
 
   useEffect(() => {
     try {
@@ -99,9 +90,7 @@ export function MobileContactBar({
 
   return (
     <div
-      className={`fixed bottom-[57px] left-0 z-[100] w-full bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] transition-transform duration-300 md:hidden ${
-        visible ? "translate-y-0" : "translate-y-full"
-      }`}
+      className="fixed bottom-[57px] left-0 z-[100] w-full bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] md:hidden"
     >
       {/* Urgency strip — Airbnb style */}
       {urgency && (

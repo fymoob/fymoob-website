@@ -9,7 +9,7 @@ import {
   generatePropertySchema,
   generatePropertyDescription,
 } from "@/lib/seo"
-import { generateImageAlt, getPropertyImage, filterPropertyPhotos, generateShortTitle } from "@/lib/utils"
+import { generateImageAlt, getPropertyImage, filterPropertyPhotos, generateShortTitle, formatPrice } from "@/lib/utils"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyGallery } from "@/components/property/PropertyGallery"
 import { PropertyDetails } from "@/components/property/PropertyDetails"
@@ -116,20 +116,16 @@ export default async function PropertyPage({ params }: PageProps) {
 
       <RecentlyViewedTracker property={property} />
 
-      {/* Mobile: gallery first with overlay buttons */}
-      <div className="relative md:hidden">
-        <PropertyGallery fotos={filterPropertyPhotos(property.fotos).slice(0, 15)} alt={alt} />
-        {/* Overlay buttons on gallery */}
-        <div className="absolute left-0 right-0 top-0 z-20 flex items-center justify-between p-4">
+      <div className="mx-auto w-full max-w-7xl px-4 pb-[160px] md:px-8 md:pb-0">
+        {/* Mobile: header with back + actions */}
+        <div className="flex items-center justify-between py-2 md:hidden">
           <BackButton />
           <div className="flex items-center gap-2">
             <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} variant="overlay" />
             <WishlistButton codigo={property.codigo} size="sm" />
           </div>
         </div>
-      </div>
 
-      <div className="mx-auto w-full max-w-7xl px-4 pb-48 md:px-8 md:pb-0">
         {/* Desktop: breadcrumbs + actions */}
         <div className="hidden items-center justify-between md:flex">
           <Breadcrumbs items={breadcrumbItems} />
@@ -139,11 +135,21 @@ export default async function PropertyPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Property header + specs */}
+        {/* Property header + specs + price */}
         <PropertyDetails property={property} shortTitle={shortTitle} />
 
+        {/* Mobile: price highlight */}
+        <p className="mt-3 font-display text-2xl font-bold text-neutral-950 md:hidden">
+          {formatPrice(property.precoVenda ?? property.precoAluguel)}
+        </p>
+
+        {/* Mobile gallery — after title, rounded, with padding */}
+        <div className="mt-5 overflow-hidden rounded-xl md:hidden">
+          <PropertyGallery fotos={filterPropertyPhotos(property.fotos).slice(0, 15)} alt={alt} />
+        </div>
+
         {/* Main content grid */}
-        <div className="mt-4 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">
+        <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">
           {/* Left column */}
           <div className="space-y-10">
             {/* Desktop gallery */}
