@@ -323,7 +323,7 @@ export function PropertyCard({
           <Carousel
             className="h-full [&>div]:h-full"
             setApi={setCarouselApi}
-            opts={{ align: "start", loop: photos.length > 1 }}
+            opts={{ align: "start", loop: photos.length > 1, dragFree: false, containScroll: "trimSnaps", duration: 25 }}
           >
             <CarouselContent className="ml-0 h-full">
               {photos.map((photo, index) => {
