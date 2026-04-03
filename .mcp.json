@@ -7,6 +7,10 @@
         "GSC_OAUTH_CLIENT_SECRETS_FILE": "c:\\Users\\Vine\\mcp-gsc\\client_secrets.json",
         "GSC_DATA_STATE": "all"
       }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
     }
   }
 }

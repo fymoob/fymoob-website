@@ -15,7 +15,7 @@
 | 3 | SEO Tecnico | 8 | 8 | 0 | CONCLUIDA |
 | 4 | Blog e Conteudo | 8 | 8 | 0 | CONCLUIDA |
 | 5 | API Loft Real | 8 | 8 | 0 | CONCLUIDA |
-| 5.6 | Sessao 02/04 | 17 | 17 | 0 | CONCLUIDA |
+| 5.6 | Sessao 02-03/04 | 28 | 28 | 0 | CONCLUIDA |
 | 6 | Institucional e Polish | 7 | 6 | 1 | CONCLUIDA |
 | 7 | QA, Deploy, Go-Live | 10 | 0 | 10 | PENDENTE |
 | 8 | SEO Programatico | 18 | 0 | 18 | PENDENTE |
@@ -23,7 +23,7 @@
 | -- | Bugs | 1 | 0 | 1 | ABERTO |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **137** | **88** | **49** | **64%** |
+| | **TOTAL** | **148** | **99** | **49** | **67%** |
 
 ---
 
@@ -147,20 +147,21 @@
 
 ---
 
-## Sessao 2026-04-02 — Contrato, Tasks, SEO Intelligence, Mobile UX [CONCLUIDA]
+## Sessao 2026-04-02/03 — Contrato, Tasks, SEO Intelligence, Mobile UX, Fase 6 [CONCLUIDA]
 
 <details>
-<summary>17 tasks concluidas</summary>
+<summary>28 tasks concluidas</summary>
 
 **Contrato e Documentacao:**
 - [x] Contrato de prestacao de servicos (`docs/contrato-prestacao-servicos.md`) — 14 clausulas
-- [x] Escopo detalhado com automacao (geracao automatica de paginas, painel blog)
+- [x] Escopo expandido: 800+ paginas, SEO programatico, UX, empreendimentos, faixas preco
+- [x] Secao UX simplificada: essenciais fixos + recursos personalizaveis pelo cliente
 - [x] Consolidar TODAS as tasks em `docs/TASKS.md` — fonte unica de verdade
 - [x] Atualizar `CLAUDE.md` com Task Management e novas rotas SEO programatico
 
 **SEO Intelligence (Fase 10):**
 - [x] Instalar mcp-gsc (Google Search Console MCP) — `c:\Users\Vine\mcp-gsc\`
-- [x] Criar `.mcp.json` com config GSC
+- [x] Criar `.mcp.json` com config GSC + Playwright MCP
 - [x] Instalar claude-seo skill (20 skills + 10 subagents)
 - [x] Criar skill `/project:seo-report` — relatorio semanal automatico
 - [x] Criar skill `/project:seo-audit` — auditoria completa FYMOOB
@@ -169,11 +170,24 @@
 
 **Mobile UX:**
 - [x] Header — menu dropdown rapido (Area do Cliente, Favoritos, Comparar)
-- [x] BottomNav — sempre visivel + WhatsApp integrado (substituiu "Mais")
+- [x] BottomNav — 3 itens fixos (Inicio, Buscar, Favoritos)
 - [x] WhatsAppFloat — escondido no mobile, apenas desktop
 - [x] MobileContactBar — reposicionado acima do BottomNav (bottom-[57px])
-- [x] UrgencyBar — barra de urgencia estilo Airbnb (recém-anunciado, achado, popular)
+- [x] UrgencyBar integrada ao MobileContactBar — tira Airbnb colada no topo da barra CTA
 - [x] Menu mobile (Sheet) — secao "Acesso rapido" com Area do Cliente, Favoritos, Comparar
+- [x] SortDropdown — bottom sheet nativo no mobile (substituiu select escuro)
+- [x] Icone WhatsApp oficial (SVG) no botao "Quero visitar"
+
+**Fase 6 — Institucional:**
+- [x] `/sobre` — historia, valores (4), diferenciais (4), stats, localizacao, CRECI
+- [x] `/contato` — 5 cards contato, formulario CRM, mapa Google, WhatsApp CTA
+- [x] `/anuncie` — 4 etapas, 6 beneficios, tipos aceitos, formulario captacao
+- [x] `ContactForm.tsx` — componente reutilizavel POST /api/lead com estados
+- [x] Footer — 5 colunas (info+CRECI, institucional, tipos, bairros populares, area cliente)
+
+**Infra:**
+- [x] Playwright MCP adicionado ao `.mcp.json` para testes visuais
+- [x] Remover UrgencyBar.tsx standalone (logica absorvida pelo MobileContactBar)
 
 </details>
 
