@@ -133,6 +133,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
+  // Bairro + finalidade pages (e.g., /imoveis/batel/venda, /imoveis/batel/aluguel)
+  const finalidadePages: MetadataRoute.Sitemap = bairros
+    .filter((b) => b.total >= 3)
+    .flatMap((b) => [
+      {
+        url: `${SITE_URL}/imoveis/${b.slug}/venda`,
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+      },
+      {
+        url: `${SITE_URL}/imoveis/${b.slug}/aluguel`,
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+      },
+    ])
+
   // Price range landing pages
   const priceRangePages: MetadataRoute.Sitemap = [
     "ate-300-mil",
@@ -163,6 +181,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...typePages,
     ...bairroPages,
     ...combinedPages,
+    ...finalidadePages,
     ...priceRangePages,
     ...empreendimentoPages,
     ...propertyPages,
