@@ -80,7 +80,7 @@ export default async function Home() {
   return (
     <>
       {/* Hero */}
-      <section id="hero" className="relative flex min-h-[60dvh] items-center justify-center overflow-hidden bg-neutral-950 md:min-h-[100dvh]">
+      <section id="hero" className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-neutral-950">
         {/* Background video with scale-in */}
         <video
           autoPlay
@@ -100,7 +100,7 @@ export default async function Home() {
           }}
         />
         {/* Content */}
-        <div className="relative z-10 mx-auto w-full max-w-4xl px-4 text-center sm:px-6">
+        <div className="relative z-10 mx-auto w-full max-w-4xl px-4 pb-12 text-center sm:px-6">
           <h1 className="hero-animate hero-animate-1 font-display text-3xl font-extrabold tracking-tight text-white sm:text-5xl md:text-7xl leading-[1.05]">
             Encontre seu imóvel{"\n"}ideal
           </h1>
