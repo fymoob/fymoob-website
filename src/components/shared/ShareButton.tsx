@@ -2,17 +2,23 @@
 
 import { useEffect, useState } from "react"
 import { Share2, Link2, MessageCircle, Check } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 interface ShareButtonProps {
   title: string
   url: string
+  variant?: "default" | "overlay"
 }
 
-export function ShareButton({ title, url }: ShareButtonProps) {
+export function ShareButton({ title, url, variant = "default" }: ShareButtonProps) {
   const [copied, setCopied] = useState(false)
   const [canNativeShare, setCanNativeShare] = useState(false)
   const fullUrl = `https://fymoob.com${url}`
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${title} — ${fullUrl}`)}`
+
+  useEffect(() => {
+    setCanNativeShare(typeof navigator !== "undefined" && "share" in navigator)
+  }, [])
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -24,17 +30,27 @@ export function ShareButton({ title, url }: ShareButtonProps) {
     }
   }
 
-  useEffect(() => {
-    // Must detect browser API post-hydration to avoid server/client mismatch
-    setCanNativeShare(typeof navigator !== "undefined" && "share" in navigator) // eslint-disable-line react-hooks/set-state-in-effect
-  }, [])
-
   const handleCopy = async () => {
     await navigator.clipboard.writeText(fullUrl)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
 
+  // Overlay variant: single circular button (for mobile gallery overlay)
+  if (variant === "overlay") {
+    return (
+      <button
+        type="button"
+        onClick={canNativeShare ? handleShare : handleCopy}
+        aria-label="Compartilhar"
+        className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-neutral-700 shadow-sm backdrop-blur-sm transition hover:bg-white"
+      >
+        {copied ? <Check className="size-4 text-emerald-500" /> : <Share2 className="size-4" />}
+      </button>
+    )
+  }
+
+  // Default: full button row (for desktop)
   return (
     <div className="flex items-center gap-2">
       <a

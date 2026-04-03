@@ -97,7 +97,7 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
   return (
     <div>
       {/* ===== Mobile: Swipeable photo strip ===== */}
-      <div className="relative md:hidden">
+      <div className="relative overflow-hidden rounded-b-2xl md:hidden">
         <div
           className="flex snap-x snap-mandatory overflow-x-auto scrollbar-hide"
           style={{ WebkitOverflowScrolling: "touch" }}

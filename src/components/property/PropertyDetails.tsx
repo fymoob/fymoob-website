@@ -10,7 +10,7 @@ interface PropertyDetailsProps {
 
 export function PropertyDetails({ property, shortTitle }: PropertyDetailsProps) {
   return (
-    <div className="space-y-3">
+    <div className="mt-4 space-y-3 md:mt-0">
       {/* Badges */}
       <div className="flex flex-wrap items-center gap-2">
         <PropertyBadge variant="type">{property.tipo}</PropertyBadge>

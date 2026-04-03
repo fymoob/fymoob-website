@@ -120,16 +120,16 @@ export default async function PropertyPage({ params }: PageProps) {
       <div className="relative md:hidden">
         <PropertyGallery fotos={filterPropertyPhotos(property.fotos).slice(0, 15)} alt={alt} />
         {/* Overlay buttons on gallery */}
-        <div className="absolute left-0 right-0 top-0 z-10 flex items-center justify-between p-3">
+        <div className="absolute left-0 right-0 top-0 z-20 flex items-center justify-between p-4">
           <BackButton />
           <div className="flex items-center gap-2">
+            <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} variant="overlay" />
             <WishlistButton codigo={property.codigo} size="sm" />
-            <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} />
           </div>
         </div>
       </div>
 
-      <div className="mx-auto w-full max-w-7xl px-4 pb-44 md:px-8 md:pb-0">
+      <div className="mx-auto w-full max-w-7xl px-4 pb-48 md:px-8 md:pb-0">
         {/* Desktop: breadcrumbs + actions */}
         <div className="hidden items-center justify-between md:flex">
           <Breadcrumbs items={breadcrumbItems} />
