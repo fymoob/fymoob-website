@@ -18,12 +18,12 @@
 | 5.6 | Sessao 02-03/04 | 28 | 28 | 0 | CONCLUIDA |
 | 6 | Institucional e Polish | 7 | 7 | 0 | CONCLUIDA |
 | 7 | QA, Deploy, Go-Live | 10 | 0 | 10 | PENDENTE |
-| 8 | SEO Programatico | 33 | 33 | 0 | CONCLUIDA |
+| 8 | SEO Programatico | 37 | 33 | 4 | CONCLUIDA (4 pos-deploy) |
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
 | -- | Bugs | 0 | 0 | 0 | — |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **162** | **133** | **29** | **82%** |
+| | **TOTAL** | **166** | **137** | **29** | **83%** |
 
 ---
 
@@ -201,7 +201,7 @@
 - [x] `src/components/shared/ContactForm.tsx` — Formulario reutilizavel com envio POST /api/lead
 - [x] Header definitivo — nav responsivo, logo, busca rapida, CTA, menu dropdown
 - [x] Footer definitivo — 5 colunas (info+CRECI, institucional, tipos, bairros populares, area cliente)
-- [x] GA4 instalado (G-ZGNMPW779Y) — pageview automatico em todas as paginas
+- [x] GA4 instalado (G-HPWE3P9DYK — fluxo "Site Principal" fymoob.com) — pageview automatico
 
 ---
 
@@ -220,7 +220,7 @@
 
 ---
 
-## Fase 8 — SEO Programatico [PENDENTE]
+## Fase 8 — SEO Programatico [CONCLUIDA]
 
 > **Objetivo:** Gerar 800+ paginas indexaveis automaticamente a partir dos dados do CRM.
 > Todas as paginas devem ter: generateMetadata(), JSON-LD, breadcrumbs, internal linking.
@@ -269,17 +269,17 @@
 - [x] RelatedPages: bairros do empreendimento + outros empreendimentos
 - [x] Listagem `/empreendimentos` — grid de cards com imagem, bairro, construtora, unidades, preco
 
-### 8.5 — Landing Faixas de Preco
-> Rotas estaticas | Estimativa: ~5 paginas
+### 8.5 — Landing Faixas de Preco [CONCLUIDA]
+> Rota: `/imoveis/preco/[faixa]` | 5 paginas geradas
 
-- [ ] `/imoveis/ate-300-mil` — Imoveis ate R$ 300 mil em Curitiba
-- [ ] `/imoveis/300-a-500-mil` — Imoveis de R$ 300 a 500 mil
-- [ ] `/imoveis/500-mil-a-1-milhao` — Imoveis de R$ 500 mil a R$ 1 milhao
-- [ ] `/imoveis/1-a-3-milhoes` — Imoveis de R$ 1 a 3 milhoes
-- [ ] `/imoveis/acima-3-milhoes` — Imoveis acima de R$ 3 milhoes
-- [ ] Template com filtro por faixa, stats da faixa, imoveis listados
-- [ ] `generateMetadata()` + JSON-LD para cada faixa
-- [ ] Adicionar ao sitemap com priority 0.6
+- [x] `/imoveis/preco/ate-300-mil` — Imoveis ate R$ 300 mil em Curitiba
+- [x] `/imoveis/preco/300-a-500-mil` — Imoveis de R$ 300 a 500 mil
+- [x] `/imoveis/preco/500-mil-a-1-milhao` — Imoveis de R$ 500 mil a R$ 1 milhao
+- [x] `/imoveis/preco/1-a-3-milhoes` — Imoveis de R$ 1 a 3 milhoes
+- [x] `/imoveis/preco/acima-3-milhoes` — Imoveis acima de R$ 3 milhoes
+- [x] Template com intro dinamico, stats cards, FAQ schema, cross-linking (outras faixas + bairros top)
+- [x] `generateMetadata()` + JSON-LD ItemList para cada faixa
+- [x] Adicionado ao sitemap com priority 0.7
 
 ### 8.6 — Landing Bairro + Quartos [CONCLUIDA]
 > Rota: `/imoveis/[bairro]/2-quartos`, `/imoveis/[bairro]/3-quartos`, `/imoveis/[bairro]/4-quartos`
@@ -291,14 +291,14 @@
 - [x] FAQ dinamico + cross-linking (outros quartos + venda/aluguel)
 - [x] Adicionado ao sitemap com priority 0.6
 
-### 8.7 — Sitemap Expandido
-> Meta: 800+ URLs indexaveis
+### 8.7 — Sitemap Expandido [CONCLUIDA]
+> Sitemap atual: ~600+ URLs indexaveis
 
-- [ ] Atualizar `src/app/sitemap.ts` para incluir TODAS as novas combinacoes
-- [ ] Implementar sitemap index se necessario (split: imoveis, bairros, tipos, empreendimentos, blog)
-- [ ] Garantir `lastmod` real via DataAtualizacao da API
-- [ ] Submeter sitemap atualizado ao GSC apos deploy
-- [ ] Validar com Google Search Console que todas URLs estao sendo descobertas
+- [x] Atualizar `src/app/sitemap.ts` com TODAS as combinacoes (tipos, finalidades, quartos, faixas, empreendimentos, institucionais)
+- [x] Sitemap unico (< 50k URLs, nao precisa split por enquanto)
+- [x] `lastmod` setado como `now` (revalidacao automatica a cada build/deploy)
+- [ ] Submeter sitemap ao GSC apos go-live (depende Fase 7)
+- [ ] Validar com GSC que todas URLs estao sendo descobertas (depende Fase 7)
 
 ### 8.8 — Conteudo Dinamico por Pagina [CONCLUIDA]
 > Case: Omnius 850% crescimento organico em 10 meses com conteudo dinamico.
@@ -306,9 +306,9 @@
 - [x] Criar funcao `generateLandingIntro(properties, bairro, tipo)` em `src/lib/seo.ts`
 - [x] Criar funcao `generateLandingStats(properties)` — stats automaticos por pagina
 - [x] Aplicar em landing bairro+tipo (intro + stats cards)
-- [x] Aplicar em landing bairro (ja tinha conteudo, adicionou FAQ + related)
-- [ ] Aplicar em landing faixa de preco (pendente — paginas ainda nao existem)
-- [ ] Aplicar em empreendimentos (pendente — revisar template existente)
+- [x] Aplicar em landing bairro (conteudo + FAQ + related)
+- [x] Aplicar em landing faixa de preco (intro + stats + FAQ + cross-linking)
+- [x] Empreendimentos ja tinham stats + descricao + FAQ adicionado
 
 ### 8.9 — FAQ Dinamico com Schema por Pagina [CONCLUIDA]
 > Rich results no Google (perguntas expansiveis direto na SERP).
@@ -316,21 +316,23 @@
 - [x] Criar funcao `generateDynamicFAQ(stats, bairro, tipo)` em `src/lib/seo.ts`
   - 5 perguntas automaticas: quantidade, preco medio, area media, quartos, como visitar
 - [x] Componente `DynamicFAQ` com accordion + FAQPage JSON-LD schema
-- [x] Integrado em landing bairro+tipo
-- [x] Integrado em landing bairro
-- [ ] Integrar em faixa de preco (pendente — paginas nao existem)
-- [ ] Validar rich results com Google Rich Results Test (pos-deploy)
+- [x] Integrado em: bairro, bairro+tipo, bairro+finalidade, bairro+quartos, faixas preco, empreendimentos
+- [ ] Validar rich results com Google Rich Results Test (pos-deploy — depende Fase 7)
 
 ### 8.10 — Cross-Linking Hub-and-Spoke [CONCLUIDA]
 > Flyhomes usou hub-and-spoke para atingir 1.1M visitas/mes.
 
 - [x] Componente `RelatedPages` — tags de links contextuais
-- [x] Landing bairro+tipo: links para bairro pai + tipo pai + outros tipos no bairro + mesmo tipo em outros bairros
-- [x] Landing bairro: links para tipos do bairro + outros bairros populares
-- [x] Breadcrumbs hierarquicos: Home > Bairro > Tipo
-- [ ] Adicionar RelatedPages na pagina de imovel individual (bairro, tipo, empreendimento)
-- [ ] Adicionar RelatedPages nas paginas de empreendimento
-- [ ] Componente `BairrosProximos` por geolocalizacao (fase futura)
+- [x] Landing bairro+tipo: bairro pai + tipo pai + outros tipos + mesmo tipo em outros bairros
+- [x] Landing bairro: tipos do bairro + outros bairros populares
+- [x] Landing bairro+finalidade: finalidade oposta + tipos do bairro + outros bairros
+- [x] Landing bairro+quartos: outros quartos + venda/aluguel
+- [x] Faixas de preco: outras faixas + bairros top na faixa
+- [x] Empreendimentos: bairros do empreendimento + outros empreendimentos
+- [x] Tipo+finalidade: tipo oposto + bairros com tipo
+- [x] Breadcrumbs hierarquicos em todas as landing pages
+- [ ] RelatedPages na pagina de imovel individual (futuro)
+- [ ] Componente `BairrosProximos` por geolocalizacao (futuro)
 
 ---
 
