@@ -78,22 +78,27 @@ d) Submissão do sitemap ao Google Search Console;
 e) Verificação da propriedade no Google Search Console;
 f) Monitoramento de indexação nos primeiros 7 dias após o lançamento.
 
-**Parágrafo 1º:** O escopo descrito nesta cláusula resulta em um site com mais de **800 (oitocentas) páginas indexáveis pelo Google**, geradas automaticamente a partir dos dados do CRM, incluindo: ~249 páginas de imóveis, ~113 de empreendimentos, ~65 de bairros, ~260 de combinações bairro+tipo, ~5 de faixas de preço, além de páginas institucionais, blog e FAQ. Este volume representa uma vantagem competitiva significativa em relação a sites imobiliários convencionais.
+**Parágrafo 1º:** Com base no volume atual do CRM (249 imóveis, 113 empreendimentos, 65 bairros), o escopo descrito nesta cláusula é capaz de gerar mais de **800 (oitocentas) páginas indexáveis pelo Google**. O número exato de páginas depende da quantidade de imóveis e empreendimentos cadastrados no CRM pela CONTRATANTE — quanto mais imóveis ativos, mais páginas o sistema gera automaticamente. A estrutura técnica para geração dessas páginas é responsabilidade da CONTRATADA; o volume de dados é responsabilidade da CONTRATANTE.
 
 **Parágrafo 2º:** Quaisquer funcionalidades, páginas ou serviços não listados nesta cláusula estão fora do escopo deste contrato e, se solicitados, serão objeto de orçamento complementar aprovado por ambas as partes antes da execução.
 
 ---
 
-## CLÁUSULA 3ª — DO PRAZO
+## CLÁUSULA 3ª — DO PRAZO, ENTREGAS E ACEITE
 
 O prazo para a execução completa dos serviços descritos na Cláusula 2ª é de **60 (sessenta) dias corridos**, contados a partir da data de assinatura do presente contrato.
 
 **§ 1º** O prazo poderá ser prorrogado, sem ônus para a CONTRATADA, nas seguintes hipóteses:
 a) Atraso da CONTRATANTE no fornecimento de materiais, informações ou aprovações necessárias;
 b) Solicitação de alterações no escopo original pela CONTRATANTE;
-c) Caso fortuito ou força maior devidamente comprovados.
+c) Caso fortuito ou força maior devidamente comprovados;
+d) Suspensão dos serviços por inadimplência (conforme Cláusula 11ª).
 
 **§ 2º** A CONTRATADA apresentará versão funcional do site para aprovação da CONTRATANTE antes da implantação final em produção.
+
+**§ 3º — Do aceite:** Após a apresentação de cada entrega, a CONTRATANTE terá **5 (cinco) dias úteis** para aprovar ou solicitar ajustes. Cada entrega admite até **2 (duas) rodadas de revisão**. Revisões adicionais serão tratadas como serviço complementar (Cláusula 4ª, § 4º). A ausência de manifestação dentro do prazo será considerada como **aceite tácito**.
+
+**§ 4º — Da entrega final:** Considera-se **entrega final** o momento em que o site é publicado no domínio fymoob.com em ambiente de produção, após aprovação (expressa ou tácita) da CONTRATANTE. A data da entrega final marca o início do período de suporte (Cláusula 9ª).
 
 ---
 
@@ -140,10 +145,19 @@ Constituem obrigações da CONTRATANTE:
 a) Fornecer à CONTRATADA todos os materiais, informações, textos, imagens, logotipos e acessos necessários à execução dos serviços, incluindo acesso ao CRM Loft/Vista;
 b) Aprovar ou solicitar alterações nas etapas do projeto dentro do prazo de **5 (cinco) dias úteis** após a apresentação de cada entrega;
 c) Efetuar os pagamentos nas datas e condições pactuadas na Cláusula 4ª;
-d) Manter ativas as contas de domínio (fymoob.com) e serviços de hospedagem necessários ao funcionamento do site;
-e) Designar um responsável para comunicação e tomada de decisões relativas ao projeto.
+d) Manter ativas as contas de domínio (fymoob.com), serviços de hospedagem e CRM Loft/Vista necessários ao funcionamento do site;
+e) Designar um responsável para comunicação e tomada de decisões relativas ao projeto;
+f) Arcar com os custos recorrentes de infraestrutura necessários ao funcionamento do site, conforme descrito no § 1º.
 
-**Parágrafo único:** A falta de aprovação ou resposta da CONTRATANTE dentro do prazo de 5 (cinco) dias úteis será considerada como aprovação tácita da etapa apresentada.
+**§ 1º — Custos recorrentes por conta da CONTRATANTE:** Os seguintes serviços são independentes deste contrato e seus custos são de responsabilidade exclusiva da CONTRATANTE:
+a) Registro e renovação do domínio fymoob.com;
+b) Plano de hospedagem na plataforma Vercel (o plano gratuito atende ao projeto inicial; upgrades futuros, se necessários, serão por conta da CONTRATANTE);
+c) Assinatura do CRM Loft/Vista (necessário para a sincronização automática de imóveis);
+d) Eventuais serviços de terceiros (Google Ads, ferramentas de marketing, etc.).
+
+**§ 2º** A CONTRATADA não se responsabiliza por indisponibilidade do site causada por cancelamento ou suspensão dos serviços listados no § 1º pela CONTRATANTE.
+
+**§ 3º** A falta de aprovação ou resposta da CONTRATANTE dentro do prazo de 5 (cinco) dias úteis será considerada como aprovação tácita da etapa apresentada.
 
 ---
 
@@ -170,6 +184,10 @@ a) Sejam ou se tornem de domínio público sem violação deste contrato;
 b) Sejam recebidas legitimamente de terceiros sem obrigação de sigilo;
 c) Sejam exigidas por ordem judicial ou determinação legal.
 
+**§ 4º — Proteção de Dados (LGPD):** As partes comprometem-se a cumprir a Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018) no tratamento de dados pessoais coletados pelo site (formulários de contato, leads, dados de navegação). A CONTRATANTE é a **controladora** dos dados pessoais coletados e a CONTRATADA atua como **operadora** durante o desenvolvimento e período de suporte. Após a entrega final e quitação, a CONTRATANTE assume integralmente a responsabilidade pelo tratamento dos dados pessoais.
+
+**§ 5º** Ambas as partes devem adotar medidas técnicas e organizacionais adequadas para proteger os dados pessoais contra acesso não autorizado, destruição, perda ou alteração.
+
 ---
 
 ## CLÁUSULA 9ª — DO SUPORTE PÓS-ENTREGA
@@ -177,18 +195,22 @@ c) Sejam exigidas por ordem judicial ou determinação legal.
 **§ 1º** A CONTRATADA prestará suporte técnico gratuito pelo período de **60 (sessenta) dias corridos** após a entrega final do site em ambiente de produção.
 
 **§ 2º** O suporte inclui:
-a) Correção de bugs e falhas técnicas no código desenvolvido;
-b) Ajustes menores de layout e conteúdo;
-c) Esclarecimento de dúvidas sobre a operação e administração do site.
+a) Correção de bugs e falhas técnicas no código desenvolvido pela CONTRATADA;
+b) Ajustes menores de layout e conteúdo, limitados a **até 2 (duas) horas de trabalho por solicitação**;
+c) Esclarecimento de dúvidas sobre a operação e administração do site;
+d) Orientação sobre o uso do painel de blog.
 
 **§ 3º** O suporte **NÃO** inclui:
 a) Desenvolvimento de novas funcionalidades ou páginas;
 b) Redesign parcial ou total do site;
 c) Criação de novos conteúdos (textos, artigos, imagens);
 d) Alterações no escopo original do projeto;
-e) Problemas causados por intervenção de terceiros no código.
+e) Problemas causados por intervenção de terceiros no código;
+f) Indisponibilidade causada por serviços de terceiros (Vercel, Loft/Vista, Google, domínio).
 
-**§ 4º** Após o término do período de suporte gratuito, a prestação de serviços de manutenção e evolução do site poderá ser contratada mediante novo instrumento específico.
+**§ 4º** Solicitações que excedam o limite de 2 (duas) horas por demanda serão avaliadas e, se aceitas, cobradas como serviço adicional conforme orçamento prévio.
+
+**§ 5º** Após o término do período de suporte gratuito, a prestação de serviços de manutenção e evolução do site poderá ser contratada mediante novo instrumento específico.
 
 ---
 
@@ -244,6 +266,10 @@ c) Correção monetária pelo índice IGP-M/FGV ou, na sua falta, pelo IPCA/IBGE
 **§ 3º** Eventuais alterações neste contrato somente terão validade se formalizadas por meio de aditivo contratual assinado por ambas as partes.
 
 **§ 4º** Este contrato é celebrado em caráter irrevogável e irretratável, obrigando as partes e seus sucessores.
+
+**§ 5º — Da comunicação:** Toda comunicação relativa a este contrato será realizada preferencialmente por **WhatsApp** e/ou **e-mail**, ficando as partes obrigadas a responder solicitações em até **2 (dois) dias úteis**. Comunicações com efeito jurídico (notificações, rescisão, alterações contratuais) deverão ser formalizadas por e-mail com confirmação de recebimento.
+
+**§ 6º — Do treinamento:** Após a entrega final, a CONTRATADA fornecerá à CONTRATANTE orientação sobre o uso do painel de blog e funcionalidades do site, em formato de videoconferência ou documentação escrita, com duração estimada de até **1 (uma) hora**. Treinamentos adicionais poderão ser contratados separadamente.
 
 ---
 
