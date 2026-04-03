@@ -46,14 +46,12 @@ c) **Painel de blog:** área administrativa onde a CONTRATANTE poderá criar, ed
 d) **Sitemap auto-atualizável:** o mapa do site para o Google será atualizado automaticamente conforme novos imóveis, empreendimentos e artigos forem publicados, garantindo indexação contínua de todas as 800+ páginas.
 
 ### 2.3 — Experiência do Usuário (UX)
-a) **Navegação mobile otimizada:** barra de navegação inferior fixa, menu responsivo com acesso rápido e layout adaptado para telas pequenas;
-b) **Sistema de favoritos:** os visitantes podem salvar imóveis de interesse com um clique, com contador visível e página dedicada de favoritos;
-c) **Compartilhamento de imóveis:** botão de compartilhar em cada imóvel via WhatsApp, redes sociais e link direto;
-d) **Indicadores de popularidade:** badges automáticos de "Novo", "Lançamento", "Mais Visto" e contadores de visualização para gerar senso de urgência;
-e) **Barra de urgência:** sinalização inteligente estilo Airbnb em imóveis recém-anunciados, com preço abaixo da média do bairro ou com alta procura;
-f) **Galeria de fotos profissional:** navegação por setas, contador de fotos, visualização otimizada;
-g) **Skeleton loaders e transições:** carregamento suave entre páginas com indicadores visuais de progresso;
-h) **Área do Cliente integrada:** acesso direto ao portal Loft para inquilinos e proprietários (boletos, contratos, 2ª via).
+a) **Navegação mobile otimizada:** layout responsivo, menu adaptado para telas pequenas e navegação intuitiva em dispositivos móveis;
+b) **Galeria de fotos:** visualização das fotos dos imóveis com navegação otimizada;
+c) **Área do Cliente integrada:** acesso direto ao portal Loft para inquilinos e proprietários (boletos, contratos);
+d) **Recursos interativos:** conjunto de funcionalidades de engajamento e conversão a serem definidas em comum acordo com a CONTRATANTE durante o desenvolvimento, incluindo, mas não se limitando a: sistema de favoritos, compartilhamento de imóveis, indicadores de popularidade, sinalizações de urgência e elementos de prova social.
+
+**Parágrafo único:** Os recursos interativos descritos no item (d) serão apresentados pela CONTRATADA como sugestões durante o desenvolvimento, cabendo à CONTRATANTE aprovar, ajustar ou priorizar conforme suas preferências e necessidades comerciais.
 
 ### 2.4 — Otimização SEO (800+ páginas indexáveis)
 a) Meta tags únicas (title, description, Open Graph) para **todas** as 800+ páginas;
