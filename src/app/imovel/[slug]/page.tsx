@@ -23,6 +23,7 @@ import { MobileContactBar } from "@/components/property/MobileContactBar"
 import { RecentlyViewedTracker } from "@/components/property/RecentlyViewedTracker"
 import { ShareButton } from "@/components/shared/ShareButton"
 import { WishlistButton } from "@/components/property/WishlistButton"
+import { BackButton } from "@/components/shared/BackButton"
 import { ViewCounter } from "@/components/property/ViewCounter"
 
 export const revalidate = 900
@@ -115,7 +116,7 @@ export default async function PropertyPage({ params }: PageProps) {
 
       <RecentlyViewedTracker property={property} />
 
-      <div className="mx-auto w-full max-w-7xl px-4 pb-36 md:px-8 md:pb-0">
+      <div className="mx-auto w-full max-w-7xl px-4 pb-44 md:px-8 md:pb-0">
         {/* Breadcrumbs + actions */}
         <div className="hidden items-center justify-between md:flex">
           <Breadcrumbs items={breadcrumbItems} />
@@ -124,9 +125,13 @@ export default async function PropertyPage({ params }: PageProps) {
             <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} />
           </div>
         </div>
-        <div className="flex items-center justify-end gap-2 pt-2 md:hidden">
-          <WishlistButton codigo={property.codigo} size="sm" />
-          <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} />
+        {/* Mobile: back button + actions */}
+        <div className="flex items-center justify-between pt-2 md:hidden">
+          <BackButton />
+          <div className="flex items-center gap-2">
+            <WishlistButton codigo={property.codigo} size="sm" />
+            <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} />
+          </div>
         </div>
 
         {/* Property header + specs */}
