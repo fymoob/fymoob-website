@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import { generateOrganizationSchema, generateLocalBusinessSchema } from "@/lib/seo";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -8,6 +9,8 @@ import { BottomNav } from "@/components/layout/BottomNav";
 import { NavigationProgress } from "@/components/layout/NavigationProgress";
 import { Suspense } from "react";
 import "./globals.css";
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 const satoshi = localFont({
   src: "../../public/fonts/Satoshi-Variable.woff2",
@@ -64,6 +67,24 @@ export default function RootLayout({
       <body
         className="antialiased"
       >
+        {GA_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="gtag-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_ID}', {
+                  page_path: window.location.pathname,
+                });
+              `}
+            </Script>
+          </>
+        )}
         <Suspense fallback={null}>
           <NavigationProgress />
         </Suspense>
