@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import Image from "next/image"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import {
   Shield,
@@ -155,13 +156,14 @@ export default function SobrePage() {
         <section className="mb-16">
           <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm">
             <div className="grid md:grid-cols-2">
-              <div className="relative flex min-h-[280px] items-center justify-center bg-gradient-to-br from-brand-primary/20 to-neutral-950 md:min-h-0">
-                {/* Replace with /images/sobre-dreams.jpg when Bruno provides the image */}
-                <div className="px-8 py-12 text-center">
-                  <p className="font-display text-3xl font-extrabold text-white/90 sm:text-4xl">Where</p>
-                  <p className="font-display text-4xl font-extrabold text-brand-primary sm:text-5xl">Dreams</p>
-                  <p className="font-display text-3xl font-extrabold text-white/90 sm:text-4xl">Reside</p>
-                </div>
+              <div className="relative min-h-[280px] md:min-h-0">
+                <Image
+                  src="/images/sobre-dreams.jpg"
+                  alt="Where Dreams Reside — FYMOOB Imobiliaria"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
               </div>
               <div className="p-8 md:p-10">
                 <h2 className="font-display text-2xl font-bold text-neutral-900">Nossa Historia</h2>
