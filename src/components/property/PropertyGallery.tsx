@@ -99,13 +99,13 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
       {/* ===== Mobile: Swipeable photo strip ===== */}
       <div className="relative overflow-hidden md:hidden">
         <div
-          className="flex snap-x snap-mandatory overflow-x-auto scrollbar-hide"
+          className="flex snap-x snap-mandatory overflow-x-auto scroll-smooth scrollbar-hide"
           style={{ WebkitOverflowScrolling: "touch" }}
         >
           {images.slice(0, 8).map((foto, index) => (
             <div
               key={index}
-              className="relative aspect-[4/3] w-full flex-shrink-0 snap-start cursor-pointer"
+              className="relative aspect-[4/3] w-full flex-shrink-0 snap-center cursor-pointer"
               onClick={() => openGrid()}
             >
               <Image
