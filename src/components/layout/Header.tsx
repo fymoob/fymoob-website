@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
-import { Menu, Phone } from "lucide-react"
+import { Menu, Phone, Grid3X3, Heart, GitCompareArrows, UserCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 import {
   Sheet,
@@ -12,6 +12,13 @@ import {
   SheetTrigger,
   SheetTitle,
 } from "@/components/ui/sheet"
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu"
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -100,8 +107,49 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Phone CTA + Mobile Menu */}
-        <div className="flex items-center gap-4">
+        {/* Quick Menu + Phone CTA + Mobile Menu */}
+        <div className="flex items-center gap-2 sm:gap-4">
+          {/* Quick Access Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              className={cn(
+                "flex h-9 w-9 items-center justify-center rounded-lg transition-colors duration-300",
+                isTransparent
+                  ? "text-white/80 hover:bg-white/10 hover:text-white"
+                  : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-950"
+              )}
+            >
+              <Grid3X3 size={20} />
+              <span className="sr-only">Menu rápido</span>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" sideOffset={8} className="w-52">
+              <DropdownMenuItem className="cursor-pointer">
+                <a
+                  href="https://aluguel.loft.com.br/site/login.php?i=17eb36b074cd570faf13f0c2fff538c2&tipo=cliente"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex w-full items-center gap-2 py-1"
+                >
+                  <UserCircle size={16} className="text-brand-primary" />
+                  <span className="font-medium">Área do Cliente</span>
+                </a>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="cursor-pointer">
+                <Link href="/favoritos" className="flex w-full items-center gap-2 py-1">
+                  <Heart size={16} className="text-rose-500" />
+                  <span>Favoritos</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                <Link href="/comparar" className="flex w-full items-center gap-2 py-1">
+                  <GitCompareArrows size={16} className="text-amber-500" />
+                  <span>Comparar imóveis</span>
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <a
             href="tel:+554199978-0517"
             className={cn(
@@ -165,6 +213,34 @@ export function Header() {
                   </Link>
                 ))}
               </nav>
+
+              {/* Quick access section */}
+              <div className="border-t border-neutral-100 px-3 py-3">
+                <p className="px-3 pb-2 text-xs font-medium uppercase tracking-wider text-neutral-400">Acesso rápido</p>
+                <a
+                  href="https://aluguel.loft.com.br/site/login.php?i=17eb36b074cd570faf13f0c2fff538c2&tipo=cliente"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
+                >
+                  <UserCircle size={18} className="text-brand-primary" />
+                  Área do Cliente
+                </a>
+                <Link
+                  href="/favoritos"
+                  className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
+                >
+                  <Heart size={18} className="text-rose-500" />
+                  Favoritos
+                </Link>
+                <Link
+                  href="/comparar"
+                  className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-medium text-neutral-700 transition-colors hover:bg-neutral-50"
+                >
+                  <GitCompareArrows size={18} className="text-amber-500" />
+                  Comparar imóveis
+                </Link>
+              </div>
 
               {/* CTA footer */}
               <div className="border-t border-neutral-100 px-5 py-5 space-y-3">

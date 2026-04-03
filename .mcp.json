@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "gsc": {
+      "command": "c:\\Users\\Vine\\mcp-gsc\\.venv\\Scripts\\python.exe",
+      "args": ["c:\\Users\\Vine\\mcp-gsc\\gsc_server.py"],
+      "env": {
+        "GSC_OAUTH_CLIENT_SECRETS_FILE": "c:\\Users\\Vine\\mcp-gsc\\client_secrets.json",
+        "GSC_DATA_STATE": "all"
+      }
+    }
+  }
+}

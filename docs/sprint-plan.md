@@ -1,3 +1,5 @@
+> **NOTA (2026-04-02):** Este arquivo é referência histórica. A fonte única de verdade para tasks é [`docs/TASKS.md`](TASKS.md), que inclui as fases originais + novas fases de SEO programático (Fases 8-9).
+
 # Plano de Sprints — FYMOOB
 
 ## Visão Geral

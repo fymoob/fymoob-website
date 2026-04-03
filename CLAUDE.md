@@ -64,6 +64,13 @@ npm run test         # Testes
 /contato                             → Contato
 /anuncie                             → Anunciar imóvel
 /busca                               → Busca com filtros (SSR)
+/imoveis/[bairro]/venda              → Landing bairro + venda (programático)
+/imoveis/[bairro]/aluguel            → Landing bairro + aluguel (programático)
+/apartamentos-curitiba/venda         → Landing tipo + finalidade
+/imoveis/ate-300-mil                 → Landing faixa de preço
+/imoveis/[bairro]/[n]-quartos        → Landing bairro + quartos (futuro)
+/empreendimento/[slug]               → Página individual empreendimento
+/empreendimentos                     → Listagem de empreendimentos
 ```
 
 ## SEO — Regras obrigatórias
@@ -82,9 +89,16 @@ npm run test         # Testes
 - Detalhes: `/imoveis/detalhes?key=KEY&imovel=CODIGO`
 - 249 imóveis ativos via API REST (dados ao vivo do CRM)
 
+## Task Management
+- **Tasks consolidadas em `docs/TASKS.md`** — fonte única de verdade
+- Ao completar uma task, marcar `[x]` imediatamente no TASKS.md
+- Ao descobrir nova task, adicionar na fase apropriada
+- Fases 0-5.5 concluídas | Fases 6-9 pendentes | Meta: 800+ páginas indexáveis
+
 ## Contexto de negócio
 - Ver `docs/project-context.md` para dados completos do cliente
-- Ver `docs/sprint-plan.md` para plano de execução por fases
+- Ver `docs/TASKS.md` para todas as tasks do projeto (fonte única)
+- Ver `docs/sprint-plan.md` para referência histórica das fases originais
 - Ver `docs/seo-strategy.md` para estratégia técnica detalhada de SEO
 
 ## Compactação

@@ -20,6 +20,7 @@ import { PropertyAmenities } from "@/components/property/PropertyAmenities"
 import { SimilarProperties } from "@/components/property/SimilarProperties"
 import { PropertyMap } from "@/components/property/PropertyMap"
 import { MobileContactBar } from "@/components/property/MobileContactBar"
+import { UrgencyBar } from "@/components/property/UrgencyBar"
 import { RecentlyViewedTracker } from "@/components/property/RecentlyViewedTracker"
 import { ShareButton } from "@/components/shared/ShareButton"
 import { ViewCounter } from "@/components/property/ViewCounter"
@@ -158,7 +159,13 @@ export default async function PropertyPage({ params }: PageProps) {
         <SimilarProperties properties={similarProperties} />
       </div>
 
-      {/* Mobile fixed CTA bar */}
+      {/* Mobile fixed CTA bar + urgency */}
+      <UrgencyBar
+        codigo={property.codigo}
+        dataCadastro={property.dataCadastro}
+        bairro={property.bairro}
+        precoVenda={property.precoVenda}
+      />
       <MobileContactBar
         propertyTitle={property.titulo}
         propertyCode={property.codigo}
