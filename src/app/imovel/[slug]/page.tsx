@@ -22,6 +22,7 @@ import { PropertyMap } from "@/components/property/PropertyMap"
 import { MobileContactBar } from "@/components/property/MobileContactBar"
 import { RecentlyViewedTracker } from "@/components/property/RecentlyViewedTracker"
 import { ShareButton } from "@/components/shared/ShareButton"
+import { WishlistButton } from "@/components/property/WishlistButton"
 import { ViewCounter } from "@/components/property/ViewCounter"
 
 export const revalidate = 900
@@ -115,12 +116,16 @@ export default async function PropertyPage({ params }: PageProps) {
       <RecentlyViewedTracker property={property} />
 
       <div className="mx-auto w-full max-w-7xl px-4 pb-36 md:px-8 md:pb-0">
-        {/* Breadcrumbs — hidden on mobile for cleaner UX */}
+        {/* Breadcrumbs + actions */}
         <div className="hidden items-center justify-between md:flex">
           <Breadcrumbs items={breadcrumbItems} />
-          <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} />
+          <div className="flex items-center gap-2">
+            <WishlistButton codigo={property.codigo} />
+            <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} />
+          </div>
         </div>
-        <div className="flex items-center justify-end pt-2 md:hidden">
+        <div className="flex items-center justify-end gap-2 pt-2 md:hidden">
+          <WishlistButton codigo={property.codigo} size="sm" />
           <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} />
         </div>
 
