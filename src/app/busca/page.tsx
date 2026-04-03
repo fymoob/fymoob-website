@@ -289,12 +289,12 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
         dangerouslySetInnerHTML={{ __html: JSON.stringify(searchResultsSchema) }}
       />
 
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <p id="search-results-title" className="text-sm text-neutral-500">
           <span className="font-semibold text-brand-primary">{total}</span>{" "}
           {total === 1 ? "imóvel encontrado" : "imóveis encontrados"}
         </p>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <Suspense fallback={null}>
             <SortDropdown />
           </Suspense>
@@ -304,7 +304,7 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
           {hasAppliedFilters && (
             <Link
               href="/busca"
-              className="text-sm text-muted-foreground underline decoration-muted-foreground/40 underline-offset-4 transition-colors hover:text-foreground"
+              className="whitespace-nowrap text-xs text-muted-foreground underline decoration-muted-foreground/40 underline-offset-4 transition-colors hover:text-foreground"
             >
               Limpar filtros
             </Link>
