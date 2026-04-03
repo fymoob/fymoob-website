@@ -89,11 +89,16 @@ npm run test         # Testes
 - Detalhes: `/imoveis/detalhes?key=KEY&imovel=CODIGO`
 - 249 imóveis ativos via API REST (dados ao vivo do CRM)
 
-## Task Management
+## Task Management — REGRA OBRIGATÓRIA
 - **Tasks consolidadas em `docs/TASKS.md`** — fonte única de verdade
-- Ao completar uma task, marcar `[x]` imediatamente no TASKS.md
+- **APÓS CADA IMPLEMENTAÇÃO:** atualizar `docs/TASKS.md` imediatamente:
+  1. Marcar tasks concluídas com `[x]`
+  2. Atualizar contadores na tabela Status Geral (concluídas, pendentes, %)
+  3. Adicionar novas tasks descobertas na fase apropriada
+  4. Se fase completa, mudar status para CONCLUIDA
+- **NUNCA** fazer commit sem ter atualizado o TASKS.md primeiro
 - Ao descobrir nova task, adicionar na fase apropriada
-- Fases 0-5.5 concluídas | Fases 6-9 pendentes | Meta: 800+ páginas indexáveis
+- Status atual: verificar tabela no topo de `docs/TASKS.md`
 
 ## Contexto de negócio
 - Ver `docs/project-context.md` para dados completos do cliente

@@ -1,7 +1,7 @@
 # FYMOOB — Task Tracker
 
 > Fonte unica de verdade para todas as tasks do projeto.
-> Atualizado: 2026-04-02
+> Atualizado: 2026-04-03
 
 ---
 
@@ -405,20 +405,19 @@ _Nenhum bug aberto._
 ## Prioridade de Execucao
 
 ```
-AGORA (pre-contrato assinado):
-  Fase 6 → Fase 7 → Deploy producao
+CONCLUIDO:
+  ✅ Fase 0-5.5 (Fundacao ate UX)
+  ✅ Fase 6 (Institucional + GA4)
+  ✅ Fase 8 (SEO Programatico — 600+ paginas, FAQ schema, cross-linking)
 
-PARALELO (configurar enquanto desenvolve):
+PROXIMO:
+  Fase 7 → Deploy producao (fymoob.com) — depende de DNS do Bruno
+
+PARALELO:
   10.2 Google Cloud OAuth → 10.3 Baseline → 10.4 Monitoramento
 
-APOS DEPLOY (semanas 1-2):
-  8.1 Bairro+Tipo → 8.4 Empreendimentos → 8.7 Sitemap
-
-APOS VALIDACAO TRAFEGO (semanas 3-4):
-  8.2 Bairro+Finalidade → 8.3 Tipo+Finalidade → 8.5 Faixas Preco
-
-FASE FUTURA (mes 2+):
-  8.6 Bairro+Quartos → Fase 9 Painel Blog
+APOS GO-LIVE:
+  Fase 9 → Painel Blog Admin
 
 QUANDO POSSIVEL:
   Nice-to-haves
