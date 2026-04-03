@@ -18,12 +18,12 @@
 | 5.6 | Sessao 02-03/04 | 28 | 28 | 0 | CONCLUIDA |
 | 6 | Institucional e Polish | 7 | 7 | 0 | CONCLUIDA |
 | 7 | QA, Deploy, Go-Live | 10 | 0 | 10 | PENDENTE |
-| 8 | SEO Programatico | 33 | 0 | 33 | PENDENTE |
+| 8 | SEO Programatico | 33 | 20 | 13 | EM ANDAMENTO |
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
 | -- | Bugs | 0 | 0 | 0 | — |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **162** | **100** | **62** | **62%** |
+| | **TOTAL** | **162** | **120** | **42** | **74%** |
 
 ---
 
@@ -228,17 +228,17 @@
 > **Estrategias baseadas em cases reais:** Omnius (67→2100 signups, 850% trafego), Flyhomes (1.1M visitas), Baja (220% crescimento).
 > Diferenciais: conteudo dinamico por pagina (8.8), FAQ com schema (8.9), cross-linking hub-and-spoke (8.10).
 
-### 8.1 — Landing Bairro + Tipo (PRIORIDADE ALTA)
+### 8.1 — Landing Bairro + Tipo [CONCLUIDA]
 > Rota: `/imoveis/[bairro]/[tipo]` | Estimativa: ~260 paginas
-> Exemplo: `/imoveis/batel/apartamentos` → "Apartamentos no Batel, Curitiba"
 
-- [ ] Verificar estado atual de `src/app/imoveis/[bairro]/[tipo]/page.tsx`
-- [ ] Garantir `generateStaticParams()` gera TODAS as combinacoes ativas
-- [ ] `generateMetadata()` unica: "Apartamentos no Batel | FYMOOB Curitiba"
-- [ ] JSON-LD ItemList + BreadcrumbList schema
-- [ ] Conteudo introdutorio dinamico por combinacao (nao so lista de imoveis)
-- [ ] Internal linking: links para bairro pai, tipo pai, imoveis relacionados
-- [ ] Adicionar ao sitemap com priority 0.7
+- [x] Verificar estado atual de `src/app/imoveis/[bairro]/[tipo]/page.tsx`
+- [x] Garantir `generateStaticParams()` gera TODAS as combinacoes ativas (threshold >= 3)
+- [x] `generateMetadata()` unica: "Apartamentos no Batel | FYMOOB Curitiba"
+- [x] JSON-LD ItemList schema
+- [x] Conteudo introdutorio dinamico por combinacao (generateLandingIntro)
+- [x] Stats cards (total, preco min, area media, quartos media)
+- [x] Internal linking: bairro pai, tipo pai, outros tipos no bairro, mesmo tipo em outros bairros
+- [x] Ja no sitemap com priority 0.6
 
 ### 8.2 — Landing Bairro + Finalidade
 > Rota: `/imoveis/[bairro]/venda` e `/imoveis/[bairro]/aluguel` | Estimativa: ~130 paginas
@@ -300,50 +300,37 @@
 - [ ] Submeter sitemap atualizado ao GSC apos deploy
 - [ ] Validar com Google Search Console que todas URLs estao sendo descobertas
 
-### 8.8 — Conteudo Dinamico por Pagina (ESTRATEGIA CASE OMNIUS/FLYHOMES)
-> Transformar paginas programaticas de "listas finas" em paginas com conteudo unico e relevante.
-> Case: Omnius gerou 15.000 paginas com conteudo dinamico → 850% crescimento organico em 10 meses.
+### 8.8 — Conteudo Dinamico por Pagina [CONCLUIDA]
+> Case: Omnius 850% crescimento organico em 10 meses com conteudo dinamico.
 
-- [ ] Criar funcao `generateNeighborhoodIntro(bairro, tipo, stats)` em `src/lib/seo.ts`
-  - Gera paragrafo introdutorio unico por combinacao usando dados reais da API
-  - Ex: "O Batel conta com 23 apartamentos disponiveis a partir de R$ 450 mil. Bairro nobre com facil acesso ao Shopping Patio Batel."
-- [ ] Criar funcao `generatePriceStats(properties)` — stats automaticos por pagina
-  - Preco medio, preco minimo, preco maximo, area media, total de imoveis
-- [ ] Aplicar conteudo dinamico em TODAS as landing pages (bairro, bairro+tipo, faixa preco, empreendimento)
-- [ ] Garantir que cada pagina tenha conteudo textual unico (nao so grid de cards)
-- [ ] Textos condicionais: adaptar copy se poucos imoveis vs muitos, se venda vs aluguel
+- [x] Criar funcao `generateLandingIntro(properties, bairro, tipo)` em `src/lib/seo.ts`
+- [x] Criar funcao `generateLandingStats(properties)` — stats automaticos por pagina
+- [x] Aplicar em landing bairro+tipo (intro + stats cards)
+- [x] Aplicar em landing bairro (ja tinha conteudo, adicionou FAQ + related)
+- [ ] Aplicar em landing faixa de preco (pendente — paginas ainda nao existem)
+- [ ] Aplicar em empreendimentos (pendente — revisar template existente)
 
-### 8.9 — FAQ Dinamico com Schema por Pagina (ESTRATEGIA CASE OMNIUS)
-> Cada landing page gera automaticamente 3-5 perguntas FAQ contextuais com FAQPage schema.
-> Gera rich results no Google (perguntas expansiveis direto na SERP).
+### 8.9 — FAQ Dinamico com Schema por Pagina [CONCLUIDA]
+> Rich results no Google (perguntas expansiveis direto na SERP).
 
-- [ ] Criar funcao `generateDynamicFAQ(bairro, tipo, stats)` em `src/lib/seo.ts`
-  - Perguntas geradas automaticamente:
-    - "Qual o preco medio de {tipo} no {bairro}?" → resposta com dados reais
-    - "Quantos {tipo} estao disponiveis no {bairro}?" → contagem real
-    - "Qual a area media dos {tipo} no {bairro}?" → calculo real
-    - "O {bairro} e um bom bairro para morar?" → texto contextual
-    - "Como comprar um {tipo} no {bairro}?" → link para contato/FAQ geral
-- [ ] Componente `DynamicFAQ` com accordion + FAQPage JSON-LD schema
-- [ ] Integrar em todas as landing pages (bairro, bairro+tipo, faixa preco)
-- [ ] Validar rich results com Google Rich Results Test
+- [x] Criar funcao `generateDynamicFAQ(stats, bairro, tipo)` em `src/lib/seo.ts`
+  - 5 perguntas automaticas: quantidade, preco medio, area media, quartos, como visitar
+- [x] Componente `DynamicFAQ` com accordion + FAQPage JSON-LD schema
+- [x] Integrado em landing bairro+tipo
+- [x] Integrado em landing bairro
+- [ ] Integrar em faixa de preco (pendente — paginas nao existem)
+- [ ] Validar rich results com Google Rich Results Test (pos-deploy)
 
-### 8.10 — Cross-Linking Hub-and-Spoke (ESTRATEGIA CASE OMNIUS/FLYHOMES)
-> Arquitetura de links internos que distribui autoridade entre paginas relacionadas.
-> Case: Flyhomes usou hub-and-spoke para atingir 1.1M visitas/mes.
+### 8.10 — Cross-Linking Hub-and-Spoke [CONCLUIDA]
+> Flyhomes usou hub-and-spoke para atingir 1.1M visitas/mes.
 
-- [ ] Criar componente `RelatedPages` — secao "Veja tambem" com 5-10 links contextuais
-  - Pagina de bairro → links para todas as combinacoes tipo daquele bairro
-  - Pagina bairro+tipo → link para bairro pai + outros tipos do mesmo bairro + bairros vizinhos
-  - Pagina de imovel → link para bairro, tipo, empreendimento
-  - Pagina de empreendimento → link para bairro, imoveis do empreendimento
-- [ ] Criar funcao `getRelatedPages(currentPage)` em `src/services/loft.ts`
-  - Retorna lista de paginas relacionadas com titulo e URL
-- [ ] Criar componente `BairrosProximos` — links para bairros geograficamente proximos
-- [ ] Adicionar breadcrumbs hierarquicos em todas as landing pages
-  - Home > Curitiba > {Bairro} > {Tipo}
-- [ ] Footer de cada landing: grid de links para todas as combinacoes ativas
-- [ ] Validar que nenhuma pagina esta "orfa" (sem links internos apontando para ela)
+- [x] Componente `RelatedPages` — tags de links contextuais
+- [x] Landing bairro+tipo: links para bairro pai + tipo pai + outros tipos no bairro + mesmo tipo em outros bairros
+- [x] Landing bairro: links para tipos do bairro + outros bairros populares
+- [x] Breadcrumbs hierarquicos: Home > Bairro > Tipo
+- [ ] Adicionar RelatedPages na pagina de imovel individual (bairro, tipo, empreendimento)
+- [ ] Adicionar RelatedPages nas paginas de empreendimento
+- [ ] Componente `BairrosProximos` por geolocalizacao (fase futura)
 
 ---
 
