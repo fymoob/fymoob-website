@@ -8,9 +8,13 @@ import {
   generateLandingTitle,
   generateLandingDescription,
   generateItemListSchema,
+  generateLandingStats,
+  generateDynamicFAQ,
 } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyGrid } from "@/components/search/PropertyGrid"
+import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
+import { RelatedPages } from "@/components/seo/RelatedPages"
 
 interface BairroPageProps {
   params: Promise<{ bairro: string }>
@@ -183,26 +187,54 @@ export default async function BairroPage({ params }: BairroPageProps) {
         </div>
       </section>
 
-      {/* SEO content section */}
-      <section className="border-t border-neutral-200 bg-neutral-50 py-16 md:py-20">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-950">
-            Sobre o bairro {bairro.bairro}
-          </h2>
-          <div className="mt-4 space-y-4 text-base leading-relaxed text-neutral-600">
-            <p>{descricao}</p>
-            <p>
-              Atualmente temos <strong className="text-neutral-950">{properties.length} imoveis</strong> disponiveis
-              no {bairro.bairro}{precoMedio && (<>, com preco medio de <strong className="text-neutral-950">{formatPrice(precoMedio)}</strong></>)}.
-              {bairro.tipos.length > 0 && (
-                <> Os tipos mais comuns sao: {bairro.tipos.map(t => `${t.tipo}s (${t.count})`).join(", ")}.</>
-              )}
-            </p>
-            <p>
-              A FYMOOB Imobiliaria e especialista em imoveis no {bairro.bairro} e em toda Curitiba.
-              Entre em contato para encontrar o imovel ideal para voce neste bairro.
-            </p>
+      {/* SEO content + FAQ + Related */}
+      <section className="border-t border-neutral-200 bg-neutral-50 py-12 md:py-16">
+        <div className="mx-auto max-w-4xl space-y-12 px-4 sm:px-6 lg:px-8">
+          {/* About neighborhood */}
+          <div>
+            <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-950">
+              Sobre o bairro {bairro.bairro}
+            </h2>
+            <div className="mt-4 space-y-4 text-base leading-relaxed text-neutral-600">
+              <p>{descricao}</p>
+              <p>
+                Atualmente temos <strong className="text-neutral-950">{properties.length} imoveis</strong> disponiveis
+                no {bairro.bairro}{precoMedio && (<>, com preco medio de <strong className="text-neutral-950">{formatPrice(precoMedio)}</strong></>)}.
+                {bairro.tipos.length > 0 && (
+                  <> Os tipos mais comuns sao: {bairro.tipos.map(t => `${t.tipo}s (${t.count})`).join(", ")}.</>
+                )}
+              </p>
+            </div>
           </div>
+
+          {/* Dynamic FAQ with schema */}
+          <DynamicFAQ
+            questions={generateDynamicFAQ(
+              generateLandingStats(properties),
+              bairro.bairro
+            )}
+            title={`Perguntas frequentes sobre imoveis no ${bairro.bairro}`}
+          />
+
+          {/* Cross-linking */}
+          <RelatedPages
+            title="Explore tambem"
+            links={[
+              ...bairro.tipos
+                .filter((t) => t.count >= 3)
+                .map((t) => ({
+                  href: `/imoveis/${bairroSlug}/${slugify(t.tipo)}s`,
+                  label: `${t.tipo}s no ${bairro.bairro}`,
+                })),
+              ...bairros
+                .filter((b) => b.slug !== bairroSlug && b.total >= 5)
+                .slice(0, 8)
+                .map((b) => ({
+                  href: `/imoveis/${b.slug}`,
+                  label: `Imoveis no ${b.bairro}`,
+                })),
+            ]}
+          />
         </div>
       </section>
     </>

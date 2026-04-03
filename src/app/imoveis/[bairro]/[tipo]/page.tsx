@@ -2,15 +2,21 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { getAllBairros, getProperties } from "@/services/loft"
-import { slugify } from "@/lib/utils"
+import { slugify, formatPrice } from "@/lib/utils"
 import type { PropertyType } from "@/types/property"
 import {
   generateLandingTitle,
   generateLandingDescription,
   generateItemListSchema,
+  generateLandingIntro,
+  generateLandingStats,
+  generateDynamicFAQ,
 } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyGrid } from "@/components/search/PropertyGrid"
+import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
+import { RelatedPages } from "@/components/seo/RelatedPages"
+import { Home, Maximize2, BedDouble, DollarSign } from "lucide-react"
 
 const TIPO_SLUG_MAP: Record<string, PropertyType> = {
   apartamentos: "Apartamento",
@@ -38,6 +44,8 @@ const TIPO_PLURAL: Partial<Record<PropertyType, string>> = {
   "Terreno Comercial": "Terrenos Comerciais",
   Empreendimento: "Empreendimentos",
 }
+
+const ALL_TIPO_SLUGS = ["apartamentos", "casas", "sobrados", "terrenos"]
 
 interface CombinadaPageProps {
   params: Promise<{ bairro: string; tipo: string }>
@@ -108,10 +116,42 @@ export default async function CombinadaPage({ params }: CombinadaPageProps) {
   })
 
   const plural = TIPO_PLURAL[tipoKey] || `${tipoKey}s`
+  const stats = generateLandingStats(properties)
+  const intro = generateLandingIntro(properties, bairro.bairro, tipoKey)
+  const faqQuestions = generateDynamicFAQ(stats, bairro.bairro, tipoKey)
   const itemListSchema = generateItemListSchema(
     properties,
     `/imoveis/${bairroSlug}/${tipoSlug}`
   )
+
+  // Cross-linking: other types in same neighborhood
+  const otherTypes = ALL_TIPO_SLUGS
+    .filter((s) => s !== tipoSlug)
+    .map((s) => {
+      const tipoMatch = bairro.tipos.find(
+        (t) => `${slugify(t.tipo)}s` === s && t.count >= 3
+      )
+      if (!tipoMatch) return null
+      const p = TIPO_PLURAL[TIPO_SLUG_MAP[s]] || s
+      return { href: `/imoveis/${bairroSlug}/${s}`, label: `${p} no ${bairro.bairro}` }
+    })
+    .filter(Boolean) as { href: string; label: string }[]
+
+  // Cross-linking: nearby/popular neighborhoods with same type
+  const otherBairros = bairros
+    .filter((b) => b.slug !== bairroSlug && b.tipos.some((t) => t.tipo === tipoKey && t.count >= 3))
+    .slice(0, 6)
+    .map((b) => ({
+      href: `/imoveis/${b.slug}/${tipoSlug}`,
+      label: `${plural} no ${b.bairro}`,
+    }))
+
+  const relatedLinks = [
+    { href: `/imoveis/${bairroSlug}`, label: `Todos os imoveis no ${bairro.bairro}` },
+    { href: `/${tipoSlug}-curitiba`, label: `${plural} em Curitiba` },
+    ...otherTypes,
+    ...otherBairros,
+  ]
 
   return (
     <>
@@ -135,28 +175,37 @@ export default async function CombinadaPage({ params }: CombinadaPageProps) {
             {plural} no {bairro.bairro}, Curitiba
           </h1>
 
-          <p className="mt-3 text-neutral-300">
-            <span className="font-semibold text-white">
-              {properties.length}
-            </span>{" "}
-            {properties.length === 1 ? "imovel encontrado" : "imoveis encontrados"}
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-neutral-300">
+            {intro}
           </p>
 
-          {/* Internal links */}
-          <div className="mt-4 flex flex-wrap gap-4 text-sm">
-            <Link
-              href={`/imoveis/${bairroSlug}`}
-              className="text-brand-primary transition-colors duration-200 hover:text-brand-primary-hover"
-            >
-              Todos os imoveis no {bairro.bairro}
-            </Link>
-            <Link
-              href={`/${tipoSlug}-curitiba`}
-              className="text-brand-primary transition-colors duration-200 hover:text-brand-primary-hover"
-            >
-              {plural} em Curitiba
-            </Link>
-          </div>
+          {/* Stats cards */}
+          {stats.total > 0 && (
+            <div className="mt-6 flex flex-wrap gap-3">
+              <div className="flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-sm text-white">
+                <Home className="size-4 text-brand-primary" />
+                <span><strong>{stats.total}</strong> {stats.total === 1 ? "imovel" : "imoveis"}</span>
+              </div>
+              {stats.precoMin && (
+                <div className="flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-sm text-white">
+                  <DollarSign className="size-4 text-brand-primary" />
+                  <span>A partir de <strong>{formatPrice(stats.precoMin)}</strong></span>
+                </div>
+              )}
+              {stats.areaMedio && (
+                <div className="flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-sm text-white">
+                  <Maximize2 className="size-4 text-brand-primary" />
+                  <span>Media <strong>{stats.areaMedio} m²</strong></span>
+                </div>
+              )}
+              {stats.quartosMedio && (
+                <div className="flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-sm text-white">
+                  <BedDouble className="size-4 text-brand-primary" />
+                  <span>Media <strong>{stats.quartosMedio} quartos</strong></span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </section>
 
@@ -164,6 +213,20 @@ export default async function CombinadaPage({ params }: CombinadaPageProps) {
       <section className="py-12 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <PropertyGrid properties={properties} />
+        </div>
+      </section>
+
+      {/* FAQ + Related — SEO content */}
+      <section className="border-t border-neutral-100 bg-neutral-50 py-12 md:py-16">
+        <div className="mx-auto max-w-4xl space-y-12 px-4 sm:px-6 lg:px-8">
+          <DynamicFAQ
+            questions={faqQuestions}
+            title={`Perguntas frequentes sobre ${plural.toLowerCase()} no ${bairro.bairro}`}
+          />
+          <RelatedPages
+            title="Explore tambem"
+            links={relatedLinks}
+          />
         </div>
       </section>
     </>

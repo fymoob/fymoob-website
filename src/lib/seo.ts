@@ -295,6 +295,132 @@ export function generateFAQPageSchema(
   }
 }
 
+// --- Phase 8: Dynamic content & FAQ generators ---
+
+export function generateLandingIntro(
+  properties: Property[],
+  bairro?: string,
+  tipo?: string
+): string {
+  const count = properties.length
+  if (count === 0) return ""
+
+  const precos = properties
+    .map((p) => p.precoVenda ?? p.precoAluguel)
+    .filter((p): p is number => p !== null && p > 0)
+
+  const areas = properties
+    .map((p) => p.areaPrivativa ?? p.areaTotal)
+    .filter((a): a is number => a !== null && a > 0)
+
+  const minPreco = precos.length > 0 ? Math.min(...precos) : null
+  const avgPreco = precos.length > 0 ? Math.round(precos.reduce((a, b) => a + b, 0) / precos.length) : null
+  const avgArea = areas.length > 0 ? Math.round(areas.reduce((a, b) => a + b, 0) / areas.length) : null
+
+  const tipoPlural = tipo ? getPluralTipo(tipo) : "imoveis"
+  const local = bairro ? `no ${bairro}` : "em Curitiba"
+
+  let intro = `Encontre ${count} ${tipoPlural.toLowerCase()} disponiveis ${local}.`
+
+  if (minPreco) {
+    intro += ` Precos a partir de ${formatPrice(minPreco)}`
+    if (avgPreco && avgPreco !== minPreco) {
+      intro += `, com valor medio de ${formatPrice(avgPreco)}`
+    }
+    intro += "."
+  }
+
+  if (avgArea) {
+    intro += ` Area media de ${avgArea} m².`
+  }
+
+  return intro
+}
+
+function getPluralTipo(tipo: string): string {
+  const plurals: Record<string, string> = {
+    Apartamento: "Apartamentos",
+    Casa: "Casas",
+    Sobrado: "Sobrados",
+    Terreno: "Terrenos",
+    Cobertura: "Coberturas",
+    Kitnet: "Kitnets",
+    Studio: "Studios",
+    Loja: "Lojas",
+  }
+  return plurals[tipo] || `${tipo}s`
+}
+
+export function generateLandingStats(properties: Property[]) {
+  const precos = properties
+    .map((p) => p.precoVenda ?? p.precoAluguel)
+    .filter((p): p is number => p !== null && p > 0)
+
+  const areas = properties
+    .map((p) => p.areaPrivativa ?? p.areaTotal)
+    .filter((a): a is number => a !== null && a > 0)
+
+  const quartos = properties
+    .map((p) => p.dormitorios)
+    .filter((d): d is number => d !== null && d > 0)
+
+  return {
+    total: properties.length,
+    precoMin: precos.length > 0 ? Math.min(...precos) : null,
+    precoMax: precos.length > 0 ? Math.max(...precos) : null,
+    precoMedio: precos.length > 0 ? Math.round(precos.reduce((a, b) => a + b, 0) / precos.length) : null,
+    areaMedio: areas.length > 0 ? Math.round(areas.reduce((a, b) => a + b, 0) / areas.length) : null,
+    quartosMedio: quartos.length > 0 ? Math.round(quartos.reduce((a, b) => a + b, 0) / quartos.length) : null,
+    quartosMin: quartos.length > 0 ? Math.min(...quartos) : null,
+    quartosMax: quartos.length > 0 ? Math.max(...quartos) : null,
+  }
+}
+
+export function generateDynamicFAQ(
+  stats: ReturnType<typeof generateLandingStats>,
+  bairro?: string,
+  tipo?: string
+): { question: string; answer: string }[] {
+  const faq: { question: string; answer: string }[] = []
+  const tipoPlural = tipo ? getPluralTipo(tipo).toLowerCase() : "imoveis"
+  const local = bairro || "Curitiba"
+
+  if (stats.total > 0) {
+    faq.push({
+      question: `Quantos ${tipoPlural} estao disponiveis ${bairro ? `no ${bairro}` : "em Curitiba"}?`,
+      answer: `Atualmente existem ${stats.total} ${tipoPlural} disponiveis ${bairro ? `no ${bairro}` : "em Curitiba"} no site da FYMOOB. O catalogo e atualizado automaticamente conforme novos imoveis sao cadastrados.`,
+    })
+  }
+
+  if (stats.precoMin && stats.precoMedio) {
+    faq.push({
+      question: `Qual o preco medio de ${tipoPlural} ${bairro ? `no ${bairro}` : "em Curitiba"}?`,
+      answer: `O preco medio de ${tipoPlural} ${bairro ? `no ${bairro}` : "em Curitiba"} e de ${formatPrice(stats.precoMedio)}. Os valores variam de ${formatPrice(stats.precoMin)} a ${formatPrice(stats.precoMax)}.`,
+    })
+  }
+
+  if (stats.areaMedio) {
+    faq.push({
+      question: `Qual a area media dos ${tipoPlural} ${bairro ? `no ${bairro}` : "em Curitiba"}?`,
+      answer: `A area media dos ${tipoPlural} ${bairro ? `no ${bairro}` : "em Curitiba"} e de aproximadamente ${stats.areaMedio} m². Voce pode filtrar por area na pagina de busca para encontrar o tamanho ideal.`,
+    })
+  }
+
+  if (stats.quartosMin && stats.quartosMax && stats.quartosMin !== stats.quartosMax) {
+    faq.push({
+      question: `Quantos quartos tem os ${tipoPlural} ${bairro ? `no ${bairro}` : "em Curitiba"}?`,
+      answer: `Os ${tipoPlural} ${bairro ? `no ${bairro}` : "em Curitiba"} variam de ${stats.quartosMin} a ${stats.quartosMax} quartos. A media e de ${stats.quartosMedio} quartos.`,
+    })
+  }
+
+  faq.push({
+    question: `Como visitar um ${tipo ? tipo.toLowerCase() : "imovel"} ${bairro ? `no ${bairro}` : "em Curitiba"}?`,
+    answer: `Voce pode agendar uma visita pelo WhatsApp da FYMOOB ou pelo formulario de contato na pagina do imovel. Nossos corretores atendem de segunda a sexta das 9h as 18h e sabados das 9h as 13h.`,
+  })
+
+  return faq
+}
+
 export function generateItemListSchema(properties: Property[], pageUrl: string) {
   return {
     "@context": "https://schema.org",
