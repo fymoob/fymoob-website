@@ -7,9 +7,11 @@ import {
   getPropertiesByEmpreendimento,
 } from "@/services/loft"
 import { slugify, formatPrice } from "@/lib/utils"
-import { generateItemListSchema } from "@/lib/seo"
+import { generateItemListSchema, generateLandingStats, generateDynamicFAQ } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyGrid } from "@/components/search/PropertyGrid"
+import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
+import { RelatedPages } from "@/components/seo/RelatedPages"
 
 interface EmpreendimentoPageProps {
   params: Promise<{ slug: string }>
@@ -214,24 +216,41 @@ export default async function EmpreendimentoPage({
         </div>
       </section>
 
-      {bairros.length > 0 && (
-        <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
-          <h2 className="text-lg font-semibold text-neutral-900">
-            Bairros relacionados
-          </h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {bairros.map((bairro) => (
-              <Link
-                key={bairro}
-                href={`/imoveis/${slugify(bairro)}`}
-                className="rounded-full bg-neutral-100 px-4 py-2 text-sm text-neutral-700 transition hover:bg-brand-primary hover:text-white"
-              >
-                Imóveis no {bairro}
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
+      {/* FAQ + Related */}
+      <section className="border-t border-neutral-100 bg-neutral-50 py-12 md:py-16">
+        <div className="mx-auto max-w-4xl space-y-12 px-4 sm:px-6 lg:px-8">
+          <DynamicFAQ
+            questions={(() => {
+              const stats = generateLandingStats(properties)
+              const baseFaq = generateDynamicFAQ(stats, bairros[0])
+              return [
+                {
+                  question: `Quantas unidades estao disponiveis no ${emp.nome}?`,
+                  answer: `O ${emp.nome} possui ${properties.length} ${properties.length === 1 ? "unidade disponivel" : "unidades disponiveis"} no site da FYMOOB.${precoMin ? ` Precos a partir de ${formatPrice(precoMin)}.` : ""}`,
+                },
+                ...baseFaq.slice(1),
+              ]
+            })()}
+            title={`Perguntas frequentes sobre o ${emp.nome}`}
+          />
+          <RelatedPages
+            title="Explore tambem"
+            links={[
+              ...bairros.map((bairro) => ({
+                href: `/imoveis/${slugify(bairro)}`,
+                label: `Imoveis no ${bairro}`,
+              })),
+              ...empreendimentos
+                .filter((e) => e.slug !== slug && e.total >= 3)
+                .slice(0, 6)
+                .map((e) => ({
+                  href: `/empreendimento/${e.slug}`,
+                  label: e.nome,
+                })),
+            ]}
+          />
+        </div>
+      </section>
     </>
   )
 }

@@ -133,6 +133,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
+  // Tipo + finalidade pages (e.g., /apartamentos-curitiba/venda)
+  const tipoFinalidadePages: MetadataRoute.Sitemap = [
+    "apartamentos", "casas", "sobrados", "terrenos",
+  ].flatMap((tipo) => [
+    {
+      url: `${SITE_URL}/${tipo}-curitiba/venda`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/${tipo}-curitiba/aluguel`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    },
+  ])
+
   // Bairro + finalidade pages (e.g., /imoveis/batel/venda, /imoveis/batel/aluguel)
   const finalidadePages: MetadataRoute.Sitemap = bairros
     .filter((b) => b.total >= 3)
@@ -179,6 +197,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...staticPages,
     ...typePages,
+    ...tipoFinalidadePages,
     ...bairroPages,
     ...combinedPages,
     ...finalidadePages,

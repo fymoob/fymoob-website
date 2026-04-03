@@ -18,12 +18,12 @@
 | 5.6 | Sessao 02-03/04 | 28 | 28 | 0 | CONCLUIDA |
 | 6 | Institucional e Polish | 7 | 7 | 0 | CONCLUIDA |
 | 7 | QA, Deploy, Go-Live | 10 | 0 | 10 | PENDENTE |
-| 8 | SEO Programatico | 33 | 20 | 13 | EM ANDAMENTO |
+| 8 | SEO Programatico | 33 | 31 | 2 | QUASE CONCLUIDA |
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
 | -- | Bugs | 0 | 0 | 0 | — |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **162** | **120** | **42** | **74%** |
+| | **TOTAL** | **162** | **131** | **31** | **81%** |
 
 ---
 
@@ -240,33 +240,34 @@
 - [x] Internal linking: bairro pai, tipo pai, outros tipos no bairro, mesmo tipo em outros bairros
 - [x] Ja no sitemap com priority 0.6
 
-### 8.2 — Landing Bairro + Finalidade
-> Rota: `/imoveis/[bairro]/venda` e `/imoveis/[bairro]/aluguel` | Estimativa: ~130 paginas
-> Exemplo: `/imoveis/agua-verde/aluguel` → "Imoveis para Alugar no Agua Verde"
+### 8.2 — Landing Bairro + Finalidade [CONCLUIDA]
+> Rota: `/imoveis/[bairro]/venda` e `/imoveis/[bairro]/aluguel` | ~57 paginas geradas
 
-- [ ] Criar rota dinamica ou adaptar segmento existente `[tipo]` para aceitar "venda"/"aluguel"
-- [ ] Filtrar por `Finalidade` (Venda/Locacao) ou `ValorVenda`/`ValorLocacao`
-- [ ] `generateMetadata()`: "Imoveis a Venda no {Bairro} | FYMOOB Curitiba"
-- [ ] Adicionar ao sitemap com priority 0.7
-- [ ] Internal linking bidirecional (venda <-> aluguel do mesmo bairro)
+- [x] Adaptar segmento `[tipo]` para aceitar "venda"/"aluguel" como slugs validos
+- [x] Filtrar por `Finalidade` (Venda/Locacao) via PropertyFilters
+- [x] `generateMetadata()`: "Imoveis a Venda no {Bairro} | FYMOOB Curitiba"
+- [x] Adicionar ao sitemap com priority 0.7 (~57 URLs novas)
+- [x] Internal linking bidirecional (venda <-> aluguel + tipos do bairro)
 
-### 8.3 — Landing Tipo + Finalidade
-> Rota: `/apartamentos-curitiba/venda`, `/casas-curitiba/aluguel` | Estimativa: ~8 paginas
+### 8.3 — Landing Tipo + Finalidade [CONCLUIDA]
+> Rota: `/apartamentos-curitiba/venda`, `/casas-curitiba/aluguel` | 8 paginas geradas
 
-- [ ] Criar subrotas nas landing pages de tipo existentes
-- [ ] `generateMetadata()`: "Apartamentos a Venda em Curitiba | FYMOOB"
-- [ ] Adicionar ao sitemap com priority 0.8
+- [x] Criar componente reutilizavel `TipoFinalidadePage` (evita duplicacao)
+- [x] Subrotas `[finalidade]` em apartamentos, casas, sobrados, terrenos
+- [x] `generateMetadata()` + `generateStaticParams()` (venda + aluguel)
+- [x] FAQ dinamico + cross-linking (tipo oposto + bairros com tipo)
+- [x] Adicionar ao sitemap com priority 0.8 (8 URLs novas)
 
-### 8.4 — Paginas de Empreendimento (revisar existente)
-> Rota: `/empreendimento/[slug]` | Estimativa: ~113 paginas
-> JA EXISTE parcialmente — revisar qualidade e completude
+### 8.4 — Paginas de Empreendimento [CONCLUIDA]
+> Rota: `/empreendimento/[slug]` | 113 paginas ativas
 
-- [ ] Auditar `src/app/empreendimento/[slug]/page.tsx` — esta gerando todas as 113?
-- [ ] Verificar template: unidades disponiveis, faixa preco, construtora, fotos, mapa
-- [ ] JSON-LD RealEstateListing ou ApartmentComplex schema
-- [ ] `generateMetadata()` com nome do empreendimento, bairro, faixa preco
-- [ ] Listagem `/empreendimentos` com todos os empreendimentos + filtros
-- [ ] Internal linking: empreendimento → bairro, tipo, imoveis individuais
+- [x] Auditado — gerando todas as 113 via generateStaticParams
+- [x] Template completo: unidades, faixa preco, construtora, bairros, descricao
+- [x] JSON-LD RealEstateListing + ItemList schema
+- [x] `generateMetadata()` com nome, bairro, faixa preco, construtora
+- [x] DynamicFAQ com pergunta customizada por empreendimento + schema
+- [x] RelatedPages: bairros do empreendimento + outros empreendimentos
+- [ ] Listagem `/empreendimentos` com todos os empreendimentos + filtros (futuro)
 
 ### 8.5 — Landing Faixas de Preco
 > Rotas estaticas | Estimativa: ~5 paginas
