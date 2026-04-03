@@ -49,10 +49,10 @@ export function WishlistButton({ codigo, className, size = "md" }: WishlistButto
       onClick={toggle}
       aria-label={isFav ? "Remover dos favoritos" : "Adicionar aos favoritos"}
       className={cn(
-        "flex items-center justify-center rounded-full border transition",
+        "flex items-center justify-center rounded-full shadow-sm backdrop-blur-sm transition",
         isFav
-          ? "border-rose-200 bg-rose-50 text-rose-500"
-          : "border-neutral-200 bg-white text-neutral-400 hover:border-rose-200 hover:text-rose-400",
+          ? "bg-white/90 text-rose-500"
+          : "bg-white/90 text-neutral-500 hover:text-rose-400",
         size === "sm" ? "h-9 w-9" : "h-10 w-10",
         className
       )}

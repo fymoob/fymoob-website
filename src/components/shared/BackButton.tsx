@@ -1,15 +1,23 @@
 "use client"
 
 import { ChevronLeft } from "lucide-react"
+import { cn } from "@/lib/utils"
 
-export function BackButton() {
+interface BackButtonProps {
+  className?: string
+}
+
+export function BackButton({ className }: BackButtonProps) {
   return (
     <button
       onClick={() => window.history.back()}
-      className="flex items-center gap-0.5 text-sm font-medium text-neutral-500 transition hover:text-neutral-900"
+      aria-label="Voltar"
+      className={cn(
+        "flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-neutral-700 shadow-sm backdrop-blur-sm transition hover:bg-white",
+        className
+      )}
     >
-      <ChevronLeft className="size-4" />
-      Voltar
+      <ChevronLeft className="size-5" />
     </button>
   )
 }

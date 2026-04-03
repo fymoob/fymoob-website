@@ -116,20 +116,25 @@ export default async function PropertyPage({ params }: PageProps) {
 
       <RecentlyViewedTracker property={property} />
 
+      {/* Mobile: gallery first with overlay buttons */}
+      <div className="relative md:hidden">
+        <PropertyGallery fotos={filterPropertyPhotos(property.fotos).slice(0, 15)} alt={alt} />
+        {/* Overlay buttons on gallery */}
+        <div className="absolute left-0 right-0 top-0 z-10 flex items-center justify-between p-3">
+          <BackButton />
+          <div className="flex items-center gap-2">
+            <WishlistButton codigo={property.codigo} size="sm" />
+            <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} />
+          </div>
+        </div>
+      </div>
+
       <div className="mx-auto w-full max-w-7xl px-4 pb-44 md:px-8 md:pb-0">
-        {/* Breadcrumbs + actions */}
+        {/* Desktop: breadcrumbs + actions */}
         <div className="hidden items-center justify-between md:flex">
           <Breadcrumbs items={breadcrumbItems} />
           <div className="flex items-center gap-2">
             <WishlistButton codigo={property.codigo} />
-            <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} />
-          </div>
-        </div>
-        {/* Mobile: back button + actions */}
-        <div className="flex items-center justify-between pt-2 md:hidden">
-          <BackButton />
-          <div className="flex items-center gap-2">
-            <WishlistButton codigo={property.codigo} size="sm" />
             <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} />
           </div>
         </div>
@@ -141,7 +146,10 @@ export default async function PropertyPage({ params }: PageProps) {
         <div className="mt-4 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">
           {/* Left column */}
           <div className="space-y-10">
-            <PropertyGallery fotos={filterPropertyPhotos(property.fotos).slice(0, 15)} alt={alt} />
+            {/* Desktop gallery */}
+            <div className="hidden md:block">
+              <PropertyGallery fotos={filterPropertyPhotos(property.fotos).slice(0, 15)} alt={alt} />
+            </div>
             <PropertyDescription descricao={descricaoWithTitle} />
             <PropertyAmenities descricao={descricaoWithTitle} />
             <PropertyCharacteristics property={property} />
