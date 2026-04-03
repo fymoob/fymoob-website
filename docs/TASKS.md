@@ -18,12 +18,12 @@
 | 5.6 | Sessao 02-03/04 | 28 | 28 | 0 | CONCLUIDA |
 | 6 | Institucional e Polish | 7 | 7 | 0 | CONCLUIDA |
 | 7 | QA, Deploy, Go-Live | 10 | 0 | 10 | PENDENTE |
-| 8 | SEO Programatico | 33 | 31 | 2 | QUASE CONCLUIDA |
+| 8 | SEO Programatico | 33 | 32 | 1 | QUASE CONCLUIDA |
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
 | -- | Bugs | 0 | 0 | 0 | — |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **162** | **131** | **31** | **81%** |
+| | **TOTAL** | **162** | **132** | **30** | **81%** |
 
 ---
 
@@ -267,7 +267,7 @@
 - [x] `generateMetadata()` com nome, bairro, faixa preco, construtora
 - [x] DynamicFAQ com pergunta customizada por empreendimento + schema
 - [x] RelatedPages: bairros do empreendimento + outros empreendimentos
-- [ ] Listagem `/empreendimentos` com todos os empreendimentos + filtros (futuro)
+- [x] Listagem `/empreendimentos` — grid de cards com imagem, bairro, construtora, unidades, preco
 
 ### 8.5 — Landing Faixas de Preco
 > Rotas estaticas | Estimativa: ~5 paginas
