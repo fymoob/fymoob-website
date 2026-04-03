@@ -16,13 +16,12 @@ export function ViewCounter({ codigo }: ViewCounterProps) {
     setCount(newCount)
   }, [codigo])
 
-  // Only show if viewed 3+ times (meaningful social proof)
   if (count < 3) return null
 
   return (
-    <div className="flex items-center gap-1.5 text-sm text-neutral-500">
-      <Eye className="size-4" />
-      <span>{count} {count === 1 ? "pessoa viu" : "pessoas viram"} este imóvel</span>
-    </div>
+    <span className="inline-flex items-center gap-1 text-xs text-neutral-400">
+      <Eye className="size-3.5" />
+      {count} visualizações
+    </span>
   )
 }

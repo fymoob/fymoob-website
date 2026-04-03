@@ -60,7 +60,7 @@ export function Header() {
   return (
     <>
     {/* Spacer for fixed header on non-home pages */}
-    {!isHome && <div className="h-16" />}
+    {!isHome && <div className="h-14 md:h-16" />}
     <header
       className={cn(
         "fixed top-0 z-50 w-full transition-all duration-300",
@@ -69,7 +69,7 @@ export function Header() {
           : "border-b border-neutral-200/50 bg-white/90 backdrop-blur-xl"
       )}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 md:h-16 lg:px-8">
         {/* Logo */}
         <Link href="/" className="shrink-0">
           <Image
@@ -79,7 +79,7 @@ export function Header() {
             height={80}
             priority
             className={cn(
-              "h-9 w-auto transition-all duration-300",
+              "h-8 w-auto transition-all duration-300 md:h-9",
               isTransparent && "brightness-0 invert"
             )}
           />
@@ -108,12 +108,12 @@ export function Header() {
         </nav>
 
         {/* Quick Menu + Phone CTA + Mobile Menu */}
-        <div className="flex items-center gap-2 sm:gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           {/* Quick Access Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger
               className={cn(
-                "flex h-9 w-9 items-center justify-center rounded-lg transition-colors duration-300",
+                "flex h-10 w-10 items-center justify-center rounded-lg transition-colors duration-300",
                 isTransparent
                   ? "text-white/80 hover:bg-white/10 hover:text-white"
                   : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-950"
@@ -167,7 +167,7 @@ export function Header() {
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger
               id="mobile-menu-trigger"
-              className="md:hidden flex h-9 w-9 items-center justify-center rounded-lg"
+              className="md:hidden flex h-10 w-10 items-center justify-center rounded-lg"
             >
               <Menu
                 size={22}

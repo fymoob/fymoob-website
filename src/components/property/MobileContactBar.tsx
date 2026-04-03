@@ -34,24 +34,24 @@ function getUrgencyMessage({
       (Date.now() - new Date(dataCadastro).getTime()) / (1000 * 60 * 60 * 24)
     )
     if (daysAgo <= 3) {
-      return { icon: Sparkles, text: "Achado! Publicado ha poucos dias", color: "text-amber-700 bg-amber-50" }
+      return { icon: Sparkles, text: "Novo — publicado recentemente", color: "text-amber-700 bg-amber-50" }
     }
     if (daysAgo <= 7) {
-      return { icon: Sparkles, text: `Novidade! Anunciado ha ${daysAgo} dias`, color: "text-amber-700 bg-amber-50" }
+      return { icon: Sparkles, text: `Novo — ${daysAgo} dias atrás`, color: "text-amber-700 bg-amber-50" }
     }
   }
 
   if (precoVenda && precoMedioBairro && precoVenda < precoMedioBairro * 0.9) {
     const pct = Math.round(((precoMedioBairro - precoVenda) / precoMedioBairro) * 100)
-    return { icon: TrendingUp, text: `Achado! ${pct}% abaixo da media${bairro ? ` do ${bairro}` : ""}`, color: "text-emerald-700 bg-emerald-50" }
+    return { icon: TrendingUp, text: `${pct}% abaixo da média${bairro ? ` — ${bairro}` : ""}`, color: "text-emerald-700 bg-emerald-50" }
   }
 
   if (viewCount >= 10) {
-    return { icon: Eye, text: `Popular! ${viewCount} pessoas viram este imovel`, color: "text-rose-700 bg-rose-50" }
+    return { icon: Eye, text: `Popular — ${viewCount} visualizações`, color: "text-rose-700 bg-rose-50" }
   }
 
   if (viewCount >= 5) {
-    return { icon: Flame, text: `Em alta! ${viewCount} pessoas interessadas`, color: "text-orange-700 bg-orange-50" }
+    return { icon: Flame, text: `Em alta — ${viewCount} interessados`, color: "text-orange-700 bg-orange-50" }
   }
 
   return null

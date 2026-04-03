@@ -114,15 +114,18 @@ export default async function PropertyPage({ params }: PageProps) {
 
       <RecentlyViewedTracker property={property} />
 
-      <div className="mx-auto w-full max-w-7xl px-4 pb-24 md:px-8 md:pb-0">
-        <div className="flex items-center justify-between">
+      <div className="mx-auto w-full max-w-7xl px-4 pb-36 md:px-8 md:pb-0">
+        {/* Breadcrumbs — hidden on mobile for cleaner UX */}
+        <div className="hidden items-center justify-between md:flex">
           <Breadcrumbs items={breadcrumbItems} />
+          <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} />
+        </div>
+        <div className="flex items-center justify-end pt-2 md:hidden">
           <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} />
         </div>
 
         {/* Property header + specs */}
         <PropertyDetails property={property} shortTitle={shortTitle} />
-        <ViewCounter codigo={property.codigo} />
 
         {/* Main content grid */}
         <div className="mt-4 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">

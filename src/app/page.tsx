@@ -19,6 +19,7 @@ import { AnimateOnScroll } from "@/components/shared/AnimateOnScroll"
 import { RecentlyViewed } from "@/components/shared/RecentlyViewed"
 import { WelcomeBack } from "@/components/shared/WelcomeBack"
 import { SavedSearchBanner } from "@/components/search/SavedSearchBanner"
+import { HomeCarousel } from "@/components/home/HomeCarousel"
 
 export const metadata: Metadata = {
   title: "Imóveis à Venda e Aluguel em Curitiba | FYMOOB",
@@ -79,7 +80,7 @@ export default async function Home() {
   return (
     <>
       {/* Hero */}
-      <section id="hero" className="relative flex min-h-[75dvh] items-center justify-center overflow-hidden bg-neutral-950 md:min-h-[100dvh]">
+      <section id="hero" className="relative flex min-h-[60dvh] items-center justify-center overflow-hidden bg-neutral-950 md:min-h-[100dvh]">
         {/* Background video with scale-in */}
         <video
           autoPlay
@@ -172,7 +173,7 @@ export default async function Home() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <AnimateOnScroll>
               <div>
-                <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
+                <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-3xl md:font-bold">
                   Oportunidade de hoje
                 </h2>
                 <div className="mt-8">
@@ -186,11 +187,11 @@ export default async function Home() {
 
       {/* Destaques de lançamento */}
       {destaques.length > 0 && (
-        <section className="bg-neutral-50 py-12 md:py-16">
+        <section className="bg-neutral-50 py-10 md:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <AnimateOnScroll>
               <div className="flex items-center justify-between">
-                <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
+                <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-3xl md:font-bold">
                   Destaques de lançamento
                 </h2>
                 <Link
@@ -201,7 +202,12 @@ export default async function Home() {
                 </Link>
               </div>
             </AnimateOnScroll>
-            <AnimateOnScroll stagger className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+            {/* Mobile: horizontal carousel */}
+            <div className="mt-6 md:hidden">
+              <HomeCarousel properties={destaques} />
+            </div>
+            {/* Desktop: grid */}
+            <AnimateOnScroll stagger className="mt-8 hidden gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
               {destaques.map((property) => (
                 <div key={property.slug} className="opacity-0">
                   <PropertyCard property={property} />
@@ -214,10 +220,10 @@ export default async function Home() {
 
       {/* Bairros em destaque */}
       {bairros.length > 0 && (
-        <section className="py-12 md:py-16">
+        <section className="py-10 md:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <AnimateOnScroll>
-              <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
+              <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-3xl md:font-bold">
                 Bairros em destaque
               </h2>
             </AnimateOnScroll>
@@ -233,10 +239,10 @@ export default async function Home() {
       )}
 
       {/* Buscar por tipo */}
-      <section className="bg-neutral-50 py-12 md:py-16">
+      <section className="bg-neutral-50 py-10 md:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <AnimateOnScroll>
-            <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
+            <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-3xl md:font-bold">
               Buscar por tipo de imóvel
             </h2>
           </AnimateOnScroll>
@@ -266,11 +272,11 @@ export default async function Home() {
 
       {/* Do Blog */}
       {recentPosts.length > 0 && (
-        <section className="py-12 md:py-16">
+        <section className="py-10 md:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <AnimateOnScroll>
               <div className="flex items-center justify-between">
-                <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
+                <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-3xl md:font-bold">
                   Do Blog
                 </h2>
                 <Link

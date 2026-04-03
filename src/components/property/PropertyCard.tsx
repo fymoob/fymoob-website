@@ -392,7 +392,7 @@ export function PropertyCard({
             <button
               type="button"
               onClick={goPrev}
-              className="absolute top-1/2 left-3 z-20 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/35 text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100 hover:bg-black/50"
+              className="absolute top-1/2 left-3 z-20 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/35 text-white opacity-70 backdrop-blur-sm transition md:opacity-0 md:group-hover:opacity-100 hover:bg-black/50"
               aria-label="Foto anterior"
             >
               <ChevronLeft className="size-4" />
@@ -401,7 +401,7 @@ export function PropertyCard({
             <button
               type="button"
               onClick={goNext}
-              className="absolute top-1/2 right-3 z-20 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/35 text-white opacity-0 backdrop-blur-sm transition group-hover:opacity-100 hover:bg-black/50"
+              className="absolute top-1/2 right-3 z-20 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/35 text-white opacity-70 backdrop-blur-sm transition md:opacity-0 md:group-hover:opacity-100 hover:bg-black/50"
               aria-label="Proxima foto"
             >
               <ChevronRight className="size-4" />

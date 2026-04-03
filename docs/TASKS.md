@@ -20,10 +20,10 @@
 | 7 | QA, Deploy, Go-Live | 10 | 0 | 10 | PENDENTE |
 | 8 | SEO Programatico | 18 | 0 | 18 | PENDENTE |
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
-| -- | Bugs | 1 | 0 | 1 | ABERTO |
+| -- | Bugs | 0 | 0 | 0 | — |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **148** | **99** | **49** | **67%** |
+| | **TOTAL** | **147** | **99** | **48** | **67%** |
 
 ---
 
@@ -315,7 +315,7 @@
 
 ## Bugs Abertos
 
-- [ ] **Lightbox Freeze** — Galeria trava ao clicar foto em imoveis COM coordenadas/mapa. Ver `memory/project_lightbox_bug.md` para detalhes da investigacao.
+_Nenhum bug aberto._
 
 ---
 
@@ -387,5 +387,5 @@ FASE FUTURA (mes 2+):
   8.6 Bairro+Quartos → Fase 9 Painel Blog
 
 QUANDO POSSIVEL:
-  Bug lightbox → Nice-to-haves
+  Nice-to-haves
 ```

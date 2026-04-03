@@ -226,7 +226,7 @@ export function SearchBar({
   return (
     <aside
       className={cn(
-        sticky && "sticky top-16 z-40 bg-white/80 py-3 backdrop-blur-md",
+        sticky && "sticky top-14 z-40 bg-white/80 py-3 backdrop-blur-md md:top-16",
         className
       )}
     >
@@ -259,12 +259,12 @@ export function SearchBar({
                   )}
                 </SheetTrigger>
 
-                <SheetContent side="bottom" className="max-h-[85dvh] overflow-y-auto rounded-t-2xl">
+                <SheetContent side="bottom" className="flex max-h-[85dvh] flex-col rounded-t-2xl">
                   <SheetHeader>
                     <SheetTitle>Filtros</SheetTitle>
                   </SheetHeader>
 
-                  <div className="space-y-6 px-4 pb-4">
+                  <div className="flex-1 space-y-6 overflow-y-auto px-4 pb-4">
                     {/* Location */}
                     <div>
                       <h3 className="mb-2 text-sm font-semibold text-neutral-700">Localização</h3>
@@ -323,7 +323,7 @@ export function SearchBar({
                     </div>
                   </div>
 
-                  <SheetFooter>
+                  <SheetFooter className="sticky bottom-0 border-t border-neutral-100 bg-white pb-safe">
                     <div className="flex gap-3">
                       {hasAnyFilter && (
                         <button
