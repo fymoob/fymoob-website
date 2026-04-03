@@ -26,6 +26,9 @@ export default function FavoritosPage() {
   const [count, setCount] = useState(0)
 
   useEffect(() => {
+    // Scroll to top on mount
+    window.scrollTo(0, 0)
+
     const codes = getWishlistCodes()
     setCount(codes.length)
 
@@ -42,7 +45,16 @@ export default function FavoritosPage() {
           .catch(() => null)
       )
     ).then((results) => {
-      setProperties(results.filter(Boolean))
+      const valid = results.filter(Boolean)
+      setProperties(valid)
+      setCount(valid.length)
+
+      // Clean up invalid codes from localStorage
+      if (valid.length < codes.length) {
+        const validCodes = valid.map((p: Property) => p.codigo)
+        localStorage.setItem(WISHLIST_KEY, JSON.stringify(validCodes))
+      }
+
       setLoading(false)
     })
   }, [])
