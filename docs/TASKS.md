@@ -18,12 +18,12 @@
 | 5.6 | Sessao 02-03/04 | 28 | 28 | 0 | CONCLUIDA |
 | 6 | Institucional e Polish | 7 | 7 | 0 | CONCLUIDA |
 | 7 | QA, Deploy, Go-Live | 10 | 0 | 10 | PENDENTE |
-| 8 | SEO Programatico | 33 | 32 | 1 | QUASE CONCLUIDA |
+| 8 | SEO Programatico | 33 | 33 | 0 | CONCLUIDA |
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
 | -- | Bugs | 0 | 0 | 0 | — |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **162** | **132** | **30** | **81%** |
+| | **TOTAL** | **162** | **133** | **29** | **82%** |
 
 ---
 
@@ -281,16 +281,15 @@
 - [ ] `generateMetadata()` + JSON-LD para cada faixa
 - [ ] Adicionar ao sitemap com priority 0.6
 
-### 8.6 — Landing Bairro + Quartos (FASE FUTURA)
-> Rota: `/imoveis/[bairro]/[n]-quartos` | Estimativa: ~195 paginas
-> Exemplo: `/imoveis/batel/3-quartos` → "Imoveis com 3 Quartos no Batel"
-> Prioridade: BAIXA — implementar apos validar trafego das fases 8.1-8.5
+### 8.6 — Landing Bairro + Quartos [CONCLUIDA]
+> Rota: `/imoveis/[bairro]/2-quartos`, `/imoveis/[bairro]/3-quartos`, `/imoveis/[bairro]/4-quartos`
 
-- [ ] Criar rota dinamica `/imoveis/[bairro]/[quartos]/page.tsx`
-- [ ] Filtrar por Dormitorio (2, 3, 4+ quartos)
-- [ ] `generateStaticParams()` apenas para combinacoes com 3+ imoveis
-- [ ] `generateMetadata()` + JSON-LD
-- [ ] Adicionar ao sitemap
+- [x] Integrado no segmento `[tipo]` existente (detecta pattern N-quartos)
+- [x] Filtrar por Dormitorio exato (2, 3 exatos; 4 = 4+)
+- [x] `generateStaticParams()` para bairros com 5+ imoveis × 3 variacoes
+- [x] `generateMetadata()` + JSON-LD ItemList
+- [x] FAQ dinamico + cross-linking (outros quartos + venda/aluguel)
+- [x] Adicionado ao sitemap com priority 0.6
 
 ### 8.7 — Sitemap Expandido
 > Meta: 800+ URLs indexaveis

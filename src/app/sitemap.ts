@@ -169,6 +169,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     ])
 
+  // Bairro + quartos pages (e.g., /imoveis/batel/3-quartos)
+  const quartosPages: MetadataRoute.Sitemap = bairros
+    .filter((b) => b.total >= 5)
+    .flatMap((b) =>
+      [2, 3, 4].map((q) => ({
+        url: `${SITE_URL}/imoveis/${b.slug}/${q}-quartos`,
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: 0.6,
+      }))
+    )
+
   // Price range landing pages
   const priceRangePages: MetadataRoute.Sitemap = [
     "ate-300-mil",
@@ -202,6 +214,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...bairroPages,
     ...combinedPages,
     ...finalidadePages,
+    ...quartosPages,
     ...priceRangePages,
     ...empreendimentoPages,
     ...propertyPages,

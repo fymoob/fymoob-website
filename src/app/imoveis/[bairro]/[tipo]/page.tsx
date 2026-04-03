@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { getAllBairros, getProperties } from "@/services/loft"
+import { getAllBairros, getProperties, getPropertiesByBairro } from "@/services/loft"
 import { slugify, formatPrice } from "@/lib/utils"
 import type { PropertyType, PropertyFinalidade, PropertyFilters } from "@/types/property"
 import {
@@ -59,6 +59,16 @@ const FINALIDADE_LABELS: Record<string, { title: string; preposition: string }> 
   aluguel: { title: "Imoveis para Alugar", preposition: "para alugar" },
 }
 
+// --- Quartos mappings ---
+const QUARTOS_REGEX = /^(\d+)-quartos$/
+function isQuartos(slug: string): boolean {
+  return QUARTOS_REGEX.test(slug)
+}
+function parseQuartos(slug: string): number | null {
+  const match = slug.match(QUARTOS_REGEX)
+  return match ? parseInt(match[1], 10) : null
+}
+
 function isFinalidade(slug: string): boolean {
   return slug in FINALIDADE_SLUGS
 }
@@ -77,16 +87,22 @@ export async function generateStaticParams() {
   const params: { bairro: string; tipo: string }[] = []
 
   for (const b of bairros) {
-    // Type combinations (existing)
+    // Type combinations
     for (const { tipo, count } of b.tipos) {
       if (count >= 3) {
         params.push({ bairro: b.slug, tipo: `${slugify(tipo)}s` })
       }
     }
-    // Finalidade combinations (new) — only if bairro has 3+ properties
+    // Finalidade combinations
     if (b.total >= 3) {
       params.push({ bairro: b.slug, tipo: "venda" })
       params.push({ bairro: b.slug, tipo: "aluguel" })
+    }
+    // Quartos combinations — only for neighborhoods with 5+ properties
+    if (b.total >= 5) {
+      for (const q of [2, 3, 4]) {
+        params.push({ bairro: b.slug, tipo: `${q}-quartos` })
+      }
     }
   }
 
@@ -100,6 +116,19 @@ export async function generateMetadata({ params }: CombinadaPageProps): Promise<
   if (!bairro) return {}
 
   const filters: PropertyFilters = { bairro: bairro.bairro, limit: 1000 }
+
+  if (isQuartos(tipoSlug)) {
+    const q = parseQuartos(tipoSlug)!
+    filters.dormitoriosMin = q
+    const { properties: allProps } = await getProperties(filters)
+    const properties = q === 4 ? allProps.filter((p) => (p.dormitorios ?? 0) >= 4) : allProps.filter((p) => p.dormitorios === q)
+    const precos = properties.map((p) => p.precoVenda ?? p.precoAluguel).filter((p): p is number => p !== null && p > 0)
+    return {
+      title: `Imoveis com ${q}${q === 4 ? "+" : ""} Quartos no ${bairro.bairro}, Curitiba | FYMOOB`,
+      description: `${properties.length} imoveis com ${q}${q === 4 ? " ou mais" : ""} quartos no ${bairro.bairro}, Curitiba.${precos.length > 0 ? ` A partir de ${formatPrice(Math.min(...precos))}.` : ""} FYMOOB Imobiliaria.`,
+      alternates: { canonical: `/imoveis/${bairroSlug}/${tipoSlug}` },
+    }
+  }
 
   if (isFinalidade(tipoSlug)) {
     filters.finalidade = FINALIDADE_SLUGS[tipoSlug]
@@ -138,29 +167,45 @@ export default async function CombinadaPage({ params }: CombinadaPageProps) {
   if (!bairro) notFound()
 
   const isFin = isFinalidade(tipoSlug)
-  const tipoKey = isFin ? undefined : TIPO_SLUG_MAP[tipoSlug]
+  const isQ = isQuartos(tipoSlug)
+  const quartosNum = isQ ? parseQuartos(tipoSlug) : null
+  const tipoKey = (isFin || isQ) ? undefined : TIPO_SLUG_MAP[tipoSlug]
 
-  if (!isFin && !tipoKey) notFound()
+  if (!isFin && !isQ && !tipoKey) notFound()
 
   // Fetch properties
   const filters: PropertyFilters = { bairro: bairro.bairro, limit: 1000 }
-  if (isFin) {
+  if (isQ && quartosNum) {
+    filters.dormitoriosMin = quartosNum
+  } else if (isFin) {
     filters.finalidade = FINALIDADE_SLUGS[tipoSlug]
   } else {
     filters.tipo = tipoKey
   }
-  const { properties } = await getProperties(filters)
+  const { properties: rawProperties } = await getProperties(filters)
+
+  // For quartos, filter to exact match (4 = 4+)
+  const properties = isQ && quartosNum
+    ? quartosNum >= 4
+      ? rawProperties.filter((p) => (p.dormitorios ?? 0) >= 4)
+      : rawProperties.filter((p) => p.dormitorios === quartosNum)
+    : rawProperties
 
   // Labels
-  const pageTitle = isFin
-    ? `${FINALIDADE_LABELS[tipoSlug].title} no ${bairro.bairro}`
-    : `${TIPO_PLURAL[tipoKey!] || `${tipoKey}s`} no ${bairro.bairro}, Curitiba`
+  const quartosLabel = quartosNum ? `${quartosNum}${quartosNum >= 4 ? "+" : ""} Quartos` : ""
+  const pageTitle = isQ
+    ? `Imoveis com ${quartosLabel} no ${bairro.bairro}`
+    : isFin
+      ? `${FINALIDADE_LABELS[tipoSlug].title} no ${bairro.bairro}`
+      : `${TIPO_PLURAL[tipoKey!] || `${tipoKey}s`} no ${bairro.bairro}, Curitiba`
 
-  const breadcrumbLabel = isFin
-    ? FINALIDADE_LABELS[tipoSlug].title
-    : (TIPO_PLURAL[tipoKey!] || `${tipoKey}s`)
+  const breadcrumbLabel = isQ
+    ? quartosLabel
+    : isFin
+      ? FINALIDADE_LABELS[tipoSlug].title
+      : (TIPO_PLURAL[tipoKey!] || `${tipoKey}s`)
 
-  const tipoForIntro = isFin ? undefined : (tipoKey as string)
+  const tipoForIntro = (isFin || isQ) ? undefined : (tipoKey as string)
   const stats = generateLandingStats(properties)
   const intro = generateLandingIntro(properties, bairro.bairro, tipoForIntro)
   const faqQuestions = generateDynamicFAQ(stats, bairro.bairro, tipoForIntro)
@@ -171,7 +216,22 @@ export default async function CombinadaPage({ params }: CombinadaPageProps) {
     { href: `/imoveis/${bairroSlug}`, label: `Todos os imoveis no ${bairro.bairro}` },
   ]
 
-  if (isFin) {
+  if (isQ) {
+    // Link to other quartos options
+    for (const q of [2, 3, 4]) {
+      if (q !== quartosNum) {
+        relatedLinks.push({
+          href: `/imoveis/${bairroSlug}/${q}-quartos`,
+          label: `${q}${q >= 4 ? "+" : ""} quartos no ${bairro.bairro}`,
+        })
+      }
+    }
+    // Link to venda/aluguel
+    relatedLinks.push(
+      { href: `/imoveis/${bairroSlug}/venda`, label: `Imoveis a venda no ${bairro.bairro}` },
+      { href: `/imoveis/${bairroSlug}/aluguel`, label: `Imoveis para alugar no ${bairro.bairro}` },
+    )
+  } else if (isFin) {
     // Link to opposite finalidade
     const opposite = tipoSlug === "venda" ? "aluguel" : "venda"
     relatedLinks.push({
