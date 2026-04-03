@@ -133,15 +133,42 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
+  // Price range landing pages
+  const priceRangePages: MetadataRoute.Sitemap = [
+    "ate-300-mil",
+    "300-a-500-mil",
+    "500-mil-a-1-milhao",
+    "1-a-3-milhoes",
+    "acima-3-milhoes",
+  ].map((faixa) => ({
+    url: `${SITE_URL}/imoveis/preco/${faixa}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }))
+
+  // Institutional pages
+  const institutionalPages: MetadataRoute.Sitemap = [
+    { url: `${SITE_URL}/sobre`, priority: 0.5 },
+    { url: `${SITE_URL}/contato`, priority: 0.6 },
+    { url: `${SITE_URL}/anuncie`, priority: 0.7 },
+  ].map((p) => ({
+    ...p,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+  }))
+
   return [
     ...staticPages,
     ...typePages,
     ...bairroPages,
     ...combinedPages,
+    ...priceRangePages,
     ...empreendimentoPages,
     ...propertyPages,
     ...blogListingPage,
     ...blogPostPages,
+    ...institutionalPages,
     ...faqPage,
   ]
 }
