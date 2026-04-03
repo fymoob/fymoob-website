@@ -6,11 +6,11 @@
 
 **CONTRATANTE:**
 
-**[PREENCHER: Razão Social da FYMOOB ou Nome Completo]**, inscrita no CNPJ/CPF sob o nº **[PREENCHER]**, com sede na Rua Engenheiro Heitor Soares Gomes, 778, Portão, Curitiba/PR, CEP 80330-350, neste ato representada por seus sócios **Bruno Cesar [PREENCHER: Sobrenome]**, portador do RG nº **[PREENCHER]** e CPF nº **[PREENCHER]**, e **Wagner [PREENCHER: Sobrenome]**, portador do RG nº **[PREENCHER]** e CPF nº **[PREENCHER]**, doravante denominada **CONTRATANTE**.
+**FYMOOB Administradora de Imóveis LTDA**, inscrita no CNPJ/CPF sob o nº **54.209.379/0001-73**, com sede na Rua Engenheiro Heitor Soares Gomes, 778, Portão, Curitiba/PR, CEP 80330-350, neste ato representada por seus sócios **Bruno Cesar de Almeida**, portador do RG nº **[PREENCHER]** e CPF nº **[PREENCHER]**, e **Wagner [PREENCHER: Sobrenome]**, portador do RG nº **[PREENCHER]** e CPF nº **[PREENCHER]**, doravante denominada **CONTRATANTE**.
 
 **CONTRATADA:**
 
-**[PREENCHER: Razão Social do MEI ou Nome Completo]**, inscrita no CNPJ/CPF sob o nº **[PREENCHER]**, com sede em **[PREENCHER: Endereço Completo]**, e-mail **[PREENCHER]**, telefone **[PREENCHER]**, doravante denominada **CONTRATADA**.
+**Vinícius Damas de Lima**, inscrita no CNPJ/CPF sob o nº **[PREENCHER]**, com sede em **Rua Augusto Dering Sobrinho, 380, Ferrari, Campo Largo/PR, CEP 83606-320**, e-mail **vinicius.damas@hotmail.com**, telefone **(41) 99727-7806**, doravante denominada **CONTRATADA**.
 
 As partes acima identificadas têm entre si, justo e acertado, o presente Contrato de Prestação de Serviços de Desenvolvimento de Website, que se regerá pelas cláusulas e condições a seguir descritas.
 
@@ -120,7 +120,9 @@ Pela prestação dos serviços objeto deste contrato, a CONTRATANTE pagará à C
 
 **§ 3º** A CONTRATADA emitirá nota fiscal ou recibo correspondente a cada parcela recebida.
 
-**§ 4º** Valores referentes a serviços adicionais não previstos no escopo original (Cláusula 2ª) serão objeto de orçamento complementar e aprovação prévia por escrito da CONTRATANTE.
+**§ 4º — Antecipação por performance:** Caso o site atinja **1.500 (mil e quinhentas) visitas orgânicas mensais**, apuradas pelo Google Analytics vinculado ao domínio fymoob.com, a CONTRATANTE antecipará o pagamento integral de todas as parcelas restantes em uma única parcela, no prazo de **10 (dez) dias úteis** após a comprovação da meta. A apuração será feita com base no relatório mensal do Google Analytics, considerando o total de sessões orgânicas (excluindo tráfego pago e direto) no período de 30 dias corridos.
+
+**§ 5º** Valores referentes a serviços adicionais não previstos no escopo original (Cláusula 2ª) serão objeto de orçamento complementar e aprovação prévia por escrito da CONTRATANTE.
 
 ---
 
@@ -223,8 +225,7 @@ O presente contrato poderá ser rescindido nas seguintes hipóteses:
 **§ 2º** Por **acordo mútuo** entre as partes, formalizado por escrito.
 
 **§ 3º** Em caso de rescisão por iniciativa da CONTRATANTE sem justa causa:
-a) A CONTRATANTE pagará à CONTRATADA o valor correspondente aos serviços já executados, calculados proporcionalmente ao escopo entregue;
-b) Será devida multa rescisória de **20% (vinte por cento)** sobre o saldo restante do contrato.
+a) A CONTRATANTE pagará à CONTRATADA o valor correspondente aos serviços já executados, calculados proporcionalmente ao escopo entregue.
 
 **§ 4º** Em caso de rescisão por iniciativa da CONTRATADA sem justa causa:
 a) A CONTRATADA devolverá à CONTRATANTE os valores recebidos referentes a serviços não prestados;
