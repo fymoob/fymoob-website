@@ -146,22 +146,22 @@ export default async function GuiaBairroPage({ params }: PageProps) {
 
         {/* Stats bar — live data from CRM */}
         {stats.total > 0 && (
-          <div className="mt-8 grid grid-cols-3 gap-4 rounded-xl border border-neutral-200 bg-neutral-50 p-4 sm:p-6">
+          <div className="mt-8 grid grid-cols-3 gap-2 rounded-xl border border-neutral-200 bg-neutral-50 p-3 sm:gap-4 sm:p-6">
             <div className="text-center">
-              <p className="text-2xl font-bold text-brand-primary">{stats.total}</p>
-              <p className="mt-1 text-xs text-neutral-500">imóveis disponíveis</p>
+              <p className="text-lg font-bold text-brand-primary sm:text-2xl">{stats.total}</p>
+              <p className="mt-1 text-[10px] text-neutral-500 sm:text-xs">imóveis disponíveis</p>
             </div>
             <div className="text-center">
-              <p className="text-2xl font-bold text-neutral-900">
+              <p className="text-sm font-bold text-neutral-900 sm:text-2xl">
                 {formatPrice(stats.precoMedio)}
               </p>
-              <p className="mt-1 text-xs text-neutral-500">preço médio</p>
+              <p className="mt-1 text-[10px] text-neutral-500 sm:text-xs">preço médio</p>
             </div>
             <div className="text-center">
-              <p className="text-2xl font-bold text-neutral-900">
+              <p className="text-lg font-bold text-neutral-900 sm:text-2xl">
                 {Math.round(stats.areaMedio ?? 0)}m²
               </p>
-              <p className="mt-1 text-xs text-neutral-500">área média</p>
+              <p className="mt-1 text-[10px] text-neutral-500 sm:text-xs">área média</p>
             </div>
           </div>
         )}
