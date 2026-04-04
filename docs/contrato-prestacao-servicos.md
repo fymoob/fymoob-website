@@ -10,7 +10,7 @@
 
 **CONTRATADO:**
 
-**Vinícius Damas de Lima**, inscrito no CPF sob o nº **092.376.029-60**, com sede em **Rua Augusto Dering Sobrinho, 380, Ferrari, Campo Largo/PR, CEP 83606-320**, e-mail **vinicius.damas@hotmail.com**, telefone **(41) 99727-7806**, doravante denominada **CONTRATADO**.
+**61.282.301 VINICIUS DAMAS DE LIMA**, inscrito no CNPJ sob o nº **61.282.301/0001-40**, com sede na Rua Augusto Dering Sobrinho, 380, Ferrari, Campo Largo/PR, CEP 83606-320, e-mail **vinicius.damas@hotmail.com**, telefone **(41) 99727-7806**, doravante denominado **CONTRATADO**.
 
 As partes acima identificadas têm entre si, justo e acertado, o presente Contrato de Prestação de Serviços de Desenvolvimento de Website, que se regerá pelas cláusulas e condições a seguir descritas.
 
@@ -308,5 +308,5 @@ CPF: 069.356.989-10
 
 _______________________________________________
 **Vinícius Damas de Lima**
-CPF: 092.376.029-60
+CNPJ: 61.282.301/0001-40
 
