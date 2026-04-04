@@ -8,9 +8,9 @@
 
 **FYMOOB Administradora de Imóveis LTDA**, inscrita no CNPJ/CPF sob o nº **54.209.379/0001-73**, com sede na Rua Engenheiro Heitor Soares Gomes, 778, Portão, Curitiba/PR, CEP 80330-350, neste ato representada por seus sócios **Bruno Cesar de Almeida**, CPF nº **071.767.899-75**, e **Wagner Vicente Spessatto**, CPF nº **069.356.989-10**, doravante denominada **CONTRATANTE**.
 
-**CONTRATADA:**
+**CONTRATADO:**
 
-**Vinícius Damas de Lima**, inscrito no CPF sob o nº **092.376.029-60**, com sede em **Rua Augusto Dering Sobrinho, 380, Ferrari, Campo Largo/PR, CEP 83606-320**, e-mail **vinicius.damas@hotmail.com**, telefone **(41) 99727-7806**, doravante denominada **CONTRATADA**.
+**Vinícius Damas de Lima**, inscrito no CPF sob o nº **092.376.029-60**, com sede em **Rua Augusto Dering Sobrinho, 380, Ferrari, Campo Largo/PR, CEP 83606-320**, e-mail **vinicius.damas@hotmail.com**, telefone **(41) 99727-7806**, doravante denominada **CONTRATADO**.
 
 As partes acima identificadas têm entre si, justo e acertado, o presente Contrato de Prestação de Serviços de Desenvolvimento de Website, que se regerá pelas cláusulas e condições a seguir descritas.
 
@@ -24,7 +24,7 @@ O presente contrato tem por objeto a prestação de serviços de **desenvolvimen
 
 ## CLÁUSULA 2ª — DO ESCOPO DOS SERVIÇOS
 
-A CONTRATADA se compromete a entregar os seguintes serviços e funcionalidades:
+A CONTRATADO se compromete a entregar os seguintes serviços e funcionalidades:
 
 ### 2.1 — Desenvolvimento do Website
 a) Site responsivo e otimizado para desktop, tablet e dispositivos móveis;
@@ -51,7 +51,7 @@ b) **Galeria de fotos:** visualização das fotos dos imóveis com navegação o
 c) **Área do Cliente integrada:** acesso direto ao portal Loft para inquilinos e proprietários (boletos, contratos);
 d) **Recursos interativos:** conjunto de funcionalidades de engajamento e conversão a serem definidas em comum acordo com a CONTRATANTE durante o desenvolvimento, incluindo, mas não se limitando a: sistema de favoritos, compartilhamento de imóveis, indicadores de popularidade, sinalizações de urgência e elementos de prova social.
 
-**Parágrafo único:** Os recursos interativos descritos no item (d) serão apresentados pela CONTRATADA como sugestões durante o desenvolvimento, cabendo à CONTRATANTE aprovar, ajustar ou priorizar conforme suas preferências e necessidades comerciais.
+**Parágrafo único:** Os recursos interativos descritos no item (d) serão apresentados pela CONTRATADO como sugestões durante o desenvolvimento, cabendo à CONTRATANTE aprovar, ajustar ou priorizar conforme suas preferências e necessidades comerciais.
 
 ### 2.4 — Otimização SEO (800+ páginas indexáveis)
 a) Meta tags únicas (title, description, Open Graph) para **todas** as 800+ páginas;
@@ -78,7 +78,7 @@ d) Submissão do sitemap ao Google Search Console;
 e) Verificação da propriedade no Google Search Console;
 f) Monitoramento de indexação nos primeiros 7 dias após o lançamento.
 
-**Parágrafo 1º:** Com base no volume atual do CRM (249 imóveis, 113 empreendimentos, 65 bairros), o escopo descrito nesta cláusula é capaz de gerar mais de **800 (oitocentas) páginas indexáveis pelo Google**. O número exato de páginas depende da quantidade de imóveis e empreendimentos cadastrados no CRM pela CONTRATANTE — quanto mais imóveis ativos, mais páginas o sistema gera automaticamente. A estrutura técnica para geração dessas páginas é responsabilidade da CONTRATADA; o volume de dados é responsabilidade da CONTRATANTE.
+**Parágrafo 1º:** Com base no volume atual do CRM (249 imóveis, 113 empreendimentos, 65 bairros), o escopo descrito nesta cláusula é capaz de gerar mais de **800 (oitocentas) páginas indexáveis pelo Google**. O número exato de páginas depende da quantidade de imóveis e empreendimentos cadastrados no CRM pela CONTRATANTE — quanto mais imóveis ativos, mais páginas o sistema gera automaticamente. A estrutura técnica para geração dessas páginas é responsabilidade da CONTRATADO; o volume de dados é responsabilidade da CONTRATANTE.
 
 **Parágrafo 2º:** Quaisquer funcionalidades, páginas ou serviços não listados nesta cláusula estão fora do escopo deste contrato e, se solicitados, serão objeto de orçamento complementar aprovado por ambas as partes antes da execução.
 
@@ -88,13 +88,13 @@ f) Monitoramento de indexação nos primeiros 7 dias após o lançamento.
 
 O prazo para a execução completa dos serviços descritos na Cláusula 2ª é de **60 (sessenta) dias corridos**, contados a partir da data de assinatura do presente contrato.
 
-**§ 1º** O prazo poderá ser prorrogado, sem ônus para a CONTRATADA, nas seguintes hipóteses:
+**§ 1º** O prazo poderá ser prorrogado, sem ônus para a CONTRATADO, nas seguintes hipóteses:
 a) Atraso da CONTRATANTE no fornecimento de materiais, informações ou aprovações necessárias;
 b) Solicitação de alterações no escopo original pela CONTRATANTE;
 c) Caso fortuito ou força maior devidamente comprovados;
 d) Suspensão dos serviços por inadimplência (conforme Cláusula 11ª).
 
-**§ 2º** A CONTRATADA apresentará versão funcional do site para aprovação da CONTRATANTE antes da implantação final em produção.
+**§ 2º** A CONTRATADO apresentará versão funcional do site para aprovação da CONTRATANTE antes da implantação final em produção.
 
 **§ 3º — Do aceite:** Após a apresentação de cada entrega, a CONTRATANTE terá **5 (cinco) dias úteis** para aprovar ou solicitar ajustes. Cada entrega admite até **3 (três) rodadas de revisão**. Revisões adicionais serão tratadas como serviço complementar (Cláusula 4ª, § 4º). A ausência de manifestação dentro do prazo será considerada como **aceite tácito**.
 
@@ -104,7 +104,7 @@ d) Suspensão dos serviços por inadimplência (conforme Cláusula 11ª).
 
 ## CLÁUSULA 4ª — DO VALOR E FORMA DE PAGAMENTO
 
-Pela prestação dos serviços objeto deste contrato, a CONTRATANTE pagará à CONTRATADA o valor total de **R$ 15.000,00 (quinze mil reais)**, nas seguintes condições:
+Pela prestação dos serviços objeto deste contrato, a CONTRATANTE pagará à CONTRATADO o valor total de **R$ 15.000,00 (quinze mil reais)**, nas seguintes condições:
 
 **§ 1º** O pagamento será realizado em **6 (seis) parcelas mensais e consecutivas de R$ 2.500,00 (dois mil e quinhentos reais)** cada, com vencimento todo dia **10 (dez)** de cada mês, sendo a primeira parcela com vencimento em **10 de maio de 2026**.
 
@@ -118,7 +118,7 @@ Pela prestação dos serviços objeto deste contrato, a CONTRATANTE pagará à C
 | Conta | **35297-7** |
 | Chave PIX | **092.376.029-60** |
 
-**§ 3º** A CONTRATADA emitirá nota fiscal ou recibo correspondente a cada parcela recebida.
+**§ 3º** A CONTRATADO emitirá nota fiscal ou recibo correspondente a cada parcela recebida.
 
 **§ 4º — Antecipação por performance:** Caso o site atinja **1.500 (mil e quinhentas) visitas orgânicas mensais**, apuradas pelo Google Analytics vinculado ao domínio fymoob.com, a CONTRATANTE antecipará o pagamento integral de todas as parcelas restantes em uma única parcela, no prazo de **10 (dez) dias úteis** após a comprovação da meta. A apuração será feita com base no relatório mensal do Google Analytics, considerando o total de sessões orgânicas (excluindo tráfego pago e direto) no período de 30 dias corridos.
 
@@ -126,9 +126,9 @@ Pela prestação dos serviços objeto deste contrato, a CONTRATANTE pagará à C
 
 ---
 
-## CLÁUSULA 5ª — DAS OBRIGAÇÕES DA CONTRATADA
+## CLÁUSULA 5ª — DAS OBRIGAÇÕES DA CONTRATADO
 
-Constituem obrigações da CONTRATADA:
+Constituem obrigações da CONTRATADO:
 
 a) Executar os serviços descritos na Cláusula 2ª com zelo, dedicação e competência técnica;
 b) Manter a CONTRATANTE informada sobre o andamento do projeto, com atualizações regulares;
@@ -144,7 +144,7 @@ g) Responsabilizar-se por todos os encargos fiscais e tributários decorrentes d
 
 Constituem obrigações da CONTRATANTE:
 
-a) Fornecer à CONTRATADA todos os materiais, informações, textos, imagens, logotipos e acessos necessários à execução dos serviços, incluindo acesso ao CRM Loft/Vista;
+a) Fornecer à CONTRATADO todos os materiais, informações, textos, imagens, logotipos e acessos necessários à execução dos serviços, incluindo acesso ao CRM Loft/Vista;
 b) Aprovar ou solicitar alterações nas etapas do projeto dentro do prazo de **5 (cinco) dias úteis** após a apresentação de cada entrega;
 c) Efetuar os pagamentos nas datas e condições pactuadas na Cláusula 4ª;
 d) Manter ativas as contas de domínio (fymoob.com), serviços de hospedagem e CRM Loft/Vista necessários ao funcionamento do site;
@@ -157,7 +157,7 @@ b) Plano de hospedagem na plataforma Vercel (o plano gratuito atende ao projeto 
 c) Assinatura do CRM Loft/Vista (necessário para a sincronização automática de imóveis);
 d) Eventuais serviços de terceiros (Google Ads, ferramentas de marketing, etc.).
 
-**§ 2º** A CONTRATADA não se responsabiliza por indisponibilidade do site causada por cancelamento ou suspensão dos serviços listados no § 1º pela CONTRATANTE.
+**§ 2º** A CONTRATADO não se responsabiliza por indisponibilidade do site causada por cancelamento ou suspensão dos serviços listados no § 1º pela CONTRATANTE.
 
 **§ 3º** A falta de aprovação ou resposta da CONTRATANTE dentro do prazo de 5 (cinco) dias úteis será considerada como aprovação tácita da etapa apresentada.
 
@@ -167,11 +167,11 @@ d) Eventuais serviços de terceiros (Google Ads, ferramentas de marketing, etc.)
 
 **§ 1º** Após a **quitação integral** do valor descrito na Cláusula 4ª, todos os direitos sobre o código-fonte desenvolvido especificamente para este projeto serão transferidos à CONTRATANTE.
 
-**§ 2º** O site utiliza bibliotecas e frameworks de código aberto (open-source), cujas licenças são de domínio público e seguem seus respectivos termos de uso (MIT, Apache 2.0, entre outras). A CONTRATADA não detém nem transfere direitos sobre tais componentes.
+**§ 2º** O site utiliza bibliotecas e frameworks de código aberto (open-source), cujas licenças são de domínio público e seguem seus respectivos termos de uso (MIT, Apache 2.0, entre outras). A CONTRATADO não detém nem transfere direitos sobre tais componentes.
 
-**§ 3º** A CONTRATADA reserva-se o direito de utilizar o projeto em seu portfólio profissional, incluindo capturas de tela, descrições técnicas e menção ao cliente, salvo expressa oposição por escrito da CONTRATANTE.
+**§ 3º** A CONTRATADO reserva-se o direito de utilizar o projeto em seu portfólio profissional, incluindo capturas de tela, descrições técnicas e menção ao cliente, salvo expressa oposição por escrito da CONTRATANTE.
 
-**§ 4º** Enquanto não houver quitação integral, o código-fonte permanece de propriedade da CONTRATADA.
+**§ 4º** Enquanto não houver quitação integral, o código-fonte permanece de propriedade da CONTRATADO.
 
 ---
 
@@ -186,7 +186,7 @@ a) Sejam ou se tornem de domínio público sem violação deste contrato;
 b) Sejam recebidas legitimamente de terceiros sem obrigação de sigilo;
 c) Sejam exigidas por ordem judicial ou determinação legal.
 
-**§ 4º — Proteção de Dados (LGPD):** As partes comprometem-se a cumprir a Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018) no tratamento de dados pessoais coletados pelo site (formulários de contato, leads, dados de navegação). A CONTRATANTE é a **controladora** dos dados pessoais coletados e a CONTRATADA atua como **operadora** durante o desenvolvimento e período de suporte. Após a entrega final e quitação, a CONTRATANTE assume integralmente a responsabilidade pelo tratamento dos dados pessoais.
+**§ 4º — Proteção de Dados (LGPD):** As partes comprometem-se a cumprir a Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018) no tratamento de dados pessoais coletados pelo site (formulários de contato, leads, dados de navegação). A CONTRATANTE é a **controladora** dos dados pessoais coletados e a CONTRATADO atua como **operadora** durante o desenvolvimento e período de suporte. Após a entrega final e quitação, a CONTRATANTE assume integralmente a responsabilidade pelo tratamento dos dados pessoais.
 
 **§ 5º** Ambas as partes devem adotar medidas técnicas e organizacionais adequadas para proteger os dados pessoais contra acesso não autorizado, destruição, perda ou alteração.
 
@@ -194,10 +194,10 @@ c) Sejam exigidas por ordem judicial ou determinação legal.
 
 ## CLÁUSULA 9ª — DO SUPORTE PÓS-ENTREGA
 
-**§ 1º** A CONTRATADA prestará suporte técnico gratuito pelo período de **120 (cento e vinte) dias corridos** após a entrega final do site em ambiente de produção.
+**§ 1º** A CONTRATADO prestará suporte técnico gratuito pelo período de **120 (cento e vinte) dias corridos** após a entrega final do site em ambiente de produção.
 
 **§ 2º** O suporte inclui:
-a) Correção de bugs e falhas técnicas no código desenvolvido pela CONTRATADA;
+a) Correção de bugs e falhas técnicas no código desenvolvido pela CONTRATADO;
 b) Ajustes menores de layout e conteúdo, limitados a **até 3 (três) horas de trabalho por solicitação**;
 c) Esclarecimento de dúvidas sobre a operação e administração do site;
 d) Orientação sobre o uso do painel de blog.
@@ -210,7 +210,7 @@ d) Alterações no escopo original do projeto;
 e) Problemas causados por intervenção de terceiros no código;
 f) Indisponibilidade causada por serviços de terceiros (Loft/Vista, Google, domínio).
 
-**§ 3º-A** A CONTRATADA prestará orientação e suporte de diagnóstico para questões relacionadas à hospedagem na plataforma Vercel, incluindo configuração, deploy e resolução de problemas técnicos. A CONTRATADA não se responsabiliza, contudo, por indisponibilidades, falhas ou limitações da própria plataforma Vercel que estejam fora de seu controle.
+**§ 3º-A** A CONTRATADO prestará orientação e suporte de diagnóstico para questões relacionadas à hospedagem na plataforma Vercel, incluindo configuração, deploy e resolução de problemas técnicos. A CONTRATADO não se responsabiliza, contudo, por indisponibilidades, falhas ou limitações da própria plataforma Vercel que estejam fora de seu controle.
 
 **§ 4º** Solicitações que excedam o limite de 3 (três) horas por demanda serão avaliadas conjuntamente pelas partes, que definirão de comum acordo o prazo e as condições para execução.
 
@@ -227,13 +227,13 @@ O presente contrato poderá ser rescindido nas seguintes hipóteses:
 **§ 2º** Por **acordo mútuo** entre as partes, formalizado por escrito.
 
 **§ 3º** Em caso de rescisão por iniciativa da CONTRATANTE sem justa causa:
-a) A CONTRATANTE pagará à CONTRATADA o valor correspondente aos serviços já executados, calculados proporcionalmente ao escopo entregue.
+a) A CONTRATANTE pagará à CONTRATADO o valor correspondente aos serviços já executados, calculados proporcionalmente ao escopo entregue.
 
-**§ 4º** Em caso de rescisão por iniciativa da CONTRATADA sem justa causa:
-a) A CONTRATADA devolverá à CONTRATANTE os valores recebidos referentes a serviços não prestados;
-b) A CONTRATADA entregará todo o trabalho desenvolvido até a data da rescisão.
+**§ 4º** Em caso de rescisão por iniciativa da CONTRATADO sem justa causa:
+a) A CONTRATADO devolverá à CONTRATANTE os valores recebidos referentes a serviços não prestados;
+b) A CONTRATADO entregará todo o trabalho desenvolvido até a data da rescisão.
 
-**§ 5º** Em caso de rescisão, a CONTRATADA entregará à CONTRATANTE todos os arquivos e materiais produzidos até o momento, proporcionalmente aos valores quitados.
+**§ 5º** Em caso de rescisão, a CONTRATADO entregará à CONTRATANTE todos os arquivos e materiais produzidos até o momento, proporcionalmente aos valores quitados.
 
 ---
 
@@ -244,7 +244,7 @@ a) Multa de **2% (dois por cento)** sobre o valor da parcela em atraso;
 b) Juros de mora de **1% (um por cento) ao mês**, calculados pro rata die;
 c) Correção monetária pelo índice IGP-M/FGV ou, na sua falta, pelo IPCA/IBGE.
 
-**§ 2º** O atraso superior a **30 (trinta) dias** no pagamento de qualquer parcela autoriza a CONTRATADA a **suspender a execução dos serviços** até a regularização do débito, sem que isso configure descumprimento contratual por parte da CONTRATADA.
+**§ 2º** O atraso superior a **30 (trinta) dias** no pagamento de qualquer parcela autoriza a CONTRATADO a **suspender a execução dos serviços** até a regularização do débito, sem que isso configure descumprimento contratual por parte da CONTRATADO.
 
 **§ 3º** O prazo de entrega será automaticamente prorrogado pelo mesmo número de dias em que os serviços permanecerem suspensos por inadimplência.
 
@@ -254,7 +254,7 @@ c) Correção monetária pelo índice IGP-M/FGV ou, na sua falta, pelo IPCA/IBGE
 
 **§ 1º** O presente contrato não gera qualquer vínculo empregatício entre as partes, seus empregados, prepostos ou subcontratados.
 
-**§ 2º** A CONTRATADA prestará os serviços de forma autônoma, com liberdade de horário e método de trabalho, utilizando seus próprios equipamentos e recursos.
+**§ 2º** A CONTRATADO prestará os serviços de forma autônoma, com liberdade de horário e método de trabalho, utilizando seus próprios equipamentos e recursos.
 
 **§ 3º** Cada parte será exclusivamente responsável pelos encargos trabalhistas, previdenciários, fiscais e tributários relativos aos seus respectivos colaboradores.
 
@@ -272,7 +272,7 @@ c) Correção monetária pelo índice IGP-M/FGV ou, na sua falta, pelo IPCA/IBGE
 
 **§ 5º — Da comunicação:** Toda comunicação relativa a este contrato será realizada preferencialmente por **WhatsApp** e/ou **e-mail**, ficando as partes obrigadas a responder solicitações em até **2 (dois) dias úteis**. Comunicações com efeito jurídico (notificações, rescisão, alterações contratuais) deverão ser formalizadas por e-mail com confirmação de recebimento.
 
-**§ 6º — Do treinamento:** Após a entrega final, a CONTRATADA fornecerá à CONTRATANTE orientação sobre o uso do painel de blog e funcionalidades do site, em formato de videoconferência ou documentação escrita, em até **3 (três) sessões** com duração de até **1 (uma) hora** cada, conforme necessidade da CONTRATANTE. Treinamentos adicionais além das 3 sessões poderão ser contratados separadamente.
+**§ 6º — Do treinamento:** Após a entrega final, a CONTRATADO fornecerá à CONTRATANTE orientação sobre o uso do painel de blog e funcionalidades do site, em formato de videoconferência ou documentação escrita, em até **3 (três) sessões** com duração de até **1 (uma) hora** cada, conforme necessidade da CONTRATANTE. Treinamentos adicionais além das 3 sessões poderão ser contratados separadamente.
 
 ---
 
@@ -304,7 +304,7 @@ CPF: 069.356.989-10
 
 &nbsp;
 
-**CONTRATADA:**
+**CONTRATADO:**
 
 _______________________________________________
 **Vinícius Damas de Lima**
