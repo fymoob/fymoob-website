@@ -436,9 +436,12 @@ export function PropertyCard({
             ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3"
             : "space-y-2.5 p-5 md:p-6"
       )}>
-        {/* Meta row — vertical/responsive only */}
+        {/* Meta row — vertical only (hidden on mobile for responsive to save height) */}
         {!isHorizontal && (
-          <div className="flex items-center justify-between">
+          <div className={cn(
+            "flex items-center justify-between",
+            isResponsive && "hidden sm:flex"
+          )}>
             <div className="flex items-center gap-2">
               <span className="text-xs font-medium text-neutral-400">
                 {property.tipo}
@@ -461,7 +464,7 @@ export function PropertyCard({
         <p
           className={cn(
             "font-bold tracking-tight",
-            isHorizontal ? "text-base" : "text-xl",
+            isHorizontal ? "text-base" : isResponsive ? "text-base sm:text-xl" : "text-xl",
             price ? "text-[#0B1120]" : "text-neutral-400"
           )}
           style={{ fontFamily: '"Plus Jakarta Sans", var(--font-satoshi), sans-serif' }}
@@ -473,16 +476,16 @@ export function PropertyCard({
         <Link href={propertyHref} className="block">
           <h2 className={cn(
             "font-semibold leading-snug tracking-tight text-neutral-950 transition-colors hover:text-brand-primary",
-            isHorizontal ? "line-clamp-2 text-sm" : "text-lg"
+            isHorizontal ? "line-clamp-2 text-sm" : isResponsive ? "line-clamp-2 text-sm sm:line-clamp-none sm:text-lg" : "text-lg"
           )}>
-            {truncateText(property.titulo, isHorizontal ? 55 : 68)}
+            {truncateText(property.titulo, (isHorizontal || isResponsive) ? 55 : 68)}
           </h2>
         </Link>
 
         {/* Location */}
         <p className={cn(
           "text-neutral-500",
-          isHorizontal ? "text-xs" : "text-sm"
+          (isHorizontal || isResponsive) ? "text-xs sm:text-sm" : "text-sm"
         )}>
           {property.bairro}, {property.cidade}
         </p>
@@ -494,8 +497,8 @@ export function PropertyCard({
           vagas={property.vagas}
           areaPrivativa={property.areaPrivativa}
           size="sm"
-          compact={isHorizontal}
-          className={isHorizontal ? "pt-0" : "pt-1"}
+          compact={isHorizontal || isResponsive}
+          className={(isHorizontal || isResponsive) ? "pt-0 sm:pt-1" : "pt-1"}
         />
       </div>
     </article>

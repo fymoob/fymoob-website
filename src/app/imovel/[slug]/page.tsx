@@ -172,22 +172,22 @@ export default async function PropertyPage({ params }: PageProps) {
             </div>
 
             {/* Description (white) */}
-            <div className="mt-8 border-t border-neutral-100 pt-8">
+            <div className="mt-4 border-t border-neutral-100 pt-4 md:mt-6 md:pt-6">
               <PropertyDescription descricao={descricaoWithTitle} />
             </div>
 
             {/* Amenities (stone-50 bg) */}
-            <div className="-mx-4 mt-8 bg-stone-50 px-4 py-8 md:mx-0 md:rounded-xl">
+            <div className="-mx-4 mt-6 bg-stone-50 px-4 py-6 md:mx-0 md:rounded-xl">
               <PropertyAmenities descricao={descricaoWithTitle} />
             </div>
 
             {/* Characteristics (white) */}
-            <div className="mt-8 border-t border-neutral-100 pt-8">
+            <div className="mt-6 border-t border-neutral-100 pt-6">
               <PropertyCharacteristics property={property} />
             </div>
 
             {/* Map (stone-50 bg) */}
-            <div className="-mx-4 mt-8 bg-stone-50 px-4 py-8 md:mx-0 md:rounded-xl">
+            <div className="-mx-4 mt-6 bg-stone-50 px-4 py-6 md:mx-0 md:rounded-xl">
               <PropertyMap
                 latitude={property.latitude}
                 longitude={property.longitude}
@@ -211,7 +211,7 @@ export default async function PropertyPage({ params }: PageProps) {
       </div>
 
       {/* Similar properties — lazy loaded (below fold) */}
-      <div className="mt-12">
+      <div className="mt-6">
         <LazySimilarProperties properties={similarProperties} />
       </div>
 

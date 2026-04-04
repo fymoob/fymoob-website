@@ -43,7 +43,7 @@ export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMap
 
       const map = new maplibregl.Map({
         container: mapContainerRef.current,
-        style: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+        style: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
         center: [coords!.lng, coords!.lat],
         zoom: 15,
         attributionControl: false,
