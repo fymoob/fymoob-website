@@ -64,25 +64,73 @@ function ListPicker({
 }
 
 // Price range slider
-function PriceSlider({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+function PriceRangeSlider({
+  min,
+  max,
+  onMinChange,
+  onMaxChange,
+}: {
+  min: number
+  max: number
+  onMinChange: (v: number) => void
+  onMaxChange: (v: number) => void
+}) {
   const steps = [0, 200000, 300000, 500000, 750000, 1000000, 1500000, 2000000, 3000000, 5000000, 10000000]
-  const idx = steps.findIndex((s) => s >= value) === -1 ? steps.length - 1 : steps.findIndex((s) => s >= value)
+  const minIdx = steps.findIndex((s) => s >= min) === -1 ? 0 : steps.findIndex((s) => s >= min)
+  const maxIdx = steps.findIndex((s) => s >= max) === -1 ? steps.length - 1 : steps.findIndex((s) => s >= max)
+
+  const handleMin = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newIdx = parseInt(e.target.value)
+    if (newIdx < maxIdx || max === 0) {
+      onMinChange(steps[newIdx])
+    }
+  }
+
+  const handleMax = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newIdx = parseInt(e.target.value)
+    if (newIdx > minIdx) {
+      onMaxChange(steps[newIdx])
+    }
+  }
+
+  const label =
+    min === 0 && max === 0
+      ? "Qualquer preco"
+      : min > 0 && max === 0
+        ? `A partir de ${formatPrice(min)}`
+        : min === 0 && max > 0
+          ? `Ate ${formatPrice(max)}`
+          : `${formatPrice(min)} — ${formatPrice(max)}`
 
   return (
     <div>
-      <input
-        type="range"
-        min={0}
-        max={steps.length - 1}
-        value={idx}
-        onChange={(e) => onChange(steps[parseInt(e.target.value)])}
-        className="w-full accent-brand-primary"
-      />
+      <div className="space-y-3">
+        <div>
+          <span className="text-xs text-neutral-500">Preco minimo</span>
+          <input
+            type="range"
+            min={0}
+            max={steps.length - 1}
+            value={minIdx}
+            onChange={handleMin}
+            className="w-full accent-brand-primary"
+          />
+        </div>
+        <div>
+          <span className="text-xs text-neutral-500">Preco maximo</span>
+          <input
+            type="range"
+            min={0}
+            max={steps.length - 1}
+            value={maxIdx}
+            onChange={handleMax}
+            className="w-full accent-brand-primary"
+          />
+        </div>
+      </div>
       <div className="mt-2 flex justify-between text-xs text-neutral-400">
         <span>Sem limite</span>
-        <span className="font-semibold text-neutral-900">
-          {value === 0 ? "Qualquer preco" : `Ate ${formatPrice(value)}`}
-        </span>
+        <span className="font-semibold text-neutral-900">{label}</span>
         <span>R$ 10mi+</span>
       </div>
     </div>
@@ -95,6 +143,7 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
   const [bairro, setBairro] = useState("")
   const [tipo, setTipo] = useState("")
   const [quartos, setQuartos] = useState("")
+  const [precoMin, setPrecoMin] = useState(0)
   const [precoMax, setPrecoMax] = useState(0)
   const [mounted, setMounted] = useState(false)
   const [picker, setPicker] = useState<"bairro" | "tipo" | null>(null)
@@ -110,22 +159,24 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
     return () => { document.body.style.overflow = "" }
   }, [open, picker])
 
-  const activeFilters = [bairro, tipo, quartos, precoMax > 0 ? "1" : ""].filter(Boolean).length
+  const activeFilters = [bairro, tipo, quartos, (precoMin > 0 || precoMax > 0) ? "1" : ""].filter(Boolean).length
 
   const handleSearch = useCallback(() => {
     const params = new URLSearchParams()
     if (bairro) params.set("bairro", bairro)
     if (tipo) params.set("tipo", tipo)
     if (quartos) params.set("quartos", quartos)
+    if (precoMin > 0) params.set("precoMin", precoMin.toString())
     if (precoMax > 0) params.set("precoMax", precoMax.toString())
     setOpen(false)
     router.push(`/busca?${params.toString()}`)
-  }, [bairro, tipo, quartos, precoMax, router])
+  }, [bairro, tipo, quartos, precoMin, precoMax, router])
 
   const clearAll = () => {
     setBairro("")
     setTipo("")
     setQuartos("")
+    setPrecoMin(0)
     setPrecoMax(0)
   }
 
@@ -205,9 +256,9 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
           <div>
             <label className="mb-3 flex items-center gap-2 text-sm font-semibold text-neutral-900">
               <DollarSign className="size-4 text-brand-primary" />
-              Preco maximo
+              Faixa de preco
             </label>
-            <PriceSlider value={precoMax} onChange={setPrecoMax} />
+            <PriceRangeSlider min={precoMin} max={precoMax} onMinChange={setPrecoMin} onMaxChange={setPrecoMax} />
           </div>
         </div>
       </div>
