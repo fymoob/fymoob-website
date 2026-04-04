@@ -23,8 +23,9 @@
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
 | -- | Bugs | 0 | 0 | 0 | — |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
+| 11 | Performance (CWV) | 12 | 11 | 1 | EM ANDAMENTO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **201** | **172** | **29** | **86%** |
+| | **TOTAL** | **213** | **183** | **30** | **86%** |
 
 ---
 
@@ -281,7 +282,7 @@
 - [ ] Submeter sitemap ao Google Search Console
 - [ ] Verificar propriedade no GSC
 - [ ] Google Business Profile — fotos, horarios, categorias
-- [ ] Lighthouse audit: 500+ paginas (meta: >90 perf, >95 SEO)
+- [ ] Lighthouse audit: 500+ paginas (meta: >90 perf, >95 SEO) — ver Fase 11 para otimizacoes
 - [ ] Rich Results Test em 5+ paginas (imovel, bairro, blog, FAQ, home)
 - [ ] Testar formularios de contato (lead chega no CRM?)
 - [ ] Configurar redirects do site antigo → novo
@@ -461,6 +462,55 @@ _Nenhum bug aberto._
 
 ---
 
+## Fase 11 — Performance e Core Web Vitals [EM ANDAMENTO]
+
+> **Objetivo:** Atingir score Lighthouse >90 (performance) em mobile e desktop.
+> **Baseline (2026-04-04):** Lighthouse mobile **59/100** em `demo-blue-beta.vercel.app`
+> **Ferramenta:** Lighthouse CLI + Playwright MCP (PageSpeed API quota esgotada)
+
+### 11.0 — Auditoria Baseline [CONCLUIDA]
+- [x] Rodar Lighthouse CLI contra deploy Vercel (mobile) — score 59/100
+  - FCP: 1.2s (BOM) | LCP: 5.5s (RUIM) | TBT: 800ms (RUIM) | CLS: 0.007 (BOM)
+  - Speed Index: 3.4s (MEDIO) | TTI: 5.7s (MEDIO) | TTFB: 50ms (BOM)
+  - Payload total: 3,540 KB | hero-bg.mp4: 2,367 KB (67% do total)
+  - JS total: 271 KB (16 chunks) | Imagens: 381 KB (9 arquivos)
+  - Erro console: GA4 appendChild SyntaxError (nao-bloqueante)
+  - Report salvo: `lighthouse-report.report.html`
+
+### 11.1 — LCP: Hero Video (P0 — maior impacto) [CONCLUIDA]
+> LCP anterior: 5.5s (POOR). Meta: <2.5s.
+> Estrategia: poster image (LCP) + lazy video (desktop) + imagem estatica (mobile)
+
+- [x] Crop watermark "Veo" do video (5% inferior, ffmpeg crop=1280:684:0:0)
+- [x] Comprimir hero-bg.mp4 (2.5MB → 758KB, CRF 28, sem audio, movflags +faststart)
+- [x] Extrair poster WebP do video cropado (hero-poster.webp 44KB, hero-poster-mobile.webp 23KB)
+- [x] Criar componente `HeroSection` client (src/components/home/HeroSection.tsx)
+  - Image como LCP element (next/image, priority, fill, sizes="100vw")
+  - Video lazy loaded via requestIdleCallback (data-src → src swap)
+  - Mobile: apenas imagem estatica (sem video, economia 758KB)
+  - Desktop: poster → video fade-in com transition-opacity duration-1000
+- [x] Refatorar src/app/page.tsx para usar HeroSection component
+
+### 11.2 — TBT: JavaScript (P1) [CONCLUIDA]
+> TBT anterior: 800ms (POOR). Meta: <200ms.
+
+- [x] GA4: migrar de Script manual (dangerouslySetInnerHTML) para @next/third-parties GoogleAnalytics
+  - Resolve erro appendChild, carrega apos hydration, ~0% perda de dados
+- [x] Corrigir erro GA4 `appendChild` SyntaxError (resolvido pela migracao)
+- [x] optimizePackageImports: lucide-react no next.config.ts
+
+### 11.3 — Imagens (P2) [CONCLUIDA]
+- [x] Habilitar AVIF no next.config.ts (formats: ['image/avif', 'image/webp'])
+  - AVIF ~50% menor que JPEG, suporte 93.8% browsers, fallback WebP automatico
+- [x] Verificar sizes props — BairroCard, PropertyCard, PropertyCardFeatured ja corretos
+- [x] Hero poster com priority + sizes="100vw"
+
+### 11.4 — Re-teste pos-otimizacao
+- [ ] Rodar Lighthouse CLI apos deploy e comparar com baseline (59/100)
+  - Meta: score >90 mobile, LCP <2.5s, TBT <200ms
+
+---
+
 ## Nice-to-Have (fora do contrato atual)
 
 > Estas features agregam valor mas nao estao no escopo contratual.
@@ -480,8 +530,10 @@ CONCLUIDO:
   ✅ Fase 0-5.5 (Fundacao ate UX)
   ✅ Fase 6 (Institucional + GA4)
   ✅ Fase 8 (SEO Programatico — 600+ paginas, FAQ schema, cross-linking)
+  ✅ Fase 11.0 (Auditoria Performance — baseline 59/100)
 
-PROXIMO:
+PROXIMO (URGENTE — impacta SEO):
+  Fase 11.1-11.3 → Performance CWV (meta: Lighthouse >90)
   Fase 7 → Deploy producao (fymoob.com) — depende de DNS do Bruno
 
 PARALELO:
@@ -489,6 +541,7 @@ PARALELO:
 
 APOS GO-LIVE:
   Fase 9 → Painel Blog Admin
+  Fase 11.4 → Re-teste performance em producao
 
 QUANDO POSSIVEL:
   Nice-to-haves

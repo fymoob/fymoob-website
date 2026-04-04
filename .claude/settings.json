@@ -1,12 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx tsc:*)",
-      "Bash(netstat -ano)",
-      "Bash(findstr :3000)",
-      "Bash(findstr LISTENING)",
-      "Bash(cmd.exe /c \"taskkill /PID 11200 /F\")",
-      "Bash(cmd.exe /c \"taskkill /F /IM node.exe\")"
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(node:*)",
+      "Bash(git:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(mv:*)"
     ]
   }
 }

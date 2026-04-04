@@ -44,5 +44,8 @@ Thumbs.db
 *.tsbuildinfo
 next-env.d.ts
 
+# playwright MCP temp files
+.playwright-mcp/
+
 # misc
 *.log

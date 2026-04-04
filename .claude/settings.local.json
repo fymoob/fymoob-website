@@ -1,71 +1,45 @@
 {
   "permissions": {
     "allow": [
-      "Bash(node -e:*)",
-      "Bash(node --version:*)",
-      "Bash(npm:*)",
-      "Bash(npx --version)",
-      "Bash(npx create-next-app@latest:*)",
-      "Bash(npx shadcn@latest init:*)",
-      "Bash(npx shadcn@latest add:*)",
-      "Bash(git status:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
       "WebSearch",
-      "WebFetch(domain:developers.google.com)",
-      "Bash(/c/Users/Vine/AgenticTI/Fymoob/public/blog/melhores-bairros-curitiba.jpg:*)",
-      "Bash(/c/Users/Vine/AgenticTI/Fymoob/public/blog/financiamento-mcmv.jpg:*)",
-      "Bash(/c/Users/Vine/AgenticTI/Fymoob/public/blog/documentos-compra-imovel.jpg:*)",
-      "Bash(/c/Users/Vine/AgenticTI/Fymoob/public/blog/apartamento-ou-casa.jpg:*)",
-      "Bash(/c/Users/Vine/AgenticTI/Fymoob/public/blog/custo-morar-batel.jpg:*)",
-      "Bash(cd:*)",
-      "WebFetch(domain:localhost)",
-      "Bash(curl:*)",
-      "Bash(taskkill:*)",
       "WebFetch(domain:fymoob.com)",
-      "Bash(mv:*)",
-      "Bash(cmd.exe /c \"wmic process where ProcessId=11200 get Name,CommandLine\")",
-      "Bash(node -e \":*)",
-      "WebFetch(domain:unsplash.com)",
-      "WebFetch(domain:www.pexels.com)",
-      "WebFetch(domain:commons.wikimedia.org)",
-      "Bash(ls:*)",
-      "WebFetch(domain:api.fontshare.com)",
-      "Bash(find /c/Users/Vine/demo -type f \\\\\\(-name *.mdx -o -name *.md \\\\\\))",
-      "WebFetch(domain:www.apolar.com.br)",
-      "WebFetch(domain:razziimoveis.com.br)",
-      "WebFetch(domain:searchlab.com.br)",
-      "WebFetch(domain:www.gonzagaimoveis.com.br)",
-      "WebFetch(domain:rocketimob.com.br)",
-      "WebFetch(domain:wptech.com.br)",
-      "WebFetch(domain:jbaimoveis.com.br)",
-      "WebFetch(domain:apolar.com.br)",
-      "WebFetch(domain:gonzagaimoveis.com.br)",
-      "WebFetch(domain:api.gonzagaimoveis.com.br)",
-      "WebFetch(domain:www.semrush.com)",
-      "WebFetch(domain:www.similarweb.com)",
-      "WebFetch(domain:www.grupoavantti.com)",
-      "WebFetch(domain:www.jbaimoveis.com.br)",
-      "WebFetch(domain:premium.fymoob.com)",
-      "WebFetch(domain:blog.grupoavantti.com)",
       "WebFetch(domain:demo-blue-beta.vercel.app)",
-      "mcp__playwright__browser_evaluate",
-      "mcp__playwright__browser_console_messages",
+      "WebFetch(domain:localhost)",
+      "WebFetch(domain:developers.google.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
       "mcp__playwright__browser_navigate",
       "mcp__playwright__browser_take_screenshot",
       "mcp__playwright__browser_resize",
       "mcp__playwright__browser_snapshot",
       "mcp__playwright__browser_click",
-      "WebFetch(domain:matteus.dev)",
-      "WebFetch(domain:diegocastroadvogado.com.br)",
-      "WebFetch(domain:www.wonder.legal)",
-      "WebFetch(domain:github.com)",
-      "WebFetch(domain:www.jusbrasil.com.br)",
-      "WebFetch(domain:raw.githubusercontent.com)",
-      "WebFetch(domain:juristas.com.br)"
+      "mcp__playwright__browser_evaluate",
+      "mcp__playwright__browser_console_messages",
+      "mcp__playwright__browser_press_key",
+      "WebFetch(domain:www.lilachbullock.com)",
+      "mcp__playwright__browser_network_requests"
     ],
     "additionalDirectories": [
       "c:\\Users\\Vine\\.claude\\projects\\c--Users-Vine-demo\\memory"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "gsc",
+    "playwright"
+  ],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command // \"\"' | grep -qiE '(curl|wget|fetch|http).*(DELETE|PUT|PATCH).*(vistahost|loft)' && echo '{\"decision\":\"block\",\"reason\":\"BLOCKED: Destructive API call to Loft/Vista detected. Read-only access only.\"}' && exit 1 || true",
+            "timeout": 5,
+            "statusMessage": "Checking Loft API safety..."
+          }
+        ]
+      }
     ]
   }
 }

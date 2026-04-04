@@ -6,7 +6,7 @@
 
 **CONTRATANTE:**
 
-**FYMOOB Administradora de Imóveis LTDA**, inscrita no CNPJ/CPF sob o nº **54.209.379/0001-73**, com sede na Rua Engenheiro Heitor Soares Gomes, 778, Portão, Curitiba/PR, CEP 80330-350, neste ato representada por seus sócios **Bruno Cesar de Almeida**, portador do RG nº **[PREENCHER]** e CPF nº **[PREENCHER]**, e **Wagner [PREENCHER: Sobrenome]**, portador do RG nº **[PREENCHER]** e CPF nº **[PREENCHER]**, doravante denominada **CONTRATANTE**.
+**FYMOOB Administradora de Imóveis LTDA**, inscrita no CNPJ/CPF sob o nº **54.209.379/0001-73**, com sede na Rua Engenheiro Heitor Soares Gomes, 778, Portão, Curitiba/PR, CEP 80330-350, neste ato representada por seus sócios **Bruno Cesar de Almeida**, portador do RG nº **[PREENCHER]** e CPF nº **[PREENCHER]**, e **Wagner Spessatto**, portador do RG nº **[PREENCHER]** e CPF nº **[PREENCHER]**, doravante denominada **CONTRATANTE**.
 
 **CONTRATADA:**
 
