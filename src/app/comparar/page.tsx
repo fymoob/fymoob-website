@@ -37,17 +37,13 @@ interface CompareRowProps {
 function CompareRow({ label, values, highlight = false }: CompareRowProps) {
   return (
     <tr className={highlight ? "bg-brand-primary/5" : ""}>
-      <td className="border-b border-neutral-100 px-4 py-3 text-sm font-medium text-neutral-500 whitespace-nowrap">
+      <td className="sticky left-0 z-10 border-b border-neutral-100 bg-white px-3 py-3 text-xs font-medium text-neutral-500 whitespace-nowrap sm:px-4 sm:text-sm">
         {label}
       </td>
       {values.map((val, i) => (
-        <td key={i} className="border-b border-neutral-100 px-4 py-3 text-sm font-semibold text-neutral-900 text-center">
+        <td key={i} className="border-b border-neutral-100 px-3 py-3 text-xs font-semibold text-neutral-900 text-center sm:px-4 sm:text-sm">
           {val ?? "—"}
         </td>
-      ))}
-      {/* Fill empty columns if less than MAX_COMPARE */}
-      {Array.from({ length: MAX_COMPARE - values.length }).map((_, i) => (
-        <td key={`empty-${i}`} className="border-b border-neutral-100 px-4 py-3" />
       ))}
     </tr>
   )
@@ -173,19 +169,16 @@ export default function CompararPage() {
 
           {/* Comparison table */}
           <div className="overflow-x-auto rounded-xl border border-neutral-200">
-            <table className="w-full min-w-[500px]">
+            <table className="w-full">
               <thead>
                 <tr className="bg-neutral-50">
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-neutral-500">
+                  <th className="sticky left-0 z-10 bg-neutral-50 px-3 py-3 text-left text-[10px] font-semibold uppercase tracking-wider text-neutral-500 sm:px-4 sm:text-xs">
                     Característica
                   </th>
                   {properties.map((p) => (
-                    <th key={p.codigo} className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider text-neutral-500">
+                    <th key={p.codigo} className="px-3 py-3 text-center text-[10px] font-semibold uppercase tracking-wider text-neutral-500 sm:px-4 sm:text-xs">
                       {p.codigo}
                     </th>
-                  ))}
-                  {Array.from({ length: MAX_COMPARE - properties.length }).map((_, i) => (
-                    <th key={`empty-${i}`} className="px-4 py-3" />
                   ))}
                 </tr>
               </thead>
