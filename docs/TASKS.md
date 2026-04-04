@@ -1,7 +1,7 @@
 # FYMOOB — Task Tracker
 
 > Fonte unica de verdade para todas as tasks do projeto.
-> Atualizado: 2026-04-03
+> Atualizado: 2026-04-04
 
 ---
 
@@ -16,6 +16,7 @@
 | 4 | Blog e Conteudo | 8 | 8 | 0 | CONCLUIDA |
 | 5 | API Loft Real | 8 | 8 | 0 | CONCLUIDA |
 | 5.6 | Sessao 02-03/04 | 28 | 28 | 0 | CONCLUIDA |
+| 5.7 | Sessao 03-04/04 | 35 | 35 | 0 | CONCLUIDA |
 | 6 | Institucional e Polish | 7 | 7 | 0 | CONCLUIDA |
 | 7 | QA, Deploy, Go-Live | 10 | 0 | 10 | PENDENTE |
 | 8 | SEO Programatico | 37 | 33 | 4 | CONCLUIDA (4 pos-deploy) |
@@ -23,7 +24,7 @@
 | -- | Bugs | 0 | 0 | 0 | — |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **166** | **137** | **29** | **83%** |
+| | **TOTAL** | **201** | **172** | **29** | **86%** |
 
 ---
 
@@ -188,6 +189,74 @@
 **Infra:**
 - [x] Playwright MCP adicionado ao `.mcp.json` para testes visuais
 - [x] Remover UrgencyBar.tsx standalone (logica absorvida pelo MobileContactBar)
+
+</details>
+
+---
+
+## Sessao 2026-04-03/04 — Fase 8 Completa, Visual Premium, UX Polish [CONCLUIDA]
+
+<details>
+<summary>30+ tasks concluidas</summary>
+
+**Fase 8 — SEO Programatico (COMPLETA):**
+- [x] 8.1 Landing Bairro+Tipo — reescrita com conteudo dinamico, stats, FAQ schema, cross-linking
+- [x] 8.2 Landing Bairro+Finalidade (venda/aluguel) — ~57 paginas
+- [x] 8.3 Landing Tipo+Finalidade — 8 paginas com TipoFinalidadePage reutilizavel
+- [x] 8.4 Empreendimentos — FAQ + RelatedPages + listagem /empreendimentos
+- [x] 8.5 Landing Faixas de Preco — 5 paginas em /imoveis/preco/[faixa]
+- [x] 8.6 Landing Bairro+Quartos — integrado no [tipo] segment (2, 3, 4+ quartos)
+- [x] 8.7 Sitemap expandido — todos os tipos incluidos (~600+ URLs)
+- [x] 8.8 Conteudo Dinamico — generateLandingIntro + generateLandingStats
+- [x] 8.9 FAQ Dinamico — generateDynamicFAQ + DynamicFAQ component + FAQPage schema
+- [x] 8.10 Cross-Linking — RelatedPages component hub-and-spoke em todas as landing
+
+**GA4:**
+- [x] Fluxo "Site Principal" criado (G-HPWE3P9DYK)
+- [x] Script gtag.js corrigido (dangerouslySetInnerHTML — fix appendChild error)
+
+**Contrato:**
+- [x] Revisao juridica completa (10 correcoes: aceite, custos, LGPD, suporte, comunicacao)
+- [x] Clausula de performance (1500 views = antecipacao pagamento)
+- [x] Wagner Spessatto identificado + CNPJ preenchido
+- [x] Multa rescisoria removida (decisao do cliente)
+- [x] PDF gerado para envio
+
+**UX Mobile — Pagina de Imovel:**
+- [x] Layout reestruturado: titulo+preco primeiro, galeria depois (UX research)
+- [x] Preco em brand-primary (azul) — mobile e desktop
+- [x] Hierarquia visual: fundos alternados stone-50/white entre secoes
+- [x] Badges refinados (bg-neutral-100 solido, sem backdrop-blur)
+- [x] MobileContactBar sempre visivel (removido scroll > 400)
+- [x] WishlistButton na pagina de imovel (mobile + desktop)
+- [x] BackButton component para navegacao mobile
+- [x] ShareButton variante "overlay" (botao circular unico)
+- [x] Galeria: snap-center + scroll-smooth + Embla dragFree:false
+- [x] SimilarProperties: grid vertical com swipe de fotos por card
+- [x] Bottom padding pb-[160px] para evitar corte da BottomNav
+
+**Sobre Nos — Redesign Premium:**
+- [x] Full dark theme (hero gradient mesh + glow accents)
+- [x] Stats bar dark (bg-white/5 backdrop-blur)
+- [x] Missao/Visao com gradient cards (from-white to-brand-primary/5)
+- [x] Valores com hover premium (-translate-y-1 + shadow-xl + icon scale)
+- [x] Historia split layout com imagem "Where Dreams Reside"
+- [x] Diretoria section dark (placeholder avatars para Bruno + Wagner)
+- [x] "Padrao FYMOOB" numerado (01-04) com layout alternado
+- [x] CTA dark gradient mesh com glow
+
+**Home — Search:**
+- [x] Header bug fix (scroll reset + requestAnimationFrame)
+- [x] QuickSearch pill compacto (Airbnb pattern)
+- [x] Full-screen overlay com filtros (progressive disclosure)
+- [x] ListPicker para bairro/tipo (substitui select nativo escuro)
+- [x] Range slider para preco (substitui pills estaticas)
+- [x] Body scroll lock quando overlay aberto
+
+**Infra:**
+- [x] Playwright MCP adicionado ao .mcp.json
+- [x] API route /api/property/[code] para favoritos
+- [x] Favoritos: busca imoveis reais + auto-limpeza de codigos invalidos
 
 </details>
 
