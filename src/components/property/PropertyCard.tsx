@@ -440,55 +440,38 @@ export function PropertyCard({
             ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3"
             : "space-y-2.5 p-5 md:p-6"
       )}>
-        {/* Meta row — vertical only (hidden on mobile for responsive to save height) */}
-        {!isHorizontal && (
-          <div className={cn(
-            "flex items-center justify-between",
-            isResponsive && "hidden sm:flex"
-          )}>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-medium text-neutral-400">
-                {property.tipo}
-              </span>
-              <span className="text-neutral-200">·</span>
-              <span className="text-xs text-neutral-300">
-                {property.codigo}
-              </span>
-            </div>
-            {daysAgo && (
-              <span className="flex items-center gap-1 text-[11px] text-neutral-400">
-                <Clock className="size-3" />
-                {daysAgo}
-              </span>
-            )}
-          </div>
-        )}
+        {/* Line 1: Type */}
+        <span className={cn(
+          "font-medium text-neutral-500",
+          (isHorizontal || isResponsive) ? "text-xs" : "text-sm"
+        )}>
+          {property.tipo}
+        </span>
 
-        {/* Price */}
+        {/* Line 2: Price (highlight) */}
         <p
           className={cn(
             "font-bold tracking-tight",
             isHorizontal ? "text-base" : isResponsive ? "text-base sm:text-xl" : "text-xl",
-            price ? "text-[#0B1120]" : "text-neutral-400"
+            price ? "text-neutral-900" : "text-neutral-400"
           )}
-          style={{ fontFamily: '"Plus Jakarta Sans", var(--font-satoshi), sans-serif' }}
         >
           {formatPrice(price)}
         </p>
 
-        {/* Title */}
+        {/* Line 3: Title (1 line, truncated) */}
         <Link href={propertyHref} className="block">
           <h2 className={cn(
-            "font-semibold leading-snug tracking-tight text-neutral-950 transition-colors hover:text-brand-primary",
-            isHorizontal ? "line-clamp-2 text-sm" : isResponsive ? "line-clamp-2 text-sm sm:line-clamp-none sm:text-lg" : "text-lg"
+            "truncate font-semibold tracking-tight text-neutral-800 transition-colors hover:text-brand-primary",
+            (isHorizontal || isResponsive) ? "text-sm sm:text-base" : "text-base"
           )}>
-            {truncateText(property.titulo, (isHorizontal || isResponsive) ? 55 : 68)}
+            {property.titulo}
           </h2>
         </Link>
 
-        {/* Location */}
+        {/* Line 4: Location (prominent) */}
         <p className={cn(
-          "text-neutral-500",
+          "font-medium text-neutral-600",
           (isHorizontal || isResponsive) ? "text-xs sm:text-sm" : "text-sm"
         )}>
           {property.bairro}, {property.cidade}

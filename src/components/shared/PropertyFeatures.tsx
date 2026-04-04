@@ -46,7 +46,7 @@ export function PropertyFeatures({
         >
           <feature.icon
             size={compact ? 12 : iconSize}
-            className="shrink-0 text-neutral-400"
+            className="shrink-0 text-neutral-500"
           />
           <span className={cn("font-medium", compact ? "text-[11px]" : textClass)}>
             {compact ? feature.value : `${feature.value} ${feature.label}`}

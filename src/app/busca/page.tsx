@@ -8,6 +8,7 @@ import { SkeletonsGrid } from "@/components/search/SkeletonsGrid"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { SaveSearchButton } from "@/components/search/SaveSearchButton"
 import { SortDropdown } from "@/components/search/SortDropdown"
+import { MapPin } from "lucide-react"
 import { generateItemListSchema } from "@/lib/seo"
 import { slugify } from "@/lib/utils"
 import {
@@ -298,6 +299,14 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
           <Suspense fallback={null}>
             <SortDropdown />
           </Suspense>
+          <button
+            type="button"
+            className="hidden items-center gap-1.5 rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-brand-primary transition hover:border-brand-primary/30 hover:shadow-sm md:inline-flex"
+            title="Em breve"
+          >
+            <MapPin className="size-4" />
+            Mapa
+          </button>
           <Suspense fallback={null}>
             <SaveSearchButton />
           </Suspense>

@@ -22,7 +22,7 @@ export function PropertyGrid({ properties }: PropertyGridProps) {
   return (
     <section
       aria-live="polite"
-      className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4"
+      className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8"
     >
       {properties.map((property, index) => (
         <PropertyCard
