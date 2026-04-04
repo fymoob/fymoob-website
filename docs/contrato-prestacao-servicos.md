@@ -96,7 +96,7 @@ d) Suspensão dos serviços por inadimplência (conforme Cláusula 11ª).
 
 **§ 2º** A CONTRATADA apresentará versão funcional do site para aprovação da CONTRATANTE antes da implantação final em produção.
 
-**§ 3º — Do aceite:** Após a apresentação de cada entrega, a CONTRATANTE terá **5 (cinco) dias úteis** para aprovar ou solicitar ajustes. Cada entrega admite até **2 (duas) rodadas de revisão**. Revisões adicionais serão tratadas como serviço complementar (Cláusula 4ª, § 4º). A ausência de manifestação dentro do prazo será considerada como **aceite tácito**.
+**§ 3º — Do aceite:** Após a apresentação de cada entrega, a CONTRATANTE terá **5 (cinco) dias úteis** para aprovar ou solicitar ajustes. Cada entrega admite até **3 (três) rodadas de revisão**. Revisões adicionais serão tratadas como serviço complementar (Cláusula 4ª, § 4º). A ausência de manifestação dentro do prazo será considerada como **aceite tácito**.
 
 **§ 4º — Da entrega final:** Considera-se **entrega final** o momento em que o site é publicado no domínio fymoob.com em ambiente de produção, após aprovação (expressa ou tácita) da CONTRATANTE. A data da entrega final marca o início do período de suporte (Cláusula 9ª).
 
@@ -194,11 +194,11 @@ c) Sejam exigidas por ordem judicial ou determinação legal.
 
 ## CLÁUSULA 9ª — DO SUPORTE PÓS-ENTREGA
 
-**§ 1º** A CONTRATADA prestará suporte técnico gratuito pelo período de **60 (sessenta) dias corridos** após a entrega final do site em ambiente de produção.
+**§ 1º** A CONTRATADA prestará suporte técnico gratuito pelo período de **120 (cento e vinte) dias corridos** após a entrega final do site em ambiente de produção.
 
 **§ 2º** O suporte inclui:
 a) Correção de bugs e falhas técnicas no código desenvolvido pela CONTRATADA;
-b) Ajustes menores de layout e conteúdo, limitados a **até 2 (duas) horas de trabalho por solicitação**;
+b) Ajustes menores de layout e conteúdo, limitados a **até 3 (três) horas de trabalho por solicitação**;
 c) Esclarecimento de dúvidas sobre a operação e administração do site;
 d) Orientação sobre o uso do painel de blog.
 
@@ -208,9 +208,11 @@ b) Redesign parcial ou total do site;
 c) Criação de novos conteúdos (textos, artigos, imagens);
 d) Alterações no escopo original do projeto;
 e) Problemas causados por intervenção de terceiros no código;
-f) Indisponibilidade causada por serviços de terceiros (Vercel, Loft/Vista, Google, domínio).
+f) Indisponibilidade causada por serviços de terceiros (Loft/Vista, Google, domínio).
 
-**§ 4º** Solicitações que excedam o limite de 2 (duas) horas por demanda serão avaliadas e, se aceitas, cobradas como serviço adicional conforme orçamento prévio.
+**§ 3º-A** A CONTRATADA prestará orientação e suporte de diagnóstico para questões relacionadas à hospedagem na plataforma Vercel, incluindo configuração, deploy e resolução de problemas técnicos. A CONTRATADA não se responsabiliza, contudo, por indisponibilidades, falhas ou limitações da própria plataforma Vercel que estejam fora de seu controle.
+
+**§ 4º** Solicitações que excedam o limite de 3 (três) horas por demanda serão avaliadas conjuntamente pelas partes, que definirão de comum acordo o prazo e as condições para execução.
 
 **§ 5º** Após o término do período de suporte gratuito, a prestação de serviços de manutenção e evolução do site poderá ser contratada mediante novo instrumento específico.
 
@@ -270,7 +272,7 @@ c) Correção monetária pelo índice IGP-M/FGV ou, na sua falta, pelo IPCA/IBGE
 
 **§ 5º — Da comunicação:** Toda comunicação relativa a este contrato será realizada preferencialmente por **WhatsApp** e/ou **e-mail**, ficando as partes obrigadas a responder solicitações em até **2 (dois) dias úteis**. Comunicações com efeito jurídico (notificações, rescisão, alterações contratuais) deverão ser formalizadas por e-mail com confirmação de recebimento.
 
-**§ 6º — Do treinamento:** Após a entrega final, a CONTRATADA fornecerá à CONTRATANTE orientação sobre o uso do painel de blog e funcionalidades do site, em formato de videoconferência ou documentação escrita, com duração estimada de até **1 (uma) hora**. Treinamentos adicionais poderão ser contratados separadamente.
+**§ 6º — Do treinamento:** Após a entrega final, a CONTRATADA fornecerá à CONTRATANTE orientação sobre o uso do painel de blog e funcionalidades do site, em formato de videoconferência ou documentação escrita, em até **3 (três) sessões** com duração de até **1 (uma) hora** cada, conforme necessidade da CONTRATANTE. Treinamentos adicionais além das 3 sessões poderão ser contratados separadamente.
 
 ---
 
