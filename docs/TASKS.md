@@ -24,7 +24,7 @@
 | -- | Bugs | 0 | 0 | 0 | — |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
 | 11 | Performance (CWV) | 31 | 26 | 5 | EM ANDAMENTO |
-| 12 | Conteudo SEO Editorial | 29 | 19 | 10 | EM ANDAMENTO |
+| 12 | Conteudo SEO Editorial | 29 | 26 | 3 | EM ANDAMENTO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
 | | **TOTAL** | **229** | **195** | **34** | **85%** |
 
@@ -594,18 +594,18 @@ _Nenhum bug aberto._
 - [x] Guia do Santa Felicidade
 - [x] Guia do Merces
 
-### 12.4 — Blog Editorial [EM ANDAMENTO]
-> Meta: 10 artigos novos (total 15 com os 5 existentes)
+### 12.4 — Blog Editorial [CONCLUIDA]
+> 10 artigos novos + 5 existentes = 15 artigos, 15.145 palavras totais
 - [x] ITBI Curitiba 2026 (target: 500-1000 buscas/mes)
 - [x] Batel vs Agua Verde (target: 200-500 buscas/mes)
 - [x] Custo de Vida em Curitiba (target: 1000-3000 buscas/mes)
-- [ ] Mercado Imobiliario Curitiba 2026
-- [ ] Financiamento Caixa vs Itau vs Bradesco
-- [ ] Checklist: 25 Itens para Comprar Imovel
-- [ ] Ecoville vs Bigorrilho
-- [ ] Imovel Planta vs Pronto
-- [ ] Melhores Bairros para Familias
-- [ ] Preco m² por Bairro — Tabela
+- [x] Mercado Imobiliario Curitiba 2026 (tendencias, precos, oportunidades)
+- [x] Financiamento Caixa vs Itau vs Bradesco (comparativo com tabelas)
+- [x] Checklist: 25 Itens para Comprar Imovel (guia pratico)
+- [x] Ecoville vs Bigorrilho (comparativo bairros)
+- [x] Imovel Planta vs Pronto (vantagens, riscos, custos)
+- [x] Melhores Bairros para Familias (8 bairros avaliados)
+- [x] Preco m² por Bairro — Tabela 2026 (20+ bairros)
 
 ### 12.5 — E-E-A-T Signals [PENDENTE]
 - [ ] Testimonials de clientes na pagina Sobre
