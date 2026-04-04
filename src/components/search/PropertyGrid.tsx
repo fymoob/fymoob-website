@@ -1,6 +1,5 @@
-"use client"
-
-import { useEffect, useState } from "react"
+// Server Component — NO "use client", NO useIsMobile
+// CSS responsive layout prevents CLS from JS-driven layout shifts
 import type { Property } from "@/types/property"
 import { PropertyCard } from "@/components/property/PropertyCard"
 
@@ -10,24 +9,7 @@ interface PropertyGridProps {
 
 const ABOVE_THE_FOLD_PRIORITY_CARDS = 3
 
-function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const mql = window.matchMedia("(max-width: 639px)")
-    setIsMobile(mql.matches)
-
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
-    mql.addEventListener("change", handler)
-    return () => mql.removeEventListener("change", handler)
-  }, [])
-
-  return isMobile
-}
-
 export function PropertyGrid({ properties }: PropertyGridProps) {
-  const isMobile = useIsMobile()
-
   if (properties.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-neutral-300 bg-neutral-50 py-16 text-center">
@@ -39,22 +21,36 @@ export function PropertyGrid({ properties }: PropertyGridProps) {
   }
 
   return (
-    <section
-      aria-live="polite"
-      className={
-        isMobile
-          ? "flex flex-col gap-3"
-          : "grid grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-4 lg:gap-6"
-      }
-    >
-      {properties.map((property, index) => (
-        <PropertyCard
-          key={property.slug}
-          property={property}
-          prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
-          variant={isMobile ? "horizontal" : "vertical"}
-        />
-      ))}
-    </section>
+    <>
+      {/* Mobile: horizontal cards in vertical list */}
+      <section
+        aria-live="polite"
+        className="flex flex-col gap-3 sm:hidden"
+      >
+        {properties.map((property, index) => (
+          <PropertyCard
+            key={property.slug}
+            property={property}
+            prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
+            variant="horizontal"
+          />
+        ))}
+      </section>
+
+      {/* Desktop: vertical cards in grid */}
+      <section
+        aria-live="polite"
+        className="hidden gap-5 sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4"
+      >
+        {properties.map((property, index) => (
+          <PropertyCard
+            key={property.slug}
+            property={property}
+            prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
+            variant="vertical"
+          />
+        ))}
+      </section>
+    </>
   )
 }

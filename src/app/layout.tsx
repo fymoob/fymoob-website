@@ -71,6 +71,8 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={satoshi.variable}>
       <head>
+        <link rel="preconnect" href="https://cdn.vistahost.com.br" />
+        <link rel="dns-prefetch" href="https://cdn.vistahost.com.br" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}

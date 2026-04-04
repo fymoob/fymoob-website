@@ -175,18 +175,26 @@ export function PropertyCard({
 
   const [topViewed, setTopViewed] = useState<Set<string>>(new Set())
   useEffect(() => {
-    setTopViewed(getTopViewedCodes())
+    const load = () => setTopViewed(getTopViewedCodes())
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(load)
+    } else {
+      load()
+    }
   }, [])
   const badge = useMemo(() => getBadge(property, topViewed), [property, topViewed])
 
   const [carouselApi, setCarouselApi] = useState<CarouselApi>()
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isFavorite, setIsFavorite] = useState(false)
-  const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    const wishlist = getWishlistCodes()
-    setIsFavorite(wishlist.has(property.codigo))
+    const check = () => setIsFavorite(getWishlistCodes().has(property.codigo))
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(check)
+    } else {
+      check()
+    }
   }, [property.codigo])
 
   useEffect(() => {
@@ -206,24 +214,6 @@ export function PropertyCard({
     }
   }, [carouselApi])
 
-  useEffect(() => {
-    const element = articleRef.current
-    if (!element) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -32px 0px" }
-    )
-
-    observer.observe(element)
-
-    return () => observer.disconnect()
-  }, [])
 
   // Hover photo cycle (desktop) — Feature 2
   const startHoverCycle = useCallback(() => {
@@ -299,7 +289,7 @@ export function PropertyCard({
         isHorizontal
           ? "flex flex-row hover:shadow-lg"
           : "hover:-translate-y-1.5 hover:border-brand-primary/30 hover:shadow-2xl",
-        isVisible ? "animate-fade-in-up" : "opacity-0"
+        ""
       )}
     >
       {/* Photo section */}

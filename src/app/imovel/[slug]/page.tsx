@@ -14,17 +14,16 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyGallery } from "@/components/property/PropertyGallery"
 import { PropertyDetails } from "@/components/property/PropertyDetails"
 import { PropertyDescription } from "@/components/property/PropertyDescription"
-import { ContactSidebar } from "@/components/property/ContactSidebar"
+import { LazyContactSidebar } from "@/components/property/LazyContactSidebar"
 import { PropertyCharacteristics } from "@/components/property/PropertyCharacteristics"
 import { PropertyAmenities } from "@/components/property/PropertyAmenities"
-import { SimilarProperties } from "@/components/property/SimilarProperties"
+import { LazySimilarProperties } from "@/components/property/LazySimilarProperties"
 import { PropertyMap } from "@/components/property/PropertyMap"
 import { MobileContactBar } from "@/components/property/MobileContactBar"
 import { RecentlyViewedTracker } from "@/components/property/RecentlyViewedTracker"
 import { ShareButton } from "@/components/shared/ShareButton"
 import { WishlistButton } from "@/components/property/WishlistButton"
 import { BackButton } from "@/components/shared/BackButton"
-import { ViewCounter } from "@/components/property/ViewCounter"
 
 export const revalidate = 900
 export const dynamicParams = true
@@ -200,7 +199,7 @@ export default async function PropertyPage({ params }: PageProps) {
 
           {/* Right sidebar — desktop only */}
           <aside className="hidden lg:block">
-            <ContactSidebar
+            <LazyContactSidebar
               propertyTitle={property.titulo}
               propertyCode={property.codigo}
               precoVenda={property.precoVenda}
@@ -211,9 +210,9 @@ export default async function PropertyPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Similar properties */}
+      {/* Similar properties — lazy loaded (below fold) */}
       <div className="mt-12">
-        <SimilarProperties properties={similarProperties} />
+        <LazySimilarProperties properties={similarProperties} />
       </div>
 
       {/* Mobile fixed CTA bar with integrated urgency strip */}
