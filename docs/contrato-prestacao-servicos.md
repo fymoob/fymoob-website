@@ -6,11 +6,11 @@
 
 **CONTRATANTE:**
 
-**FYMOOB Administradora de Imóveis LTDA**, inscrita no CNPJ/CPF sob o nº **54.209.379/0001-73**, com sede na Rua Engenheiro Heitor Soares Gomes, 778, Portão, Curitiba/PR, CEP 80330-350, neste ato representada por seus sócios **Bruno Cesar de Almeida**, portador do RG nº **[PREENCHER]** e CPF nº **[PREENCHER]**, e **Wagner Spessatto**, portador do RG nº **[PREENCHER]** e CPF nº **[PREENCHER]**, doravante denominada **CONTRATANTE**.
+**FYMOOB Administradora de Imóveis LTDA**, inscrita no CNPJ/CPF sob o nº **54.209.379/0001-73**, com sede na Rua Engenheiro Heitor Soares Gomes, 778, Portão, Curitiba/PR, CEP 80330-350, neste ato representada por seus sócios **Bruno Cesar de Almeida**, CPF nº **071.767.899-75**, e **Wagner Vicente Spessatto**, CPF nº **069.356.989-10**, doravante denominada **CONTRATANTE**.
 
 **CONTRATADA:**
 
-**Vinícius Damas de Lima**, inscrita no CNPJ/CPF sob o nº **[PREENCHER]**, com sede em **Rua Augusto Dering Sobrinho, 380, Ferrari, Campo Largo/PR, CEP 83606-320**, e-mail **vinicius.damas@hotmail.com**, telefone **(41) 99727-7806**, doravante denominada **CONTRATADA**.
+**Vinícius Damas de Lima**, inscrito no CPF sob o nº **092.376.029-60**, com sede em **Rua Augusto Dering Sobrinho, 380, Ferrari, Campo Largo/PR, CEP 83606-320**, e-mail **vinicius.damas@hotmail.com**, telefone **(41) 99727-7806**, doravante denominada **CONTRATADA**.
 
 As partes acima identificadas têm entre si, justo e acertado, o presente Contrato de Prestação de Serviços de Desenvolvimento de Website, que se regerá pelas cláusulas e condições a seguir descritas.
 
@@ -106,17 +106,17 @@ d) Suspensão dos serviços por inadimplência (conforme Cláusula 11ª).
 
 Pela prestação dos serviços objeto deste contrato, a CONTRATANTE pagará à CONTRATADA o valor total de **R$ 15.000,00 (quinze mil reais)**, nas seguintes condições:
 
-**§ 1º** O pagamento será realizado em **6 (seis) parcelas mensais e consecutivas de R$ 2.500,00 (dois mil e quinhentos reais)** cada, com vencimento todo dia **[PREENCHER: dia do mês]** de cada mês, sendo a primeira parcela com vencimento em **[PREENCHER: data da 1ª parcela]**.
+**§ 1º** O pagamento será realizado em **6 (seis) parcelas mensais e consecutivas de R$ 2.500,00 (dois mil e quinhentos reais)** cada, com vencimento todo dia **10 (dez)** de cada mês, sendo a primeira parcela com vencimento em **10 de maio de 2026**.
 
 **§ 2º** Os pagamentos deverão ser efetuados via transferência bancária (TED/PIX) para a seguinte conta:
 
 | Dado | Informação |
 |------|------------|
-| Titular | **[PREENCHER]** |
-| Banco | **[PREENCHER]** |
-| Agência | **[PREENCHER]** |
-| Conta | **[PREENCHER]** |
-| Chave PIX | **[PREENCHER]** |
+| Titular | **Vinícius Damas de Lima** |
+| Banco | **Bradesco** |
+| Agência | **1886** |
+| Conta | **35297-7** |
+| Chave PIX | **092.376.029-60** |
 
 **§ 3º** A CONTRATADA emitirá nota fiscal ou recibo correspondente a cada parcela recebida.
 
@@ -293,22 +293,22 @@ E, por estarem assim justas e contratadas, as partes assinam o presente instrume
 **CONTRATANTE:**
 
 _______________________________________________
-**[PREENCHER: Nome Completo — Bruno]**
-CPF: [PREENCHER]
+**Bruno Cesar de Almeida**
+CPF: 071.767.899-75
 
 &nbsp;
 
 _______________________________________________
-**[PREENCHER: Nome Completo — Wagner]**
-CPF: [PREENCHER]
+**Wagner Vicente Spessatto**
+CPF: 069.356.989-10
 
 &nbsp;
 
 **CONTRATADA:**
 
 _______________________________________________
-**[PREENCHER: Nome Completo / Razão Social]**
-CNPJ/CPF: [PREENCHER]
+**Vinícius Damas de Lima**
+CPF: 092.376.029-60
 
 ---
 
