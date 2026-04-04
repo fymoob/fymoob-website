@@ -23,6 +23,7 @@ import { MobileContactBar } from "@/components/property/MobileContactBar"
 import { RecentlyViewedTracker } from "@/components/property/RecentlyViewedTracker"
 import { ShareButton } from "@/components/shared/ShareButton"
 import { WishlistButton } from "@/components/property/WishlistButton"
+import { CompareButton } from "@/components/property/CompareButton"
 import { BackButton } from "@/components/shared/BackButton"
 
 export const revalidate = 900
@@ -121,6 +122,7 @@ export default async function PropertyPage({ params }: PageProps) {
         <div className="flex items-center justify-between py-2 md:hidden">
           <BackButton />
           <div className="flex items-center gap-2">
+            <CompareButton codigo={property.codigo} size="sm" />
             <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} variant="overlay" />
             <WishlistButton codigo={property.codigo} size="sm" />
           </div>
@@ -130,6 +132,7 @@ export default async function PropertyPage({ params }: PageProps) {
         <div className="hidden items-center justify-between md:flex">
           <Breadcrumbs items={breadcrumbItems} />
           <div className="flex items-center gap-2">
+            <CompareButton codigo={property.codigo} />
             <WishlistButton codigo={property.codigo} />
             <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} />
           </div>
