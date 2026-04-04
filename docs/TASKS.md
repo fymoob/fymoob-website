@@ -24,6 +24,7 @@
 | -- | Bugs | 0 | 0 | 0 | — |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
 | 11 | Performance (CWV) | 31 | 26 | 5 | EM ANDAMENTO |
+| 12 | Conteudo SEO Editorial | 29 | 9 | 20 | EM ANDAMENTO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
 | | **TOTAL** | **229** | **195** | **34** | **85%** |
 
@@ -552,12 +553,64 @@ _Nenhum bug aberto._
 > Payload do Imovel caiu 45% (1,272→695 KB) — maplibre nao carrega mais no load.
 > LCP ~3s em todas as paginas — limitado pelo React hydration + TTFB da Vercel.
 
-### 11.7 — Pendentes (futuro)
+### 11.8 — Pendentes Performance (futuro)
 - [ ] Criar PropertyCardStatic (Server Component) para listagens — sem carousel, sem JS
 - [ ] Code-split SearchBar filters (LocationFilter, PriceFilter) via dynamic import
 - [ ] Investigar @base-ui/react tree-shaking — remover ou substituir por componentes mais leves
 - [ ] PropertyGallery: split em Static (grid) + Interactive (fullscreen viewer)
 - [ ] Re-testar apos proxima rodada de otimizacoes
+
+---
+
+## Fase 12 — Conteudo SEO Editorial [EM ANDAMENTO]
+
+> **Objetivo:** Construir topical authority com conteudo editorial profundo.
+> Pesquisa mostrou que conteudo local profundo = fator #1 de ranking, acima de CWV.
+> Modelo: Pillar + Cluster (guias de bairro → pillar pages → blog)
+> Meta: 10 guias de bairro + 3 pillar pages + 10 artigos novos
+
+### 12.1 — Infraestrutura [CONCLUIDA]
+- [x] Rota `/guia/[bairro]/page.tsx` — Server Component com dados CRM + MDX editorial
+- [x] Servico `src/services/guias.ts` — leitor MDX para guias
+- [x] Componente `AuthorBio` — E-E-A-T (CRECI J 9420, foto, bio)
+- [x] Sitemap atualizado com guias + pillar pages
+- [x] Internal linking: landing pages `/imoveis/[bairro]` → guia completo
+
+### 12.2 — Pillar Pages [CONCLUIDA]
+- [x] `/comprar-imovel-curitiba` — Guia completo de compra (3000+ palavras)
+- [x] `/morar-em-curitiba` — Guia completo para mudanca (3000+ palavras)
+- [x] `/alugar-curitiba` — Guia completo de aluguel (3000+ palavras)
+
+### 12.3 — Guias de Bairro [EM ANDAMENTO]
+> Meta: 10 guias de 2500+ palavras com dados reais do CRM
+- [x] Guia do Portao (2500+ palavras)
+- [x] Guia do Batel (2500+ palavras)
+- [x] Guia do Agua Verde (2500+ palavras)
+- [ ] Guia do Bigorrilho
+- [ ] Guia do Centro
+- [ ] Guia do Ecoville
+- [ ] Guia do Cabral
+- [ ] Guia do Juveve
+- [ ] Guia do Santa Felicidade
+- [ ] Guia do Merces
+
+### 12.4 — Blog Editorial [EM ANDAMENTO]
+> Meta: 10 artigos novos (total 15 com os 5 existentes)
+- [x] ITBI Curitiba 2026 (target: 500-1000 buscas/mes)
+- [x] Batel vs Agua Verde (target: 200-500 buscas/mes)
+- [x] Custo de Vida em Curitiba (target: 1000-3000 buscas/mes)
+- [ ] Mercado Imobiliario Curitiba 2026
+- [ ] Financiamento Caixa vs Itau vs Bradesco
+- [ ] Checklist: 25 Itens para Comprar Imovel
+- [ ] Ecoville vs Bigorrilho
+- [ ] Imovel Planta vs Pronto
+- [ ] Melhores Bairros para Familias
+- [ ] Preco m² por Bairro — Tabela
+
+### 12.5 — E-E-A-T Signals [PENDENTE]
+- [ ] Testimonials de clientes na pagina Sobre
+- [ ] Fotos reais do escritorio e equipe
+- [ ] Indice FYMOOB de Precos (pagina com dados do CRM)
 
 ---
 
@@ -582,16 +635,17 @@ CONCLUIDO:
   ✅ Fase 8 (SEO Programatico — 600+ paginas, FAQ schema, cross-linking)
   ✅ Fase 11.0 (Auditoria Performance — baseline 59/100)
 
-PROXIMO (URGENTE — impacta SEO):
-  Fase 11.1-11.3 → Performance CWV (meta: Lighthouse >90)
+PROXIMO:
+  Fase 12.3-12.4 → Finalizar guias de bairro + artigos blog
   Fase 7 → Deploy producao (fymoob.com) — depende de DNS do Bruno
 
 PARALELO:
   10.2 Google Cloud OAuth → 10.3 Baseline → 10.4 Monitoramento
+  12.5 E-E-A-T (testimonials, fotos, indice precos)
 
 APOS GO-LIVE:
   Fase 9 → Painel Blog Admin
-  Fase 11.4 → Re-teste performance em producao
+  11.8 → Performance fine-tuning
 
 QUANDO POSSIVEL:
   Nice-to-haves
