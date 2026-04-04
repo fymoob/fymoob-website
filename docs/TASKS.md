@@ -23,9 +23,9 @@
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
 | -- | Bugs | 0 | 0 | 0 | — |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
-| 11 | Performance (CWV) | 12 | 11 | 1 | EM ANDAMENTO |
+| 11 | Performance (CWV) | 28 | 23 | 5 | EM ANDAMENTO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **213** | **183** | **30** | **86%** |
+| | **TOTAL** | **229** | **195** | **34** | **85%** |
 
 ---
 
@@ -505,9 +505,53 @@ _Nenhum bug aberto._
 - [x] Verificar sizes props — BairroCard, PropertyCard, PropertyCardFeatured ja corretos
 - [x] Hero poster com priority + sizes="100vw"
 
-### 11.4 — Re-teste pos-otimizacao
-- [ ] Rodar Lighthouse CLI apos deploy e comparar com baseline (59/100)
-  - Meta: score >90 mobile, LCP <2.5s, TBT <200ms
+### 11.4 — Otimizacao Home Avancada [CONCLUIDA]
+> Score: 59→84 (rodada 1+2)
+
+- [x] HeroSection: split Server+Client (h1 sem dependencia de hydration)
+- [x] HeroBackground: `<picture>` com media query CSS (sem useState para mobile/desktop)
+- [x] Hero animations: remover opacity:0 do LCP element (heroSlideUp sem opacity)
+- [x] GA4: DeferredGA custom (carrega apos interacao scroll/click ou 5s timeout)
+- [x] Layout: WhatsAppFloat, BottomNav, NavigationProgress via next/dynamic
+- [x] Home: RecentlyViewed, WelcomeBack, SavedSearchBanner, HomeCarousel via next/dynamic
+- [x] Header: split Server Component shell + dynamic HeaderClient
+- [x] AnimateOnScroll: CSS animation-timeline:view() (zero JS, zero IntersectionObservers)
+- [x] DeferredHydration: wrapper requestIdleCallback para componentes nao-criticos
+- [x] BottomNav: substituir setInterval(2s) por event listener wishlist-change
+
+### 11.5 — Otimizacao Multi-Pagina [CONCLUIDA]
+> Foco: Imovel (65→65), Bairro (64→71), Busca (75→69)
+
+- [x] PropertyGrid: remover useIsMobile hook (CLS 0.148→0), CSS responsive puro, agora Server Component
+- [x] PropertyCard: remover isVisible animation (CLS fix), lazy localStorage via requestIdleCallback
+- [x] SimilarProperties: dynamic import via LazySimilarProperties wrapper (defer embla-carousel 50KB)
+- [x] ContactSidebar: dynamic import via LazyContactSidebar wrapper (defer @base-ui/react ~100KB, desktop-only)
+- [x] DynamicFAQ: substituir Accordion (@base-ui) por `<details>/<summary>` nativo (zero JS, 100% browser support)
+- [x] Remover import ViewCounter nao usado na pagina de imovel
+- [x] Preconnect + dns-prefetch para cdn.vistahost.com.br (LCP -100-300ms)
+
+### 11.6 — Resultados Finais (2026-04-04)
+
+| Pagina | Baseline | Apos v3 | LCP | TBT | CLS |
+|--------|----------|---------|-----|-----|-----|
+| Home | 59 | **81** | 3.0s ⚠️ | 450ms ⚠️ | 0.009 ✅ |
+| Busca | 75 | **69** | 3.0s ⚠️ | 1,030ms ❌ | 0.078 ✅ |
+| Imovel | 65 | **65** | 3.0s ⚠️ | 1,780ms ❌ | 0.078 ✅ |
+| Bairro | 64 | **71** | 3.2s ⚠️ | 960ms ❌ | **0** ✅ |
+
+> **Nota:** Lighthouse mobile simula CPU 4x slowdown + 3G throttle — scores reais em devices
+> modernos sao significativamente melhores. CLS do Bairro corrigido de 0.148→0.
+> Payload total caiu 74% (3,540→937 KB na Home).
+> TBT das paginas de listagem/detalhe permanece alto por causa do volume de PropertyCards
+> com embla-carousel e Radix UI components. Proximos ganhos exigem refatoracao profunda
+> dos componentes PropertyCard e SearchBar.
+
+### 11.7 — Pendentes (futuro)
+- [ ] Criar PropertyCardStatic (Server Component) para listagens — sem carousel, sem JS
+- [ ] Code-split SearchBar filters (LocationFilter, PriceFilter) via dynamic import
+- [ ] Investigar @base-ui/react tree-shaking — remover ou substituir por componentes mais leves
+- [ ] PropertyGallery: split em Static (grid) + Interactive (fullscreen viewer)
+- [ ] Re-testar apos proxima rodada de otimizacoes
 
 ---
 
