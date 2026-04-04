@@ -349,9 +349,11 @@ export function PropertyCard({
         {badge && (
           <span
             className={cn(
-              "absolute z-20 rounded-full text-[11px] font-bold uppercase tracking-wider text-white shadow-md",
+              "absolute z-20 rounded-full font-bold uppercase tracking-wider text-white shadow-md",
               badge.color,
-              isHorizontal ? "top-2 left-2 px-1.5 py-0.5 text-[9px]" : "top-3 left-3 px-2.5 py-1"
+              (isHorizontal || isResponsive)
+                ? "top-1.5 left-1.5 px-1.5 py-0.5 text-[8px] sm:top-3 sm:left-3 sm:px-2.5 sm:py-1 sm:text-[11px]"
+                : "top-3 left-3 px-2.5 py-1 text-[11px]"
             )}
           >
             {badge.text}
@@ -364,7 +366,9 @@ export function PropertyCard({
           onClick={toggleFavorite}
           className={cn(
             "group/wishlist absolute z-20 inline-flex items-center justify-center transition-transform hover:scale-110",
-            isHorizontal ? "top-2 right-2 size-7" : "top-3 right-3 size-9"
+            (isHorizontal || isResponsive)
+              ? "top-1.5 right-1.5 size-6 sm:top-3 sm:right-3 sm:size-9"
+              : "top-3 right-3 size-9"
           )}
           aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
           aria-pressed={isFavorite}
@@ -372,7 +376,7 @@ export function PropertyCard({
           <Heart
             className={cn(
               "text-transparent stroke-white stroke-[2px] drop-shadow-lg transition-all duration-200",
-              isHorizontal ? "size-4" : "size-5",
+              (isHorizontal || isResponsive) ? "size-3.5 sm:size-5" : "size-5",
               isFavorite
                 ? "fill-brand-primary stroke-brand-primary text-brand-primary scale-110"
                 : "group-hover/wishlist:fill-brand-primary/90 group-hover/wishlist:stroke-brand-primary"

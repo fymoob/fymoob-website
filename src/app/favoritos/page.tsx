@@ -37,26 +37,26 @@ export default function FavoritosPage() {
       return
     }
 
-    // Fetch each property by code
-    Promise.all(
-      codes.map((code) =>
-        fetch(`/api/property/${code}`)
-          .then((r) => (r.ok ? r.json() : null))
-          .catch(() => null)
-      )
-    ).then((results) => {
-      const valid = results.filter(Boolean)
-      setProperties(valid)
-      setCount(valid.length)
-
-      // Clean up invalid codes from localStorage
-      if (valid.length < codes.length) {
-        const validCodes = valid.map((p: Property) => p.codigo)
-        localStorage.setItem(WISHLIST_KEY, JSON.stringify(validCodes))
-      }
-
-      setLoading(false)
+    // Fetch all properties in a single batch request
+    fetch("/api/properties/batch", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ codes }),
     })
+      .then((r) => (r.ok ? r.json() : []))
+      .then((valid: Property[]) => {
+        setProperties(valid)
+        setCount(valid.length)
+
+        // Clean up invalid codes from localStorage
+        if (valid.length < codes.length) {
+          const validCodes = valid.map((p) => p.codigo)
+          localStorage.setItem(WISHLIST_KEY, JSON.stringify(validCodes))
+        }
+
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
   }, [])
 
   return (
