@@ -46,11 +46,15 @@ export function Header() {
       return
     }
 
+    // Reset to transparent immediately when navigating to home
+    setScrolled(false)
+
+    // Then check actual scroll position after a frame (browser may restore scroll)
     function handleScroll() {
       setScrolled(window.scrollY > 50)
     }
 
-    handleScroll()
+    requestAnimationFrame(handleScroll)
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [isHome])

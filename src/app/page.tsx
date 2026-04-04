@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { Suspense } from "react"
-import { Building2, Home as HomeIcon, Landmark, TreePine, ChevronDown, TrendingUp, MapPin, LayoutGrid } from "lucide-react"
+import { Building2, Home as HomeIcon, Landmark, TreePine, ChevronDown, TrendingUp, MapPin, LayoutGrid, Search } from "lucide-react"
 import {
   getFeaturedProperties,
   getAllBairros,
@@ -107,7 +107,22 @@ export default async function Home() {
           <p className="hero-animate hero-animate-2 mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-white/85 sm:mt-6 sm:text-lg md:text-xl">
             Apartamentos, casas e sobrados à venda e para alugar nos melhores bairros da cidade.
           </p>
-          <div className="hero-animate hero-animate-3 mt-6 sm:mt-10">
+          {/* Mobile: compact search pill */}
+          <div className="hero-animate hero-animate-3 mt-8 md:hidden">
+            <Link
+              href="/busca"
+              className="mx-auto flex w-full max-w-sm items-center gap-3 rounded-full border border-white/20 bg-white/10 px-5 py-4 text-left backdrop-blur-md transition hover:bg-white/15"
+            >
+              <Search className="size-5 shrink-0 text-white/60" />
+              <div>
+                <p className="text-sm font-medium text-white">Buscar imoveis</p>
+                <p className="text-xs text-white/50">Curitiba e regiao</p>
+              </div>
+            </Link>
+          </div>
+
+          {/* Desktop: full search bar */}
+          <div className="hero-animate hero-animate-3 mt-10 hidden md:block">
             <Suspense fallback={<div className="h-16 w-full rounded-2xl bg-white/20" />}>
               <HomeSearchBar
                 bairros={bairroNames}
