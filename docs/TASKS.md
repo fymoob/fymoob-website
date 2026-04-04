@@ -18,7 +18,7 @@
 | 5.6 | Sessao 02-03/04 | 28 | 28 | 0 | CONCLUIDA |
 | 5.7 | Sessao 03-04/04 | 35 | 35 | 0 | CONCLUIDA |
 | 6 | Institucional e Polish | 7 | 7 | 0 | CONCLUIDA |
-| 7 | QA, Deploy, Go-Live | 10 | 0 | 10 | PENDENTE |
+| 7 | QA, Testes, Deploy | 82 | 0 | 82 | PENDENTE |
 | 8 | SEO Programatico | 37 | 33 | 4 | CONCLUIDA (4 pos-deploy) |
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
 | -- | Bugs | 0 | 0 | 0 | — |
@@ -276,18 +276,199 @@
 
 ---
 
-## Fase 7 — QA, Deploy, Go-Live [PENDENTE]
+## Fase 7 — QA, Testes, Deploy, Go-Live [PENDENTE]
+
+### 7.1 — Testes de Navegacao (mobile + desktop)
+> Testar TODAS as paginas no celular (375px) e desktop (1440px).
+> Criterio: sem erros visuais, sem links quebrados, sem textos cortados.
+
+**Home:**
+- [ ] Hero carrega com poster image → video fade-in (desktop)
+- [ ] Hero mostra apenas imagem no mobile (sem video)
+- [ ] QuickSearch: abre overlay, multi-select bairro funciona, multi-select tipo funciona
+- [ ] QuickSearch: dual-range preco (min e max) funciona, labels acima corretas
+- [ ] QuickSearch: quartos funciona, busca redireciona para /busca com params
+- [ ] Cards destaques carregam com fotos reais do CRM
+- [ ] Secao bairros em destaque com imagens
+- [ ] Secao blog com 3 artigos e imagens
+- [ ] Stats bar (imoveis, bairros, tipos) mostra numeros corretos
+- [ ] Footer: 5 colunas, CRECI, telefone, endereco, links funcionam
+- [ ] BottomNav mobile: 3 tabs (Inicio, Buscar, Favoritos) funcionam
+- [ ] WhatsApp float visivel no desktop, escondido no mobile
+
+**Busca (/busca):**
+- [ ] Filtros funcionam (bairro, tipo, preco, quartos)
+- [ ] Cards responsivos (horizontal mobile, grid desktop)
+- [ ] Badge NOVO/LANCAMENTO visivel e nao sobreposta pelo coracao
+- [ ] Paginacao funciona
+- [ ] Ordenacao (mais relevantes, preco asc/desc) funciona
+- [ ] Resultado "0 imoveis encontrados" mostra estado vazio
+
+**Pagina de Imovel (/imovel/[slug]):**
+- [ ] Titulo, preco, caracteristicas aparecem corretamente
+- [ ] Galeria de fotos funciona (swipe mobile, grid desktop)
+- [ ] Fullscreen da galeria abre e fecha
+- [ ] Descricao com "ver mais" expande
+- [ ] Comodidades (amenities) listadas
+- [ ] Caracteristicas do imovel (quartos, area, vagas)
+- [ ] Mapa comeca fechado, abre ao clicar, mostra localizacao correta
+- [ ] Mapa colorido (estilo voyager)
+- [ ] Imoveis semelhantes carregam ao scrollar (lazy load)
+- [ ] MobileContactBar: "Quero visitar" abre WhatsApp com mensagem correta
+- [ ] Botao telefone funciona
+- [ ] Favoritar (coracao) funciona — muda cor, persiste
+- [ ] Comparar (setas) funciona — muda cor amber
+- [ ] Compartilhar funciona (native share mobile, copy link desktop)
+- [ ] Breadcrumbs corretos (Home > Bairro > Imovel)
+- [ ] BackButton (mobile) volta para pagina anterior
+
+**Favoritos (/favoritos):**
+- [ ] Adicionar imovel via coracao → aparece na lista
+- [ ] Remover imovel → sai da lista
+- [ ] Badge no BottomNav atualiza contagem
+- [ ] Estado vazio mostra mensagem + link para busca
+- [ ] Carregamento rapido (batch API)
+
+**Comparar (/comparar):**
+- [ ] Adicionar 2-3 imoveis via botao comparar
+- [ ] Cards com foto, preco, titulo aparecem
+- [ ] Tabela comparativa: preco, tipo, bairro, area, quartos, vagas, condominio, preco/m²
+- [ ] Tabela scroll horizontal no mobile (primeira coluna sticky)
+- [ ] Botao remover (X) funciona
+- [ ] Botao "Adicionar imovel" linka para busca
+- [ ] CTA WhatsApp com codigos dos imoveis
+- [ ] Max 3 imoveis (4o substitui o mais antigo)
+- [ ] Estado vazio mostra mensagem
+
+**Landing Pages Bairro (/imoveis/[bairro]):**
+- [ ] Testar /imoveis/portao — lista imoveis, contagem correta
+- [ ] FAQ abre/fecha (details/summary nativo)
+- [ ] Link para guia completo do bairro aparece
+- [ ] Cross-linking para tipos, outros bairros funciona
+- [ ] Stats (preco medio, total imoveis) corretos
+
+**Landing Pages Tipo (/apartamentos-curitiba, etc.):**
+- [ ] /apartamentos-curitiba — lista apartamentos
+- [ ] /casas-curitiba — lista casas
+- [ ] /sobrados-curitiba — lista sobrados
+- [ ] /terrenos-curitiba — lista terrenos
+
+**Landing Pages Preco (/imoveis/preco/[faixa]):**
+- [ ] /imoveis/preco/ate-300-mil — filtra corretamente
+- [ ] /imoveis/preco/1-a-3-milhoes — filtra corretamente
+
+**Empreendimentos:**
+- [ ] /empreendimentos — lista de empreendimentos com foto, construtora, preco
+- [ ] /empreendimento/[slug] — pagina individual carrega
+
+**Guias de Bairro (/guia/[bairro]):**
+- [ ] /guia/batel — conteudo MDX renderiza, imagens aparecem
+- [ ] /guia/portao — stats bar com dados reais do CRM
+- [ ] Imoveis a venda embutidos (PropertyGrid)
+- [ ] FAQ funciona (details/summary)
+- [ ] AuthorBio aparece (Bruno, CRECI J 9420)
+- [ ] CTA WhatsApp funciona
+- [ ] RelatedPages links funcionam
+
+**Pillar Pages:**
+- [ ] /comprar-imovel-curitiba — conteudo renderiza, tabelas, CTA
+- [ ] /morar-em-curitiba — conteudo renderiza
+- [ ] /alugar-curitiba — conteudo renderiza
+
+**Blog:**
+- [ ] /blog — lista 15 artigos, paginacao, imagens
+- [ ] /blog/itbi-curitiba-valor-como-pagar — artigo completo, tabelas, CTA
+- [ ] /blog/batel-vs-agua-verde-curitiba — comparativo, tabelas
+- [ ] /blog/custo-de-vida-curitiba — tabelas de custos
+- [ ] Imagens hero de todos os 10 novos artigos carregam
+- [ ] AuthorBio no final de cada artigo
+- [ ] Related posts aparecem
+
+**Institucionais:**
+- [ ] /sobre — historia, valores, diferenciais, equipe, mapa, CRECI
+- [ ] /contato — 5 cards contato, formulario, mapa, WhatsApp
+- [ ] /anuncie — 4 etapas, beneficios, formulario
+- [ ] /faq — 22 perguntas em 5 categorias, accordion funciona
+
+### 7.2 — Testes de Formularios e Leads
+> Criterio: cada formulario deve enviar dados ao CRM Loft e/ou email.
+
+- [ ] Formulario /contato — preencher e enviar, verificar se lead chega no CRM
+- [ ] Formulario /anuncie — preencher e enviar
+- [ ] Formulario ContactSidebar (pagina imovel, desktop) — preencher e enviar
+- [ ] WhatsApp "Quero visitar" — abre WhatsApp com titulo do imovel na mensagem
+- [ ] WhatsApp float (desktop) — abre chat correto
+- [ ] WhatsApp CTA nos guias de bairro — abre com mensagem do bairro
+- [ ] WhatsApp CTA nos artigos do blog — abre com mensagem do artigo
+
+### 7.3 — Testes de SEO e Schema
+> Criterio: Google deve conseguir indexar e entender todas as paginas.
+
+- [ ] Sitemap.xml acessivel e lista todas URLs (600+)
+- [ ] Robots.txt permite crawling (exceto /api/, /favoritos, /comparar)
+- [ ] JSON-LD Organization no layout (verificar via View Source)
+- [ ] JSON-LD LocalBusiness no layout
+- [ ] JSON-LD RealEstateListing em pagina de imovel
+- [ ] JSON-LD BlogPosting em artigo do blog
+- [ ] JSON-LD FAQPage em paginas com FAQ
+- [ ] JSON-LD Article em guias de bairro e pillar pages
+- [ ] Rich Results Test (Google) — testar 5 URLs:
+  - Home, 1 imovel, 1 bairro, 1 artigo blog, FAQ
+- [ ] Open Graph tags (title, description, image) em todas as paginas
+- [ ] Canonical URLs corretas
+- [ ] Breadcrumbs com schema BreadcrumbList
+- [ ] Alt text descritivo em todas as imagens
+
+### 7.4 — Testes de Performance
+> Criterio: Lighthouse mobile >80 em todas as paginas principais.
+
+- [ ] Lighthouse Home — score >80
+- [ ] Lighthouse /busca — score >75
+- [ ] Lighthouse /imovel/[slug] — score >85
+- [ ] Lighthouse /imoveis/portao — score >75
+- [ ] Lighthouse /favoritos — score >85
+- [ ] Lighthouse /blog — score >85
+- [ ] Lighthouse /guia/batel — score >85
+- [ ] Console do browser: zero erros em todas as paginas
+
+### 7.5 — Testes de Responsividade
+> Testar em pelo menos 3 resolucoes: 375px (iPhone), 768px (tablet), 1440px (desktop).
+
+- [ ] Home — layout correto em 3 resolucoes
+- [ ] Busca — cards horizontais mobile, grid desktop
+- [ ] Imovel — galeria adaptada, sidebar desktop only
+- [ ] Blog — grid de artigos adaptado
+- [ ] Header — menu hamburger mobile, nav links desktop
+- [ ] Footer — colunas empilhadas mobile, lado a lado desktop
+
+### 7.6 — Testes de Links e Integracao
+> Criterio: zero links quebrados, todas integracoes funcionando.
+
+- [ ] Menu Header — todos os 6 links navegam corretamente
+- [ ] Menu mobile (Sheet) — todos os links funcionam
+- [ ] Quick Access dropdown — Area do Cliente, Favoritos, Comparar
+- [ ] BottomNav — Inicio, Buscar, Favoritos navegam corretamente
+- [ ] Footer — todos os links internos funcionam
+- [ ] Blog cards — linkam para artigos corretos
+- [ ] PropertyCards — linkam para /imovel/[slug] correto
+- [ ] BairroCards — linkam para /imoveis/[bairro] correto
+- [ ] Cross-links em landing pages — funcionam
+- [ ] Area do Cliente — abre portal Loft externo
+- [ ] Telefone (41) 99978-0517 — abre discador
+- [ ] Email fymoob@gmail.com — abre app de email
+
+### 7.7 — Deploy Producao (pos-aprovacao)
+> So executar apos Rodada 1 de revisao aprovada pelo cliente.
 
 - [ ] Deploy Vercel producao (fymoob.com)
-- [ ] Configurar DNS do dominio fymoob.com
+- [ ] Configurar DNS do dominio fymoob.com no GoDaddy
+- [ ] Verificar HTTPS funcionando
 - [ ] Submeter sitemap ao Google Search Console
 - [ ] Verificar propriedade no GSC
-- [ ] Google Business Profile — fotos, horarios, categorias
-- [ ] Lighthouse audit: 500+ paginas (meta: >90 perf, >95 SEO) — ver Fase 11 para otimizacoes
-- [ ] Rich Results Test em 5+ paginas (imovel, bairro, blog, FAQ, home)
-- [ ] Testar formularios de contato (lead chega no CRM?)
-- [ ] Configurar redirects do site antigo → novo
+- [ ] Google Business Profile — verificar fotos, horarios, categorias
+- [ ] Configurar redirects do site antigo → novo (se houver)
 - [ ] Monitorar indexacao primeiros 7 dias (GSC + `site:fymoob.com`)
+- [ ] Confirmar GA4 coletando dados (pageviews, eventos)
 
 ---
 
