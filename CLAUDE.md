@@ -48,6 +48,21 @@ npm run test         # Testes
 - Sem mock data — API Loft é a única fonte de dados (LOFT_API_KEY obrigatória)
 - Env vars: `LOFT_API_KEY`, `NEXT_PUBLIC_SITE_URL`, `NHOST_SUBDOMAIN`
 
+## Performance — Regras obrigatórias
+> Meta: Lighthouse mobile >80 em todas as páginas. Toda nova feature deve preservar performance.
+- **Server Components por padrão** — 'use client' apenas para interatividade (hooks, eventos)
+- **CSS puro > biblioteca JS** — animações, sliders, layouts responsivos via CSS/Tailwind
+- **NUNCA usar JS para decidir layout responsivo** (useIsMobile = CLS). Usar classes Tailwind (`sm:`, `md:`)
+- **Dynamic import (`next/dynamic`)** para componentes pesados abaixo do fold
+- **Padrão wrapper client** para `ssr: false`: criar client component wrapper, importar do server component
+- **Lazy localStorage** via `requestIdleCallback` — nunca bloquear main thread com localStorage síncrono
+- **Imagens:** `priority` apenas no LCP element (1 por página). Demais usam `loading="lazy"` (padrão)
+- **GA4:** DeferredGA (carrega após interação ou 12s) — nunca carregar síncrono
+- **Carousel (embla):** nunca carregar no bundle inicial de listagens. Dynamic import para seções abaixo do fold
+- **Mapa (maplibre):** sempre dynamic import, `isOpen=false` por padrão, CSS carregado via CDN dinâmico
+- **Animações:** CSS `animation-timeline: view()` com fallback. Nunca `opacity:0` + JS IntersectionObserver para animação de entrada
+- **FAQ:** `<details>/<summary>` nativo (zero JS). Nunca Accordion/Radix para FAQ
+
 ## Arquitetura de URLs (SEO)
 ```
 /                                    → Home
