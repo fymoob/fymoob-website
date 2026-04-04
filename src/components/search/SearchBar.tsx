@@ -84,7 +84,7 @@ const SegmentTrigger = forwardRef<HTMLButtonElement, SegmentTriggerProps>(
         )}
         {...buttonProps}
       >
-        <Icon className={cn("size-4 shrink-0", active ? "text-[#29ABE2]" : "text-neutral-400")} />
+        <Icon className={cn("size-4 shrink-0", active ? "text-[#29ABE2]" : "text-neutral-500")} />
         <div className="min-w-0 flex-1">
           {active ? (
             <>
@@ -92,13 +92,13 @@ const SegmentTrigger = forwardRef<HTMLButtonElement, SegmentTriggerProps>(
                 {value}
               </p>
               {context === "search" && (
-                <p className="hidden truncate text-[11px] text-neutral-400 md:block">
+                <p className="hidden truncate text-[11px] text-neutral-500 md:block">
                   {title}
                 </p>
               )}
             </>
           ) : (
-            <p className="truncate text-sm font-medium tracking-tight text-neutral-400 group-hover:text-neutral-600">
+            <p className="truncate text-sm font-medium tracking-tight text-neutral-500 group-hover:text-neutral-700">
               {title}
             </p>
           )}
@@ -117,13 +117,13 @@ const SegmentTrigger = forwardRef<HTMLButtonElement, SegmentTriggerProps>(
                 onClear()
               }
             }}
-            className="ml-auto flex size-5 shrink-0 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-neutral-100 hover:text-neutral-600"
+            className="ml-auto flex size-5 shrink-0 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-700"
             aria-label={`Limpar ${title}`}
           >
             <X className="size-3.5" />
           </span>
         ) : (
-          <ChevronDown className="ml-auto size-4 shrink-0 text-neutral-400" />
+          <ChevronDown className="ml-auto size-4 shrink-0 text-neutral-500" />
         )}
       </button>
     )
@@ -340,7 +340,7 @@ export function SearchBar({
                           applyFilters()
                           setSheetOpen(false)
                         }}
-                        className="flex-[2] rounded-xl bg-[#0B1120] py-3 text-sm font-semibold text-white transition-colors hover:bg-[#111827]"
+                        className="flex-[2] rounded-xl bg-brand-primary py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-primary-hover"
                       >
                         Aplicar filtros
                       </button>
@@ -527,7 +527,7 @@ export function SearchBar({
                     <button
                       type="button"
                       onClick={applyFilters}
-                      className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#0B1120] px-7 text-sm font-semibold text-white transition-colors hover:bg-[#111827]"
+                      className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-brand-primary px-7 text-sm font-semibold text-white transition-colors hover:bg-brand-primary-hover"
                     >
                       <Search className="size-4" />
                       Buscar
@@ -538,7 +538,7 @@ export function SearchBar({
                     <button
                       type="button"
                       onClick={applyFilters}
-                      className="inline-flex size-10 items-center justify-center rounded-full bg-[#0B1120] text-white transition-transform duration-200 hover:scale-105 hover:bg-[#111827]"
+                      className="inline-flex size-10 items-center justify-center rounded-full bg-brand-primary text-white transition-transform duration-200 hover:scale-105 hover:bg-brand-primary-hover"
                       aria-label="Aplicar busca"
                     >
                       <Search className="size-4" />
@@ -550,7 +550,7 @@ export function SearchBar({
               <button
                 type="button"
                 onClick={applyFilters}
-                className="mt-2 inline-flex w-full items-center justify-center rounded-xl bg-[#0B1120] py-3 text-sm font-semibold text-white transition-colors hover:bg-[#111827] md:hidden"
+                className="mt-2 inline-flex w-full items-center justify-center rounded-xl bg-brand-primary py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-primary-hover md:hidden"
               >
                 Buscar
               </button>
@@ -581,7 +581,7 @@ export function SearchBar({
                 />
                 <button
                   type="submit"
-                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#0B1120] px-6 text-sm font-semibold text-white transition-colors hover:bg-[#111827] md:w-auto md:rounded-full"
+                  className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-brand-primary px-6 text-sm font-semibold text-white transition-colors hover:bg-brand-primary-hover md:w-auto md:rounded-full"
                 >
                   <Search className="size-4" />
                   Buscar

@@ -331,14 +331,14 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="mx-auto flex w-full max-w-sm items-center gap-3 rounded-full border border-white/20 bg-white/10 px-5 py-4 text-left backdrop-blur-md transition hover:bg-white/15 active:scale-[0.98]"
+        className="mx-auto flex w-full max-w-sm items-center gap-3 rounded-full border border-white/30 bg-white/80 px-5 py-4 text-left shadow-lg backdrop-blur-xl transition hover:bg-white/90 active:scale-[0.98]"
       >
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-primary">
           <Search className="size-4 text-white" />
         </div>
         <div>
-          <p className="text-sm font-medium text-white">Onde voce quer morar?</p>
-          <p className="text-xs text-white/50">Bairro · Tipo · Preco</p>
+          <p className="text-sm font-medium text-neutral-800">Onde voce quer morar?</p>
+          <p className="text-xs text-neutral-400">Bairro · Tipo · Preco</p>
         </div>
       </button>
       {overlay}
