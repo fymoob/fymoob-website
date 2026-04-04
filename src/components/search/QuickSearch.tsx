@@ -11,20 +11,28 @@ interface QuickSearchProps {
   tipos: string[]
 }
 
-// Sub-screen for selecting from a list (replaces native select)
-function ListPicker({
+// Sub-screen for selecting multiple items from a list (checkbox style)
+function MultiListPicker({
   title,
   options,
-  value,
+  selected,
   onChange,
   onClose,
 }: {
   title: string
   options: string[]
-  value: string
-  onChange: (v: string) => void
+  selected: string[]
+  onChange: (v: string[]) => void
   onClose: () => void
 }) {
+  const toggle = (opt: string) => {
+    if (selected.includes(opt)) {
+      onChange(selected.filter((s) => s !== opt))
+    } else {
+      onChange([...selected, opt])
+    }
+  }
+
   return (
     <div className="fixed inset-0 z-[10000] flex flex-col bg-white">
       <div className="flex shrink-0 items-center justify-between border-b border-neutral-100 px-4 py-4">
@@ -32,38 +40,55 @@ function ListPicker({
           <X className="size-5 text-neutral-600" />
         </button>
         <p className="font-display text-base font-bold text-neutral-900">{title}</p>
-        <div className="w-9" />
+        {selected.length > 0 ? (
+          <button type="button" onClick={() => onChange([])} className="text-xs font-medium text-brand-primary">Limpar</button>
+        ) : (
+          <div className="w-9" />
+        )}
       </div>
       <div className="flex-1 overflow-y-auto overscroll-contain">
+        {options.map((opt) => {
+          const isSelected = selected.includes(opt)
+          return (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => toggle(opt)}
+              className={`flex w-full items-center gap-3 border-b border-neutral-50 px-5 py-4 text-left text-sm transition ${
+                isSelected ? "bg-brand-primary/5 font-semibold text-brand-primary" : "text-neutral-700 hover:bg-neutral-50"
+              }`}
+            >
+              <div className={`flex size-5 shrink-0 items-center justify-center rounded border-2 transition ${
+                isSelected ? "border-brand-primary bg-brand-primary" : "border-neutral-300"
+              }`}>
+                {isSelected && <Check className="size-3 text-white" />}
+              </div>
+              {opt}
+            </button>
+          )
+        })}
+      </div>
+      {/* Confirm button */}
+      <div className="shrink-0 border-t border-neutral-100 bg-white px-5 py-4">
         <button
           type="button"
-          onClick={() => { onChange(""); onClose() }}
-          className={`flex w-full items-center justify-between px-5 py-4 text-left text-sm transition ${
-            value === "" ? "bg-brand-primary/5 font-semibold text-brand-primary" : "text-neutral-700 hover:bg-neutral-50"
-          }`}
+          onClick={onClose}
+          className="flex w-full items-center justify-center rounded-full bg-brand-primary py-3.5 text-sm font-semibold text-white transition hover:bg-brand-primary-hover"
         >
-          Todos
-          {value === "" && <Check className="size-4 text-brand-primary" />}
+          {selected.length > 0 ? `Confirmar (${selected.length})` : "Todos selecionados"}
         </button>
-        {options.map((opt) => (
-          <button
-            key={opt}
-            type="button"
-            onClick={() => { onChange(opt); onClose() }}
-            className={`flex w-full items-center justify-between border-t border-neutral-50 px-5 py-4 text-left text-sm transition ${
-              value === opt ? "bg-brand-primary/5 font-semibold text-brand-primary" : "text-neutral-700 hover:bg-neutral-50"
-            }`}
-          >
-            {opt}
-            {value === opt && <Check className="size-4 text-brand-primary" />}
-          </button>
-        ))}
       </div>
     </div>
   )
 }
 
 // Price range slider
+function formatShortPrice(v: number): string {
+  if (v === 0) return "Sem limite"
+  if (v >= 1000000) return `R$ ${(v / 1000000).toFixed(v % 1000000 === 0 ? 0 : 1)}mi`
+  return `R$ ${(v / 1000).toFixed(0)}mil`
+}
+
 function PriceRangeSlider({
   min,
   max,
@@ -81,57 +106,49 @@ function PriceRangeSlider({
 
   const handleMin = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newIdx = parseInt(e.target.value)
-    if (newIdx < maxIdx || max === 0) {
-      onMinChange(steps[newIdx])
-    }
+    if (newIdx < maxIdx || max === 0) onMinChange(steps[newIdx])
   }
 
   const handleMax = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newIdx = parseInt(e.target.value)
-    if (newIdx > minIdx) {
-      onMaxChange(steps[newIdx])
-    }
+    if (newIdx > minIdx) onMaxChange(steps[newIdx])
   }
 
-  const label =
-    min === 0 && max === 0
-      ? "Qualquer preco"
-      : min > 0 && max === 0
-        ? `A partir de ${formatPrice(min)}`
-        : min === 0 && max > 0
-          ? `Ate ${formatPrice(max)}`
-          : `${formatPrice(min)} — ${formatPrice(max)}`
-
   return (
-    <div>
-      <div className="space-y-3">
-        <div>
-          <span className="text-xs text-neutral-500">Preco minimo</span>
-          <input
-            type="range"
-            min={0}
-            max={steps.length - 1}
-            value={minIdx}
-            onChange={handleMin}
-            className="w-full accent-brand-primary"
-          />
+    <div className="space-y-5">
+      {/* Min slider */}
+      <div>
+        <div className="mb-1 flex items-center justify-between">
+          <span className="text-xs text-neutral-500">Mínimo</span>
+          <span className="rounded-md bg-brand-primary/10 px-2 py-0.5 text-xs font-semibold text-brand-primary">
+            {formatShortPrice(min)}
+          </span>
         </div>
-        <div>
-          <span className="text-xs text-neutral-500">Preco maximo</span>
-          <input
-            type="range"
-            min={0}
-            max={steps.length - 1}
-            value={maxIdx}
-            onChange={handleMax}
-            className="w-full accent-brand-primary"
-          />
-        </div>
+        <input
+          type="range"
+          min={0}
+          max={steps.length - 1}
+          value={minIdx}
+          onChange={handleMin}
+          className="w-full accent-brand-primary"
+        />
       </div>
-      <div className="mt-2 flex justify-between text-xs text-neutral-400">
-        <span>Sem limite</span>
-        <span className="font-semibold text-neutral-900">{label}</span>
-        <span>R$ 10mi+</span>
+      {/* Max slider */}
+      <div>
+        <div className="mb-1 flex items-center justify-between">
+          <span className="text-xs text-neutral-500">Máximo</span>
+          <span className="rounded-md bg-brand-primary/10 px-2 py-0.5 text-xs font-semibold text-brand-primary">
+            {formatShortPrice(max)}
+          </span>
+        </div>
+        <input
+          type="range"
+          min={0}
+          max={steps.length - 1}
+          value={maxIdx}
+          onChange={handleMax}
+          className="w-full accent-brand-primary"
+        />
       </div>
     </div>
   )
@@ -140,8 +157,9 @@ function PriceRangeSlider({
 export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
-  const [bairro, setBairro] = useState("")
-  const [tipo, setTipo] = useState("")
+  const [bairrosSel, setBairrosSel] = useState<string[]>([])
+  const [tiposSel, setTiposSel] = useState<string[]>([])
+
   const [quartos, setQuartos] = useState("")
   const [precoMin, setPrecoMin] = useState(0)
   const [precoMax, setPrecoMax] = useState(0)
@@ -159,22 +177,22 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
     return () => { document.body.style.overflow = "" }
   }, [open, picker])
 
-  const activeFilters = [bairro, tipo, quartos, (precoMin > 0 || precoMax > 0) ? "1" : ""].filter(Boolean).length
+  const activeFilters = [bairrosSel.length > 0 ? "1" : "", tiposSel.length > 0 ? "1" : "", quartos, (precoMin > 0 || precoMax > 0) ? "1" : ""].filter(Boolean).length
 
   const handleSearch = useCallback(() => {
     const params = new URLSearchParams()
-    if (bairro) params.set("bairro", bairro)
-    if (tipo) params.set("tipo", tipo)
+    if (bairrosSel.length > 0) params.set("bairro", bairrosSel.join(","))
+    if (tiposSel.length > 0) params.set("tipo", tiposSel.join(","))
     if (quartos) params.set("quartos", quartos)
     if (precoMin > 0) params.set("precoMin", precoMin.toString())
     if (precoMax > 0) params.set("precoMax", precoMax.toString())
     setOpen(false)
     router.push(`/busca?${params.toString()}`)
-  }, [bairro, tipo, quartos, precoMin, precoMax, router])
+  }, [bairrosSel, tiposSel, quartos, precoMin, precoMax, router])
 
   const clearAll = () => {
-    setBairro("")
-    setTipo("")
+    setBairrosSel([])
+    setTiposSel([])
     setQuartos("")
     setPrecoMin(0)
     setPrecoMax(0)
@@ -207,10 +225,10 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
               Localizacao
             </label>
             <button type="button" onClick={() => setPicker("bairro")} className={selectorBtn}>
-              <span className={bairro ? "text-neutral-900" : "text-neutral-400"}>
-                {bairro || "Todos os bairros"}
+              <span className={bairrosSel.length > 0 ? "text-neutral-900" : "text-neutral-400"}>
+                {bairrosSel.length === 0 ? "Todos os bairros" : bairrosSel.length === 1 ? bairrosSel[0] : `${bairrosSel.length} bairros`}
               </span>
-              <span className="text-xs text-brand-primary">{bairro ? "Alterar" : "Escolher"}</span>
+              <span className="text-xs text-brand-primary">{bairrosSel.length > 0 ? "Alterar" : "Escolher"}</span>
             </button>
           </div>
 
@@ -221,10 +239,10 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
               Tipo de imovel
             </label>
             <button type="button" onClick={() => setPicker("tipo")} className={selectorBtn}>
-              <span className={tipo ? "text-neutral-900" : "text-neutral-400"}>
-                {tipo || "Todos os tipos"}
+              <span className={tiposSel.length > 0 ? "text-neutral-900" : "text-neutral-400"}>
+                {tiposSel.length === 0 ? "Todos os tipos" : tiposSel.length === 1 ? tiposSel[0] : `${tiposSel.length} tipos`}
               </span>
-              <span className="text-xs text-brand-primary">{tipo ? "Alterar" : "Escolher"}</span>
+              <span className="text-xs text-brand-primary">{tiposSel.length > 0 ? "Alterar" : "Escolher"}</span>
             </button>
           </div>
 
@@ -277,20 +295,20 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
 
       {/* Sub-pickers */}
       {picker === "bairro" && (
-        <ListPicker
-          title="Escolha o bairro"
+        <MultiListPicker
+          title="Escolha os bairros"
           options={bairros}
-          value={bairro}
-          onChange={setBairro}
+          selected={bairrosSel}
+          onChange={setBairrosSel}
           onClose={() => setPicker(null)}
         />
       )}
       {picker === "tipo" && (
-        <ListPicker
+        <MultiListPicker
           title="Tipo de imovel"
           options={tipos}
-          value={tipo}
-          onChange={setTipo}
+          selected={tiposSel}
+          onChange={setTiposSel}
           onClose={() => setPicker(null)}
         />
       )}
