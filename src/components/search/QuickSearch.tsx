@@ -82,7 +82,7 @@ function MultiListPicker({
   )
 }
 
-// Price range slider
+// Dual-range price slider (Airbnb/Zillow pattern)
 function formatShortPrice(v: number): string {
   if (v === 0) return "Sem limite"
   if (v >= 1000000) return `R$ ${(v / 1000000).toFixed(v % 1000000 === 0 ? 0 : 1)}mi`
@@ -101,53 +101,63 @@ function PriceRangeSlider({
   onMaxChange: (v: number) => void
 }) {
   const steps = [0, 200000, 300000, 500000, 750000, 1000000, 1500000, 2000000, 3000000, 5000000, 10000000]
+  const total = steps.length - 1
   const minIdx = steps.findIndex((s) => s >= min) === -1 ? 0 : steps.findIndex((s) => s >= min)
-  const maxIdx = steps.findIndex((s) => s >= max) === -1 ? steps.length - 1 : steps.findIndex((s) => s >= max)
+  const maxIdx = steps.findIndex((s) => s >= max) === -1 ? total : steps.findIndex((s) => s >= max)
 
   const handleMin = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newIdx = parseInt(e.target.value)
-    if (newIdx < maxIdx || max === 0) onMinChange(steps[newIdx])
+    const v = parseInt(e.target.value)
+    onMinChange(steps[Math.min(v, maxIdx - 1)])
   }
 
   const handleMax = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newIdx = parseInt(e.target.value)
-    if (newIdx > minIdx) onMaxChange(steps[newIdx])
+    const v = parseInt(e.target.value)
+    onMaxChange(steps[Math.max(v, minIdx + 1)])
   }
 
+  // Track fill percentage
+  const leftPct = (minIdx / total) * 100
+  const rightPct = (maxIdx / total) * 100
+
   return (
-    <div className="space-y-5">
-      {/* Min slider */}
-      <div>
-        <div className="mb-1 flex items-center justify-between">
-          <span className="text-xs text-neutral-500">Mínimo</span>
-          <span className="rounded-md bg-brand-primary/10 px-2 py-0.5 text-xs font-semibold text-brand-primary">
-            {formatShortPrice(min)}
-          </span>
-        </div>
+    <div>
+      {/* Labels above */}
+      <div className="mb-3 flex items-center justify-between">
+        <span className="rounded-md bg-brand-primary/10 px-2.5 py-1 text-xs font-semibold text-brand-primary">
+          {formatShortPrice(min)}
+        </span>
+        <span className="text-xs text-neutral-400">—</span>
+        <span className="rounded-md bg-brand-primary/10 px-2.5 py-1 text-xs font-semibold text-brand-primary">
+          {formatShortPrice(max)}
+        </span>
+      </div>
+
+      {/* Dual range track */}
+      <div className="relative h-10 flex items-center">
+        {/* Track background */}
+        <div className="absolute inset-x-0 h-1.5 rounded-full bg-neutral-200" />
+        {/* Active range fill */}
+        <div
+          className="absolute h-1.5 rounded-full bg-brand-primary"
+          style={{ left: `${leftPct}%`, right: `${100 - rightPct}%` }}
+        />
+        {/* Min thumb */}
         <input
           type="range"
           min={0}
-          max={steps.length - 1}
+          max={total}
           value={minIdx}
           onChange={handleMin}
-          className="w-full accent-brand-primary"
+          className="dual-range-thumb absolute inset-x-0 z-20"
         />
-      </div>
-      {/* Max slider */}
-      <div>
-        <div className="mb-1 flex items-center justify-between">
-          <span className="text-xs text-neutral-500">Máximo</span>
-          <span className="rounded-md bg-brand-primary/10 px-2 py-0.5 text-xs font-semibold text-brand-primary">
-            {formatShortPrice(max)}
-          </span>
-        </div>
+        {/* Max thumb */}
         <input
           type="range"
           min={0}
-          max={steps.length - 1}
+          max={total}
           value={maxIdx}
           onChange={handleMax}
-          className="w-full accent-brand-primary"
+          className="dual-range-thumb absolute inset-x-0 z-30"
         />
       </div>
     </div>
