@@ -284,7 +284,7 @@ As partes elegem o Foro da Comarca de **Curitiba, Estado do Paraná**, para diri
 
 E, por estarem assim justas e contratadas, as partes assinam o presente instrumento em **2 (duas) vias de igual teor e forma**, na presença das testemunhas abaixo.
 
-**Curitiba/PR, [PREENCHER: data por extenso].**
+**Curitiba/PR, 4 de abril de 2026.**
 
 ---
 
