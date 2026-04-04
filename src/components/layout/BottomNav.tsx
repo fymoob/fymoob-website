@@ -44,10 +44,10 @@ export function BottomNav() {
     }
 
     window.addEventListener("storage", handleStorage)
-    const interval = setInterval(handleStorage, 2000)
+    window.addEventListener("wishlist-change", handleStorage)
     return () => {
       window.removeEventListener("storage", handleStorage)
-      clearInterval(interval)
+      window.removeEventListener("wishlist-change", handleStorage)
     }
   }, [])
 

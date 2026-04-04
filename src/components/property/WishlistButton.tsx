@@ -38,6 +38,7 @@ export function WishlistButton({ codigo, className, size = "md" }: WishlistButto
       if (next) wl.add(codigo)
       else wl.delete(codigo)
       localStorage.setItem(WISHLIST_KEY, JSON.stringify(Array.from(wl)))
+      window.dispatchEvent(new Event("wishlist-change"))
       return next
     })
   }

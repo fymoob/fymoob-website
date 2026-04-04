@@ -1,16 +1,31 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import dynamic from "next/dynamic";
 import { generateOrganizationSchema, generateLocalBusinessSchema } from "@/lib/seo";
+import { Suspense } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
-import { BottomNav } from "@/components/layout/BottomNav";
-import { NavigationProgress } from "@/components/layout/NavigationProgress";
-import { Suspense } from "react";
 import "./globals.css";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
+
+// Dynamic imports — these client components don't need SSR
+const WhatsAppFloat = dynamic(
+  () => import("@/components/layout/WhatsAppFloat").then((m) => ({ default: m.WhatsAppFloat })),
+  { ssr: true }
+);
+const BottomNav = dynamic(
+  () => import("@/components/layout/BottomNav").then((m) => ({ default: m.BottomNav })),
+  { ssr: true }
+);
+const NavigationProgress = dynamic(
+  () => import("@/components/layout/NavigationProgress").then((m) => ({ default: m.NavigationProgress })),
+  { ssr: true }
+);
+const DeferredGA = dynamic(
+  () => import("@/components/analytics/DeferredGA").then((m) => ({ default: m.DeferredGA })),
+  { ssr: true }
+);
 
 const satoshi = localFont({
   src: "../../public/fonts/Satoshi-Variable.woff2",
@@ -75,7 +90,7 @@ export default function RootLayout({
         <Footer />
         <WhatsAppFloat />
         <BottomNav />
-        {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
+        {GA_ID && <DeferredGA gaId={GA_ID} />}
       </body>
     </html>
   );

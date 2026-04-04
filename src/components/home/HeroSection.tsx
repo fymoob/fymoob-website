@@ -1,12 +1,18 @@
-"use client"
-
-import { useRef, useEffect, useState } from "react"
-import Image from "next/image"
-import { Suspense } from "react"
+// Server Component — NO "use client"
+// h1 and p render without hydration dependency → fast LCP
+import dynamic from "next/dynamic"
 import { ChevronDown } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { QuickSearch } from "@/components/search/QuickSearch"
-import { HomeSearchBar } from "@/components/search/HomeSearchBar"
+import { HeroBackground } from "./HeroBackground"
+
+const QuickSearch = dynamic(
+  () => import("@/components/search/QuickSearch").then((m) => ({ default: m.QuickSearch })),
+  { loading: () => <div className="h-14 w-full rounded-2xl bg-white/20 animate-pulse" /> }
+)
+
+const HomeSearchBar = dynamic(
+  () => import("@/components/search/HomeSearchBar").then((m) => ({ default: m.HomeSearchBar })),
+  { loading: () => <div className="h-16 w-full rounded-2xl bg-white/20 animate-pulse" /> }
+)
 
 interface HeroSectionProps {
   bairroNames: string[]
@@ -16,69 +22,13 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds }: HeroSectionProps) {
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const [showVideo, setShowVideo] = useState(false)
-  const [isMobile, setIsMobile] = useState(true) // default mobile (SSR-safe)
-
-  useEffect(() => {
-    const mobile = window.innerWidth < 768
-    setIsMobile(mobile)
-
-    if (!mobile) {
-      // Lazy load video after LCP — wait for idle time
-      const loadVideo = () => {
-        const video = videoRef.current
-        if (!video) return
-        const source = video.querySelector("source")
-        if (source?.dataset.src) {
-          source.src = source.dataset.src
-          video.load()
-          video.play().catch(() => {})
-          // Fade in after video can play
-          video.addEventListener("canplay", () => setShowVideo(true), { once: true })
-        }
-      }
-
-      if ("requestIdleCallback" in window) {
-        requestIdleCallback(loadVideo)
-      } else {
-        setTimeout(loadVideo, 2000)
-      }
-    }
-  }, [])
-
   return (
     <section
       id="hero"
       className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden bg-neutral-950"
     >
-      {/* Poster image — this is the LCP element (fast) */}
-      <Image
-        src={isMobile ? "/images/hero-poster-mobile.webp" : "/images/hero-poster.webp"}
-        alt="Vista panorâmica de apartamento de luxo em Curitiba"
-        fill
-        priority
-        quality={80}
-        className="object-cover"
-        sizes="100vw"
-      />
-
-      {/* Video — lazy loaded, desktop only */}
-      {!isMobile && (
-        <video
-          ref={videoRef}
-          muted
-          loop
-          playsInline
-          preload="none"
-          className={cn(
-            "hero-video absolute inset-0 h-full w-full object-cover transition-opacity duration-1000",
-            showVideo ? "opacity-100" : "opacity-0"
-          )}
-        >
-          <source data-src="/videos/hero-bg.mp4" type="video/mp4" />
-        </video>
-      )}
+      {/* Background: poster image (LCP) + lazy video (desktop) */}
+      <HeroBackground />
 
       {/* Gradient overlay */}
       <div
@@ -89,9 +39,10 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds }: He
         }}
       />
 
-      {/* Content */}
+      {/* Content — Server rendered, NO hydration needed for LCP */}
       <div className="relative z-10 mx-auto w-full max-w-4xl px-4 pb-12 text-center sm:px-6">
-        <h1 className="hero-animate-1 font-display text-3xl font-extrabold tracking-tight text-white sm:text-5xl md:text-7xl leading-[1.05]">
+        {/* h1: NO animation class — must be instantly visible for LCP */}
+        <h1 className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-5xl md:text-7xl leading-[1.05]">
           Encontre seu imóvel{"\n"}ideal
         </h1>
         <p className="hero-animate-2 mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-white/85 sm:mt-6 sm:text-lg md:text-xl">
@@ -106,17 +57,13 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds }: He
 
         {/* Desktop: full search bar */}
         <div className="hero-animate-3 mt-10 hidden md:block">
-          <Suspense
-            fallback={<div className="h-16 w-full rounded-2xl bg-white/20" />}
-          >
-            <HomeSearchBar
-              bairros={bairroNames}
-              cidades={cidades}
-              tipos={tipoNames}
-              priceBounds={priceBounds}
-              targetPath="/busca"
-            />
-          </Suspense>
+          <HomeSearchBar
+            bairros={bairroNames}
+            cidades={cidades}
+            tipos={tipoNames}
+            priceBounds={priceBounds}
+            targetPath="/busca"
+          />
         </div>
       </div>
 

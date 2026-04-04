@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import dynamic from "next/dynamic"
 import { Building2, Home as HomeIcon, Landmark, TreePine, TrendingUp, MapPin, LayoutGrid } from "lucide-react"
 import {
   getFeaturedProperties,
@@ -15,10 +16,24 @@ import { PropertyCard } from "@/components/property/PropertyCard"
 import { PropertyCardFeatured } from "@/components/property/PropertyCardFeatured"
 import { BlogCard } from "@/components/blog/BlogCard"
 import { AnimateOnScroll } from "@/components/shared/AnimateOnScroll"
-import { RecentlyViewed } from "@/components/shared/RecentlyViewed"
-import { WelcomeBack } from "@/components/shared/WelcomeBack"
-import { SavedSearchBanner } from "@/components/search/SavedSearchBanner"
-import { HomeCarousel } from "@/components/home/HomeCarousel"
+
+// Dynamic imports — client components that return null for most visitors or are below-the-fold
+const RecentlyViewed = dynamic(
+  () => import("@/components/shared/RecentlyViewed").then((m) => ({ default: m.RecentlyViewed })),
+  { ssr: true }
+)
+const WelcomeBack = dynamic(
+  () => import("@/components/shared/WelcomeBack").then((m) => ({ default: m.WelcomeBack })),
+  { ssr: true }
+)
+const SavedSearchBanner = dynamic(
+  () => import("@/components/search/SavedSearchBanner").then((m) => ({ default: m.SavedSearchBanner })),
+  { ssr: true }
+)
+const HomeCarousel = dynamic(
+  () => import("@/components/home/HomeCarousel").then((m) => ({ default: m.HomeCarousel })),
+  { ssr: true }
+)
 
 export const metadata: Metadata = {
   title: "Imóveis à Venda e Aluguel em Curitiba | FYMOOB",
