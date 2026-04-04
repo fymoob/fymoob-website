@@ -1,6 +1,7 @@
-"use client"
-
-import { useEffect, useRef, type ReactNode } from "react"
+// Server Component — pure CSS scroll animations (no JS, no hydration)
+// Uses CSS animation-timeline: view() with fallback for unsupported browsers
+import type { ReactNode } from "react"
+import { cn } from "@/lib/utils"
 
 interface AnimateOnScrollProps {
   children: ReactNode
@@ -9,35 +10,8 @@ interface AnimateOnScrollProps {
 }
 
 export function AnimateOnScroll({ children, className = "", stagger = false }: AnimateOnScrollProps) {
-  const ref = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          if (stagger) {
-            const items = el.children
-            Array.from(items).forEach((child, i) => {
-              ;(child as HTMLElement).classList.add("animate-fade-in-up", `stagger-${i + 1}`)
-            })
-          } else {
-            el.classList.add("animate-fade-in-up")
-          }
-          observer.unobserve(el)
-        }
-      },
-      { threshold: 0.05, rootMargin: "0px 0px 40px 0px" }
-    )
-
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [stagger])
-
   return (
-    <div ref={ref} className={`${!stagger ? "opacity-0" : ""} ${className}`}>
+    <div className={cn("scroll-reveal", stagger && "scroll-reveal-stagger", className)}>
       {children}
     </div>
   )

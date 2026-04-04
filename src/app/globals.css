@@ -143,7 +143,7 @@
   display: none;
 }
 
-/* ── Fade-in-up animation for scroll reveal ── */
+/* ── Scroll reveal animations (CSS-only, no JS) ── */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -155,12 +155,40 @@
   }
 }
 
+/* CSS scroll-driven animation (Chrome 115+, Safari 18.4+) */
+@supports (animation-timeline: view()) {
+  .scroll-reveal {
+    animation: fadeInUp 0.6s ease-out both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 30%;
+  }
+  .scroll-reveal-stagger > * {
+    animation: fadeInUp 0.6s ease-out both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 30%;
+  }
+  .scroll-reveal-stagger > :nth-child(1) { animation-delay: 0s; }
+  .scroll-reveal-stagger > :nth-child(2) { animation-delay: 0.05s; }
+  .scroll-reveal-stagger > :nth-child(3) { animation-delay: 0.1s; }
+  .scroll-reveal-stagger > :nth-child(4) { animation-delay: 0.15s; }
+  .scroll-reveal-stagger > :nth-child(5) { animation-delay: 0.2s; }
+  .scroll-reveal-stagger > :nth-child(6) { animation-delay: 0.25s; }
+}
+
+/* Fallback: no animation (content visible immediately) */
+@supports not (animation-timeline: view()) {
+  .scroll-reveal,
+  .scroll-reveal-stagger > * {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Legacy classes (kept for backward compat) */
 .animate-fade-in-up {
   animation: fadeInUp 0.6s ease-out forwards;
   opacity: 0;
 }
-
-/* Stagger delays for grid children */
 .stagger-1 { animation-delay: 0.05s; }
 .stagger-2 { animation-delay: 0.1s; }
 .stagger-3 { animation-delay: 0.15s; }

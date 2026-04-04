@@ -181,7 +181,7 @@ export default async function Home() {
             {/* Desktop: grid */}
             <AnimateOnScroll stagger className="mt-8 hidden gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
               {destaques.map((property) => (
-                <div key={property.slug} className="opacity-0">
+                <div key={property.slug} className="">
                   <PropertyCard property={property} />
                 </div>
               ))}
@@ -201,7 +201,7 @@ export default async function Home() {
             </AnimateOnScroll>
             <AnimateOnScroll stagger className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
               {bairros.map((bairro) => (
-                <div key={bairro.slug} className="opacity-0">
+                <div key={bairro.slug} className="">
                   <BairroCard bairro={bairro} />
                 </div>
               ))}
@@ -222,7 +222,7 @@ export default async function Home() {
             {tipoLinks.map((item) => {
               const Icon = item.icon
               return (
-                <div key={item.href} className="opacity-0">
+                <div key={item.href} className="">
                   <Link
                     href={item.href}
                     className="flex flex-col items-center gap-3 rounded-2xl border border-neutral-200 bg-white p-8 text-center transition-all duration-300 hover:-translate-y-1 hover:border-brand-primary-muted hover:shadow-xl"
@@ -261,7 +261,7 @@ export default async function Home() {
             </AnimateOnScroll>
             <AnimateOnScroll stagger className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
               {recentPosts.map((post) => (
-                <div key={post.slug} className="opacity-0">
+                <div key={post.slug} className="">
                   <BlogCard post={post} />
                 </div>
               ))}
