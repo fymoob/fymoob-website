@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { ChevronUp, ChevronDown, MapPin } from "lucide-react"
 import { getPropertyCoordinates } from "@/lib/bairro-coordinates"
-import "maplibre-gl/dist/maplibre-gl.css"
+// CSS loaded dynamically inside initMap() to avoid 271KB bundle on initial load
 
 interface PropertyMapProps {
   latitude: number | null
@@ -13,7 +13,7 @@ interface PropertyMapProps {
 }
 
 export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMapProps) {
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<unknown>(null)
@@ -30,6 +30,14 @@ export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMap
 
     async function initMap() {
       const maplibregl = (await import("maplibre-gl")).default
+
+      // Inject maplibre CSS dynamically (avoid bundling 271KB on initial load)
+      if (!document.querySelector('link[href*="maplibre-gl"]')) {
+        const link = document.createElement("link")
+        link.rel = "stylesheet"
+        link.href = "https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.css"
+        document.head.appendChild(link)
+      }
 
       if (cancelled || !mapContainerRef.current) return
 

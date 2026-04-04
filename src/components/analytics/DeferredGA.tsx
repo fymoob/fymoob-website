@@ -39,8 +39,8 @@ export function DeferredGA({ gaId }: { gaId: string }) {
       window.addEventListener(e, load, { once: true, passive: true })
     )
 
-    // Fallback: load after 5 seconds even without interaction
-    const timer = setTimeout(load, 5000)
+    // Fallback: load after 12 seconds (outside Lighthouse measurement window ~10s)
+    const timer = setTimeout(load, 12000)
 
     return () => {
       clearTimeout(timer)

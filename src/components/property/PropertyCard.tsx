@@ -158,7 +158,7 @@ function getPropertyPhotos(property: Property): string[] {
 interface PropertyCardProps {
   property: Property
   prioritizeFirstImage?: boolean
-  variant?: "vertical" | "horizontal"
+  variant?: "vertical" | "horizontal" | "responsive"
 }
 
 export function PropertyCard({
@@ -278,26 +278,30 @@ export function PropertyCard({
   }
 
   const isHorizontal = variant === "horizontal"
+  const isResponsive = variant === "responsive"
 
   return (
     <article
       ref={articleRef}
-      onMouseEnter={isHorizontal ? undefined : startHoverCycle}
-      onMouseLeave={isHorizontal ? undefined : stopHoverCycle}
+      onMouseEnter={(isHorizontal && !isResponsive) ? undefined : startHoverCycle}
+      onMouseLeave={(isHorizontal && !isResponsive) ? undefined : stopHoverCycle}
       className={cn(
         "group overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-300",
-        isHorizontal
-          ? "flex flex-row hover:shadow-lg"
-          : "hover:-translate-y-1.5 hover:border-brand-primary/30 hover:shadow-2xl",
-        ""
+        isResponsive
+          ? "flex flex-row sm:flex-col hover:shadow-lg sm:hover:-translate-y-1.5 sm:hover:border-brand-primary/30 sm:hover:shadow-2xl"
+          : isHorizontal
+            ? "flex flex-row hover:shadow-lg"
+            : "hover:-translate-y-1.5 hover:border-brand-primary/30 hover:shadow-2xl"
       )}
     >
       {/* Photo section */}
       <div className={cn(
         "relative overflow-hidden",
-        isHorizontal ? "w-28 shrink-0 self-stretch sm:w-32" : "aspect-[4/3]"
+        isResponsive
+          ? "w-28 shrink-0 self-stretch sm:w-full sm:shrink sm:self-auto sm:aspect-[4/3]"
+          : isHorizontal ? "w-28 shrink-0 self-stretch sm:w-32" : "aspect-[4/3]"
       )}>
-        {isHorizontal ? (
+        {(isHorizontal && !isResponsive) ? (
           /* Horizontal: single image, no carousel */
           <Image
             src={photos[0]}
@@ -426,11 +430,13 @@ export function PropertyCard({
 
       {/* Content section */}
       <div className={cn(
-        isHorizontal
-          ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3"
-          : "space-y-2.5 p-5 md:p-6"
+        isResponsive
+          ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3 sm:flex-none sm:gap-0 sm:space-y-2.5 sm:p-5 md:p-6"
+          : isHorizontal
+            ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3"
+            : "space-y-2.5 p-5 md:p-6"
       )}>
-        {/* Meta row — vertical only */}
+        {/* Meta row — vertical/responsive only */}
         {!isHorizontal && (
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">

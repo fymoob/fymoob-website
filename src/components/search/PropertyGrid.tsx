@@ -1,5 +1,4 @@
-// Server Component — NO "use client", NO useIsMobile
-// CSS responsive layout prevents CLS from JS-driven layout shifts
+// Server Component — single render per card, CSS responsive layout
 import type { Property } from "@/types/property"
 import { PropertyCard } from "@/components/property/PropertyCard"
 
@@ -21,36 +20,18 @@ export function PropertyGrid({ properties }: PropertyGridProps) {
   }
 
   return (
-    <>
-      {/* Mobile: horizontal cards in vertical list */}
-      <section
-        aria-live="polite"
-        className="flex flex-col gap-3 sm:hidden"
-      >
-        {properties.map((property, index) => (
-          <PropertyCard
-            key={property.slug}
-            property={property}
-            prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
-            variant="horizontal"
-          />
-        ))}
-      </section>
-
-      {/* Desktop: vertical cards in grid */}
-      <section
-        aria-live="polite"
-        className="hidden gap-5 sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4"
-      >
-        {properties.map((property, index) => (
-          <PropertyCard
-            key={property.slug}
-            property={property}
-            prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
-            variant="vertical"
-          />
-        ))}
-      </section>
-    </>
+    <section
+      aria-live="polite"
+      className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4"
+    >
+      {properties.map((property, index) => (
+        <PropertyCard
+          key={property.slug}
+          property={property}
+          prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
+          variant="responsive"
+        />
+      ))}
+    </section>
   )
 }
