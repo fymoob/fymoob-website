@@ -24,7 +24,7 @@
 | -- | Bugs | 0 | 0 | 0 | — |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
 | 11 | Performance (CWV) | 31 | 26 | 5 | EM ANDAMENTO |
-| 12 | Conteudo SEO Editorial | 29 | 9 | 20 | EM ANDAMENTO |
+| 12 | Conteudo SEO Editorial | 29 | 19 | 10 | EM ANDAMENTO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
 | | **TOTAL** | **229** | **195** | **34** | **85%** |
 
@@ -581,18 +581,18 @@ _Nenhum bug aberto._
 - [x] `/morar-em-curitiba` — Guia completo para mudanca (3000+ palavras)
 - [x] `/alugar-curitiba` — Guia completo de aluguel (3000+ palavras)
 
-### 12.3 — Guias de Bairro [EM ANDAMENTO]
-> Meta: 10 guias de 2500+ palavras com dados reais do CRM
+### 12.3 — Guias de Bairro [CONCLUIDA]
+> 10 guias com 11.000 palavras totais, dados reais do CRM, FAQ schema, AuthorBio
 - [x] Guia do Portao (2500+ palavras)
 - [x] Guia do Batel (2500+ palavras)
 - [x] Guia do Agua Verde (2500+ palavras)
-- [ ] Guia do Bigorrilho
-- [ ] Guia do Centro
-- [ ] Guia do Ecoville
-- [ ] Guia do Cabral
-- [ ] Guia do Juveve
-- [ ] Guia do Santa Felicidade
-- [ ] Guia do Merces
+- [x] Guia do Bigorrilho (Champagnat)
+- [x] Guia do Centro
+- [x] Guia do Ecoville
+- [x] Guia do Cabral
+- [x] Guia do Juveve
+- [x] Guia do Santa Felicidade
+- [x] Guia do Merces
 
 ### 12.4 — Blog Editorial [EM ANDAMENTO]
 > Meta: 10 artigos novos (total 15 com os 5 existentes)
