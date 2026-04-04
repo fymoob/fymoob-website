@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { Suspense } from "react"
-import { Building2, Home as HomeIcon, Landmark, TreePine, ChevronDown, TrendingUp, MapPin, LayoutGrid, Search } from "lucide-react"
+import { Building2, Home as HomeIcon, Landmark, TreePine, ChevronDown, TrendingUp, MapPin, LayoutGrid } from "lucide-react"
 import {
   getFeaturedProperties,
   getAllBairros,
@@ -11,6 +11,7 @@ import {
 } from "@/services/loft"
 import { getRecentPosts } from "@/services/blog"
 import { HomeSearchBar } from "@/components/search/HomeSearchBar"
+import { QuickSearch } from "@/components/search/QuickSearch"
 import { BairroCard } from "@/components/search/BairroCard"
 import { PropertyCard } from "@/components/property/PropertyCard"
 import { PropertyCardFeatured } from "@/components/property/PropertyCardFeatured"
@@ -107,18 +108,9 @@ export default async function Home() {
           <p className="hero-animate hero-animate-2 mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-white/85 sm:mt-6 sm:text-lg md:text-xl">
             Apartamentos, casas e sobrados à venda e para alugar nos melhores bairros da cidade.
           </p>
-          {/* Mobile: compact search pill */}
+          {/* Mobile: compact pill → expands to bottom sheet */}
           <div className="hero-animate hero-animate-3 mt-8 md:hidden">
-            <Link
-              href="/busca"
-              className="mx-auto flex w-full max-w-sm items-center gap-3 rounded-full border border-white/20 bg-white/10 px-5 py-4 text-left backdrop-blur-md transition hover:bg-white/15"
-            >
-              <Search className="size-5 shrink-0 text-white/60" />
-              <div>
-                <p className="text-sm font-medium text-white">Buscar imoveis</p>
-                <p className="text-xs text-white/50">Curitiba e regiao</p>
-              </div>
-            </Link>
+            <QuickSearch bairros={bairroNames} tipos={tipoNames} />
           </div>
 
           {/* Desktop: full search bar */}
