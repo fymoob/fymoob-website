@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next"
 import { getAllBairros, getAllSlugs, getAllTypes, getAllEmpreendimentos } from "@/services/loft"
 import { getAllSlugs as getAllBlogSlugs } from "@/services/blog"
+import { getAllGuiaSlugs } from "@/services/guias"
 import type { PropertyType } from "@/types/property"
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
@@ -33,12 +34,13 @@ const TIPO_STATIC_PAGES: Partial<Record<PropertyType, string>> = {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [slugs, bairros, types, blogSlugs, empreendimentos] = await Promise.all([
+  const [slugs, bairros, types, blogSlugs, empreendimentos, guiaSlugs] = await Promise.all([
     getAllSlugs(),
     getAllBairros(),
     getAllTypes(),
     getAllBlogSlugs(),
     getAllEmpreendimentos(),
+    getAllGuiaSlugs(),
   ])
 
   const now = new Date()
@@ -207,8 +209,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "monthly" as const,
   }))
 
+  // Pillar pages (guias completos)
+  const pillarPages: MetadataRoute.Sitemap = [
+    { url: `${SITE_URL}/comprar-imovel-curitiba`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${SITE_URL}/morar-em-curitiba`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${SITE_URL}/alugar-curitiba`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+  ]
+
+  // Neighborhood guides (guias de bairro)
+  const guiaPages: MetadataRoute.Sitemap = guiaSlugs.map((slug) => ({
+    url: `${SITE_URL}/guia/${slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }))
+
   return [
     ...staticPages,
+    ...pillarPages,
     ...typePages,
     ...tipoFinalidadePages,
     ...bairroPages,
@@ -217,6 +235,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...quartosPages,
     ...priceRangePages,
     ...empreendimentoPages,
+    ...guiaPages,
     ...propertyPages,
     ...blogListingPage,
     ...blogPostPages,

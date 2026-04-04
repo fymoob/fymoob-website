@@ -220,6 +220,7 @@ export default async function BairroPage({ params }: BairroPageProps) {
           <RelatedPages
             title="Explore tambem"
             links={[
+              { href: `/guia/${bairroSlug}`, label: `Guia completo: Morar no ${bairro.bairro}` },
               ...bairro.tipos
                 .filter((t) => t.count >= 3)
                 .map((t) => ({
