@@ -384,13 +384,16 @@ export function PropertyCard({
           />
         </button>
 
-        {/* Carousel controls — only vertical */}
+        {/* Carousel controls — hidden on mobile responsive, visible on hover desktop */}
         {!isHorizontal && photos.length > 1 && (
           <>
             <button
               type="button"
               onClick={goPrev}
-              className="absolute top-1/2 left-3 z-20 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/35 text-white opacity-70 backdrop-blur-sm transition md:opacity-0 md:group-hover:opacity-100 hover:bg-black/50"
+              className={cn(
+                "absolute top-1/2 left-3 z-20 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/35 text-white backdrop-blur-sm transition hover:bg-black/50 opacity-0 group-hover:opacity-100",
+                isResponsive && "hidden sm:inline-flex"
+              )}
               aria-label="Foto anterior"
             >
               <ChevronLeft className="size-4" />
@@ -399,13 +402,19 @@ export function PropertyCard({
             <button
               type="button"
               onClick={goNext}
-              className="absolute top-1/2 right-3 z-20 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/35 text-white opacity-70 backdrop-blur-sm transition md:opacity-0 md:group-hover:opacity-100 hover:bg-black/50"
+              className={cn(
+                "absolute top-1/2 right-3 z-20 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/35 text-white backdrop-blur-sm transition hover:bg-black/50 opacity-0 group-hover:opacity-100",
+                isResponsive && "hidden sm:inline-flex"
+              )}
               aria-label="Proxima foto"
             >
               <ChevronRight className="size-4" />
             </button>
 
-            <div className="absolute bottom-2.5 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1 rounded-full bg-black/30 px-1.5 py-0.5 backdrop-blur-sm">
+            <div className={cn(
+              "absolute bottom-2.5 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1 rounded-full bg-black/30 px-1.5 py-0.5 backdrop-blur-sm",
+              isResponsive && "hidden sm:flex"
+            )}>
               {photos.slice(0, 6).map((_, index) => (
                 <button
                   key={index}
