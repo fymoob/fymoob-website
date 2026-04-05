@@ -306,7 +306,7 @@ export function PropertyCard({
             {displayPhotos.map((photo, index) => {
               const shouldPrioritize = prioritizeFirstImage && index === 0
               return (
-                <div key={`${property.codigo}-${index}`} className="relative h-full min-w-full shrink-0">
+                <div key={`${property.codigo}-${index}`} className="relative h-full min-w-full shrink-0 overflow-hidden">
                   <Image
                     src={photo}
                     alt={`${alt} - foto ${index + 1}`}
