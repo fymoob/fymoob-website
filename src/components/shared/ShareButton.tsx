@@ -50,46 +50,15 @@ export function ShareButton({ title, url, variant = "default" }: ShareButtonProp
     )
   }
 
-  // Default: full button row (for desktop)
+  // Default: single share button (native share or copy link fallback)
   return (
-    <div className="flex items-center gap-2">
-      <a
-        href={whatsappUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-600 transition hover:bg-neutral-50 hover:text-[#25D366]"
-      >
-        <MessageCircle className="size-4" />
-        <span className="hidden sm:inline">Compartilhar</span>
-      </a>
-
-      <button
-        type="button"
-        onClick={handleCopy}
-        className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-600 transition hover:bg-neutral-50"
-      >
-        {copied ? (
-          <>
-            <Check className="size-4 text-emerald-500" />
-            <span className="hidden sm:inline text-emerald-500">Copiado!</span>
-          </>
-        ) : (
-          <>
-            <Link2 className="size-4" />
-            <span className="hidden sm:inline">Copiar link</span>
-          </>
-        )}
-      </button>
-
-      {canNativeShare && (
-        <button
-          type="button"
-          onClick={handleShare}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-200 px-3 py-2 text-sm text-neutral-600 transition hover:bg-neutral-50"
-        >
-          <Share2 className="size-4" />
-        </button>
-      )}
-    </div>
+    <button
+      type="button"
+      onClick={canNativeShare ? handleShare : handleCopy}
+      className="inline-flex items-center justify-center rounded-full bg-neutral-100 p-2.5 text-neutral-600 transition hover:bg-neutral-200"
+      aria-label="Compartilhar"
+    >
+      {copied ? <Check className="size-5 text-emerald-500" /> : <Share2 className="size-5" />}
+    </button>
   )
 }
