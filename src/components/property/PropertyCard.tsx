@@ -433,7 +433,7 @@ export function PropertyCard({
           className={cn(
             "font-bold tracking-tight",
             isHorizontal ? "text-base" : isResponsive ? "text-base sm:text-xl" : "text-xl",
-            price ? "text-neutral-900" : "text-neutral-400"
+            price ? "text-brand-primary" : "text-neutral-400"
           )}
         >
           {formatPrice(price)}

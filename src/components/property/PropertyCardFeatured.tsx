@@ -31,28 +31,22 @@ export function PropertyCardFeatured({ property }: PropertyCardFeaturedProps) {
 
       {/* Content */}
       <div className="flex w-full flex-col justify-center space-y-3 p-6 md:w-1/2 md:p-8">
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <PropertyBadge variant="type">{property.tipo}</PropertyBadge>
-          <PropertyBadge variant="code">Cód: {property.codigo}</PropertyBadge>
+          <span className="hidden text-xs text-neutral-400 sm:inline">Cód: {property.codigo}</span>
         </div>
 
         <p className="text-sm text-neutral-500">
           {property.bairro} - {property.cidade} / {property.estado}
         </p>
 
-        <h3 className="font-display text-xl font-bold tracking-tight text-neutral-950">
-          {truncateText(property.titulo, 80)}
-        </h3>
-
-        <p className="text-2xl font-bold text-neutral-900">
+        <p className="text-2xl font-extrabold tracking-tight text-brand-primary md:text-3xl">
           {formatPrice(price)}
         </p>
 
-        {property.descricao && (
-          <p className="line-clamp-2 text-sm leading-relaxed text-neutral-600">
-            {truncateText(property.descricao, 120)}
-          </p>
-        )}
+        <h3 className="line-clamp-2 font-display text-lg font-bold tracking-tight text-neutral-950 md:text-xl">
+          {property.titulo}
+        </h3>
 
         <PropertyFeatures
           dormitorios={property.dormitorios}

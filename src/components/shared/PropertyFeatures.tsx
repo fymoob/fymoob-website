@@ -33,23 +33,36 @@ export function PropertyFeatures({
 
   if (features.length === 0) return null
 
+  if (compact) {
+    return (
+      <p className={cn("text-xs text-neutral-500", className)}>
+        {features.map((f, i) => (
+          <span key={f.label}>
+            <span className="font-semibold text-neutral-700">{f.value}</span>
+            {" "}{f.label}
+            {i < features.length - 1 && <span className="mx-1.5 text-neutral-300">·</span>}
+          </span>
+        ))}
+      </p>
+    )
+  }
+
   return (
-    <div className={cn("flex flex-wrap items-center", compact ? "gap-1.5" : "gap-2", className)}>
+    <div className={cn("flex flex-wrap items-center gap-2", className)}>
       {features.map((feature) => (
         <div
           key={feature.label}
           className={cn(
-            "inline-flex items-center rounded-full bg-neutral-50 text-neutral-600",
-            compact ? "gap-1 px-2 py-0.5" : "gap-1.5",
-            !compact && (size === "sm" ? "px-2.5 py-1" : "px-3 py-1.5")
+            "inline-flex items-center gap-1.5 rounded-full bg-neutral-50 text-neutral-600",
+            size === "sm" ? "px-2.5 py-1" : "px-3 py-1.5"
           )}
         >
           <feature.icon
-            size={compact ? 12 : iconSize}
+            size={iconSize}
             className="shrink-0 text-neutral-500"
           />
-          <span className={cn("font-medium", compact ? "text-[11px]" : textClass)}>
-            {compact ? feature.value : `${feature.value} ${feature.label}`}
+          <span className={cn("font-medium", textClass)}>
+            {feature.value} {feature.label}
           </span>
         </div>
       ))}
