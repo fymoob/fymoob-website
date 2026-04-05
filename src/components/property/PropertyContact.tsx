@@ -27,7 +27,7 @@ export function PropertyContact({
 
   const price = precoVenda ?? precoAluguel
   const priceLabel = finalidade === "Locação" || finalidade === "Aluguel" ? "VALOR ALUGUEL" : "VALOR VENDA"
-  const whatsMessage = `Ola! Tenho interesse no imovel ${propertyTitle} (Cod: ${propertyCode}). Gostaria de mais informacoes.`
+  const whatsMessage = `Olá! Tenho interesse no imóvel ${propertyTitle} (Cód: ${propertyCode}). Gostaria de mais informações.`
   const whatsUrl = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent(whatsMessage)}`
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

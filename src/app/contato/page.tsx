@@ -13,16 +13,16 @@ function WhatsAppIcon({ className }: { className?: string }) {
 }
 
 export const metadata: Metadata = {
-  title: "Contato | FYMOOB Imobiliaria Curitiba",
+  title: "Contato | FYMOOB Imobiliária Curitiba",
   description:
-    "Entre em contato com a FYMOOB Imobiliaria. WhatsApp, telefone, e-mail ou visite nosso escritorio no Portao, Curitiba. Atendimento personalizado para compra, venda e locacao.",
+    "Entre em contato com a FYMOOB Imobiliária. WhatsApp, telefone, e-mail ou visite nosso escritório no Portão, Curitiba. Atendimento personalizado para compra, venda e locação.",
   alternates: {
     canonical: "/contato",
   },
 }
 
 const FYMOOB_PHONE = "5541999780517"
-const WA_URL = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent("Ola! Gostaria de mais informacoes sobre os imoveis da FYMOOB.")}`
+const WA_URL = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent("Olá! Gostaria de mais informações sobre os imóveis da FYMOOB.")}`
 
 const contatoInfo = [
   {
@@ -30,7 +30,7 @@ const contatoInfo = [
     label: "WhatsApp",
     value: "(41) 99978-0517",
     href: WA_URL,
-    description: "Resposta rapida, geralmente em minutos",
+    description: "Resposta rápida, geralmente em minutos",
     highlight: true,
   },
   {
@@ -38,27 +38,27 @@ const contatoInfo = [
     label: "Telefone",
     value: "(41) 3265-5051",
     href: "tel:+554132655051",
-    description: "Horario comercial",
+    description: "Horário comercial",
   },
   {
     icon: Mail,
     label: "E-mail",
     value: "fymoob@gmail.com",
     href: "mailto:fymoob@gmail.com",
-    description: "Respondemos em ate 24 horas",
+    description: "Respondemos em até 24 horas",
   },
   {
     icon: MapPin,
-    label: "Escritorio",
+    label: "Escritório",
     value: "Rua Eng. Heitor Soares Gomes, 778",
     href: "https://www.google.com/maps/search/?api=1&query=Rua+Engenheiro+Heitor+Soares+Gomes+778+Portao+Curitiba+PR",
-    description: "Portao, Curitiba/PR — CEP 80330-350",
+    description: "Portão, Curitiba/PR — CEP 80330-350",
   },
   {
     icon: Clock,
-    label: "Horario",
-    value: "Seg a Sex: 9h as 18h",
-    description: "Sabado: 9h as 13h",
+    label: "Horário",
+    value: "Seg a Sex: 9h às 18h",
+    description: "Sábado: 9h às 13h",
   },
 ]
 
@@ -78,7 +78,7 @@ export default function ContatoPage() {
           Fale conosco
         </h1>
         <p className="mt-3 max-w-2xl text-lg text-fymoob-gray-mid">
-          Estamos prontos para ajudar voce a encontrar o imovel ideal em
+          Estamos prontos para ajudar você a encontrar o imóvel ideal em
           Curitiba. Escolha o canal que preferir.
         </p>
       </div>
@@ -139,7 +139,7 @@ export default function ContatoPage() {
             Envie sua mensagem
           </h2>
           <p className="mb-6 text-sm text-fymoob-gray-mid">
-            Preencha o formulario e retornaremos o mais breve possivel.
+            Preencha o formulário e retornaremos o mais breve possível.
           </p>
           <ContactForm />
         </div>
@@ -158,12 +158,12 @@ export default function ContatoPage() {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Localizacao FYMOOB Imobiliaria - Portao, Curitiba"
+              title="Localização FYMOOB Imobiliária - Portão, Curitiba"
               className="w-full"
             />
           </div>
           <p className="mt-3 text-xs text-fymoob-gray-mid">
-            Estacionamento disponivel na rua. Proximo ao Terminal do Portao.
+            Estacionamento disponível na rua. Próximo ao Terminal do Portão.
           </p>
         </div>
       </div>
@@ -175,7 +175,7 @@ export default function ContatoPage() {
         </p>
         <p className="mx-auto mt-2 max-w-md text-sm text-fymoob-gray-mid">
           Chame no WhatsApp e fale diretamente com um de nossos corretores.
-          Atendimento rapido e personalizado.
+          Atendimento rápido e personalizado.
         </p>
         <a
           href={WA_URL}

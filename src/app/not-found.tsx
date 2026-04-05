@@ -9,10 +9,10 @@ export default function NotFound() {
           404
         </p>
         <h1 className="mt-4 font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
-          Pagina nao encontrada
+          Página não encontrada
         </h1>
         <p className="mt-3 max-w-md text-base leading-relaxed text-neutral-500">
-          A pagina que voce esta procurando pode ter sido removida, renomeada ou esta temporariamente indisponivel.
+          A página que você está procurando pode ter sido removida, renomeada ou está temporariamente indisponível.
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
@@ -20,14 +20,14 @@ export default function NotFound() {
             className="inline-flex items-center gap-2 rounded-xl bg-brand-primary px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-brand-primary-hover hover:shadow-lg active:scale-[0.98]"
           >
             <Home size={16} />
-            Voltar ao inicio
+            Voltar ao início
           </Link>
           <Link
             href="/busca"
             className="inline-flex items-center gap-2 rounded-xl border border-neutral-200 bg-white px-6 py-3 text-sm font-semibold text-neutral-700 transition-all duration-200 hover:border-brand-primary-muted hover:shadow-lg"
           >
             <Search size={16} />
-            Buscar imoveis
+            Buscar imóveis
           </Link>
         </div>
       </div>

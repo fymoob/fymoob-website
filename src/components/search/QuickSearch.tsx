@@ -217,7 +217,7 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
         <button type="button" onClick={() => setOpen(false)} className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-neutral-100">
           <X className="size-5 text-neutral-600" />
         </button>
-        <p className="font-display text-base font-bold text-neutral-900">Buscar imoveis</p>
+        <p className="font-display text-base font-bold text-neutral-900">Buscar imóveis</p>
         {activeFilters > 0 ? (
           <button type="button" onClick={clearAll} className="text-xs font-medium text-brand-primary">Limpar</button>
         ) : (
@@ -232,7 +232,7 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
           <div>
             <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-neutral-900">
               <MapPin className="size-4 text-brand-primary" />
-              Localizacao
+              Localização
             </label>
             <button type="button" onClick={() => setPicker("bairro")} className={selectorBtn}>
               <span className={bairrosSel.length > 0 ? "text-neutral-900" : "text-neutral-400"}>
@@ -246,7 +246,7 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
           <div>
             <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-neutral-900">
               <Home className="size-4 text-brand-primary" />
-              Tipo de imovel
+              Tipo de imóvel
             </label>
             <button type="button" onClick={() => setPicker("tipo")} className={selectorBtn}>
               <span className={tiposSel.length > 0 ? "text-neutral-900" : "text-neutral-400"}>
@@ -284,7 +284,7 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
           <div>
             <label className="mb-3 flex items-center gap-2 text-sm font-semibold text-neutral-900">
               <DollarSign className="size-4 text-brand-primary" />
-              Faixa de preco
+              Faixa de preço
             </label>
             <PriceRangeSlider min={precoMin} max={precoMax} onMinChange={setPrecoMin} onMaxChange={setPrecoMax} />
           </div>
@@ -299,7 +299,7 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
           className="flex w-full items-center justify-center gap-2 rounded-full bg-brand-primary py-4 text-base font-semibold text-white shadow-lg shadow-brand-primary/20 transition hover:bg-brand-primary-hover active:scale-[0.98]"
         >
           <Search className="size-5" />
-          Buscar imoveis
+          Buscar imóveis
         </button>
       </div>
 
@@ -315,7 +315,7 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
       )}
       {picker === "tipo" && (
         <MultiListPicker
-          title="Tipo de imovel"
+          title="Tipo de imóvel"
           options={tipos}
           selected={tiposSel}
           onChange={setTiposSel}
@@ -337,8 +337,8 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
           <Search className="size-3.5 text-white" />
         </div>
         <div>
-          <p className="text-xs font-medium text-neutral-800">Onde voce quer morar?</p>
-          <p className="text-[10px] text-neutral-400">Bairro · Tipo · Preco</p>
+          <p className="text-xs font-medium text-neutral-800">Onde você quer morar?</p>
+          <p className="text-[10px] text-neutral-400">Bairro · Tipo · Preço</p>
         </div>
       </button>
       {overlay}

@@ -56,21 +56,21 @@ export async function generateMetadata({
 }
 
 const bairroDescriptions: Record<string, string> = {
-  "Batel": "O Batel e um dos bairros mais nobres de Curitiba, conhecido pela vida noturna, gastronomia refinada e comercio de alto padrao. Localizado proximo ao centro, oferece facil acesso a toda a cidade com infraestrutura completa.",
-  "Agua Verde": "O Agua Verde combina conveniencia urbana com qualidade de vida. Com fartura de comercio, servicos, escolas e facil acesso ao transporte publico, e um dos bairros mais procurados para morar em Curitiba.",
-  "Portao": "O Portao e um bairro tradicional e bem estruturado, com excelente rede de transporte, comercio variado e opcoes de lazer. Ideal para familias que buscam praticidade no dia a dia.",
-  "Centro": "O Centro de Curitiba reune historia, cultura e praticidade. Com acesso a todos os servicos essenciais, transporte publico abundante e vida cultural ativa, e perfeito para quem valoriza a vida urbana.",
-  "Bigorrilho": "O Bigorrilho e vizinho do Batel e compartilha de sua infraestrutura premium. Bairro residencial com ruas arborizadas, comercio sofisticado e excelente qualidade de vida.",
-  "Ecoville": "O Ecoville e um dos bairros mais modernos de Curitiba, com predios novos, amplas areas verdes e infraestrutura de primeiro mundo. Ideal para quem busca conforto e modernidade.",
-  "Merces": "O Merces e um bairro residencial tranquilo, proximo ao Batel e ao Bigorrilho. Oferece boa infraestrutura, ruas calmas e facil acesso aos principais pontos da cidade.",
-  "Juveve": "O Juveve e um bairro charmoso e bem localizado, com ruas arborizadas, comercio local variado e proximidade ao centro. Perfeito para quem busca tranquilidade sem abrir mao da conveniencia.",
-  "Cabral": "O Cabral e um bairro nobre com excelente infraestrutura, proximo ao Jardim Botanico e ao centro. Ruas arborizadas, boas escolas e comercio completo fazem dele um dos mais desejados.",
-  "Santa Felicidade": "Santa Felicidade e famoso pela gastronomia italiana e pelo charme interiorano dentro da cidade. Com grandes terrenos e casas amplas, e ideal para quem busca espaco e tranquilidade.",
+  "Batel": "O Batel é um dos bairros mais nobres de Curitiba, conhecido pela vida noturna, gastronomia refinada e comércio de alto padrão. Localizado próximo ao centro, oferece fácil acesso a toda a cidade com infraestrutura completa.",
+  "Agua Verde": "O Água Verde combina conveniência urbana com qualidade de vida. Com fartura de comércio, serviços, escolas e fácil acesso ao transporte público, é um dos bairros mais procurados para morar em Curitiba.",
+  "Portao": "O Portão é um bairro tradicional e bem estruturado, com excelente rede de transporte, comércio variado e opções de lazer. Ideal para famílias que buscam praticidade no dia a dia.",
+  "Centro": "O Centro de Curitiba reúne história, cultura e praticidade. Com acesso a todos os serviços essenciais, transporte público abundante e vida cultural ativa, é perfeito para quem valoriza a vida urbana.",
+  "Bigorrilho": "O Bigorrilho é vizinho do Batel e compartilha de sua infraestrutura premium. Bairro residencial com ruas arborizadas, comércio sofisticado e excelente qualidade de vida.",
+  "Ecoville": "O Ecoville é um dos bairros mais modernos de Curitiba, com prédios novos, amplas áreas verdes e infraestrutura de primeiro mundo. Ideal para quem busca conforto e modernidade.",
+  "Merces": "O Mercês é um bairro residencial tranquilo, próximo ao Batel e ao Bigorrilho. Oferece boa infraestrutura, ruas calmas e fácil acesso aos principais pontos da cidade.",
+  "Juveve": "O Juvevê é um bairro charmoso e bem localizado, com ruas arborizadas, comércio local variado e proximidade ao centro. Perfeito para quem busca tranquilidade sem abrir mão da conveniência.",
+  "Cabral": "O Cabral é um bairro nobre com excelente infraestrutura, próximo ao Jardim Botânico e ao centro. Ruas arborizadas, boas escolas e comércio completo fazem dele um dos mais desejados.",
+  "Santa Felicidade": "Santa Felicidade é famoso pela gastronomia italiana e pelo charme interiorano dentro da cidade. Com grandes terrenos e casas amplas, é ideal para quem busca espaço e tranquilidade.",
 }
 
 function getBairroDescription(bairroName: string): string {
   return bairroDescriptions[bairroName] ||
-    `Descubra os melhores imoveis disponiveis no ${bairroName}, em Curitiba. Apartamentos, casas e sobrados com as melhores condicoes do mercado. A FYMOOB te ajuda a encontrar o imovel ideal neste bairro.`
+    `Descubra os melhores imóveis disponíveis no ${bairroName}, em Curitiba. Apartamentos, casas e sobrados com as melhores condições do mercado. A FYMOOB te ajuda a encontrar o imóvel ideal neste bairro.`
 }
 
 export default async function BairroPage({ params }: BairroPageProps) {
@@ -116,13 +116,13 @@ export default async function BairroPage({ params }: BairroPageProps) {
           <Breadcrumbs
             items={[
               { name: "Home", url: "/" },
-              { name: "Imoveis", url: "/busca" },
+              { name: "Imóveis", url: "/busca" },
               { name: bairro.bairro, url: `/imoveis/${bairroSlug}` },
             ]}
           />
 
           <h1 className="mt-2 font-display text-3xl font-extrabold tracking-tight text-white md:text-5xl">
-            Imoveis no {bairro.bairro}
+            Imóveis no {bairro.bairro}
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-300">
             {descricao}
@@ -134,7 +134,7 @@ export default async function BairroPage({ params }: BairroPageProps) {
               <Building2 size={20} className="shrink-0 text-brand-primary" />
               <div>
                 <p className="text-2xl font-bold text-white">{properties.length}</p>
-                <p className="text-xs text-neutral-400">imoveis disponiveis</p>
+                <p className="text-xs text-neutral-400">imóveis disponíveis</p>
               </div>
             </div>
             {precoMin && precoMax && (
@@ -144,7 +144,7 @@ export default async function BairroPage({ params }: BairroPageProps) {
                   <p className="text-sm font-semibold text-white">
                     {formatPrice(precoMin)} - {formatPrice(precoMax)}
                   </p>
-                  <p className="text-xs text-neutral-400">faixa de preco</p>
+                  <p className="text-xs text-neutral-400">faixa de preço</p>
                 </div>
               </div>
             )}
@@ -153,7 +153,7 @@ export default async function BairroPage({ params }: BairroPageProps) {
                 <MapPin size={20} className="shrink-0 text-brand-primary" />
                 <div>
                   <p className="text-lg font-bold text-white">{formatPrice(precoMedio)}</p>
-                  <p className="text-xs text-neutral-400">preco medio</p>
+                  <p className="text-xs text-neutral-400">preço médio</p>
                 </div>
               </div>
             )}
@@ -198,10 +198,10 @@ export default async function BairroPage({ params }: BairroPageProps) {
             <div className="mt-4 space-y-4 text-base leading-relaxed text-neutral-600">
               <p>{descricao}</p>
               <p>
-                Atualmente temos <strong className="text-neutral-950">{properties.length} imoveis</strong> disponiveis
-                no {bairro.bairro}{precoMedio && (<>, com preco medio de <strong className="text-neutral-950">{formatPrice(precoMedio)}</strong></>)}.
+                Atualmente temos <strong className="text-neutral-950">{properties.length} imóveis</strong> disponíveis
+                no {bairro.bairro}{precoMedio && (<>, com preço médio de <strong className="text-neutral-950">{formatPrice(precoMedio)}</strong></>)}.
                 {bairro.tipos.length > 0 && (
-                  <> Os tipos mais comuns sao: {bairro.tipos.map(t => `${t.tipo}s (${t.count})`).join(", ")}.</>
+                  <> Os tipos mais comuns são: {bairro.tipos.map(t => `${t.tipo}s (${t.count})`).join(", ")}.</>
                 )}
               </p>
             </div>
@@ -213,12 +213,12 @@ export default async function BairroPage({ params }: BairroPageProps) {
               generateLandingStats(properties),
               bairro.bairro
             )}
-            title={`Perguntas frequentes sobre imoveis no ${bairro.bairro}`}
+            title={`Perguntas frequentes sobre imóveis no ${bairro.bairro}`}
           />
 
           {/* Cross-linking */}
           <RelatedPages
-            title="Explore tambem"
+            title="Explore também"
             links={[
               { href: `/guia/${bairroSlug}`, label: `Guia completo: Morar no ${bairro.bairro}` },
               ...bairro.tipos
@@ -232,7 +232,7 @@ export default async function BairroPage({ params }: BairroPageProps) {
                 .slice(0, 8)
                 .map((b) => ({
                   href: `/imoveis/${b.slug}`,
-                  label: `Imoveis no ${b.bairro}`,
+                  label: `Imóveis no ${b.bairro}`,
                 })),
             ]}
           />

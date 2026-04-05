@@ -15,9 +15,9 @@ import {
 } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Anuncie seu Imovel | FYMOOB Curitiba",
+  title: "Anuncie seu Imóvel | FYMOOB Curitiba",
   description:
-    "Anuncie seu imovel na FYMOOB e alcance milhares de compradores e inquilinos em Curitiba. Avaliacao gratuita, fotos profissionais e atendimento personalizado. CRECI J 9420.",
+    "Anuncie seu imóvel na FYMOOB e alcance milhares de compradores e inquilinos em Curitiba. Avaliação gratuita, fotos profissionais e atendimento personalizado. CRECI J 9420.",
   alternates: {
     canonical: "/anuncie",
   },
@@ -27,30 +27,30 @@ const etapas = [
   {
     number: "01",
     icon: ClipboardCheck,
-    title: "Cadastro do imovel",
+    title: "Cadastro do imóvel",
     description:
-      "Preencha o formulario com os dados basicos do seu imovel. Nos entramos em contato para agendar uma visita.",
+      "Preencha o formulário com os dados básicos do seu imóvel. Nós entramos em contato para agendar uma visita.",
   },
   {
     number: "02",
     icon: Camera,
-    title: "Avaliacao e fotos",
+    title: "Avaliação e fotos",
     description:
-      "Visitamos o imovel, fazemos a avaliacao de mercado e registramos fotos de alta qualidade para o anuncio.",
+      "Visitamos o imóvel, fazemos a avaliação de mercado e registramos fotos de alta qualidade para o anúncio.",
   },
   {
     number: "03",
     icon: Megaphone,
-    title: "Publicacao e divulgacao",
+    title: "Publicação e divulgação",
     description:
-      "Seu imovel e publicado no nosso site otimizado para Google, portais parceiros e redes sociais.",
+      "Seu imóvel é publicado no nosso site otimizado para Google, portais parceiros e redes sociais.",
   },
   {
     number: "04",
     icon: Handshake,
-    title: "Negociacao e fechamento",
+    title: "Negociação e fechamento",
     description:
-      "Cuidamos de toda a negociacao, documentacao e acompanhamos ate a entrega das chaves.",
+      "Cuidamos de toda a negociação, documentação e acompanhamos até a entrega das chaves.",
   },
 ]
 
@@ -59,37 +59,37 @@ const beneficios = [
     icon: Eye,
     title: "Visibilidade no Google",
     description:
-      "Seu imovel aparece nas buscas do Google com pagina propria, fotos e todas as informacoes.",
+      "Seu imóvel aparece nas buscas do Google com página própria, fotos e todas as informações.",
   },
   {
     icon: Zap,
-    title: "Anuncio em 24 horas",
+    title: "Anúncio em 24 horas",
     description:
-      "Apos a visita tecnica, seu imovel e publicado em menos de 24 horas no site.",
+      "Após a visita técnica, seu imóvel é publicado em menos de 24 horas no site.",
   },
   {
     icon: Users,
     title: "Base de clientes qualificados",
     description:
-      "Conectamos seu imovel a compradores e inquilinos que ja estao buscando ativamente em Curitiba.",
+      "Conectamos seu imóvel a compradores e inquilinos que já estão buscando ativamente em Curitiba.",
   },
   {
     icon: TrendingUp,
-    title: "Avaliacao de mercado gratuita",
+    title: "Avaliação de mercado gratuita",
     description:
-      "Precificacao baseada em dados reais do mercado curitibano para vender ou alugar mais rapido.",
+      "Precificação baseada em dados reais do mercado curitibano para vender ou alugar mais rápido.",
   },
   {
     icon: Shield,
-    title: "Seguranca juridica",
+    title: "Segurança jurídica",
     description:
-      "Contratos revisados, documentacao verificada e transacoes com respaldo legal. CRECI J 9420.",
+      "Contratos revisados, documentação verificada e transações com respaldo legal. CRECI J 9420.",
   },
   {
     icon: Camera,
     title: "Fotos profissionais",
     description:
-      "Anuncios com fotos de qualidade que destacam os melhores atributos do seu imovel.",
+      "Anúncios com fotos de qualidade que destacam os melhores atributos do seu imóvel.",
   },
 ]
 
@@ -110,19 +110,19 @@ export default function AnunciePage() {
       <Breadcrumbs
         items={[
           { name: "Home", url: "/" },
-          { name: "Anuncie seu imovel", url: "/anuncie" },
+          { name: "Anuncie seu imóvel", url: "/anuncie" },
         ]}
       />
 
       {/* Hero */}
       <div className="mb-12">
         <h1 className="font-display text-3xl font-bold text-fymoob-gray-dark sm:text-4xl">
-          Anuncie seu imovel na FYMOOB
+          Anuncie seu imóvel na FYMOOB
         </h1>
         <p className="mt-4 max-w-3xl text-lg leading-relaxed text-fymoob-gray-mid">
-          Venda ou alugue seu imovel com quem entende de Curitiba.{" "}
+          Venda ou alugue seu imóvel com quem entende de Curitiba.{" "}
           <strong className="text-fymoob-gray-dark">
-            Avaliacao gratuita, anuncio profissional e atendimento do inicio ao fim.
+            Avaliação gratuita, anúncio profissional e atendimento do início ao fim.
           </strong>
         </p>
       </div>
@@ -130,7 +130,7 @@ export default function AnunciePage() {
       {/* Stats bar */}
       <div className="mb-14 grid grid-cols-3 gap-4 rounded-xl border border-brand-primary/20 bg-brand-primary/5 p-6">
         {[
-          { number: "249+", label: "Imoveis ativos" },
+          { number: "249+", label: "Imóveis ativos" },
           { number: "65", label: "Bairros atendidos" },
           { number: "24h", label: "Para publicar" },
         ].map((item) => (
@@ -202,7 +202,7 @@ export default function AnunciePage() {
       {/* Tipos aceitos */}
       <section className="mb-16">
         <h2 className="mb-4 font-display text-2xl font-bold text-fymoob-gray-dark">
-          Tipos de imoveis que anunciamos
+          Tipos de imóveis que anunciamos
         </h2>
         <div className="flex flex-wrap gap-2">
           {tiposAceitos.map((tipo) => (
@@ -220,11 +220,11 @@ export default function AnunciePage() {
       {/* Form section */}
       <section className="mb-8 rounded-2xl border border-neutral-200 bg-neutral-50 p-6 sm:p-8">
         <h2 className="mb-2 font-display text-2xl font-bold text-fymoob-gray-dark">
-          Cadastre seu imovel
+          Cadastre seu imóvel
         </h2>
         <p className="mb-6 text-sm text-fymoob-gray-mid">
-          Preencha os dados abaixo e um de nossos corretores entrara em contato
-          para agendar a visita de avaliacao. Sem compromisso.
+          Preencha os dados abaixo e um de nossos corretores entrará em contato
+          para agendar a visita de avaliação. Sem compromisso.
         </p>
         <div className="mx-auto max-w-lg">
           <ContactForm />

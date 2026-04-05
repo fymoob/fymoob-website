@@ -12,10 +12,10 @@ import {
 
 const SORT_OPTIONS = [
   { value: "", label: "Mais relevantes" },
-  { value: "preco-asc", label: "Menor preco" },
-  { value: "preco-desc", label: "Maior preco" },
-  { value: "area-desc", label: "Maior area" },
-  { value: "area-asc", label: "Menor area" },
+  { value: "preco-asc", label: "Menor preço" },
+  { value: "preco-desc", label: "Maior preço" },
+  { value: "area-desc", label: "Maior área" },
+  { value: "area-asc", label: "Menor área" },
   { value: "recente", label: "Mais recentes" },
 ]
 

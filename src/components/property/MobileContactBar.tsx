@@ -85,7 +85,7 @@ export function MobileContactBar({
 
   const urgency = getUrgencyMessage({ dataCadastro, viewCount, bairro, precoVenda, precoMedioBairro })
 
-  const whatsMessage = `Ola! Tenho interesse no imovel ${propertyTitle} (Cod: ${propertyCode}). Gostaria de mais informacoes.`
+  const whatsMessage = `Olá! Tenho interesse no imóvel ${propertyTitle} (Cód: ${propertyCode}). Gostaria de mais informações.`
   const whatsUrl = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent(whatsMessage)}`
 
   return (

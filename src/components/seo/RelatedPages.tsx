@@ -11,7 +11,7 @@ interface RelatedPagesProps {
   links: RelatedLink[]
 }
 
-export function RelatedPages({ title = "Veja tambem", links }: RelatedPagesProps) {
+export function RelatedPages({ title = "Veja também", links }: RelatedPagesProps) {
   if (links.length === 0) return null
 
   return (

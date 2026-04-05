@@ -28,7 +28,7 @@ export function ContactSidebar({
 }: ContactSidebarProps) {
   const price = precoVenda ?? precoAluguel
   const priceLabel = finalidade === "Locação" ? "VALOR ALUGUEL" : "VALOR VENDA"
-  const whatsMessage = `Ola! Tenho interesse no imovel ${propertyTitle} (Cod: ${propertyCode}).`
+  const whatsMessage = `Olá! Tenho interesse no imóvel ${propertyTitle} (Cód: ${propertyCode}).`
   const whatsUrl = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent(whatsMessage)}`
 
   return (

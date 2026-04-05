@@ -26,41 +26,41 @@ interface FaixaConfig {
 const FAIXAS: FaixaConfig[] = [
   {
     slug: "ate-300-mil",
-    label: "Ate R$ 300 mil",
-    title: "Imoveis ate R$ 300 mil em Curitiba",
-    description: "Encontre imoveis com precos acessiveis em Curitiba. Apartamentos, casas e terrenos ate R$ 300 mil com otimas condicoes.",
+    label: "Até R$ 300 mil",
+    title: "Imóveis até R$ 300 mil em Curitiba",
+    description: "Encontre imóveis com preços acessíveis em Curitiba. Apartamentos, casas e terrenos até R$ 300 mil com ótimas condições.",
     min: null,
     max: 300000,
   },
   {
     slug: "300-a-500-mil",
     label: "R$ 300 a 500 mil",
-    title: "Imoveis de R$ 300 a 500 mil em Curitiba",
-    description: "Imoveis na faixa de R$ 300 a 500 mil em Curitiba. Apartamentos e casas com bom custo-beneficio nos melhores bairros.",
+    title: "Imóveis de R$ 300 a 500 mil em Curitiba",
+    description: "Imóveis na faixa de R$ 300 a 500 mil em Curitiba. Apartamentos e casas com bom custo-benefício nos melhores bairros.",
     min: 300000,
     max: 500000,
   },
   {
     slug: "500-mil-a-1-milhao",
-    label: "R$ 500 mil a 1 milhao",
-    title: "Imoveis de R$ 500 mil a R$ 1 milhao em Curitiba",
-    description: "Imoveis de medio a alto padrao em Curitiba. Apartamentos amplos e casas em bairros valorizados.",
+    label: "R$ 500 mil a 1 milhão",
+    title: "Imóveis de R$ 500 mil a R$ 1 milhão em Curitiba",
+    description: "Imóveis de médio a alto padrão em Curitiba. Apartamentos amplos e casas em bairros valorizados.",
     min: 500000,
     max: 1000000,
   },
   {
     slug: "1-a-3-milhoes",
-    label: "R$ 1 a 3 milhoes",
-    title: "Imoveis de R$ 1 a 3 milhoes em Curitiba",
-    description: "Imoveis de alto padrao em Curitiba. Coberturas, apartamentos e casas nos bairros mais nobres da cidade.",
+    label: "R$ 1 a 3 milhões",
+    title: "Imóveis de R$ 1 a 3 milhões em Curitiba",
+    description: "Imóveis de alto padrão em Curitiba. Coberturas, apartamentos e casas nos bairros mais nobres da cidade.",
     min: 1000000,
     max: 3000000,
   },
   {
     slug: "acima-3-milhoes",
-    label: "Acima de R$ 3 milhoes",
-    title: "Imoveis acima de R$ 3 milhoes em Curitiba",
-    description: "Imoveis de luxo em Curitiba. As melhores propriedades com acabamento premium e localizacao privilegiada.",
+    label: "Acima de R$ 3 milhões",
+    title: "Imóveis acima de R$ 3 milhões em Curitiba",
+    description: "Imóveis de luxo em Curitiba. As melhores propriedades com acabamento premium e localização privilegiada.",
     min: 3000000,
     max: null,
   },
@@ -140,7 +140,7 @@ export default async function FaixaPrecoPage({ params }: FaixaPageProps) {
           <Breadcrumbs
             items={[
               { name: "Home", url: "/" },
-              { name: "Imoveis", url: "/busca" },
+              { name: "Imóveis", url: "/busca" },
               { name: faixa.label, url: `/imoveis/preco/${faixaSlug}` },
             ]}
           />
@@ -157,7 +157,7 @@ export default async function FaixaPrecoPage({ params }: FaixaPageProps) {
             <div className="mt-6 flex flex-wrap gap-3">
               <div className="flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-sm text-white">
                 <Home className="size-4 text-brand-primary" />
-                <span><strong>{stats.total}</strong> imoveis</span>
+                <span><strong>{stats.total}</strong> imóveis</span>
               </div>
               {stats.precoMin && stats.precoMax && (
                 <div className="flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-sm text-white">
@@ -168,13 +168,13 @@ export default async function FaixaPrecoPage({ params }: FaixaPageProps) {
               {stats.areaMedio && (
                 <div className="flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-sm text-white">
                   <Maximize2 className="size-4 text-brand-primary" />
-                  <span>Media <strong>{stats.areaMedio} m²</strong></span>
+                  <span>Média <strong>{stats.areaMedio} m²</strong></span>
                 </div>
               )}
               {stats.quartosMedio && (
                 <div className="flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-sm text-white">
                   <BedDouble className="size-4 text-brand-primary" />
-                  <span>Media <strong>{stats.quartosMedio} quartos</strong></span>
+                  <span>Média <strong>{stats.quartosMedio} quartos</strong></span>
                 </div>
               )}
             </div>
@@ -190,10 +190,10 @@ export default async function FaixaPrecoPage({ params }: FaixaPageProps) {
           ) : (
             <div className="py-16 text-center">
               <p className="text-lg text-neutral-500">
-                Nenhum imovel encontrado nesta faixa de preco no momento.
+                Nenhum imóvel encontrado nesta faixa de preço no momento.
               </p>
               <a href="/busca" className="mt-4 inline-block text-brand-primary hover:underline">
-                Ver todos os imoveis
+                Ver todos os imóveis
               </a>
             </div>
           )}
@@ -206,12 +206,12 @@ export default async function FaixaPrecoPage({ params }: FaixaPageProps) {
           {faqQuestions.length > 0 && (
             <DynamicFAQ
               questions={faqQuestions}
-              title={`Perguntas sobre imoveis ${faixa.label.toLowerCase()}`}
+              title={`Perguntas sobre imóveis ${faixa.label.toLowerCase()}`}
             />
           )}
-          <RelatedPages title="Outras faixas de preco" links={otherFaixas} />
+          <RelatedPages title="Outras faixas de preço" links={otherFaixas} />
           {topBairros.length > 0 && (
-            <RelatedPages title="Bairros com mais opcoes nesta faixa" links={topBairros} />
+            <RelatedPages title="Bairros com mais opções nesta faixa" links={topBairros} />
           )}
         </div>
       </section>

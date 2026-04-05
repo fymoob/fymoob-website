@@ -19,36 +19,36 @@ import {
 } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Sobre a FYMOOB | Imobiliaria em Curitiba",
+  title: "Sobre a FYMOOB | Imobiliária em Curitiba",
   description:
-    "Conheca a FYMOOB Imobiliaria — especialistas em compra, venda e locacao de imoveis em Curitiba. CRECI J 9420. Atendimento personalizado e transparente.",
+    "Conheça a FYMOOB Imobiliária — especialistas em compra, venda e locação de imóveis em Curitiba. CRECI J 9420. Atendimento personalizado e transparente.",
   alternates: { canonical: "/sobre" },
 }
 
 const valores = [
-  { icon: Shield, title: "Integridade", description: "Transparencia e honestidade em cada negociacao." },
-  { icon: Sparkles, title: "Inovacao", description: "Solucoes modernas para superar expectativas." },
-  { icon: Target, title: "Personalizacao", description: "Atendimento feito sob medida para voce." },
-  { icon: Award, title: "Excelencia", description: "Qualidade impecavel em cada detalhe." },
+  { icon: Shield, title: "Integridade", description: "Transparência e honestidade em cada negociação." },
+  { icon: Sparkles, title: "Inovação", description: "Soluções modernas para superar expectativas." },
+  { icon: Target, title: "Personalização", description: "Atendimento feito sob medida para você." },
+  { icon: Award, title: "Excelência", description: "Qualidade impecável em cada detalhe." },
 ]
 
 const diferenciais = [
-  { number: "250+", label: "Imoveis ativos", icon: Building2 },
+  { number: "250+", label: "Imóveis ativos", icon: Building2 },
   { number: "65", label: "Bairros atendidos", icon: MapPin },
   { number: "113", label: "Empreendimentos", icon: TrendingUp },
   { number: "J 9420", label: "CRECI ativo", icon: Award },
 ]
 
 const etapas = [
-  { num: "01", title: "Portfolio diversificado", text: "Mais de 250 imoveis ativos em 65 bairros de Curitiba, com opcoes para todos os perfis e orcamentos." },
-  { num: "02", title: "Atendimento personalizado", text: "Nao somos um portal. Somos corretores que conhecem cada imovel e cada bairro de Curitiba." },
-  { num: "03", title: "Seguranca juridica", text: "Registro CRECI J 9420. Todas as transacoes seguem as normas do COFECI e legislacao vigente." },
-  { num: "04", title: "Especialistas em Curitiba", text: "Conhecemos os bairros, as tendencias de valorizacao e as melhores oportunidades da cidade." },
+  { num: "01", title: "Portfólio diversificado", text: "Mais de 250 imóveis ativos em 65 bairros de Curitiba, com opções para todos os perfis e orçamentos." },
+  { num: "02", title: "Atendimento personalizado", text: "Não somos um portal. Somos corretores que conhecem cada imóvel e cada bairro de Curitiba." },
+  { num: "03", title: "Segurança jurídica", text: "Registro CRECI J 9420. Todas as transações seguem as normas do COFECI e legislação vigente." },
+  { num: "04", title: "Especialistas em Curitiba", text: "Conhecemos os bairros, as tendências de valorização e as melhores oportunidades da cidade." },
 ]
 
 const equipe = [
-  { nome: "Bruno Cesar de Almeida", cargo: "CEO e Socio-fundador" },
-  { nome: "Wagner Spessatto", cargo: "Socio-diretor" },
+  { nome: "Bruno Cesar de Almeida", cargo: "CEO e Sócio-fundador" },
+  { nome: "Wagner Spessatto", cargo: "Sócio-diretor" },
 ]
 
 export default function SobrePage() {
@@ -65,14 +65,14 @@ export default function SobrePage() {
           <Breadcrumbs
             items={[
               { name: "Home", url: "/" },
-              { name: "Sobre nos", url: "/sobre" },
+              { name: "Sobre nós", url: "/sobre" },
             ]}
           />
           <h1 className="mt-6 font-display text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
-            Quem Nos Somos
+            Quem Nós Somos
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-neutral-400">
-            Na FYMOOB, transformamos a busca pelo lar ideal em uma experiencia unica e personalizada. Mais do que imoveis, entregamos{" "}
+            Na FYMOOB, transformamos a busca pelo lar ideal em uma experiência única e personalizada. Mais do que imóveis, entregamos{" "}
             <span className="text-brand-primary font-semibold">lares que refletem seus sonhos e estilo de vida.</span>
           </p>
         </div>
@@ -105,18 +105,18 @@ export default function SobrePage() {
             <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-brand-primary/10">
               <Handshake className="size-7 text-brand-primary" />
             </div>
-            <h2 className="font-display text-xl font-bold text-neutral-900">Nossa Missao</h2>
+            <h2 className="font-display text-xl font-bold text-neutral-900">Nossa Missão</h2>
             <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-              Guiar voce em cada etapa da jornada imobiliaria, com confianca, transparencia e excelencia, garantindo que sua experiencia seja segura e satisfatoria.
+              Guiar você em cada etapa da jornada imobiliária, com confiança, transparência e excelência, garantindo que sua experiência seja segura e satisfatória.
             </p>
           </div>
           <div className="rounded-2xl border border-brand-primary/10 bg-gradient-to-br from-white to-brand-primary/5 p-8 transition hover:shadow-lg hover:shadow-brand-primary/5">
             <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-brand-primary/10">
               <TrendingUp className="size-7 text-brand-primary" />
             </div>
-            <h2 className="font-display text-xl font-bold text-neutral-900">Nossa Visao</h2>
+            <h2 className="font-display text-xl font-bold text-neutral-900">Nossa Visão</h2>
             <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-              Redefinir o padrao de atendimento no mercado imobiliario, inovando para conectar pessoas ao lar perfeito, onde felicidade e bem-estar comecam.
+              Redefinir o padrão de atendimento no mercado imobiliário, inovando para conectar pessoas ao lar perfeito, onde felicidade e bem-estar começam.
             </p>
           </div>
         </div>
@@ -156,23 +156,23 @@ export default function SobrePage() {
               <div className="relative min-h-[300px] md:min-h-0">
                 <Image
                   src="/images/sobre-dreams.jpg"
-                  alt="Where Dreams Reside — FYMOOB Imobiliaria"
+                  alt="Where Dreams Reside — FYMOOB Imobiliária"
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
               <div className="flex flex-col justify-center p-8 md:p-12">
-                <h2 className="font-display text-2xl font-bold text-neutral-900 md:text-3xl">Nossa Historia</h2>
+                <h2 className="font-display text-2xl font-bold text-neutral-900 md:text-3xl">Nossa História</h2>
                 <div className="mt-5 space-y-4 text-sm leading-relaxed text-neutral-600">
                   <p>
-                    A FYMOOB nasceu da vontade de transformar a experiencia de comprar, vender e alugar imoveis em Curitiba. Nossos fundadores identificaram que o mercado imobiliario carecia de uma abordagem mais moderna, transparente e focada no cliente.
+                    A FYMOOB nasceu da vontade de transformar a experiência de comprar, vender e alugar imóveis em Curitiba. Nossos fundadores identificaram que o mercado imobiliário carecia de uma abordagem mais moderna, transparente e focada no cliente.
                   </p>
                   <p>
-                    Com sede no bairro Portao, atuamos em mais de 65 bairros da cidade, atendendo desde quem busca seu primeiro apartamento ate investidores que procuram oportunidades de alto retorno.
+                    Com sede no bairro Portão, atuamos em mais de 65 bairros da cidade, atendendo desde quem busca seu primeiro apartamento até investidores que procuram oportunidades de alto retorno.
                   </p>
                   <p className="border-l-2 border-brand-primary pl-4 italic text-neutral-800">
-                    &ldquo;Na FYMOOB, cada imovel e mais do que uma propriedade — e o inicio de uma nova historia.&rdquo;
+                    &ldquo;Na FYMOOB, cada imóvel é mais do que uma propriedade — é o início de uma nova história.&rdquo;
                   </p>
                 </div>
               </div>
@@ -203,7 +203,7 @@ export default function SobrePage() {
             ))}
           </div>
           <p className="mt-6 text-sm text-neutral-500">
-            Estamos ao seu lado para orientar, entender seus desejos e transformar a escolha do seu novo lar em uma experiencia marcada por confianca, agilidade e total transparencia.
+            Estamos ao seu lado para orientar, entender seus desejos e transformar a escolha do seu novo lar em uma experiência marcada por confiança, agilidade e total transparência.
           </p>
         </div>
       </section>
@@ -212,7 +212,7 @@ export default function SobrePage() {
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-center font-display text-2xl font-bold text-neutral-900 md:text-3xl">
-            Padrao FYMOOB em Cada Etapa
+            Padrão FYMOOB em Cada Etapa
           </h2>
           <div className="mt-12 space-y-6">
             {etapas.map((etapa, i) => (
@@ -238,7 +238,7 @@ export default function SobrePage() {
       {/* ══════ ESCRITÓRIO — Contato + Mapa ══════ */}
       <section className="bg-stone-50 py-16 md:py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-display text-2xl font-bold text-neutral-900 md:text-3xl">Nosso Escritorio</h2>
+          <h2 className="font-display text-2xl font-bold text-neutral-900 md:text-3xl">Nosso Escritório</h2>
           <div className="mt-8 grid gap-6 md:grid-cols-2">
             <div className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
               <div className="space-y-4">
@@ -246,7 +246,7 @@ export default function SobrePage() {
                   <MapPin className="mt-0.5 size-5 shrink-0 text-brand-primary" />
                   <div>
                     <p className="font-medium text-neutral-900">Rua Engenheiro Heitor Soares Gomes, 778</p>
-                    <p className="text-sm text-neutral-500">Esquina — Bairro Portao, Curitiba/PR — CEP 80330-350</p>
+                    <p className="text-sm text-neutral-500">Esquina — Bairro Portão, Curitiba/PR — CEP 80330-350</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -263,7 +263,7 @@ export default function SobrePage() {
                 </div>
                 <div className="flex items-center gap-3">
                   <Clock className="size-5 shrink-0 text-brand-primary" />
-                  <span className="text-sm text-neutral-500">Seg-Sex 9h as 18h | Sab 9h as 13h</span>
+                  <span className="text-sm text-neutral-500">Seg-Sex 9h às 18h | Sáb 9h às 13h</span>
                 </div>
               </div>
             </div>
@@ -276,7 +276,7 @@ export default function SobrePage() {
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Localizacao FYMOOB Imobiliaria"
+                title="Localização FYMOOB Imobiliária"
               />
             </div>
           </div>
@@ -288,17 +288,17 @@ export default function SobrePage() {
         <div className="absolute -right-32 top-0 h-64 w-64 rounded-full bg-brand-primary/10 blur-[100px]" />
         <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <p className="font-display text-2xl font-bold text-white md:text-3xl">
-            Pronto para encontrar seu imovel?
+            Pronto para encontrar seu imóvel?
           </p>
           <p className="mx-auto mt-4 max-w-lg text-sm text-neutral-400">
-            Explore nosso portfolio com mais de 250 imoveis em Curitiba ou entre em contato para um atendimento personalizado.
+            Explore nosso portfólio com mais de 250 imóveis em Curitiba ou entre em contato para um atendimento personalizado.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link
               href="/busca"
               className="inline-flex items-center rounded-full bg-brand-primary px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-brand-primary-hover hover:shadow-lg hover:shadow-brand-primary/20"
             >
-              Buscar imoveis
+              Buscar imóveis
             </Link>
             <Link
               href="/contato"
