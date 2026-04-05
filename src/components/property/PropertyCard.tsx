@@ -384,8 +384,8 @@ export function PropertyCard({
           />
         </button>
 
-        {/* Carousel controls */}
-        {(isResponsive ? photos.length > 1 : !isHorizontal && photos.length > 1) && (
+        {/* Carousel controls — only show if multiple photos available */}
+        {!isHorizontal && photos.length > 1 && (
           <>
             <button
               type="button"
