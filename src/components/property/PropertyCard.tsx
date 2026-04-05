@@ -191,6 +191,22 @@ export function PropertyCard({
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isFavorite, setIsFavorite] = useState(false)
 
+  // Lazy-load extra photos on first hover (only if we have 1 photo)
+  const [dynamicPhotos, setDynamicPhotos] = useState<string[] | null>(null)
+  const fetchedRef = useRef(false)
+  const loadPhotosOnHover = useCallback(() => {
+    if (fetchedRef.current || photos.length > 1) return
+    fetchedRef.current = true
+    fetch(`/api/photos/${property.codigo}`)
+      .then((r) => r.ok ? r.json() : [])
+      .then((apiPhotos: string[]) => {
+        if (apiPhotos.length > 1) setDynamicPhotos(apiPhotos)
+      })
+      .catch(() => {})
+  }, [property.codigo, photos.length])
+
+  const displayPhotos = dynamicPhotos ?? photos
+
   useEffect(() => {
     const check = () => setIsFavorite(getWishlistCodes().has(property.codigo))
     if ("requestIdleCallback" in window) {
@@ -220,11 +236,11 @@ export function PropertyCard({
 
   // Hover photo cycle (desktop) — Feature 2
   const startHoverCycle = useCallback(() => {
-    if (photos.length <= 1 || !carouselApi) return
+    if (displayPhotos.length <= 1 || !carouselApi) return
     hoverTimerRef.current = setInterval(() => {
       carouselApi.scrollNext()
     }, 1500)
-  }, [photos.length, carouselApi])
+  }, [displayPhotos.length, carouselApi])
 
   const stopHoverCycle = useCallback(() => {
     if (hoverTimerRef.current) {
@@ -286,7 +302,7 @@ export function PropertyCard({
   return (
     <article
       ref={articleRef}
-      onMouseEnter={(isHorizontal && !isResponsive) ? undefined : startHoverCycle}
+      onMouseEnter={() => { if (!(isHorizontal && !isResponsive)) startHoverCycle(); loadPhotosOnHover(); }}
       onMouseLeave={(isHorizontal && !isResponsive) ? undefined : stopHoverCycle}
       className={cn(
         "group overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-300",
@@ -307,7 +323,7 @@ export function PropertyCard({
         {(isHorizontal && !isResponsive) ? (
           /* Horizontal: single image, no carousel */
           <Image
-            src={photos[0]}
+            src={displayPhotos[0]}
             alt={alt}
             fill
             priority={prioritizeFirstImage}
@@ -320,10 +336,10 @@ export function PropertyCard({
           <Carousel
             className="h-full [&>div]:h-full"
             setApi={setCarouselApi}
-            opts={{ align: "start", loop: photos.length > 1, dragFree: false, containScroll: "trimSnaps", duration: 25 }}
+            opts={{ align: "start", loop: displayPhotos.length > 1, dragFree: false, containScroll: "trimSnaps", duration: 25 }}
           >
             <CarouselContent className="ml-0 h-full">
-              {photos.map((photo, index) => {
+              {displayPhotos.map((photo, index) => {
                 const shouldPrioritize = prioritizeFirstImage && index === 0
 
                 return (
@@ -388,7 +404,7 @@ export function PropertyCard({
         </button>
 
         {/* Carousel controls — only show if multiple photos available */}
-        {!isHorizontal && photos.length > 1 && (
+        {!isHorizontal && displayPhotos.length > 1 && (
           <>
             <button
               type="button"
@@ -409,7 +425,7 @@ export function PropertyCard({
             </button>
 
             <div className="absolute bottom-2.5 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-1 rounded-full bg-black/30 px-1.5 py-0.5 backdrop-blur-sm sm:flex">
-              {photos.slice(0, 6).map((_, index) => (
+              {displayPhotos.slice(0, 6).map((_, index) => (
                 <button
                   key={index}
                   type="button"
@@ -421,8 +437,8 @@ export function PropertyCard({
                   aria-label={`Ir para foto ${index + 1}`}
                 />
               ))}
-              {photos.length > 6 && (
-                <span className="text-[9px] text-white/70">+{photos.length - 6}</span>
+              {displayPhotos.length > 6 && (
+                <span className="text-[9px] text-white/70">+{displayPhotos.length - 6}</span>
               )}
             </div>
           </>
