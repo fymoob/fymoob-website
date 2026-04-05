@@ -23,10 +23,11 @@
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
 | -- | Bugs | 0 | 0 | 0 | — |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
-| 11 | Performance (CWV) | 31 | 26 | 5 | EM ANDAMENTO |
+| 11 | Performance (CWV) | 35 | 31 | 4 | EM ANDAMENTO |
 | 12 | Conteudo SEO Editorial | 29 | 26 | 3 | EM ANDAMENTO |
-| -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **229** | **195** | **34** | **85%** |
+| 13 | Funcionalidades e UX | 22 | 22 | 0 | CONCLUIDA |
+| -- | Nice-to-Have | 3 | 0 | 3 | FUTURO |
+| | **TOTAL** | **254** | **221** | **33** | **87%** |
 
 ---
 
@@ -716,23 +717,45 @@ _Nenhum bug aberto._
   - CSS do maplibre carregado dinamicamente do CDN apenas quando mapa abre
 - [x] DeferredGA: timeout 5s→12s (fora da janela de medicao do Lighthouse ~10s)
 
-### 11.7 — Resultados Finais (2026-04-04)
+### 11.7 — Resultados Intermediarios (2026-04-04)
 
-| Pagina | Baseline | Final | LCP | TBT | CLS | Payload |
-|--------|----------|-------|-----|-----|-----|---------|
+| Pagina | Baseline | v4 | LCP | TBT | CLS | Payload |
+|--------|----------|-----|-----|-----|-----|---------|
 | Home | 59 | **84** | 3.0s ⚠️ | 380ms ⚠️ | 0.008 ✅ | 937 KB |
 | Busca | 75 | **79** | 3.2s ⚠️ | 510ms ⚠️ | 0 ✅ | 1,110 KB |
 | Imovel | 65 | **91** | 2.8s ⚠️ | 240ms ⚠️ | 0 ✅ | 695 KB |
 | Bairro | 64 | **80** | 3.1s ⚠️ | 440ms ⚠️ | 0.078 ✅ | 1,110 KB |
 
-> **Imovel atingiu 91/100** — acima da meta de 90.
-> CLS zerado em Busca e Imovel (era 0.078). Bairro CLS corrigido de 0.148→0 (v3), 0.078 (v4, variacao).
-> TBT do Imovel caiu 86% (1,780→240ms) — fix do mapa foi o maior impacto.
-> Payload do Imovel caiu 45% (1,272→695 KB) — maplibre nao carrega mais no load.
-> LCP ~3s em todas as paginas — limitado pelo React hydration + TTFB da Vercel.
+### 11.8 — Hero Redesign + embla removal [CONCLUIDA]
+- [x] Hero: trocar fundo escuro (video) por imagem clara (sala ensolarada)
+- [x] Hero: altura 100dvh → 50dvh mobile / 75dvh desktop (proxima secao visivel)
+- [x] Hero: gradiente scrim duplo — topo (navbar) + bottom (texto)
+- [x] Hero: texto branco com drop-shadow para legibilidade sobre fundo claro
+- [x] HeroBackground: simplificado para Server Component (sem video, sem "use client")
+- [x] QuickSearch pill mobile: fundo branco/80 com blur + texto escuro
+- [x] SearchBar: botao "Buscar" preto → azul brand (#29ABE2) em TODOS os contextos
+- [x] SearchBar: placeholders neutral-400 → neutral-500 (melhor contraste)
+- [x] PropertyCard: substituir embla-carousel por CSS scroll-snap (TBT -200ms, -50KB bundle)
+- [x] PropertyCard: carousel fotos on-hover via /api/photos/[code] (zero impacto load inicial)
+- [x] Busca: grid 4 colunas → 3 colunas desktop (fotos maiores, texto respira)
+- [x] Busca: hierarquia texto card — Tipo → Preco → Titulo (1 linha) → Bairro (destaque)
+- [x] Busca: botao "Mapa" mockado no toolbar desktop
+- [x] PropertyFeatures: icones neutral-400 → neutral-500
+- [x] Contato: icone WhatsApp oficial SVG (era MessageCircle generico)
 
-### 11.8 — Pendentes Performance (futuro)
-- [ ] Criar PropertyCardStatic (Server Component) para listagens — sem carousel, sem JS
+### 11.9 — Resultados Finais (2026-04-05)
+
+| Pagina | Baseline | Final | LCP | TBT | CLS |
+|--------|----------|-------|-----|-----|-----|
+| Home | 59 | **88** | 3.0s | 300ms | 0.01 |
+| Busca | 75 | **86** | 2.9s | 380ms | 0 |
+| Imovel | 65 | **91** | 2.8s | 240ms | 0 |
+| Favoritos | — | **90** | 2.9s | 250ms | 0 |
+
+> **Comparativo com concorrente Jota8:**
+> FYMOOB 86 vs Jota8 31 (busca). 10x mais rapido em LCP, 12x mais leve em payload.
+
+### 11.10 — Pendentes Performance (futuro)
 - [ ] Code-split SearchBar filters (LocationFilter, PriceFilter) via dynamic import
 - [ ] Investigar @base-ui/react tree-shaking — remover ou substituir por componentes mais leves
 - [ ] PropertyGallery: split em Static (grid) + Interactive (fullscreen viewer)
@@ -792,6 +815,52 @@ _Nenhum bug aberto._
 
 ---
 
+## Fase 13 — Funcionalidades e UX Polish [CONCLUIDA]
+
+> Funcionalidades implementadas na sessao de 04-05/04/2026.
+
+### 13.1 — Comparador de Imoveis [CONCLUIDA]
+- [x] Pagina /comparar — comparacao lado a lado de ate 3 imoveis
+  - Cards com foto, preco, titulo, botao remover
+  - Tabela comparativa: preco, tipo, bairro, area, quartos, suites, banheiros, vagas, condominio, IPTU, preco/m², financiamento, permuta
+  - CTA WhatsApp com codigos dos imoveis na mensagem
+  - Estado vazio com link para busca
+- [x] CompareButton — botao comparar nas paginas de imovel (mobile + desktop)
+  - localStorage com evento "compare-change"
+  - Max 3 imoveis (4o substitui o mais antigo)
+  - Highlight amber quando ativo
+- [x] /api/properties/batch — API route para buscar multiplos imoveis em 1 request
+
+### 13.2 — Multi-Select e Dual Range [CONCLUIDA]
+- [x] QuickSearch: multi-select bairros com checkboxes (pode selecionar varios)
+- [x] QuickSearch: multi-select tipos com checkboxes
+- [x] QuickSearch: dual-range price slider (Airbnb pattern) — 1 barra, 2 thumbs
+  - CSS puro (zero JS library), thumbs 24px azul brand
+  - Labels min/max acima em pills
+- [x] MultiListPicker: tela cheia com checkboxes, "Limpar" + "Confirmar (N)"
+
+### 13.3 — UI Polish [CONCLUIDA]
+- [x] Cards busca mobile: texto compacto (text-base, line-clamp-2, hide meta row)
+- [x] Badge/heart menores no mobile responsive (nao sobrepostos)
+- [x] Imovel: espacamento reduzido entre secoes (mt-8→mt-4/6)
+- [x] Mapa: estilo positron (cinza) → voyager (colorido)
+- [x] Blog: 10 imagens hero otimizadas (Unsplash, 1200x630, 64-183KB)
+- [x] Blog: imagem Batel vs Agua Verde substituida por foto real de Curitiba (Rua XV)
+- [x] Contato: icone WhatsApp oficial SVG
+- [x] Favoritos: batch API (1 request em vez de N)
+
+### 13.4 — Contrato [CONCLUIDA]
+- [x] Ajustes solicitados pelo Wagner (6 alteracoes)
+  - 3 rodadas revisao, 120 dias suporte, 3h/solicitacao
+  - Suporte Vercel (diagnostico), excedente "avaliado conjuntamente"
+  - 3 sessoes treinamento de 1h
+- [x] Dados preenchidos: CPFs, CNPJ MEI, dados bancarios Bradesco
+- [x] Parcelas: 6x R$2.500 dia 10, primeira 10/05/2026
+- [x] Data assinatura: 04/04/2026
+- [x] PDF gerado e enviado para assinatura digital
+
+---
+
 ## Nice-to-Have (fora do contrato atual)
 
 > Estas features agregam valor mas nao estao no escopo contratual.
@@ -799,7 +868,7 @@ _Nenhum bug aberto._
 
 - [ ] Preco/m2 comparativo — comparacao com media do bairro
 - [ ] Mapa split-panel na busca — mapa interativo lado a lado com lista
-- [ ] Comparador de imoveis — selecionar 2-3 imoveis e comparar lado a lado
+- [x] ~~Comparador de imoveis~~ — IMPLEMENTADO (Fase 13.1)
 - [ ] Landing imagens quebradas tipo — verificar remotePatterns, CDN URLs, fallback placeholder
 
 ---
@@ -808,14 +877,15 @@ _Nenhum bug aberto._
 
 ```
 CONCLUIDO:
-  ✅ Fase 0-5.5 (Fundacao ate UX)
-  ✅ Fase 6 (Institucional + GA4)
-  ✅ Fase 8 (SEO Programatico — 600+ paginas, FAQ schema, cross-linking)
-  ✅ Fase 11.0 (Auditoria Performance — baseline 59/100)
+  ✅ Fase 0-6 (Fundacao, UX, Institucional)
+  ✅ Fase 8 (SEO Programatico — 616 paginas no sitemap)
+  ✅ Fase 11.0-11.8 (Performance — 59→88 Home, 75→86 Busca, 65→91 Imovel)
+  ✅ Fase 12.1-12.4 (Conteudo Editorial — 10 guias, 3 pillars, 15 artigos, 35K palavras)
+  ✅ Fase 13 (Comparador, Multi-select, Dual-range, UI Polish, Contrato)
 
 PROXIMO:
-  Fase 12.3-12.4 → Finalizar guias de bairro + artigos blog
   Fase 7 → Deploy producao (fymoob.com) — depende de DNS do Bruno
+  Apresentacao Rodada 1 ao cliente (~1 semana)
 
 PARALELO:
   10.2 Google Cloud OAuth → 10.3 Baseline → 10.4 Monitoramento
@@ -823,7 +893,7 @@ PARALELO:
 
 APOS GO-LIVE:
   Fase 9 → Painel Blog Admin
-  11.8 → Performance fine-tuning
+  11.10 → Performance fine-tuning (SearchBar code-split, @base-ui audit)
 
 QUANDO POSSIVEL:
   Nice-to-haves
