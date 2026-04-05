@@ -15,7 +15,7 @@ import {
   truncateText,
 } from "@/lib/utils"
 import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
-import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel"
+// CSS scroll-snap carousel — no embla dependency (~50KB saved)
 import { getTopViewedCodes } from "@/lib/view-tracker"
 
 const WISHLIST_STORAGE_KEY = "fymoob:wishlist"
@@ -187,7 +187,7 @@ export function PropertyCard({
   }, [])
   const badge = useMemo(() => getBadge(property, topViewed), [property, topViewed])
 
-  const [carouselApi, setCarouselApi] = useState<CarouselApi>()
+  const scrollRef = useRef<HTMLDivElement>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isFavorite, setIsFavorite] = useState(false)
 
@@ -216,31 +216,16 @@ export function PropertyCard({
     }
   }, [property.codigo])
 
-  useEffect(() => {
-    if (!carouselApi) return
-
-    const onSelect = () => {
-      setCurrentSlide(carouselApi.selectedScrollSnap())
-    }
-
-    onSelect()
-    carouselApi.on("select", onSelect)
-    carouselApi.on("reInit", onSelect)
-
-    return () => {
-      carouselApi.off("select", onSelect)
-      carouselApi.off("reInit", onSelect)
-    }
-  }, [carouselApi])
-
-
-  // Hover photo cycle (desktop) — Feature 2
+  // Hover photo cycle (desktop)
   const startHoverCycle = useCallback(() => {
-    if (displayPhotos.length <= 1 || !carouselApi) return
+    if (displayPhotos.length <= 1 || !scrollRef.current) return
     hoverTimerRef.current = setInterval(() => {
-      carouselApi.scrollNext()
+      const el = scrollRef.current
+      if (!el) return
+      const nextSlide = (currentSlide + 1) % displayPhotos.length
+      el.scrollTo({ left: nextSlide * el.offsetWidth, behavior: "smooth" })
     }, 1500)
-  }, [displayPhotos.length, carouselApi])
+  }, [displayPhotos.length, currentSlide])
 
   const stopHoverCycle = useCallback(() => {
     if (hoverTimerRef.current) {
@@ -278,23 +263,39 @@ export function PropertyCard({
     })
   }
 
+  const scrollTo = (index: number) => {
+    const el = scrollRef.current
+    if (!el) return
+    el.scrollTo({ left: index * el.offsetWidth, behavior: "smooth" })
+  }
+
   const goPrev = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     event.stopPropagation()
-    carouselApi?.scrollPrev()
+    const prev = currentSlide <= 0 ? displayPhotos.length - 1 : currentSlide - 1
+    scrollTo(prev)
   }
 
   const goNext = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     event.stopPropagation()
-    carouselApi?.scrollNext()
+    const next = (currentSlide + 1) % displayPhotos.length
+    scrollTo(next)
   }
 
   const goToSlide = (index: number, event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     event.stopPropagation()
-    carouselApi?.scrollTo(index)
+    scrollTo(index)
   }
+
+  // Track current slide via scroll position
+  const handleScroll = useCallback(() => {
+    const el = scrollRef.current
+    if (!el) return
+    const idx = Math.round(el.scrollLeft / el.offsetWidth)
+    setCurrentSlide(idx)
+  }, [])
 
   const isHorizontal = variant === "horizontal"
   const isResponsive = variant === "responsive"
@@ -332,34 +333,29 @@ export function PropertyCard({
             sizes="144px"
           />
         ) : (
-          /* Vertical: full carousel */
-          <Carousel
-            className="h-full [&>div]:h-full"
-            setApi={setCarouselApi}
-            opts={{ align: "start", loop: displayPhotos.length > 1, dragFree: false, containScroll: "trimSnaps", duration: 25 }}
+          /* CSS scroll-snap carousel — no JS library */
+          <div
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="flex h-full snap-x snap-mandatory overflow-x-auto scrollbar-none"
           >
-            <CarouselContent className="ml-0 h-full">
-              {displayPhotos.map((photo, index) => {
-                const shouldPrioritize = prioritizeFirstImage && index === 0
-
-                return (
-                  <CarouselItem key={`${property.codigo}-${index}`} className="h-full pl-0">
-                    <div className="relative h-full w-full overflow-hidden">
-                      <Image
-                        src={photo}
-                        alt={`${alt} - foto ${index + 1}`}
-                        fill
-                        priority={shouldPrioritize}
-                        loading={shouldPrioritize ? "eager" : "lazy"}
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                      />
-                    </div>
-                  </CarouselItem>
-                )
-              })}
-            </CarouselContent>
-          </Carousel>
+            {displayPhotos.map((photo, index) => {
+              const shouldPrioritize = prioritizeFirstImage && index === 0
+              return (
+                <div key={`${property.codigo}-${index}`} className="relative h-full w-full shrink-0 snap-center">
+                  <Image
+                    src={photo}
+                    alt={`${alt} - foto ${index + 1}`}
+                    fill
+                    priority={shouldPrioritize}
+                    loading={shouldPrioritize ? "eager" : "lazy"}
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                  />
+                </div>
+              )
+            })}
+          </div>
         )}
 
         <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/40 to-transparent" />
