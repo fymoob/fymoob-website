@@ -224,7 +224,7 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
 
       {/* ===== Thumbnail strip — desktop only ===== */}
       {count > 1 && (
-        <div className="mt-2 hidden gap-2 overflow-x-auto pb-1 md:flex">
+        <div className="mt-3 hidden gap-2 overflow-x-auto px-1 pb-2 pt-1 md:flex">
           {images.slice(0, 8).map((foto, index) => (
             <button
               key={index}
