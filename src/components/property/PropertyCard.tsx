@@ -451,14 +451,15 @@ export function PropertyCard({
           {formatPrice(price)}
         </p>
 
-        {/* Line 4: Features — always compact inline */}
+        {/* Line 4: Features — icon-only on horizontal, compact on vertical */}
         <PropertyFeatures
           dormitorios={property.dormitorios}
           banheiros={property.banheiros}
           vagas={property.vagas}
           areaPrivativa={property.areaPrivativa}
           size="sm"
-          compact
+          compact={!isHorizontal && !isResponsive}
+          iconOnly={isHorizontal || isResponsive}
           className="pt-0.5"
         />
       </div>

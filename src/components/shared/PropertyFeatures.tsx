@@ -9,6 +9,7 @@ interface PropertyFeaturesProps {
   areaPrivativa: number | null
   size?: "sm" | "md"
   compact?: boolean
+  iconOnly?: boolean
   className?: string
 }
 
@@ -19,6 +20,7 @@ export function PropertyFeatures({
   areaPrivativa,
   size = "md",
   compact = false,
+  iconOnly = false,
   className,
 }: PropertyFeaturesProps) {
   const iconSize = size === "sm" ? 14 : 18
@@ -32,6 +34,22 @@ export function PropertyFeatures({
   ].filter((f) => f.value !== null && f.value !== 0)
 
   if (features.length === 0) return null
+
+  if (iconOnly) {
+    return (
+      <div className={cn("flex items-center gap-2.5 text-neutral-500", className)}>
+        {features.map((f) => {
+          const Icon = f.icon
+          return (
+            <span key={f.label} className="inline-flex items-center gap-1">
+              <Icon size={12} className="shrink-0 text-neutral-400" />
+              <span className="text-[11px] font-semibold text-neutral-700">{f.value}</span>
+            </span>
+          )
+        })}
+      </div>
+    )
+  }
 
   if (compact) {
     return (
