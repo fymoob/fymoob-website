@@ -200,7 +200,14 @@ export function PropertyCard({
     fetch(`/api/photos/${property.codigo}`)
       .then((r) => r.ok ? r.json() : [])
       .then((apiPhotos: string[]) => {
-        if (apiPhotos.length > 1) setDynamicPhotos(apiPhotos)
+        if (apiPhotos.length > 1) {
+          setDynamicPhotos(apiPhotos)
+          setCurrentSlide(0)
+          // Reset scroll position after React re-renders
+          requestAnimationFrame(() => {
+            scrollRef.current?.scrollTo({ left: 0 })
+          })
+        }
       })
       .catch(() => {})
   }, [property.codigo, photos.length])
@@ -337,12 +344,12 @@ export function PropertyCard({
           <div
             ref={scrollRef}
             onScroll={handleScroll}
-            className="flex h-full snap-x snap-mandatory overflow-x-auto scrollbar-none"
+            className="flex h-full snap-x snap-mandatory overflow-x-scroll overflow-y-hidden scrollbar-none touch-pan-x"
           >
             {displayPhotos.map((photo, index) => {
               const shouldPrioritize = prioritizeFirstImage && index === 0
               return (
-                <div key={`${property.codigo}-${index}`} className="relative h-full w-full shrink-0 snap-center">
+                <div key={`${property.codigo}-${index}`} className="relative h-full min-w-full shrink-0 snap-start">
                   <Image
                     src={photo}
                     alt={`${alt} - foto ${index + 1}`}
