@@ -228,11 +228,13 @@ export function PropertyCard({
     if (displayPhotos.length <= 1 || !scrollRef.current) return
     hoverTimerRef.current = setInterval(() => {
       const el = scrollRef.current
-      if (!el) return
-      const nextSlide = (currentSlide + 1) % displayPhotos.length
-      el.scrollTo({ left: nextSlide * el.offsetWidth, behavior: "smooth" })
+      if (!el || !el.children[0]) return
+      const slideWidth = (el.children[0] as HTMLElement).offsetWidth
+      const curr = Math.round(el.scrollLeft / slideWidth)
+      const next = (curr + 1) % displayPhotos.length
+      el.scrollTo({ left: next * slideWidth, behavior: "smooth" })
     }, 1500)
-  }, [displayPhotos.length, currentSlide])
+  }, [displayPhotos.length])
 
   const stopHoverCycle = useCallback(() => {
     if (hoverTimerRef.current) {
@@ -272,8 +274,9 @@ export function PropertyCard({
 
   const scrollTo = (index: number) => {
     const el = scrollRef.current
-    if (!el) return
-    el.scrollTo({ left: index * el.offsetWidth, behavior: "smooth" })
+    if (!el || !el.children[0]) return
+    const slideWidth = (el.children[0] as HTMLElement).offsetWidth
+    el.scrollTo({ left: index * slideWidth, behavior: "smooth" })
   }
 
   const goPrev = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -299,8 +302,10 @@ export function PropertyCard({
   // Track current slide via scroll position
   const handleScroll = useCallback(() => {
     const el = scrollRef.current
-    if (!el) return
-    const idx = Math.round(el.scrollLeft / el.offsetWidth)
+    if (!el || !el.children[0]) return
+    const slideWidth = (el.children[0] as HTMLElement).offsetWidth
+    if (slideWidth === 0) return
+    const idx = Math.round(el.scrollLeft / slideWidth)
     setCurrentSlide(idx)
   }, [])
 
@@ -349,7 +354,7 @@ export function PropertyCard({
             {displayPhotos.map((photo, index) => {
               const shouldPrioritize = prioritizeFirstImage && index === 0
               return (
-                <div key={`${property.codigo}-${index}`} className="relative h-full min-w-full shrink-0 snap-start">
+                <div key={`${property.codigo}-${index}`} className="relative h-full min-w-full shrink-0 snap-start" style={{ scrollSnapStop: "always" }}>
                   <Image
                     src={photo}
                     alt={`${alt} - foto ${index + 1}`}
