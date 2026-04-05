@@ -110,7 +110,7 @@ const CARD_FIELDS = [
   "ExibirNoSite", "DestaqueWeb", "SuperDestaqueWeb", "Lancamento",
   "Empreendimento", "Construtora", "DataCadastro", "DataAtualizacao",
   "Latitude", "Longitude",
-  { Foto: ["Foto", "Ordem"] },
+  "FotoDestaquePequena",
 ]
 
 // Full fields for detail pages (single property)
