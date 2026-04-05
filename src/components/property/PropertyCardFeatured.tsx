@@ -15,7 +15,7 @@ export function PropertyCardFeatured({ property }: PropertyCardFeaturedProps) {
   return (
     <Link
       href={`/imovel/${property.slug}`}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-brand-primary-muted hover:shadow-xl md:flex-row"
+      className="group flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-brand-primary-muted hover:shadow-xl md:min-h-[350px] md:flex-row"
     >
       {/* Image */}
       <div className="relative aspect-[4/3] w-full overflow-hidden md:aspect-auto md:w-[55%]">
@@ -36,11 +36,11 @@ export function PropertyCardFeatured({ property }: PropertyCardFeaturedProps) {
           <span className="text-xs text-neutral-400">{property.bairro}, {property.cidade}</span>
         </div>
 
-        <h3 className="line-clamp-1 font-display text-base font-bold tracking-tight text-neutral-950 md:text-xl">
+        <h3 className="line-clamp-1 font-display text-base font-bold tracking-tight text-neutral-950 md:text-2xl">
           {property.titulo}
         </h3>
 
-        <p className="text-xl font-extrabold tracking-tight text-brand-primary md:text-2xl">
+        <p className="text-xl font-extrabold tracking-tight text-brand-primary md:text-3xl">
           {formatPrice(price)}
         </p>
 
