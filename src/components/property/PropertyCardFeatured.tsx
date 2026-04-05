@@ -18,18 +18,18 @@ export function PropertyCardFeatured({ property }: PropertyCardFeaturedProps) {
       className="group flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-brand-primary-muted hover:shadow-xl md:flex-row"
     >
       {/* Image */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden md:aspect-auto md:w-1/2">
+      <div className="relative aspect-[4/3] w-full overflow-hidden md:aspect-auto md:w-[55%]">
         <Image
           src={getPropertyImage(property)}
           alt={alt}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, 50vw"
+          sizes="(max-width: 768px) 100vw, 55vw"
         />
       </div>
 
       {/* Content */}
-      <div className="flex w-full flex-col justify-center space-y-1.5 p-4 md:w-1/2 md:space-y-2.5 md:p-8">
+      <div className="flex w-full flex-col justify-center space-y-1.5 p-4 md:w-[45%] md:space-y-2.5 md:p-8">
         <div className="flex items-center gap-2">
           <span className="text-xs font-medium text-neutral-500">{property.tipo}</span>
           <span className="text-neutral-300">·</span>

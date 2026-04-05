@@ -82,7 +82,7 @@ export default async function Home() {
   ])
 
   const highlight = featured[0]
-  const destaques = featured.slice(1, 5)
+  const destaques = featured.slice(1, 7)
   const bairros = allBairros.slice(0, 6)
   const bairroNames = allBairros.map((b) => b.bairro)
   const tipoNames = types.map((t) => t.tipo)
@@ -147,7 +147,7 @@ export default async function Home() {
               <HomeCarousel properties={destaques} />
             </div>
             {/* Desktop: grid */}
-            <AnimateOnScroll stagger className="mt-8 hidden gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+            <AnimateOnScroll stagger className="mt-8 hidden gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
               {destaques.map((property) => (
                 <div key={property.slug} className="">
                   <PropertyCard property={property} />
