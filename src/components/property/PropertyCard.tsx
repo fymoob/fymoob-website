@@ -143,12 +143,15 @@ export function getWishlistProperties(): string[] {
 // Photo helpers
 // ---------------------------------------------------------------------------
 
+const MAX_CARD_PHOTOS = 5
+
 function getPropertyPhotos(property: Property): string[] {
   const merged = [getPropertyImage(property), ...filterPropertyPhotos(property.fotos)].filter(
     Boolean
   )
   const uniquePhotos = Array.from(new Set(merged))
-  return uniquePhotos.length > 0 ? uniquePhotos : ["/logo.png"]
+  const photos = uniquePhotos.length > 0 ? uniquePhotos : ["/logo.png"]
+  return photos.slice(0, MAX_CARD_PHOTOS)
 }
 
 // ---------------------------------------------------------------------------
