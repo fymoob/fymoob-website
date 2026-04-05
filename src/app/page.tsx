@@ -107,39 +107,7 @@ export default async function Home() {
       {/* Saved search banner */}
       <SavedSearchBanner />
 
-      {/* Stats Bar — Social Proof */}
-      <section className="border-b border-neutral-100 bg-white py-6">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-6 px-4 sm:gap-10 sm:px-6 lg:gap-16 lg:px-8">
-          <div className="flex items-center gap-2.5">
-            <LayoutGrid className="size-5 text-brand-primary" />
-            <div>
-              <span className="text-lg font-bold text-neutral-950">{stats.total}</span>
-              <span className="ml-1.5 text-sm text-neutral-500">imóveis disponíveis</span>
-            </div>
-          </div>
-          <div className="hidden h-8 w-px bg-neutral-200 sm:block" />
-          <div className="flex items-center gap-2.5">
-            <MapPin className="size-5 text-brand-primary" />
-            <div>
-              <span className="text-lg font-bold text-neutral-950">{allBairros.length}</span>
-              <span className="ml-1.5 text-sm text-neutral-500">bairros em Curitiba</span>
-            </div>
-          </div>
-          <div className="hidden h-8 w-px bg-neutral-200 sm:block" />
-          <div className="flex items-center gap-2.5">
-            <TrendingUp className="size-5 text-brand-primary" />
-            <div>
-              <span className="text-lg font-bold text-neutral-950">{types.length}</span>
-              <span className="ml-1.5 text-sm text-neutral-500">tipos de imóvel</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Vistos recentemente */}
-      <RecentlyViewed />
-
-      {/* Oportunidade de hoje */}
+      {/* Oportunidade de hoje — vitrine imediata após hero */}
       {highlight && (
         <section id="oportunidade" className="py-10 md:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -241,6 +209,38 @@ export default async function Home() {
           </AnimateOnScroll>
         </div>
       </section>
+
+      {/* Stats Bar — Prova Social (autoridade, mais abaixo) */}
+      <section className="border-y border-neutral-100 bg-white py-6">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-6 px-4 sm:gap-10 sm:px-6 lg:gap-16 lg:px-8">
+          <div className="flex items-center gap-2.5">
+            <LayoutGrid className="size-5 text-brand-primary" />
+            <div>
+              <span className="text-lg font-bold text-neutral-950">{stats.total}</span>
+              <span className="ml-1.5 text-sm text-neutral-500">imóveis disponíveis</span>
+            </div>
+          </div>
+          <div className="hidden h-8 w-px bg-neutral-200 sm:block" />
+          <div className="flex items-center gap-2.5">
+            <MapPin className="size-5 text-brand-primary" />
+            <div>
+              <span className="text-lg font-bold text-neutral-950">{allBairros.length}</span>
+              <span className="ml-1.5 text-sm text-neutral-500">bairros em Curitiba</span>
+            </div>
+          </div>
+          <div className="hidden h-8 w-px bg-neutral-200 sm:block" />
+          <div className="flex items-center gap-2.5">
+            <TrendingUp className="size-5 text-brand-primary" />
+            <div>
+              <span className="text-lg font-bold text-neutral-950">{types.length}</span>
+              <span className="ml-1.5 text-sm text-neutral-500">tipos de imóvel</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Vistos recentemente — só aparece se o usuário já visitou imóveis */}
+      <RecentlyViewed />
 
       {/* Do Blog */}
       {recentPosts.length > 0 && (
