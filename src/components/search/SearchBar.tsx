@@ -375,6 +375,40 @@ export function SearchBar({
 
         {/* ── Desktop: Full search bar (also mobile for home context) ── */}
         <div className={cn(!isHome && "hidden md:block")}>
+
+        {/* Comprar / Alugar toggle — above search bar on home */}
+        {isHome && (
+          <div className="mb-4 flex justify-center">
+            <div className="inline-flex rounded-full bg-black/30 p-1 backdrop-blur-sm">
+              {(["comprar", "alugar"] as const).map((f) => {
+                const isActive = f === "comprar"
+                  ? !pendingFilters.finalidades.includes("locacao")
+                  : pendingFilters.finalidades.includes("locacao")
+                return (
+                  <button
+                    key={f}
+                    type="button"
+                    onClick={() =>
+                      setPendingFilters((c) => ({
+                        ...c,
+                        finalidades: f === "alugar" ? ["locacao"] : [],
+                      }))
+                    }
+                    className={cn(
+                      "rounded-full px-6 py-2 text-sm font-semibold transition-all",
+                      isActive
+                        ? "bg-white text-neutral-900 shadow-sm"
+                        : "text-white/80 hover:text-white"
+                    )}
+                  >
+                    {f === "comprar" ? "Comprar" : "Alugar"}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
         <div className="relative">
           <div
             className={cn(
