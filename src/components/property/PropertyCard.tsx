@@ -170,7 +170,6 @@ export function PropertyCard({
   variant = "vertical",
 }: PropertyCardProps) {
   const articleRef = useRef<HTMLElement>(null)
-  const hoverTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const alt = generateImageAlt(property)
   const price = property.precoVenda ?? property.precoAluguel
   const photos = useMemo(() => getPropertyPhotos(property), [property])
@@ -187,7 +186,6 @@ export function PropertyCard({
   }, [])
   const badge = useMemo(() => getBadge(property, topViewed), [property, topViewed])
 
-  const scrollRef = useRef<HTMLDivElement>(null)
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isFavorite, setIsFavorite] = useState(false)
 
@@ -203,10 +201,6 @@ export function PropertyCard({
         if (apiPhotos.length > 1) {
           setDynamicPhotos(apiPhotos)
           setCurrentSlide(0)
-          // Reset scroll position after React re-renders
-          requestAnimationFrame(() => {
-            scrollRef.current?.scrollTo({ left: 0 })
-          })
         }
       })
       .catch(() => {})
@@ -223,29 +217,7 @@ export function PropertyCard({
     }
   }, [property.codigo])
 
-  // Hover photo cycle (desktop)
-  const startHoverCycle = useCallback(() => {
-    if (displayPhotos.length <= 1 || !scrollRef.current) return
-    hoverTimerRef.current = setInterval(() => {
-      const el = scrollRef.current
-      if (!el || !el.children[0]) return
-      const slideWidth = (el.children[0] as HTMLElement).offsetWidth
-      const curr = Math.round(el.scrollLeft / slideWidth)
-      const next = (curr + 1) % displayPhotos.length
-      el.scrollTo({ left: next * slideWidth, behavior: "smooth" })
-    }, 1500)
-  }, [displayPhotos.length])
-
-  const stopHoverCycle = useCallback(() => {
-    if (hoverTimerRef.current) {
-      clearInterval(hoverTimerRef.current)
-      hoverTimerRef.current = null
-    }
-  }, [])
-
-  useEffect(() => {
-    return () => stopHoverCycle()
-  }, [stopHoverCycle])
+  // No auto-cycle — carousel navigates only via arrow clicks
 
   const propertyHref = `/imovel/${property.slug}`
 
@@ -272,42 +244,23 @@ export function PropertyCard({
     })
   }
 
-  const scrollTo = (index: number) => {
-    const el = scrollRef.current
-    if (!el || !el.children[0]) return
-    const slideWidth = (el.children[0] as HTMLElement).offsetWidth
-    el.scrollTo({ left: index * slideWidth, behavior: "smooth" })
-  }
-
   const goPrev = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     event.stopPropagation()
-    const prev = currentSlide <= 0 ? displayPhotos.length - 1 : currentSlide - 1
-    scrollTo(prev)
+    setCurrentSlide((prev) => prev <= 0 ? displayPhotos.length - 1 : prev - 1)
   }
 
   const goNext = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     event.stopPropagation()
-    const next = (currentSlide + 1) % displayPhotos.length
-    scrollTo(next)
+    setCurrentSlide((prev) => (prev + 1) % displayPhotos.length)
   }
 
   const goToSlide = (index: number, event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     event.stopPropagation()
-    scrollTo(index)
+    setCurrentSlide(index)
   }
-
-  // Track current slide via scroll position
-  const handleScroll = useCallback(() => {
-    const el = scrollRef.current
-    if (!el || !el.children[0]) return
-    const slideWidth = (el.children[0] as HTMLElement).offsetWidth
-    if (slideWidth === 0) return
-    const idx = Math.round(el.scrollLeft / slideWidth)
-    setCurrentSlide(idx)
-  }, [])
 
   const isHorizontal = variant === "horizontal"
   const isResponsive = variant === "responsive"
@@ -315,8 +268,7 @@ export function PropertyCard({
   return (
     <article
       ref={articleRef}
-      onMouseEnter={() => { if (!(isHorizontal && !isResponsive)) startHoverCycle(); loadPhotosOnHover(); }}
-      onMouseLeave={(isHorizontal && !isResponsive) ? undefined : stopHoverCycle}
+      onMouseEnter={loadPhotosOnHover}
       className={cn(
         "group overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-300",
         isResponsive
@@ -345,16 +297,16 @@ export function PropertyCard({
             sizes="144px"
           />
         ) : (
-          /* CSS scroll-snap carousel — no JS library */
-          <div
-            ref={scrollRef}
-            onScroll={handleScroll}
-            className="flex h-full snap-x snap-mandatory overflow-x-scroll overflow-y-hidden scrollbar-none touch-pan-x"
-          >
+          /* Transform-based carousel — no scroll, no library */
+          <div className="relative h-full w-full overflow-hidden">
+            <div
+              className="flex h-full transition-transform duration-300 ease-out"
+              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+            >
             {displayPhotos.map((photo, index) => {
               const shouldPrioritize = prioritizeFirstImage && index === 0
               return (
-                <div key={`${property.codigo}-${index}`} className="relative h-full min-w-full shrink-0 snap-start" style={{ scrollSnapStop: "always" }}>
+                <div key={`${property.codigo}-${index}`} className="relative h-full min-w-full shrink-0">
                   <Image
                     src={photo}
                     alt={`${alt} - foto ${index + 1}`}
@@ -367,6 +319,7 @@ export function PropertyCard({
                 </div>
               )
             })}
+            </div>
           </div>
         )}
 
