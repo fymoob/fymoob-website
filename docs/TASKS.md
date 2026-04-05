@@ -26,8 +26,9 @@
 | 11 | Performance (CWV) | 35 | 31 | 4 | EM ANDAMENTO |
 | 12 | Conteudo SEO Editorial | 29 | 26 | 3 | EM ANDAMENTO |
 | 13 | Funcionalidades e UX | 22 | 22 | 0 | CONCLUIDA |
+| -- | Ações Bruno (CRM) | 3 | 0 | 3 | PENDENTE |
 | -- | Nice-to-Have | 3 | 0 | 3 | FUTURO |
-| | **TOTAL** | **254** | **221** | **33** | **87%** |
+| | **TOTAL** | **257** | **221** | **36** | **86%** |
 
 ---
 
@@ -858,6 +859,74 @@ _Nenhum bug aberto._
 - [x] Parcelas: 6x R$2.500 dia 10, primeira 10/05/2026
 - [x] Data assinatura: 04/04/2026
 - [x] PDF gerado e enviado para assinatura digital
+
+---
+
+## Ações para o Bruno (CRM / Conteúdo)
+
+> Tarefas que dependem do Bruno para melhorar a qualidade do site.
+
+### Padronização de Títulos e Descrições no CRM
+
+**Problema:** Os títulos e descrições dos imóveis no CRM estão inconsistentes — alguns com CAPS LOCK, outros cortados, outros genéricos demais. Isso aparece direto no site e prejudica a imagem profissional e o SEO.
+
+**Ação:** Pedir ao Bruno que padronize os títulos e descrições dos imóveis ativos no CRM (Loft/Vista). Abaixo o padrão recomendado:
+
+#### Formato recomendado para TÍTULO (max 70 caracteres)
+```
+{Tipo} {N} Quartos {Área}m² | {Bairro}, Curitiba — {Diferencial}
+```
+
+**Exemplos:**
+- `Apartamento 3 Quartos 98m² | Batel, Curitiba — Vista Panorâmica`
+- `Sobrado 4 Quartos 220m² | Ecoville — Lazer Completo e 3 Vagas`
+- `Cobertura Duplex 180m² | Água Verde — Terraço Gourmet`
+- `Casa 5 Quartos 350m² | Santa Felicidade — Piscina e Churrasqueira`
+
+**Por que funciona:**
+- Tipo + quartos + m² = palavras-chave que o Google indexa
+- Bairro no título = 70%+ das buscas incluem bairro
+- Diferencial no final = gera curiosidade e clique
+- Listagens com m² no título recebem 15-20% mais cliques
+
+**Palavras que convertem:** vista livre, pronto para morar, reformado, andar alto, sol da manhã, lazer completo, primeira locação, silencioso, segurança 24h
+
+**Evitar:** "IMPERDÍVEL", "NÃO PERCA" (spam), ALL CAPS, exclamações (!!!), "lindo/maravilhoso" sem contexto, abreviações (dorm., gar.)
+
+#### Formato recomendado para DESCRIÇÃO (150-250 palavras)
+```
+{Frase de estilo de vida com o diferencial principal.}
+
+• {N} quartos ({N} suítes) · {N} vagas · {Área}m² privativos
+• {Diferencial 1: acabamento/posição solar/vista}
+• {Diferencial 2: lazer do condomínio/segurança}
+
+Localização privilegiada no {Bairro}, a {X} min do {referência — parque, shopping, escola}.
+
+Agende sua visita com a FYMOOB.
+```
+
+**Exemplo de descrição profissional:**
+```
+Viva com vista para o Parque Barigui neste apartamento de alto padrão no Ecoville.
+
+• 3 quartos (1 suíte) · 2 vagas · 126m² privativos
+• Acabamento premium, piso porcelanato e cozinha planejada
+• Condomínio com piscina, academia, salão de festas e playground
+
+Localização privilegiada no Ecoville, a 5 min do Parque Barigui e do Shopping Barigui.
+
+Agende sua visita com a FYMOOB.
+```
+
+**Dados de pesquisa:**
+- Descrições com bullet points têm ~30% mais engajamento que texto corrido
+- Mencionar proximidade a referências (parques, shoppings) aumenta cliques
+- Sempre incluir preço — imóveis sem preço recebem menos leads qualificados
+
+- [ ] Falar com Bruno sobre padronização de títulos no CRM
+- [ ] Falar com Bruno sobre padronização de descrições no CRM
+- [ ] Criar documento/guia simplificado para o Bruno seguir
 
 ---
 
