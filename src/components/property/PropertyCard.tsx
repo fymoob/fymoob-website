@@ -415,57 +415,51 @@ export function PropertyCard({
       {/* Content section */}
       <div className={cn(
         isResponsive
-          ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3 sm:flex-none sm:gap-0 sm:space-y-2.5 sm:p-5 md:p-6"
+          ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3 sm:flex-none sm:gap-0 sm:space-y-1.5 sm:p-4 md:p-5"
           : isHorizontal
             ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3"
-            : "space-y-2.5 p-5 md:p-6"
+            : "space-y-1 p-4"
       )}>
-        {/* Line 1: Type */}
-        <span className={cn(
-          "font-medium text-neutral-500",
-          (isHorizontal || isResponsive) ? "text-xs" : "text-sm"
+        {/* Line 1: Type · Location */}
+        <p className={cn(
+          "text-neutral-500",
+          (isHorizontal || isResponsive) ? "text-xs" : "text-xs"
         )}>
-          {property.tipo}
-        </span>
+          <span className="font-medium">{property.tipo}</span>
+          <span className="mx-1.5 text-neutral-300">·</span>
+          <span>{property.bairro}, {property.cidade}</span>
+        </p>
 
-        {/* Line 2: Price (highlight) */}
+        {/* Line 2: Title (1 line) */}
+        <Link href={propertyHref} className="block">
+          <h2 className={cn(
+            "truncate font-bold tracking-tight text-neutral-900 transition-colors hover:text-brand-primary",
+            (isHorizontal || isResponsive) ? "text-sm sm:text-base" : "text-sm"
+          )}>
+            {property.titulo}
+          </h2>
+        </Link>
+
+        {/* Line 3: Price */}
         <p
           className={cn(
-            "font-bold tracking-tight",
-            isHorizontal ? "text-base" : isResponsive ? "text-base sm:text-xl" : "text-xl",
+            "font-extrabold tracking-tight",
+            isHorizontal ? "text-base" : isResponsive ? "text-base sm:text-lg" : "text-lg",
             price ? "text-brand-primary" : "text-neutral-400"
           )}
         >
           {formatPrice(price)}
         </p>
 
-        {/* Line 3: Title (1 line, truncated) */}
-        <Link href={propertyHref} className="block">
-          <h2 className={cn(
-            "truncate font-semibold tracking-tight text-neutral-800 transition-colors hover:text-brand-primary",
-            (isHorizontal || isResponsive) ? "text-sm sm:text-base" : "text-base"
-          )}>
-            {property.titulo}
-          </h2>
-        </Link>
-
-        {/* Line 4: Location (prominent) */}
-        <p className={cn(
-          "font-medium text-neutral-600",
-          (isHorizontal || isResponsive) ? "text-xs sm:text-sm" : "text-sm"
-        )}>
-          {property.bairro}, {property.cidade}
-        </p>
-
-        {/* Features */}
+        {/* Line 4: Features — always compact inline */}
         <PropertyFeatures
           dormitorios={property.dormitorios}
           banheiros={property.banheiros}
           vagas={property.vagas}
           areaPrivativa={property.areaPrivativa}
           size="sm"
-          compact={isHorizontal || isResponsive}
-          className={(isHorizontal || isResponsive) ? "pt-0 sm:pt-1" : "pt-1"}
+          compact
+          className="pt-0.5"
         />
       </div>
     </article>
