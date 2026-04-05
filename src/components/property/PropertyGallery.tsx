@@ -222,30 +222,7 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
         )}
       </div>
 
-      {/* ===== Thumbnail strip — desktop only ===== */}
-      {count > 1 && (
-        <div className="mt-3 hidden gap-2 overflow-x-auto px-1 pb-2 pt-1 md:flex">
-          {images.slice(0, 8).map((foto, index) => (
-            <button
-              key={index}
-              type="button"
-              onClick={() => openFullscreen(index)}
-              className="relative h-16 w-24 shrink-0 overflow-hidden rounded-lg ring-2 ring-transparent transition-all hover:ring-brand-primary hover:scale-105"
-            >
-              <Image src={foto} alt={`${alt} - Miniatura ${index + 1}`} fill loading="lazy" className="object-cover" sizes="96px" />
-            </button>
-          ))}
-          {count > 8 && (
-            <button
-              type="button"
-              onClick={openGrid}
-              className="flex h-16 w-24 shrink-0 items-center justify-center rounded-lg bg-neutral-100 text-xs font-semibold text-neutral-600 transition-colors hover:bg-neutral-200"
-            >
-              +{count - 8} fotos
-            </button>
-          )}
-        </div>
-      )}
+      {/* Thumbnails removed — Bento Box grid + "Mostrar todas as fotos" button is sufficient */}
 
       {/* ===== Grid overlay (Airbnb style) ===== */}
       {mode === "grid" && (
