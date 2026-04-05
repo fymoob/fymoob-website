@@ -109,7 +109,7 @@ export default async function Home() {
 
       {/* Oportunidade de hoje — vitrine imediata após hero */}
       {highlight && (
-        <section id="oportunidade" className="py-10 md:py-16">
+        <section id="oportunidade" className="relative z-10 -mt-16 pb-10 md:-mt-24 md:pb-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <AnimateOnScroll>
               <div>
