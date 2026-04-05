@@ -89,18 +89,22 @@ function formatShortPrice(v: number): string {
   return `R$ ${(v / 1000).toFixed(0)}mil`
 }
 
+const STEPS_COMPRAR = [0, 200000, 300000, 500000, 750000, 1000000, 1500000, 2000000, 3000000, 5000000, 10000000]
+const STEPS_ALUGAR = [0, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 7500, 10000, 25000]
+
 function PriceRangeSlider({
   min,
   max,
   onMinChange,
   onMaxChange,
+  steps = STEPS_COMPRAR,
 }: {
   min: number
   max: number
   onMinChange: (v: number) => void
   onMaxChange: (v: number) => void
+  steps?: number[]
 }) {
-  const steps = [0, 200000, 300000, 500000, 750000, 1000000, 1500000, 2000000, 3000000, 5000000, 10000000]
   const total = steps.length - 1
   const minIdx = steps.findIndex((s) => s >= min) === -1 ? 0 : steps.findIndex((s) => s >= min)
   const maxIdx = steps.findIndex((s) => s >= max) === -1 ? total : steps.findIndex((s) => s >= max)
@@ -167,6 +171,7 @@ function PriceRangeSlider({
 export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
+  const [finalidade, setFinalidade] = useState<"comprar" | "alugar">("comprar")
   const [bairrosSel, setBairrosSel] = useState<string[]>([])
   const [tiposSel, setTiposSel] = useState<string[]>([])
 
@@ -187,10 +192,17 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
     return () => { document.body.style.overflow = "" }
   }, [open, picker])
 
+  const handleFinalidade = (f: "comprar" | "alugar") => {
+    setFinalidade(f)
+    setPrecoMin(0)
+    setPrecoMax(0)
+  }
+
   const activeFilters = [bairrosSel.length > 0 ? "1" : "", tiposSel.length > 0 ? "1" : "", quartos, (precoMin > 0 || precoMax > 0) ? "1" : ""].filter(Boolean).length
 
   const handleSearch = useCallback(() => {
     const params = new URLSearchParams()
+    if (finalidade === "alugar") params.set("finalidade", "aluguel")
     if (bairrosSel.length > 0) params.set("bairro", bairrosSel.join(","))
     if (tiposSel.length > 0) params.set("tipo", tiposSel.join(","))
     if (quartos) params.set("quartos", quartos)
@@ -198,9 +210,10 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
     if (precoMax > 0) params.set("precoMax", precoMax.toString())
     setOpen(false)
     router.push(`/busca?${params.toString()}`)
-  }, [bairrosSel, tiposSel, quartos, precoMin, precoMax, router])
+  }, [finalidade, bairrosSel, tiposSel, quartos, precoMin, precoMax, router])
 
   const clearAll = () => {
+    setFinalidade("comprar")
     setBairrosSel([])
     setTiposSel([])
     setQuartos("")
@@ -228,6 +241,26 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
       {/* Filters */}
       <div className="flex-1 overflow-y-auto overscroll-contain px-5 py-6">
         <div className="space-y-6">
+          {/* Finalidade — segmented control */}
+          <div className="rounded-xl bg-neutral-100 p-1">
+            <div className="grid grid-cols-2 gap-1">
+              {(["comprar", "alugar"] as const).map((f) => (
+                <button
+                  key={f}
+                  type="button"
+                  onClick={() => handleFinalidade(f)}
+                  className={`rounded-lg py-3 text-sm font-semibold transition ${
+                    finalidade === f
+                      ? "bg-white text-neutral-900 shadow-sm"
+                      : "text-neutral-500 hover:text-neutral-700"
+                  }`}
+                >
+                  {f === "comprar" ? "Comprar" : "Alugar"}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Bairro — tap to open list picker */}
           <div>
             <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-neutral-900">
@@ -286,7 +319,13 @@ export function QuickSearch({ bairros, tipos }: QuickSearchProps) {
               <DollarSign className="size-4 text-brand-primary" />
               Faixa de preço
             </label>
-            <PriceRangeSlider min={precoMin} max={precoMax} onMinChange={setPrecoMin} onMaxChange={setPrecoMax} />
+            <PriceRangeSlider
+              min={precoMin}
+              max={precoMax}
+              onMinChange={setPrecoMin}
+              onMaxChange={setPrecoMax}
+              steps={finalidade === "alugar" ? STEPS_ALUGAR : STEPS_COMPRAR}
+            />
           </div>
         </div>
       </div>
