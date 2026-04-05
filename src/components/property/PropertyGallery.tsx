@@ -224,7 +224,7 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
           <button
             type="button"
             onClick={openGrid}
-            className="absolute right-4 bottom-4 z-10 flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-[#0B1120] shadow-md transition hover:shadow-lg"
+            className="absolute right-4 bottom-4 z-10 flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-[#0B1120] shadow-md transition-all hover:scale-105 hover:bg-neutral-100 hover:shadow-lg"
           >
             <Grid className="h-4 w-4" />
             Mostrar todas as fotos
