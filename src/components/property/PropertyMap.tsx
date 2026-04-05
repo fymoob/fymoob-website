@@ -18,6 +18,17 @@ export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMap
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<unknown>(null)
 
+  const handleToggle = () => {
+    setIsOpen((prev) => {
+      if (prev && mapRef.current) {
+        (mapRef.current as { remove: () => void }).remove()
+        mapRef.current = null
+        setLoaded(false)
+      }
+      return !prev
+    })
+  }
+
   const coords = useMemo(
     () => getPropertyCoordinates(latitude, longitude, bairro),
     [latitude, longitude, bairro]
@@ -91,7 +102,7 @@ export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMap
     <section>
       <button
         type="button"
-        onClick={() => setIsOpen((v) => !v)}
+        onClick={handleToggle}
         className="flex w-full items-center justify-between pt-2 pb-4"
       >
         <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950">
