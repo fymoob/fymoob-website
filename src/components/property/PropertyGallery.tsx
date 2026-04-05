@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
-import { ArrowLeft, ChevronLeft, ChevronRight, Grid, Maximize, Share2, X } from "lucide-react"
+import { ArrowLeft, ChevronLeft, ChevronRight, Grid, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -29,19 +29,30 @@ type GalleryMode = "closed" | "grid" | "fullscreen"
 export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
   const [mode, setMode] = React.useState<GalleryMode>("closed")
   const [currentIndex, setCurrentIndex] = React.useState(0)
+  const [animating, setAnimating] = React.useState(false)
   const touchStartX = React.useRef(0)
   const touchEndX = React.useRef(0)
 
   const images = fotos.length > 0 ? fotos : ["/placeholder-property.jpg"]
   const count = images.length
 
-  const openGrid = () => setMode("grid")
+  const openGrid = () => {
+    setAnimating(true)
+    setMode("grid")
+    requestAnimationFrame(() => setAnimating(false))
+  }
   const openFullscreen = (index: number) => {
     setCurrentIndex(index)
+    setAnimating(true)
     setMode("fullscreen")
+    requestAnimationFrame(() => setAnimating(false))
   }
   const close = () => setMode("closed")
-  const backToGrid = () => setMode("grid")
+  const backToGrid = () => {
+    setAnimating(true)
+    setMode("grid")
+    requestAnimationFrame(() => setAnimating(false))
+  }
 
   const goNext = React.useCallback(
     () => setCurrentIndex((prev) => (prev + 1) % count),
@@ -121,7 +132,6 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
           ))}
         </div>
 
-        {/* Photo counter */}
         <div className="absolute bottom-3 right-3 z-10 rounded-full bg-black/50 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
           1 / {count}
         </div>
@@ -138,7 +148,7 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
         )}
       </div>
 
-      {/* ===== Desktop: Grid layout ===== */}
+      {/* ===== Desktop: Bento Box grid ===== */}
       <div
         className={cn(
           "group relative hidden overflow-hidden md:h-[32rem]",
@@ -222,46 +232,44 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
         )}
       </div>
 
-      {/* Thumbnails removed — Bento Box grid + "Mostrar todas as fotos" button is sufficient */}
-
-      {/* ===== Grid overlay (Airbnb style) ===== */}
+      {/* ===== Grid Modal (Masonry) — Airbnb style ===== */}
       {mode === "grid" && (
-        <div className="fixed inset-0 z-[9999] overflow-y-auto bg-white">
-          {/* Header */}
+        <div className="fixed inset-0 z-[9999] animate-[fadeIn_0.25s_ease-out] overflow-y-auto bg-white">
+          {/* Sticky header */}
           <div className="sticky top-0 z-10 flex items-center justify-between border-b border-neutral-100 bg-white/95 px-4 py-3 backdrop-blur-sm">
             <button
               type="button"
               onClick={close}
-              className="flex items-center gap-2 text-sm font-medium text-neutral-700"
+              className="flex items-center gap-2 text-sm font-medium text-neutral-700 transition hover:text-neutral-900"
             >
               <ArrowLeft className="size-5" />
               <span className="hidden sm:inline">Voltar</span>
             </button>
-            <span className="text-sm text-neutral-500">{count} fotos</span>
+            <span className="text-sm font-medium text-neutral-500">{count} fotos</span>
             <button
               type="button"
               onClick={close}
-              className="flex size-9 items-center justify-center rounded-full hover:bg-neutral-100"
+              className="flex size-9 items-center justify-center rounded-full transition hover:bg-neutral-100"
             >
               <X className="size-5 text-neutral-600" />
             </button>
           </div>
 
-          {/* Photo grid */}
-          <div className="mx-auto max-w-3xl columns-2 gap-2 p-2 sm:p-4">
+          {/* Masonry grid */}
+          <div className="mx-auto max-w-4xl columns-2 gap-3 p-4 sm:columns-3 sm:gap-4 sm:p-6">
             {images.map((foto, index) => (
               <button
                 key={index}
                 type="button"
                 onClick={() => openFullscreen(index)}
-                className="mb-2 block w-full overflow-hidden rounded-lg transition hover:opacity-90"
+                className="mb-3 block w-full overflow-hidden rounded-xl transition-transform duration-200 hover:scale-[1.02] hover:shadow-lg sm:mb-4"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={foto}
                   alt={`${alt} - Foto ${index + 1}`}
                   className="w-full"
-                  loading={index < 4 ? "eager" : "lazy"}
+                  loading={index < 6 ? "eager" : "lazy"}
                 />
               </button>
             ))}
@@ -269,29 +277,29 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
         </div>
       )}
 
-      {/* ===== Fullscreen viewer with swipe ===== */}
+      {/* ===== Fullscreen Viewer (Immersive) ===== */}
       {mode === "fullscreen" && (
         <div
-          className="fixed inset-0 z-[9999] flex h-[100dvh] w-screen flex-col bg-black/95"
+          className="fixed inset-0 z-[9999] flex h-[100dvh] w-screen flex-col bg-black/95 animate-[fadeIn_0.2s_ease-out]"
           onClick={close}
         >
           {/* Top bar */}
-          <div className="flex h-12 shrink-0 items-center justify-between px-4">
+          <div className="flex h-14 shrink-0 items-center justify-between px-4 sm:px-6">
             <button
               type="button"
               onClick={(e) => { e.stopPropagation(); backToGrid() }}
-              className="flex items-center gap-2 text-sm text-white/70 transition hover:text-white"
+              className="flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-white/80 backdrop-blur-sm transition hover:bg-white/20 hover:text-white"
             >
-              <ArrowLeft className="size-4" />
+              <Grid className="size-4" />
               Galeria
             </button>
-            <span className="text-sm font-medium text-white/70">
+            <span className="rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-white/80 backdrop-blur-sm">
               {currentIndex + 1} / {count}
             </span>
             <button
               type="button"
               onClick={(e) => { e.stopPropagation(); close() }}
-              className="flex size-9 items-center justify-center rounded-full text-white/60 transition hover:bg-white/10 hover:text-white"
+              className="flex size-10 items-center justify-center rounded-full bg-white/10 text-white/70 backdrop-blur-sm transition hover:bg-white/20 hover:text-white"
               aria-label="Fechar"
             >
               <X className="size-5" />
@@ -300,7 +308,7 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
 
           {/* Image area with swipe */}
           <div
-            className="flex flex-1 items-center justify-center px-4 sm:px-14"
+            className="flex flex-1 items-center justify-center px-4 sm:px-16"
             onClick={(e) => e.stopPropagation()}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
@@ -308,9 +316,10 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
+              key={currentIndex}
               src={images[currentIndex]}
               alt={`${alt} - Foto ${currentIndex + 1}`}
-              className="max-h-[calc(100dvh-8rem)] max-w-full rounded-lg object-contain"
+              className="max-h-[calc(100dvh-8rem)] max-w-full rounded-lg object-contain animate-[fadeIn_0.15s_ease-out]"
               draggable={false}
             />
           </div>
@@ -321,18 +330,18 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
               <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); goPrev() }}
-                className="absolute top-1/2 left-3 z-[10000] hidden size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 sm:flex"
+                className="absolute top-1/2 left-4 z-[10000] hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/25 hover:scale-110 sm:flex"
                 aria-label="Foto anterior"
               >
-                <ChevronLeft className="size-5" />
+                <ChevronLeft className="size-6" />
               </button>
               <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); goNext() }}
-                className="absolute top-1/2 right-3 z-[10000] hidden size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white transition hover:bg-white/20 sm:flex"
+                className="absolute top-1/2 right-4 z-[10000] hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition hover:bg-white/25 hover:scale-110 sm:flex"
                 aria-label="Próxima foto"
               >
-                <ChevronRight className="size-5" />
+                <ChevronRight className="size-6" />
               </button>
             </>
           )}
