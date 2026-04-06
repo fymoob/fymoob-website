@@ -129,8 +129,8 @@ export default function SobrePage() {
       {/* ══════ HERO — Imagem de fundo com overlay ══════ */}
       <section className="relative flex min-h-[60vh] items-center overflow-hidden">
         <Image
-          src="/images/sobre-dreams.jpg"
-          alt="Vista panorâmica de Curitiba — FYMOOB Imobiliária"
+          src="/images/sobre/sobre-maior.jpeg"
+          alt="Empreendimento de alto padrão com vista para o Parque Barigui — FYMOOB Imobiliária"
           fill
           className="object-cover"
           sizes="100vw"
@@ -179,8 +179,8 @@ export default function SobrePage() {
           {/* Imagem */}
           <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-neutral-200 shadow-xl">
             <Image
-              src="/images/sobre-dreams.jpg"
-              alt="Escritório FYMOOB — imobiliária em Curitiba"
+              src="/images/sobre/sobre-horizontal.png"
+              alt="Vista aérea de empreendimento em Curitiba — FYMOOB Imobiliária"
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 50vw"
