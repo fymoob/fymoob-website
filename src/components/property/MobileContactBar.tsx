@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState, useRef } from "react"
 import { Phone, TrendingUp, Sparkles } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
 
@@ -26,7 +27,6 @@ function getUrgencyMessage({
   precoVenda?: number | null
   precoMedioBairro?: number | null
 }) {
-  // Only real backend data — no localStorage views
   if (dataCadastro) {
     const daysAgo = Math.floor(
       (Date.now() - new Date(dataCadastro).getTime()) / (1000 * 60 * 60 * 24)
@@ -59,11 +59,41 @@ export function MobileContactBar({
   const price = precoVenda ?? precoAluguel ?? null
   const urgency = getUrgencyMessage({ dataCadastro, bairro, precoVenda, precoMedioBairro })
 
+  // Mirror BottomNav auto-hide: when nav hides, slide down to bottom-0
+  const [navHidden, setNavHidden] = useState(false)
+  const lastScrollY = useRef(0)
+
+  useEffect(() => {
+    let idleTimer: ReturnType<typeof setTimeout>
+
+    const handleScroll = () => {
+      const currentY = window.scrollY
+      if (currentY > lastScrollY.current && currentY > 100) {
+        setNavHidden(true)
+      } else {
+        setNavHidden(false)
+      }
+      lastScrollY.current = currentY
+
+      clearTimeout(idleTimer)
+      idleTimer = setTimeout(() => setNavHidden(false), 2000)
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      clearTimeout(idleTimer)
+    }
+  }, [])
+
   const whatsMessage = `Olá! Tenho interesse no imóvel ${propertyTitle} (Cód: ${propertyCode}). Gostaria de mais informações.`
   const whatsUrl = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent(whatsMessage)}`
 
   return (
-    <div className="fixed bottom-[57px] left-0 z-[100] w-full border-t border-neutral-200 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.08)] md:hidden">
+    <div
+      className="fixed left-0 z-[100] w-full border-t border-neutral-200 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.08)] transition-[bottom] duration-300 md:hidden"
+      style={{ bottom: navHidden ? 0 : 57 }}
+    >
       {/* Urgency strip */}
       {urgency && (
         <div className={`flex items-center justify-center gap-1.5 px-4 py-2 ${urgency.color}`}>
@@ -73,7 +103,7 @@ export function MobileContactBar({
       )}
 
       {/* Price + CTA */}
-      <div className="border-t border-neutral-100 px-4 py-3 pb-[env(safe-area-inset-bottom,8px)]">
+      <div className="border-t border-neutral-100 px-4 py-3">
         <div className="mx-auto flex w-full max-w-lg items-center gap-2">
           <div className="min-w-0 flex-1">
             <p className="truncate text-lg font-extrabold text-brand-primary">
