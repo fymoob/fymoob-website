@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { getProperties, getAllBairros } from "@/services/loft"
+import { Suspense } from "react"
+import { getProperties, getAllBairros, getAllTypes, getAllCities, getPropertyStats } from "@/services/loft"
+import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
 import { formatPrice } from "@/lib/utils"
 import {
   generateLandingTitle,
@@ -29,9 +31,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function TerrenosCuritibaPage() {
-  const [{ properties }, bairros] = await Promise.all([
+  const [{ properties }, bairros, tipos, cidades, stats] = await Promise.all([
     getProperties({ tipo: "Terreno", limit: 1000 }),
     getAllBairros(),
+    getAllTypes(),
+    getAllCities(),
+    getPropertyStats(),
   ])
 
   const precos = properties
@@ -55,6 +60,18 @@ export default async function TerrenosCuritibaPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
+
+      <Suspense fallback={null}>
+      <SearchPageSearchBar
+        bairros={bairros.map((b) => b.bairro)}
+        tipos={tipos.map((t) => t.tipo)}
+        cidades={cidades}
+        priceBounds={{ min: stats.precoMin ?? 50_000, max: stats.precoMax ?? 5_000_000 }}
+        bairroSummaries={bairros}
+        tipoSummaries={tipos}
+        sticky
+      />
+      </Suspense>
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <Breadcrumbs

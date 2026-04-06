@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { getProperties } from "@/services/loft"
+import { Suspense } from "react"
+import { getProperties, getAllBairros, getAllTypes, getAllCities, getPropertyStats } from "@/services/loft"
+import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
 import { formatPrice } from "@/lib/utils"
 import {
   generateItemListSchema,
@@ -95,11 +97,17 @@ export default async function FaixaPrecoPage({ params }: FaixaPageProps) {
   const faixa = getFaixa(faixaSlug)
   if (!faixa) notFound()
 
-  const { properties } = await getProperties({
-    precoMin: faixa.min ?? undefined,
-    precoMax: faixa.max ?? undefined,
-    limit: 1000,
-  })
+  const [{ properties }, bairros, tipos, cidades, statsData] = await Promise.all([
+    getProperties({
+      precoMin: faixa.min ?? undefined,
+      precoMax: faixa.max ?? undefined,
+      limit: 1000,
+    }),
+    getAllBairros(),
+    getAllTypes(),
+    getAllCities(),
+    getPropertyStats(),
+  ])
 
   const stats = generateLandingStats(properties)
   const intro = generateLandingIntro(properties)
@@ -133,6 +141,18 @@ export default async function FaixaPrecoPage({ params }: FaixaPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
+
+      <Suspense fallback={null}>
+      <SearchPageSearchBar
+        bairros={bairros.map((b) => b.bairro)}
+        tipos={tipos.map((t) => t.tipo)}
+        cidades={cidades}
+        priceBounds={{ min: statsData.precoMin ?? 50_000, max: statsData.precoMax ?? 5_000_000 }}
+        bairroSummaries={bairros}
+        tipoSummaries={tipos}
+        sticky
+      />
+      </Suspense>
 
       {/* Hero */}
       <section className="bg-neutral-950 py-12 md:py-16">

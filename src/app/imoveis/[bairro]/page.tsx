@@ -2,7 +2,9 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { MapPin, Building2, TrendingUp } from "lucide-react"
-import { getAllBairros, getProperties } from "@/services/loft"
+import { Suspense } from "react"
+import { getAllBairros, getProperties, getAllTypes, getAllCities, getPropertyStats } from "@/services/loft"
+import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
 import { slugify, formatPrice } from "@/lib/utils"
 import {
   generateLandingTitle,
@@ -75,7 +77,12 @@ function getBairroDescription(bairroName: string): string {
 
 export default async function BairroPage({ params }: BairroPageProps) {
   const { bairro: bairroSlug } = await params
-  const bairros = await getAllBairros()
+  const [bairros, tipos, cidades, stats] = await Promise.all([
+    getAllBairros(),
+    getAllTypes(),
+    getAllCities(),
+    getPropertyStats(),
+  ])
   const bairro = bairros.find((b) => b.slug === bairroSlug)
 
   if (!bairro) notFound()
@@ -108,6 +115,18 @@ export default async function BairroPage({ params }: BairroPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
+
+      <Suspense fallback={null}>
+      <SearchPageSearchBar
+        bairros={bairros.map((b) => b.bairro)}
+        tipos={tipos.map((t) => t.tipo)}
+        cidades={cidades}
+        priceBounds={{ min: stats.precoMin ?? 50_000, max: stats.precoMax ?? 5_000_000 }}
+        bairroSummaries={bairros}
+        tipoSummaries={tipos}
+        sticky
+      />
+      </Suspense>
 
       {/* Hero */}
       <section className="relative bg-neutral-950 py-16 md:py-24">

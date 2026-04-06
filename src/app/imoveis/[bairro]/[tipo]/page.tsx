@@ -1,7 +1,9 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { getAllBairros, getProperties, getPropertiesByBairro } from "@/services/loft"
+import { Suspense } from "react"
+import { getAllBairros, getProperties, getPropertiesByBairro, getAllTypes, getAllCities, getPropertyStats } from "@/services/loft"
+import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
 import { slugify, formatPrice } from "@/lib/utils"
 import type { PropertyType, PropertyFinalidade, PropertyFilters } from "@/types/property"
 import {
@@ -161,7 +163,12 @@ export async function generateMetadata({ params }: CombinadaPageProps): Promise<
 
 export default async function CombinadaPage({ params }: CombinadaPageProps) {
   const { bairro: bairroSlug, tipo: tipoSlug } = await params
-  const bairros = await getAllBairros()
+  const [bairros, allTypes, cidades, priceStats] = await Promise.all([
+    getAllBairros(),
+    getAllTypes(),
+    getAllCities(),
+    getPropertyStats(),
+  ])
   const bairro = bairros.find((b) => b.slug === bairroSlug)
 
   if (!bairro) notFound()
@@ -290,6 +297,18 @@ export default async function CombinadaPage({ params }: CombinadaPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
+
+      <Suspense fallback={null}>
+      <SearchPageSearchBar
+        bairros={bairros.map((b) => b.bairro)}
+        tipos={allTypes.map((t) => t.tipo)}
+        cidades={cidades}
+        priceBounds={{ min: priceStats.precoMin ?? 50_000, max: priceStats.precoMax ?? 5_000_000 }}
+        bairroSummaries={bairros}
+        tipoSummaries={allTypes}
+        sticky
+      />
+      </Suspense>
 
       {/* Hero */}
       <section className="bg-neutral-950 py-12 md:py-16">
