@@ -63,8 +63,8 @@ export function generateLocalBusinessSchema() {
       {
         "@type": "OpeningHoursSpecification",
         dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        opens: "09:00",
-        closes: "18:00",
+        opens: "08:30",
+        closes: "17:00",
       },
       {
         "@type": "OpeningHoursSpecification",
@@ -103,7 +103,7 @@ export function generatePropertySchema(property: Property) {
     }),
     address: {
       "@type": "PostalAddress",
-      streetAddress: property.endereco || undefined,
+      streetAddress: [property.endereco, property.numero].filter(Boolean).join(", ") || undefined,
       addressLocality: property.cidade,
       addressRegion: property.estado,
       addressCountry: "BR",
@@ -415,7 +415,7 @@ export function generateDynamicFAQ(
 
   faq.push({
     question: `Como visitar um ${tipo ? tipo.toLowerCase() : "imóvel"} ${bairro ? `no ${bairro}` : "em Curitiba"}?`,
-    answer: `Você pode agendar uma visita pelo WhatsApp da FYMOOB ou pelo formulário de contato na página do imóvel. Nossos corretores atendem de segunda a sexta das 9h às 18h e sábados das 9h às 13h.`,
+    answer: `Você pode agendar uma visita pelo WhatsApp da FYMOOB ou pelo formulário de contato na página do imóvel. Nossos corretores atendem de segunda a sexta das 8h30 às 17h e sábados das 9h às 13h.`,
   })
 
   return faq

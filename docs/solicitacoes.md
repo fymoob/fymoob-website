@@ -1,0 +1,165 @@
+# FYMOOB — Solicitacoes do Bruno
+
+> Solicitacoes de alteracao feitas pelo cliente (Bruno).
+> Atualizado: 2026-04-06
+> **Total: 14 solicitacoes** | ACEITO: 4 | AVALIAR: 10 | Implementadas: 12 (+ task 3 pendente dados Bruno, task 10 futuro v2)
+
+---
+
+## Legenda
+
+- `[ ]` — Pendente
+- `[x]` — Implementado
+- **ACEITO** — Troca de informacao simples, sem impacto em componentes
+- **AVALIAR** — Mudanca em componente/layout, precisa analisar impacto
+
+---
+
+## Solicitacoes
+
+<!-- Formato:
+- [ ] **Descricao da solicitacao**
+  - Tipo: ACEITO | AVALIAR
+  - Comentario: [analise de impacto, se vale a pena, se vai ficar melhor]
+-->
+
+### 1. Alterar cargos da Diretoria (pagina /sobre) ✅
+- [x] Bruno Cesar de Almeida: "CEO e Socio-fundador" → **"Socio e Responsavel tecnico"**
+- [x] Wagner Spessatto: "Socio-diretor" → **"Socio"**
+  - Tipo: **ACEITO** (troca de informacao)
+  - Comentario: Texto simples, sem impacto em layout ou componentes.
+  - Implementacao: Editar array `equipe` em `src/app/sobre/page.tsx` (linhas 49-52). Trocar strings `cargo`.
+
+### 2. Alterar horario de atendimento (pagina /contato e /sobre) ✅
+- [x] "Seg-Sex 9h as 18h | Sab 9h as 13h" → **"Seg-Sex 8h30 as 17h | Sab 9h as 13h"**
+  - Tipo: **ACEITO** (troca de informacao)
+  - Comentario: Texto simples. Verificar se aparece tambem no footer, JSON-LD LocalBusiness e schema Organization — atualizar em todos os locais.
+  - Implementacao: 5 arquivos — (1) `src/app/contato/page.tsx` linha 59, (2) `src/components/layout/Footer.tsx` linha 76, (3) `src/lib/seo.ts` linhas 65+418 (JSON-LD opens 09:00→08:30, closes 18:00→17:00), (4) `src/data/faq-data.ts` linha 25.
+
+### 3. Adicionar mini-curriculo na secao Diretoria (pagina /sobre)
+- [ ] Expandir cards da diretoria com: formacao, anos de experiencia, especializacoes
+  - Tipo: **AVALIAR**
+  - Comentario: **Vale muito a pena.** Reforça E-E-A-T (Experience, Expertise, Authority, Trust) — fator direto de ranking no Google. Mostra credibilidade para o visitante que esta decidindo confiar o imovel. Impacto no componente: expandir o card atual (que so tem nome + cargo + avatar placeholder) para incluir 2-3 linhas de bio. Mudanca pequena em layout, grande em percepcao de valor. **Depende do Bruno enviar os dados** (formacao, CRECI, anos de mercado, especializacao de cada socio).
+
+### 4. Trocar "Avaliacao gratuita" por "Avaliacao profissional" (pagina /anuncie) ✅
+- [x] Hero subtitle: "Avaliacao gratuita" → **"Avaliacao profissional"**
+- [x] Card beneficio: "Avaliacao de mercado gratuita" → **"Avaliacao de mercado profissional"**
+- [x] Metadata description: "Avaliacao gratuita" → **"Avaliacao profissional"**
+  - Tipo: **ACEITO** (troca de informacao)
+  - Comentario: Faz sentido comercial — existem casos que cobram pela avaliacao. Manter "gratuita" poderia gerar expectativa errada no cliente. Troca de texto simples, sem impacto em layout.
+  - Implementacao: `src/app/anuncie/page.tsx` — 3 pontos: linha 20 (metadata), linha 78 (card title), linha 125 (hero bold text). Trocar "gratuita" → "profissional".
+
+### 5. Remover promessa de "24 horas" no anuncio (pagina /anuncie + /contato) ✅
+- [x] Card: "Anuncio em 24 horas" → **"Agilidade na publicacao"**
+- [x] Descricao: "publicado em menos de 24 horas" → **"publicado o mais rapido possivel"**
+- [x] Stats bar: "24h Para publicar" → **"Agil / Publicacao rapida"**
+- [x] Contato: "Respondemos em ate 24 horas" → **"Respondemos o mais rapido possivel"**
+  - Tipo: **ACEITO** (troca de informacao)
+  - Comentario: Correto comercialmente — prometer 24h pode gerar cobranca do cliente se atrasar. Melhor manter vago sem comprometer prazo fixo.
+  - Implementacao: `src/app/anuncie/page.tsx` — linhas 66 (card title), 68 (card desc), 135 (stats). `src/app/contato/page.tsx` — linha 48.
+
+### 6. Filtro de bairros: mostrar apenas bairros com imoveis ativos (SearchBar / QuickSearch) ✅
+- [x] Remover bairros sem imoveis da lista de selecao (hoje mostra todos, inclusive vazios)
+- [x] Agrupar bairros por cidade (Curitiba, Sao Jose dos Pinhais, etc.)
+- [x] Ao selecionar uma cidade, mostrar apenas bairros daquela cidade
+  - Tipo: **AVALIAR**
+  - Comentario: **Vale muito a pena — melhora UX significativamente.** Hoje a lista tem ~65 bairros misturados de varias cidades. Referencia ImovelWeb: agrupa por "Cidade, Estado" com contagem. Dados ja disponiveis na API (campo Cidade). Bairros com total=0 ja sao identificaveis via `getAllBairros()`.
+  - Implementacao:
+    1. **API** (`src/services/loft.ts`): Adicionar campo `cidade` ao `BairroSummary` (~linha 544). No loop de agregacao, capturar `property.cidade` por bairro.
+    2. **Props**: `src/app/page.tsx` e `src/app/busca/page.tsx` — passar `BairroSummary[]` completo em vez de `.map(b => b.bairro)`.
+    3. **Desktop** (`src/components/search/filters/LocationFilter.tsx`): Filtrar bairros com `total > 0`. Agrupar por cidade usando `CommandGroup` do shadcn com header da cidade. Mostrar contagem "(25)" ao lado de cada bairro.
+    4. **Mobile** (`src/components/search/QuickSearch.tsx` MultiListPicker): Adicionar prop `groups` para renderizar headers de cidade (sticky) + bairros abaixo. Mesma logica de filtrar total > 0.
+
+### 7. Reordenar filtros da SearchBar por prioridade (Home) ✅
+- [x] Ordem atual: Localizacao → Preco → Quartos → Tipo/Finalidade
+- [x] Ordem correta: **Comprar/Alugar → Localizacao → Tipo → Quartos → Preco**
+  - Tipo: **AVALIAR**
+  - Comentario: **Faz sentido e vale a pena.** Referencia ImovelWeb: "Location → Comprar → Tipo → Quartos → Preco → Mais filtros". A finalidade e a decisao mais fundamental (define precos, tipos disponiveis).
+  - Implementacao:
+    1. **Desktop** (`src/components/search/SearchBar.tsx` ~linha 422): Reordenar grid para 6 colunas — Comprar/Alugar (toggle pill, nao popover) → Localizacao → Tipo → Quartos → Preco → Buscar.
+    2. **Remover toggle standalone** da home (linhas 380-410) — finalidade agora integrada como primeiro pill da barra.
+    3. **Mobile bottom sheet** (linhas 266-324): Reordenar secoes na mesma ordem.
+    4. **QuickSearch**: Ja tem ordem correta (Finalidade primeiro). Sem mudanca.
+
+### 8. Filtro de tipo: mostrar apenas tipos com imoveis disponiveis (SearchBar) ✅
+- [x] Ao selecionar "Comprar": lista de tipos mostra apenas categorias com imoveis a venda
+- [x] Ao selecionar "Alugar": lista de tipos mostra apenas categorias com imoveis para locacao
+- [x] Remover tipos sem imoveis ativos da lista (hoje mostra todos, inclusive vazios)
+  - Tipo: **AVALIAR**
+  - Comentario: **Excelente ponto.** Nao faz sentido mostrar "Chacara" se nao tem nenhuma. Mesma logica da task 6.
+  - Implementacao:
+    1. **API** (`src/services/loft.ts`): Enriquecer `TypeSummary` com `porFinalidade: Record<string, number>` (ex: `{"Venda": 15, "Aluguel": 3}`). No loop de `getAllTypes()`, contar tambem por `property.finalidade`.
+    2. **Props**: Passar `TypeSummary[]` completo (com contagens) em vez de `.map(t => t.tipo)`.
+    3. **Controller** (`useSearchBarController.ts`): `useMemo` que filtra `tipoOptions` baseado na `finalidade` selecionada. Quando finalidade muda, limpar tipos selecionados que ficaram invalidos.
+    4. **QuickSearch**: Mesma logica — filtrar lista de tipos quando toggle Comprar/Alugar muda.
+
+### 9. Bug: "Alugar" nao mostra tipo de imovel, so "Alugar" no pill (SearchBar) ✅
+- [x] Ao clicar "Alugar", o filtro de tipo deve continuar disponivel (mostrar tipos com imoveis para locacao)
+- [x] Hoje ao clicar "Alugar" o pill de tipo some e mostra apenas "Alugar" — comportamento incorreto
+  - Tipo: **AVALIAR**
+  - Comentario: **Bug real.** Root cause: `TypeFilter.tsx` combina checkboxes de tipo + finalidade no mesmo componente. O `typeLabel` no controller conta tipos + finalidades juntos. O pill "Tipo" ativa/limpa ambos.
+  - Implementacao:
+    1. **TypeFilter** (`src/components/search/filters/TypeFilter.tsx`): Remover secao de finalidade (~linhas 74-92). Manter apenas checkboxes de tipo.
+    2. **Controller** (`useSearchBarController.ts`): `typeLabel` so conta `tipos.length`, nao `finalidades.length`. Criar `finalidadeLabel` separado.
+    3. **SearchBar** (`SearchBar.tsx`): Pill "Tipo" so verifica/limpa `tipos`, nao `finalidades`. Finalidade vira pill independente (task 7).
+    4. Implementar junto com tasks 7 e 8 — sao complementares.
+
+### 10. Busca estilo portal: autocomplete cidade+bairro (referencia ImovelWeb) — FUTURO v2
+- [ ] Campo de localizacao com autocomplete: digitar "cu" → sugere "Curitiba, Parana" + "Agua Verde, Curitiba" etc.
+- [ ] Formato: "Bairro, Cidade, Estado" nas sugestoes
+  - Tipo: **AVALIAR** — marcada como v2/futuro
+  - Comentario: Complexidade alta (busca fuzzy, debounce, highlight). As tasks 6-9 ja resolvem 80% do problema (agrupamento por cidade, filtro de ativos). O autocomplete e evolucao futura que pode ser implementada sobre a base das tasks 6-9.
+  - Implementacao futura: Substituir `CommandInput` do `LocationFilter` por autocomplete com debounce 300ms. Criar `searchLocations(query)` em `loft.ts` que busca em `BairroSummary[]` (ja cached). Retornar resultados agrupados "Bairro, Cidade, Estado". Sem lib nova — usar o `Command` do shadcn que ja tem busca embutida.
+
+### 11. Codigo do imovel em destaque na pagina de imovel (/imovel/[slug]) ✅
+- [x] Mover codigo do imovel do rodape tecnico para o **header**, proximo aos badges (tipo, finalidade)
+- [x] Formato: badge com "Cod: 69804095" visivel e destacado (referencia: site antigo da FYMOOB)
+  - Tipo: **AVALIAR**
+  - Comentario: **Faz sentido para o fluxo comercial.** Referencia: site antigo mostra "Cód: 69802113" como badge no header. ImovelWeb e ZAP tambem mostram codigo visivel no topo.
+  - Implementacao:
+    1. **PropertyDetails** (`src/components/property/PropertyDetails.tsx` linha 17): Adicionar `<PropertyBadge variant="code">Cód: {property.codigo}</PropertyBadge>` apos os badges existentes.
+    2. **PropertyBadge** (`src/components/shared/PropertyBadge.tsx` linha 22): Trocar variant "code" de `text-neutral-400` para `border border-neutral-300 text-neutral-500` — badge outline discreto mas visivel.
+    3. **Opcional**: Remover codigo do rodape em `src/app/imovel/[slug]/page.tsx` (~linha 217).
+
+### 12. Endereco completo na pagina do imovel (/imovel/[slug]) ✅
+- [x] Hoje mostra: "Irati, Santa Quiteria, Curitiba - PR"
+- [x] Deveria mostrar: **"Irati, 531, Santa Quiteria, Curitiba - PR"** (rua + numero, como no site antigo)
+  - Tipo: **AVALIAR**
+  - Comentario: Campos `numero` e `complemento` ja existem no tipo `Property` e sao mapeados da API (`loft.ts` raw.Numero, raw.Complemento). So nao estao sendo usados na exibicao. Referencia: site antigo mostra "Anna de Macedo Portugal, 206, Campo de Santana, Curitiba - PR".
+  - Implementacao:
+    1. **PropertyDetails** (`src/components/property/PropertyDetails.tsx` linhas 29-31): Substituir formatacao por `[property.endereco, property.numero, property.complemento, property.bairro].filter(Boolean).join(", ") + ", " + property.cidade + " - " + property.estado`.
+    2. **JSON-LD** (`src/lib/seo.ts` ~linha 106): Incluir numero no streetAddress: `[property.endereco, property.numero].filter(Boolean).join(", ")`.
+
+### 13. Descricao do imovel incompleta (/imovel/[slug]) ✅
+- [x] Site antigo mostra descricao completa do CRM (pavimentos, divisao, diferenciais, metragem detalhada)
+- [x] Nosso site mostra descricao cortada/resumida — faltam detalhes dos pavimentos e diferenciais
+  - Tipo: **AVALIAR**
+  - Comentario: **Causa raiz identificada:** A funcao `parseDescription` em `PropertyDescription.tsx` (linhas 29-48) remove agressivamente: headers de pavimento ("PAVIMENTO TÉRREO"), bullets ("- Garagem"), linhas curtas com numero, linhas com "sem". O "Mostrar mais" expande mas mostra texto JA filtrado. A API retorna `DescricaoWeb` completo — nao e problema de API.
+  - Implementacao:
+    1. **PropertyDescription** (`src/components/property/PropertyDescription.tsx`): Manter `parseDescription` para preview colapsado (4 linhas limpas). Adicionar `splitParagraphs()` que so divide por `\n` sem filtrar. Quando expandido, usar `splitParagraphs()` (texto CRM completo). Quando colapsado, usar `parseDescription()` (preview narrativo).
+    2. `needsTruncation` deve checar o texto COMPLETO (`splitParagraphs`), nao o filtrado.
+    3. Referencia: site antigo e ImovelWeb mostram descricao completa com pavimentos e bullets. Nosso preview fica limpo, mas o expandido mostra tudo.
+
+### 14. Filtros avancados na pagina de busca (/busca) ✅
+- [x] Adicionar filtros que existem no site antigo mas faltam no novo:
+  - [x] Busca por **codigo** do imovel
+  - [x] Filtro por **cidade** (separado de bairro — integrado no agrupamento por cidade)
+  - [x] Filtro por **suites** (1+, 2+, 3+, 4+)
+  - [x] Filtro por **banheiros** (1+, 2+, 3+, 4+)
+  - [x] Filtro por **vagas** (1+, 2+, 3+, 4+)
+  - [ ] Filtro por **area total** (min/max m²) — futuro
+  - [ ] Filtro por **area privativa** (min/max m²) — futuro
+- [x] Manter filtros acessiveis e editaveis a qualquer momento (referencia ImovelWeb: barra sticky)
+  - Tipo: **AVALIAR**
+  - Comentario: Site antigo tem 12 campos de filtro. Nosso tem 4. Referencia ImovelWeb: "Mais filtros (3)" botao com badge de contagem. A API ja suporta `vagasMin`, `areaMin/Max` no `applyFilters()`. So faltam `suitesMin` e `banheirosMin`.
+  - Implementacao:
+    1. **Tipos** (`src/types/property.ts`): Adicionar `suitesMin?: number` e `banheirosMin?: number` ao `PropertyFilters`.
+    2. **API** (`src/services/loft.ts` ~linha 442): Adicionar filtro para suites e banheiros no `applyFilters()`.
+    3. **Novo componente** `src/components/search/filters/AdvancedFilters.tsx`: Botao "Mais filtros" que abre Sheet (bottom sheet mobile, side panel desktop). Campos: codigo (text input), suites/banheiros/vagas (number selectors pattern BedroomsFilter), area privativa e total (min/max inputs em m²). Botoes Limpar + Aplicar.
+    4. **State** (`search-state.ts`): Estender `SearchDraftFilters` com novos campos. Atualizar serializacao URL.
+    5. **SearchBar**: Adicionar botao "Mais filtros" so na /busca (nao na home). Badge com contagem de filtros avancados ativos.
+    6. **Performance**: Zero impacto — nenhuma lib nova, Sheet do shadcn ja existe, filtros em memoria.
+
+---
+
+_Adicionar novas solicitacoes acima desta linha._

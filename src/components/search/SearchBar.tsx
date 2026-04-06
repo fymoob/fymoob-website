@@ -16,10 +16,11 @@ import {
   X,
 } from "lucide-react"
 
+import { AdvancedFilters } from "@/components/search/filters/AdvancedFilters"
 import { BedroomsFilter } from "@/components/search/filters/BedroomsFilter"
 import { LocationFilter } from "@/components/search/filters/LocationFilter"
 import { PriceFilter } from "@/components/search/filters/PriceFilter"
-import { FINALIDADE_OPTIONS, type PriceBounds } from "@/components/search/filters/search-state"
+import { type PriceBounds } from "@/components/search/filters/search-state"
 import { TypeFilter } from "@/components/search/filters/TypeFilter"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -37,11 +38,15 @@ import { SlidersHorizontal } from "lucide-react"
 
 type SearchMode = "filters" | "code"
 
+import type { BairroSummary, TypeSummary } from "@/types/property"
+
 export interface SearchBarProps {
   bairros: string[]
   cidades: string[]
   tipos: string[]
   priceBounds: PriceBounds
+  bairroSummaries?: BairroSummary[]
+  tipoSummaries?: TypeSummary[]
   sticky?: boolean
   targetPath?: string
   className?: string
@@ -135,6 +140,8 @@ export function SearchBar({
   cidades,
   tipos,
   priceBounds,
+  bairroSummaries,
+  tipoSummaries,
   sticky = false,
   targetPath = "/busca",
   className,
@@ -149,10 +156,13 @@ export function SearchBar({
     bairroOptions,
     cidadeOptions,
     tipoOptions,
+    filteredTipoOptions,
+    groupedBairroOptions,
     locationLabel,
     priceLabel,
     quartosLabel,
     typeLabel,
+    finalidadeLabel,
     minPrice,
     maxPrice,
     applyFilters,
@@ -163,6 +173,8 @@ export function SearchBar({
     tipos,
     priceBounds,
     targetPath,
+    bairroSummaries,
+    tipoSummaries,
   })
 
   const isHome = context === "home"
@@ -188,16 +200,26 @@ export function SearchBar({
       finalidades: [],
       quartos: "",
       priceRange: [priceBounds.min, priceBounds.max],
+      codigo: "",
+      suitesMin: "",
+      banheirosMin: "",
+      vagasMin: "",
     })
 
   const activeFilterCount =
+    (pendingFilters.finalidades.length > 0 ? 1 : 0) +
     (pendingFilters.bairros.length > 0 || pendingFilters.cidades.length > 0 ? 1 : 0) +
-    (minPrice > priceBounds.min || maxPrice < priceBounds.max ? 1 : 0) +
+    (pendingFilters.tipos.length > 0 ? 1 : 0) +
     (pendingFilters.quartos ? 1 : 0) +
-    (pendingFilters.tipos.length > 0 || pendingFilters.finalidades.length > 0 ? 1 : 0)
+    (minPrice > priceBounds.min || maxPrice < priceBounds.max ? 1 : 0)
 
-  // Chip definitions for mobile
+  // Chip definitions for mobile — order: Finalidade → Location → Tipo → Quartos → Preço
   const chips = [
+    {
+      label: finalidadeLabel,
+      active: pendingFilters.finalidades.length > 0,
+      icon: Building2,
+    },
     {
       label: pendingFilters.bairros.length > 0 || pendingFilters.cidades.length > 0
         ? locationLabel : "Localização",
@@ -205,10 +227,9 @@ export function SearchBar({
       icon: MapPin,
     },
     {
-      label: minPrice > priceBounds.min || maxPrice < priceBounds.max
-        ? priceLabel : "Preço",
-      active: minPrice > priceBounds.min || maxPrice < priceBounds.max,
-      icon: Tag,
+      label: pendingFilters.tipos.length > 0 ? typeLabel : "Tipo",
+      active: pendingFilters.tipos.length > 0,
+      icon: Building2,
     },
     {
       label: pendingFilters.quartos ? quartosLabel : "Quartos",
@@ -216,10 +237,10 @@ export function SearchBar({
       icon: BedDouble,
     },
     {
-      label: pendingFilters.tipos.length > 0 || pendingFilters.finalidades.length > 0
-        ? typeLabel : "Tipo",
-      active: pendingFilters.tipos.length > 0 || pendingFilters.finalidades.length > 0,
-      icon: Building2,
+      label: minPrice > priceBounds.min || maxPrice < priceBounds.max
+        ? priceLabel : "Preço",
+      active: minPrice > priceBounds.min || maxPrice < priceBounds.max,
+      icon: Tag,
     },
   ]
 
@@ -265,12 +286,45 @@ export function SearchBar({
                   </SheetHeader>
 
                   <div className="flex-1 space-y-6 overflow-y-auto px-4 pb-4">
+                    {/* Finalidade — Comprar/Alugar */}
+                    <div>
+                      <h3 className="mb-2 text-sm font-semibold text-neutral-700">O que deseja?</h3>
+                      <div className="flex gap-2">
+                        {(["comprar", "alugar"] as const).map((f) => {
+                          const isActive = f === "comprar"
+                            ? !pendingFilters.finalidades.includes("locacao")
+                            : pendingFilters.finalidades.includes("locacao")
+                          return (
+                            <button
+                              key={f}
+                              type="button"
+                              onClick={() =>
+                                setPendingFilters((c) => ({
+                                  ...c,
+                                  finalidades: f === "alugar" ? ["locacao"] : [],
+                                }))
+                              }
+                              className={cn(
+                                "flex-1 rounded-xl py-2.5 text-sm font-semibold transition-all",
+                                isActive
+                                  ? "bg-brand-primary text-white"
+                                  : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
+                              )}
+                            >
+                              {f === "comprar" ? "Comprar" : "Alugar"}
+                            </button>
+                          )
+                        })}
+                      </div>
+                    </div>
+
                     {/* Location */}
                     <div>
                       <h3 className="mb-2 text-sm font-semibold text-neutral-700">Localização</h3>
                       <LocationFilter
                         bairros={bairroOptions}
                         cidades={cidadeOptions}
+                        groupedBairros={groupedBairroOptions}
                         selectedBairros={pendingFilters.bairros}
                         selectedCidades={pendingFilters.cidades}
                         onBairrosChange={(values) =>
@@ -278,6 +332,29 @@ export function SearchBar({
                         }
                         onCidadesChange={(values) =>
                           setPendingFilters((c) => ({ ...c, cidades: values }))
+                        }
+                      />
+                    </div>
+
+                    {/* Type */}
+                    <div>
+                      <h3 className="mb-2 text-sm font-semibold text-neutral-700">Tipo de imóvel</h3>
+                      <TypeFilter
+                        typeOptions={filteredTipoOptions}
+                        selectedTipos={pendingFilters.tipos}
+                        onTiposChange={(values) =>
+                          setPendingFilters((c) => ({ ...c, tipos: values }))
+                        }
+                      />
+                    </div>
+
+                    {/* Bedrooms */}
+                    <div>
+                      <h3 className="mb-2 text-sm font-semibold text-neutral-700">Quartos</h3>
+                      <BedroomsFilter
+                        value={pendingFilters.quartos}
+                        onChange={(value) =>
+                          setPendingFilters((c) => ({ ...c, quartos: value }))
                         }
                       />
                     </div>
@@ -294,31 +371,12 @@ export function SearchBar({
                       />
                     </div>
 
-                    {/* Bedrooms */}
-                    <div>
-                      <h3 className="mb-2 text-sm font-semibold text-neutral-700">Quartos</h3>
-                      <BedroomsFilter
-                        value={pendingFilters.quartos}
-                        onChange={(value) =>
-                          setPendingFilters((c) => ({ ...c, quartos: value }))
-                        }
-                      />
-                    </div>
-
-                    {/* Type */}
-                    <div>
-                      <h3 className="mb-2 text-sm font-semibold text-neutral-700">Tipo de imóvel</h3>
-                      <TypeFilter
-                        typeOptions={tipoOptions}
-                        finalidadeOptions={FINALIDADE_OPTIONS}
-                        selectedTipos={pendingFilters.tipos}
-                        selectedFinalidades={pendingFilters.finalidades}
-                        onTiposChange={(values) =>
-                          setPendingFilters((c) => ({ ...c, tipos: values }))
-                        }
-                        onFinalidadesChange={(values) =>
-                          setPendingFilters((c) => ({ ...c, finalidades: values }))
-                        }
+                    {/* Advanced Filters */}
+                    <div className="border-t border-neutral-200 pt-4">
+                      <h3 className="mb-3 text-sm font-semibold text-neutral-700">Mais filtros</h3>
+                      <AdvancedFilters
+                        pendingFilters={pendingFilters}
+                        setPendingFilters={setPendingFilters}
                       />
                     </div>
                   </div>
@@ -419,7 +477,9 @@ export function SearchBar({
             )}
           >
             <div className="w-full max-w-full rounded-3xl border border-neutral-200 bg-white p-4 shadow-xl md:rounded-full md:p-0 md:shadow-lg">
-              <div className="flex flex-col md:grid md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)_auto] md:items-center md:gap-0">
+              <div className="flex flex-col md:grid md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,0.8fr)_minmax(0,1fr)_auto] md:items-center md:gap-0">
+
+                {/* 1. Localização */}
                 <div className="border-b border-neutral-200 md:border-b-0">
                   <Popover>
                     <PopoverTrigger
@@ -444,6 +504,7 @@ export function SearchBar({
                       <LocationFilter
                         bairros={bairroOptions}
                         cidades={cidadeOptions}
+                        groupedBairros={groupedBairroOptions}
                         selectedBairros={pendingFilters.bairros}
                         selectedCidades={pendingFilters.cidades}
                         onBairrosChange={(values) =>
@@ -457,38 +518,37 @@ export function SearchBar({
                   </Popover>
                 </div>
 
+                {/* 2. Tipo */}
                 <div className="border-b border-neutral-200 md:border-b-0">
                   <Popover>
                     <PopoverTrigger
                       render={
                         <SegmentTrigger
                           context={context}
-                          icon={Tag}
-                          title="Preço"
-                          value={priceLabel}
-                          active={minPrice > priceBounds.min || maxPrice < priceBounds.max}
+                          icon={Building2}
+                          title="Tipo"
+                          value={typeLabel}
+                          active={pendingFilters.tipos.length > 0}
                           onClear={() =>
-                            setPendingFilters((c) => ({
-                              ...c,
-                              priceRange: [priceBounds.min, priceBounds.max],
-                            }))
+                            setPendingFilters((c) => ({ ...c, tipos: [] }))
                           }
                           withDivider
                         />
                       }
                     />
-                    <PopoverContent className="w-[calc(100vw-2rem)] max-w-md p-3 md:w-96 md:p-4">
-                      <PriceFilter
-                        value={pendingFilters.priceRange}
-                        bounds={priceBounds}
-                        onChange={(value) =>
-                          setPendingFilters((current) => ({ ...current, priceRange: value }))
+                    <PopoverContent className="w-[calc(100vw-2rem)] max-w-sm p-3 md:w-80 md:p-4">
+                      <TypeFilter
+                        typeOptions={filteredTipoOptions}
+                        selectedTipos={pendingFilters.tipos}
+                        onTiposChange={(values) =>
+                          setPendingFilters((current) => ({ ...current, tipos: values }))
                         }
                       />
                     </PopoverContent>
                   </Popover>
                 </div>
 
+                {/* 3. Quartos */}
                 <div className="border-b border-neutral-200 md:border-b-0">
                   <Popover>
                     <PopoverTrigger
@@ -517,39 +577,32 @@ export function SearchBar({
                   </Popover>
                 </div>
 
+                {/* 4. Preço */}
                 <div className="md:border-b-0">
                   <Popover>
                     <PopoverTrigger
                       render={
                         <SegmentTrigger
                           context={context}
-                          icon={Building2}
-                          title="Tipo"
-                          value={typeLabel}
-                          active={
-                            pendingFilters.tipos.length > 0 ||
-                            pendingFilters.finalidades.length > 0
-                          }
+                          icon={Tag}
+                          title="Preço"
+                          value={priceLabel}
+                          active={minPrice > priceBounds.min || maxPrice < priceBounds.max}
                           onClear={() =>
-                            setPendingFilters((c) => ({ ...c, tipos: [], finalidades: [] }))
+                            setPendingFilters((c) => ({
+                              ...c,
+                              priceRange: [priceBounds.min, priceBounds.max],
+                            }))
                           }
                         />
                       }
                     />
-                    <PopoverContent className="w-[calc(100vw-2rem)] max-w-sm p-3 md:w-80 md:p-4">
-                      <TypeFilter
-                        typeOptions={tipoOptions}
-                        finalidadeOptions={FINALIDADE_OPTIONS}
-                        selectedTipos={pendingFilters.tipos}
-                        selectedFinalidades={pendingFilters.finalidades}
-                        onTiposChange={(values) =>
-                          setPendingFilters((current) => ({ ...current, tipos: values }))
-                        }
-                        onFinalidadesChange={(values) =>
-                          setPendingFilters((current) => ({
-                            ...current,
-                            finalidades: values,
-                          }))
+                    <PopoverContent className="w-[calc(100vw-2rem)] max-w-md p-3 md:w-96 md:p-4">
+                      <PriceFilter
+                        value={pendingFilters.priceRange}
+                        bounds={priceBounds}
+                        onChange={(value) =>
+                          setPendingFilters((current) => ({ ...current, priceRange: value }))
                         }
                       />
                     </PopoverContent>

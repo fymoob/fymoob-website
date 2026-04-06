@@ -143,6 +143,8 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
   const areaMin = parseNumberParam(getParamValue(searchParams.areaMin))
   const areaMax = parseNumberParam(getParamValue(searchParams.areaMax))
   const vagasMin = parseNumberParam(getParamValue(searchParams.vagasMin))
+  const suitesMin = parseNumberParam(getParamValue(searchParams.suitesMin))
+  const banheirosMin = parseNumberParam(getParamValue(searchParams.banheirosMin))
   const quartos =
     parseNumberParam(getParamValue(searchParams.quartos)) ??
     parseNumberParam(getParamValue(searchParams.dormitoriosMin))
@@ -176,6 +178,8 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
   if (areaMin) filters.areaMin = areaMin
   if (areaMax) filters.areaMax = areaMax
   if (vagasMin) filters.vagasMin = vagasMin
+  if (suitesMin) filters.suitesMin = suitesMin
+  if (banheirosMin) filters.banheirosMin = banheirosMin
   if (quartos) {
     filters.quartosMin = quartos
     filters.dormitoriosMin = quartos
@@ -404,6 +408,8 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
           tipos={tipos.map((item) => item.tipo)}
           cidades={cidades}
           priceBounds={{ min: minPrice, max: maxPrice }}
+          bairroSummaries={bairros}
+          tipoSummaries={tipos}
           sticky
         />
       </div>

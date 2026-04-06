@@ -443,6 +443,8 @@ function applyFilters(indexed: IndexedProperty[], filters: PropertyFilters): Pro
     if (filters.areaMin && (p.areaPrivativa === null || p.areaPrivativa < filters.areaMin)) continue
     if (filters.areaMax && (p.areaPrivativa === null || p.areaPrivativa > filters.areaMax)) continue
     if (filters.vagasMin && (p.vagas === null || p.vagas < filters.vagasMin)) continue
+    if (filters.suitesMin && (p.suites === null || p.suites < filters.suitesMin)) continue
+    if (filters.banheirosMin && (p.banheiros === null || p.banheiros < filters.banheirosMin)) continue
     if (searchTerms.length > 0 && !searchTerms.every((t) => item.searchableText.includes(t))) continue
     result.push(p)
   }
@@ -545,24 +547,34 @@ export async function getAllBairros(limit?: number): Promise<BairroSummary[]> {
   const all = await getAllPropertiesInternal()
   const { bairroImages } = await import("@/lib/bairro-images")
 
-  const bairroMap = new Map<string, { total: number; tipos: Map<PropertyType, number> }>()
+  const bairroMap = new Map<string, { total: number; tipos: Map<PropertyType, number>; cidadeCount: Map<string, number> }>()
   for (const p of all) {
     const key = p.bairro
     if (!key) continue
-    if (!bairroMap.has(key)) bairroMap.set(key, { total: 0, tipos: new Map() })
+    if (!bairroMap.has(key)) bairroMap.set(key, { total: 0, tipos: new Map(), cidadeCount: new Map() })
     const entry = bairroMap.get(key)!
     entry.total++
     entry.tipos.set(p.tipo, (entry.tipos.get(p.tipo) ?? 0) + 1)
+    entry.cidadeCount.set(p.cidade, (entry.cidadeCount.get(p.cidade) ?? 0) + 1)
   }
 
   const result = Array.from(bairroMap.entries())
-    .map(([bairro, info]) => ({
-      bairro,
-      slug: slugify(bairro),
-      total: info.total,
-      tipos: Array.from(info.tipos.entries()).map(([tipo, count]) => ({ tipo, count })),
-      imageUrl: bairroImages[bairro],
-    }))
+    .map(([bairro, info]) => {
+      // Pick the most common city for this bairro
+      let topCidade = ""
+      let topCount = 0
+      for (const [cidade, count] of info.cidadeCount) {
+        if (count > topCount) { topCidade = cidade; topCount = count }
+      }
+      return {
+        bairro,
+        slug: slugify(bairro),
+        total: info.total,
+        cidade: topCidade,
+        tipos: Array.from(info.tipos.entries()).map(([tipo, count]) => ({ tipo, count })),
+        imageUrl: bairroImages[bairro],
+      }
+    })
     .sort((a, b) => b.total - a.total)
 
   return limit ? result.slice(0, limit) : result
@@ -590,9 +602,20 @@ export async function getAllSlugs(): Promise<string[]> {
 
 export async function getAllTypes(): Promise<TypeSummary[]> {
   const all = await getAllPropertiesInternal()
-  const typeMap = new Map<PropertyType, number>()
-  for (const p of all) typeMap.set(p.tipo, (typeMap.get(p.tipo) ?? 0) + 1)
-  return Array.from(typeMap.entries()).map(([tipo, total]) => ({ tipo, slug: slugify(tipo), total }))
+  const typeMap = new Map<PropertyType, { total: number; porFinalidade: Map<string, number> }>()
+  for (const p of all) {
+    if (!typeMap.has(p.tipo)) typeMap.set(p.tipo, { total: 0, porFinalidade: new Map() })
+    const entry = typeMap.get(p.tipo)!
+    entry.total++
+    const fin = p.finalidade || "Venda"
+    entry.porFinalidade.set(fin, (entry.porFinalidade.get(fin) ?? 0) + 1)
+  }
+  return Array.from(typeMap.entries()).map(([tipo, info]) => ({
+    tipo,
+    slug: slugify(tipo),
+    total: info.total,
+    porFinalidade: Object.fromEntries(info.porFinalidade),
+  }))
 }
 
 export async function getFeaturedProperties(limit: number = 8): Promise<Property[]> {

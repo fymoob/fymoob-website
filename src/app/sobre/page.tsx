@@ -47,8 +47,8 @@ const etapas = [
 ]
 
 const equipe = [
-  { nome: "Bruno Cesar de Almeida", cargo: "CEO e Sócio-fundador" },
-  { nome: "Wagner Spessatto", cargo: "Sócio-diretor" },
+  { nome: "Bruno Cesar de Almeida", cargo: "Sócio e Responsável técnico" },
+  { nome: "Wagner Spessatto", cargo: "Sócio" },
 ]
 
 export default function SobrePage() {

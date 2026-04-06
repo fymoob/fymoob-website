@@ -129,6 +129,8 @@ export interface PropertyFilters {
   areaMin?: number;
   areaMax?: number;
   vagasMin?: number;
+  suitesMin?: number;
+  banheirosMin?: number;
   busca?: string;
   orderBy?: "preco-asc" | "preco-desc" | "area-asc" | "area-desc" | "recente";
   page?: number;
@@ -139,6 +141,7 @@ export interface BairroSummary {
   bairro: string;
   slug: string;
   total: number;
+  cidade: string;
   tipos: { tipo: PropertyType; count: number }[];
   imageUrl?: string;
 }
@@ -147,6 +150,7 @@ export interface TypeSummary {
   tipo: PropertyType;
   slug: string;
   total: number;
+  porFinalidade: Record<string, number>;
 }
 
 export interface EmpreendimentoSummary {

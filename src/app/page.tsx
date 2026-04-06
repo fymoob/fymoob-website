@@ -86,6 +86,9 @@ export default async function Home() {
     min: stats.precoMin ?? 50_000,
     max: stats.precoMax ?? 5_000_000,
   }
+  // Rich data for SearchBar filtering (tasks 6, 8)
+  const bairroSummaries = allBairros
+  const tipoSummaries = types
 
   return (
     <>
@@ -95,6 +98,8 @@ export default async function Home() {
         tipoNames={tipoNames}
         cidades={cities}
         priceBounds={priceBounds}
+        bairroSummaries={bairroSummaries}
+        tipoSummaries={tipoSummaries}
       />
 
       {/* Saved search banner */}

@@ -73,7 +73,7 @@ export function Footer() {
                 </a>
                 <div className="flex items-center gap-2">
                   <Clock size={14} className="text-brand-primary" />
-                  <span>Seg-Sex 9h-18h | Sab 9h-13h</span>
+                  <span>Seg-Sex 8h30-17h | Sab 9h-13h</span>
                 </div>
               </div>
             </div>

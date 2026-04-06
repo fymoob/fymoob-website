@@ -45,7 +45,7 @@ const contatoInfo = [
     label: "E-mail",
     value: "fymoob@gmail.com",
     href: "mailto:fymoob@gmail.com",
-    description: "Respondemos em até 24 horas",
+    description: "Respondemos o mais rápido possível",
   },
   {
     icon: MapPin,
@@ -57,7 +57,7 @@ const contatoInfo = [
   {
     icon: Clock,
     label: "Horário",
-    value: "Seg a Sex: 9h às 18h",
+    value: "Seg a Sex: 8h30 às 17h",
     description: "Sábado: 9h às 13h",
   },
 ]

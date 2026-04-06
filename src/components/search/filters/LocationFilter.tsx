@@ -12,6 +12,7 @@ import {
   CommandList,
 } from "@/components/ui/command"
 import type { MultiSelectOption } from "./types"
+import type { GroupedBairroOptions } from "../useSearchBarController"
 
 interface LocationFilterProps {
   bairros: MultiSelectOption[]
@@ -20,6 +21,7 @@ interface LocationFilterProps {
   selectedCidades: string[]
   onBairrosChange: (values: string[]) => void
   onCidadesChange: (values: string[]) => void
+  groupedBairros?: GroupedBairroOptions[]
 }
 
 function toggleValue(values: string[], value: string): string[] {
@@ -39,26 +41,47 @@ export function LocationFilter({
   selectedCidades,
   onBairrosChange,
   onCidadesChange,
+  groupedBairros,
 }: LocationFilterProps) {
   const [query, setQuery] = useState("")
 
+  // Use grouped bairros if available, fall back to flat list
+  const useGrouped = groupedBairros && groupedBairros.length > 0
+
+  const filteredGroups = useMemo(() => {
+    if (!useGrouped || !groupedBairros) return []
+    const normalized = query.trim().toLowerCase()
+    return groupedBairros
+      .map((group) => ({
+        ...group,
+        bairros: normalized
+          ? group.bairros.filter((b) => b.label.toLowerCase().includes(normalized))
+          : group.bairros,
+      }))
+      .filter((group) => group.bairros.length > 0)
+  }, [groupedBairros, query, useGrouped])
+
   const filteredBairros = useMemo(() => {
+    if (useGrouped) return [] // handled by groups
     const normalized = query.trim().toLowerCase()
     if (!normalized) return bairros
     return bairros.filter((bairro) =>
       bairro.label.toLowerCase().includes(normalized)
     )
-  }, [bairros, query])
+  }, [bairros, query, useGrouped])
 
   const filteredCidades = useMemo(() => {
+    if (useGrouped) return [] // cities become group headers
     const normalized = query.trim().toLowerCase()
     if (!normalized) return cidades
     return cidades.filter((cidade) =>
       cidade.label.toLowerCase().includes(normalized)
     )
-  }, [cidades, query])
+  }, [cidades, query, useGrouped])
 
-  const isEmpty = filteredBairros.length === 0 && filteredCidades.length === 0
+  const isEmpty = useGrouped
+    ? filteredGroups.length === 0
+    : filteredBairros.length === 0 && filteredCidades.length === 0
 
   return (
     <div>
@@ -71,6 +94,28 @@ export function LocationFilter({
         <CommandList>
           {isEmpty ? (
             <CommandEmpty>Nenhuma localização encontrada.</CommandEmpty>
+          ) : useGrouped ? (
+            <>
+              {filteredGroups.map((group) => (
+                <CommandGroup key={group.cidade} heading={group.cidade}>
+                  {group.bairros.map((bairro) => {
+                    const checked = selectedBairros.includes(bairro.value)
+                    return (
+                      <CommandItem
+                        key={bairro.value}
+                        onClick={() =>
+                          onBairrosChange(toggleValue(selectedBairros, bairro.value))
+                        }
+                      >
+                        <Checkbox checked={checked} />
+                        <span className="flex-1 text-sm">{bairro.label}</span>
+                        <span className="text-xs text-neutral-400">({bairro.count})</span>
+                      </CommandItem>
+                    )
+                  })}
+                </CommandGroup>
+              ))}
+            </>
           ) : (
             <>
               {filteredBairros.length > 0 && (

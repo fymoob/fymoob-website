@@ -14,14 +14,18 @@ const HomeSearchBar = dynamic(
   { loading: () => <div className="h-16 w-full rounded-2xl bg-white/30 backdrop-blur animate-pulse" /> }
 )
 
+import type { BairroSummary, TypeSummary } from "@/types/property"
+
 interface HeroSectionProps {
   bairroNames: string[]
   tipoNames: string[]
   cidades: string[]
   priceBounds: { min: number; max: number }
+  bairroSummaries?: BairroSummary[]
+  tipoSummaries?: TypeSummary[]
 }
 
-export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds }: HeroSectionProps) {
+export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bairroSummaries, tipoSummaries }: HeroSectionProps) {
   return (
     <section
       id="hero"
@@ -69,6 +73,8 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds }: He
             cidades={cidades}
             tipos={tipoNames}
             priceBounds={priceBounds}
+            bairroSummaries={bairroSummaries}
+            tipoSummaries={tipoSummaries}
             targetPath="/busca"
           />
         </div>

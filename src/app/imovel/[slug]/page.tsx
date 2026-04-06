@@ -213,11 +213,6 @@ export default async function PropertyPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Property code — technical footer */}
-      <div className="mx-auto max-w-7xl px-4 py-4 md:px-8">
-        <p className="text-xs text-neutral-400">Código do imóvel: {property.codigo}</p>
-      </div>
-
       {/* Similar properties — lazy loaded (below fold) */}
       <div className="mt-2">
         <LazySimilarProperties properties={similarProperties} />

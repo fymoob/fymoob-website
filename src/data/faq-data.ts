@@ -22,7 +22,7 @@ export const faqData: FAQCategory[] = [
       {
         question: "Onde fica a FYMOOB?",
         answer:
-          "A FYMOOB está localizada na Rua Engenheiro Heitor Soares Gomes, 778, Esquina — Curitiba/PR, CEP 80330-350. Nosso horário de atendimento é de segunda a sexta, das 9h às 18h, e sábados das 9h às 13h.",
+          "A FYMOOB está localizada na Rua Engenheiro Heitor Soares Gomes, 778, Esquina — Curitiba/PR, CEP 80330-350. Nosso horário de atendimento é de segunda a sexta, das 8h30 às 17h, e sábados das 9h às 13h.",
       },
       {
         question: "Como entrar em contato com a FYMOOB?",

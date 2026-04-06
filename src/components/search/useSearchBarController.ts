@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 import { slugify } from "@/lib/utils"
 import type { MultiSelectOption } from "@/components/search/filters/types"
+import type { BairroSummary, TypeSummary } from "@/types/property"
 import {
   FINALIDADE_OPTIONS,
   applyDraftToSearchParams,
@@ -13,12 +14,19 @@ import {
   type SearchDraftFilters,
 } from "@/components/search/filters/search-state"
 
+export interface GroupedBairroOptions {
+  cidade: string
+  bairros: (MultiSelectOption & { count: number })[]
+}
+
 export interface SearchBarControllerProps {
   bairros: string[]
   cidades: string[]
   tipos: string[]
   priceBounds: PriceBounds
   targetPath?: string
+  bairroSummaries?: BairroSummary[]
+  tipoSummaries?: TypeSummary[]
 }
 
 export interface SearchBarController {
@@ -27,10 +35,13 @@ export interface SearchBarController {
   bairroOptions: MultiSelectOption[]
   cidadeOptions: MultiSelectOption[]
   tipoOptions: MultiSelectOption[]
+  filteredTipoOptions: MultiSelectOption[]
+  groupedBairroOptions: GroupedBairroOptions[]
   locationLabel: string
   priceLabel: string
   quartosLabel: string
   typeLabel: string
+  finalidadeLabel: string
   minPrice: number
   maxPrice: number
   applyFilters: () => void
@@ -78,6 +89,8 @@ export function useSearchBarController({
   tipos,
   priceBounds,
   targetPath = "/busca",
+  bairroSummaries,
+  tipoSummaries,
 }: SearchBarControllerProps): SearchBarController {
   const router = useRouter()
   const pathname = usePathname()
@@ -186,22 +199,64 @@ export function useSearchBarController({
     : "Qualquer quarto"
 
   const typeLabel = useMemo(() => {
-    const total = pendingFilters.tipos.length + pendingFilters.finalidades.length
-    if (total === 0) return "Todos os tipos"
-
-    if (total === 1) {
-      if (pendingFilters.tipos.length === 1) {
-        return tipoMap.get(pendingFilters.tipos[0]) ?? pendingFilters.tipos[0]
-      }
-
-      return (
-        finalidadeMap.get(pendingFilters.finalidades[0]) ??
-        pendingFilters.finalidades[0]
-      )
+    if (pendingFilters.tipos.length === 0) return "Todos os tipos"
+    if (pendingFilters.tipos.length === 1) {
+      return tipoMap.get(pendingFilters.tipos[0]) ?? pendingFilters.tipos[0]
     }
+    return `${pendingFilters.tipos.length} tipos`
+  }, [pendingFilters.tipos, tipoMap])
 
-    return `${total} filtros`
-  }, [finalidadeMap, pendingFilters.finalidades, pendingFilters.tipos, tipoMap])
+  const finalidadeLabel = useMemo(() => {
+    if (pendingFilters.finalidades.length === 0) return "Comprar"
+    if (pendingFilters.finalidades.includes("locacao")) return "Alugar"
+    return "Comprar"
+  }, [pendingFilters.finalidades])
+
+  // Task 8: Filter tipos by selected finalidade
+  const filteredTipoOptions = useMemo(() => {
+    if (!tipoSummaries || tipoSummaries.length === 0) return tipoOptions
+    // If no finalidade selected, show all tipos with total > 0
+    const activeTipos = tipoSummaries.filter((ts) => {
+      if (ts.total === 0) return false
+      if (pendingFilters.finalidades.length === 0) return true
+      // Check if this tipo has properties for the selected finalidade
+      const isAlugar = pendingFilters.finalidades.includes("locacao")
+      if (isAlugar) {
+        return (ts.porFinalidade["Aluguel"] ?? 0) > 0 ||
+               (ts.porFinalidade["Locação"] ?? 0) > 0 ||
+               (ts.porFinalidade["Venda e Aluguel"] ?? 0) > 0 ||
+               (ts.porFinalidade["Venda e Locação"] ?? 0) > 0
+      }
+      return (ts.porFinalidade["Venda"] ?? 0) > 0 ||
+             (ts.porFinalidade["Venda e Aluguel"] ?? 0) > 0 ||
+             (ts.porFinalidade["Venda e Locação"] ?? 0) > 0
+    })
+    const activeSlugSet = new Set(activeTipos.map((ts) => ts.slug))
+    return tipoOptions.filter((opt) => activeSlugSet.has(opt.value))
+  }, [tipoOptions, tipoSummaries, pendingFilters.finalidades])
+
+  // Task 6: Group bairros by city, only active ones
+  const groupedBairroOptions = useMemo<GroupedBairroOptions[]>(() => {
+    if (!bairroSummaries || bairroSummaries.length === 0) return []
+    const activeBairros = bairroSummaries.filter((bs) => bs.total > 0)
+    const groups = new Map<string, (MultiSelectOption & { count: number })[]>()
+    for (const bs of activeBairros) {
+      const cidade = bs.cidade || "Outros"
+      if (!groups.has(cidade)) groups.set(cidade, [])
+      groups.get(cidade)!.push({
+        value: slugify(bs.bairro),
+        label: bs.bairro,
+        count: bs.total,
+      })
+    }
+    // Sort cities: most bairros first, then alphabetically
+    return Array.from(groups.entries())
+      .sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0], "pt-BR"))
+      .map(([cidade, bairros]) => ({
+        cidade,
+        bairros: bairros.sort((a, b) => a.label.localeCompare(b.label, "pt-BR")),
+      }))
+  }, [bairroSummaries])
 
   const applyFilters = useCallback(() => {
     const baseParams = isTargetCurrentPath
@@ -239,10 +294,13 @@ export function useSearchBarController({
     bairroOptions,
     cidadeOptions,
     tipoOptions,
+    filteredTipoOptions,
+    groupedBairroOptions,
     locationLabel,
     priceLabel,
     quartosLabel,
     typeLabel,
+    finalidadeLabel,
     minPrice,
     maxPrice,
     applyFilters,

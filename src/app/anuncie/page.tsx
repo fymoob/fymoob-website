@@ -17,7 +17,7 @@ import {
 export const metadata: Metadata = {
   title: "Anuncie seu Imóvel | FYMOOB Curitiba",
   description:
-    "Anuncie seu imóvel na FYMOOB e alcance milhares de compradores e inquilinos em Curitiba. Avaliação gratuita, fotos profissionais e atendimento personalizado. CRECI J 9420.",
+    "Anuncie seu imóvel na FYMOOB e alcance milhares de compradores e inquilinos em Curitiba. Avaliação profissional, fotos de qualidade e atendimento personalizado. CRECI J 9420.",
   alternates: {
     canonical: "/anuncie",
   },
@@ -63,9 +63,9 @@ const beneficios = [
   },
   {
     icon: Zap,
-    title: "Anúncio em 24 horas",
+    title: "Agilidade na publicação",
     description:
-      "Após a visita técnica, seu imóvel é publicado em menos de 24 horas no site.",
+      "Após a visita técnica, seu imóvel é publicado o mais rápido possível no site.",
   },
   {
     icon: Users,
@@ -75,7 +75,7 @@ const beneficios = [
   },
   {
     icon: TrendingUp,
-    title: "Avaliação de mercado gratuita",
+    title: "Avaliação de mercado profissional",
     description:
       "Precificação baseada em dados reais do mercado curitibano para vender ou alugar mais rápido.",
   },
@@ -122,7 +122,7 @@ export default function AnunciePage() {
         <p className="mt-4 max-w-3xl text-lg leading-relaxed text-fymoob-gray-mid">
           Venda ou alugue seu imóvel com quem entende de Curitiba.{" "}
           <strong className="text-fymoob-gray-dark">
-            Avaliação gratuita, anúncio profissional e atendimento do início ao fim.
+            Avaliação profissional, anúncio otimizado e atendimento do início ao fim.
           </strong>
         </p>
       </div>
@@ -132,7 +132,7 @@ export default function AnunciePage() {
         {[
           { number: "249+", label: "Imóveis ativos" },
           { number: "65", label: "Bairros atendidos" },
-          { number: "24h", label: "Para publicar" },
+          { number: "Ágil", label: "Publicação rápida" },
         ].map((item) => (
           <div key={item.label} className="text-center">
             <p className="font-display text-2xl font-bold text-brand-primary sm:text-3xl">

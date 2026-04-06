@@ -47,17 +47,26 @@ function parseDescription(descricao: string): string[] {
   return paragraphs
 }
 
+function splitParagraphs(descricao: string): string[] {
+  return descricao.split(/\r?\n/).map((l) => l.trim()).filter(Boolean)
+}
+
 export function PropertyDescription({ descricao }: PropertyDescriptionProps) {
   const [expanded, setExpanded] = React.useState(false)
 
   if (!descricao) return null
 
-  const paragraphs = parseDescription(descricao)
-  if (paragraphs.length === 0) return null
+  const filteredParagraphs = parseDescription(descricao)
+  const allParagraphs = splitParagraphs(descricao)
 
-  // Estimate ~80 chars per visible line, 4 lines ≈ 320 chars
-  const fullText = paragraphs.join(" ")
+  if (allParagraphs.length === 0) return null
+
+  // Use full text length for truncation check
+  const fullText = allParagraphs.join(" ")
   const needsTruncation = fullText.length > 320
+
+  // Collapsed: clean narrative preview. Expanded: full CRM content
+  const displayParagraphs = expanded ? allParagraphs : (filteredParagraphs.length > 0 ? filteredParagraphs : allParagraphs)
 
   return (
     <section className="border-t border-neutral-100 pt-10">
@@ -72,7 +81,7 @@ export function PropertyDescription({ descricao }: PropertyDescriptionProps) {
               : "text-sm leading-relaxed text-neutral-600"
           }
         >
-          {paragraphs.map((p, i) => (
+          {displayParagraphs.map((p, i) => (
             <p key={i} className={i > 0 ? "mt-3" : ""}>
               {p}
             </p>

@@ -11,10 +11,11 @@ interface PropertyDetailsProps {
 export function PropertyDetails({ property, shortTitle }: PropertyDetailsProps) {
   return (
     <div className="mt-2 space-y-2.5 md:mt-0">
-      {/* Badges — no code in header */}
+      {/* Badges */}
       <div className="flex flex-wrap items-center gap-2">
         <PropertyBadge variant="type">{property.tipo}</PropertyBadge>
         <PropertyBadge variant="sale">{property.finalidade}</PropertyBadge>
+        <PropertyBadge variant="code">Cód: {property.codigo}</PropertyBadge>
       </div>
 
       {/* Title — 1-2 lines max */}
@@ -27,7 +28,7 @@ export function PropertyDetails({ property, shortTitle }: PropertyDetailsProps) 
         <p className="flex items-center gap-1.5 text-sm text-neutral-500">
           <MapPin size={14} className="shrink-0 text-neutral-400" />
           {property.endereco
-            ? `${property.endereco}, ${property.bairro}, ${property.cidade} - ${property.estado}`
+            ? `${[property.endereco, property.numero, property.complemento, property.bairro].filter(Boolean).join(", ")}, ${property.cidade} - ${property.estado}`
             : `${property.bairro}, ${property.cidade} - ${property.estado}`}
         </p>
       )}

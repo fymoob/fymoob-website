@@ -13,6 +13,10 @@ export interface SearchDraftFilters {
   finalidades: string[]
   quartos: string
   priceRange: [number, number]
+  codigo: string
+  suitesMin: string
+  banheirosMin: string
+  vagasMin: string
 }
 
 export const PRICE_STEP = 50_000
@@ -62,6 +66,10 @@ export function createDraftFromSearchParams(
     finalidades: parseCsvParam(params.get("finalidade")),
     quartos: params.get("quartos") ?? params.get("dormitoriosMin") ?? "",
     priceRange: normalizeRange([minFromUrl, maxFromUrl], bounds),
+    codigo: params.get("codigo") ?? "",
+    suitesMin: params.get("suitesMin") ?? "",
+    banheirosMin: params.get("banheirosMin") ?? "",
+    vagasMin: params.get("vagasMin") ?? "",
   }
 }
 
@@ -102,6 +110,31 @@ export function applyDraftToSearchParams(
     params.set("precoMax", String(maxPrice))
   } else {
     params.delete("precoMax")
+  }
+
+  // Advanced filters
+  if (draft.codigo) {
+    params.set("codigo", draft.codigo)
+  } else {
+    params.delete("codigo")
+  }
+
+  if (draft.suitesMin) {
+    params.set("suitesMin", draft.suitesMin)
+  } else {
+    params.delete("suitesMin")
+  }
+
+  if (draft.banheirosMin) {
+    params.set("banheirosMin", draft.banheirosMin)
+  } else {
+    params.delete("banheirosMin")
+  }
+
+  if (draft.vagasMin) {
+    params.set("vagasMin", draft.vagasMin)
+  } else {
+    params.delete("vagasMin")
   }
 
   params.delete("page")
