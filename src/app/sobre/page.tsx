@@ -136,7 +136,7 @@ export default function SobrePage() {
           sizes="100vw"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-neutral-900/80 via-neutral-900/70 to-neutral-900/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-neutral-900/60 via-neutral-900/50 to-neutral-900/70" />
 
         <div className="relative z-10 mx-auto w-full max-w-5xl px-4 pb-32 pt-24 sm:px-6 lg:px-8">
           <Breadcrumbs
