@@ -14,6 +14,10 @@ import {
 import type { MultiSelectOption } from "./types"
 import type { GroupedBairroOptions } from "../useSearchBarController"
 
+/** Accent-insensitive lowercase */
+const normalize = (s: string) =>
+  s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+
 interface LocationFilterProps {
   bairros: MultiSelectOption[]
   cidades: MultiSelectOption[]
@@ -50,12 +54,12 @@ export function LocationFilter({
 
   const filteredGroups = useMemo(() => {
     if (!useGrouped || !groupedBairros) return []
-    const normalized = query.trim().toLowerCase()
+    const q = normalize(query.trim())
     return groupedBairros
       .map((group) => ({
         ...group,
-        bairros: normalized
-          ? group.bairros.filter((b) => b.label.toLowerCase().includes(normalized))
+        bairros: q
+          ? group.bairros.filter((b) => normalize(b.label).includes(q))
           : group.bairros,
       }))
       .filter((group) => group.bairros.length > 0)
@@ -63,19 +67,19 @@ export function LocationFilter({
 
   const filteredBairros = useMemo(() => {
     if (useGrouped) return [] // handled by groups
-    const normalized = query.trim().toLowerCase()
-    if (!normalized) return bairros
+    const q = normalize(query.trim())
+    if (!q) return bairros
     return bairros.filter((bairro) =>
-      bairro.label.toLowerCase().includes(normalized)
+      normalize(bairro.label).includes(q)
     )
   }, [bairros, query, useGrouped])
 
   const filteredCidades = useMemo(() => {
     if (useGrouped) return [] // cities become group headers
-    const normalized = query.trim().toLowerCase()
-    if (!normalized) return cidades
+    const q = normalize(query.trim())
+    if (!q) return cidades
     return cidades.filter((cidade) =>
-      cidade.label.toLowerCase().includes(normalized)
+      normalize(cidade.label).includes(q)
     )
   }, [cidades, query, useGrouped])
 
