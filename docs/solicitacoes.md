@@ -2,7 +2,7 @@
 
 > Solicitacoes de alteracao feitas pelo cliente (Bruno).
 > Atualizado: 2026-04-06
-> **Total: 14 solicitacoes** | ACEITO: 4 | AVALIAR: 10 | Implementadas: 12 (+ task 3 pendente dados Bruno, task 10 futuro v2)
+> **Total: 14 solicitacoes** | ACEITO: 4 | AVALIAR: 10 | Implementadas: 13 (task 3 pendente dados Bruno)
 
 ---
 
@@ -104,12 +104,22 @@
     3. **SearchBar** (`SearchBar.tsx`): Pill "Tipo" so verifica/limpa `tipos`, nao `finalidades`. Finalidade vira pill independente (task 7).
     4. Implementar junto com tasks 7 e 8 — sao complementares.
 
-### 10. Busca estilo portal: autocomplete cidade+bairro (referencia ImovelWeb) — FUTURO v2
-- [ ] Campo de localizacao com autocomplete: digitar "cu" → sugere "Curitiba, Parana" + "Agua Verde, Curitiba" etc.
-- [ ] Formato: "Bairro, Cidade, Estado" nas sugestoes
-  - Tipo: **AVALIAR** — marcada como v2/futuro
-  - Comentario: Complexidade alta (busca fuzzy, debounce, highlight). As tasks 6-9 ja resolvem 80% do problema (agrupamento por cidade, filtro de ativos). O autocomplete e evolucao futura que pode ser implementada sobre a base das tasks 6-9.
-  - Implementacao futura: Substituir `CommandInput` do `LocationFilter` por autocomplete com debounce 300ms. Criar `searchLocations(query)` em `loft.ts` que busca em `BairroSummary[]` (ja cached). Retornar resultados agrupados "Bairro, Cidade, Estado". Sem lib nova — usar o `Command` do shadcn que ja tem busca embutida.
+### 10. Busca estilo portal: autocomplete cidade+bairro (referencia ImovelWeb/QuintoAndar) ✅
+- [x] Campo de localizacao com autocomplete: digitar "cu" → sugere "Curitiba, Parana" + "Agua Verde, Curitiba" etc.
+- [x] Formato: "Bairro, Cidade, Estado" nas sugestoes com contagem de imoveis
+  - Tipo: **AVALIAR** — implementado
+  - Comentario: Implementado como `LocationAutocomplete.tsx` — padrao QuintoAndar/Airbnb.
+  - Implementacao:
+    1. **Novo componente** `src/components/search/filters/LocationAutocomplete.tsx`:
+       - Input com icone de lupa, placeholder "Digite uma cidade ou bairro..."
+       - **Estado vazio:** Mostra "Cidades disponiveis" (top 8 por contagem)
+       - **Buscando:** Debounce 200ms, filtra cidades+bairros, formato "Batel — Curitiba - PR (25)"
+       - **Selecao:** Seta valor, limpa input, fecha popover, pill mostra nome selecionado
+       - Navegacao por teclado (ArrowUp/Down, Enter, Escape)
+       - So mostra locais com imoveis ativos (total > 0)
+    2. **Controller** (`useSearchBarController.ts`): `cidadeSummaries` com contagem por cidade
+    3. **SearchBar desktop**: Popover de Localizacao usa LocationAutocomplete (single-select rapido)
+    4. **Modal/Mobile**: Manteve LocationFilter (multi-select com checkboxes para busca refinada)
 
 ### 11. Codigo do imovel em destaque na pagina de imovel (/imovel/[slug]) ✅
 - [x] Mover codigo do imovel do rodape tecnico para o **header**, proximo aos badges (tipo, finalidade)

@@ -18,6 +18,7 @@ import {
 
 import { AdvancedFiltersModal } from "@/components/search/filters/AdvancedFiltersModal"
 import { BedroomsFilter } from "@/components/search/filters/BedroomsFilter"
+import { LocationAutocomplete } from "@/components/search/filters/LocationAutocomplete"
 import { LocationFilter } from "@/components/search/filters/LocationFilter"
 import { PriceFilter } from "@/components/search/filters/PriceFilter"
 import { type PriceBounds } from "@/components/search/filters/search-state"
@@ -150,6 +151,7 @@ export function SearchBar({
   const [searchMode, setSearchMode] = useState<SearchMode>("filters")
   const [codigo, setCodigo] = useState("")
   const [modalOpen, setModalOpen] = useState(false)
+  const [locationPopoverOpen, setLocationPopoverOpen] = useState(false)
 
   const {
     pendingFilters,
@@ -159,6 +161,7 @@ export function SearchBar({
     tipoOptions,
     filteredTipoOptions,
     groupedBairroOptions,
+    cidadeSummaries,
     locationLabel,
     priceLabel,
     quartosLabel,
@@ -510,9 +513,9 @@ export function SearchBar({
                   : "md:grid md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,0.7fr)_minmax(0,0.9fr)_minmax(0,0.9fr)_auto]"
               )}>
 
-                {/* 1. Localização */}
+                {/* 1. Localização — Smart Autocomplete */}
                 <div className="border-b border-neutral-200 md:border-b-0">
-                  <Popover>
+                  <Popover open={locationPopoverOpen} onOpenChange={setLocationPopoverOpen}>
                     <PopoverTrigger
                       render={
                         <SegmentTrigger
@@ -531,19 +534,29 @@ export function SearchBar({
                         />
                       }
                     />
-                    <PopoverContent className="w-[calc(100vw-2rem)] max-w-md p-3 md:w-96 md:p-4">
-                      <LocationFilter
-                        bairros={bairroOptions}
-                        cidades={cidadeOptions}
+                    <PopoverContent className="w-[calc(100vw-2rem)] max-w-md p-4 md:w-[420px]">
+                      <LocationAutocomplete
                         groupedBairros={groupedBairroOptions}
+                        cidades={cidadeSummaries}
                         selectedBairros={pendingFilters.bairros}
                         selectedCidades={pendingFilters.cidades}
-                        onBairrosChange={(values) =>
-                          setPendingFilters((current) => ({ ...current, bairros: values }))
-                        }
-                        onCidadesChange={(values) =>
-                          setPendingFilters((current) => ({ ...current, cidades: values }))
-                        }
+                        onSelect={(item) => {
+                          if (item.type === "cidade") {
+                            setPendingFilters((c) => ({
+                              ...c,
+                              cidades: [item.slug],
+                              bairros: [],
+                            }))
+                          } else {
+                            setPendingFilters((c) => ({
+                              ...c,
+                              bairros: [item.slug],
+                              cidades: [],
+                            }))
+                          }
+                          setLocationPopoverOpen(false)
+                        }}
+                        onClose={() => setLocationPopoverOpen(false)}
                       />
                     </PopoverContent>
                   </Popover>

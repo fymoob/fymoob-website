@@ -37,6 +37,7 @@ export interface SearchBarController {
   tipoOptions: MultiSelectOption[]
   filteredTipoOptions: MultiSelectOption[]
   groupedBairroOptions: GroupedBairroOptions[]
+  cidadeSummaries: { label: string; slug: string; count: number }[]
   locationLabel: string
   priceLabel: string
   quartosLabel: string
@@ -235,6 +236,22 @@ export function useSearchBarController({
     return tipoOptions.filter((opt) => activeSlugSet.has(opt.value))
   }, [tipoOptions, tipoSummaries, pendingFilters.finalidades])
 
+  // City summaries with counts for autocomplete
+  const cidadeSummaries = useMemo(() => {
+    if (!bairroSummaries || bairroSummaries.length === 0) {
+      return cidades.map((c) => ({ label: c, slug: slugify(c), count: 0 }))
+    }
+    const cityCount = new Map<string, number>()
+    for (const bs of bairroSummaries) {
+      if (bs.total === 0) continue
+      const c = bs.cidade || "Outros"
+      cityCount.set(c, (cityCount.get(c) ?? 0) + bs.total)
+    }
+    return Array.from(cityCount.entries())
+      .map(([label, count]) => ({ label, slug: slugify(label), count }))
+      .sort((a, b) => b.count - a.count)
+  }, [bairroSummaries, cidades])
+
   // Task 6: Group bairros by city, only active ones
   const groupedBairroOptions = useMemo<GroupedBairroOptions[]>(() => {
     if (!bairroSummaries || bairroSummaries.length === 0) return []
@@ -296,6 +313,7 @@ export function useSearchBarController({
     tipoOptions,
     filteredTipoOptions,
     groupedBairroOptions,
+    cidadeSummaries,
     locationLabel,
     priceLabel,
     quartosLabel,
