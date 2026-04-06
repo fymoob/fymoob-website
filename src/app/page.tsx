@@ -186,7 +186,7 @@ export default async function Home() {
                 <div key={item.href} className="">
                   <Link
                     href={item.href}
-                    className="flex flex-col items-center gap-3 rounded-2xl border border-neutral-200 bg-white p-8 text-center transition-all duration-300 hover:-translate-y-1 hover:border-brand-primary-muted hover:shadow-xl"
+                    className="flex h-full flex-col items-center justify-center gap-3 rounded-2xl border border-neutral-200 bg-white p-8 text-center transition-all duration-300 hover:-translate-y-1 hover:border-brand-primary-muted hover:shadow-xl"
                   >
                     <Icon size={32} className="text-brand-primary" />
                     <span className="font-display text-sm font-semibold text-neutral-950">
