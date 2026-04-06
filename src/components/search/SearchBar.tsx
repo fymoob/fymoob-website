@@ -16,7 +16,7 @@ import {
   X,
 } from "lucide-react"
 
-import { AdvancedFilters } from "@/components/search/filters/AdvancedFilters"
+import { AdvancedFiltersModal } from "@/components/search/filters/AdvancedFiltersModal"
 import { BedroomsFilter } from "@/components/search/filters/BedroomsFilter"
 import { LocationFilter } from "@/components/search/filters/LocationFilter"
 import { PriceFilter } from "@/components/search/filters/PriceFilter"
@@ -149,6 +149,7 @@ export function SearchBar({
 }: SearchBarProps) {
   const [searchMode, setSearchMode] = useState<SearchMode>("filters")
   const [codigo, setCodigo] = useState("")
+  const [modalOpen, setModalOpen] = useState(false)
 
   const {
     pendingFilters,
@@ -204,14 +205,25 @@ export function SearchBar({
       suitesMin: "",
       banheirosMin: "",
       vagasMin: "",
+      areaMin: "",
+      areaMax: "",
     })
+
+  const advancedFilterCount =
+    (pendingFilters.codigo ? 1 : 0) +
+    (pendingFilters.suitesMin ? 1 : 0) +
+    (pendingFilters.banheirosMin ? 1 : 0) +
+    (pendingFilters.vagasMin ? 1 : 0) +
+    (pendingFilters.areaMin ? 1 : 0) +
+    (pendingFilters.areaMax ? 1 : 0)
 
   const activeFilterCount =
     (pendingFilters.finalidades.length > 0 ? 1 : 0) +
     (pendingFilters.bairros.length > 0 || pendingFilters.cidades.length > 0 ? 1 : 0) +
     (pendingFilters.tipos.length > 0 ? 1 : 0) +
     (pendingFilters.quartos ? 1 : 0) +
-    (minPrice > priceBounds.min || maxPrice < priceBounds.max ? 1 : 0)
+    (minPrice > priceBounds.min || maxPrice < priceBounds.max ? 1 : 0) +
+    advancedFilterCount
 
   // Chip definitions for mobile — order: Finalidade → Location → Tipo → Quartos → Preço
   const chips = [
@@ -245,6 +257,7 @@ export function SearchBar({
   ]
 
   return (
+    <>
     <aside
       className={cn(
         sticky && "sticky top-14 z-40 bg-white/80 py-3 backdrop-blur-md md:top-16",
@@ -371,13 +384,26 @@ export function SearchBar({
                       />
                     </div>
 
-                    {/* Advanced Filters */}
+                    {/* Mais filtros button → opens modal */}
                     <div className="border-t border-neutral-200 pt-4">
-                      <h3 className="mb-3 text-sm font-semibold text-neutral-700">Mais filtros</h3>
-                      <AdvancedFilters
-                        pendingFilters={pendingFilters}
-                        setPendingFilters={setPendingFilters}
-                      />
+                      <button
+                        type="button"
+                        onClick={() => { setSheetOpen(false); setTimeout(() => setModalOpen(true), 200) }}
+                        className={cn(
+                          "flex w-full items-center justify-center gap-2 rounded-xl border py-3 text-sm font-medium transition-colors",
+                          advancedFilterCount > 0
+                            ? "border-brand-primary bg-brand-primary/5 text-brand-primary"
+                            : "border-neutral-200 text-neutral-600 hover:bg-neutral-50"
+                        )}
+                      >
+                        <SlidersHorizontal className="size-4" />
+                        Mais filtros
+                        {advancedFilterCount > 0 && (
+                          <span className="flex size-5 items-center justify-center rounded-full bg-brand-primary text-[10px] font-bold text-white">
+                            {advancedFilterCount}
+                          </span>
+                        )}
+                      </button>
                     </div>
                   </div>
 
@@ -477,7 +503,12 @@ export function SearchBar({
             )}
           >
             <div className="w-full max-w-full rounded-3xl border border-neutral-200 bg-white p-4 shadow-xl md:rounded-full md:p-0 md:shadow-lg">
-              <div className="flex flex-col md:grid md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,0.8fr)_minmax(0,1fr)_auto] md:items-center md:gap-0">
+              <div className={cn(
+                "flex flex-col md:items-center md:gap-0",
+                isHome
+                  ? "md:grid md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,0.8fr)_minmax(0,1fr)_auto]"
+                  : "md:grid md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,0.7fr)_minmax(0,0.9fr)_minmax(0,0.9fr)_auto]"
+              )}>
 
                 {/* 1. Localização */}
                 <div className="border-b border-neutral-200 md:border-b-0">
@@ -609,6 +640,25 @@ export function SearchBar({
                   </Popover>
                 </div>
 
+                {/* 5. Mais filtros (search context only) */}
+                {!isHome && (
+                  <div className="hidden md:block">
+                    <button
+                      type="button"
+                      onClick={() => setModalOpen(true)}
+                      className="group flex h-14 w-full items-center gap-2 px-5 text-left transition-colors"
+                    >
+                      <SlidersHorizontal className={cn("size-4 shrink-0", advancedFilterCount > 0 ? "text-brand-primary" : "text-neutral-500")} />
+                      <span className={cn(
+                        "truncate text-sm font-medium tracking-tight",
+                        advancedFilterCount > 0 ? "font-semibold text-neutral-900" : "text-neutral-500 group-hover:text-neutral-700"
+                      )}>
+                        {advancedFilterCount > 0 ? `Mais filtros (${advancedFilterCount})` : "Mais filtros"}
+                      </span>
+                    </button>
+                  </div>
+                )}
+
                 {isHome ? (
                   <div className="hidden justify-end md:flex md:pr-2">
                     <button
@@ -707,5 +757,21 @@ export function SearchBar({
         </div>
       </div>
     </aside>
+
+    {/* Advanced filters modal — portal outside aside */}
+    <AdvancedFiltersModal
+      open={modalOpen}
+      onClose={() => setModalOpen(false)}
+      pendingFilters={pendingFilters}
+      setPendingFilters={setPendingFilters}
+      priceBounds={priceBounds}
+      bairroOptions={bairroOptions}
+      cidadeOptions={cidadeOptions}
+      tipoOptions={filteredTipoOptions}
+      groupedBairroOptions={groupedBairroOptions}
+      onApply={applyFilters}
+      onClear={clearAllFilters}
+    />
+    </>
   )
 }

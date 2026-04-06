@@ -147,18 +147,17 @@
   - [x] Filtro por **suites** (1+, 2+, 3+, 4+)
   - [x] Filtro por **banheiros** (1+, 2+, 3+, 4+)
   - [x] Filtro por **vagas** (1+, 2+, 3+, 4+)
-  - [ ] Filtro por **area total** (min/max m²) — futuro
-  - [ ] Filtro por **area privativa** (min/max m²) — futuro
+  - [x] Filtro por **area privativa** (min/max m²)
 - [x] Manter filtros acessiveis e editaveis a qualquer momento (referencia ImovelWeb: barra sticky)
+- [x] **Padrao "Quick Pills + Modal" (Airbnb/ImovelWeb):**
+  - [x] Pill "Mais filtros" no desktop com badge de contagem
+  - [x] Modal overlay (fixed z-9999, backdrop blur, nao empurra layout)
+  - [x] Header fixo "Filtros" + botao fechar (X)
+  - [x] Conteudo scrollavel: Finalidade, Localizacao+Tipo (grid 2col), Preco, Quartos/Suites/Banheiros/Vagas (grid 2col), Area (min/max m²), Codigo
+  - [x] Footer fixo: "Limpar tudo" + "Aplicar filtros"
+  - [x] Mobile: full-screen. Desktop: centralizado max-w-3xl rounded-2xl
   - Tipo: **AVALIAR**
-  - Comentario: Site antigo tem 12 campos de filtro. Nosso tem 4. Referencia ImovelWeb: "Mais filtros (3)" botao com badge de contagem. A API ja suporta `vagasMin`, `areaMin/Max` no `applyFilters()`. So faltam `suitesMin` e `banheirosMin`.
-  - Implementacao:
-    1. **Tipos** (`src/types/property.ts`): Adicionar `suitesMin?: number` e `banheirosMin?: number` ao `PropertyFilters`.
-    2. **API** (`src/services/loft.ts` ~linha 442): Adicionar filtro para suites e banheiros no `applyFilters()`.
-    3. **Novo componente** `src/components/search/filters/AdvancedFilters.tsx`: Botao "Mais filtros" que abre Sheet (bottom sheet mobile, side panel desktop). Campos: codigo (text input), suites/banheiros/vagas (number selectors pattern BedroomsFilter), area privativa e total (min/max inputs em m²). Botoes Limpar + Aplicar.
-    4. **State** (`search-state.ts`): Estender `SearchDraftFilters` com novos campos. Atualizar serializacao URL.
-    5. **SearchBar**: Adicionar botao "Mais filtros" so na /busca (nao na home). Badge com contagem de filtros avancados ativos.
-    6. **Performance**: Zero impacto — nenhuma lib nova, Sheet do shadcn ja existe, filtros em memoria.
+  - Comentario: Implementado como `AdvancedFiltersModal.tsx` — modal completo padrao Airbnb/ImovelWeb. No desktop, pill "Mais filtros (N)" aparece na barra apos Preco. No mobile, botao "Mais filtros" no bottom sheet abre o modal. Zero libs novas, performance intacta.
 
 ---
 

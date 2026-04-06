@@ -17,6 +17,8 @@ export interface SearchDraftFilters {
   suitesMin: string
   banheirosMin: string
   vagasMin: string
+  areaMin: string
+  areaMax: string
 }
 
 export const PRICE_STEP = 50_000
@@ -70,6 +72,8 @@ export function createDraftFromSearchParams(
     suitesMin: params.get("suitesMin") ?? "",
     banheirosMin: params.get("banheirosMin") ?? "",
     vagasMin: params.get("vagasMin") ?? "",
+    areaMin: params.get("areaMin") ?? "",
+    areaMax: params.get("areaMax") ?? "",
   }
 }
 
@@ -135,6 +139,18 @@ export function applyDraftToSearchParams(
     params.set("vagasMin", draft.vagasMin)
   } else {
     params.delete("vagasMin")
+  }
+
+  if (draft.areaMin) {
+    params.set("areaMin", draft.areaMin)
+  } else {
+    params.delete("areaMin")
+  }
+
+  if (draft.areaMax) {
+    params.set("areaMax", draft.areaMax)
+  } else {
+    params.delete("areaMax")
   }
 
   params.delete("page")
