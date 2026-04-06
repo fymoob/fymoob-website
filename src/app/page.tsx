@@ -22,10 +22,6 @@ const RecentlyViewed = dynamic(
   () => import("@/components/shared/RecentlyViewed").then((m) => ({ default: m.RecentlyViewed })),
   { ssr: true }
 )
-const WelcomeBack = dynamic(
-  () => import("@/components/shared/WelcomeBack").then((m) => ({ default: m.WelcomeBack })),
-  { ssr: true }
-)
 const SavedSearchBanner = dynamic(
   () => import("@/components/search/SavedSearchBanner").then((m) => ({ default: m.SavedSearchBanner })),
   { ssr: true }
@@ -100,9 +96,6 @@ export default async function Home() {
         cidades={cities}
         priceBounds={priceBounds}
       />
-
-      {/* Welcome back banner (returning visitors) */}
-      <WelcomeBack />
 
       {/* Saved search banner */}
       <SavedSearchBanner />
