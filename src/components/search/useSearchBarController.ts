@@ -213,28 +213,59 @@ export function useSearchBarController({
     return "Comprar"
   }, [pendingFilters.finalidades])
 
-  // Task 8: Filter tipos by selected finalidade
+  // Task 8: Filter tipos by selected finalidade AND location
   const filteredTipoOptions = useMemo(() => {
     if (!tipoSummaries || tipoSummaries.length === 0) return tipoOptions
-    // If no finalidade selected, show all tipos with total > 0
-    const activeTipos = tipoSummaries.filter((ts) => {
-      if (ts.total === 0) return false
-      if (pendingFilters.finalidades.length === 0) return true
-      // Check if this tipo has properties for the selected finalidade
+
+    // Step 1: Get types valid for the selected finalidade
+    let validTypeSlugs: Set<string> | null = null
+    if (pendingFilters.finalidades.length > 0) {
       const isAlugar = pendingFilters.finalidades.includes("locacao")
-      if (isAlugar) {
-        return (ts.porFinalidade["Aluguel"] ?? 0) > 0 ||
-               (ts.porFinalidade["Locação"] ?? 0) > 0 ||
+      const activeTipos = tipoSummaries.filter((ts) => {
+        if (ts.total === 0) return false
+        if (isAlugar) {
+          return (ts.porFinalidade["Aluguel"] ?? 0) > 0 ||
+                 (ts.porFinalidade["Locação"] ?? 0) > 0 ||
+                 (ts.porFinalidade["Venda e Aluguel"] ?? 0) > 0 ||
+                 (ts.porFinalidade["Venda e Locação"] ?? 0) > 0
+        }
+        return (ts.porFinalidade["Venda"] ?? 0) > 0 ||
                (ts.porFinalidade["Venda e Aluguel"] ?? 0) > 0 ||
                (ts.porFinalidade["Venda e Locação"] ?? 0) > 0
+      })
+      validTypeSlugs = new Set(activeTipos.map((ts) => ts.slug))
+    }
+
+    // Step 2: Get types valid for the selected location (bairro or cidade)
+    let locationTypeSlugs: Set<string> | null = null
+    if (bairroSummaries && bairroSummaries.length > 0) {
+      const hasBairro = pendingFilters.bairros.length > 0
+      const hasCidade = pendingFilters.cidades.length > 0
+      if (hasBairro || hasCidade) {
+        locationTypeSlugs = new Set<string>()
+        for (const bs of bairroSummaries) {
+          if (bs.total === 0) continue
+          const bairroMatch = hasBairro && pendingFilters.bairros.includes(slugify(bs.bairro))
+          const cidadeMatch = hasCidade && pendingFilters.cidades.includes(slugify(bs.cidade))
+          if (bairroMatch || cidadeMatch) {
+            for (const t of bs.tipos) {
+              locationTypeSlugs.add(slugify(t.tipo))
+            }
+          }
+        }
       }
-      return (ts.porFinalidade["Venda"] ?? 0) > 0 ||
-             (ts.porFinalidade["Venda e Aluguel"] ?? 0) > 0 ||
-             (ts.porFinalidade["Venda e Locação"] ?? 0) > 0
+    }
+
+    // Step 3: Intersect — type must pass all active filters
+    return tipoOptions.filter((opt) => {
+      if (validTypeSlugs && !validTypeSlugs.has(opt.value)) return false
+      if (locationTypeSlugs && !locationTypeSlugs.has(opt.value)) return false
+      // Also exclude types with zero total
+      const ts = tipoSummaries.find((t) => t.slug === opt.value)
+      if (ts && ts.total === 0) return false
+      return true
     })
-    const activeSlugSet = new Set(activeTipos.map((ts) => ts.slug))
-    return tipoOptions.filter((opt) => activeSlugSet.has(opt.value))
-  }, [tipoOptions, tipoSummaries, pendingFilters.finalidades])
+  }, [tipoOptions, tipoSummaries, bairroSummaries, pendingFilters.finalidades, pendingFilters.bairros, pendingFilters.cidades])
 
   // City summaries with counts for autocomplete
   const cidadeSummaries = useMemo(() => {
