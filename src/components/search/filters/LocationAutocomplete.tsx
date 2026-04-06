@@ -85,14 +85,16 @@ export function LocationAutocomplete({
     return items
   }, [cidades, groupedBairros])
 
-  // Filter results based on query
+  // Filter results based on query (accent-insensitive)
   const filteredResults = useMemo<LocationItem[]>(() => {
     if (!debouncedQuery.trim()) return []
-    const q = debouncedQuery.toLowerCase().trim()
+    const normalize = (s: string) =>
+      s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    const q = normalize(debouncedQuery.trim())
     return allLocations
       .filter((item) => {
-        const inLabel = item.label.toLowerCase().includes(q)
-        const inCidade = item.cidade?.toLowerCase().includes(q)
+        const inLabel = normalize(item.label).includes(q)
+        const inCidade = item.cidade ? normalize(item.cidade).includes(q) : false
         return inLabel || inCidade
       })
       .sort((a, b) => {
