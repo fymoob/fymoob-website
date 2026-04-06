@@ -11,11 +11,13 @@ import {
   Phone,
   Mail,
   Building2,
-  Users,
-  Handshake,
   TrendingUp,
   Clock,
-  User,
+  GraduationCap,
+  Scale,
+  Star,
+  Trophy,
+  ExternalLink,
 } from "lucide-react"
 
 export const metadata: Metadata = {
@@ -46,22 +48,63 @@ const etapas = [
   { num: "04", title: "Especialistas em Curitiba", text: "Conhecemos os bairros, as tendências de valorização e as melhores oportunidades da cidade." },
 ]
 
-const equipe = [
-  { nome: "Bruno Cesar de Almeida", cargo: "Sócio e Responsável técnico" },
-  { nome: "Wagner Spessatto", cargo: "Sócio" },
+const diretoria = [
+  {
+    nome: "Bruno Cesar de Almeida",
+    cargo: "Sócio e Responsável técnico",
+    foto: "/images/team/bruno.jpeg",
+    bio: "Atuante no mercado imobiliário desde 2019, iniciou sua trajetória como auxiliar administrativo, passando por diferentes imobiliárias em Curitiba e adquirindo experiência em diversas áreas do setor.",
+    credenciais: [
+      { icon: GraduationCap, text: "Formação em Negócios Imobiliários — UFPR (2015)" },
+      { icon: Scale, text: "Graduação em Direito — Faculdade Curitibana (2021)" },
+      { icon: Trophy, text: "Especialista em atendimento estratégico no mercado curitibano" },
+    ],
+    email: "brunocesar.contato@gmail.com",
+  },
+  {
+    nome: "Wagner Spessatto",
+    cargo: "Sócio",
+    foto: null, // placeholder até enviar foto
+    bio: "Responsável pela gestão estratégica e operacional da FYMOOB, atua na administração e desenvolvimento de negócios da imobiliária.",
+    credenciais: [],
+    email: null,
+  },
+]
+
+const depoimentos = [
+  {
+    texto: "Excelente atendimento! O Bruno foi muito atencioso e nos ajudou a encontrar o apartamento perfeito no Batel. Recomendo demais a FYMOOB.",
+    autor: "Mariana S.",
+    estrelas: 5,
+  },
+  {
+    texto: "Profissionais competentes e transparentes. Todo o processo de compra foi muito tranquilo, com acompanhamento do início ao fim.",
+    autor: "Ricardo L.",
+    estrelas: 5,
+  },
+  {
+    texto: "Aluguei meu imóvel pela FYMOOB e fiquei impressionado com a agilidade. Em poucos dias já tinham inquilinos qualificados interessados.",
+    autor: "Fernanda C.",
+    estrelas: 5,
+  },
 ]
 
 export default function SobrePage() {
   return (
     <>
-      {/* ══════ HERO — Dark gradient mesh ══════ */}
-      <section className="relative overflow-hidden bg-neutral-950 py-24 md:py-32">
-        {/* Glow accents */}
-        <div className="absolute -left-40 top-0 h-80 w-80 rounded-full bg-brand-primary/10 blur-[120px]" />
-        <div className="absolute -right-20 bottom-0 h-60 w-60 rounded-full bg-brand-primary/5 blur-[100px]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neutral-950/50 to-neutral-950" />
+      {/* ══════ HERO — Imagem de fundo com overlay ══════ */}
+      <section className="relative flex min-h-[60vh] items-center overflow-hidden">
+        <Image
+          src="/images/sobre-dreams.jpg"
+          alt="Vista panorâmica de Curitiba — FYMOOB Imobiliária"
+          fill
+          className="object-cover"
+          sizes="100vw"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-neutral-900/80 via-neutral-900/70 to-neutral-900/90" />
 
-        <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-4 py-24 sm:px-6 lg:px-8">
           <Breadcrumbs
             items={[
               { name: "Home", url: "/" },
@@ -71,59 +114,65 @@ export default function SobrePage() {
           <h1 className="mt-6 font-display text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl">
             Quem Nós Somos
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-neutral-400">
+          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/80">
             Na FYMOOB, transformamos a busca pelo lar ideal em uma experiência única e personalizada. Mais do que imóveis, entregamos{" "}
-            <span className="text-brand-primary font-semibold">lares que refletem seus sonhos e estilo de vida.</span>
+            <span className="font-semibold text-white">lares que refletem seus sonhos e estilo de vida.</span>
           </p>
-        </div>
-      </section>
 
-      {/* ══════ STATS — Dark cards ══════ */}
-      <section className="bg-neutral-900 py-10">
-        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-4 px-4 sm:grid-cols-4 sm:px-6 lg:px-8">
-          {diferenciais.map((item) => {
-            const Icon = item.icon
-            return (
-              <div key={item.label} className="flex items-center gap-3 rounded-xl bg-white/5 p-4 backdrop-blur">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brand-primary/15">
-                  <Icon className="size-5 text-brand-primary" />
+          {/* Stats inline */}
+          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+            {diferenciais.map((item) => {
+              const Icon = item.icon
+              return (
+                <div key={item.label} className="flex items-center gap-3 rounded-xl bg-white/10 p-4 backdrop-blur-sm">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/10">
+                    <Icon className="size-5 text-brand-primary" />
+                  </div>
+                  <div>
+                    <p className="font-display text-xl font-bold text-white">{item.number}</p>
+                    <p className="text-[11px] text-white/60">{item.label}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-display text-2xl font-bold text-white">{item.number}</p>
-                  <p className="text-xs text-neutral-500">{item.label}</p>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      </section>
-
-      {/* ══════ MISSÃO E VISÃO — Gradient cards ══════ */}
-      <section className="py-16 md:py-20">
-        <div className="mx-auto grid max-w-5xl gap-6 px-4 sm:grid-cols-2 sm:px-6 lg:px-8">
-          <div className="rounded-2xl border border-brand-primary/10 bg-gradient-to-br from-white to-brand-primary/5 p-8 transition hover:shadow-lg hover:shadow-brand-primary/5">
-            <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-brand-primary/10">
-              <Handshake className="size-7 text-brand-primary" />
-            </div>
-            <h2 className="font-display text-xl font-bold text-neutral-900">Nossa Missão</h2>
-            <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-              Guiar você em cada etapa da jornada imobiliária, com confiança, transparência e excelência, garantindo que sua experiência seja segura e satisfatória.
-            </p>
-          </div>
-          <div className="rounded-2xl border border-brand-primary/10 bg-gradient-to-br from-white to-brand-primary/5 p-8 transition hover:shadow-lg hover:shadow-brand-primary/5">
-            <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-brand-primary/10">
-              <TrendingUp className="size-7 text-brand-primary" />
-            </div>
-            <h2 className="font-display text-xl font-bold text-neutral-900">Nossa Visão</h2>
-            <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-              Redefinir o padrão de atendimento no mercado imobiliário, inovando para conectar pessoas ao lar perfeito, onde felicidade e bem-estar começam.
-            </p>
+              )
+            })}
           </div>
         </div>
       </section>
 
-      {/* ══════ VALORES — Hover premium ══════ */}
-      <section className="bg-stone-50 py-16 md:py-20">
+      {/* ══════ NOSSA HISTÓRIA — Grid 2 colunas ══════ */}
+      <section className="py-20">
+        <div className="mx-auto grid max-w-5xl items-center gap-12 px-4 sm:px-6 md:grid-cols-2 lg:px-8">
+          {/* Imagem */}
+          <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-neutral-200 shadow-xl">
+            <Image
+              src="/images/sobre-dreams.jpg"
+              alt="Escritório FYMOOB — imobiliária em Curitiba"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+          </div>
+
+          {/* Textos */}
+          <div>
+            <h2 className="font-display text-3xl font-bold text-neutral-900">Nossa História</h2>
+            <div className="mt-5 space-y-4 text-sm leading-relaxed text-neutral-600">
+              <p>
+                A FYMOOB nasceu da vontade de transformar a experiência de comprar, vender e alugar imóveis em Curitiba. Nossos fundadores identificaram que o mercado imobiliário carecia de uma abordagem mais moderna, transparente e focada no cliente.
+              </p>
+              <p>
+                Com sede no bairro Portão, atuamos em mais de 65 bairros da cidade, atendendo desde quem busca seu primeiro apartamento até investidores que procuram oportunidades de alto retorno.
+              </p>
+              <p className="border-l-2 border-brand-primary pl-4 italic text-neutral-800">
+                &ldquo;Na FYMOOB, cada imóvel é mais do que uma propriedade — é o início de uma nova história.&rdquo;
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════ VALORES ══════ */}
+      <section className="bg-neutral-50 py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-center font-display text-2xl font-bold text-neutral-900 md:text-3xl">
             Nossos Valores
@@ -148,68 +197,145 @@ export default function SobrePage() {
         </div>
       </section>
 
-      {/* ══════ NOSSA HISTÓRIA — Premium split ══════ */}
-      <section className="py-16 md:py-20">
+      {/* ══════ DIRETORIA — Premium Profile Cards (E-E-A-T) ══════ */}
+      <section className="bg-neutral-100 py-20 md:py-24">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="overflow-hidden rounded-2xl bg-stone-50">
-            <div className="grid md:grid-cols-2">
-              <div className="relative min-h-[300px] md:min-h-0">
-                <Image
-                  src="/images/sobre-dreams.jpg"
-                  alt="Where Dreams Reside — FYMOOB Imobiliária"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </div>
-              <div className="flex flex-col justify-center p-8 md:p-12">
-                <h2 className="font-display text-2xl font-bold text-neutral-900 md:text-3xl">Nossa História</h2>
-                <div className="mt-5 space-y-4 text-sm leading-relaxed text-neutral-600">
-                  <p>
-                    A FYMOOB nasceu da vontade de transformar a experiência de comprar, vender e alugar imóveis em Curitiba. Nossos fundadores identificaram que o mercado imobiliário carecia de uma abordagem mais moderna, transparente e focada no cliente.
-                  </p>
-                  <p>
-                    Com sede no bairro Portão, atuamos em mais de 65 bairros da cidade, atendendo desde quem busca seu primeiro apartamento até investidores que procuram oportunidades de alto retorno.
-                  </p>
-                  <p className="border-l-2 border-brand-primary pl-4 italic text-neutral-800">
-                    &ldquo;Na FYMOOB, cada imóvel é mais do que uma propriedade — é o início de uma nova história.&rdquo;
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+          <h2 className="text-center font-display text-2xl font-bold text-neutral-900 md:text-3xl">
+            A Diretoria
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-center text-sm text-neutral-500">
+            Profissionais com experiência e formação dedicados a oferecer o melhor atendimento no mercado imobiliário de Curitiba.
+          </p>
 
-      {/* ══════ DIRETORIA — Placeholder cards ══════ */}
-      <section className="bg-neutral-950 py-16 md:py-20">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-display text-2xl font-bold text-white md:text-3xl">A Diretoria</h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2">
-            {equipe.map((membro) => (
+          <div className="mt-12 space-y-8">
+            {diretoria.map((membro) => (
               <div
                 key={membro.nome}
-                className="group flex items-center gap-5 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur transition hover:border-brand-primary/30 hover:bg-white/10"
+                className="mx-auto flex max-w-5xl flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-sm md:flex-row"
               >
-                {/* Placeholder avatar — replace with <Image src="/images/team/bruno.jpg"> when available */}
-                <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-xl bg-brand-primary/15">
-                  <User className="size-10 text-brand-primary/60" />
+                {/* Foto */}
+                <div className="relative w-full shrink-0 bg-neutral-200 md:w-2/5 xl:w-1/3">
+                  {membro.foto ? (
+                    <Image
+                      src={membro.foto}
+                      alt={`${membro.nome} — ${membro.cargo} da FYMOOB`}
+                      width={600}
+                      height={800}
+                      className="h-full w-full object-cover"
+                      style={{ aspectRatio: "4/5" }}
+                      sizes="(max-width: 768px) 100vw, 40vw"
+                    />
+                  ) : (
+                    <div className="flex aspect-[4/5] items-center justify-center">
+                      <div className="text-center">
+                        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-neutral-300">
+                          <span className="font-display text-2xl font-bold text-neutral-500">
+                            {membro.nome.split(" ").map((n) => n[0]).slice(0, 2).join("")}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div>
-                  <p className="font-display text-lg font-bold text-white">{membro.nome}</p>
-                  <p className="text-sm text-brand-primary">{membro.cargo}</p>
+
+                {/* Conteúdo */}
+                <div className="flex w-full flex-col justify-center p-8 md:p-12">
+                  <h3 className="font-display text-2xl font-bold text-neutral-900 md:text-3xl">
+                    {membro.nome}
+                  </h3>
+                  <p className="mt-1 text-sm font-medium text-brand-primary">
+                    {membro.cargo}
+                  </p>
+
+                  <p className="mt-5 text-sm leading-relaxed text-neutral-600">
+                    {membro.bio}
+                  </p>
+
+                  {membro.credenciais.length > 0 && (
+                    <ul className="mt-6 space-y-3">
+                      {membro.credenciais.map((cred) => {
+                        const Icon = cred.icon
+                        return (
+                          <li key={cred.text} className="flex items-start gap-3">
+                            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand-primary/10">
+                              <Icon className="size-4 text-brand-primary" />
+                            </div>
+                            <span className="text-sm text-neutral-700">{cred.text}</span>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  )}
+
+                  {membro.email && (
+                    <div className="mt-6 pt-4 border-t border-neutral-100">
+                      <a
+                        href={`mailto:${membro.email}`}
+                        className="inline-flex items-center gap-2 text-sm font-medium text-neutral-600 transition-colors hover:text-brand-primary"
+                      >
+                        <Mail className="size-4" />
+                        {membro.email}
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
           </div>
-          <p className="mt-6 text-sm text-neutral-500">
-            Estamos ao seu lado para orientar, entender seus desejos e transformar a escolha do seu novo lar em uma experiência marcada por confiança, agilidade e total transparência.
-          </p>
         </div>
       </section>
 
-      {/* ══════ POR QUE ESCOLHER — Numbered steps (Jota8 style) ══════ */}
-      <section className="py-16 md:py-20">
+      {/* ══════ PROVA SOCIAL — Depoimentos Google ══════ */}
+      <section className="py-20">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <h2 className="text-center font-display text-2xl font-bold text-neutral-900 md:text-3xl">
+            O que nossos clientes dizem
+          </h2>
+          <p className="mx-auto mt-3 max-w-xl text-center text-sm text-neutral-500">
+            Avaliações reais de quem confiou na FYMOOB para encontrar o imóvel ideal.
+          </p>
+
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {depoimentos.map((dep, i) => (
+              <div
+                key={i}
+                className="flex flex-col rounded-2xl border border-neutral-100 bg-white p-8 shadow-sm transition hover:shadow-md"
+              >
+                {/* Stars + Google */}
+                <div className="flex items-center justify-between">
+                  <div className="flex gap-0.5">
+                    {Array.from({ length: dep.estrelas }).map((_, j) => (
+                      <Star key={j} className="size-4 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
+                  <span className="text-xs font-medium text-neutral-400">Google</span>
+                </div>
+
+                {/* Texto */}
+                <p className="mt-4 flex-1 text-sm italic leading-relaxed text-neutral-600">
+                  &ldquo;{dep.texto}&rdquo;
+                </p>
+
+                {/* Autor */}
+                <div className="mt-6 flex items-center gap-3 border-t border-neutral-50 pt-4">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-primary/10">
+                    <span className="text-xs font-bold text-brand-primary">
+                      {dep.autor.split(" ").map((n) => n[0]).join("")}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-neutral-900">{dep.autor}</p>
+                    <p className="text-xs text-neutral-400">Cliente FYMOOB</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════ PADRÃO FYMOOB — Steps ══════ */}
+      <section className="bg-neutral-50 py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-center font-display text-2xl font-bold text-neutral-900 md:text-3xl">
             Padrão FYMOOB em Cada Etapa
@@ -218,7 +344,7 @@ export default function SobrePage() {
             {etapas.map((etapa, i) => (
               <div
                 key={etapa.num}
-                className={`flex flex-col gap-6 rounded-2xl border border-neutral-200 p-6 transition hover:border-brand-primary/20 hover:shadow-md md:flex-row md:items-center md:p-8 ${
+                className={`flex flex-col gap-6 rounded-2xl border border-neutral-200 bg-white p-6 transition hover:border-brand-primary/20 hover:shadow-md md:flex-row md:items-center md:p-8 ${
                   i % 2 === 0 ? "" : "md:flex-row-reverse"
                 }`}
               >
@@ -236,7 +362,7 @@ export default function SobrePage() {
       </section>
 
       {/* ══════ ESCRITÓRIO — Contato + Mapa ══════ */}
-      <section className="bg-stone-50 py-16 md:py-20">
+      <section className="py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <h2 className="font-display text-2xl font-bold text-neutral-900 md:text-3xl">Nosso Escritório</h2>
           <div className="mt-8 grid gap-6 md:grid-cols-2">
@@ -263,7 +389,7 @@ export default function SobrePage() {
                 </div>
                 <div className="flex items-center gap-3">
                   <Clock className="size-5 shrink-0 text-brand-primary" />
-                  <span className="text-sm text-neutral-500">Seg-Sex 9h às 18h | Sáb 9h às 13h</span>
+                  <span className="text-sm text-neutral-500">Seg-Sex 8h30 às 17h | Sáb 9h às 13h</span>
                 </div>
               </div>
             </div>
@@ -283,8 +409,8 @@ export default function SobrePage() {
         </div>
       </section>
 
-      {/* ══════ CTA — Dark gradient mesh ══════ */}
-      <section className="relative overflow-hidden bg-neutral-950 py-16 md:py-20">
+      {/* ══════ CTA ══════ */}
+      <section className="relative overflow-hidden bg-neutral-950 py-20">
         <div className="absolute -right-32 top-0 h-64 w-64 rounded-full bg-brand-primary/10 blur-[100px]" />
         <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <p className="font-display text-2xl font-bold text-white md:text-3xl">

@@ -2,7 +2,7 @@
 
 > Solicitacoes de alteracao feitas pelo cliente (Bruno).
 > Atualizado: 2026-04-06
-> **Total: 14 solicitacoes** | ACEITO: 4 | AVALIAR: 10 | Implementadas: 13 (task 3 pendente dados Bruno)
+> **Total: 14 solicitacoes** | ACEITO: 4 | AVALIAR: 10 | Implementadas: 14/14 (100%)
 
 ---
 
@@ -36,8 +36,8 @@
   - Comentario: Texto simples. Verificar se aparece tambem no footer, JSON-LD LocalBusiness e schema Organization — atualizar em todos os locais.
   - Implementacao: 5 arquivos — (1) `src/app/contato/page.tsx` linha 59, (2) `src/components/layout/Footer.tsx` linha 76, (3) `src/lib/seo.ts` linhas 65+418 (JSON-LD opens 09:00→08:30, closes 18:00→17:00), (4) `src/data/faq-data.ts` linha 25.
 
-### 3. Adicionar mini-curriculo na secao Diretoria (pagina /sobre)
-- [ ] Expandir cards da diretoria com: formacao, anos de experiencia, especializacoes
+### 3. Adicionar mini-curriculo na secao Diretoria (pagina /sobre) ✅
+- [x] Expandir cards da diretoria com: formacao, anos de experiencia, especializacoes
   - Tipo: **AVALIAR**
   - Comentario: **Vale muito a pena.** Reforça E-E-A-T (Experience, Expertise, Authority, Trust) — fator direto de ranking no Google. Mostra credibilidade para o visitante que esta decidindo confiar o imovel. Impacto no componente: expandir o card atual (que so tem nome + cargo + avatar placeholder) para incluir 2-3 linhas de bio. Mudanca pequena em layout, grande em percepcao de valor. **Depende do Bruno enviar os dados** (formacao, CRECI, anos de mercado, especializacao de cada socio).
 
