@@ -203,6 +203,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/contato`, priority: 0.6 },
     { url: `${SITE_URL}/anuncie`, priority: 0.7 },
     { url: `${SITE_URL}/empreendimentos`, priority: 0.8 },
+    { url: `${SITE_URL}/lancamentos`, priority: 0.9 },
   ].map((p) => ({
     ...p,
     lastModified: now,

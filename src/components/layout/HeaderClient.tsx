@@ -24,6 +24,7 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/sobre", label: "Sobre nós" },
   { href: "/busca", label: "Buscar" },
+  { href: "/lancamentos", label: "Lançamentos" },
   { href: "/blog", label: "Blog" },
   { href: "/anuncie", label: "Anunciar" },
   { href: "/contato", label: "Contato" },

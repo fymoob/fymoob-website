@@ -436,6 +436,7 @@ function applyFilters(indexed: IndexedProperty[], filters: PropertyFilters): Pro
     if (bairroSlugSet && !bairroSlugSet.has(item.bairroSlug)) continue
     if (cidadeSlugSet && !cidadeSlugSet.has(item.cidadeSlug)) continue
     if (filters.empreendimento && p.empreendimento !== filters.empreendimento) continue
+    if (filters.lancamento !== undefined && p.lancamento !== filters.lancamento) continue
     if (codigo && !p.codigo.toLowerCase().includes(codigo)) continue
     if (filters.precoMin && (item.price === null || item.price < filters.precoMin)) continue
     if (filters.precoMax && (item.price === null || item.price > filters.precoMax)) continue
