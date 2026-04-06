@@ -92,7 +92,7 @@ export function MobileContactBar({
   return (
     <div
       className="fixed left-0 z-[100] w-full border-t border-neutral-200 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.08)] transition-[bottom] duration-300 md:hidden"
-      style={{ bottom: navHidden ? 0 : 56 }}
+      style={{ bottom: navHidden ? 0 : 64 }}
     >
       {/* Urgency strip */}
       {urgency && (
