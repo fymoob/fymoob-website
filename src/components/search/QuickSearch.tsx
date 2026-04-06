@@ -36,6 +36,7 @@ function getCountForFinalidade(
          (porFinalidade["Venda e Locação"] ?? 0)
 }
 
+/** Accent-insensitive string comparison helper */
 const normalize = (s: string) =>
   s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
 
