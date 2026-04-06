@@ -298,6 +298,7 @@ export default async function CombinadaPage({ params }: CombinadaPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
 
+      <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
       <Suspense fallback={null}>
       <SearchPageSearchBar
         bairros={bairros.map((b) => b.bairro)}
@@ -309,6 +310,7 @@ export default async function CombinadaPage({ params }: CombinadaPageProps) {
         sticky
       />
       </Suspense>
+      </div>
 
       {/* Hero */}
       <section className="bg-neutral-950 py-12 md:py-16">

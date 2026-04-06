@@ -116,6 +116,7 @@ export default async function BairroPage({ params }: BairroPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
 
+      <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
       <Suspense fallback={null}>
       <SearchPageSearchBar
         bairros={bairros.map((b) => b.bairro)}
@@ -127,6 +128,7 @@ export default async function BairroPage({ params }: BairroPageProps) {
         sticky
       />
       </Suspense>
+      </div>
 
       {/* Hero */}
       <section className="relative bg-neutral-950 py-16 md:py-24">

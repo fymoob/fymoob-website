@@ -57,6 +57,7 @@ export default async function LancamentosPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
 
+      <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
       <Suspense fallback={null}>
       <SearchPageSearchBar
         bairros={bairros.map((b) => b.bairro)}
@@ -68,6 +69,7 @@ export default async function LancamentosPage() {
         sticky
       />
       </Suspense>
+      </div>
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <Breadcrumbs
