@@ -29,18 +29,27 @@ export function BottomNav() {
       return
     }
 
+    let idleTimer: ReturnType<typeof setTimeout>
+
     const handleScroll = () => {
       const currentY = window.scrollY
       if (currentY > lastScrollY.current && currentY > 100) {
-        setHidden(true) // scrolling down
+        setHidden(true) // scrolling down → hide
       } else {
-        setHidden(false) // scrolling up
+        setHidden(false) // scrolling up → show
       }
       lastScrollY.current = currentY
+
+      // Show again after 2s idle (user stopped scrolling)
+      clearTimeout(idleTimer)
+      idleTimer = setTimeout(() => setHidden(false), 2000)
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      clearTimeout(idleTimer)
+    }
   }, [isPropertyPage])
 
   useEffect(() => {
