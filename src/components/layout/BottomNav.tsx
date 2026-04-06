@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { Search, Heart, Home } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { cn } from "@/lib/utils"
 
 const WISHLIST_KEY = "fymoob:wishlist"
@@ -17,6 +17,31 @@ const navItems = [
 export function BottomNav() {
   const pathname = usePathname()
   const [favCount, setFavCount] = useState(0)
+  const isPropertyPage = pathname.startsWith("/imovel/")
+
+  // Auto-hide on scroll down (property pages only)
+  const [hidden, setHidden] = useState(false)
+  const lastScrollY = useRef(0)
+
+  useEffect(() => {
+    if (!isPropertyPage) {
+      setHidden(false)
+      return
+    }
+
+    const handleScroll = () => {
+      const currentY = window.scrollY
+      if (currentY > lastScrollY.current && currentY > 100) {
+        setHidden(true) // scrolling down
+      } else {
+        setHidden(false) // scrolling up
+      }
+      lastScrollY.current = currentY
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [isPropertyPage])
 
   useEffect(() => {
     try {
@@ -52,8 +77,13 @@ export function BottomNav() {
   }, [])
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-neutral-200 bg-white/95 backdrop-blur-sm md:hidden">
-      <div className="flex items-center justify-around py-2">
+    <nav
+      className={cn(
+        "fixed bottom-0 left-0 right-0 z-50 border-t border-neutral-200 bg-white/95 backdrop-blur-sm transition-transform duration-300 md:hidden",
+        hidden && "translate-y-full"
+      )}
+    >
+      <div className="flex items-center justify-around py-2 pb-[env(safe-area-inset-bottom,8px)]">
         {navItems.map((item) => {
           const isActive =
             item.href === "/"

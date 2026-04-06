@@ -10,16 +10,15 @@ interface PropertyDetailsProps {
 
 export function PropertyDetails({ property, shortTitle }: PropertyDetailsProps) {
   return (
-    <div className="mt-2 space-y-3 md:mt-0">
-      {/* Badges */}
+    <div className="mt-2 space-y-2.5 md:mt-0">
+      {/* Badges — no code in header */}
       <div className="flex flex-wrap items-center gap-2">
         <PropertyBadge variant="type">{property.tipo}</PropertyBadge>
         <PropertyBadge variant="sale">{property.finalidade}</PropertyBadge>
-        <span className="text-xs text-neutral-400">{property.codigo}</span>
       </div>
 
-      {/* Title */}
-      <h1 className="font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
+      {/* Title — 1-2 lines max */}
+      <h1 className="line-clamp-2 font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
         {shortTitle || property.titulo}
       </h1>
 
@@ -33,14 +32,13 @@ export function PropertyDetails({ property, shortTitle }: PropertyDetailsProps) 
         </p>
       )}
 
-      {/* Specs as pill badges */}
+      {/* Specs — clean inline, no pill backgrounds */}
       <PropertyFeatures
         dormitorios={property.dormitorios}
         banheiros={property.banheiros}
         vagas={property.vagas}
         areaPrivativa={property.areaPrivativa}
         size="md"
-        className="pt-1"
       />
     </div>
   )

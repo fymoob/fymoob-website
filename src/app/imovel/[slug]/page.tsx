@@ -165,7 +165,7 @@ export default async function PropertyPage({ params }: PageProps) {
       </div>
 
       {/* Section 3: Content (white bg) */}
-      <div className="mx-auto w-full max-w-7xl px-4 pb-[160px] md:px-8 md:pb-0">
+      <div className="mx-auto w-full max-w-7xl px-4 pb-28 md:px-8 md:pb-0">
         <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">
           {/* Left column */}
           <div>
@@ -213,8 +213,13 @@ export default async function PropertyPage({ params }: PageProps) {
         </div>
       </div>
 
+      {/* Property code — technical footer */}
+      <div className="mx-auto max-w-7xl px-4 py-4 md:px-8">
+        <p className="text-xs text-neutral-400">Código do imóvel: {property.codigo}</p>
+      </div>
+
       {/* Similar properties — lazy loaded (below fold) */}
-      <div className="mt-6">
+      <div className="mt-2">
         <LazySimilarProperties properties={similarProperties} />
       </div>
 
