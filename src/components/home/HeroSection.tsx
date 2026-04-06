@@ -63,7 +63,7 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bair
 
         {/* Mobile: compact pill → expands to bottom sheet */}
         <div className="hero-animate-3 mt-8 md:hidden">
-          <QuickSearch bairros={bairroNames} tipos={tipoNames} />
+          <QuickSearch bairroSummaries={bairroSummaries ?? []} tipoSummaries={tipoSummaries ?? []} />
         </div>
 
         {/* Desktop: full search bar */}
