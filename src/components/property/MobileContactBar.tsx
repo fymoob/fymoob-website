@@ -63,7 +63,7 @@ export function MobileContactBar({
   const whatsUrl = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent(whatsMessage)}`
 
   return (
-    <div className="fixed bottom-0 left-0 z-[100] w-full border-t border-neutral-200 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.08)] md:hidden">
+    <div className="fixed bottom-[57px] left-0 z-[100] w-full border-t border-neutral-200 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.08)] md:hidden">
       {/* Urgency strip */}
       {urgency && (
         <div className={`flex items-center justify-center gap-1.5 px-4 py-2 ${urgency.color}`}>
