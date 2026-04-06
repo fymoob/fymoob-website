@@ -92,7 +92,7 @@ export function BottomNav() {
         hidden && "translate-y-full"
       )}
     >
-      <div className="flex items-center justify-around py-2 pb-[env(safe-area-inset-bottom,8px)]">
+      <div className="flex items-center justify-around py-2">
         {navItems.map((item) => {
           const isActive =
             item.href === "/"

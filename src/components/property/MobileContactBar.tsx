@@ -91,11 +91,9 @@ export function MobileContactBar({
 
   return (
     <div
-      className="fixed left-0 z-[100] w-full bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.08)] transition-[bottom] duration-300 md:hidden"
-      style={{ bottom: navHidden ? 0 : 57 }}
+      className="fixed left-0 z-[100] w-full border-t border-neutral-200 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.08)] transition-[bottom] duration-300 md:hidden"
+      style={{ bottom: navHidden ? 0 : 49 }}
     >
-      {/* White extension below to cover any gap with BottomNav */}
-      <div className="absolute left-0 top-full h-4 w-full bg-white" />
       {/* Urgency strip */}
       {urgency && (
         <div className={`flex items-center justify-center gap-1.5 px-4 py-2 ${urgency.color}`}>
