@@ -152,6 +152,7 @@ export default async function SobrePage() {
 
         <div className="relative z-10 mx-auto w-full max-w-5xl px-4 pb-32 pt-24 sm:px-6 lg:px-8">
           <Breadcrumbs
+            variant="dark"
             items={[
               { name: "Home", url: "/" },
               { name: "Sobre nós", url: "/sobre" },
@@ -409,7 +410,7 @@ export default async function SobrePage() {
           {/* Link para todas as avaliações */}
           <div className="mt-8 text-center">
             <a
-              href="https://www.google.com/maps/place/%F0%9F%9F%A2+Fymoob/@-25.4722896,-49.3028175,946m/data=!4m8!3m7!1s0x94dcfbccb62e3229:0x6977db3f3145d493!8m2!3d-25.4722896!4d-49.3028175!9m1!1b1"
+              href="https://www.google.com/maps/place/%F0%9F%9F%A2+Fymoob/@-25.4722847,-49.3053924,1414m/data=!3m1!1e3!4m8!3m7!1s0x94dcfbccb62e3229:0x6977db3f3145d493!8m2!3d-25.4722896!4d-49.3028175!9m1!1b1!16s%2Fg%2F11fd7g02qy?entry=ttu&g_ep=EgoyMDI2MDQwMS4wIKXMDSoASAFQAw%3D%3D"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm font-medium text-brand-primary transition hover:underline"
