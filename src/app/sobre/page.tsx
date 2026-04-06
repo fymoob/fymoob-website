@@ -251,7 +251,7 @@ export default async function SobrePage() {
       </section>
 
       {/* ══════ DIRETORIA — Premium Profile Cards (E-E-A-T) ══════ */}
-      <section className="bg-slate-900 py-24 md:py-32">
+      <section className="bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 py-24 md:py-32">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <h2 className="text-center font-display text-2xl font-bold text-white md:text-3xl">
             A Diretoria
@@ -264,7 +264,7 @@ export default async function SobrePage() {
             {diretoria.map((membro) => (
               <div
                 key={membro.nome}
-                className="mx-auto flex max-w-5xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl ring-1 ring-slate-900/5 md:flex-row"
+                className="mx-auto flex max-w-5xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl ring-1 ring-slate-900/10 md:flex-row"
               >
                 {/* Foto */}
                 <div className="relative w-full shrink-0 bg-neutral-200 md:w-2/5 xl:w-1/3">
