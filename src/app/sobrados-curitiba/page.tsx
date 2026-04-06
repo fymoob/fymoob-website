@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Suspense } from "react"
 import { getProperties, getAllBairros, getAllTypes, getAllCities, getPropertyStats } from "@/services/loft"
 import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
+import { SeoInternalLinks, buildBairrosGroup } from "@/components/seo/SeoInternalLinks"
 import { formatPrice } from "@/lib/utils"
 import {
   generateLandingTitle,
@@ -116,24 +117,12 @@ export default async function SobradosCuritibaPage() {
           </p>
         </div>
 
-        {bairrosComSobrado.length > 0 && (
-          <div className="mt-6 flex flex-wrap gap-2">
-            {bairrosComSobrado.map((b) => (
-              <Link
-                key={b.slug}
-                href={`/imoveis/${b.slug}/sobrados`}
-                className="rounded-full border border-fymoob-gray-light px-4 py-1.5 text-sm text-fymoob-gray-dark transition-colors hover:border-fymoob-blue hover:text-fymoob-blue"
-              >
-                {b.bairro}
-              </Link>
-            ))}
-          </div>
-        )}
-
         <div className="mt-8">
           <PropertyGrid properties={properties} />
         </div>
       </div>
+
+      <SeoInternalLinks groups={[buildBairrosGroup(bairrosComSobrado, { tipoSlug: "sobrados", title: "Sobrados por Bairro" })]} />
     </>
   )
 }

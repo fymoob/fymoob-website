@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { MapPin, Building2, TrendingUp } from "lucide-react"
 import { Suspense } from "react"
 import { getAllBairros, getProperties, getAllTypes, getAllCities, getPropertyStats } from "@/services/loft"
+import { SeoInternalLinks } from "@/components/seo/SeoInternalLinks"
 import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
 import { slugify, formatPrice } from "@/lib/utils"
 import {
@@ -183,24 +184,6 @@ export default async function BairroPage({ params }: BairroPageProps) {
       </section>
 
       {/* Type filter links */}
-      {bairro.tipos.length > 0 && (
-        <div className="border-b border-neutral-200 bg-white">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-wrap gap-2 py-4">
-              {bairro.tipos.map(({ tipo, count }) => (
-                <Link
-                  key={tipo}
-                  href={`/imoveis/${bairroSlug}/${slugify(tipo)}s`}
-                  className="rounded-full border border-neutral-200 px-4 py-2 text-sm font-medium text-neutral-700 transition-all duration-200 hover:border-brand-primary hover:text-brand-primary"
-                >
-                  {tipo}s ({count})
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Property grid */}
       <section className="py-12 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -259,6 +242,14 @@ export default async function BairroPage({ params }: BairroPageProps) {
           />
         </div>
       </section>
+
+      <SeoInternalLinks groups={[{
+        title: `Tipos no ${bairro.bairro}`,
+        links: bairro.tipos.map(({ tipo, count }) => ({
+          label: `${tipo}s (${count})`,
+          href: `/imoveis/${bairroSlug}/${slugify(tipo)}s`,
+        })),
+      }]} />
     </>
   )
 }

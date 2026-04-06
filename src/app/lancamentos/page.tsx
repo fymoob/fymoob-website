@@ -8,6 +8,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyGrid } from "@/components/search/PropertyGrid"
 import Link from "next/link"
 import { Building2, TrendingUp, MapPin } from "lucide-react"
+import { SeoInternalLinks, buildBairrosGroup } from "@/components/seo/SeoInternalLinks"
 
 export async function generateMetadata(): Promise<Metadata> {
   const { properties } = await getProperties({ lancamento: true, limit: 1000 })
@@ -117,35 +118,6 @@ export default async function LancamentosPage() {
           </p>
         </div>
 
-        {/* Tipos disponíveis */}
-        {tipos.length > 1 && (
-          <div className="mt-6 flex flex-wrap gap-2">
-            {tipos.map((tipo) => (
-              <span
-                key={tipo}
-                className="rounded-full border border-fymoob-gray-light bg-white px-4 py-1.5 text-sm text-fymoob-gray-dark"
-              >
-                {tipo}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {/* Bairros com lançamentos */}
-        {bairrosComLancamento.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-2">
-            {bairrosComLancamento.map((b) => (
-              <Link
-                key={b.slug}
-                href={`/imoveis/${b.slug}`}
-                className="rounded-full border border-fymoob-gray-light px-4 py-1.5 text-sm text-fymoob-gray-dark transition-colors hover:border-fymoob-blue hover:text-fymoob-blue"
-              >
-                {b.bairro}
-              </Link>
-            ))}
-          </div>
-        )}
-
         {/* Grid de imóveis */}
         {properties.length > 0 ? (
           <div className="mt-8">
@@ -168,6 +140,8 @@ export default async function LancamentosPage() {
           </div>
         )}
       </div>
+
+      <SeoInternalLinks groups={[buildBairrosGroup(bairrosComLancamento, { title: "Bairros com Lançamentos" })]} />
     </>
   )
 }
