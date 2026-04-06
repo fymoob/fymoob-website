@@ -1,7 +1,7 @@
 # FYMOOB — Task Tracker
 
 > Fonte unica de verdade para todas as tasks do projeto.
-> Atualizado: 2026-04-04
+> Atualizado: 2026-04-06
 
 ---
 
@@ -25,11 +25,11 @@
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
 | 11 | Performance (CWV) | 35 | 31 | 4 | EM ANDAMENTO |
 | 12 | Conteudo SEO Editorial | 29 | 26 | 3 | EM ANDAMENTO |
-| 13 | Funcionalidades e UX | 22 | 22 | 0 | CONCLUIDA |
+| 13 | Funcionalidades e UX | 31 | 31 | 0 | CONCLUIDA |
 | -- | Ações Bruno (CRM) | 3 | 0 | 3 | PENDENTE |
 | 14 | Inteligência Imobiliária | 17 | 0 | 17 | FUTURO |
 | -- | Nice-to-Have | 3 | 0 | 3 | FUTURO |
-| | **TOTAL** | **274** | **221** | **53** | **81%** |
+| | **TOTAL** | **283** | **230** | **53** | **81%** |
 
 ---
 
@@ -860,6 +860,17 @@ _Nenhum bug aberto._
 - [x] Parcelas: 6x R$2.500 dia 10, primeira 10/05/2026
 - [x] Data assinatura: 04/04/2026
 - [x] PDF gerado e enviado para assinatura digital
+
+### 13.5 — Padrao Ouro UI/UX (sessao 06/04/2026) [CONCLUIDA]
+- [x] PropertyFeatures: removido pills cinzas (bg-neutral-50) — atributos inline limpos
+- [x] formatPrice: removido centavos (R$7.000.000 em vez de R$7.000.000,00)
+- [x] PropertyDetails: codigo do imovel movido do header para rodape tecnico
+- [x] PropertyDetails: titulo com line-clamp-2
+- [x] MobileContactBar: removido logica localStorage views (urgencia so backend)
+- [x] MobileContactBar: preco em brand-primary, bottom-0, safe area iPhone
+- [x] BottomNav auto-hide na pagina de imovel (scroll down=esconde, scroll up=mostra, idle 2s=mostra)
+- [x] BottomNav: transicao suave translateY 300ms (sem CLS)
+- [x] WelcomeBack banner removido da home + arquivo deletado
 
 ---
 
