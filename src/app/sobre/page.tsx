@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
+import { AnimatedCounter } from "@/components/shared/AnimatedCounter"
+import { getAllBairros, getAllEmpreendimentos } from "@/services/loft"
 import {
   Shield,
   Target,
@@ -34,12 +36,7 @@ const valores = [
   { icon: Award, title: "Excelência", description: "Qualidade impecável em cada detalhe." },
 ]
 
-const diferenciais = [
-  { number: "250+", label: "Imóveis ativos", icon: Building2 },
-  { number: "65", label: "Bairros atendidos", icon: MapPin },
-  { number: "113", label: "Empreendimentos", icon: TrendingUp },
-  { number: "J 9420", label: "CRECI ativo", icon: Award },
-]
+// diferenciais são buscados dinamicamente na função do componente
 
 const etapas = [
   { num: "01", title: "Portfólio diversificado", text: "Mais de 250 imóveis ativos em 65 bairros de Curitiba, com opções para todos os perfis e orçamentos." },
@@ -123,7 +120,22 @@ const avaliacoesGoogle = [
   },
 ]
 
-export default function SobrePage() {
+export default async function SobrePage() {
+  const [bairros, empreendimentos] = await Promise.all([
+    getAllBairros(),
+    getAllEmpreendimentos(),
+  ])
+  const totalImoveis = bairros.reduce((sum, b) => sum + b.total, 0)
+  const totalBairros = bairros.length
+  const totalEmpreendimentos = empreendimentos.length
+
+  const diferenciais = [
+    { number: totalImoveis, suffix: "+", label: "Imóveis ativos", icon: Building2 },
+    { number: totalBairros, suffix: "", label: "Bairros atendidos", icon: MapPin },
+    { number: totalEmpreendimentos, suffix: "", label: "Empreendimentos", icon: TrendingUp },
+    { number: null, text: "J 9420", label: "CRECI ativo", icon: Award },
+  ]
+
   return (
     <>
       {/* ══════ HERO — Imagem de fundo com overlay ══════ */}
@@ -163,7 +175,13 @@ export default function SobrePage() {
                     <Icon className="size-5 text-brand-primary" />
                   </div>
                   <div>
-                    <p className="font-display text-xl font-bold text-white">{item.number}</p>
+                    <p className="font-display text-xl font-bold text-white">
+                      {item.number !== null ? (
+                        <AnimatedCounter end={item.number} suffix={item.suffix} />
+                      ) : (
+                        item.text
+                      )}
+                    </p>
                     <p className="text-[11px] text-white/60">{item.label}</p>
                   </div>
                 </div>
