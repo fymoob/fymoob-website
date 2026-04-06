@@ -58,64 +58,42 @@ export default async function LancamentosPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
 
-      <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
-      <Suspense fallback={null}>
-      <SearchPageSearchBar
-        bairros={bairros.map((b) => b.bairro)}
-        tipos={allTypes.map((t) => t.tipo)}
-        cidades={cidades}
-        priceBounds={{ min: stats.precoMin ?? 50_000, max: stats.precoMax ?? 5_000_000 }}
-        bairroSummaries={bairros}
-        tipoSummaries={allTypes}
-        sticky
-      />
-      </Suspense>
-      </div>
-
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <Breadcrumbs
-          items={[
-            { name: "Home", url: "/" },
-            { name: "Lançamentos", url: "/lancamentos" },
-          ]}
-        />
+        <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Lançamentos", url: "/lancamentos" }]} />
 
-        <h1 className="font-display text-2xl font-bold text-fymoob-gray-dark sm:text-3xl">
+        <h1 className="mt-2 font-display text-2xl font-bold text-neutral-900 sm:text-3xl">
           Lançamentos Imobiliários em Curitiba
         </h1>
 
-        {/* Stats */}
-        <div className="mt-4 flex flex-wrap gap-4 text-sm text-fymoob-gray-mid">
+        <div className="mt-4 flex flex-wrap gap-4 text-sm text-neutral-600">
           <span className="flex items-center gap-1.5">
             <Building2 className="size-4 text-brand-primary" />
-            <span className="font-semibold text-fymoob-gray-dark">{properties.length}</span>{" "}
-            lançamentos disponíveis
+            <span className="font-semibold text-neutral-900">{properties.length}</span> lançamentos disponíveis
           </span>
           {precoMin && precoMax && (
             <span className="flex items-center gap-1.5">
               <TrendingUp className="size-4 text-brand-primary" />
-              De{" "}
-              <span className="font-semibold text-fymoob-gray-dark">{formatPrice(precoMin)}</span>
-              {" "}a{" "}
-              <span className="font-semibold text-fymoob-gray-dark">{formatPrice(precoMax)}</span>
+              De <span className="font-semibold text-neutral-900">{formatPrice(precoMin)}</span> a <span className="font-semibold text-neutral-900">{formatPrice(precoMax)}</span>
             </span>
           )}
           {bairrosComLancamento.length > 0 && (
             <span className="flex items-center gap-1.5">
               <MapPin className="size-4 text-brand-primary" />
-              <span className="font-semibold text-fymoob-gray-dark">{bairrosComLancamento.length}</span>{" "}
-              bairros
+              <span className="font-semibold text-neutral-900">{bairrosComLancamento.length}</span> bairros
             </span>
           )}
         </div>
 
-        {/* Descrição SEO */}
-        <div className="mt-6">
-          <p className="max-w-3xl text-fymoob-gray-mid">
-            Encontre os melhores lançamentos e imóveis na planta em Curitiba. Empreendimentos novos
-            com condições especiais de pagamento direto com a construtora. Apartamentos, casas e
-            sobrados em fase de lançamento nos principais bairros da cidade.
-          </p>
+        <p className="mt-4 max-w-4xl text-neutral-600">
+          Encontre os melhores lançamentos e imóveis na planta em Curitiba. Empreendimentos novos
+          com condições especiais de pagamento direto com a construtora. Apartamentos, casas e
+          sobrados em fase de lançamento nos principais bairros da cidade.
+        </p>
+
+        <div className="mt-8 mb-8">
+          <Suspense fallback={null}>
+            <SearchPageSearchBar bairros={bairros.map((b) => b.bairro)} tipos={allTypes.map((t) => t.tipo)} cidades={cidades} priceBounds={{ min: stats.precoMin ?? 50_000, max: stats.precoMax ?? 5_000_000 }} bairroSummaries={bairros} tipoSummaries={allTypes} sticky />
+          </Suspense>
         </div>
 
         {/* Grid de imóveis */}

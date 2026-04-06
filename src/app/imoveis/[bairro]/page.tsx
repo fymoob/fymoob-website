@@ -117,79 +117,56 @@ export default async function BairroPage({ params }: BairroPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
 
-      <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
-      <Suspense fallback={null}>
-      <SearchPageSearchBar
-        bairros={bairros.map((b) => b.bairro)}
-        tipos={tipos.map((t) => t.tipo)}
-        cidades={cidades}
-        priceBounds={{ min: stats.precoMin ?? 50_000, max: stats.precoMax ?? 5_000_000 }}
-        bairroSummaries={bairros}
-        tipoSummaries={tipos}
-        sticky
-      />
-      </Suspense>
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <Breadcrumbs
+          items={[
+            { name: "Home", url: "/" },
+            { name: "Imóveis", url: "/busca" },
+            { name: bairro.bairro, url: `/imoveis/${bairroSlug}` },
+          ]}
+        />
+
+        <h1 className="mt-2 font-display text-2xl font-bold text-neutral-900 sm:text-3xl">
+          Imóveis no {bairro.bairro}
+        </h1>
+
+        <div className="mt-4 flex flex-wrap gap-4 text-sm text-neutral-600">
+          <span className="flex items-center gap-1.5">
+            <Building2 size={16} className="shrink-0 text-brand-primary" />
+            <span className="font-semibold text-neutral-900">{properties.length}</span> imóveis disponíveis
+          </span>
+          {precoMin && precoMax && (
+            <span className="flex items-center gap-1.5">
+              <TrendingUp size={16} className="shrink-0 text-brand-primary" />
+              De <span className="font-semibold text-neutral-900">{formatPrice(precoMin)}</span> a <span className="font-semibold text-neutral-900">{formatPrice(precoMax)}</span>
+            </span>
+          )}
+          {precoMedio && (
+            <span className="flex items-center gap-1.5">
+              <MapPin size={16} className="shrink-0 text-brand-primary" />
+              Média <span className="font-semibold text-neutral-900">{formatPrice(precoMedio)}</span>
+            </span>
+          )}
+        </div>
+
+        <p className="mt-4 max-w-4xl text-neutral-600">{descricao}</p>
+
+        <div className="mt-8 mb-8">
+          <Suspense fallback={null}>
+            <SearchPageSearchBar
+              bairros={bairros.map((b) => b.bairro)}
+              tipos={tipos.map((t) => t.tipo)}
+              cidades={cidades}
+              priceBounds={{ min: stats.precoMin ?? 50_000, max: stats.precoMax ?? 5_000_000 }}
+              bairroSummaries={bairros}
+              tipoSummaries={tipos}
+              sticky
+            />
+          </Suspense>
+        </div>
+
+        <PropertyGrid properties={properties} />
       </div>
-
-      {/* Hero */}
-      <section className="relative bg-neutral-950 py-16 md:py-24">
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/10 to-transparent" />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs
-            items={[
-              { name: "Home", url: "/" },
-              { name: "Imóveis", url: "/busca" },
-              { name: bairro.bairro, url: `/imoveis/${bairroSlug}` },
-            ]}
-          />
-
-          <h1 className="mt-2 font-display text-3xl font-extrabold tracking-tight text-white md:text-5xl">
-            Imóveis no {bairro.bairro}
-          </h1>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-neutral-300">
-            {descricao}
-          </p>
-
-          {/* Stats cards */}
-          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-              <Building2 size={20} className="shrink-0 text-brand-primary" />
-              <div>
-                <p className="text-2xl font-bold text-white">{properties.length}</p>
-                <p className="text-xs text-neutral-400">imóveis disponíveis</p>
-              </div>
-            </div>
-            {precoMin && precoMax && (
-              <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-                <TrendingUp size={20} className="shrink-0 text-brand-primary" />
-                <div>
-                  <p className="text-sm font-semibold text-white">
-                    {formatPrice(precoMin)} - {formatPrice(precoMax)}
-                  </p>
-                  <p className="text-xs text-neutral-400">faixa de preço</p>
-                </div>
-              </div>
-            )}
-            {precoMedio && (
-              <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-                <MapPin size={20} className="shrink-0 text-brand-primary" />
-                <div>
-                  <p className="text-lg font-bold text-white">{formatPrice(precoMedio)}</p>
-                  <p className="text-xs text-neutral-400">preço médio</p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Type filter links */}
-      {/* Property grid */}
-      <section className="py-12 md:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <PropertyGrid properties={properties} />
-        </div>
-      </section>
 
       {/* SEO content + FAQ + Related */}
       <section className="border-t border-neutral-200 bg-neutral-50 py-12 md:py-16">

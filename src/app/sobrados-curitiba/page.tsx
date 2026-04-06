@@ -62,64 +62,31 @@ export default async function SobradosCuritibaPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
 
-      <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
-      <Suspense fallback={null}>
-      <SearchPageSearchBar
-        bairros={bairros.map((b) => b.bairro)}
-        tipos={tipos.map((t) => t.tipo)}
-        cidades={cidades}
-        priceBounds={{ min: stats.precoMin ?? 50_000, max: stats.precoMax ?? 5_000_000 }}
-        bairroSummaries={bairros}
-        tipoSummaries={tipos}
-        sticky
-      />
-      </Suspense>
-      </div>
-
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <Breadcrumbs
-          items={[
-            { name: "Home", url: "/" },
-            { name: "Sobrados em Curitiba", url: "/sobrados-curitiba" },
-          ]}
-        />
+        <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Sobrados em Curitiba", url: "/sobrados-curitiba" }]} />
 
-        <h1 className="font-display text-2xl font-bold text-fymoob-gray-dark sm:text-3xl">
+        <h1 className="mt-2 font-display text-2xl font-bold text-neutral-900 sm:text-3xl">
           Sobrados à Venda e Aluguel em Curitiba
         </h1>
 
-        <div className="mt-4 flex flex-wrap gap-4 text-sm text-fymoob-gray-mid">
-          <span>
-            <span className="font-semibold text-fymoob-gray-dark">
-              {properties.length}
-            </span>{" "}
-            sobrados disponíveis
-          </span>
+        <div className="mt-4 flex flex-wrap gap-4 text-sm text-neutral-600">
+          <span><span className="font-semibold text-neutral-900">{properties.length}</span> sobrados disponíveis</span>
           {precoMin && precoMax && (
-            <span>
-              De{" "}
-              <span className="font-semibold text-fymoob-gray-dark">
-                {formatPrice(precoMin)}
-              </span>{" "}
-              a{" "}
-              <span className="font-semibold text-fymoob-gray-dark">
-                {formatPrice(precoMax)}
-              </span>
-            </span>
+            <span>De <span className="font-semibold text-neutral-900">{formatPrice(precoMin)}</span> a <span className="font-semibold text-neutral-900">{formatPrice(precoMax)}</span></span>
           )}
         </div>
 
-        <div className="mt-6">
-          <p className="max-w-3xl text-fymoob-gray-mid">
-            Sobrados em Curitiba com o espaço e conforto que sua família precisa. A FYMOOB
-            oferece sobrados à venda e para alugar com múltiplos pavimentos, garagem e áreas
-            de lazer nos melhores bairros.
-          </p>
+        <p className="mt-4 max-w-4xl text-neutral-600">
+          Sobrados em Curitiba com o espaço e conforto que sua família precisa. A FYMOOB oferece sobrados à venda e para alugar com múltiplos pavimentos, garagem e áreas de lazer nos melhores bairros.
+        </p>
+
+        <div className="mt-8 mb-8">
+          <Suspense fallback={null}>
+            <SearchPageSearchBar bairros={bairros.map((b) => b.bairro)} tipos={tipos.map((t) => t.tipo)} cidades={cidades} priceBounds={{ min: stats.precoMin ?? 50_000, max: stats.precoMax ?? 5_000_000 }} bairroSummaries={bairros} tipoSummaries={tipos} sticky />
+          </Suspense>
         </div>
 
-        <div className="mt-8">
-          <PropertyGrid properties={properties} />
-        </div>
+        <PropertyGrid properties={properties} />
       </div>
 
       <SeoInternalLinks groups={[buildBairrosGroup(bairrosComSobrado, { tipoSlug: "sobrados", title: "Sobrados por Bairro" })]} />
