@@ -19,6 +19,23 @@ function formatShortPrice(v: number): string {
   return `R$ ${(v / 1000).toFixed(0)}mil`
 }
 
+function getCountForFinalidade(
+  porFinalidade: Record<string, number>,
+  total: number,
+  finalidade: "comprar" | "alugar" | null
+): number {
+  if (!finalidade) return total
+  if (finalidade === "alugar") {
+    return (porFinalidade["Aluguel"] ?? 0) +
+           (porFinalidade["Locação"] ?? 0) +
+           (porFinalidade["Venda e Aluguel"] ?? 0) +
+           (porFinalidade["Venda e Locação"] ?? 0)
+  }
+  return (porFinalidade["Venda"] ?? 0) +
+         (porFinalidade["Venda e Aluguel"] ?? 0) +
+         (porFinalidade["Venda e Locação"] ?? 0)
+}
+
 const normalize = (s: string) =>
   s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
 
@@ -29,28 +46,31 @@ const STEPS_ALUGAR = [0, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 7500, 10000, 
 function LocationPicker({
   bairroSummaries,
   selected,
+  finalidade,
   onSelect,
   onClose,
 }: {
   bairroSummaries: BairroSummary[]
   selected: string
+  finalidade: "comprar" | "alugar"
   onSelect: (bairro: string) => void
   onClose: () => void
 }) {
   const [query, setQuery] = useState("")
 
-  // Cities with counts
+  // Cities with counts filtered by finalidade
   const cities = useMemo(() => {
     const map = new Map<string, number>()
     for (const bs of bairroSummaries) {
-      if (bs.total === 0) continue
+      const count = getCountForFinalidade(bs.porFinalidade, bs.total, finalidade)
+      if (count === 0) continue
       const c = bs.cidade || "Outros"
-      map.set(c, (map.get(c) ?? 0) + bs.total)
+      map.set(c, (map.get(c) ?? 0) + count)
     }
     return Array.from(map.entries())
       .map(([label, count]) => ({ label, count }))
       .sort((a, b) => b.count - a.count)
-  }, [bairroSummaries])
+  }, [bairroSummaries, finalidade])
 
   // All locations flat for searching
   const allLocations = useMemo(() => {
@@ -59,11 +79,12 @@ function LocationPicker({
       items.push({ type: "cidade", label: c.label, count: c.count })
     }
     for (const bs of bairroSummaries) {
-      if (bs.total === 0) continue
-      items.push({ type: "bairro", label: bs.bairro, cidade: bs.cidade, count: bs.total })
+      const count = getCountForFinalidade(bs.porFinalidade, bs.total, finalidade)
+      if (count === 0) continue
+      items.push({ type: "bairro", label: bs.bairro, cidade: bs.cidade, count })
     }
     return items
-  }, [bairroSummaries, cities])
+  }, [bairroSummaries, cities, finalidade])
 
   const isSearching = query.trim().length > 0
 
@@ -347,7 +368,11 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
     }
 
     return filtered
-      .map((ts) => ({ label: ts.tipo, count: ts.total }))
+      .map((ts) => ({
+        label: ts.tipo,
+        count: getCountForFinalidade(ts.porFinalidade, ts.total, finalidade),
+      }))
+      .filter((t) => t.count > 0)
       .sort((a, b) => a.label.localeCompare(b.label, "pt-BR"))
   }, [tipoSummaries, bairroSummaries, finalidade, locationSel])
 
@@ -511,6 +536,7 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
         <LocationPicker
           bairroSummaries={bairroSummaries}
           selected={locationSel}
+          finalidade={finalidade}
           onSelect={setLocationSel}
           onClose={() => setPicker(null)}
         />

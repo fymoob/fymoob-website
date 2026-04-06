@@ -267,44 +267,60 @@ export function useSearchBarController({
     })
   }, [tipoOptions, tipoSummaries, bairroSummaries, pendingFilters.finalidades, pendingFilters.bairros, pendingFilters.cidades])
 
-  // City summaries with counts for autocomplete
+  // Helper: get finalidade-filtered count for a bairro
+  const isAlugar = pendingFilters.finalidades.includes("locacao")
+  const getBairroCount = useCallback((bs: BairroSummary) => {
+    if (pendingFilters.finalidades.length === 0) return bs.total
+    if (isAlugar) {
+      return (bs.porFinalidade["Aluguel"] ?? 0) +
+             (bs.porFinalidade["Locação"] ?? 0) +
+             (bs.porFinalidade["Venda e Aluguel"] ?? 0) +
+             (bs.porFinalidade["Venda e Locação"] ?? 0)
+    }
+    return (bs.porFinalidade["Venda"] ?? 0) +
+           (bs.porFinalidade["Venda e Aluguel"] ?? 0) +
+           (bs.porFinalidade["Venda e Locação"] ?? 0)
+  }, [pendingFilters.finalidades, isAlugar])
+
+  // City summaries with counts filtered by finalidade
   const cidadeSummaries = useMemo(() => {
     if (!bairroSummaries || bairroSummaries.length === 0) {
       return cidades.map((c) => ({ label: c, slug: slugify(c), count: 0 }))
     }
     const cityCount = new Map<string, number>()
     for (const bs of bairroSummaries) {
-      if (bs.total === 0) continue
+      const count = getBairroCount(bs)
+      if (count === 0) continue
       const c = bs.cidade || "Outros"
-      cityCount.set(c, (cityCount.get(c) ?? 0) + bs.total)
+      cityCount.set(c, (cityCount.get(c) ?? 0) + count)
     }
     return Array.from(cityCount.entries())
       .map(([label, count]) => ({ label, slug: slugify(label), count }))
       .sort((a, b) => b.count - a.count)
-  }, [bairroSummaries, cidades])
+  }, [bairroSummaries, cidades, getBairroCount])
 
-  // Task 6: Group bairros by city, only active ones
+  // Task 6: Group bairros by city, filtered by finalidade
   const groupedBairroOptions = useMemo<GroupedBairroOptions[]>(() => {
     if (!bairroSummaries || bairroSummaries.length === 0) return []
-    const activeBairros = bairroSummaries.filter((bs) => bs.total > 0)
     const groups = new Map<string, (MultiSelectOption & { count: number })[]>()
-    for (const bs of activeBairros) {
+    for (const bs of bairroSummaries) {
+      const count = getBairroCount(bs)
+      if (count === 0) continue
       const cidade = bs.cidade || "Outros"
       if (!groups.has(cidade)) groups.set(cidade, [])
       groups.get(cidade)!.push({
         value: slugify(bs.bairro),
         label: bs.bairro,
-        count: bs.total,
+        count,
       })
     }
-    // Sort cities: most bairros first, then alphabetically
     return Array.from(groups.entries())
       .sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0], "pt-BR"))
       .map(([cidade, bairros]) => ({
         cidade,
         bairros: bairros.sort((a, b) => a.label.localeCompare(b.label, "pt-BR")),
       }))
-  }, [bairroSummaries])
+  }, [bairroSummaries, getBairroCount])
 
   const applyFilters = useCallback(() => {
     const baseParams = isTargetCurrentPath
