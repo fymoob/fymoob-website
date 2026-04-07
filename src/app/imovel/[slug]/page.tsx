@@ -11,7 +11,7 @@ import {
 } from "@/lib/seo"
 import { generateImageAlt, getPropertyImage, filterPropertyPhotos, generateShortTitle, formatPrice } from "@/lib/utils"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
-import { PropertyGallery } from "@/components/property/PropertyGallery"
+import { PropertyHeroWithGallery } from "@/components/property/PropertyHeroWithGallery"
 import { PropertyDetails } from "@/components/property/PropertyDetails"
 import { PropertyDescription } from "@/components/property/PropertyDescription"
 import { LazyContactSidebar } from "@/components/property/LazyContactSidebar"
@@ -25,6 +25,9 @@ import { ShareButton } from "@/components/shared/ShareButton"
 import { WishlistButton } from "@/components/property/WishlistButton"
 import { CompareButton } from "@/components/property/CompareButton"
 import { BackButton } from "@/components/shared/BackButton"
+import { PropertyBadge } from "@/components/shared/PropertyBadge"
+import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
+import { MapPin } from "lucide-react"
 
 export const revalidate = 900
 export const dynamicParams = true
@@ -86,7 +89,6 @@ export default async function PropertyPage({ params }: PageProps) {
   }
 
   const rawSimilar = await getSimilarProperties(property, 4)
-  // Limit photos on similar properties to reduce RSC payload (312 → ~50 image URLs)
   const similarProperties = rawSimilar.map((p) => ({
     ...p,
     fotos: p.fotos.slice(0, 3),
@@ -95,6 +97,9 @@ export default async function PropertyPage({ params }: PageProps) {
   const alt = generateImageAlt(property)
   const shortTitle = generateShortTitle(property)
   const hasLongTitle = property.titulo.length > 60
+  const mainImage = getPropertyImage(property)
+  const allPhotos = filterPropertyPhotos(property.fotos).slice(0, 15)
+  const price = property.precoVenda ?? property.precoAluguel
 
   const breadcrumbItems = [
     { name: "Home", url: "/" },
@@ -102,13 +107,12 @@ export default async function PropertyPage({ params }: PageProps) {
     { name: shortTitle, url: `/imovel/${property.slug}` },
   ]
 
-  // If the original title was truncated, prepend it to the description
   const descricaoWithTitle = hasLongTitle
     ? `${property.titulo}\n\n${property.descricao}`
     : property.descricao
 
   return (
-    <>
+    <div className="min-h-screen bg-slate-50">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(propertySchema) }}
@@ -116,10 +120,10 @@ export default async function PropertyPage({ params }: PageProps) {
 
       <RecentlyViewedTracker property={property} />
 
-      {/* Section 1: Header + Info (white bg) */}
-      <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
-        {/* Mobile: header with back + actions */}
-        <div className="flex items-center justify-between py-2 md:hidden">
+      {/* ══════ Hero Section ══════ */}
+      <div className="mx-auto w-full max-w-7xl px-4 pt-4 md:px-8 md:pt-6">
+        {/* Mobile: back + actions */}
+        <div className="mb-3 flex items-center justify-between md:hidden">
           <BackButton />
           <div className="flex items-center gap-2">
             <CompareButton codigo={property.codigo} size="sm" />
@@ -129,7 +133,7 @@ export default async function PropertyPage({ params }: PageProps) {
         </div>
 
         {/* Desktop: breadcrumbs + actions */}
-        <div className="hidden items-center justify-between md:flex">
+        <div className="mb-4 hidden items-center justify-between md:flex">
           <Breadcrumbs items={breadcrumbItems} />
           <div className="flex items-center gap-2">
             <CompareButton codigo={property.codigo} />
@@ -138,59 +142,87 @@ export default async function PropertyPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Property header + specs */}
-        <PropertyDetails property={property} shortTitle={shortTitle} />
-
-        {/* Price highlight */}
-        <div className="mt-3 flex items-baseline gap-2 md:hidden">
-          <p className="font-display text-2xl font-bold text-brand-primary">
-            {formatPrice(property.precoVenda ?? property.precoAluguel)}
-          </p>
-          {property.valorCondominio && property.valorCondominio > 0 && (
-            <span className="text-xs text-neutral-400">
-              + {formatPrice(property.valorCondominio)}/cond.
-            </span>
-          )}
-        </div>
+        {/* Hero Image */}
+        <PropertyHeroWithGallery
+          fotos={allPhotos}
+          mainImage={mainImage}
+          alt={alt}
+          tipo={property.tipo}
+          bairro={property.bairro}
+        />
       </div>
 
-      {/* Section 2: Gallery (stone-50 bg on mobile) */}
-      <div className="mt-4 bg-stone-50 py-4 md:bg-transparent md:py-0">
-        <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
-          {/* Mobile gallery */}
-          <div className="overflow-hidden rounded-xl md:hidden">
-            <PropertyGallery fotos={filterPropertyPhotos(property.fotos).slice(0, 15)} alt={alt} />
+      {/* ══════ Info Strip + Content ══════ */}
+      <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
+        {/* Info strip below hero */}
+        <div className="mt-6 md:mt-8">
+          {/* Badges */}
+          <div className="flex flex-wrap items-center gap-2">
+            <PropertyBadge variant="type">{property.tipo}</PropertyBadge>
+            <PropertyBadge variant={property.finalidade === "Venda" ? "sale" : "rent"}>{property.finalidade}</PropertyBadge>
+            <PropertyBadge variant="code">Cód: {property.codigo}</PropertyBadge>
+          </div>
+
+          {/* Title */}
+          <h1 className="mt-3 line-clamp-2 font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
+            {shortTitle || property.titulo}
+          </h1>
+
+          {/* Address */}
+          {(property.endereco || property.bairro) && (
+            <p className="mt-2 flex items-center gap-1.5 text-sm text-neutral-500">
+              <MapPin size={14} className="shrink-0 text-neutral-400" />
+              {property.endereco
+                ? `${[property.endereco, property.numero, property.bairro].filter(Boolean).join(", ")}, ${property.cidade} - ${property.estado}`
+                : `${property.bairro}, ${property.cidade} - ${property.estado}`}
+            </p>
+          )}
+
+          {/* Price */}
+          <div className="mt-3 flex items-baseline gap-2">
+            <p className="font-display text-2xl font-bold text-brand-primary md:text-3xl">
+              {formatPrice(price)}
+            </p>
+            {property.valorCondominio && property.valorCondominio > 0 && (
+              <span className="text-xs text-neutral-400">
+                + {formatPrice(property.valorCondominio)}/cond.
+              </span>
+            )}
           </div>
         </div>
-      </div>
 
-      {/* Section 3: Content (white bg) */}
-      <div className="mx-auto w-full max-w-7xl px-4 pb-40 md:px-8 md:pb-0">
-        <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">
+        {/* ══════ Two Column Layout ══════ */}
+        <div className="mt-8 grid grid-cols-1 gap-8 pb-40 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)] md:pb-0">
           {/* Left column */}
           <div>
-            {/* Desktop gallery */}
-            <div className="hidden md:block">
-              <PropertyGallery fotos={filterPropertyPhotos(property.fotos).slice(0, 15)} alt={alt} />
+            {/* Quick Glance — editorial attributes bar */}
+            <div className="rounded-xl bg-white p-5 shadow-sm">
+              <PropertyFeatures
+                dormitorios={property.dormitorios}
+                banheiros={property.banheiros}
+                vagas={property.vagas}
+                areaPrivativa={property.areaPrivativa}
+                editorial
+              />
             </div>
 
-            {/* Description (white) */}
-            <div className="mt-4 border-t border-neutral-100 pt-4 md:mt-6 md:pt-6">
+            {/* Description */}
+            <div className="mt-6 rounded-xl bg-white p-5 shadow-sm md:p-6">
               <PropertyDescription descricao={descricaoWithTitle} />
             </div>
 
-            {/* Amenities (stone-50 bg) */}
-            <div className="-mx-4 mt-6 bg-stone-50 px-4 py-6 md:mx-0 md:rounded-xl">
+            {/* Amenities */}
+            <div className="mt-6 rounded-xl bg-white p-5 shadow-sm md:p-6">
               <PropertyAmenities descricao={descricaoWithTitle} />
             </div>
 
-            {/* Characteristics (white) */}
-            <div className="mt-6 border-t border-neutral-100 pt-6">
+            {/* Characteristics */}
+            <div className="mt-6 rounded-xl bg-white p-5 shadow-sm md:p-6">
               <PropertyCharacteristics property={property} />
             </div>
 
-            {/* Map (stone-50 bg) */}
-            <div className="-mx-4 mt-6 bg-stone-50 px-4 py-6 md:mx-0 md:rounded-xl">
+            {/* Map */}
+            <div className="mt-6 rounded-xl bg-white p-5 shadow-sm md:p-6">
               <PropertyMap
                 latitude={property.latitude}
                 longitude={property.longitude}
@@ -202,23 +234,25 @@ export default async function PropertyPage({ params }: PageProps) {
 
           {/* Right sidebar — desktop only */}
           <aside className="hidden lg:block">
-            <LazyContactSidebar
-              propertyTitle={property.titulo}
-              propertyCode={property.codigo}
-              precoVenda={property.precoVenda}
-              precoAluguel={property.precoAluguel}
-              finalidade={property.finalidade}
-            />
+            <div className="sticky top-24">
+              <LazyContactSidebar
+                propertyTitle={property.titulo}
+                propertyCode={property.codigo}
+                precoVenda={property.precoVenda}
+                precoAluguel={property.precoAluguel}
+                finalidade={property.finalidade}
+              />
+            </div>
           </aside>
         </div>
       </div>
 
-      {/* Similar properties — lazy loaded (below fold) */}
+      {/* Similar properties */}
       <div className="mt-2">
         <LazySimilarProperties properties={similarProperties} />
       </div>
 
-      {/* Mobile fixed CTA bar with integrated urgency strip */}
+      {/* Mobile fixed CTA bar */}
       <MobileContactBar
         propertyTitle={property.titulo}
         propertyCode={property.codigo}
@@ -227,6 +261,6 @@ export default async function PropertyPage({ params }: PageProps) {
         dataCadastro={property.dataCadastro}
         bairro={property.bairro}
       />
-    </>
+    </div>
   )
 }

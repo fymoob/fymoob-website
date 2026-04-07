@@ -9,6 +9,10 @@ import { cn } from "@/lib/utils"
 interface PropertyGalleryProps {
   fotos: string[]
   alt: string
+  /** When set, gallery renders only overlays (no inline grid/strip) starting in this mode */
+  initialMode?: "grid" | "fullscreen"
+  /** Called when the overlay closes — required when using initialMode */
+  onClose?: () => void
 }
 
 function getTileClassName(className?: string) {
@@ -26,8 +30,9 @@ function getFiveImageRadius(index: number): string {
 
 type GalleryMode = "closed" | "grid" | "fullscreen"
 
-export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
-  const [mode, setMode] = React.useState<GalleryMode>("closed")
+export function PropertyGallery({ fotos, alt, initialMode, onClose: onCloseExternal }: PropertyGalleryProps) {
+  const [mode, setMode] = React.useState<GalleryMode>(initialMode ?? "closed")
+  const isOverlayOnly = !!initialMode
   const [currentIndex, setCurrentIndex] = React.useState(0)
   const [animating, setAnimating] = React.useState(false)
   const touchStartX = React.useRef(0)
@@ -47,7 +52,10 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
     setMode("fullscreen")
     requestAnimationFrame(() => setAnimating(false))
   }
-  const close = () => setMode("closed")
+  const close = () => {
+    setMode("closed")
+    onCloseExternal?.()
+  }
   const backToGrid = () => {
     setAnimating(true)
     setMode("grid")
@@ -107,7 +115,9 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
 
   return (
     <div>
-      {/* ===== Mobile: Swipeable photo strip ===== */}
+      {/* ===== Mobile: Swipeable photo strip (hidden in overlay-only mode) ===== */}
+      {!isOverlayOnly && (<>
+      {/* eslint-disable-next-line react/jsx-no-useless-fragment */}
       <div className="relative overflow-hidden md:hidden">
         <div
           className="flex snap-x snap-mandatory overflow-x-auto scroll-smooth scrollbar-hide"
@@ -231,6 +241,7 @@ export function PropertyGallery({ fotos, alt }: PropertyGalleryProps) {
           </button>
         )}
       </div>
+      </>)}
 
       {/* ===== Grid Modal (Masonry) — Airbnb style ===== */}
       {mode === "grid" && (
