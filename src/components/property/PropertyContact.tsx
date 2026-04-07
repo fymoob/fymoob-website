@@ -98,7 +98,7 @@ export function PropertyContact({
       </div>
 
       <h3 className="text-base font-semibold text-neutral-900">
-        Enviar proposta
+        Enviar dúvida
       </h3>
 
       {status === "success" ? (
@@ -175,7 +175,7 @@ export function PropertyContact({
                 Enviando...
               </>
             ) : (
-              "Enviar proposta"
+              "Enviar dúvida"
             )}
           </button>
         </form>

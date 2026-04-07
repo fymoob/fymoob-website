@@ -102,11 +102,11 @@ export function ContactSidebar({
             type="submit"
             className="h-11 w-full rounded-xl bg-brand-primary text-sm font-semibold text-white hover:bg-brand-primary-hover"
           >
-            Enviar proposta
+            Enviar dúvida
           </Button>
           <p className="flex items-center justify-center gap-1.5 pt-1 text-xs text-neutral-400">
             <ShieldCheck size={13} className="shrink-0" />
-            Seus dados estão seguros. Resposta em até 2h.
+            Seus dados estão seguros. Respondemos o mais rápido possível.
           </p>
         </form>
       </CardContent>
