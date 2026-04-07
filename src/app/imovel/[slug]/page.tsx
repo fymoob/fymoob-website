@@ -180,7 +180,7 @@ export default async function PropertyPage({ params }: PageProps) {
 
           {/* Price */}
           <div className="mt-3 flex items-baseline gap-2">
-            <p className="font-display text-2xl font-bold text-brand-primary md:text-3xl">
+            <p className="font-display text-2xl font-bold text-slate-900 md:text-3xl">
               {formatPrice(price)}
             </p>
             {property.valorCondominio && property.valorCondominio > 0 && (
