@@ -283,7 +283,7 @@ export function PropertyCard({
         "relative overflow-hidden",
         isResponsive
           ? "w-28 shrink-0 self-stretch sm:w-full sm:shrink sm:self-auto sm:aspect-[4/3]"
-          : isHorizontal ? "aspect-[16/10] sm:aspect-auto sm:w-2/5 sm:shrink-0 sm:self-stretch" : "aspect-[21/9] max-h-[400px] xl:max-h-[480px] rounded-sm"
+          : isHorizontal ? "aspect-[16/10] sm:aspect-auto sm:w-2/5 sm:shrink-0 sm:self-stretch" : "aspect-[4/3] min-h-[250px] rounded-sm"
       )}>
         {(isHorizontal && !isResponsive) ? (
           /* Horizontal: single image, no carousel */
