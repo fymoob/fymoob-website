@@ -148,7 +148,7 @@ export default async function Home() {
             <AnimateOnScroll stagger className="mt-8 hidden gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
               {destaques.map((property) => (
                 <div key={property.slug} className="">
-                  <PropertyCard property={property} />
+                  <PropertyCard property={property} compactFeatures />
                 </div>
               ))}
             </AnimateOnScroll>

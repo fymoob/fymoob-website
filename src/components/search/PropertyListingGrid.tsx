@@ -15,7 +15,7 @@ const ABOVE_THE_FOLD_PRIORITY_CARDS = 3
 
 export function ViewToggle({ viewMode, setViewMode }: { viewMode: "grid" | "list"; setViewMode: (v: "grid" | "list") => void }) {
   return (
-    <div className="flex items-center gap-1 rounded-lg border border-neutral-200 p-1">
+    <div className="hidden items-center gap-1 rounded-lg border border-neutral-200 p-1 md:flex">
       <button
         onClick={() => setViewMode("grid")}
         className={`rounded-md p-1.5 transition-colors ${viewMode === "grid" ? "bg-brand-primary text-white" : "text-neutral-400 hover:text-neutral-600"}`}

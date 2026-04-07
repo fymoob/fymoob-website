@@ -162,12 +162,14 @@ interface PropertyCardProps {
   property: Property
   prioritizeFirstImage?: boolean
   variant?: "vertical" | "horizontal" | "responsive"
+  compactFeatures?: boolean
 }
 
 export function PropertyCard({
   property,
   prioritizeFirstImage = false,
   variant = "vertical",
+  compactFeatures = false,
 }: PropertyCardProps) {
   const articleRef = useRef<HTMLElement>(null)
   const alt = generateImageAlt(property)
@@ -264,6 +266,7 @@ export function PropertyCard({
 
   const isHorizontal = variant === "horizontal"
   const isResponsive = variant === "responsive"
+  const useInlineFeatures = isHorizontal || isResponsive || compactFeatures
 
   return (
     <article
@@ -439,19 +442,19 @@ export function PropertyCard({
           </h2>
         </Link>
 
-        {/* Price — above features for horizontal/responsive */}
-        {(isHorizontal || isResponsive) && (
+        {/* Price — above features for inline variants */}
+        {useInlineFeatures && (
           <p className={cn(
             "font-semibold tracking-tight",
-            isHorizontal ? "text-lg sm:text-xl" : "text-base sm:text-lg",
+            isHorizontal ? "text-lg sm:text-xl" : isResponsive ? "text-base sm:text-lg" : "text-xl",
             price ? "text-slate-900" : "text-neutral-400"
           )}>
             {formatPrice(price)}
           </p>
         )}
 
-        {/* Features — editorial (stacked) for grid, inline for list/responsive */}
-        {!(isHorizontal || isResponsive) ? (
+        {/* Features — editorial (stacked) for grid, inline for list/responsive/compact */}
+        {!useInlineFeatures ? (
           <div className="border-y border-gray-100">
             <PropertyFeatures
               dormitorios={property.dormitorios}
@@ -472,8 +475,8 @@ export function PropertyCard({
           />
         )}
 
-        {/* Price — anchored at bottom for grid (editorial) */}
-        {!(isHorizontal || isResponsive) && (
+        {/* Price — anchored at bottom for editorial grid */}
+        {!useInlineFeatures && (
           <p className={cn(
             "text-2xl font-semibold tracking-tight pt-3",
             price ? "text-slate-900" : "text-neutral-400"
