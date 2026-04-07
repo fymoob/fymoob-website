@@ -409,12 +409,22 @@ function applyFilters(indexed: IndexedProperty[], filters: PropertyFilters): Pro
       : filters.cidade
         ? new Set([slugify(filters.cidade)])
         : null
-  const finalidadeSlugSet =
+  const finalidadeSlugSetRaw =
     filters.finalidades?.length
       ? new Set(filters.finalidades.map((f) => slugify(f)))
       : filters.finalidade
         ? new Set([slugify(filters.finalidade)])
         : null
+  // "Venda e Locação" properties should appear in both Comprar and Alugar results
+  const finalidadeSlugSet = finalidadeSlugSetRaw
+    ? (() => {
+        const expanded = new Set(finalidadeSlugSetRaw)
+        if (expanded.has("venda") || expanded.has("locacao")) {
+          expanded.add("venda-e-locacao")
+        }
+        return expanded
+      })()
+    : null
   const tipoSet =
     filters.tipos?.length
       ? new Set(filters.tipos)
@@ -432,7 +442,7 @@ function applyFilters(indexed: IndexedProperty[], filters: PropertyFilters): Pro
   for (const item of indexed) {
     const p = item.property
     if (tipoSet && !tipoSet.has(p.tipo)) continue
-    if (finalidadeSlugSet && !finalidadeSlugSet.has(item.finalidadeSlug) && !(item.finalidadeSlug === "venda-e-locacao")) continue
+    if (finalidadeSlugSet && !finalidadeSlugSet.has(item.finalidadeSlug)) continue
     if (bairroSlugSet && !bairroSlugSet.has(item.bairroSlug)) continue
     if (cidadeSlugSet && !cidadeSlugSet.has(item.cidadeSlug)) continue
     if (filters.empreendimento && p.empreendimento !== filters.empreendimento) continue
