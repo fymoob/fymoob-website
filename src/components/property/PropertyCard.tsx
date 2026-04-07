@@ -35,9 +35,9 @@ function getBadge(property: Property, topViewed?: Set<string>): { text: string; 
     if (days <= 7) return { text: "NOVO", color: "bg-emerald-500" }
   }
 
-  if (property.lancamento) return { text: "LANÇAMENTO", color: "bg-amber-500" }
+  if (property.lancamento) return { text: "LANÇAMENTO", color: "bg-neutral-900/80 backdrop-blur-sm" }
 
-  if (topViewed?.has(property.codigo)) return { text: "MAIS VISTO", color: "bg-orange-500" }
+  if (topViewed?.has(property.codigo)) return { text: "MAIS VISTO", color: "bg-neutral-900/80 backdrop-blur-sm" }
 
   return null
 }
@@ -270,12 +270,12 @@ export function PropertyCard({
       ref={articleRef}
       onMouseEnter={loadPhotosOnHover}
       className={cn(
-        "group overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-300",
+        "group overflow-hidden transition-all duration-300",
         isResponsive
-          ? "flex flex-row sm:flex-col hover:shadow-lg sm:hover:-translate-y-1.5 sm:hover:border-brand-primary/30 sm:hover:shadow-2xl"
+          ? "flex flex-row sm:flex-col rounded-2xl border border-neutral-200 bg-white hover:shadow-lg sm:hover:-translate-y-1.5 sm:hover:border-brand-primary/30 sm:hover:shadow-2xl"
           : isHorizontal
-            ? "flex flex-col sm:flex-row hover:shadow-lg sm:hover:shadow-xl"
-            : "hover:-translate-y-1.5 hover:border-brand-primary/30 hover:shadow-2xl"
+            ? "flex flex-col sm:flex-row rounded-2xl border border-neutral-200 bg-white hover:shadow-lg sm:hover:shadow-xl"
+            : "bg-transparent"
       )}
     >
       {/* Photo section */}
@@ -283,7 +283,7 @@ export function PropertyCard({
         "relative overflow-hidden",
         isResponsive
           ? "w-28 shrink-0 self-stretch sm:w-full sm:shrink sm:self-auto sm:aspect-[4/3]"
-          : isHorizontal ? "aspect-[16/10] sm:aspect-auto sm:w-2/5 sm:shrink-0 sm:self-stretch" : "aspect-[4/3]"
+          : isHorizontal ? "aspect-[16/10] sm:aspect-auto sm:w-2/5 sm:shrink-0 sm:self-stretch" : "aspect-[3/2] rounded-lg"
       )}>
         {(isHorizontal && !isResponsive) ? (
           /* Horizontal: single image, no carousel */
@@ -329,11 +329,11 @@ export function PropertyCard({
         {badge && (
           <span
             className={cn(
-              "absolute z-20 rounded-full font-bold uppercase tracking-wider text-white shadow-md",
+              "absolute z-20 font-semibold uppercase text-white",
               badge.color,
               (isHorizontal || isResponsive)
-                ? "top-1.5 left-1.5 px-1.5 py-0.5 text-[8px] sm:top-3 sm:left-3 sm:px-2.5 sm:py-1 sm:text-[11px]"
-                : "top-3 left-3 px-2.5 py-1 text-[11px]"
+                ? "top-1.5 left-1.5 rounded-full px-1.5 py-0.5 text-[8px] tracking-wider shadow-md sm:top-3 sm:left-3 sm:px-2.5 sm:py-1 sm:text-[11px]"
+                : "top-3 left-3 rounded-sm px-2.5 py-1 text-[10px] tracking-widest"
             )}
           >
             {badge.text}
@@ -418,50 +418,63 @@ export function PropertyCard({
           ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3 sm:flex-none sm:gap-0 sm:space-y-1.5 sm:p-4 md:p-5"
           : isHorizontal
             ? "flex min-w-0 flex-1 flex-col justify-center gap-1.5 p-4 sm:gap-2 sm:p-6"
-            : "space-y-1 p-4"
+            : "space-y-1.5 pt-4 pb-2"
       )}>
         {/* Line 1: Type · Location */}
         <p className={cn(
           "text-neutral-500",
-          (isHorizontal || isResponsive) ? "text-xs" : "text-xs"
+          (isHorizontal || isResponsive) ? "text-xs" : "text-[11px] uppercase tracking-wider"
         )}>
           <span className="font-medium">{property.tipo}</span>
-          <span className="mx-1.5 text-neutral-300">·</span>
+          <span className={cn("mx-1.5", (isHorizontal || isResponsive) ? "text-neutral-300" : "text-neutral-300")}>—</span>
           <span>{property.bairro}, {property.cidade}</span>
         </p>
 
         {/* Line 2: Title (1 line) */}
         <Link href={propertyHref} className="block">
           <h2 className={cn(
-            "truncate font-bold tracking-tight text-neutral-900 transition-colors hover:text-brand-primary",
-            isHorizontal ? "text-sm sm:text-lg" : isResponsive ? "text-sm sm:text-base" : "text-sm"
+            "truncate tracking-tight text-neutral-900 transition-colors hover:text-brand-primary",
+            isHorizontal ? "text-sm sm:text-lg font-bold" : isResponsive ? "text-sm sm:text-base font-bold" : "text-base font-medium"
           )}>
             {property.titulo}
           </h2>
         </Link>
 
-        {/* Line 3: Price */}
-        <p
-          className={cn(
+        {/* Price — above features for horizontal/responsive, below for vertical */}
+        {(isHorizontal || isResponsive) && (
+          <p className={cn(
             "font-extrabold tracking-tight",
-            isHorizontal ? "text-lg sm:text-xl" : isResponsive ? "text-base sm:text-lg" : "text-lg",
+            isHorizontal ? "text-lg sm:text-xl" : "text-base sm:text-lg",
             price ? "text-brand-primary" : "text-neutral-400"
-          )}
-        >
-          {formatPrice(price)}
-        </p>
+          )}>
+            {formatPrice(price)}
+          </p>
+        )}
 
-        {/* Line 4: Features — icon-only on horizontal, compact on vertical */}
-        <PropertyFeatures
-          dormitorios={property.dormitorios}
-          banheiros={property.banheiros}
-          vagas={property.vagas}
-          areaPrivativa={property.areaPrivativa}
-          size="sm"
-          compact={!isHorizontal && !isResponsive}
-          iconOnly={isResponsive}
-          className="pt-0.5"
-        />
+        {/* Features */}
+        <div className={cn(
+          !(isHorizontal || isResponsive) && "border-b border-neutral-100 py-3"
+        )}>
+          <PropertyFeatures
+            dormitorios={property.dormitorios}
+            banheiros={property.banheiros}
+            vagas={property.vagas}
+            areaPrivativa={property.areaPrivativa}
+            size="sm"
+            compact={!isHorizontal && !isResponsive}
+            iconOnly={isResponsive}
+          />
+        </div>
+
+        {/* Price — below features for vertical (editorial) */}
+        {!(isHorizontal || isResponsive) && (
+          <p className={cn(
+            "text-xl font-bold tracking-tight pt-1",
+            price ? "text-brand-primary" : "text-neutral-400"
+          )}>
+            {formatPrice(price)}
+          </p>
+        )}
       </div>
     </article>
   )
