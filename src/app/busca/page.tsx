@@ -294,23 +294,15 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
         dangerouslySetInnerHTML={{ __html: JSON.stringify(searchResultsSchema) }}
       />
 
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <p id="search-results-title" className="text-sm text-neutral-500">
-          <span className="font-semibold text-brand-primary">{total}</span>{" "}
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 pb-4">
+        <p id="search-results-title" className="text-sm text-gray-500">
+          <span className="font-medium text-slate-700">{total}</span>{" "}
           {total === 1 ? "imóvel encontrado" : "imóveis encontrados"}
         </p>
         <div className="flex items-center gap-2">
           <Suspense fallback={null}>
             <SortDropdown />
           </Suspense>
-          <button
-            type="button"
-            className="hidden items-center gap-1.5 rounded-full border border-neutral-200 bg-white px-4 py-2 text-sm font-medium text-brand-primary transition hover:border-brand-primary/30 hover:shadow-sm md:inline-flex"
-            title="Em breve"
-          >
-            <MapPin className="size-4" />
-            Mapa
-          </button>
           <Suspense fallback={null}>
             <SaveSearchButton />
           </Suspense>
@@ -325,7 +317,7 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
         </div>
       </div>
 
-      <PropertyListingGrid properties={properties} showToolbar={false} />
+      <PropertyListingGrid properties={properties} />
 
       {totalPages > 1 && (
         <nav

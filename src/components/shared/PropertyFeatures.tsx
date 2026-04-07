@@ -10,6 +10,7 @@ interface PropertyFeaturesProps {
   size?: "sm" | "md"
   compact?: boolean
   iconOnly?: boolean
+  editorial?: boolean
   className?: string
 }
 
@@ -21,6 +22,7 @@ export function PropertyFeatures({
   size = "md",
   compact = false,
   iconOnly = false,
+  editorial = false,
   className,
 }: PropertyFeaturesProps) {
   const features = [
@@ -31,6 +33,24 @@ export function PropertyFeatures({
   ].filter((f) => f.value !== null && f.value !== 0)
 
   if (features.length === 0) return null
+
+  // Editorial: spread-out with justify-between, light font
+  if (editorial) {
+    return (
+      <div className={cn("flex items-center justify-between py-4", className)}>
+        {features.map((f) => {
+          const Icon = f.icon
+          return (
+            <span key={f.label} className="inline-flex flex-col items-center gap-1">
+              <Icon size={16} className="text-slate-400" strokeWidth={1.5} />
+              <span className="text-base font-light text-slate-700">{f.value}</span>
+              <span className="text-[10px] uppercase tracking-wider text-slate-400">{f.unit}</span>
+            </span>
+          )
+        })}
+      </div>
+    )
+  }
 
   // Icon-only: compact for card overlays
   if (iconOnly) {

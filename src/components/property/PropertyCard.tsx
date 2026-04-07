@@ -283,7 +283,7 @@ export function PropertyCard({
         "relative overflow-hidden",
         isResponsive
           ? "w-28 shrink-0 self-stretch sm:w-full sm:shrink sm:self-auto sm:aspect-[4/3]"
-          : isHorizontal ? "aspect-[16/10] sm:aspect-auto sm:w-2/5 sm:shrink-0 sm:self-stretch" : "aspect-[3/2] rounded-lg"
+          : isHorizontal ? "aspect-[16/10] sm:aspect-auto sm:w-2/5 sm:shrink-0 sm:self-stretch" : "aspect-[16/9] rounded-sm"
       )}>
         {(isHorizontal && !isResponsive) ? (
           /* Horizontal: single image, no carousel */
@@ -422,11 +422,11 @@ export function PropertyCard({
       )}>
         {/* Line 1: Type · Location */}
         <p className={cn(
-          (isHorizontal || isResponsive) ? "text-xs text-neutral-500" : "text-[11px] uppercase tracking-wider text-slate-400"
+          (isHorizontal || isResponsive) ? "text-xs text-neutral-500" : "text-[10px] uppercase tracking-widest text-gray-500"
         )}>
-          <span className="font-medium">{property.tipo}</span>
-          <span className="mx-1.5">—</span>
-          <span>{property.bairro}, {property.cidade}</span>
+          {property.tipo}
+          <span className="mx-2">•</span>
+          {property.bairro}
         </p>
 
         {/* Line 2: Title (1 line) */}
@@ -439,31 +439,38 @@ export function PropertyCard({
           </h2>
         </Link>
 
-        {/* Price — above features for horizontal/responsive, below for vertical */}
+        {/* Price — above features for horizontal/responsive */}
         {(isHorizontal || isResponsive) && (
           <p className={cn(
-            "font-extrabold tracking-tight",
+            "font-semibold tracking-tight",
             isHorizontal ? "text-lg sm:text-xl" : "text-base sm:text-lg",
-            price ? "text-brand-primary" : "text-neutral-400"
+            price ? "text-slate-900" : "text-neutral-400"
           )}>
             {formatPrice(price)}
           </p>
         )}
 
-        {/* Features */}
-        <div className={cn(
-          !(isHorizontal || isResponsive) && "border-b border-neutral-100 py-3"
-        )}>
+        {/* Features — editorial for vertical, standard for others */}
+        {!(isHorizontal || isResponsive) ? (
+          <div className="border-y border-gray-100">
+            <PropertyFeatures
+              dormitorios={property.dormitorios}
+              banheiros={property.banheiros}
+              vagas={property.vagas}
+              areaPrivativa={property.areaPrivativa}
+              editorial
+            />
+          </div>
+        ) : (
           <PropertyFeatures
             dormitorios={property.dormitorios}
             banheiros={property.banheiros}
             vagas={property.vagas}
             areaPrivativa={property.areaPrivativa}
             size="sm"
-            compact={!isHorizontal && !isResponsive}
             iconOnly={isResponsive}
           />
-        </div>
+        )}
 
         {/* Price — below features for vertical (editorial) */}
         {!(isHorizontal || isResponsive) && (
