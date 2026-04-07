@@ -42,6 +42,7 @@ export function PropertyCardFeatured({ property }: PropertyCardFeaturedProps) {
 
         <p className="text-xl font-extrabold tracking-tight text-slate-900 md:text-3xl">
           {formatPrice(price)}
+          {property.finalidade !== "Venda" && price && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
         </p>
 
         <PropertyFeatures

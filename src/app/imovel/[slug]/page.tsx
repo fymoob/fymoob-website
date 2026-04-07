@@ -179,14 +179,22 @@ export default async function PropertyPage({ params }: PageProps) {
           )}
 
           {/* Price */}
-          <div className="mt-3 flex items-baseline gap-2">
-            <p className="font-display text-2xl font-bold text-slate-900 md:text-3xl">
-              {formatPrice(price)}
-            </p>
-            {property.valorCondominio && property.valorCondominio > 0 && (
-              <span className="text-xs text-neutral-400">
-                + {formatPrice(property.valorCondominio)}/cond.
-              </span>
+          <div className="mt-3">
+            <div className="flex items-baseline gap-2">
+              <p className="font-display text-2xl font-bold text-slate-900 md:text-3xl">
+                {formatPrice(price)}
+              </p>
+              {property.finalidade !== "Venda" && (
+                <span className="text-sm text-neutral-500">/mês</span>
+              )}
+            </div>
+            {property.finalidade !== "Venda" && (property.valorCondominio || property.valorIptu) && (
+              <p className="mt-1 text-sm text-slate-500">
+                {[
+                  property.valorCondominio && property.valorCondominio > 0 && `Condomínio: ${formatPrice(property.valorCondominio)}`,
+                  property.valorIptu && property.valorIptu > 0 && `IPTU: ${formatPrice(property.valorIptu)}`,
+                ].filter(Boolean).join("  •  ")}
+              </p>
             )}
           </div>
         </div>
@@ -239,6 +247,8 @@ export default async function PropertyPage({ params }: PageProps) {
                 precoVenda={property.precoVenda}
                 precoAluguel={property.precoAluguel}
                 finalidade={property.finalidade}
+                valorCondominio={property.valorCondominio}
+                valorIptu={property.valorIptu}
               />
             </div>
           </aside>
@@ -256,6 +266,7 @@ export default async function PropertyPage({ params }: PageProps) {
         propertyCode={property.codigo}
         precoVenda={property.precoVenda}
         precoAluguel={property.precoAluguel}
+        finalidade={property.finalidade}
         dataCadastro={property.dataCadastro}
         bairro={property.bairro}
       />

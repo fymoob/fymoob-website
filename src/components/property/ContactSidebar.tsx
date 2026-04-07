@@ -15,6 +15,8 @@ interface ContactSidebarProps {
   precoVenda: number | null
   precoAluguel: number | null
   finalidade: Property["finalidade"]
+  valorCondominio: number | null
+  valorIptu: number | null
 }
 
 const FYMOOB_PHONE = "554199978-0517".replace(/\D/g, "")
@@ -25,11 +27,18 @@ export function ContactSidebar({
   precoVenda,
   precoAluguel,
   finalidade,
+  valorCondominio,
+  valorIptu,
 }: ContactSidebarProps) {
   const price = precoVenda ?? precoAluguel
-  const priceLabel = finalidade === "Locação" ? "VALOR ALUGUEL" : "VALOR VENDA"
+  const isRental = finalidade !== "Venda"
+  const priceLabel = isRental ? "VALOR ALUGUEL" : "VALOR VENDA"
   const whatsMessage = `Olá! Tenho interesse no imóvel ${propertyTitle} (Cód: ${propertyCode}).`
   const whatsUrl = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent(whatsMessage)}`
+
+  const totalPacote = isRental && price
+    ? price + (valorCondominio ?? 0) + (valorIptu ?? 0)
+    : null
 
   return (
     <Card className="sticky top-20 z-10 border border-neutral-200 py-0 shadow-xl">
@@ -39,13 +48,39 @@ export function ContactSidebar({
           <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
             {priceLabel}
           </p>
-          <p className="mt-1.5 text-3xl font-bold tracking-tight text-slate-900">
-            {formatPrice(price)}
-          </p>
+          <div className="mt-1.5 flex items-baseline gap-1.5">
+            <p className="text-3xl font-bold tracking-tight text-slate-900">
+              {formatPrice(price)}
+            </p>
+            {isRental && <span className="text-sm text-neutral-500">/mês</span>}
+          </div>
           {finalidade === "Venda e Locação" && precoAluguel && (
             <p className="mt-1 text-sm text-neutral-500">
               Aluguel: {formatPrice(precoAluguel)}
             </p>
+          )}
+          {/* Rental cost breakdown */}
+          {isRental && (valorCondominio || valorIptu) && (
+            <div className="mt-3 space-y-1.5 border-t border-neutral-100 pt-3">
+              {valorCondominio && valorCondominio > 0 && (
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-slate-500">Condomínio</span>
+                  <span className="text-slate-700">{formatPrice(valorCondominio)}</span>
+                </div>
+              )}
+              {valorIptu && valorIptu > 0 && (
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-slate-500">IPTU</span>
+                  <span className="text-slate-700">{formatPrice(valorIptu)}</span>
+                </div>
+              )}
+              {totalPacote && price && totalPacote > price && (
+                <div className="flex items-center justify-between border-t border-neutral-100 pt-2">
+                  <span className="text-sm font-semibold text-slate-700">Valor total</span>
+                  <span className="text-lg font-bold text-slate-900">{formatPrice(totalPacote)}</span>
+                </div>
+              )}
+            </div>
           )}
         </div>
 

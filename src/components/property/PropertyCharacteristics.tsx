@@ -20,7 +20,7 @@ export function PropertyCharacteristics({ property }: PropertyCharacteristicsPro
     items.push({ label: "Condomínio", value: `${formatPrice(property.valorCondominio)}/mês` })
   }
   if (property.valorIptu && property.valorIptu > 0) {
-    items.push({ label: "IPTU", value: `${formatPrice(property.valorIptu)}/ano` })
+    items.push({ label: "IPTU", value: `${formatPrice(property.valorIptu)}/mês` })
   }
   if (property.anoConstrucao && property.anoConstrucao !== "0") {
     items.push({ label: "Ano", value: property.anoConstrucao })

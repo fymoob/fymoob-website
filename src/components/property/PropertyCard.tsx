@@ -450,6 +450,7 @@ export function PropertyCard({
             price ? "text-slate-900" : "text-neutral-400"
           )}>
             {formatPrice(price)}
+            {property.finalidade !== "Venda" && price && <span className="text-xs font-normal text-neutral-500"> /mês</span>}
           </p>
         )}
 
@@ -482,6 +483,7 @@ export function PropertyCard({
             price ? "text-slate-900" : "text-neutral-400"
           )}>
             {formatPrice(price)}
+            {property.finalidade !== "Venda" && price && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
           </p>
         )}
 

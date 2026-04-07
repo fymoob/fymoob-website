@@ -9,6 +9,7 @@ interface MobileContactBarProps {
   propertyCode: string
   precoVenda?: number | null
   precoAluguel?: number | null
+  finalidade?: string
   dataCadastro?: string | null
   bairro?: string
   precoMedioBairro?: number | null
@@ -52,11 +53,13 @@ export function MobileContactBar({
   propertyCode,
   precoVenda,
   precoAluguel,
+  finalidade,
   dataCadastro,
   bairro,
   precoMedioBairro,
 }: MobileContactBarProps) {
   const price = precoVenda ?? precoAluguel ?? null
+  const isRental = finalidade ? finalidade !== "Venda" : !precoVenda
   const urgency = getUrgencyMessage({ dataCadastro, bairro, precoVenda, precoMedioBairro })
 
   // Mirror BottomNav auto-hide: when nav hides, slide down to bottom-0
@@ -107,7 +110,7 @@ export function MobileContactBar({
         <div className="mx-auto flex w-full max-w-lg items-center gap-2">
           <div className="min-w-0 flex-1">
             <p className="truncate text-lg font-extrabold text-slate-900">
-              {formatPrice(price)}
+              {formatPrice(price)}{isRental && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
             </p>
           </div>
           <a
