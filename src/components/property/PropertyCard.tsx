@@ -481,16 +481,22 @@ export function PropertyCard({
           />
         )}
 
-        {/* Price — anchored at bottom for editorial grid */}
+        {/* Price + Code footer — editorial grid */}
         {!useInlineFeatures && (
-          <div className="border-t border-slate-100 pt-4">
-            <p className={cn(
-              "text-2xl font-bold tracking-tight",
-              price ? "text-slate-900" : "text-neutral-400"
-            )}>
-              {formatPrice(price)}
-              {property.finalidade !== "Venda" && price && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
-            </p>
+          <div className="flex items-center justify-between border-t border-slate-100 pt-4">
+            <div className="flex items-center gap-3">
+              <div className="w-[3px] self-stretch rounded-full bg-brand-primary" />
+              <p className={cn(
+                "text-2xl font-bold tracking-tight",
+                price ? "text-slate-900" : "text-neutral-400"
+              )}>
+                {formatPrice(price)}
+                {property.finalidade !== "Venda" && price && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
+              </p>
+            </div>
+            <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-500">
+              {property.codigo}
+            </span>
           </div>
         )}
 
