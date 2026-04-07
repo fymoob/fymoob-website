@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useMemo } from "react"
 import { createPortal } from "react-dom"
 import { useRouter } from "next/navigation"
 import { Search, MapPin, Home, BedDouble, DollarSign, X, SlidersHorizontal } from "lucide-react"
-import { slugify } from "@/lib/utils"
+import { cn, slugify } from "@/lib/utils"
 import type { BairroSummary, TypeSummary } from "@/types/property"
 
 interface QuickSearchProps {
@@ -22,9 +22,9 @@ function formatShortPrice(v: number): string {
 function getCountForFinalidade(
   porFinalidade: Record<string, number>,
   total: number,
-  finalidade: "comprar" | "alugar" | null
+  finalidade: "comprar" | "alugar" | "lancamentos" | null
 ): number {
-  if (!finalidade) return total
+  if (!finalidade || finalidade === "lancamentos") return total
   if (finalidade === "alugar") {
     return (porFinalidade["Locação"] ?? 0) +
            (porFinalidade["Venda e Locação"] ?? 0)
@@ -50,7 +50,7 @@ function LocationPicker({
 }: {
   bairroSummaries: BairroSummary[]
   selected: string
-  finalidade: "comprar" | "alugar"
+  finalidade: "comprar" | "alugar" | "lancamentos"
   onSelect: (bairro: string) => void
   onClose: () => void
 }) {
@@ -302,7 +302,7 @@ function PriceRangeSlider({
 export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
-  const [finalidade, setFinalidade] = useState<"comprar" | "alugar">("comprar")
+  const [finalidade, setFinalidade] = useState<"comprar" | "alugar" | "lancamentos">("comprar")
   const [locationSel, setLocationSel] = useState("")   // single select (bairro or cidade name)
   const [tiposSel, setTiposSel] = useState<string[]>([])
   const [quartos, setQuartos] = useState("")
@@ -322,7 +322,7 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
     return () => { document.body.style.overflow = "" }
   }, [open, picker])
 
-  const handleFinalidade = (f: "comprar" | "alugar") => {
+  const handleFinalidade = (f: "comprar" | "alugar" | "lancamentos") => {
     setFinalidade(f)
     setPrecoMin(0)
     setPrecoMax(0)
@@ -375,15 +375,26 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
 
   const handleSearch = useCallback(() => {
     const params = new URLSearchParams()
-    if (finalidade === "alugar") params.set("finalidade", "locacao")
-    if (locationSel) {
-      // Determine if it's a bairro or cidade
-      const isBairro = bairroSummaries.some((bs) => bs.bairro === locationSel)
-      if (isBairro) {
-        params.set("bairro", slugify(locationSel))
-      } else {
-        params.set("cidade", slugify(locationSel))
+    if (finalidade === "lancamentos") {
+      // Lançamentos: only location and price filters
+      if (locationSel) {
+        const isBairro = bairroSummaries.some((bs) => bs.bairro === locationSel)
+        if (isBairro) params.set("bairro", slugify(locationSel))
+        else params.set("cidade", slugify(locationSel))
       }
+      if (precoMin > 0) params.set("precoMin", precoMin.toString())
+      if (precoMax > 0) params.set("precoMax", precoMax.toString())
+      setOpen(false)
+      const query = params.toString()
+      router.push(query ? `/lancamentos?${query}` : "/lancamentos")
+      return
+    }
+    if (finalidade === "alugar") params.set("finalidade", "locacao")
+    else params.set("finalidade", "venda")
+    if (locationSel) {
+      const isBairro = bairroSummaries.some((bs) => bs.bairro === locationSel)
+      if (isBairro) params.set("bairro", slugify(locationSel))
+      else params.set("cidade", slugify(locationSel))
     }
     if (tiposSel.length > 0) params.set("tipo", tiposSel.map(slugify).join(","))
     if (quartos) params.set("quartos", quartos)
@@ -424,19 +435,20 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
         <div className="space-y-6">
           {/* Finalidade */}
           <div className="rounded-xl bg-neutral-100 p-1">
-            <div className="grid grid-cols-2 gap-1">
-              {(["comprar", "alugar"] as const).map((f) => (
+            <div className="grid grid-cols-3 gap-1">
+              {(["comprar", "alugar", "lancamentos"] as const).map((f) => (
                 <button
                   key={f}
                   type="button"
                   onClick={() => handleFinalidade(f)}
-                  className={`rounded-lg py-3 text-sm font-semibold transition ${
+                  className={cn(
+                    "whitespace-nowrap rounded-lg py-3 text-xs font-semibold transition sm:text-sm",
                     finalidade === f
                       ? "bg-white text-neutral-900 shadow-sm"
                       : "text-neutral-500 hover:text-neutral-700"
-                  }`}
+                  )}
                 >
-                  {f === "comprar" ? "Comprar" : "Alugar"}
+                  {f === "comprar" ? "Comprar" : f === "alugar" ? "Alugar" : "Lançamentos"}
                 </button>
               ))}
             </div>
@@ -456,8 +468,8 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
             </button>
           </div>
 
-          {/* Tipo — tap to open filtered list */}
-          <div>
+          {/* Tipo — tap to open filtered list (hidden for Lançamentos) */}
+          {finalidade !== "lancamentos" && <div>
             <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-neutral-900">
               <Home className="size-4 text-brand-primary" />
               Tipo de imóvel
@@ -471,10 +483,10 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
             {filteredTipos.length === 0 && (
               <p className="mt-1.5 text-xs text-neutral-400">Nenhum tipo disponível para a seleção atual</p>
             )}
-          </div>
+          </div>}
 
-          {/* Quartos */}
-          <div>
+          {/* Quartos (hidden for Lançamentos) */}
+          {finalidade !== "lancamentos" && <div>
             <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-neutral-900">
               <BedDouble className="size-4 text-brand-primary" />
               Quartos
@@ -495,7 +507,7 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
                 </button>
               ))}
             </div>
-          </div>
+          </div>}
 
           {/* Preço */}
           <div>

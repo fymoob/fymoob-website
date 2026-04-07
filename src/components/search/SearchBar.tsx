@@ -2,10 +2,12 @@
 
 import {
   forwardRef,
+  useCallback,
   useState,
   type ComponentPropsWithoutRef,
   type ComponentType,
 } from "react"
+import { useRouter } from "next/navigation"
 import {
   BedDouble,
   Building2,
@@ -148,10 +150,15 @@ export function SearchBar({
   className,
   context = "search",
 }: SearchBarProps) {
+  const isHome = context === "home"
   const [searchMode, setSearchMode] = useState<SearchMode>("filters")
+  const [heroTab, setHeroTab] = useState<"comprar" | "alugar" | "lancamentos">("comprar")
   const [codigo, setCodigo] = useState("")
   const [modalOpen, setModalOpen] = useState(false)
   const [locationPopoverOpen, setLocationPopoverOpen] = useState(false)
+  const heroRouter = useRouter()
+
+  const isLancamentos = isHome && heroTab === "lancamentos"
 
   const {
     pendingFilters,
@@ -169,7 +176,7 @@ export function SearchBar({
     finalidadeLabel,
     minPrice,
     maxPrice,
-    applyFilters,
+    applyFilters: applyFiltersBase,
     applyCodeSearch,
   } = useSearchBarController({
     bairros,
@@ -180,8 +187,28 @@ export function SearchBar({
     bairroSummaries,
     tipoSummaries,
   })
+  const handleHeroTab = useCallback((tab: "comprar" | "alugar" | "lancamentos") => {
+    setHeroTab(tab)
+    if (tab !== "lancamentos") {
+      setPendingFilters((c) => ({
+        ...c,
+        finalidades: tab === "alugar" ? ["locacao"] : ["venda"],
+      }))
+    }
+  }, [setPendingFilters])
 
-  const isHome = context === "home"
+  const applyLancamentosSearch = useCallback(() => {
+    const params = new URLSearchParams()
+    for (const b of pendingFilters.bairros) if (b) params.set("bairro", b)
+    for (const c of pendingFilters.cidades) if (c) params.set("cidade", c)
+    if (minPrice > priceBounds.min) params.set("precoMin", String(minPrice))
+    if (maxPrice < priceBounds.max) params.set("precoMax", String(maxPrice))
+    const query = params.toString()
+    heroRouter.push(query ? `/lancamentos?${query}` : "/lancamentos")
+  }, [pendingFilters.bairros, pendingFilters.cidades, minPrice, maxPrice, priceBounds, heroRouter])
+
+  const applyFilters = isLancamentos ? applyLancamentosSearch : applyFiltersBase
+
   const modeToggleLabel =
     searchMode === "filters" ? "Buscar por código" : "Buscar por filtros"
 
@@ -463,35 +490,25 @@ export function SearchBar({
         {/* ── Desktop: Full search bar (also mobile for home context) ── */}
         <div className={cn(!isHome && "hidden md:block")}>
 
-        {/* Comprar / Alugar toggle — above search bar on home */}
+        {/* Comprar / Alugar / Lançamentos toggle — above search bar on home */}
         {isHome && (
           <div className="mb-4 flex justify-center">
             <div className="inline-flex rounded-full bg-black/30 p-1 backdrop-blur-sm">
-              {(["comprar", "alugar"] as const).map((f) => {
-                const isActive = f === "comprar"
-                  ? !pendingFilters.finalidades.includes("locacao")
-                  : pendingFilters.finalidades.includes("locacao")
-                return (
-                  <button
-                    key={f}
-                    type="button"
-                    onClick={() =>
-                      setPendingFilters((c) => ({
-                        ...c,
-                        finalidades: f === "alugar" ? ["locacao"] : ["venda"],
-                      }))
-                    }
-                    className={cn(
-                      "rounded-full px-6 py-2 text-sm font-semibold transition-all",
-                      isActive
-                        ? "bg-white text-neutral-900 shadow-sm"
-                        : "text-white/80 hover:text-white"
-                    )}
-                  >
-                    {f === "comprar" ? "Comprar" : "Alugar"}
-                  </button>
-                )
-              })}
+              {(["comprar", "alugar", "lancamentos"] as const).map((tab) => (
+                <button
+                  key={tab}
+                  type="button"
+                  onClick={() => handleHeroTab(tab)}
+                  className={cn(
+                    "whitespace-nowrap rounded-full px-4 py-2 text-xs font-semibold transition-all sm:px-6 sm:text-sm",
+                    heroTab === tab
+                      ? "bg-white text-neutral-900 shadow-sm"
+                      : "text-white/80 hover:text-white"
+                  )}
+                >
+                  {tab === "comprar" ? "Comprar" : tab === "alugar" ? "Alugar" : "Lançamentos"}
+                </button>
+              ))}
             </div>
           </div>
         )}
@@ -509,7 +526,9 @@ export function SearchBar({
               <div className={cn(
                 "flex flex-col md:items-center md:gap-0",
                 isHome
-                  ? "md:grid md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,0.8fr)_minmax(0,1fr)_auto]"
+                  ? isLancamentos
+                    ? "md:grid md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_auto]"
+                    : "md:grid md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,0.8fr)_minmax(0,1fr)_auto]"
                   : "md:grid md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,0.7fr)_minmax(0,0.9fr)_minmax(0,0.9fr)_auto]"
               )}>
 
@@ -562,8 +581,8 @@ export function SearchBar({
                   </Popover>
                 </div>
 
-                {/* 2. Tipo */}
-                <div className="border-b border-neutral-200 md:border-b-0">
+                {/* 2. Tipo — hidden for Lançamentos */}
+                {!isLancamentos && <div className="border-b border-neutral-200 md:border-b-0">
                   <Popover>
                     <PopoverTrigger
                       render={
@@ -590,10 +609,10 @@ export function SearchBar({
                       />
                     </PopoverContent>
                   </Popover>
-                </div>
+                </div>}
 
-                {/* 3. Quartos */}
-                <div className="border-b border-neutral-200 md:border-b-0">
+                {/* 3. Quartos — hidden for Lançamentos */}
+                {!isLancamentos && <div className="border-b border-neutral-200 md:border-b-0">
                   <Popover>
                     <PopoverTrigger
                       render={
@@ -619,7 +638,7 @@ export function SearchBar({
                       />
                     </PopoverContent>
                   </Popover>
-                </div>
+                </div>}
 
                 {/* 4. Preço */}
                 <div className="md:border-b-0">
