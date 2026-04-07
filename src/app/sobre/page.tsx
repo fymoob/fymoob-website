@@ -162,8 +162,8 @@ export default async function SobrePage() {
             Quem Nós Somos
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/80">
-            A Fymoob é uma imobiliária que nasceu para fazer diferente. Acreditamos em negociações justas, atendimento próximo e{" "}
-            <span className="font-semibold text-white">soluções pensadas para cada cliente.</span>
+            A Fymoob é uma imobiliária que nasceu para fazer diferente. Acreditamos em negociações justas, atendimento próximo e soluções pensadas para cada cliente. Mais do que intermediar imóveis, buscamos construir{" "}
+            <span className="font-semibold text-white">relações transparentes e equilibradas.</span>
           </p>
 
           {/* Stats inline */}
@@ -211,16 +211,16 @@ export default async function SobrePage() {
             <h2 className="font-display text-3xl font-bold text-neutral-900">Nossa História</h2>
             <div className="mt-5 space-y-4 text-sm leading-relaxed text-neutral-600">
               <p>
-                A Fymoob nasceu no primeiro semestre de 2024, a partir da decisão dos sócios Bruno e Wagner de seguirem um novo caminho. Depois de experiências anteriores, surgiu a vontade de criar uma empresa com um modelo mais justo, equilibrado e alinhado com o que eles realmente acreditam — tanto nas relações internas quanto no atendimento aos clientes.
+                A Fymoob nasceu no primeiro semestre de 2024, quando os sócios e amigos de infância Bruno e Wagner decidiram seguir um novo caminho. Depois de experiências anteriores, surgiu a vontade de criar uma empresa mais moderna, justa e alinhada com o que realmente acreditam — tanto nas relações internas quanto no atendimento aos clientes.
               </p>
               <p>
-                O nome Fymoob carrega essa ideia. &ldquo;FY&rdquo; vem de uma expressão popular nas redes sociais que significa &ldquo;for you&rdquo; (para você), enquanto &ldquo;moob&rdquo; é uma forma estilizada de imobiliária. Juntos, representam uma proposta simples: uma imobiliária pensada para você.
+                O nome Fymoob carrega essa ideia. &ldquo;FY&rdquo; vem de uma expressão popular nas redes sociais que significa &ldquo;for you&rdquo; (para você), enquanto &ldquo;moob&rdquo; é uma forma estilizada da palavra imobiliária. Juntos, representam uma proposta simples: uma imobiliária para você.
               </p>
               <p>
-                Essa essência está presente em tudo que fazemos. Buscamos um atendimento próximo, personalizado e sem fórmulas prontas. Cada cliente é único, e cada negociação também. Nosso objetivo é sempre encontrar o melhor equilíbrio para todas as partes envolvidas.
+                Essa essência está presente em tudo que fazemos. Buscamos um atendimento próximo, personalizado e sem fórmulas prontas, porque cada cliente é único — e cada negociação também. Nosso objetivo é sempre encontrar o melhor equilíbrio para todos os envolvidos.
               </p>
               <p className="border-l-2 border-brand-primary pl-4 italic text-neutral-800">
-                &ldquo;Mesmo sendo uma empresa jovem, a Fymoob conta com uma equipe que soma mais de 15 anos de experiência no mercado imobiliário — unindo visão atual com conhecimento prático para entregar resultados de verdade.&rdquo;
+                &ldquo;Mesmo sendo uma empresa jovem, a Fymoob conta com uma equipe que soma mais de 15 anos de experiência no mercado imobiliário, unindo visão atual e prática para entregar resultados reais.&rdquo;
               </p>
             </div>
           </div>
