@@ -11,7 +11,7 @@ import {
   generateItemListSchema,
 } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
-import { PropertyGrid } from "@/components/search/PropertyGrid"
+import { PropertyListingGrid } from "@/components/search/PropertyListingGrid"
 
 export async function generateMetadata(): Promise<Metadata> {
   const { properties } = await getProperties({ tipo: "Terreno", limit: 1000 })
@@ -62,7 +62,7 @@ export default async function TerrenosCuritibaPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
 
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1440px] px-4 py-8 md:px-8">
         <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Terrenos em Curitiba", url: "/terrenos-curitiba" }]} />
 
         <h1 className="mt-2 font-display text-2xl font-bold text-neutral-900 sm:text-3xl">
@@ -86,7 +86,7 @@ export default async function TerrenosCuritibaPage() {
           </Suspense>
         </div>
 
-        <PropertyGrid properties={properties} />
+        <PropertyListingGrid properties={properties} totalLabel="terrenos" />
       </div>
 
       <SeoInternalLinks groups={[buildBairrosGroup(bairrosComTerreno, { tipoSlug: "terrenos", title: "Terrenos por Bairro" })]} />

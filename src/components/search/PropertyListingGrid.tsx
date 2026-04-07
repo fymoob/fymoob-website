@@ -1,0 +1,71 @@
+"use client"
+
+import { useState } from "react"
+import { LayoutGrid, List } from "lucide-react"
+import type { Property } from "@/types/property"
+import { PropertyCard } from "@/components/property/PropertyCard"
+
+interface PropertyListingGridProps {
+  properties: Property[]
+  totalLabel?: string
+}
+
+const ABOVE_THE_FOLD_PRIORITY_CARDS = 3
+
+export function PropertyListingGrid({ properties, totalLabel = "imóveis" }: PropertyListingGridProps) {
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+
+  if (properties.length === 0) {
+    return (
+      <div className="rounded-2xl border border-dashed border-neutral-300 bg-neutral-50 py-16 text-center">
+        <p className="text-lg text-neutral-500">Nenhum imóvel encontrado para os filtros atuais.</p>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      {/* Toolbar: count + view toggle */}
+      <div className="mb-6 flex items-center justify-between">
+        <p className="text-sm text-neutral-500">
+          <span className="font-semibold text-neutral-900">{properties.length}</span> {totalLabel} encontrados
+        </p>
+        <div className="flex items-center gap-1 rounded-lg border border-neutral-200 p-1">
+          <button
+            onClick={() => setViewMode("grid")}
+            className={`rounded-md p-1.5 transition-colors ${viewMode === "grid" ? "bg-brand-primary text-white" : "text-neutral-400 hover:text-neutral-600"}`}
+            aria-label="Visualização em grade"
+          >
+            <LayoutGrid className="size-4" />
+          </button>
+          <button
+            onClick={() => setViewMode("list")}
+            className={`rounded-md p-1.5 transition-colors ${viewMode === "list" ? "bg-brand-primary text-white" : "text-neutral-400 hover:text-neutral-600"}`}
+            aria-label="Visualização em lista"
+          >
+            <List className="size-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Property cards */}
+      <section
+        aria-live="polite"
+        className={
+          viewMode === "grid"
+            ? "grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8"
+            : "flex flex-col gap-6"
+        }
+      >
+        {properties.map((property, index) => (
+          <PropertyCard
+            key={property.slug}
+            property={property}
+            prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
+            variant={viewMode === "grid" ? "vertical" : "horizontal"}
+          />
+        ))}
+      </section>
+    </div>
+  )
+}

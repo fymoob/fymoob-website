@@ -283,7 +283,7 @@ export function PropertyCard({
         "relative overflow-hidden",
         isResponsive
           ? "w-28 shrink-0 self-stretch sm:w-full sm:shrink sm:self-auto sm:aspect-[4/3]"
-          : isHorizontal ? "w-28 shrink-0 self-stretch sm:w-32" : "aspect-[4/3]"
+          : isHorizontal ? "w-28 shrink-0 self-stretch sm:w-72 md:w-80" : "aspect-[4/3]"
       )}>
         {(isHorizontal && !isResponsive) ? (
           /* Horizontal: single image, no carousel */

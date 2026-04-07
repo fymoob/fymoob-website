@@ -11,7 +11,7 @@ import {
   generateItemListSchema,
 } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
-import { PropertyGrid } from "@/components/search/PropertyGrid"
+import { PropertyListingGrid } from "@/components/search/PropertyListingGrid"
 
 export async function generateMetadata(): Promise<Metadata> {
   const { properties } = await getProperties({ tipo: "Apartamento", limit: 1000 })
@@ -62,7 +62,7 @@ export default async function ApartamentosCuritibaPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
 
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1440px] px-4 py-8 md:px-8">
         <Breadcrumbs
           items={[
             { name: "Home", url: "/" },
@@ -106,7 +106,7 @@ export default async function ApartamentosCuritibaPage() {
           </Suspense>
         </div>
 
-        <PropertyGrid properties={properties} />
+        <PropertyListingGrid properties={properties} totalLabel="apartamentos" />
       </div>
 
       <SeoInternalLinks groups={[buildBairrosGroup(bairrosComApto, { tipoSlug: "apartamentos", title: "Apartamentos por Bairro" })]} />

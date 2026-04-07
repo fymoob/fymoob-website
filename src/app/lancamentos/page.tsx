@@ -5,7 +5,7 @@ import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
 import { formatPrice } from "@/lib/utils"
 import { generateItemListSchema } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
-import { PropertyGrid } from "@/components/search/PropertyGrid"
+import { PropertyListingGrid } from "@/components/search/PropertyListingGrid"
 import Link from "next/link"
 import { Building2, TrendingUp, MapPin } from "lucide-react"
 import { SeoInternalLinks, buildBairrosGroup } from "@/components/seo/SeoInternalLinks"
@@ -58,7 +58,7 @@ export default async function LancamentosPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
 
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1440px] px-4 py-8 md:px-8">
         <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Lançamentos", url: "/lancamentos" }]} />
 
         <h1 className="mt-2 font-display text-2xl font-bold text-neutral-900 sm:text-3xl">
@@ -99,7 +99,7 @@ export default async function LancamentosPage() {
         {/* Grid de imóveis */}
         {properties.length > 0 ? (
           <div className="mt-8">
-            <PropertyGrid properties={properties} />
+            <PropertyListingGrid properties={properties} totalLabel="lançamentos" />
           </div>
         ) : (
           <div className="mt-12 text-center">
