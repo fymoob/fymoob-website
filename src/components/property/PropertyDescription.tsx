@@ -102,7 +102,7 @@ export function PropertyDescription({ descricao }: PropertyDescriptionProps) {
             return (
               <h3
                 key={i}
-                className="mt-8 mb-4 text-base font-medium text-slate-900 first:mt-0"
+                className="mt-8 mb-4 text-base font-semibold text-slate-900 first:mt-0"
               >
                 {block.content}
               </h3>
@@ -113,7 +113,7 @@ export function PropertyDescription({ descricao }: PropertyDescriptionProps) {
             return (
               <ul key={i} className="my-5 space-y-2 pl-1">
                 {block.items.map((item, j) => (
-                  <li key={j} className="flex items-start gap-3 text-base leading-relaxed text-slate-700 md:text-lg">
+                  <li key={j} className="flex items-start gap-3 text-base leading-relaxed text-slate-800 md:text-lg">
                     <span className="mt-2.5 block size-1.5 shrink-0 rounded-full bg-slate-300" />
                     {item}
                   </li>
@@ -127,7 +127,7 @@ export function PropertyDescription({ descricao }: PropertyDescriptionProps) {
             <p
               key={i}
               className={cn(
-                "text-base leading-relaxed text-slate-700 md:text-lg md:leading-relaxed",
+                "text-base leading-relaxed text-slate-800 md:text-lg md:leading-relaxed",
                 i > 0 && "mt-5"
               )}
             >
