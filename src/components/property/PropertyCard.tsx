@@ -275,7 +275,7 @@ export function PropertyCard({
           ? "flex flex-row sm:flex-col rounded-2xl border border-neutral-200 bg-white hover:shadow-lg sm:hover:-translate-y-1.5 sm:hover:border-brand-primary/30 sm:hover:shadow-2xl"
           : isHorizontal
             ? "flex flex-col sm:flex-row rounded-2xl border border-neutral-200 bg-white hover:shadow-lg sm:hover:shadow-xl"
-            : "bg-transparent"
+            : "rounded-sm border border-slate-200 bg-white shadow-none hover:border-slate-300"
       )}
     >
       {/* Photo section */}
@@ -283,7 +283,7 @@ export function PropertyCard({
         "relative overflow-hidden",
         isResponsive
           ? "w-28 shrink-0 self-stretch sm:w-full sm:shrink sm:self-auto sm:aspect-[4/3]"
-          : isHorizontal ? "aspect-[4/3] sm:aspect-auto sm:w-2/5 sm:min-h-[250px] sm:shrink-0 sm:self-stretch" : "aspect-[21/9] max-h-[400px] xl:max-h-[480px] rounded-sm"
+          : isHorizontal ? "aspect-[4/3] sm:aspect-auto sm:w-2/5 sm:min-h-[250px] sm:shrink-0 sm:self-stretch" : "aspect-[21/9] max-h-[400px] xl:max-h-[480px]"
       )}>
         {(isHorizontal && !isResponsive) ? (
           /* Horizontal: single image, no carousel */
@@ -418,7 +418,7 @@ export function PropertyCard({
           ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3 sm:flex-none sm:gap-0 sm:space-y-1.5 sm:p-4 md:p-5"
           : isHorizontal
             ? "flex min-w-0 flex-1 flex-col justify-center gap-1.5 p-4 sm:gap-2 sm:p-6"
-            : "space-y-1.5 pt-4 pb-2"
+            : "space-y-1.5 px-5 py-4"
       )}>
         {/* Line 1: Type · Location */}
         <p className={cn(
