@@ -72,7 +72,7 @@ export function PropertyContact({
           <span className="text-xs font-medium uppercase tracking-wider text-neutral-500">
             {priceLabel}
           </span>
-          <p className="mt-1 text-2xl font-bold text-brand-primary">
+          <p className="mt-1 text-2xl font-bold text-slate-900">
             {formatPrice(price)}
           </p>
         </div>
