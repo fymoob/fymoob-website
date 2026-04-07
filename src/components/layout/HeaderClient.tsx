@@ -32,7 +32,7 @@ const navLinks = [
 
 export function HeaderClient() {
   const pathname = usePathname()
-  const isHome = pathname === "/"
+  const isHome = pathname === "/" || pathname === "/sobre"
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
