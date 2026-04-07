@@ -421,7 +421,7 @@ export function PropertyCard({
           ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3 sm:flex-none sm:gap-0 sm:space-y-1.5 sm:p-4 md:p-5"
           : isHorizontal
             ? "flex min-w-0 flex-1 flex-col justify-center gap-1.5 p-4 sm:gap-2 sm:p-6"
-            : "space-y-3 p-5"
+            : "flex h-full flex-col space-y-3 p-5"
       )}>
         {/* Line 1: Type · Location */}
         {(isHorizontal || isResponsive) ? (
@@ -432,8 +432,8 @@ export function PropertyCard({
           </p>
         ) : (
           <div className="flex items-center gap-2">
-            <span className="text-xs font-medium uppercase tracking-wide text-slate-500">{property.tipo}</span>
-            <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">{property.bairro}</span>
+            <span className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600">{property.tipo}</span>
+            <span className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">{property.bairro}</span>
           </div>
         )}
 
@@ -483,18 +483,15 @@ export function PropertyCard({
 
         {/* Price + Code footer — editorial grid */}
         {!useInlineFeatures && (
-          <div className="flex items-center justify-between border-t border-slate-100 pt-4">
-            <div className="flex items-center gap-3">
-              <div className="w-[3px] self-stretch rounded-full bg-brand-primary" />
-              <p className={cn(
-                "text-2xl font-bold tracking-tight",
-                price ? "text-slate-900" : "text-neutral-400"
-              )}>
-                {formatPrice(price)}
-                {property.finalidade !== "Venda" && price && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
-              </p>
-            </div>
-            <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-500">
+          <div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-4">
+            <p className={cn(
+              "text-2xl font-bold tracking-tight",
+              price ? "text-slate-900" : "text-neutral-400"
+            )}>
+              {formatPrice(price)}
+              {property.finalidade !== "Venda" && price && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
+            </p>
+            <span className="rounded-md bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-400">
               {property.codigo}
             </span>
           </div>
