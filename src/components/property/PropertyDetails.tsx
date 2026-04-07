@@ -14,7 +14,7 @@ export function PropertyDetails({ property, shortTitle }: PropertyDetailsProps) 
       {/* Badges */}
       <div className="flex flex-wrap items-center gap-2">
         <PropertyBadge variant="type">{property.tipo}</PropertyBadge>
-        <PropertyBadge variant="sale">{property.finalidade}</PropertyBadge>
+        <PropertyBadge variant={property.finalidade === "Venda" ? "sale" : "rent"}>{property.finalidade}</PropertyBadge>
         <PropertyBadge variant="code">Cód: {property.codigo}</PropertyBadge>
       </div>
 
