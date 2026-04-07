@@ -278,7 +278,7 @@ export function PropertyCard({
           ? "flex flex-row sm:flex-col rounded-2xl border border-neutral-200 bg-white hover:shadow-lg sm:hover:-translate-y-1.5 sm:hover:border-brand-primary/30 sm:hover:shadow-2xl"
           : isHorizontal
             ? "flex flex-col sm:flex-row rounded-2xl border border-neutral-200 bg-white hover:shadow-lg sm:hover:shadow-xl"
-            : "rounded-sm border border-slate-200 bg-white shadow-none hover:border-slate-300"
+            : "rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
       )}
     >
       {/* Photo section */}
@@ -336,7 +336,7 @@ export function PropertyCard({
               badge.color,
               (isHorizontal || isResponsive)
                 ? "top-1.5 left-1.5 rounded-full px-1.5 py-0.5 text-[8px] tracking-wider shadow-md sm:top-3 sm:left-3 sm:px-2.5 sm:py-1 sm:text-[11px]"
-                : "top-3 left-3 rounded-sm px-2.5 py-1 text-[10px] tracking-widest"
+                : "top-3 left-3 rounded-md px-2.5 py-1 text-[10px] tracking-widest"
             )}
           >
             {badge.text}
@@ -421,22 +421,27 @@ export function PropertyCard({
           ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3 sm:flex-none sm:gap-0 sm:space-y-1.5 sm:p-4 md:p-5"
           : isHorizontal
             ? "flex min-w-0 flex-1 flex-col justify-center gap-1.5 p-4 sm:gap-2 sm:p-6"
-            : "space-y-1.5 px-5 py-4"
+            : "space-y-3 p-5"
       )}>
         {/* Line 1: Type · Location */}
-        <p className={cn(
-          (isHorizontal || isResponsive) ? "text-xs text-neutral-500" : "text-[10px] uppercase tracking-widest text-gray-500"
-        )}>
-          {property.tipo}
-          <span className="mx-2">•</span>
-          {property.bairro}
-        </p>
+        {(isHorizontal || isResponsive) ? (
+          <p className="text-xs text-neutral-500">
+            {property.tipo}
+            <span className="mx-2">•</span>
+            {property.bairro}
+          </p>
+        ) : (
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-medium uppercase tracking-wide text-slate-500">{property.tipo}</span>
+            <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">{property.bairro}</span>
+          </div>
+        )}
 
         {/* Line 2: Title (1 line) */}
         <Link href={propertyHref} className="block">
           <h2 className={cn(
             "truncate tracking-tight transition-colors hover:text-brand-primary",
-            isHorizontal ? "text-sm sm:text-lg font-bold text-neutral-900" : isResponsive ? "text-sm sm:text-base font-bold text-neutral-900" : "text-lg font-medium text-slate-800"
+            isHorizontal ? "text-sm sm:text-lg font-bold text-neutral-900" : isResponsive ? "text-sm sm:text-base font-bold text-neutral-900" : "text-lg font-semibold leading-snug text-slate-800"
           )}>
             {property.titulo}
           </h2>
@@ -478,13 +483,15 @@ export function PropertyCard({
 
         {/* Price — anchored at bottom for editorial grid */}
         {!useInlineFeatures && (
-          <p className={cn(
-            "text-2xl font-semibold tracking-tight pt-3",
-            price ? "text-slate-900" : "text-neutral-400"
-          )}>
-            {formatPrice(price)}
-            {property.finalidade !== "Venda" && price && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
-          </p>
+          <div className="border-t border-slate-100 pt-4">
+            <p className={cn(
+              "text-2xl font-bold tracking-tight",
+              price ? "text-slate-900" : "text-neutral-400"
+            )}>
+              {formatPrice(price)}
+              {property.finalidade !== "Venda" && price && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
+            </p>
+          </div>
         )}
 
       </div>

@@ -37,7 +37,7 @@ export function PropertyFeatures({
   // Editorial: spread-out with justify-between, bronze accents
   if (editorial) {
     return (
-      <div className={cn("flex items-center justify-start gap-8 py-4", className)}>
+      <div className={cn("flex items-center justify-start gap-10 py-5", className)}>
         {features.map((f) => {
           const Icon = f.icon
           return (
