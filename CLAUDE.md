@@ -59,7 +59,7 @@ npm run test         # Testes
 - **Imagens:** `priority` apenas no LCP element (1 por página). Demais usam `loading="lazy"` (padrão)
 - **GA4:** DeferredGA (carrega após interação ou 12s) — nunca carregar síncrono
 - **Carousel (embla):** nunca carregar no bundle inicial de listagens. Dynamic import para seções abaixo do fold
-- **Mapa (maplibre):** sempre dynamic import, `isOpen=false` por padrão, CSS carregado via CDN dinâmico
+- **Mapa (maplibre):** sempre dynamic import via IntersectionObserver (200px rootMargin), CSS carregado via CDN dinâmico
 - **Animações:** CSS `animation-timeline: view()` com fallback. Nunca `opacity:0` + JS IntersectionObserver para animação de entrada
 - **FAQ:** `<details>/<summary>` nativo (zero JS). Nunca Accordion/Radix para FAQ
 

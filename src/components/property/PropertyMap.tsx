@@ -1,9 +1,8 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { ChevronUp, ChevronDown, MapPin } from "lucide-react"
+import { MapPin } from "lucide-react"
 import { getPropertyCoordinates } from "@/lib/bairro-coordinates"
-// CSS loaded dynamically inside initMap() to avoid 271KB bundle on initial load
 
 interface PropertyMapProps {
   latitude: number | null
@@ -13,29 +12,36 @@ interface PropertyMapProps {
 }
 
 export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMapProps) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [hasEnteredViewport, setHasEnteredViewport] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<unknown>(null)
-
-  const handleToggle = () => {
-    setIsOpen((prev) => {
-      if (prev && mapRef.current) {
-        (mapRef.current as { remove: () => void }).remove()
-        mapRef.current = null
-        setLoaded(false)
-      }
-      return !prev
-    })
-  }
 
   const coords = useMemo(
     () => getPropertyCoordinates(latitude, longitude, bairro),
     [latitude, longitude, bairro]
   )
 
+  // IntersectionObserver — trigger maplibre load when container approaches viewport
   useEffect(() => {
-    if (!coords || !isOpen || !mapContainerRef.current || mapRef.current) return
+    if (!coords || !mapContainerRef.current) return
+    const el = mapContainerRef.current
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasEnteredViewport(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: "200px" }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [coords])
+
+  // Load maplibre when container enters viewport
+  useEffect(() => {
+    if (!coords || !hasEnteredViewport || !mapContainerRef.current || mapRef.current) return
 
     let cancelled = false
 
@@ -84,7 +90,7 @@ export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMap
     return () => {
       cancelled = true
     }
-  }, [coords, isOpen])
+  }, [coords, hasEnteredViewport])
 
   // Cleanup on unmount
   useEffect(() => {
@@ -100,39 +106,24 @@ export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMap
 
   return (
     <section>
-      <button
-        type="button"
-        onClick={handleToggle}
-        className="flex w-full items-center justify-between pt-2 pb-4"
-      >
-        <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950">
-          Mapa do imóvel
-        </h2>
-        {isOpen ? (
-          <ChevronUp size={20} className="text-neutral-400" />
-        ) : (
-          <ChevronDown size={20} className="text-neutral-400" />
-        )}
-      </button>
+      <h2 className="pt-2 pb-4 font-display text-xl font-semibold tracking-tight text-neutral-950">
+        Mapa do imóvel
+      </h2>
 
-      {isOpen && (
-        <div>
-          <div className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
-            <div className="relative z-0 h-[350px] sm:h-[400px]">
-              <div ref={mapContainerRef} className="h-full w-full rounded-xl" />
-              {!loaded && (
-                <div className="absolute inset-0 flex items-center justify-center text-neutral-400">
-                  <MapPin size={24} className="mr-2 animate-pulse" />
-                  Carregando mapa...
-                </div>
-              )}
+      <div className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
+        <div className="relative z-0 h-[350px] sm:h-[400px]">
+          <div ref={mapContainerRef} className="h-full w-full rounded-xl" />
+          {!loaded && (
+            <div className="absolute inset-0 flex animate-pulse items-center justify-center bg-neutral-100 text-neutral-400">
+              <MapPin size={24} className="mr-2" />
+              Carregando mapa...
             </div>
-          </div>
-          <p className="mt-2 text-xs text-neutral-500">
-            Localização aproximada
-          </p>
+          )}
         </div>
-      )}
+      </div>
+      <p className="mt-2 text-xs text-neutral-500">
+        Localização aproximada
+      </p>
     </section>
   )
 }
