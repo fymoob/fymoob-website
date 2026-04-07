@@ -439,48 +439,25 @@ export function PropertyCard({
           </h2>
         </Link>
 
-        {/* Price — above features for horizontal/responsive */}
-        {(isHorizontal || isResponsive) && (
-          <p className={cn(
-            "font-semibold tracking-tight",
-            isHorizontal ? "text-lg sm:text-xl" : "text-base sm:text-lg",
-            price ? "text-slate-900" : "text-neutral-400"
-          )}>
-            {formatPrice(price)}
-          </p>
-        )}
+        {/* Price */}
+        <p className={cn(
+          "font-semibold tracking-tight",
+          isHorizontal ? "text-lg sm:text-xl" : isResponsive ? "text-base sm:text-lg" : "text-xl",
+          price ? "text-slate-900" : "text-neutral-400"
+        )}>
+          {formatPrice(price)}
+        </p>
 
-        {/* Features — editorial for vertical, standard for others */}
-        {!(isHorizontal || isResponsive) ? (
-          <div className="border-y border-gray-100">
-            <PropertyFeatures
-              dormitorios={property.dormitorios}
-              banheiros={property.banheiros}
-              vagas={property.vagas}
-              areaPrivativa={property.areaPrivativa}
-              editorial
-            />
-          </div>
-        ) : (
-          <PropertyFeatures
-            dormitorios={property.dormitorios}
-            banheiros={property.banheiros}
-            vagas={property.vagas}
-            areaPrivativa={property.areaPrivativa}
-            size="sm"
-            iconOnly={isResponsive}
-          />
-        )}
+        {/* Features — clean inline for all variants */}
+        <PropertyFeatures
+          dormitorios={property.dormitorios}
+          banheiros={property.banheiros}
+          vagas={property.vagas}
+          areaPrivativa={property.areaPrivativa}
+          size="sm"
+          iconOnly={isResponsive}
+        />
 
-        {/* Price — below features for vertical (editorial) */}
-        {!(isHorizontal || isResponsive) && (
-          <p className={cn(
-            "text-2xl font-semibold tracking-tight pt-3",
-            price ? "text-slate-900" : "text-neutral-400"
-          )}>
-            {formatPrice(price)}
-          </p>
-        )}
       </div>
     </article>
   )

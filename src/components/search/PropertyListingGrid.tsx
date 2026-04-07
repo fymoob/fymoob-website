@@ -35,7 +35,9 @@ export function ViewToggle({ viewMode, setViewMode }: { viewMode: "grid" | "list
 }
 
 export function PropertyListingGrid({ properties, totalLabel = "imóveis", showToolbar = true }: PropertyListingGridProps) {
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+  const [viewMode, setViewMode] = useState<"grid" | "list">(() =>
+    typeof window !== "undefined" && window.innerWidth < 768 ? "list" : "grid"
+  )
 
   if (properties.length === 0) {
     return (
