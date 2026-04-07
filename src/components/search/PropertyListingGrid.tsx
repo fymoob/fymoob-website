@@ -60,8 +60,8 @@ export function PropertyListingGrid({ properties, totalLabel = "imóveis", showT
         aria-live="polite"
         className={
           viewMode === "grid"
-            ? "grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8"
-            : "flex flex-col gap-6"
+            ? "grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8"
+            : "flex flex-col gap-5"
         }
       >
         {properties.map((property, index) => (

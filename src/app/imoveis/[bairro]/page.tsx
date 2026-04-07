@@ -117,7 +117,7 @@ export default async function BairroPage({ params }: BairroPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
 
-      <div className="mx-auto max-w-[1440px] px-4 py-8 md:px-8">
+      <div className="mx-auto max-w-[1600px] px-4 py-8 md:px-8">
         <Breadcrumbs
           items={[
             { name: "Home", url: "/" },

@@ -392,7 +392,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
   const maxPrice = stats.precoMax ?? 5_000_000
 
   return (
-    <div className="mx-auto w-full max-w-[1440px] px-4 py-8 md:px-8">
+    <div className="mx-auto w-full max-w-[1600px] px-4 py-8 md:px-8">
       <Breadcrumbs
         items={[
           { name: "Home", url: "/" },

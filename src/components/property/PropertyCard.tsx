@@ -274,7 +274,7 @@ export function PropertyCard({
         isResponsive
           ? "flex flex-row sm:flex-col hover:shadow-lg sm:hover:-translate-y-1.5 sm:hover:border-brand-primary/30 sm:hover:shadow-2xl"
           : isHorizontal
-            ? "flex flex-row hover:shadow-lg"
+            ? "flex flex-col sm:flex-row hover:shadow-lg sm:hover:shadow-xl"
             : "hover:-translate-y-1.5 hover:border-brand-primary/30 hover:shadow-2xl"
       )}
     >
@@ -283,7 +283,7 @@ export function PropertyCard({
         "relative overflow-hidden",
         isResponsive
           ? "w-28 shrink-0 self-stretch sm:w-full sm:shrink sm:self-auto sm:aspect-[4/3]"
-          : isHorizontal ? "w-28 shrink-0 self-stretch sm:w-72 md:w-80" : "aspect-[4/3]"
+          : isHorizontal ? "aspect-[16/10] sm:aspect-auto sm:w-2/5 sm:shrink-0 sm:self-stretch" : "aspect-[4/3]"
       )}>
         {(isHorizontal && !isResponsive) ? (
           /* Horizontal: single image, no carousel */
@@ -294,7 +294,7 @@ export function PropertyCard({
             priority={prioritizeFirstImage}
             loading={prioritizeFirstImage ? "eager" : "lazy"}
             className="object-cover transition-transform duration-500 group-hover:scale-105"
-            sizes="144px"
+            sizes="(max-width: 640px) 100vw, 40vw"
           />
         ) : (
           /* Transform-based carousel — no scroll, no library */
@@ -417,7 +417,7 @@ export function PropertyCard({
         isResponsive
           ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3 sm:flex-none sm:gap-0 sm:space-y-1.5 sm:p-4 md:p-5"
           : isHorizontal
-            ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3"
+            ? "flex min-w-0 flex-1 flex-col justify-center gap-1.5 p-4 sm:gap-2 sm:p-6"
             : "space-y-1 p-4"
       )}>
         {/* Line 1: Type · Location */}
@@ -434,7 +434,7 @@ export function PropertyCard({
         <Link href={propertyHref} className="block">
           <h2 className={cn(
             "truncate font-bold tracking-tight text-neutral-900 transition-colors hover:text-brand-primary",
-            (isHorizontal || isResponsive) ? "text-sm sm:text-base" : "text-sm"
+            isHorizontal ? "text-sm sm:text-lg" : isResponsive ? "text-sm sm:text-base" : "text-sm"
           )}>
             {property.titulo}
           </h2>
@@ -444,7 +444,7 @@ export function PropertyCard({
         <p
           className={cn(
             "font-extrabold tracking-tight",
-            isHorizontal ? "text-base" : isResponsive ? "text-base sm:text-lg" : "text-lg",
+            isHorizontal ? "text-lg sm:text-xl" : isResponsive ? "text-base sm:text-lg" : "text-lg",
             price ? "text-brand-primary" : "text-neutral-400"
           )}
         >
@@ -459,7 +459,7 @@ export function PropertyCard({
           areaPrivativa={property.areaPrivativa}
           size="sm"
           compact={!isHorizontal && !isResponsive}
-          iconOnly={isHorizontal || isResponsive}
+          iconOnly={isResponsive}
           className="pt-0.5"
         />
       </div>
