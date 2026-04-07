@@ -26,13 +26,10 @@ function getCountForFinalidade(
 ): number {
   if (!finalidade) return total
   if (finalidade === "alugar") {
-    return (porFinalidade["Aluguel"] ?? 0) +
-           (porFinalidade["Locação"] ?? 0) +
-           (porFinalidade["Venda e Aluguel"] ?? 0) +
+    return (porFinalidade["Locação"] ?? 0) +
            (porFinalidade["Venda e Locação"] ?? 0)
   }
   return (porFinalidade["Venda"] ?? 0) +
-         (porFinalidade["Venda e Aluguel"] ?? 0) +
          (porFinalidade["Venda e Locação"] ?? 0)
 }
 
@@ -340,15 +337,12 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
     // Filter by finalidade
     if (finalidade === "alugar") {
       filtered = filtered.filter((ts) =>
-        (ts.porFinalidade["Aluguel"] ?? 0) > 0 ||
         (ts.porFinalidade["Locação"] ?? 0) > 0 ||
-        (ts.porFinalidade["Venda e Aluguel"] ?? 0) > 0 ||
         (ts.porFinalidade["Venda e Locação"] ?? 0) > 0
       )
     } else {
       filtered = filtered.filter((ts) =>
         (ts.porFinalidade["Venda"] ?? 0) > 0 ||
-        (ts.porFinalidade["Venda e Aluguel"] ?? 0) > 0 ||
         (ts.porFinalidade["Venda e Locação"] ?? 0) > 0
       )
     }

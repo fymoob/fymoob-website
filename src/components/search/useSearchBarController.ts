@@ -224,13 +224,10 @@ export function useSearchBarController({
       const activeTipos = tipoSummaries.filter((ts) => {
         if (ts.total === 0) return false
         if (isAlugar) {
-          return (ts.porFinalidade["Aluguel"] ?? 0) > 0 ||
-                 (ts.porFinalidade["Locação"] ?? 0) > 0 ||
-                 (ts.porFinalidade["Venda e Aluguel"] ?? 0) > 0 ||
+          return (ts.porFinalidade["Locação"] ?? 0) > 0 ||
                  (ts.porFinalidade["Venda e Locação"] ?? 0) > 0
         }
         return (ts.porFinalidade["Venda"] ?? 0) > 0 ||
-               (ts.porFinalidade["Venda e Aluguel"] ?? 0) > 0 ||
                (ts.porFinalidade["Venda e Locação"] ?? 0) > 0
       })
       validTypeSlugs = new Set(activeTipos.map((ts) => ts.slug))
@@ -272,13 +269,10 @@ export function useSearchBarController({
   const getBairroCount = useCallback((bs: BairroSummary) => {
     if (pendingFilters.finalidades.length === 0) return bs.total
     if (isAlugar) {
-      return (bs.porFinalidade["Aluguel"] ?? 0) +
-             (bs.porFinalidade["Locação"] ?? 0) +
-             (bs.porFinalidade["Venda e Aluguel"] ?? 0) +
+      return (bs.porFinalidade["Locação"] ?? 0) +
              (bs.porFinalidade["Venda e Locação"] ?? 0)
     }
     return (bs.porFinalidade["Venda"] ?? 0) +
-           (bs.porFinalidade["Venda e Aluguel"] ?? 0) +
            (bs.porFinalidade["Venda e Locação"] ?? 0)
   }, [pendingFilters.finalidades, isAlugar])
 

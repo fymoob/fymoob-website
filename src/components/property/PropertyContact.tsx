@@ -26,7 +26,7 @@ export function PropertyContact({
   const formRef = React.useRef<HTMLFormElement>(null)
 
   const price = precoVenda ?? precoAluguel
-  const priceLabel = finalidade === "Locação" || finalidade === "Aluguel" ? "VALOR ALUGUEL" : "VALOR VENDA"
+  const priceLabel = finalidade === "Locação" || finalidade === "Venda e Locação" ? "VALOR ALUGUEL" : "VALOR VENDA"
   const whatsMessage = `Olá! Tenho interesse no imóvel ${propertyTitle} (Cód: ${propertyCode}). Gostaria de mais informações.`
   const whatsUrl = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent(whatsMessage)}`
 
@@ -48,7 +48,7 @@ export function PropertyContact({
           fone: formData.get("fone"),
           mensagem: formData.get("mensagem"),
           codigoImovel: propertyCode,
-          interesse: finalidade === "Locação" || finalidade === "Aluguel" ? "Aluguel" : "Venda",
+          interesse: finalidade === "Locação" || finalidade === "Venda e Locação" ? "Aluguel" : "Venda",
         }),
       })
 

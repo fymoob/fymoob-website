@@ -216,8 +216,8 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
   // Map Status to finalidade
   let finalidade: Property["finalidade"] = "Venda"
   const status = raw.Status || ""
-  if (status === "Aluguel") finalidade = "Aluguel"
-  else if (status === "Venda e Aluguel") finalidade = "Venda e Aluguel"
+  if (status === "Aluguel") finalidade = "Locação"
+  else if (status === "Venda e Aluguel") finalidade = "Venda e Locação"
   else if (status === "Venda") finalidade = "Venda"
 
   const titulo = raw.TituloSite

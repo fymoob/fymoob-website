@@ -17,7 +17,7 @@ export type PropertyType =
   | "Terreno"
   | "Terreno Comercial";
 
-export type PropertyFinalidade = "Venda" | "Aluguel" | "Venda e Aluguel" | "Locação" | "Venda e Locação";
+export type PropertyFinalidade = "Venda" | "Locação" | "Venda e Locação";
 
 export type PropertyStatus = "Disponível" | "Vendido" | "Alugado" | "Reservado";
 
