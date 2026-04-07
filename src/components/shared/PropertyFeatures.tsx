@@ -42,7 +42,7 @@ export function PropertyFeatures({
           const Icon = f.icon
           return (
             <span key={f.label} className="inline-flex flex-col items-center gap-1.5">
-              <Icon size={18} className="text-[#C5A059]" strokeWidth={1.5} />
+              <Icon size={18} className="text-slate-500" strokeWidth={1.5} />
               <span className="text-lg font-medium text-slate-800">{f.value}</span>
               <span className="text-[10px] uppercase tracking-wider text-slate-500">{f.unit}</span>
             </span>

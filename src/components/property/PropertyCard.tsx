@@ -35,7 +35,7 @@ function getBadge(property: Property, topViewed?: Set<string>): { text: string; 
     if (days <= 7) return { text: "NOVO", color: "bg-emerald-500" }
   }
 
-  if (property.lancamento) return { text: "LANÇAMENTO", color: "bg-[#8B6914]/90 backdrop-blur-sm" }
+  if (property.lancamento) return { text: "LANÇAMENTO", color: "bg-slate-900" }
 
   if (topViewed?.has(property.codigo)) return { text: "MAIS VISTO", color: "bg-neutral-900/80 backdrop-blur-sm" }
 
