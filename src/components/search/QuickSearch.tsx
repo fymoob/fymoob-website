@@ -376,12 +376,13 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
   const handleSearch = useCallback(() => {
     const params = new URLSearchParams()
     if (finalidade === "lancamentos") {
-      // Lançamentos: only location and price filters
       if (locationSel) {
         const isBairro = bairroSummaries.some((bs) => bs.bairro === locationSel)
         if (isBairro) params.set("bairro", slugify(locationSel))
         else params.set("cidade", slugify(locationSel))
       }
+      if (tiposSel.length > 0) params.set("tipo", tiposSel.map(slugify).join(","))
+      if (quartos) params.set("quartos", quartos)
       if (precoMin > 0) params.set("precoMin", precoMin.toString())
       if (precoMax > 0) params.set("precoMax", precoMax.toString())
       setOpen(false)
@@ -468,8 +469,8 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
             </button>
           </div>
 
-          {/* Tipo — tap to open filtered list (hidden for Lançamentos) */}
-          {finalidade !== "lancamentos" && <div>
+          {/* Tipo — tap to open filtered list */}
+          <div>
             <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-neutral-900">
               <Home className="size-4 text-brand-primary" />
               Tipo de imóvel
@@ -483,10 +484,10 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
             {filteredTipos.length === 0 && (
               <p className="mt-1.5 text-xs text-neutral-400">Nenhum tipo disponível para a seleção atual</p>
             )}
-          </div>}
+          </div>
 
-          {/* Quartos (hidden for Lançamentos) */}
-          {finalidade !== "lancamentos" && <div>
+          {/* Quartos */}
+          <div>
             <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-neutral-900">
               <BedDouble className="size-4 text-brand-primary" />
               Quartos
@@ -507,7 +508,7 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
                 </button>
               ))}
             </div>
-          </div>}
+          </div>
 
           {/* Preço */}
           <div>

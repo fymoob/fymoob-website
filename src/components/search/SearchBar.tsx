@@ -201,11 +201,13 @@ export function SearchBar({
     const params = new URLSearchParams()
     for (const b of pendingFilters.bairros) if (b) params.set("bairro", b)
     for (const c of pendingFilters.cidades) if (c) params.set("cidade", c)
+    if (pendingFilters.tipos.length > 0) params.set("tipo", pendingFilters.tipos.join(","))
+    if (pendingFilters.quartos) params.set("quartos", pendingFilters.quartos)
     if (minPrice > priceBounds.min) params.set("precoMin", String(minPrice))
     if (maxPrice < priceBounds.max) params.set("precoMax", String(maxPrice))
     const query = params.toString()
     heroRouter.push(query ? `/lancamentos?${query}` : "/lancamentos")
-  }, [pendingFilters.bairros, pendingFilters.cidades, minPrice, maxPrice, priceBounds, heroRouter])
+  }, [pendingFilters.bairros, pendingFilters.cidades, pendingFilters.quartos, minPrice, maxPrice, priceBounds, heroRouter])
 
   const applyFilters = isLancamentos ? applyLancamentosSearch : applyFiltersBase
 
@@ -526,9 +528,7 @@ export function SearchBar({
               <div className={cn(
                 "flex flex-col md:items-center md:gap-0",
                 isHome
-                  ? isLancamentos
-                    ? "md:grid md:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)_auto]"
-                    : "md:grid md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,0.8fr)_minmax(0,1fr)_auto]"
+                  ? "md:grid md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,0.8fr)_minmax(0,1fr)_auto]"
                   : "md:grid md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,0.7fr)_minmax(0,0.9fr)_minmax(0,0.9fr)_auto]"
               )}>
 
@@ -581,8 +581,8 @@ export function SearchBar({
                   </Popover>
                 </div>
 
-                {/* 2. Tipo — hidden for Lançamentos */}
-                {!isLancamentos && <div className="border-b border-neutral-200 md:border-b-0">
+                {/* 2. Tipo */}
+                <div className="border-b border-neutral-200 md:border-b-0">
                   <Popover>
                     <PopoverTrigger
                       render={
@@ -609,10 +609,10 @@ export function SearchBar({
                       />
                     </PopoverContent>
                   </Popover>
-                </div>}
+                </div>
 
-                {/* 3. Quartos — hidden for Lançamentos */}
-                {!isLancamentos && <div className="border-b border-neutral-200 md:border-b-0">
+                {/* 3. Quartos */}
+                <div className="border-b border-neutral-200 md:border-b-0">
                   <Popover>
                     <PopoverTrigger
                       render={
@@ -638,7 +638,7 @@ export function SearchBar({
                       />
                     </PopoverContent>
                   </Popover>
-                </div>}
+                </div>
 
                 {/* 4. Preço */}
                 <div className="md:border-b-0">
