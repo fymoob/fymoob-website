@@ -450,8 +450,9 @@ function applyFilters(indexed: IndexedProperty[], filters: PropertyFilters): Pro
     result.push(p)
   }
 
-  if (filters.orderBy) {
-    switch (filters.orderBy) {
+  const effectiveOrder = filters.orderBy ?? "recente"
+  if (effectiveOrder) {
+    switch (effectiveOrder) {
       case "preco-asc":
         result.sort((a, b) => (a.precoVenda ?? a.precoAluguel ?? 0) - (b.precoVenda ?? b.precoAluguel ?? 0))
         break

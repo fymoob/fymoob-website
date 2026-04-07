@@ -72,7 +72,7 @@ export function HomeCarousel({
               key={property.slug}
               className="basis-[85%] pl-3 sm:basis-[48%]"
             >
-              <PropertyCard property={property} />
+              <PropertyCard property={property} compactFeatures />
             </CarouselItem>
           ))}
         </CarouselContent>

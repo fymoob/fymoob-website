@@ -375,7 +375,7 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
 
   const handleSearch = useCallback(() => {
     const params = new URLSearchParams()
-    if (finalidade === "alugar") params.set("finalidade", "aluguel")
+    if (finalidade === "alugar") params.set("finalidade", "locacao")
     if (locationSel) {
       // Determine if it's a bairro or cidade
       const isBairro = bairroSummaries.some((bs) => bs.bairro === locationSel)
