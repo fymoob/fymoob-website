@@ -32,12 +32,12 @@ export function PropertyHeroWithGallery({
         onOpenGallery={() => setGalleryOpen(true)}
       />
 
-      {/* Gallery overlays — reuse existing component in overlay-only mode */}
+      {/* Gallery: opens in fullscreen lightbox, with grid accessible via button */}
       {galleryOpen && (
         <PropertyGallery
           fotos={fotos}
           alt={alt}
-          initialMode="grid"
+          initialMode="fullscreen"
           onClose={() => setGalleryOpen(false)}
         />
       )}

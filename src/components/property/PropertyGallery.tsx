@@ -266,14 +266,14 @@ export function PropertyGallery({ fotos, alt, initialMode, onClose: onCloseExter
             </button>
           </div>
 
-          {/* Masonry grid */}
-          <div className="mx-auto max-w-4xl columns-2 gap-3 p-4 sm:columns-3 sm:gap-4 sm:p-6">
+          {/* Immersive grid — full-width, large images */}
+          <div className="mx-auto max-w-7xl columns-1 gap-4 p-4 sm:columns-2 lg:columns-3 sm:gap-5 sm:p-8">
             {images.map((foto, index) => (
               <button
                 key={index}
                 type="button"
                 onClick={() => openFullscreen(index)}
-                className="mb-3 block w-full overflow-hidden rounded-xl transition-transform duration-200 hover:scale-[1.02] hover:shadow-lg sm:mb-4"
+                className="mb-4 block w-full overflow-hidden rounded-2xl transition-transform duration-200 hover:scale-[1.01] hover:shadow-xl sm:mb-5"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
