@@ -3,6 +3,7 @@
 import {
   forwardRef,
   useCallback,
+  useEffect,
   useState,
   type ComponentPropsWithoutRef,
   type ComponentType,
@@ -187,6 +188,13 @@ export function SearchBar({
     bairroSummaries,
     tipoSummaries,
   })
+  // Ensure "Comprar" default on home sets finalidade=venda
+  useEffect(() => {
+    if (isHome && pendingFilters.finalidades.length === 0) {
+      setPendingFilters((c) => ({ ...c, finalidades: ["venda"] }))
+    }
+  }, [isHome]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleHeroTab = useCallback((tab: "comprar" | "alugar" | "lancamentos") => {
     setHeroTab(tab)
     if (tab !== "lancamentos") {
