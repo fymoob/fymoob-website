@@ -44,8 +44,7 @@ export function Footer() {
                 className="h-9 w-auto brightness-0 invert"
               />
               <p className="max-w-xs text-sm leading-relaxed text-neutral-400">
-                Imobiliaria em Curitiba especializada em compra, venda e locacao.
-                Atendimento personalizado e as melhores oportunidades do mercado.
+                Uma imobiliária pensada para você — com atendimento próximo, negociações justas e soluções sob medida.
               </p>
               <div className="space-y-2.5 text-sm text-neutral-400">
                 <p className="font-medium text-neutral-300">CRECI: J 9420</p>

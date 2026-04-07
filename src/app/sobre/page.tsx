@@ -25,7 +25,7 @@ import {
 export const metadata: Metadata = {
   title: "Sobre a FYMOOB | Imobiliária em Curitiba",
   description:
-    "Conheça a FYMOOB Imobiliária — especialistas em compra, venda e locação de imóveis em Curitiba. CRECI J 9420. Atendimento personalizado e transparente.",
+    "Conheça a Fymoob — imobiliária em Curitiba com atendimento próximo, negociações justas e soluções sob medida. CRECI J 9420. Mais de 15 anos de experiência no mercado imobiliário.",
   alternates: { canonical: "/sobre" },
 }
 
@@ -162,8 +162,8 @@ export default async function SobrePage() {
             Quem Nós Somos
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/80">
-            Na FYMOOB, transformamos a busca pelo lar ideal em uma experiência única e personalizada. Mais do que imóveis, entregamos{" "}
-            <span className="font-semibold text-white">lares que refletem seus sonhos e estilo de vida.</span>
+            A Fymoob é uma imobiliária que nasceu para fazer diferente. Acreditamos em negociações justas, atendimento próximo e{" "}
+            <span className="font-semibold text-white">soluções pensadas para cada cliente.</span>
           </p>
 
           {/* Stats inline */}
@@ -211,13 +211,16 @@ export default async function SobrePage() {
             <h2 className="font-display text-3xl font-bold text-neutral-900">Nossa História</h2>
             <div className="mt-5 space-y-4 text-sm leading-relaxed text-neutral-600">
               <p>
-                A FYMOOB nasceu da vontade de transformar a experiência de comprar, vender e alugar imóveis em Curitiba. Nossos fundadores identificaram que o mercado imobiliário carecia de uma abordagem mais moderna, transparente e focada no cliente.
+                A Fymoob nasceu no primeiro semestre de 2024, a partir da decisão dos sócios Bruno e Wagner de seguirem um novo caminho. Depois de experiências anteriores, surgiu a vontade de criar uma empresa com um modelo mais justo, equilibrado e alinhado com o que eles realmente acreditam — tanto nas relações internas quanto no atendimento aos clientes.
               </p>
               <p>
-                Com sede no bairro Portão, atuamos em mais de 65 bairros da cidade, atendendo desde quem busca seu primeiro apartamento até investidores que procuram oportunidades de alto retorno.
+                O nome Fymoob carrega essa ideia. &ldquo;FY&rdquo; vem de uma expressão popular nas redes sociais que significa &ldquo;for you&rdquo; (para você), enquanto &ldquo;moob&rdquo; é uma forma estilizada de imobiliária. Juntos, representam uma proposta simples: uma imobiliária pensada para você.
+              </p>
+              <p>
+                Essa essência está presente em tudo que fazemos. Buscamos um atendimento próximo, personalizado e sem fórmulas prontas. Cada cliente é único, e cada negociação também. Nosso objetivo é sempre encontrar o melhor equilíbrio para todas as partes envolvidas.
               </p>
               <p className="border-l-2 border-brand-primary pl-4 italic text-neutral-800">
-                &ldquo;Na FYMOOB, cada imóvel é mais do que uma propriedade — é o início de uma nova história.&rdquo;
+                &ldquo;Mesmo sendo uma empresa jovem, a Fymoob conta com uma equipe que soma mais de 15 anos de experiência no mercado imobiliário — unindo visão atual com conhecimento prático para entregar resultados de verdade.&rdquo;
               </p>
             </div>
           </div>
