@@ -62,7 +62,7 @@ export default async function TerrenosCuritibaPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
 
-      <div className="mx-auto max-w-[1600px] px-4 py-8 md:px-8">
+      <div className="w-full px-4 py-8 md:px-12 lg:px-20 2xl:px-32">
         <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Terrenos em Curitiba", url: "/terrenos-curitiba" }]} />
 
         <h1 className="mt-2 font-display text-2xl font-bold text-neutral-900 sm:text-3xl">

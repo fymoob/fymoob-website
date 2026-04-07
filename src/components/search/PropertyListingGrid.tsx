@@ -48,9 +48,9 @@ export function PropertyListingGrid({ properties, totalLabel = "imóveis", showT
   return (
     <div>
       {showToolbar && (
-        <div className="mb-6 flex items-center justify-between">
-          <p className="text-sm text-neutral-500">
-            <span className="font-semibold text-neutral-900">{properties.length}</span> {totalLabel} encontrados
+        <div className="mb-6 flex items-center justify-between border-b border-neutral-100 pb-4">
+          <p className="text-sm text-slate-500">
+            <span className="font-medium text-slate-700">{properties.length}</span> {totalLabel} encontrados
           </p>
           <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
         </div>
@@ -60,7 +60,7 @@ export function PropertyListingGrid({ properties, totalLabel = "imóveis", showT
         aria-live="polite"
         className={
           viewMode === "grid"
-            ? "grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-8"
+            ? "grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12"
             : "flex flex-col gap-5"
         }
       >

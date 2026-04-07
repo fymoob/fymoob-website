@@ -422,19 +422,18 @@ export function PropertyCard({
       )}>
         {/* Line 1: Type · Location */}
         <p className={cn(
-          "text-neutral-500",
-          (isHorizontal || isResponsive) ? "text-xs" : "text-[11px] uppercase tracking-wider"
+          (isHorizontal || isResponsive) ? "text-xs text-neutral-500" : "text-[11px] uppercase tracking-wider text-slate-400"
         )}>
           <span className="font-medium">{property.tipo}</span>
-          <span className={cn("mx-1.5", (isHorizontal || isResponsive) ? "text-neutral-300" : "text-neutral-300")}>—</span>
+          <span className="mx-1.5">—</span>
           <span>{property.bairro}, {property.cidade}</span>
         </p>
 
         {/* Line 2: Title (1 line) */}
         <Link href={propertyHref} className="block">
           <h2 className={cn(
-            "truncate tracking-tight text-neutral-900 transition-colors hover:text-brand-primary",
-            isHorizontal ? "text-sm sm:text-lg font-bold" : isResponsive ? "text-sm sm:text-base font-bold" : "text-base font-medium"
+            "truncate tracking-tight transition-colors hover:text-brand-primary",
+            isHorizontal ? "text-sm sm:text-lg font-bold text-neutral-900" : isResponsive ? "text-sm sm:text-base font-bold text-neutral-900" : "text-lg font-medium text-slate-800"
           )}>
             {property.titulo}
           </h2>
@@ -469,8 +468,8 @@ export function PropertyCard({
         {/* Price — below features for vertical (editorial) */}
         {!(isHorizontal || isResponsive) && (
           <p className={cn(
-            "text-xl font-bold tracking-tight pt-1",
-            price ? "text-brand-primary" : "text-neutral-400"
+            "text-2xl font-semibold tracking-tight pt-3",
+            price ? "text-slate-900" : "text-neutral-400"
           )}>
             {formatPrice(price)}
           </p>

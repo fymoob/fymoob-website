@@ -325,7 +325,7 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
         </div>
       </div>
 
-      <PropertyListingGrid properties={properties} />
+      <PropertyListingGrid properties={properties} showToolbar={false} />
 
       {totalPages > 1 && (
         <nav
@@ -392,7 +392,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
   const maxPrice = stats.precoMax ?? 5_000_000
 
   return (
-    <div className="mx-auto w-full max-w-[1600px] px-4 py-8 md:px-8">
+    <div className="w-full px-4 py-8 md:px-12 lg:px-20 2xl:px-32">
       <Breadcrumbs
         items={[
           { name: "Home", url: "/" },
