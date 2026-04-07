@@ -111,10 +111,10 @@ export function PropertyDescription({ descricao }: PropertyDescriptionProps) {
 
           if (block.type === "list" && block.items) {
             return (
-              <ul key={i} className="my-5 space-y-2.5 pl-1">
+              <ul key={i} className="my-5 space-y-2 pl-1">
                 {block.items.map((item, j) => (
                   <li key={j} className="flex items-start gap-3 text-base leading-relaxed text-slate-700 md:text-lg">
-                    <span className="mt-2.5 block size-1.5 shrink-0 rounded-full bg-brand-primary/60" />
+                    <span className="mt-2.5 block size-1.5 shrink-0 rounded-full bg-slate-300" />
                     {item}
                   </li>
                 ))}
@@ -127,7 +127,7 @@ export function PropertyDescription({ descricao }: PropertyDescriptionProps) {
             <p
               key={i}
               className={cn(
-                "text-base leading-[1.8] text-slate-700 md:text-lg md:leading-[1.8]",
+                "text-base leading-relaxed text-slate-700 md:text-lg md:leading-relaxed",
                 i > 0 && "mt-5"
               )}
             >
