@@ -53,7 +53,9 @@ const TYPE_BY_SLUG: Record<string, PropertyType> = {
 const FINALIDADE_BY_SLUG: Record<string, PropertyFinalidade> = {
   venda: "Venda",
   locacao: "Locação",
+  aluguel: "Locação",
   "venda-e-locacao": "Venda e Locação",
+  "venda-e-aluguel": "Venda e Locação",
 }
 
 const ORDER_BY_VALUES = new Set<PropertyFilters["orderBy"]>([
@@ -380,7 +382,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
   const maxPrice = stats.precoMax ?? 5_000_000
 
   return (
-    <div className="w-full px-4 py-8 md:px-12 lg:px-20 2xl:px-32">
+    <div className="w-full bg-slate-50 px-4 py-8 md:px-12 lg:px-20 2xl:px-32">
       <Breadcrumbs
         items={[
           { name: "Home", url: "/" },

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { LayoutGrid, List } from "lucide-react"
 import type { Property } from "@/types/property"
 import { PropertyCard } from "@/components/property/PropertyCard"
@@ -35,9 +35,11 @@ export function ViewToggle({ viewMode, setViewMode }: { viewMode: "grid" | "list
 }
 
 export function PropertyListingGrid({ properties, totalLabel = "imóveis", showToolbar = true }: PropertyListingGridProps) {
-  const [viewMode, setViewMode] = useState<"grid" | "list">(() =>
-    typeof window !== "undefined" && window.innerWidth < 768 ? "list" : "grid"
-  )
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+
+  useEffect(() => {
+    if (window.innerWidth < 768) setViewMode("list")
+  }, [])
 
   if (properties.length === 0) {
     return (

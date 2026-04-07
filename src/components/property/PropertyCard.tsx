@@ -471,7 +471,7 @@ export function PropertyCard({
             vagas={property.vagas}
             areaPrivativa={property.areaPrivativa}
             size="sm"
-            iconOnly={isResponsive}
+            compact={isResponsive}
           />
         )}
 
