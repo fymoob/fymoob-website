@@ -27,6 +27,13 @@ function isListHeader(line: string): boolean {
   return LIST_HEADERS_PATTERNS.some((p) => p.test(trimmed))
 }
 
+function isAllCaps(line: string): boolean {
+  // Detect lines written in ALL CAPS by the broker (e.g. "REQUISITOS PARA ALUGAR:")
+  const letters = line.replace(/[^a-zA-ZÀ-ÿ]/g, "")
+  if (letters.length < 4) return false
+  return letters === letters.toUpperCase()
+}
+
 function isListItem(line: string): boolean {
   const trimmed = line.trim()
   return /^[-–•·✓✅]\s/.test(trimmed)
@@ -58,7 +65,7 @@ function parseIntoBlocks(descricao: string): DescriptionBlock[] {
     if (isListItem(line)) {
       const cleaned = cleanListItem(line)
       if (cleaned) currentList.push(cleaned)
-    } else if (isListHeader(line)) {
+    } else if (isListHeader(line) || isAllCaps(line)) {
       flushList()
       blocks.push({ type: "header", content: line })
     } else {
@@ -102,7 +109,7 @@ export function PropertyDescription({ descricao }: PropertyDescriptionProps) {
             return (
               <h3
                 key={i}
-                className="mt-8 mb-4 text-base font-semibold text-slate-900 first:mt-0"
+                className="mt-8 mb-4 text-base font-bold text-slate-900 first:mt-0"
               >
                 {block.content}
               </h3>
