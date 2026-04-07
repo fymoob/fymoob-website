@@ -195,8 +195,8 @@ export default async function PropertyPage({ params }: PageProps) {
         <div className="mt-8 grid grid-cols-1 gap-8 pb-40 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)] md:pb-0">
           {/* Left column */}
           <div>
-            {/* Quick Glance — editorial attributes bar */}
-            <div className="rounded-xl bg-white p-5 shadow-sm">
+            {/* Card 1: Quick Glance + Ficha Técnica — all specs in one place */}
+            <div className="rounded-xl bg-white p-5 shadow-sm md:p-6">
               <PropertyFeatures
                 dormitorios={property.dormitorios}
                 banheiros={property.banheiros}
@@ -204,24 +204,22 @@ export default async function PropertyPage({ params }: PageProps) {
                 areaPrivativa={property.areaPrivativa}
                 editorial
               />
+              <div className="mt-6 border-t border-gray-100 pt-6">
+                <PropertyCharacteristics property={property} />
+              </div>
             </div>
 
-            {/* Description */}
+            {/* Card 2: Description */}
             <div className="mt-6 rounded-xl bg-white p-5 shadow-sm md:p-6">
               <PropertyDescription descricao={descricaoWithTitle} />
             </div>
 
-            {/* Ficha Técnica — key-value pairs, right after description */}
-            <div className="mt-6 rounded-xl bg-white p-5 shadow-sm md:p-6">
-              <PropertyCharacteristics property={property} />
-            </div>
-
-            {/* Amenities */}
+            {/* Card 3: Amenities */}
             <div className="mt-6 rounded-xl bg-white p-5 shadow-sm md:p-6">
               <PropertyAmenities descricao={descricaoWithTitle} />
             </div>
 
-            {/* Map */}
+            {/* Card 4: Map */}
             <div className="mt-6 rounded-xl bg-white p-5 shadow-sm md:p-6">
               <PropertyMap
                 latitude={property.latitude}
