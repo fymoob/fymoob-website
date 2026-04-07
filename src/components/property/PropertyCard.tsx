@@ -278,7 +278,7 @@ export function PropertyCard({
           ? "flex flex-row sm:flex-col rounded-2xl border border-neutral-200 bg-white hover:shadow-lg sm:hover:-translate-y-1.5 sm:hover:border-brand-primary/30 sm:hover:shadow-2xl"
           : isHorizontal
             ? "flex flex-col sm:flex-row rounded-2xl border border-neutral-200 bg-white hover:shadow-lg sm:hover:shadow-xl"
-            : "rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+            : "flex flex-col rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
       )}
     >
       {/* Photo section */}
@@ -421,7 +421,7 @@ export function PropertyCard({
           ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3 sm:flex-none sm:gap-0 sm:space-y-1.5 sm:p-4 md:p-5"
           : isHorizontal
             ? "flex min-w-0 flex-1 flex-col justify-center gap-1.5 p-4 sm:gap-2 sm:p-6"
-            : "flex h-full flex-col space-y-3 p-5"
+            : "flex flex-1 flex-col space-y-3 p-5"
       )}>
         {/* Line 1: Type · Location */}
         {(isHorizontal || isResponsive) ? (
