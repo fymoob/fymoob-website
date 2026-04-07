@@ -432,7 +432,7 @@ function applyFilters(indexed: IndexedProperty[], filters: PropertyFilters): Pro
   for (const item of indexed) {
     const p = item.property
     if (tipoSet && !tipoSet.has(p.tipo)) continue
-    if (finalidadeSlugSet && !finalidadeSlugSet.has(item.finalidadeSlug)) continue
+    if (finalidadeSlugSet && !finalidadeSlugSet.has(item.finalidadeSlug) && !(item.finalidadeSlug === "venda-e-locacao")) continue
     if (bairroSlugSet && !bairroSlugSet.has(item.bairroSlug)) continue
     if (cidadeSlugSet && !cidadeSlugSet.has(item.cidadeSlug)) continue
     if (filters.empreendimento && p.empreendimento !== filters.empreendimento) continue

@@ -317,7 +317,7 @@ export function SearchBar({
                               onClick={() =>
                                 setPendingFilters((c) => ({
                                   ...c,
-                                  finalidades: f === "alugar" ? ["locacao"] : [],
+                                  finalidades: f === "alugar" ? ["locacao"] : ["venda"],
                                 }))
                               }
                               className={cn(
@@ -478,7 +478,7 @@ export function SearchBar({
                     onClick={() =>
                       setPendingFilters((c) => ({
                         ...c,
-                        finalidades: f === "alugar" ? ["locacao"] : [],
+                        finalidades: f === "alugar" ? ["locacao"] : ["venda"],
                       }))
                     }
                     className={cn(

@@ -198,7 +198,7 @@ export function AdvancedFiltersModal({
                       onClick={() =>
                         setPendingFilters((c) => ({
                           ...c,
-                          finalidades: f === "alugar" ? ["locacao"] : [],
+                          finalidades: f === "alugar" ? ["locacao"] : ["venda"],
                         }))
                       }
                       className={cn(
