@@ -300,7 +300,7 @@ export function SearchBar({
     <>
     <aside
       className={cn(
-        sticky && "sticky top-14 z-40 bg-white/80 py-3 backdrop-blur-md md:top-16",
+        sticky && "sticky top-14 z-40 bg-slate-50/80 py-3 backdrop-blur-md md:top-16",
         className
       )}
     >
