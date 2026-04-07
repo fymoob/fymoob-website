@@ -15,7 +15,7 @@ const ABOVE_THE_FOLD_PRIORITY_CARDS = 3
 
 export function ViewToggle({ viewMode, setViewMode }: { viewMode: "grid" | "list"; setViewMode: (v: "grid" | "list") => void }) {
   return (
-    <div className="hidden items-center gap-1 rounded-lg border border-neutral-200 p-1 md:flex">
+    <div className="flex items-center gap-1 rounded-lg border border-neutral-200 p-1">
       <button
         onClick={() => setViewMode("grid")}
         className={`rounded-md p-1.5 transition-colors ${viewMode === "grid" ? "bg-brand-primary text-white" : "text-neutral-400 hover:text-neutral-600"}`}
@@ -48,7 +48,7 @@ export function PropertyListingGrid({ properties, totalLabel = "imóveis", showT
   return (
     <div>
       {showToolbar && (
-        <div className="mb-6 flex items-center justify-between border-b border-gray-100 pb-4">
+        <div className="mb-6 flex flex-col gap-3 border-b border-gray-100 pb-4 md:flex-row md:items-center md:justify-between">
           <p className="text-lg font-medium text-slate-800">
             {properties.length} {totalLabel} encontrados
           </p>

@@ -505,7 +505,7 @@ export function SearchBar({
                 : "pointer-events-none absolute inset-x-0 top-0 mx-auto max-w-[60%] opacity-0"
             )}
           >
-            <div className="w-full max-w-full rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm md:rounded-full md:p-0 md:shadow-lg">
+            <div className="w-full max-w-full rounded-lg border border-slate-200 bg-white p-4 shadow-sm md:rounded-lg md:p-0 md:shadow-sm">
               <div className={cn(
                 "flex flex-col md:items-center md:gap-0",
                 isHome
