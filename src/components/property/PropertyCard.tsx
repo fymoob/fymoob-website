@@ -439,24 +439,48 @@ export function PropertyCard({
           </h2>
         </Link>
 
-        {/* Price */}
-        <p className={cn(
-          "font-semibold tracking-tight",
-          isHorizontal ? "text-lg sm:text-xl" : isResponsive ? "text-base sm:text-lg" : "text-xl",
-          price ? "text-slate-900" : "text-neutral-400"
-        )}>
-          {formatPrice(price)}
-        </p>
+        {/* Price — above features for horizontal/responsive */}
+        {(isHorizontal || isResponsive) && (
+          <p className={cn(
+            "font-semibold tracking-tight",
+            isHorizontal ? "text-lg sm:text-xl" : "text-base sm:text-lg",
+            price ? "text-slate-900" : "text-neutral-400"
+          )}>
+            {formatPrice(price)}
+          </p>
+        )}
 
-        {/* Features — clean inline for all variants */}
-        <PropertyFeatures
-          dormitorios={property.dormitorios}
-          banheiros={property.banheiros}
-          vagas={property.vagas}
-          areaPrivativa={property.areaPrivativa}
-          size="sm"
-          iconOnly={isResponsive}
-        />
+        {/* Features — editorial (stacked) for grid, inline for list/responsive */}
+        {!(isHorizontal || isResponsive) ? (
+          <div className="border-y border-gray-100">
+            <PropertyFeatures
+              dormitorios={property.dormitorios}
+              banheiros={property.banheiros}
+              vagas={property.vagas}
+              areaPrivativa={property.areaPrivativa}
+              editorial
+            />
+          </div>
+        ) : (
+          <PropertyFeatures
+            dormitorios={property.dormitorios}
+            banheiros={property.banheiros}
+            vagas={property.vagas}
+            areaPrivativa={property.areaPrivativa}
+            size="sm"
+            iconOnly={isResponsive}
+          />
+        )}
+
+        {/* Price — anchored at bottom for grid (editorial) */}
+        {!(isHorizontal || isResponsive) && (
+          <p className={cn(
+            "text-2xl font-semibold tracking-tight pt-3",
+            price ? "text-slate-900" : "text-neutral-400"
+          )}>
+            {formatPrice(price)}
+          </p>
+        )}
 
       </div>
     </article>
