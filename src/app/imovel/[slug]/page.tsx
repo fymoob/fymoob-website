@@ -211,14 +211,14 @@ export default async function PropertyPage({ params }: PageProps) {
               <PropertyDescription descricao={descricaoWithTitle} />
             </div>
 
+            {/* Ficha Técnica — key-value pairs, right after description */}
+            <div className="mt-6 rounded-xl bg-white p-5 shadow-sm md:p-6">
+              <PropertyCharacteristics property={property} />
+            </div>
+
             {/* Amenities */}
             <div className="mt-6 rounded-xl bg-white p-5 shadow-sm md:p-6">
               <PropertyAmenities descricao={descricaoWithTitle} />
-            </div>
-
-            {/* Characteristics */}
-            <div className="mt-6 rounded-xl bg-white p-5 shadow-sm md:p-6">
-              <PropertyCharacteristics property={property} />
             </div>
 
             {/* Map */}

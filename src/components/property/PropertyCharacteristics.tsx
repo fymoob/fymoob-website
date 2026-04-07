@@ -1,87 +1,67 @@
-import {
-  Bath,
-  BedDouble,
-  Building2,
-  Car,
-  Home,
-  LucideIcon,
-  MapPin,
-  Square,
-} from "lucide-react"
-
 import type { Property } from "@/types/property"
-import { formatArea } from "@/lib/utils"
+import { formatArea, formatPrice } from "@/lib/utils"
 
 interface PropertyCharacteristicsProps {
   property: Property
 }
 
-interface CharacteristicItem {
-  label: string
-  value: string | null
-  icon: LucideIcon
-}
-
 export function PropertyCharacteristics({ property }: PropertyCharacteristicsProps) {
-  const characteristics: CharacteristicItem[] = [
-    { label: "Tipo", value: property.tipo, icon: Home },
-    { label: "Finalidade", value: property.finalidade, icon: Building2 },
-    {
-      label: "Dormitórios",
-      value: property.dormitorios ? String(property.dormitorios) : null,
-      icon: BedDouble,
-    },
-    {
-      label: "Banheiros",
-      value: property.banheiros ? String(property.banheiros) : null,
-      icon: Bath,
-    },
-    {
-      label: "Vagas",
-      value: property.vagas ? String(property.vagas) : null,
-      icon: Car,
-    },
-    {
-      label: "Área privativa",
-      value: property.areaPrivativa ? formatArea(property.areaPrivativa) : null,
-      icon: Square,
-    },
-    {
-      label: "Área total",
-      value: property.areaTotal ? formatArea(property.areaTotal) : null,
-      icon: Square,
-    },
-    {
-      label: "Localização",
-      value: `${property.bairro}, ${property.cidade}`,
-      icon: MapPin,
-    },
-  ].filter((item) => item.value !== null)
+  // Only show data NOT already in Quick Glance (quartos, banheiros, vagas, área privativa)
+  const items: { label: string; value: string }[] = []
+
+  items.push({ label: "Tipo de imóvel", value: property.tipo })
+  items.push({ label: "Finalidade", value: property.finalidade })
+
+  if (property.areaTotal) {
+    items.push({ label: "Área total", value: `${formatArea(property.areaTotal)} m²` })
+  }
+  if (property.areaPrivativa) {
+    items.push({ label: "Área privativa", value: `${formatArea(property.areaPrivativa)} m²` })
+  }
+  if (property.suites) {
+    items.push({ label: "Suítes", value: String(property.suites) })
+  }
+  if (property.valorCondominio && property.valorCondominio > 0) {
+    items.push({ label: "Condomínio", value: formatPrice(property.valorCondominio) })
+  }
+  if (property.valorIptu && property.valorIptu > 0) {
+    items.push({ label: "IPTU", value: formatPrice(property.valorIptu) })
+  }
+  if (property.anoConstrucao) {
+    items.push({ label: "Ano de construção", value: property.anoConstrucao })
+  }
+  if (property.face) {
+    items.push({ label: "Face", value: property.face })
+  }
+  items.push({ label: "Localização", value: `${property.bairro}, ${property.cidade}` })
+
+  if (property.aceitaFinanciamento) {
+    items.push({ label: "Aceita financiamento", value: "Sim" })
+  }
+  if (property.aceitaPermuta) {
+    items.push({ label: "Aceita permuta", value: "Sim" })
+  }
+  if (property.codigo) {
+    items.push({ label: "Código", value: property.codigo })
+  }
+
+  if (items.length === 0) return null
 
   return (
-    <section className="border-t border-neutral-100 pt-10">
+    <section>
       <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950">
-        Características
+        Ficha técnica
       </h2>
 
-      <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-        {characteristics.map((item) => (
-          <article
+      <div className="mt-4">
+        {items.map((item, i) => (
+          <div
             key={item.label}
-            className="rounded-xl border border-neutral-200 bg-white p-4"
+            className="flex items-center justify-between border-b border-gray-100 py-3"
           >
-            <div className="flex items-start gap-3">
-              <item.icon className="mt-0.5 size-4 shrink-0 text-neutral-500" />
-              <div>
-                <p className="text-xs font-medium uppercase tracking-wider text-neutral-500">
-                  {item.label}
-                </p>
-                <p className="mt-1 text-sm font-semibold text-[#0B1120]">
-                  {item.value}
-                </p>
-              </div>
-            </div>
-          </article>
+            <span className="text-sm text-slate-500">{item.label}</span>
+            <span className="text-sm font-medium text-slate-800">{item.value}</span>
+          </div>
         ))}
       </div>
     </section>
