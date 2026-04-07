@@ -6,17 +6,15 @@ interface PropertyCharacteristicsProps {
 }
 
 export function PropertyCharacteristics({ property }: PropertyCharacteristicsProps) {
-  // Exclude items already shown in Quick Glance (quartos, banheiros, vagas, área privativa)
+  // Only complementary data — tipo, finalidade, área privativa, quartos, banheiros, vagas
+  // are already visible in badges and Quick Glance icons
   const items: { label: string; value: string }[] = []
-
-  items.push({ label: "Tipo", value: property.tipo })
-  items.push({ label: "Finalidade", value: property.finalidade })
 
   if (property.suites) {
     items.push({ label: "Suítes", value: String(property.suites) })
   }
-  if (property.areaTotal) {
-    items.push({ label: "Área total", value: `${formatArea(property.areaTotal)} m²` })
+  if (property.areaTotal && property.areaTotal !== property.areaPrivativa) {
+    items.push({ label: "Área total", value: formatArea(property.areaTotal) })
   }
   if (property.valorCondominio && property.valorCondominio > 0) {
     items.push({ label: "Condomínio", value: `${formatPrice(property.valorCondominio)}/mês` })
@@ -40,7 +38,7 @@ export function PropertyCharacteristics({ property }: PropertyCharacteristicsPro
   if (items.length === 0) return null
 
   return (
-    <div className="grid grid-cols-2 gap-x-8 gap-y-3 md:grid-cols-3">
+    <div className="grid grid-cols-2 gap-x-8 gap-y-2.5 md:grid-cols-3">
       {items.map((item) => (
         <p key={item.label} className="text-sm">
           <span className="text-slate-400">{item.label}: </span>

@@ -193,34 +193,34 @@ export default async function PropertyPage({ params }: PageProps) {
 
         {/* ══════ Two Column Layout ══════ */}
         <div className="mt-8 grid grid-cols-1 gap-8 pb-40 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)] md:pb-0">
-          {/* Left column */}
+          {/* Left column — seamless flow, no card wrappers */}
           <div>
-            {/* Card 1: Quick Glance + Ficha Técnica — all specs in one place */}
-            <div className="rounded-xl bg-white p-5 shadow-sm md:p-6">
-              <PropertyFeatures
-                dormitorios={property.dormitorios}
-                banheiros={property.banheiros}
-                vagas={property.vagas}
-                areaPrivativa={property.areaPrivativa}
-                editorial
-              />
-              <div className="mt-6 border-t border-gray-100 pt-6">
-                <PropertyCharacteristics property={property} />
-              </div>
+            {/* Quick Glance — 4 main icons */}
+            <PropertyFeatures
+              dormitorios={property.dormitorios}
+              banheiros={property.banheiros}
+              vagas={property.vagas}
+              areaPrivativa={property.areaPrivativa}
+              editorial
+            />
+
+            {/* Ficha Técnica — complementary specs only */}
+            <div className="mt-4">
+              <PropertyCharacteristics property={property} />
             </div>
 
-            {/* Card 2: Description */}
-            <div className="mt-6 rounded-xl bg-white p-5 shadow-sm md:p-6">
+            {/* Description */}
+            <div className="mt-8 border-t border-slate-200 pt-8">
               <PropertyDescription descricao={descricaoWithTitle} />
             </div>
 
-            {/* Card 3: Amenities */}
-            <div className="mt-6 rounded-xl bg-white p-5 shadow-sm md:p-6">
+            {/* Amenities */}
+            <div className="mt-8 border-t border-slate-200 pt-8">
               <PropertyAmenities descricao={descricaoWithTitle} />
             </div>
 
-            {/* Card 4: Map */}
-            <div className="mt-6 rounded-xl bg-white p-5 shadow-sm md:p-6">
+            {/* Map */}
+            <div className="mt-8 border-t border-slate-200 pt-8">
               <PropertyMap
                 latitude={property.latitude}
                 longitude={property.longitude}
