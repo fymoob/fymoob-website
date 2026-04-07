@@ -40,7 +40,7 @@ export function PropertyCardFeatured({ property }: PropertyCardFeaturedProps) {
           {property.titulo}
         </h3>
 
-        <p className="text-xl font-extrabold tracking-tight text-brand-primary md:text-3xl">
+        <p className="text-xl font-extrabold tracking-tight text-slate-900 md:text-3xl">
           {formatPrice(price)}
         </p>
 

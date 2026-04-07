@@ -106,7 +106,7 @@ export function MobileContactBar({
       <div className="border-t border-neutral-100 px-4 py-3">
         <div className="mx-auto flex w-full max-w-lg items-center gap-2">
           <div className="min-w-0 flex-1">
-            <p className="truncate text-lg font-extrabold text-brand-primary">
+            <p className="truncate text-lg font-extrabold text-slate-900">
               {formatPrice(price)}
             </p>
           </div>

@@ -30,7 +30,7 @@ export function PriceDisplay({
       <p className="text-xs font-medium uppercase tracking-wider text-neutral-500">
         Valor {label}
       </p>
-      <p className={cn("font-bold text-brand-primary", sizeClasses[size])}>
+      <p className={cn("font-bold text-slate-900", sizeClasses[size])}>
         {formatPrice(price)}
       </p>
       {finalidade === "Venda e Locacao" && precoAluguel && (

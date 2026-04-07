@@ -88,7 +88,7 @@ export default async function EmpreendimentosPage() {
                       <span className="font-semibold">{emp.total}</span> {emp.total === 1 ? "unidade" : "unidades"}
                     </div>
                     {emp.precoMin && (
-                      <p className="text-sm font-semibold text-brand-primary">
+                      <p className="text-sm font-semibold text-slate-900">
                         A partir de {formatPrice(emp.precoMin)}
                       </p>
                     )}

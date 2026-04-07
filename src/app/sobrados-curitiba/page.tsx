@@ -62,7 +62,7 @@ export default async function SobradosCuritibaPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
 
-      <div className="w-full px-4 py-8 md:px-12 lg:px-20 2xl:px-32">
+      <div className="w-full bg-slate-50 px-4 py-8 md:px-12 lg:px-20 2xl:px-32">
         <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Sobrados em Curitiba", url: "/sobrados-curitiba" }]} />
 
         <h1 className="mt-2 font-display text-2xl font-bold text-neutral-900 sm:text-3xl">

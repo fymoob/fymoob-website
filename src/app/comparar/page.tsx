@@ -139,7 +139,7 @@ export default function CompararPage() {
                   />
                 </div>
                 <div className="p-3">
-                  <p className="text-sm font-bold text-brand-primary">
+                  <p className="text-sm font-bold text-slate-900">
                     {formatPrice(property.precoVenda ?? property.precoAluguel)}
                   </p>
                   <p className="mt-1 line-clamp-2 text-xs text-neutral-600">

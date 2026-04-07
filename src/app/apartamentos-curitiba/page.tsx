@@ -62,7 +62,7 @@ export default async function ApartamentosCuritibaPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
 
-      <div className="w-full px-4 py-8 md:px-12 lg:px-20 2xl:px-32">
+      <div className="w-full bg-slate-50 px-4 py-8 md:px-12 lg:px-20 2xl:px-32">
         <Breadcrumbs
           items={[
             { name: "Home", url: "/" },
