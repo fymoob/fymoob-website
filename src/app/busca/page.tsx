@@ -3,7 +3,7 @@ import Link from "next/link"
 import { Suspense } from "react"
 
 import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
-import { PropertyGrid } from "@/components/search/PropertyGrid"
+import { PropertyListingGrid } from "@/components/search/PropertyListingGrid"
 import { SkeletonsGrid } from "@/components/search/SkeletonsGrid"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { SaveSearchButton } from "@/components/search/SaveSearchButton"
@@ -325,7 +325,7 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
         </div>
       </div>
 
-      <PropertyGrid properties={properties} />
+      <PropertyListingGrid properties={properties} />
 
       {totalPages > 1 && (
         <nav
@@ -392,7 +392,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
   const maxPrice = stats.precoMax ?? 5_000_000
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-8 md:px-8">
+    <div className="mx-auto w-full max-w-[1440px] px-4 py-8 md:px-8">
       <Breadcrumbs
         items={[
           { name: "Home", url: "/" },

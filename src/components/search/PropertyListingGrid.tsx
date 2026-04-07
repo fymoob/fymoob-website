@@ -8,11 +8,33 @@ import { PropertyCard } from "@/components/property/PropertyCard"
 interface PropertyListingGridProps {
   properties: Property[]
   totalLabel?: string
+  showToolbar?: boolean
 }
 
 const ABOVE_THE_FOLD_PRIORITY_CARDS = 3
 
-export function PropertyListingGrid({ properties, totalLabel = "imóveis" }: PropertyListingGridProps) {
+export function ViewToggle({ viewMode, setViewMode }: { viewMode: "grid" | "list"; setViewMode: (v: "grid" | "list") => void }) {
+  return (
+    <div className="flex items-center gap-1 rounded-lg border border-neutral-200 p-1">
+      <button
+        onClick={() => setViewMode("grid")}
+        className={`rounded-md p-1.5 transition-colors ${viewMode === "grid" ? "bg-brand-primary text-white" : "text-neutral-400 hover:text-neutral-600"}`}
+        aria-label="Visualização em grade"
+      >
+        <LayoutGrid className="size-4" />
+      </button>
+      <button
+        onClick={() => setViewMode("list")}
+        className={`rounded-md p-1.5 transition-colors ${viewMode === "list" ? "bg-brand-primary text-white" : "text-neutral-400 hover:text-neutral-600"}`}
+        aria-label="Visualização em lista"
+      >
+        <List className="size-4" />
+      </button>
+    </div>
+  )
+}
+
+export function PropertyListingGrid({ properties, totalLabel = "imóveis", showToolbar = true }: PropertyListingGridProps) {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
 
   if (properties.length === 0) {
@@ -25,30 +47,15 @@ export function PropertyListingGrid({ properties, totalLabel = "imóveis" }: Pro
 
   return (
     <div>
-      {/* Toolbar: count + view toggle */}
-      <div className="mb-6 flex items-center justify-between">
-        <p className="text-sm text-neutral-500">
-          <span className="font-semibold text-neutral-900">{properties.length}</span> {totalLabel} encontrados
-        </p>
-        <div className="flex items-center gap-1 rounded-lg border border-neutral-200 p-1">
-          <button
-            onClick={() => setViewMode("grid")}
-            className={`rounded-md p-1.5 transition-colors ${viewMode === "grid" ? "bg-brand-primary text-white" : "text-neutral-400 hover:text-neutral-600"}`}
-            aria-label="Visualização em grade"
-          >
-            <LayoutGrid className="size-4" />
-          </button>
-          <button
-            onClick={() => setViewMode("list")}
-            className={`rounded-md p-1.5 transition-colors ${viewMode === "list" ? "bg-brand-primary text-white" : "text-neutral-400 hover:text-neutral-600"}`}
-            aria-label="Visualização em lista"
-          >
-            <List className="size-4" />
-          </button>
+      {showToolbar && (
+        <div className="mb-6 flex items-center justify-between">
+          <p className="text-sm text-neutral-500">
+            <span className="font-semibold text-neutral-900">{properties.length}</span> {totalLabel} encontrados
+          </p>
+          <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
         </div>
-      </div>
+      )}
 
-      {/* Property cards */}
       <section
         aria-live="polite"
         className={
