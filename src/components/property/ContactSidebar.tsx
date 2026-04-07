@@ -39,7 +39,7 @@ export function ContactSidebar({
           <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
             {priceLabel}
           </p>
-          <p className="mt-1.5 text-3xl font-bold tracking-tight text-brand-primary">
+          <p className="mt-1.5 text-3xl font-bold tracking-tight text-slate-900">
             {formatPrice(price)}
           </p>
           {finalidade === "Venda e Locação" && precoAluguel && (
