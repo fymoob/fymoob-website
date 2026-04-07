@@ -35,7 +35,7 @@ function getBadge(property: Property, topViewed?: Set<string>): { text: string; 
     if (days <= 7) return { text: "NOVO", color: "bg-emerald-500" }
   }
 
-  if (property.lancamento) return { text: "LANÇAMENTO", color: "bg-neutral-900/80 backdrop-blur-sm" }
+  if (property.lancamento) return { text: "LANÇAMENTO", color: "bg-[#8B6914]/90 backdrop-blur-sm" }
 
   if (topViewed?.has(property.codigo)) return { text: "MAIS VISTO", color: "bg-neutral-900/80 backdrop-blur-sm" }
 
@@ -283,7 +283,7 @@ export function PropertyCard({
         "relative overflow-hidden",
         isResponsive
           ? "w-28 shrink-0 self-stretch sm:w-full sm:shrink sm:self-auto sm:aspect-[4/3]"
-          : isHorizontal ? "aspect-[16/10] sm:aspect-auto sm:w-2/5 sm:shrink-0 sm:self-stretch" : "aspect-[16/9] rounded-sm"
+          : isHorizontal ? "aspect-[16/10] sm:aspect-auto sm:w-2/5 sm:shrink-0 sm:self-stretch" : "aspect-[21/9] max-h-[400px] xl:max-h-[480px] rounded-sm"
       )}>
         {(isHorizontal && !isResponsive) ? (
           /* Horizontal: single image, no carousel */
@@ -293,7 +293,7 @@ export function PropertyCard({
             fill
             priority={prioritizeFirstImage}
             loading={prioritizeFirstImage ? "eager" : "lazy"}
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, 40vw"
           />
         ) : (
@@ -313,7 +313,7 @@ export function PropertyCard({
                     fill
                     priority={shouldPrioritize}
                     loading={shouldPrioritize ? "eager" : "lazy"}
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-110"
                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                   />
                 </div>

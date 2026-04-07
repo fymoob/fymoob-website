@@ -294,11 +294,7 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
         dangerouslySetInnerHTML={{ __html: JSON.stringify(searchResultsSchema) }}
       />
 
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 pb-4">
-        <p id="search-results-title" className="text-sm text-gray-500">
-          <span className="font-medium text-slate-700">{total}</span>{" "}
-          {total === 1 ? "imóvel encontrado" : "imóveis encontrados"}
-        </p>
+      <div className="flex flex-wrap items-center justify-end gap-2 pb-4">
         <div className="flex items-center gap-2">
           <Suspense fallback={null}>
             <SortDropdown />
@@ -317,7 +313,7 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
         </div>
       </div>
 
-      <PropertyListingGrid properties={properties} />
+      <PropertyListingGrid properties={properties} totalLabel="imóveis" />
 
       {totalPages > 1 && (
         <nav

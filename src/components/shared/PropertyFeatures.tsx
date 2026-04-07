@@ -34,17 +34,17 @@ export function PropertyFeatures({
 
   if (features.length === 0) return null
 
-  // Editorial: spread-out with justify-between, light font
+  // Editorial: spread-out with justify-between, bronze accents
   if (editorial) {
     return (
-      <div className={cn("flex items-center justify-between py-4", className)}>
+      <div className={cn("flex items-center justify-between py-5", className)}>
         {features.map((f) => {
           const Icon = f.icon
           return (
-            <span key={f.label} className="inline-flex flex-col items-center gap-1">
-              <Icon size={16} className="text-slate-400" strokeWidth={1.5} />
-              <span className="text-base font-light text-slate-700">{f.value}</span>
-              <span className="text-[10px] uppercase tracking-wider text-slate-400">{f.unit}</span>
+            <span key={f.label} className="inline-flex flex-col items-center gap-1.5">
+              <Icon size={18} className="text-[#C5A059]" strokeWidth={1.5} />
+              <span className="text-lg font-medium text-slate-800">{f.value}</span>
+              <span className="text-[10px] uppercase tracking-wider text-slate-500">{f.unit}</span>
             </span>
           )
         })}
