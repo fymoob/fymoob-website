@@ -8,7 +8,6 @@ import { SkeletonsGrid } from "@/components/search/SkeletonsGrid"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { SaveSearchButton } from "@/components/search/SaveSearchButton"
 import { SortDropdown } from "@/components/search/SortDropdown"
-import { MapPin } from "lucide-react"
 import { generateItemListSchema } from "@/lib/seo"
 import { slugify } from "@/lib/utils"
 import {
@@ -296,26 +295,31 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
         dangerouslySetInnerHTML={{ __html: JSON.stringify(searchResultsSchema) }}
       />
 
-      <div className="flex flex-wrap items-center justify-end gap-2 pb-4">
-        <div className="flex items-center gap-2">
-          <Suspense fallback={null}>
-            <SortDropdown />
-          </Suspense>
-          <Suspense fallback={null}>
-            <SaveSearchButton />
-          </Suspense>
-          {hasAppliedFilters && (
-            <Link
-              href="/busca"
-              className="whitespace-nowrap text-xs text-muted-foreground underline decoration-muted-foreground/40 underline-offset-4 transition-colors hover:text-foreground"
-            >
-              Limpar filtros
-            </Link>
-          )}
-        </div>
-      </div>
 
-      <PropertyListingGrid properties={properties} totalLabel="imóveis" />
+      <PropertyListingGrid
+        properties={properties}
+        total={total}
+        totalLabel="imóveis"
+        cardContext="search"
+        toolbarActions={
+          <>
+            <Suspense fallback={null}>
+              <SortDropdown />
+            </Suspense>
+            <Suspense fallback={null}>
+              <SaveSearchButton />
+            </Suspense>
+            {hasAppliedFilters && (
+              <Link
+                href="/busca"
+                className="whitespace-nowrap text-xs text-muted-foreground underline decoration-muted-foreground/40 underline-offset-4 transition-colors hover:text-foreground"
+              >
+                Limpar filtros
+              </Link>
+            )}
+          </>
+        }
+      />
 
       {totalPages > 1 && (
         <nav
@@ -404,7 +408,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
         />
       </div>
 
-      <div className="mt-10">
+      <div className="mt-6">
         <Suspense key={state.fullQuery || "default-search"} fallback={<SkeletonsGrid />}>
           <SearchResults searchParams={params} />
         </Suspense>
