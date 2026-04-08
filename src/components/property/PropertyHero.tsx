@@ -134,12 +134,12 @@ export function PropertyHero({
           aria-hidden="true"
         />
 
-        {/* The Focus — centered artwork with responsive height cap */}
+        {/* The Focus — centered artwork, scales with viewport */}
         <div
-          className="relative z-10 flex items-center justify-center px-10 py-8 lg:px-20 lg:py-10"
-          style={{ height: "clamp(420px, 56vh, 640px)" }}
+          className="relative z-10 flex items-center justify-center px-10 py-10 lg:px-20 lg:py-12"
+          style={{ minHeight: "52vh" }}
         >
-          <div className="relative w-full" style={{ maxWidth: "85%" }}>
+          <div className="relative w-full" style={{ maxWidth: "88%" }}>
             {/* Carousel track */}
             <div className="overflow-hidden rounded-xl">
               <div
@@ -158,7 +158,7 @@ export function PropertyHero({
                       className="h-auto max-w-full rounded-xl"
                       sizes="(max-width: 1400px) 80vw, 1120px"
                       quality={90}
-                      style={{ maxHeight: "clamp(360px, 48vh, 560px)" }}
+                      style={{ maxHeight: "52vh" }}
                     />
                   </div>
                 ))}
