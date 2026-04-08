@@ -147,7 +147,7 @@ export function PropertyHero({
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
                 {photos.map((photo, index) => (
-                  <div key={`stage-${index}`} className="relative min-w-full shrink-0">
+                  <div key={`stage-${index}`} className="flex min-w-full shrink-0 items-center justify-center">
                     <Image
                       src={photo}
                       alt={`${alt} - foto ${index + 1}`}
@@ -155,7 +155,7 @@ export function PropertyHero({
                       height={930}
                       priority={index === 0}
                       loading={index === 0 ? "eager" : "lazy"}
-                      className="h-auto w-full rounded-xl object-contain"
+                      className="h-auto max-w-full rounded-xl"
                       sizes="(max-width: 1400px) 80vw, 1120px"
                       quality={90}
                       style={{ maxHeight: "750px" }}
