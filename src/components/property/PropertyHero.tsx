@@ -134,41 +134,33 @@ export function PropertyHero({
           aria-hidden="true"
         />
 
-        {/* The Focus — responsive container, image adapts via object-contain */}
+        {/* The Focus — responsive container, object-cover fills naturally */}
         <div
-          className="relative z-10 flex items-center justify-center px-10 py-8 lg:px-20 lg:py-10"
+          className="relative z-10 flex items-center justify-center px-10 pt-14 pb-4 lg:px-20 lg:pt-16 lg:pb-6"
           style={{ height: "clamp(400px, 55vh, 680px)" }}
         >
-          <div className="relative h-full w-full" style={{ maxWidth: "88%" }}>
-            {/* Carousel track — fixed height, images contained inside */}
-            <div className="h-full overflow-hidden rounded-xl">
+          <div className="group/hero relative h-full w-full overflow-hidden rounded-xl" style={{ maxWidth: "88%" }}>
+            {/* Fade carousel — stacked slides with opacity transition */}
+            {photos.map((photo, index) => (
               <div
-                className="flex h-full transition-transform duration-500 ease-out"
-                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                key={`stage-${index}`}
+                className={cn(
+                  "absolute inset-0 transition-opacity duration-700 ease-out",
+                  index === currentSlide ? "opacity-100" : "opacity-0 pointer-events-none"
+                )}
               >
-                {photos.map((photo, index) => (
-                  <div key={`stage-${index}`} className="relative h-full min-w-full shrink-0">
-                    <Image
-                      src={photo}
-                      alt={`${alt} - foto ${index + 1}`}
-                      fill
-                      priority={index === 0}
-                      loading={index === 0 ? "eager" : "lazy"}
-                      className="object-contain"
-                      sizes="(max-width: 1400px) 85vw, 1200px"
-                      quality={90}
-                    />
-                  </div>
-                ))}
+                <Image
+                  src={photo}
+                  alt={`${alt} - foto ${index + 1}`}
+                  fill
+                  priority={index === 0}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  className="object-cover transition-transform duration-[1500ms] ease-out group-hover/hero:scale-105"
+                  sizes="(max-width: 1400px) 85vw, 1200px"
+                  quality={90}
+                />
               </div>
-            </div>
-
-            {/* Deep floating shadow beneath artwork */}
-            <div
-              className="pointer-events-none absolute -bottom-6 left-[8%] right-[8%] h-12"
-              style={{ boxShadow: "0 40px 100px rgba(0,0,0,0.5)", borderRadius: "50%" }}
-              aria-hidden="true"
-            />
+            ))}
 
             {/* Counter — bottom right inside artwork */}
             {photos.length > 1 && (
@@ -179,6 +171,13 @@ export function PropertyHero({
               </div>
             )}
           </div>
+
+          {/* Deep floating shadow beneath artwork */}
+          <div
+            className="pointer-events-none absolute bottom-0 left-[14%] right-[14%] h-12"
+            style={{ boxShadow: "0 40px 100px rgba(0,0,0,0.5)", borderRadius: "50%" }}
+            aria-hidden="true"
+          />
         </div>
 
         {/* Stage info — dedicated strip below image, inside dark area */}
