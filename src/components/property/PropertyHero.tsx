@@ -134,29 +134,28 @@ export function PropertyHero({
           aria-hidden="true"
         />
 
-        {/* The Focus — centered artwork, scales with viewport */}
+        {/* The Focus — responsive container, image adapts via object-contain */}
         <div
-          className="relative z-10 flex items-center justify-center px-10 py-10 lg:px-20 lg:py-12"
-          style={{ minHeight: "52vh" }}
+          className="relative z-10 flex items-center justify-center px-10 py-8 lg:px-20 lg:py-10"
+          style={{ height: "clamp(400px, 55vh, 680px)" }}
         >
-          <div className="relative w-full" style={{ maxWidth: "88%" }}>
-            {/* Carousel track */}
-            <div className="overflow-hidden rounded-xl">
+          <div className="relative h-full w-full" style={{ maxWidth: "88%" }}>
+            {/* Carousel track — fixed height, images contained inside */}
+            <div className="h-full overflow-hidden rounded-xl">
               <div
-                className="flex transition-transform duration-500 ease-out"
+                className="flex h-full transition-transform duration-500 ease-out"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
                 {photos.map((photo, index) => (
-                  <div key={`stage-${index}`} className="flex min-w-full shrink-0 items-center justify-center">
+                  <div key={`stage-${index}`} className="relative h-full min-w-full shrink-0">
                     <Image
                       src={photo}
                       alt={`${alt} - foto ${index + 1}`}
-                      width={1400}
-                      height={930}
+                      fill
                       priority={index === 0}
                       loading={index === 0 ? "eager" : "lazy"}
-                      className="h-auto w-auto max-h-[52vh] max-w-full rounded-xl"
-                      sizes="(max-width: 1400px) 80vw, 1120px"
+                      className="object-contain"
+                      sizes="(max-width: 1400px) 85vw, 1200px"
                       quality={90}
                     />
                   </div>
