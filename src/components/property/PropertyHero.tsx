@@ -140,8 +140,7 @@ export function PropertyHero({
           <div className="relative w-full" style={{ maxWidth: "88%" }}>
             {/* Carousel track */}
             <div
-              className="overflow-hidden rounded-md"
-              style={{ border: "1px solid rgba(255,255,255,0.06)" }}
+              className="overflow-hidden rounded-xl"
             >
               <div
                 className="flex transition-transform duration-500 ease-out"
