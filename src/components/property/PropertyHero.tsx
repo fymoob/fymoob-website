@@ -139,7 +139,7 @@ export function PropertyHero({
           className="relative z-10 flex items-center justify-center px-10 pt-14 pb-4 lg:px-20 lg:pt-16 lg:pb-6"
           style={{ height: "clamp(400px, 55vh, 680px)" }}
         >
-          <div className="group/hero relative h-full w-full overflow-hidden rounded-xl" style={{ maxWidth: "88%" }}>
+          <div className="group/hero relative h-full w-full overflow-hidden rounded-xl" style={{ maxWidth: "60%" }}>
             {/* Fade carousel — stacked slides with opacity transition */}
             {photos.map((photo, index) => (
               <div
