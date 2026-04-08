@@ -1,7 +1,7 @@
 # FYMOOB — Task Tracker
 
 > Fonte unica de verdade para todas as tasks do projeto.
-> Atualizado: 2026-04-07
+> Atualizado: 2026-04-08
 
 ---
 
@@ -28,8 +28,9 @@
 | 13 | Funcionalidades e UX | 39 | 39 | 0 | CONCLUIDA |
 | -- | Ações Bruno (CRM) | 3 | 0 | 3 | PENDENTE |
 | 14 | Inteligência Imobiliária | 17 | 0 | 17 | FUTURO |
+| 15 | Lead Capture + CRM | 14 | 0 | 14 | PENDENTE |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **291** | **238** | **53** | **82%** |
+| | **TOTAL** | **305** | **238** | **67** | **78%** |
 
 ---
 
@@ -1034,6 +1035,66 @@ Agende sua visita com a FYMOOB.
 1. Incluso no contrato FYMOOB como diferencial (fidelização)
 2. Produto SaaS separado — assinatura mensal para imobiliárias
 3. Consultoria — análise e relatórios sob demanda
+
+---
+
+## Fase 15 — Lead Capture + CRM Automatizado
+
+> Fluxo: capturar dados do cliente antes de abrir WhatsApp → enviar ao CRM via API → CRM cadastra cliente, atribui corretor pela roleta, registra mídia.
+> Solicitado pelo Bruno em 07/04/2026. Inspirado no fluxo do ImovelWeb.
+
+### Documentacao Tecnica — API Lead (testada e validada)
+
+```
+POST https://brunoces-rest.vistahost.com.br/lead?key={LOFT_API_KEY}
+Content-Type: application/x-www-form-urlencoded
+
+cadastro={"lead":{"nome":"...", "email":"...", "fone":"...", "interesse":"Venda", "anuncio":"69804147", "veiculo":"Site FYMOOB", "mensagem":"..."}}
+```
+
+**Campos:**
+| Campo | Obrigatorio | Descricao |
+|-------|-------------|-----------|
+| `nome` | Sim | Nome do cliente |
+| `email` | Sim (se nao tem fone) | Email do cliente |
+| `fone` | Sim (se nao tem email) | Telefone do cliente |
+| `interesse` | Nao | "Venda" ou "Locacao" (derivar da finalidade do imovel) |
+| `anuncio` | Nao | Codigo do imovel (ex: "69804147") |
+| `veiculo` | Sim | Midia de origem — usar "Site FYMOOB" |
+| `mensagem` | Sim | Texto da mensagem (pode ser auto-gerada) |
+
+**Resposta sucesso (200):**
+```json
+{"status": 200, "message": "O cadastro foi encontrado.", "Codigo": 8826568, "Corretor": 14}
+```
+- `Codigo` = ID do lead no CRM
+- `Corretor` = ID do corretor atribuido pela roleta automatica
+
+**Formato importante:** O body é `application/x-www-form-urlencoded` com o JSON dentro do parametro `cadastro` (nao é JSON puro no body).
+
+### Tasks
+
+- [ ] **15.1** Criar servico `src/services/lead.ts` — funcao `submitLead({nome, email, fone, codigoImovel, interesse, mensagem})` que faz POST /lead
+- [ ] **15.2** Criar API route `src/app/api/lead/route.ts` — proxy server-side para nao expor LOFT_API_KEY no client
+- [ ] **15.3** Criar componente `WhatsAppLeadModal` — modal com campos Nome, Email, Telefone, botao "Iniciar conversa"
+- [ ] **15.4** Integrar modal no botao WhatsApp da pagina do imovel (`ContactSidebar`) — clique abre modal em vez de ir direto pro WhatsApp
+- [ ] **15.5** Integrar modal no `MobileContactBar` — botao "Quero visitar" abre modal antes do WhatsApp
+- [ ] **15.6** Integrar modal no `WhatsAppFloat` (desktop) — mesmo fluxo
+- [ ] **15.7** Fluxo pos-submit: apos POST /lead com sucesso → redirecionar para WhatsApp com mensagem pre-preenchida (comportamento atual, mas agora com dados no CRM)
+- [ ] **15.8** Tratamento de erro: se API falhar, redirecionar pro WhatsApp mesmo assim (nao bloquear o contato do cliente)
+- [ ] **15.9** Validacao de formulario: nome obrigatorio, email OU telefone obrigatorio, feedback visual
+- [ ] **15.10** Campo `interesse` automatico: derivar de `property.finalidade` ("Venda", "Locacao", ou perguntar se "Venda e Locacao")
+- [ ] **15.11** Campo `mensagem` auto-gerada: "Ola! Tenho interesse no imovel {titulo} (Cod: {codigo})." — editavel pelo usuario
+- [ ] **15.12** Metrificacao: `veiculo` = "Site FYMOOB" permite filtrar no CRM todos os leads vindos do site
+- [ ] **15.13** Testar fluxo completo: modal → API → CRM cadastra cliente → corretor atribuido → WhatsApp abre
+- [ ] **15.14** Avisar Bruno para deletar lead de teste (Codigo 8826568) criado durante validacao da API
+
+### Notas de implementacao
+- API route server-side obrigatoria — a key nao pode ir pro browser
+- Usar `application/x-www-form-urlencoded` com param `cadastro` (nao JSON body)
+- Fallback: se a API der erro, o WhatsApp abre normalmente (usuario nao pode ficar travado)
+- O formulario do `/contato` ja existe mas envia email — adaptar para tambem enviar ao CRM
+- Performance: o modal e leve (form simples), nao precisa de dynamic import
 
 ---
 
