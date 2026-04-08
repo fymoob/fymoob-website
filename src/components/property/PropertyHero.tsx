@@ -36,10 +36,10 @@ export function PropertyHero({
   }, [photos.length])
 
   return (
-    <div className="group relative w-screen overflow-hidden bg-slate-950" style={{ marginLeft: "calc(-50vw + 50%)" }}>
+    <div className="group relative w-screen overflow-hidden" style={{ marginLeft: "calc(-50vw + 50%)" }}>
       {/* Main image container */}
       <div
-        className="relative h-[52vh] w-full cursor-pointer md:h-[74vh]"
+        className="relative h-[52vh] w-full cursor-pointer md:h-[66vh]"
         onClick={onOpenGallery}
         role="button"
         tabIndex={0}
@@ -48,14 +48,17 @@ export function PropertyHero({
         }}
         aria-label="Abrir galeria de fotos"
       >
+        {/* Cinematic vignette — darkens edges like a movie frame */}
+        <div className="pointer-events-none absolute inset-0 z-10" style={{ boxShadow: "inset 0 0 150px 60px rgba(0,0,0,0.45)" }} />
+
         {/* Top gradient for badge area */}
         <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-24 bg-gradient-to-b from-black/50 to-transparent" />
 
         {/* Bottom gradient for text overlay */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-48 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
-        {/* Image carousel — contained for sharp display */}
-        <div className="relative mx-auto h-full w-full max-w-6xl overflow-hidden">
+        {/* Image carousel — full bleed with cover */}
+        <div className="relative h-full w-full overflow-hidden">
           <div
             className="flex h-full transition-transform duration-500 ease-out"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -71,8 +74,8 @@ export function PropertyHero({
                   fill
                   priority={index === 0}
                   loading={index === 0 ? "eager" : "lazy"}
-                  className="object-contain"
-                  sizes="(max-width: 1152px) 100vw, 1152px"
+                  className="object-cover"
+                  sizes="100vw"
                   quality={90}
                 />
               </div>
@@ -80,54 +83,48 @@ export function PropertyHero({
           </div>
         </div>
 
-        {/* Bottom-left: tipo + bairro + titulo — aligned to contained area */}
-        <div className="absolute bottom-0 inset-x-0 z-20">
-          <div className="mx-auto max-w-6xl px-6 pb-6 md:px-8 md:pb-8">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/90 backdrop-blur-sm">
-              {tipo} &bull; {bairro}
-            </span>
-            <h2 className="mt-2 max-w-2xl text-lg font-semibold leading-snug text-white drop-shadow-lg md:text-2xl">
-              {titulo}
-            </h2>
-          </div>
+        {/* Bottom-left: tipo + bairro + titulo */}
+        <div className="absolute bottom-0 inset-x-0 z-20 px-6 pb-6 md:px-12 md:pb-8 lg:px-20">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/90 backdrop-blur-sm">
+            {tipo} &bull; {bairro}
+          </span>
+          <h2 className="mt-2 max-w-2xl text-lg font-semibold leading-snug text-white drop-shadow-lg md:text-2xl">
+            {titulo}
+          </h2>
         </div>
 
-        {/* Top-right: Ver fotos button — aligned to contained area */}
+        {/* Top-right: Ver fotos button */}
         {photos.length > 1 && (
-          <div className="absolute inset-x-0 top-0 z-20">
-            <div className="mx-auto flex max-w-6xl justify-end px-6 pt-4 md:px-8 md:pt-6">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/90 px-3.5 py-2 text-xs font-semibold text-slate-900 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:shadow-xl md:px-4 md:py-2.5 md:text-sm">
-                <Grid className="size-3.5 md:size-4" />
-                Ver {photos.length} fotos
-              </span>
-            </div>
+          <div className="absolute right-4 top-4 z-20 md:right-12 md:top-6 lg:right-20">
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/90 px-3.5 py-2 text-xs font-semibold text-slate-900 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:shadow-xl md:px-4 md:py-2.5 md:text-sm">
+              <Grid className="size-3.5 md:size-4" />
+              Ver {photos.length} fotos
+            </span>
           </div>
         )}
       </div>
 
-      {/* Navigation arrows — anchored to contained area edges */}
+      {/* Navigation arrows */}
       {photos.length > 1 && (
-        <div className="pointer-events-none absolute inset-0 z-30">
-          <div className="relative mx-auto h-full max-w-6xl">
-            <button
-              type="button"
-              onClick={(e) => { e.stopPropagation(); goPrev() }}
-              className="pointer-events-auto absolute left-3 top-1/2 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/30 md:inline-flex"
-              aria-label="Foto anterior"
-            >
-              <ChevronLeft className="size-6" />
-            </button>
+        <>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); goPrev() }}
+            className="absolute left-4 top-1/2 z-30 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/30 md:inline-flex md:left-8 lg:left-12"
+            aria-label="Foto anterior"
+          >
+            <ChevronLeft className="size-6" />
+          </button>
 
-            <button
-              type="button"
-              onClick={(e) => { e.stopPropagation(); goNext() }}
-              className="pointer-events-auto absolute right-3 top-1/2 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/30 md:inline-flex"
-              aria-label="Próxima foto"
-            >
-              <ChevronRight className="size-6" />
-            </button>
-          </div>
-        </div>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); goNext() }}
+            className="absolute right-4 top-1/2 z-30 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/30 md:inline-flex md:right-8 lg:right-12"
+            aria-label="Próxima foto"
+          >
+            <ChevronRight className="size-6" />
+          </button>
+        </>
       )}
 
       {/* Dots */}
