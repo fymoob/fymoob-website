@@ -2,7 +2,7 @@
 
 > Solicitacoes de alteracao feitas pelo cliente (Bruno).
 > Atualizado: 2026-04-06
-> **Total: 21 solicitacoes** | ACEITO: 4 | AVALIAR: 17 | Implementadas: 18/21 (86%)
+> **Total: 21 solicitacoes** | ACEITO: 4 | AVALIAR: 17 | Implementadas: 19/21 (90%)
 
 ---
 
@@ -218,9 +218,9 @@
     3. **Filtro correto:** Cruzar `Destaque` com campo de lancamento para exibir apenas lancamentos destacados.
   - Data: 2026-04-08
 
-### 19. Secao "Imoveis em Destaque — Prontos para Morar" na Home
-- [ ] Bruno quer carousel na home mostrando imoveis prontos/destaque, referencia J8 Imoveis
-- [ ] Layout: titulo "IMOVEIS EM DESTAQUE | PRONTOS PARA MORAR" + grid/carousel 3 cards com foto, tipo, bairro, codigo, quartos, vagas, area, preco + CTA "Conheca o imovel"
+### 19. Secao "Imoveis em Destaque — Prontos para Morar" na Home ✅
+- [x] Bruno quer carousel na home mostrando imoveis prontos/destaque, referencia J8 Imoveis
+- [x] Layout: titulo "IMOVEIS EM DESTAQUE | PRONTOS PARA MORAR" + grid/carousel 3 cards com foto, tipo, bairro, codigo, quartos, vagas, area, preco + CTA "Conheca o imovel"
   - Tipo: **AVALIAR**
   - Comentario: **Excelente para conversao e SEO.** Mostra imoveis premium logo na home, incentiva clique direto. Referencia J8: carousel com 3 cards visiveis, setas lateral. Precisamos definir criterio de "destaque" — pode ser: imoveis com `Destaque=true` na API, ou os mais caros, ou curadoria manual.
   - Implementacao:

@@ -69,7 +69,7 @@ const tipoLinks = [
 
 export default async function Home() {
   const [featured, allBairros, cities, types, stats, recentPosts] = await Promise.all([
-    getFeaturedProperties(8),
+    getFeaturedProperties(15),
     getAllBairros(),
     getAllCities(),
     getAllTypes(),
@@ -80,6 +80,7 @@ export default async function Home() {
   const lancamentos = featured.filter((p) => p.lancamento)
   const prontos = featured.filter((p) => !p.lancamento)
   const highlight = prontos[0] || featured[0]
+  const prontosParaMorar = prontos.filter((p) => p !== highlight).slice(0, 6)
   const destaques = lancamentos.slice(0, 6)
   const bairros = allBairros.slice(0, 6)
   const bairroNames = allBairros.map((b) => b.bairro)
@@ -120,6 +121,40 @@ export default async function Home() {
                   <PropertyCardFeatured property={highlight} />
                 </div>
               </div>
+            </AnimateOnScroll>
+          </div>
+        </section>
+      )}
+
+      {/* Imóveis em destaque — Prontos para morar */}
+      {prontosParaMorar.length > 0 && (
+        <section className="bg-neutral-50 py-10 md:py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <AnimateOnScroll>
+              <div className="flex items-center justify-between">
+                <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-3xl md:font-bold">
+                  Imóveis em destaque
+                </h2>
+                <Link
+                  href="/busca"
+                  className="text-sm font-medium text-brand-primary transition-colors duration-200 hover:text-brand-primary-hover"
+                >
+                  Ver todos
+                </Link>
+              </div>
+              <p className="mt-2 text-sm text-neutral-500">Prontos para morar nos melhores bairros de Curitiba</p>
+            </AnimateOnScroll>
+            {/* Mobile: horizontal carousel */}
+            <div className="mt-6 md:hidden">
+              <HomeCarousel properties={prontosParaMorar} />
+            </div>
+            {/* Desktop: grid */}
+            <AnimateOnScroll stagger className="mt-8 hidden gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+              {prontosParaMorar.map((property) => (
+                <div key={property.slug}>
+                  <PropertyCard property={property} compactFeatures />
+                </div>
+              ))}
             </AnimateOnScroll>
           </div>
         </section>
