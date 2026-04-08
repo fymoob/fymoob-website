@@ -20,6 +20,8 @@ import {
   Star,
   Trophy,
   ExternalLink,
+  Handshake,
+  BookOpen,
 } from "lucide-react"
 
 export const metadata: Metadata = {
@@ -63,9 +65,14 @@ const diretoria = [
     nome: "Wagner Spessatto",
     cargo: "Sócio",
     foto: null, // placeholder até enviar foto
-    bio: "Responsável pela gestão estratégica e operacional da FYMOOB, atua na administração e desenvolvimento de negócios da imobiliária.",
-    credenciais: [],
-    email: null,
+    bio: "Reconhecido pelo perfil colaborativo e pela facilidade em construir boas relações, Wagner é um profissional próximo, comprometido e parceiro nos negócios. Apaixonado por leitura, está sempre disposto a auxiliar colaboradores e clientes na busca pelos melhores resultados.",
+    credenciais: [
+      { icon: Award, text: "CRECI/PR 39.357" },
+      { icon: GraduationCap, text: "Formação em Psicologia — Faculdades Pequeno Príncipe (2017)" },
+      { icon: Handshake, text: "Perfil colaborativo e parceiro nos negócios" },
+      { icon: BookOpen, text: "Apaixonado por leitura e desenvolvimento pessoal" },
+    ],
+    email: "wagnerspessatto@gmail.com",
   },
 ]
 
