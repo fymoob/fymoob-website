@@ -37,7 +37,7 @@ export function PropertyHero({
 
   return (
     <div className="group relative w-screen overflow-hidden" style={{ marginLeft: "calc(-50vw + 50%)" }}>
-      {/* ═══ MOBILE: full-bleed cover, no stage ═══ */}
+      {/* ═══ MOBILE: full-bleed cover ═══ */}
       <div
         className="relative h-[52vh] w-full cursor-pointer md:hidden"
         onClick={onOpenGallery}
@@ -48,10 +48,8 @@ export function PropertyHero({
         }}
         aria-label="Abrir galeria de fotos"
       >
-        {/* Bottom gradient */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
-        {/* Mobile carousel — full bleed */}
         <div className="relative h-full w-full overflow-hidden">
           <div
             className="flex h-full transition-transform duration-500 ease-out"
@@ -74,7 +72,7 @@ export function PropertyHero({
           </div>
         </div>
 
-        {/* Mobile: tipo + bairro + titulo */}
+        {/* Mobile: info overlay */}
         <div className="absolute bottom-0 inset-x-0 z-20 px-5 pb-5">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/90 backdrop-blur-sm">
             {tipo} &bull; {bairro}
@@ -84,7 +82,7 @@ export function PropertyHero({
           </h2>
         </div>
 
-        {/* Mobile: counter bottom-right */}
+        {/* Mobile: counter */}
         {photos.length > 1 && (
           <div className="absolute bottom-4 right-4 z-20">
             <span className="rounded-full bg-black/50 px-2.5 py-1 text-[11px] font-medium tabular-nums text-white/90 backdrop-blur-sm">
@@ -104,10 +102,9 @@ export function PropertyHero({
         )}
       </div>
 
-      {/* ═══ DESKTOP: The Stage ═══ */}
+      {/* ═══ DESKTOP: Palco com Reflexo e Profundidade ═══ */}
       <div
-        className="relative hidden w-full cursor-pointer md:block"
-        style={{ backgroundColor: "#0F1115" }}
+        className="relative hidden w-full cursor-pointer overflow-hidden md:block"
         onClick={onOpenGallery}
         role="button"
         tabIndex={0}
@@ -115,13 +112,37 @@ export function PropertyHero({
           if (e.key === "Enter" || e.key === " ") onOpenGallery()
         }}
         aria-label="Abrir galeria de fotos"
+        style={{ minHeight: "72vh" }}
       >
-        {/* Stage padding + centered artwork */}
-        <div className="mx-auto flex items-center justify-center px-10 py-8 lg:px-16 lg:py-10" style={{ minHeight: "68vh" }}>
-          {/* Carousel container — the artwork frame */}
-          <div className="relative w-full max-w-5xl">
+        {/* Background Layer 1: blurred photo fill */}
+        <div
+          className="absolute inset-0 scale-110"
+          style={{
+            backgroundImage: `url(${photos[currentSlide]})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "blur(12px) brightness(0.4)",
+          }}
+          aria-hidden="true"
+        />
+
+        {/* Background Layer 2: radial gradient overlay — dark edges, lighter center */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0.85) 100%)",
+          }}
+          aria-hidden="true"
+        />
+
+        {/* The Focus — centered artwork */}
+        <div className="relative z-10 flex items-center justify-center px-10 py-10 lg:px-20 lg:py-12" style={{ minHeight: "72vh" }}>
+          <div className="relative w-full" style={{ maxWidth: "80%" }}>
             {/* Carousel track */}
-            <div className="overflow-hidden rounded-lg" style={{ border: "1px solid rgba(255,255,255,0.05)" }}>
+            <div
+              className="overflow-hidden rounded-md"
+              style={{ border: "1px solid rgba(255,255,255,0.06)" }}
+            >
               <div
                 className="flex transition-transform duration-500 ease-out"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -131,30 +152,31 @@ export function PropertyHero({
                     <Image
                       src={photo}
                       alt={`${alt} - foto ${index + 1}`}
-                      width={1200}
-                      height={800}
+                      width={1400}
+                      height={930}
                       priority={index === 0}
                       loading={index === 0 ? "eager" : "lazy"}
-                      className="h-auto max-h-[600px] w-full object-contain"
-                      sizes="(max-width: 1024px) 100vw, 1024px"
+                      className="h-auto w-full object-contain"
+                      sizes="(max-width: 1400px) 80vw, 1120px"
                       quality={90}
+                      style={{ maxHeight: "750px" }}
                     />
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Floating shadow beneath the artwork */}
+            {/* Deep floating shadow beneath artwork */}
             <div
-              className="pointer-events-none absolute -bottom-4 left-[10%] right-[10%] h-8 rounded-[50%] opacity-60"
-              style={{ boxShadow: "0 20px 40px rgba(0,0,0,0.4)" }}
+              className="pointer-events-none absolute -bottom-6 left-[8%] right-[8%] h-12"
+              style={{ boxShadow: "0 40px 100px rgba(0,0,0,0.5)", borderRadius: "50%" }}
               aria-hidden="true"
             />
 
-            {/* Photo counter — bottom right inside artwork */}
+            {/* Counter — bottom right inside artwork */}
             {photos.length > 1 && (
               <div className="absolute bottom-3 right-3 z-20">
-                <span className="rounded-full bg-black/50 px-3 py-1.5 text-xs font-medium tabular-nums text-white/90 backdrop-blur-md">
+                <span className="rounded-full bg-black/40 px-3 py-1.5 text-xs font-medium tabular-nums text-white/90 backdrop-blur-md">
                   {currentSlide + 1} / {photos.length}
                 </span>
               </div>
@@ -162,11 +184,11 @@ export function PropertyHero({
           </div>
         </div>
 
-        {/* Stage: tipo + bairro + titulo — bottom left over dark bg */}
+        {/* Stage info — bottom left */}
         <div className="absolute bottom-0 inset-x-0 z-20">
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0F1115] to-transparent" />
-          <div className="relative mx-auto max-w-5xl px-10 pb-5 lg:px-16 lg:pb-6">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/80">
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black/60 to-transparent" />
+          <div className="relative mx-auto px-10 pb-6 lg:px-20 lg:pb-8" style={{ maxWidth: "90%" }}>
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/80 backdrop-blur-sm">
               {tipo} &bull; {bairro}
             </span>
             <h2 className="mt-2 max-w-2xl text-xl font-semibold leading-snug text-white/95 md:text-2xl">
@@ -186,30 +208,30 @@ export function PropertyHero({
         )}
       </div>
 
-      {/* ═══ Navigation arrows (desktop only) ═══ */}
+      {/* ═══ Navigation arrows (desktop) — glass circles on blur area ═══ */}
       {photos.length > 1 && (
         <>
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); goPrev() }}
-            className="absolute left-4 top-1/2 z-30 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full text-white/60 transition-all hover:text-white md:inline-flex lg:left-6"
+            className="absolute left-5 top-1/2 z-30 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/[0.07] text-white/70 backdrop-blur-lg transition-all hover:bg-white/15 hover:text-white md:inline-flex lg:left-8"
             aria-label="Foto anterior"
           >
-            <ChevronLeft className="size-7" strokeWidth={1.5} />
+            <ChevronLeft className="size-6" strokeWidth={1.5} />
           </button>
 
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); goNext() }}
-            className="absolute right-4 top-1/2 z-30 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full text-white/60 transition-all hover:text-white md:inline-flex lg:right-6"
+            className="absolute right-5 top-1/2 z-30 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/[0.07] text-white/70 backdrop-blur-lg transition-all hover:bg-white/15 hover:text-white md:inline-flex lg:right-8"
             aria-label="Próxima foto"
           >
-            <ChevronRight className="size-7" strokeWidth={1.5} />
+            <ChevronRight className="size-6" strokeWidth={1.5} />
           </button>
         </>
       )}
 
-      {/* ═══ Mobile swipe dots ═══ */}
+      {/* ═══ Mobile dots ═══ */}
       {photos.length > 1 && (
         <div className="absolute bottom-14 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1.5 md:hidden">
           {photos.slice(0, 8).map((_, index) => (
