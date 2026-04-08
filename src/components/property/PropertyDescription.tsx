@@ -34,6 +34,23 @@ function isAllCaps(line: string): boolean {
   return letters === letters.toUpperCase()
 }
 
+// Detect lines that START with an ALL CAPS prefix followed by normal text
+// e.g. "INTERESSADOS NA COMPRA: Imóvel pronto e documentado..."
+// e.g. "IMPORTANTE: O valor anunciado é o ALUGUEL LÍQUIDO..."
+const CAPS_PREFIX_RE = /^([A-ZÀ-Ú][A-ZÀ-Ú\s]{3,}:)\s*(.*)/
+
+function renderWithCapsHighlight(text: string): React.ReactNode {
+  const match = CAPS_PREFIX_RE.exec(text)
+  if (match) {
+    return (
+      <>
+        <strong className="font-bold text-slate-900">{match[1]}</strong> {match[2]}
+      </>
+    )
+  }
+  return text
+}
+
 function isListItem(line: string): boolean {
   const trimmed = line.trim()
   return /^[-–•·✓✅]\s/.test(trimmed)
@@ -138,7 +155,7 @@ export function PropertyDescription({ descricao }: PropertyDescriptionProps) {
                 i > 0 && "mt-5"
               )}
             >
-              {block.content}
+              {renderWithCapsHighlight(block.content)}
             </p>
           )
         })}
