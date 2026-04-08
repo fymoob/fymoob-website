@@ -29,7 +29,11 @@ export function generateOrganizationSchema() {
       addressRegion: "PR",
       addressCountry: "BR",
     },
-    sameAs: [],
+    sameAs: [
+      "https://www.instagram.com/fymoob",
+      "https://www.facebook.com/profile.php?id=61556949541662",
+      "https://www.tiktok.com/@fymoob",
+    ],
   }
 }
 

@@ -2,7 +2,7 @@
 
 > Solicitacoes de alteracao feitas pelo cliente (Bruno).
 > Atualizado: 2026-04-06
-> **Total: 21 solicitacoes** | ACEITO: 4 | AVALIAR: 17 | Implementadas: 17/21 (81%)
+> **Total: 21 solicitacoes** | ACEITO: 4 | AVALIAR: 17 | Implementadas: 18/21 (86%)
 
 ---
 
@@ -231,9 +231,9 @@
     5. **Criterio de destaque**: Perguntar ao Bruno se existe flag "Destaque" no CRM ou se prefere curadoria manual.
   - Data: 2026-04-08
 
-### 19. Adicionar redes sociais da imobiliaria (Footer)
-- [ ] Bruno solicitou incluir icones das redes sociais: Facebook, Instagram, TikTok
-- [ ] Referencia: icones circulares com link para os perfis oficiais da FYMOOB
+### 19. Adicionar redes sociais da imobiliaria (Footer) ✅
+- [x] Bruno solicitou incluir icones das redes sociais: Facebook, Instagram, TikTok
+- [x] Referencia: icones circulares com link para os perfis oficiais da FYMOOB
   - Tipo: **AVALIAR**
   - Comentario: Facil de implementar. Footer ja existe em `src/components/layout/Footer.tsx`. Adicionar secao com icones (lucide ou SVGs) linkando para os perfis. **Depende do Bruno enviar os links** (URLs do Facebook, Instagram, TikTok da FYMOOB).
   - Implementacao:
