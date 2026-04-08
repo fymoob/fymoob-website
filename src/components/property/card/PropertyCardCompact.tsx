@@ -7,21 +7,26 @@ import { ChevronLeft, ChevronRight, Heart } from "lucide-react"
 import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
 import { cn, formatPrice } from "@/lib/utils"
 import type { Property } from "@/types/property"
-import { usePropertyCard } from "./hooks/usePropertyCard"
+import { usePropertyCard, type PriceContext } from "./hooks/usePropertyCard"
 
 interface PropertyCardCompactProps {
   property: Property
   prioritizeFirstImage?: boolean
+  priceContext?: PriceContext
 }
 
 export function PropertyCardCompact({
   property,
   prioritizeFirstImage = false,
+  priceContext = null,
 }: PropertyCardCompactProps) {
   const {
     alt,
     hasPrice,
     displayPrice,
+    isRental,
+    hasSecondaryPrice,
+    displaySecondaryPrice,
     displayPhotos,
     badge,
     currentSlide,
@@ -32,7 +37,7 @@ export function PropertyCardCompact({
     goPrev,
     goNext,
     goToSlide,
-  } = usePropertyCard(property)
+  } = usePropertyCard(property, priceContext)
 
   return (
     <article
@@ -158,7 +163,7 @@ export function PropertyCardCompact({
               )}
             >
               {displayPrice}
-              {property.finalidade !== "Venda" && hasPrice && (
+              {isRental && hasPrice && (
                 <span className="text-xs font-normal text-slate-500"> /mês</span>
               )}
             </p>
@@ -166,6 +171,11 @@ export function PropertyCardCompact({
               {property.codigo}
             </span>
           </div>
+          {hasSecondaryPrice && (
+            <p className="mt-1 text-sm font-semibold text-slate-500">
+              {displaySecondaryPrice} /mês
+            </p>
+          )}
         </div>
       </div>
 

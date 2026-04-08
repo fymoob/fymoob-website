@@ -7,28 +7,33 @@ import { Heart } from "lucide-react"
 import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
 import { cn } from "@/lib/utils"
 import type { Property } from "@/types/property"
-import { usePropertyCard } from "./hooks/usePropertyCard"
+import { usePropertyCard, type PriceContext } from "./hooks/usePropertyCard"
 
 interface PropertyCardListProps {
   property: Property
   prioritizeFirstImage?: boolean
+  priceContext?: PriceContext
 }
 
 export function PropertyCardList({
   property,
   prioritizeFirstImage = false,
+  priceContext = null,
 }: PropertyCardListProps) {
   const {
     alt,
     hasPrice,
     displayPrice,
+    isRental,
+    hasSecondaryPrice,
+    displaySecondaryPrice,
     displayPhotos,
     badge,
     isFavorite,
     propertyHref,
     loadPhotosOnHover,
     toggleFavorite,
-  } = usePropertyCard(property)
+  } = usePropertyCard(property, priceContext)
 
   return (
     <article
@@ -120,10 +125,15 @@ export function PropertyCardList({
               )}
             >
               {displayPrice}
-              {property.finalidade !== "Venda" && hasPrice && (
+              {isRental && hasPrice && (
                 <span className="text-sm font-normal text-neutral-500"> /mês</span>
               )}
             </p>
+            {hasSecondaryPrice && (
+              <p className="text-sm font-semibold text-slate-500">
+                {displaySecondaryPrice} /mês
+              </p>
+            )}
           </div>
         </div>
       </div>

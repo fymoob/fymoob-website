@@ -62,9 +62,31 @@ function getPropertyPhotos(property: Property): string[] {
   return photos.slice(0, MAX_CARD_PHOTOS)
 }
 
-export function usePropertyCard(property: Property) {
+export type PriceContext = "venda" | "locacao" | null
+
+function resolvePrice(property: Property, ctx: PriceContext) {
+  const venda = property.precoVenda && property.precoVenda > 0 ? property.precoVenda : null
+  const aluguel = property.precoAluguel && property.precoAluguel > 0 ? property.precoAluguel : null
+  const isDual = property.finalidade === "Venda e Locação" && venda && aluguel
+
+  if (isDual && ctx === "locacao") {
+    return { price: aluguel, secondaryPrice: null, isRental: true }
+  }
+  if (isDual && ctx === "venda") {
+    return { price: venda, secondaryPrice: null, isRental: false }
+  }
+  if (isDual) {
+    return { price: venda, secondaryPrice: aluguel, isRental: false }
+  }
+
+  const price = venda ?? aluguel
+  const isRental = !venda && !!aluguel
+  return { price, secondaryPrice: null, isRental }
+}
+
+export function usePropertyCard(property: Property, priceContext: PriceContext = null) {
   const alt = generateImageAlt(property)
-  const price = property.precoVenda ?? property.precoAluguel
+  const { price, secondaryPrice, isRental } = resolvePrice(property, priceContext)
   const photos = useMemo(() => getPropertyPhotos(property), [property])
   const [topViewed, setTopViewed] = useState<Set<string>>(new Set())
 
@@ -155,11 +177,17 @@ export function usePropertyCard(property: Property) {
     setCurrentSlide(index)
   }
 
+  const hasSecondaryPrice = secondaryPrice !== null && secondaryPrice > 0
+
   return {
     alt,
     price,
     hasPrice,
     displayPrice: hasPrice ? formatPrice(price) : "Consultar valor",
+    isRental,
+    secondaryPrice,
+    hasSecondaryPrice,
+    displaySecondaryPrice: hasSecondaryPrice ? formatPrice(secondaryPrice) : null,
     photos,
     displayPhotos,
     badge,

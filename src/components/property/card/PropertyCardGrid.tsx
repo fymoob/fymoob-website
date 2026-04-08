@@ -7,21 +7,26 @@ import { ChevronLeft, ChevronRight, Heart } from "lucide-react"
 import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
 import { cn } from "@/lib/utils"
 import type { Property } from "@/types/property"
-import { usePropertyCard } from "./hooks/usePropertyCard"
+import { usePropertyCard, type PriceContext } from "./hooks/usePropertyCard"
 
 interface PropertyCardGridProps {
   property: Property
   prioritizeFirstImage?: boolean
+  priceContext?: PriceContext
 }
 
 export function PropertyCardGrid({
   property,
   prioritizeFirstImage = false,
+  priceContext = null,
 }: PropertyCardGridProps) {
   const {
     alt,
     hasPrice,
     displayPrice,
+    isRental,
+    hasSecondaryPrice,
+    displaySecondaryPrice,
     displayPhotos,
     badge,
     currentSlide,
@@ -32,7 +37,7 @@ export function PropertyCardGrid({
     goPrev,
     goNext,
     goToSlide,
-  } = usePropertyCard(property)
+  } = usePropertyCard(property, priceContext)
 
   return (
     <article
@@ -145,12 +150,19 @@ export function PropertyCardGrid({
 
         {/* Price + Code overlay */}
         <div className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-between px-5 pb-4">
-          <p className="text-3xl font-extrabold tracking-tight text-white drop-shadow-md">
-            {displayPrice}
-            {property.finalidade !== "Venda" && hasPrice && (
-              <span className="text-sm font-normal text-white/80"> /mês</span>
+          <div>
+            <p className="text-3xl font-extrabold tracking-tight text-white drop-shadow-md">
+              {displayPrice}
+              {isRental && hasPrice && (
+                <span className="text-sm font-normal text-white/80"> /mês</span>
+              )}
+            </p>
+            {hasSecondaryPrice && (
+              <p className="mt-0.5 text-sm font-semibold text-white/80 drop-shadow-md">
+                {displaySecondaryPrice} /mês
+              </p>
             )}
-          </p>
+          </div>
           <span className="text-sm font-medium uppercase text-slate-200 drop-shadow-md">
             {property.codigo}
           </span>

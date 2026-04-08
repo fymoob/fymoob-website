@@ -301,6 +301,13 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
         total={total}
         totalLabel="imóveis"
         cardContext="search"
+        priceContext={
+          state.finalidades.length === 1 && state.finalidades[0] === "Locação"
+            ? "locacao"
+            : state.finalidades.length === 1 && state.finalidades[0] === "Venda"
+              ? "venda"
+              : null
+        }
         toolbarActions={
           <>
             <Suspense fallback={null}>

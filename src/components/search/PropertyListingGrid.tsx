@@ -3,7 +3,7 @@
 import { type ReactNode, useCallback, useState } from "react"
 import { Grid3X3, LayoutGrid, List } from "lucide-react"
 
-import { PropertyCardCompact, PropertyCardGrid, PropertyCardList } from "@/components/property/card"
+import { PropertyCardCompact, PropertyCardGrid, PropertyCardList, type PriceContext } from "@/components/property/card"
 import { PropertyCard } from "@/components/property/PropertyCard"
 import type { Property } from "@/types/property"
 
@@ -14,6 +14,7 @@ interface PropertyListingGridProps {
   showToolbar?: boolean
   toolbarActions?: ReactNode
   cardContext?: "default" | "search"
+  priceContext?: PriceContext
 }
 
 const ABOVE_THE_FOLD_PRIORITY_CARDS = 3
@@ -71,6 +72,7 @@ export function PropertyListingGrid({
   showToolbar = true,
   toolbarActions,
   cardContext = "default",
+  priceContext = null,
 }: PropertyListingGridProps) {
   const [viewMode, setViewModeState] = useState<ViewMode>(getSavedViewMode)
   const setViewMode = useCallback((mode: ViewMode) => {
@@ -131,6 +133,7 @@ export function PropertyListingGrid({
                   key={property.slug}
                   property={property}
                   prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
+                  priceContext={priceContext}
                 />
               )
             }
@@ -140,6 +143,7 @@ export function PropertyListingGrid({
                   key={property.slug}
                   property={property}
                   prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
+                  priceContext={priceContext}
                 />
               )
             }
@@ -149,6 +153,7 @@ export function PropertyListingGrid({
                   key={property.slug}
                   property={property}
                   prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
+                  priceContext={priceContext}
                 />
               )
             }
