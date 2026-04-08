@@ -135,7 +135,7 @@ export default async function Home() {
                   Destaques de lançamento
                 </h2>
                 <Link
-                  href="/busca"
+                  href="/lancamentos"
                   className="text-sm font-medium text-brand-primary transition-colors duration-200 hover:text-brand-primary-hover"
                 >
                   Ver todos
