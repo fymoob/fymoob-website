@@ -146,7 +146,7 @@ export default async function SobrePage() {
   return (
     <>
       {/* ══════ HERO — Imagem de fundo com overlay ══════ */}
-      <section className="relative flex min-h-[60vh] items-center overflow-hidden rounded-b-[40px] md:rounded-b-[60px]">
+      <section className="relative flex min-h-[60vh] items-center overflow-hidden">
         <Image
           src="/images/sobre/sobre-maior.jpeg"
           alt="Empreendimento de alto padrão com vista para o Parque Barigui — FYMOOB Imobiliária"

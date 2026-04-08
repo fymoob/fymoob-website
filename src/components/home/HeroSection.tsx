@@ -29,7 +29,7 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bair
   return (
     <section
       id="hero"
-      className="relative flex min-h-[50dvh] items-center justify-center overflow-hidden rounded-b-[40px] bg-neutral-200 pt-16 md:min-h-[75dvh] md:rounded-b-[60px] md:pt-0"
+      className="relative flex min-h-[50dvh] items-center justify-center overflow-hidden bg-neutral-200 pt-16 md:min-h-[75dvh] md:pt-0"
     >
       {/* Background image */}
       <HeroBackground />
