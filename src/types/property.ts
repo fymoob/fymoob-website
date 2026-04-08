@@ -234,7 +234,7 @@ export interface LoftPropertyRaw {
   FotoDestaqueEmpreendimento?: string;
   URLVideo?: string;
   TemTourVirtual?: string;
-  Foto?: Record<string, { Foto: string; FotoPequena?: string; Ordem?: string; Destaque?: string; Descricao?: string }>;
+  Foto?: Record<string, { Foto: string; FotoPequena?: string; FotoOriginal?: string; Ordem?: string; Destaque?: string; Descricao?: string }>;
 
   // Controle de exibição ("Sim"/"Nao")
   ExibirNoSite?: string;
