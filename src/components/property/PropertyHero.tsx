@@ -54,7 +54,7 @@ export function PropertyHero({
             src={photos[currentSlide]}
             alt=""
             fill
-            className="scale-[1.3] object-cover brightness-[0.3] blur-[30px]"
+            className="scale-[1.3] object-cover brightness-[0.45] blur-[20px] saturate-[1.2]"
             sizes="100vw"
             quality={30}
             aria-hidden="true"
