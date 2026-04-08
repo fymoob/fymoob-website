@@ -161,6 +161,7 @@ export default async function BairroPage({ params }: BairroPageProps) {
               bairroSummaries={bairros}
               tipoSummaries={tipos}
               sticky
+              scope={{ bairro: bairroSlug }}
             />
           </Suspense>
         </div>

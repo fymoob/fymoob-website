@@ -257,4 +257,16 @@
 
 ---
 
+## Bugs Identificados
+
+### BUG-1. SearchBar em paginas dedicadas nao respeita contexto da pagina ✅
+- [x] **Pagina /lancamentos:** ao usar filtros da SearchBar (ex: Localizacao → Curitiba), a contagem e resultados mostram TODOS os imoveis de Curitiba, nao apenas lancamentos
+- [x] Provavelmente afeta TODAS as paginas dedicadas: /lancamentos, /imoveis/[bairro], /apartamentos-curitiba, /casas-curitiba, etc.
+- [x] Os filtros deveriam operar apenas dentro do escopo da pagina (ex: na pagina de lancamentos, so mostrar lancamentos; na pagina de bairro, so imoveis daquele bairro)
+- [x] **Solucao implementada: Opcao (A)** — prop `scope` no SearchBar que injeta filtros fixos em toda busca
+  - Tipo: **RESOLVIDO**
+  - Data: 2026-04-08
+
+---
+
 _Adicionar novas solicitacoes acima desta linha._

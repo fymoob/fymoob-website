@@ -92,7 +92,7 @@ export default async function LancamentosPage() {
 
         <div className="mt-8 mb-8">
           <Suspense fallback={null}>
-            <SearchPageSearchBar bairros={bairros.map((b) => b.bairro)} tipos={allTypes.map((t) => t.tipo)} cidades={cidades} priceBounds={{ min: stats.precoMin ?? 50_000, max: stats.precoMax ?? 5_000_000 }} bairroSummaries={bairros} tipoSummaries={allTypes} sticky />
+            <SearchPageSearchBar bairros={bairros.map((b) => b.bairro)} tipos={allTypes.map((t) => t.tipo)} cidades={cidades} priceBounds={{ min: stats.precoMin ?? 50_000, max: stats.precoMax ?? 5_000_000 }} bairroSummaries={bairros} tipoSummaries={allTypes} sticky scope={{ lancamento: "true" }} />
           </Suspense>
         </div>
 

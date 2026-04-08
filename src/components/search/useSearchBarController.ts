@@ -27,6 +27,8 @@ export interface SearchBarControllerProps {
   targetPath?: string
   bairroSummaries?: BairroSummary[]
   tipoSummaries?: TypeSummary[]
+  /** Fixed params merged into every search (e.g. { lancamento: "true" }) */
+  scope?: Record<string, string>
 }
 
 export interface SearchBarController {
@@ -92,6 +94,7 @@ export function useSearchBarController({
   targetPath = "/busca",
   bairroSummaries,
   tipoSummaries,
+  scope,
 }: SearchBarControllerProps): SearchBarController {
   const router = useRouter()
   const pathname = usePathname()
@@ -322,6 +325,12 @@ export function useSearchBarController({
       : new URLSearchParams()
 
     const params = applyDraftToSearchParams(baseParams, pendingFilters, priceBounds)
+    // Merge scope params (fixed context filters from dedicated pages)
+    if (scope) {
+      for (const [key, value] of Object.entries(scope)) {
+        params.set(key, value)
+      }
+    }
     const query = params.toString()
     const href = query ? `${targetPath}?${query}` : targetPath
     router.push(href, { scroll: false })
@@ -332,6 +341,7 @@ export function useSearchBarController({
     priceBounds,
     router,
     targetPath,
+    scope,
   ])
 
   const applyCodeSearch = useCallback(
@@ -341,9 +351,14 @@ export function useSearchBarController({
 
       const params = new URLSearchParams()
       params.set("codigo", normalized)
+      if (scope) {
+        for (const [key, value] of Object.entries(scope)) {
+          params.set(key, value)
+        }
+      }
       router.push(`${targetPath}?${params.toString()}`, { scroll: false })
     },
-    [router, targetPath]
+    [router, targetPath, scope]
   )
 
   return {

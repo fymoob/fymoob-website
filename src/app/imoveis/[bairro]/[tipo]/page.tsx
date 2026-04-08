@@ -308,6 +308,7 @@ export default async function CombinadaPage({ params }: CombinadaPageProps) {
         bairroSummaries={bairros}
         tipoSummaries={allTypes}
         sticky
+        scope={{ bairro: bairroSlug, ...(tipoKey ? { tipo: tipoKey.toLowerCase() } : {}) }}
       />
       </Suspense>
       </div>

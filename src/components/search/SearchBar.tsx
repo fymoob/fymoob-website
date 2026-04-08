@@ -55,6 +55,8 @@ export interface SearchBarProps {
   targetPath?: string
   className?: string
   context?: "home" | "search"
+  /** Fixed params merged into every search (e.g. { lancamento: "true" }) */
+  scope?: Record<string, string>
 }
 
 interface SegmentTriggerProps extends ComponentPropsWithoutRef<"button"> {
@@ -150,6 +152,7 @@ export function SearchBar({
   targetPath = "/busca",
   className,
   context = "search",
+  scope,
 }: SearchBarProps) {
   const isHome = context === "home"
   const [searchMode, setSearchMode] = useState<SearchMode>("filters")
@@ -186,6 +189,7 @@ export function SearchBar({
     targetPath,
     bairroSummaries,
     tipoSummaries,
+    scope,
   })
   // Ensure "Comprar" default on home sets finalidade=venda
   useEffect(() => {

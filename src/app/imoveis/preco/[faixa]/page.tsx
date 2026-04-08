@@ -152,6 +152,7 @@ export default async function FaixaPrecoPage({ params }: FaixaPageProps) {
         bairroSummaries={bairros}
         tipoSummaries={tipos}
         sticky
+        scope={{ ...(faixa.min ? { precoMin: String(faixa.min) } : {}), ...(faixa.max ? { precoMax: String(faixa.max) } : {}) }}
       />
       </Suspense>
       </div>

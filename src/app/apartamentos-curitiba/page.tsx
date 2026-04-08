@@ -102,6 +102,7 @@ export default async function ApartamentosCuritibaPage() {
               bairroSummaries={bairros}
               tipoSummaries={tipos}
               sticky
+              scope={{ tipo: "apartamento" }}
             />
           </Suspense>
         </div>

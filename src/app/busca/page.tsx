@@ -187,6 +187,8 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
   }
   if (busca) filters.busca = busca
   if (orderBy) filters.orderBy = orderBy
+  const lancamento = getParamValue(searchParams.lancamento)
+  if (lancamento === "true") filters.lancamento = true
 
   const fullQuery = toUrlSearchParams(searchParams).toString()
 
