@@ -2,7 +2,7 @@
 
 > Solicitacoes de alteracao feitas pelo cliente (Bruno).
 > Atualizado: 2026-04-06
-> **Total: 14 solicitacoes** | ACEITO: 4 | AVALIAR: 10 | Implementadas: 14/14 (100%)
+> **Total: 21 solicitacoes** | ACEITO: 4 | AVALIAR: 17 | Implementadas: 16/21 (76%)
 
 ---
 
@@ -168,6 +168,92 @@
   - [x] Mobile: full-screen. Desktop: centralizado max-w-3xl rounded-2xl
   - Tipo: **AVALIAR**
   - Comentario: Implementado como `AdvancedFiltersModal.tsx` — modal completo padrao Airbnb/ImovelWeb. No desktop, pill "Mais filtros (N)" aparece na barra apos Preco. No mobile, botao "Mais filtros" no bottom sheet abre o modal. Zero libs novas, performance intacta.
+
+### 15. Adicionar suites como feature separada nos cards e pagina do imovel ✅
+- [x] Hoje: Área | Quartos | Banheiros | Vagas (suítes não aparece)
+- [x] Referência (site atual fymoob.com): Dormitórios | Banheiros | **Suítes** | Vagas — 4 itens separados
+- [x] Bruno quer diferenciar banheiros de suítes — "banheiro não necessariamente tem chuveiro"
+- [x] Dado `suites` já existe no tipo `Property` e vem da API (`raw.Suites`). Só não é exibido no `PropertyFeatures`
+  - Tipo: **AVALIAR**
+  - Comentario: Mudança simples com alto impacto informativo. Suítes é dado decisivo para comprador — diferencia apto de 3 quartos com 1 suíte vs 3 suítes. Impacto visual mínimo (1 item a mais na feature bar). Referência: site atual e portais (ZAP, ImovelWeb) mostram suítes separado.
+  - Implementacao:
+    1. **PropertyFeatures** (`src/components/shared/PropertyFeatures.tsx`): Adicionar prop `suites?: number | null`. Inserir novo item no array `features` entre Quartos e Banheiros com ícone adequado (ex: `BedSingle` do lucide). Label: "Suíte"/"Suítes". Só aparece se `suites > 0`.
+    2. **Página do imóvel** (`src/app/imovel/[slug]/page.tsx` ~linha 216): Passar `suites={property.suites}` no `<PropertyFeatures>`.
+    3. **Cards de busca** — 5 arquivos que usam PropertyFeatures:
+       - `src/components/property/PropertyCard.tsx` (3 chamadas ~linhas 533, 542, 552)
+       - `src/components/property/card/PropertyCardGrid.tsx` (~linha 190)
+       - `src/components/property/card/PropertyCardList.tsx` (~linha 88)
+       - `src/components/property/card/PropertyCardCompact.tsx` (~linha 148)
+       - `src/components/property/PropertyCardFeatured.tsx` (~linha 48)
+       - `src/components/property/PropertyDetails.tsx` (~linha 37)
+       Todos já recebem `property` — basta adicionar `suites={property.suites}`.
+    4. **PropertyCharacteristics** (`src/components/property/PropertyCharacteristics.tsx`): Remover suítes de lá (já aparecia na ficha técnica, ficaria duplicado).
+  - Data: 2026-04-08
+
+### 16. Remover limite de 15 fotos na galeria do imovel (/imovel/[slug]) ✅
+- [x] Todos os imoveis estao limitados a 15 fotos na galeria
+- [x] API retorna todas as fotos — limite e nosso (`page.tsx` linha 101: `.slice(0, 15)`)
+- [x] Bruno/Wagner solicitaram remover limite para exibir todas as fotos do anuncio
+  - Tipo: **AVALIAR**
+  - Comentario: Limite foi adicionado por performance (menos imagens na galeria = carregamento mais rapido). Fotos usam lazy loading, entao impacto de remover e baixo. Possivel meio-termo: aumentar para 30-40 ou remover completamente. Testar Lighthouse apos mudanca.
+  - Implementacao: `src/app/imovel/[slug]/page.tsx` linha 101 — remover `.slice(0, 15)` ou aumentar limite.
+  - Data: 2026-04-08
+
+### 16. Layout do card de busca — preco sobre imagem vs abaixo (pagina /busca, modo 2 colunas)
+- [ ] Wagner acha que preco em branco sobre a imagem fica "muito poluido visualmente"
+- [ ] Wagner prefere layout "clean e minimalista" com preco e codigo abaixo da imagem
+- [ ] Bruno gostou do layout atual com preco sobre a imagem
+  - Tipo: **AVALIAR**
+  - Comentario: **Opiniao dividida entre socios.** Wagner quer mais clean, Bruno aprovou o atual. Precisa alinhar entre Vinicius, Wagner e Bruno antes de alterar. Possivel solucao: apresentar ambas versoes para decisao final.
+  - Data: 2026-04-08
+
+### 18. BUG: Secao "Destaques de lancamento" mostrando imoveis prontos (Home)
+- [ ] A secao "Destaques de lancamento" na home esta exibindo imoveis que nao sao lancamentos (ex: Sobrado Santa Quiteria cod 69804095, Apto Mobiliado Agua Verde cod 69804752)
+- [ ] Apenas imoveis realmente em fase de lancamento/na planta deveriam aparecer nessa secao
+  - Tipo: **AVALIAR**
+  - Comentario: **Bug de filtro.** Provavel causa: a query que alimenta essa secao nao esta filtrando corretamente por status de lancamento. Pode estar usando apenas `Destaque=true` sem verificar se e lancamento. Investigar campo da API que diferencia lancamento de imovel pronto (ex: `Situacao`, `Status`, `Categoria`, ou campo customizado no CRM).
+  - Investigar:
+    1. **Home** (`src/app/page.tsx`): Verificar qual funcao alimenta a secao "Destaques de lancamento" e quais filtros aplica.
+    2. **API** (`src/services/loft.ts`): Verificar se existe campo que diferencia lancamento de pronto (ex: `Situacao=Lancamento`, `EmConstrucao`, `NaPlanta`, ou similar).
+    3. **Filtro correto:** Cruzar `Destaque` com campo de lancamento para exibir apenas lancamentos destacados.
+  - Data: 2026-04-08
+
+### 19. Secao "Imoveis em Destaque — Prontos para Morar" na Home
+- [ ] Bruno quer carousel na home mostrando imoveis prontos/destaque, referencia J8 Imoveis
+- [ ] Layout: titulo "IMOVEIS EM DESTAQUE | PRONTOS PARA MORAR" + grid/carousel 3 cards com foto, tipo, bairro, codigo, quartos, vagas, area, preco + CTA "Conheca o imovel"
+  - Tipo: **AVALIAR**
+  - Comentario: **Excelente para conversao e SEO.** Mostra imoveis premium logo na home, incentiva clique direto. Referencia J8: carousel com 3 cards visiveis, setas lateral. Precisamos definir criterio de "destaque" — pode ser: imoveis com `Destaque=true` na API, ou os mais caros, ou curadoria manual.
+  - Implementacao:
+    1. **API** (`src/services/loft.ts`): Criar `getFeaturedProperties(limit)` — filtrar imoveis com campo `Destaque` da API ou fallback para os N mais caros/recentes. Campos: foto, tipo, bairro, cidade, codigo, dormitorios, vagas, areaPrivativa, precoVenda.
+    2. **Componente** (`src/components/home/FeaturedProperties.tsx`): Carousel com embla-carousel (ja instalado, dynamic import conforme CLAUDE.md). Grid 3 colunas desktop, 1 mobile com snap scroll. Card: foto aspect-[4/3], badges tipo+cidade, titulo bairro+empreendimento, codigo, features (quartos, vagas, area), preco, link "Conheca o imovel".
+    3. **Home** (`src/app/page.tsx`): Chamar `getFeaturedProperties(9)` no server component. Renderizar `<FeaturedProperties>` entre hero e secao de bairros (ou posicao a definir).
+    4. **SEO**: Cada card com link para `/imovel/[slug]` — gera links internos valiosos.
+    5. **Criterio de destaque**: Perguntar ao Bruno se existe flag "Destaque" no CRM ou se prefere curadoria manual.
+  - Data: 2026-04-08
+
+### 19. Adicionar redes sociais da imobiliaria (Footer)
+- [ ] Bruno solicitou incluir icones das redes sociais: Facebook, Instagram, TikTok
+- [ ] Referencia: icones circulares com link para os perfis oficiais da FYMOOB
+  - Tipo: **AVALIAR**
+  - Comentario: Facil de implementar. Footer ja existe em `src/components/layout/Footer.tsx`. Adicionar secao com icones (lucide ou SVGs) linkando para os perfis. **Depende do Bruno enviar os links** (URLs do Facebook, Instagram, TikTok da FYMOOB).
+  - Implementacao:
+    1. **Footer** (`src/components/layout/Footer.tsx`): Adicionar row de icones sociais com links. Usar SVGs inline para Facebook, Instagram e TikTok (lucide nao tem TikTok).
+    2. **Dados**: URLs dos perfis sociais via constante ou env var. Aguardar Bruno enviar os links.
+    3. **Schema**: Adicionar `sameAs` no JSON-LD Organization (`src/lib/seo.ts`) com as URLs sociais — bom para SEO.
+  - Data: 2026-04-08
+
+### 20. Mover avaliacoes do Google para a Home (prova social)
+- [ ] Bruno: secao "O que nossos clientes dizem" (avaliacoes Google 4.9 estrelas) esta apenas em /sobre, escondida
+- [ ] Quer na Home de forma discreta — cliente que entra pelo site fica na home e nao ve as avaliacoes
+- [ ] "Pesa quando o cliente escolhe a gente" — prova social importa na decisao
+  - Tipo: **AVALIAR**
+  - Comentario: **Faz muito sentido e e otimo para conversao + SEO.** Avaliacoes reais do Google sao prova social forte — 4.9 com 56 avaliacoes e um diferencial real. Na home, posicionar abaixo da secao de bairros ou antes do CTA final. Manter versao compacta: badge Google + nota + 2-3 depoimentos em carousel. Nao duplicar — reutilizar o mesmo componente.
+  - Implementacao:
+    1. **Componente existente**: Verificar se o componente de reviews em `/sobre` ja e isolado ou se esta inline. Se inline, extrair para `src/components/shared/GoogleReviews.tsx`.
+    2. **Home** (`src/app/page.tsx`): Importar e renderizar `<GoogleReviews>` na home. Versao compacta: badge "4.9 (56 avaliacoes)" + carousel horizontal com 3-4 depoimentos. Posicionar entre bairros e FAQ (ou antes do CTA final).
+    3. **Schema**: JSON-LD `AggregateRating` no Organization ja deve existir — verificar se esta correto.
+    4. **Manter em /sobre tambem**: Nao remover, manter nos dois lugares. Home = versao compacta, Sobre = versao completa.
+  - Data: 2026-04-08
 
 ---
 

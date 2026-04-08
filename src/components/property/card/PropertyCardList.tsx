@@ -87,6 +87,7 @@ export function PropertyCardList({
           <div className="mt-auto pt-4">
             <PropertyFeatures
               dormitorios={property.dormitorios}
+              suites={property.suites}
               banheiros={property.banheiros}
               vagas={property.vagas}
               areaPrivativa={property.areaPrivativa}

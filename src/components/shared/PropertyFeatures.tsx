@@ -1,9 +1,10 @@
-import { Bath, BedDouble, Car, Maximize } from "lucide-react"
+import { Bath, BedDouble, BedSingle, Car, Maximize } from "lucide-react"
 
 import { cn, formatArea } from "@/lib/utils"
 
 interface PropertyFeaturesProps {
   dormitorios: number | null
+  suites?: number | null
   banheiros: number | null
   vagas: number | null
   areaPrivativa: number | null
@@ -18,6 +19,7 @@ interface PropertyFeaturesProps {
 
 export function PropertyFeatures({
   dormitorios,
+  suites,
   banheiros,
   vagas,
   areaPrivativa,
@@ -45,6 +47,14 @@ export function PropertyFeatures({
       label: "Quartos",
       shortLabel: "Quartos",
       rawValue: dormitorios,
+    },
+    {
+      icon: BedSingle,
+      value: suites,
+      unit: suites === 1 ? "Suíte" : "Suítes",
+      label: "Suítes",
+      shortLabel: "Suítes",
+      rawValue: suites,
     },
     {
       icon: Bath,

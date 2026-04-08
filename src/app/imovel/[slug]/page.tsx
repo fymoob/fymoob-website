@@ -98,7 +98,7 @@ export default async function PropertyPage({ params }: PageProps) {
   const shortTitle = generateShortTitle(property)
   const hasLongTitle = property.titulo.length > 60
   const mainImage = getPropertyImage(property)
-  const allPhotos = filterPropertyPhotos(property.fotos).slice(0, 15)
+  const allPhotos = filterPropertyPhotos(property.fotos)
   const isDual = property.finalidade === "Venda e Locação" && property.precoVenda && property.precoAluguel
   const isRental = !isDual && property.finalidade !== "Venda"
   const price = isRental ? (property.precoAluguel ?? property.precoVenda) : (property.precoVenda ?? property.precoAluguel)
@@ -215,6 +215,7 @@ export default async function PropertyPage({ params }: PageProps) {
 
               <PropertyFeatures
                 dormitorios={property.dormitorios}
+                suites={property.suites}
                 banheiros={property.banheiros}
                 vagas={property.vagas}
                 areaPrivativa={property.areaPrivativa}

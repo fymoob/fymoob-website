@@ -10,9 +10,6 @@ export function PropertyCharacteristics({ property }: PropertyCharacteristicsPro
   // are already visible in badges and Quick Glance icons
   const items: { label: string; value: string }[] = []
 
-  if (property.suites) {
-    items.push({ label: "Suítes", value: String(property.suites) })
-  }
   if (property.areaTotal && property.areaTotal !== property.areaPrivativa) {
     items.push({ label: "Área total", value: formatArea(property.areaTotal) })
   }

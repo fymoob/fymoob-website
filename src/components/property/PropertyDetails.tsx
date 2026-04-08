@@ -36,6 +36,7 @@ export function PropertyDetails({ property, shortTitle }: PropertyDetailsProps) 
       {/* Specs — clean inline, no pill backgrounds */}
       <PropertyFeatures
         dormitorios={property.dormitorios}
+        suites={property.suites}
         banheiros={property.banheiros}
         vagas={property.vagas}
         areaPrivativa={property.areaPrivativa}

@@ -532,6 +532,7 @@ export function PropertyCard({
         {isCompactCard ? (
           <PropertyFeatures
             dormitorios={property.dormitorios}
+            suites={property.suites}
             banheiros={property.banheiros}
             vagas={property.vagas}
             areaPrivativa={property.areaPrivativa}
@@ -551,6 +552,7 @@ export function PropertyCard({
         ) : (
           <PropertyFeatures
             dormitorios={property.dormitorios}
+            suites={property.suites}
             banheiros={property.banheiros}
             vagas={property.vagas}
             areaPrivativa={property.areaPrivativa}
