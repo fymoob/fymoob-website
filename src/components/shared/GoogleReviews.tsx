@@ -163,7 +163,7 @@ export function GoogleReviews({ variant = "full" }: GoogleReviewsProps) {
       <div className={cn("mt-6", isCompact ? "flex items-center justify-between" : "mt-8 text-center")}>
         {isCompact ? (
           <Link
-            href="/sobre"
+            href="/sobre#avaliacoes"
             className="text-sm font-medium text-brand-primary transition hover:underline"
           >
             Ver todas as avaliações

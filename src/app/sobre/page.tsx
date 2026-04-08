@@ -297,7 +297,7 @@ export default async function SobrePage() {
       </section>
 
       {/* ══════ PROVA SOCIAL — Avaliações Google (reais) ══════ */}
-      <section className="py-20">
+      <section id="avaliacoes" className="py-20 scroll-mt-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <GoogleReviews variant="full" />
         </div>
