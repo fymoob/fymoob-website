@@ -155,10 +155,9 @@ export function PropertyHero({
                       height={930}
                       priority={index === 0}
                       loading={index === 0 ? "eager" : "lazy"}
-                      className="h-auto max-w-full rounded-xl"
+                      className="h-auto w-auto max-h-[52vh] max-w-full rounded-xl"
                       sizes="(max-width: 1400px) 80vw, 1120px"
                       quality={90}
-                      style={{ maxHeight: "52vh" }}
                     />
                   </div>
                 ))}
