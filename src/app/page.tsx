@@ -16,6 +16,7 @@ import { PropertyCard } from "@/components/property/PropertyCard"
 import { PropertyCardFeatured } from "@/components/property/PropertyCardFeatured"
 import { BlogCard } from "@/components/blog/BlogCard"
 import { AnimateOnScroll } from "@/components/shared/AnimateOnScroll"
+import { GoogleReviews } from "@/components/shared/GoogleReviews"
 
 // Dynamic imports — client components that return null for most visitors or are below-the-fold
 const RecentlyViewed = dynamic(
@@ -212,6 +213,15 @@ export default async function Home() {
           </div>
         </section>
       )}
+
+      {/* Avaliações Google — prova social */}
+      <section className="py-10 md:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <AnimateOnScroll>
+            <GoogleReviews variant="compact" />
+          </AnimateOnScroll>
+        </div>
+      </section>
 
       {/* Buscar por tipo */}
       <section className="bg-neutral-50 py-10 md:py-16">

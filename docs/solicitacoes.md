@@ -2,7 +2,7 @@
 
 > Solicitacoes de alteracao feitas pelo cliente (Bruno).
 > Atualizado: 2026-04-06
-> **Total: 21 solicitacoes** | ACEITO: 4 | AVALIAR: 17 | Implementadas: 19/21 (90%)
+> **Total: 21 solicitacoes** | ACEITO: 4 | AVALIAR: 17 | Implementadas: 20/21 (95%)
 
 ---
 
@@ -242,10 +242,10 @@
     3. **Schema**: Adicionar `sameAs` no JSON-LD Organization (`src/lib/seo.ts`) com as URLs sociais — bom para SEO.
   - Data: 2026-04-08
 
-### 20. Mover avaliacoes do Google para a Home (prova social)
-- [ ] Bruno: secao "O que nossos clientes dizem" (avaliacoes Google 4.9 estrelas) esta apenas em /sobre, escondida
-- [ ] Quer na Home de forma discreta — cliente que entra pelo site fica na home e nao ve as avaliacoes
-- [ ] "Pesa quando o cliente escolhe a gente" — prova social importa na decisao
+### 20. Mover avaliacoes do Google para a Home (prova social) ✅
+- [x] Bruno: secao "O que nossos clientes dizem" (avaliacoes Google 4.9 estrelas) esta apenas em /sobre, escondida
+- [x] Quer na Home de forma discreta — cliente que entra pelo site fica na home e nao ve as avaliacoes
+- [x] "Pesa quando o cliente escolhe a gente" — prova social importa na decisao
   - Tipo: **AVALIAR**
   - Comentario: **Faz muito sentido e e otimo para conversao + SEO.** Avaliacoes reais do Google sao prova social forte — 4.9 com 56 avaliacoes e um diferencial real. Na home, posicionar abaixo da secao de bairros ou antes do CTA final. Manter versao compacta: badge Google + nota + 2-3 depoimentos em carousel. Nao duplicar — reutilizar o mesmo componente.
   - Implementacao:
