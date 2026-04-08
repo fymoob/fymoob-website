@@ -36,19 +36,31 @@ function isAllCaps(line: string): boolean {
 
 // Detect lines that START with an ALL CAPS prefix followed by normal text
 // e.g. "INTERESSADOS NA COMPRA: Imóvel pronto e documentado..."
-// e.g. "IMPORTANTE: O valor anunciado é o ALUGUEL LÍQUIDO..."
 const CAPS_PREFIX_RE = /^([A-ZÀ-Ú][A-ZÀ-Ú\s]{3,}:)\s*(.*)/
 
-function renderWithCapsHighlight(text: string): React.ReactNode {
-  const match = CAPS_PREFIX_RE.exec(text)
-  if (match) {
-    return (
-      <>
-        <strong className="font-bold text-slate-900">{match[1]}</strong> {match[2]}
-      </>
-    )
-  }
-  return text
+function hasCapsPrefix(line: string): boolean {
+  return CAPS_PREFIX_RE.test(line)
+}
+
+function splitCapsPrefix(line: string): { prefix: string; rest: string } | null {
+  const match = CAPS_PREFIX_RE.exec(line)
+  if (!match) return null
+  return { prefix: match[1], rest: match[2] }
+}
+
+// Bold ALL CAPS words (2+ uppercase letters) inline within text
+// e.g. "ALUGUEL LÍQUIDO", "ALUGUEL BRUTO"
+function renderWithInlineCaps(text: string): React.ReactNode {
+  // Split on sequences of ALL CAPS words (2+ letters each, possibly multiple words)
+  const parts = text.split(/(\b[A-ZÀ-Ú]{2,}(?:\s+[A-ZÀ-Ú]{2,})*\b)/)
+  if (parts.length === 1) return text
+  return parts.map((part, i) => {
+    const letters = part.replace(/[^a-zA-ZÀ-ÿ]/g, "")
+    if (letters.length >= 2 && letters === letters.toUpperCase()) {
+      return <strong key={i} className="font-bold">{part}</strong>
+    }
+    return part
+  })
 }
 
 function isListItem(line: string): boolean {
@@ -63,6 +75,7 @@ function cleanListItem(line: string): string {
 interface DescriptionBlock {
   type: "paragraph" | "header" | "list"
   content: string       // for paragraph/header
+  subtitle?: string     // for header with trailing text (e.g. "IMPORTANTE: O valor...")
   items?: string[]      // for list
 }
 
@@ -85,6 +98,10 @@ function parseIntoBlocks(descricao: string): DescriptionBlock[] {
     } else if (isListHeader(line) || isAllCaps(line)) {
       flushList()
       blocks.push({ type: "header", content: line })
+    } else if (hasCapsPrefix(line)) {
+      flushList()
+      const split = splitCapsPrefix(line)!
+      blocks.push({ type: "header", content: split.prefix, subtitle: split.rest })
     } else {
       flushList()
       blocks.push({ type: "paragraph", content: line })
@@ -129,6 +146,9 @@ export function PropertyDescription({ descricao }: PropertyDescriptionProps) {
                 className="mt-8 mb-4 text-base font-bold text-slate-900 first:mt-0"
               >
                 {block.content}
+                {block.subtitle && (
+                  <span className="font-normal text-slate-800"> {block.subtitle}</span>
+                )}
               </h3>
             )
           }
@@ -155,7 +175,7 @@ export function PropertyDescription({ descricao }: PropertyDescriptionProps) {
                 i > 0 && "mt-5"
               )}
             >
-              {renderWithCapsHighlight(block.content)}
+              {renderWithInlineCaps(block.content)}
             </p>
           )
         })}
