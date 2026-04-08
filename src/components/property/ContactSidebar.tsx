@@ -47,14 +47,16 @@ export function ContactSidebar({
   valorCondominio,
   valorIptu,
 }: ContactSidebarProps) {
-  const price = precoVenda ?? precoAluguel
-  const isRental = finalidade !== "Venda"
-  const priceLabel = isRental ? "VALOR ALUGUEL" : "VALOR VENDA"
+  const isDual = finalidade === "Venda e Locação" && precoVenda && precoAluguel
+  const isRental = !isDual && finalidade !== "Venda"
+  const price = isRental ? (precoAluguel ?? precoVenda) : (precoVenda ?? precoAluguel)
+  const priceLabel = isDual ? "VALOR VENDA" : isRental ? "VALOR ALUGUEL" : "VALOR VENDA"
   const whatsMessage = `Olá! Tenho interesse no imóvel ${propertyTitle} (Cód: ${propertyCode}).`
   const whatsUrl = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent(whatsMessage)}`
 
-  const totalPacote = isRental && price
-    ? price + (valorCondominio ?? 0) + (valorIptu ?? 0)
+  const rentalBase = isDual ? precoAluguel : isRental ? price : null
+  const totalPacote = rentalBase
+    ? rentalBase + (valorCondominio ?? 0) + (valorIptu ?? 0)
     : null
 
   const [isFavorite, setIsFavorite] = useState(false)
@@ -109,13 +111,18 @@ export function ContactSidebar({
             </p>
             {isRental && <span className="text-sm text-neutral-500">/mês</span>}
           </div>
-          {finalidade === "Venda e Locação" && precoAluguel && (
-            <p className="mt-1 text-sm text-neutral-500">
-              Aluguel: {formatPrice(precoAluguel)}
-            </p>
+          {isDual && (
+            <div className="mt-3 space-y-1.5 border-t border-neutral-100 pt-3">
+              <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
+                VALOR ALUGUEL
+              </p>
+              <p className="text-xl font-bold tracking-tight text-slate-900">
+                {formatPrice(precoAluguel)} <span className="text-sm font-normal text-neutral-500">/mês</span>
+              </p>
+            </div>
           )}
           {/* Rental cost breakdown */}
-          {isRental && (valorCondominio || valorIptu) && (
+          {(isRental || isDual) && (valorCondominio || valorIptu) && (
             <div className="mt-3 space-y-1.5 border-t border-neutral-100 pt-3">
               {valorCondominio && valorCondominio > 0 && (
                 <div className="flex items-center justify-between text-sm">
@@ -129,7 +136,7 @@ export function ContactSidebar({
                   <span className="text-slate-700">{formatPrice(valorIptu)}</span>
                 </div>
               )}
-              {totalPacote && price && totalPacote > price && (
+              {totalPacote && rentalBase && totalPacote > rentalBase && (
                 <div className="flex items-center justify-between border-t border-neutral-100 pt-2">
                   <span className="text-sm font-semibold text-slate-700">Valor total</span>
                   <span className="text-lg font-bold text-slate-900">{formatPrice(totalPacote)}</span>

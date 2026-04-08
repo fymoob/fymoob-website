@@ -99,7 +99,9 @@ export default async function PropertyPage({ params }: PageProps) {
   const hasLongTitle = property.titulo.length > 60
   const mainImage = getPropertyImage(property)
   const allPhotos = filterPropertyPhotos(property.fotos).slice(0, 15)
-  const price = property.precoVenda ?? property.precoAluguel
+  const isDual = property.finalidade === "Venda e Locação" && property.precoVenda && property.precoAluguel
+  const isRental = !isDual && property.finalidade !== "Venda"
+  const price = isRental ? (property.precoAluguel ?? property.precoVenda) : (property.precoVenda ?? property.precoAluguel)
 
   const breadcrumbItems = [
     { name: "Home", url: "/" },
@@ -180,12 +182,19 @@ export default async function PropertyPage({ params }: PageProps) {
 
             {/* Price + specs inline */}
             <div className="mt-4 flex flex-wrap items-center gap-6">
-              <div className="flex items-baseline gap-2">
-                <p className="font-display text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
-                  {formatPrice(price)}
-                </p>
-                {property.finalidade !== "Venda" && (
-                  <span className="text-sm text-neutral-500">/mês</span>
+              <div>
+                <div className="flex items-baseline gap-2">
+                  <p className="font-display text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
+                    {formatPrice(price)}
+                  </p>
+                  {isRental && (
+                    <span className="text-sm text-neutral-500">/mês</span>
+                  )}
+                </div>
+                {isDual && (
+                  <p className="mt-1 text-sm font-semibold text-slate-500">
+                    Aluguel: {formatPrice(property.precoAluguel)} /mês
+                  </p>
                 )}
               </div>
 
@@ -200,7 +209,7 @@ export default async function PropertyPage({ params }: PageProps) {
               />
             </div>
 
-            {property.finalidade !== "Venda" && (property.valorCondominio || property.valorIptu) && (
+            {(isRental || isDual) && (property.valorCondominio || property.valorIptu) && (
               <p className="mt-2 text-sm text-slate-500">
                 {[
                   property.valorCondominio && property.valorCondominio > 0 && `Condomínio: ${formatPrice(property.valorCondominio)}`,
