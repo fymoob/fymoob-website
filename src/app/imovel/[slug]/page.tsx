@@ -262,7 +262,7 @@ export default async function PropertyPage({ params }: PageProps) {
 
           {/* Right sidebar — floats up over hero */}
           <aside className="relative z-30 hidden lg:block">
-            <div className="sticky top-24 -mt-36">
+            <div className="sticky top-24 -mt-16">
               <LazyContactSidebar
                 propertyTitle={property.titulo}
                 propertyCode={property.codigo}
