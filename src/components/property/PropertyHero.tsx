@@ -155,7 +155,7 @@ export function PropertyHero({
                       height={930}
                       priority={index === 0}
                       loading={index === 0 ? "eager" : "lazy"}
-                      className="h-auto w-full object-contain"
+                      className="h-auto w-full rounded-xl object-contain"
                       sizes="(max-width: 1400px) 80vw, 1120px"
                       quality={90}
                       style={{ maxHeight: "750px" }}
