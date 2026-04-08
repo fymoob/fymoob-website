@@ -1,4 +1,4 @@
-import { Bath, BedDouble, BedSingle, Car, Maximize } from "lucide-react"
+import { BedDouble, Car, Maximize, ShowerHead, Toilet } from "lucide-react"
 
 import { cn, formatArea } from "@/lib/utils"
 
@@ -49,7 +49,7 @@ export function PropertyFeatures({
       rawValue: dormitorios,
     },
     {
-      icon: BedSingle,
+      icon: ShowerHead,
       value: suites,
       unit: suites === 1 ? "Suíte" : "Suítes",
       label: "Suítes",
@@ -57,7 +57,7 @@ export function PropertyFeatures({
       rawValue: suites,
     },
     {
-      icon: Bath,
+      icon: Toilet,
       value: banheiros,
       unit: banheiros === 1 ? "Banheiro" : "Banheiros",
       label: "Banheiros",
