@@ -121,7 +121,7 @@ export function PropertyHero({
             backgroundImage: `url(${photos[currentSlide]})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: "blur(12px) brightness(0.4)",
+            filter: "blur(10px) brightness(0.55)",
           }}
           aria-hidden="true"
         />
@@ -130,14 +130,14 @@ export function PropertyHero({
         <div
           className="absolute inset-0"
           style={{
-            background: "radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0.85) 100%)",
+            background: "radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.7) 100%)",
           }}
           aria-hidden="true"
         />
 
         {/* The Focus — centered artwork */}
         <div className="relative z-10 flex items-center justify-center px-10 py-10 lg:px-20 lg:py-12" style={{ minHeight: "72vh" }}>
-          <div className="relative w-full" style={{ maxWidth: "80%" }}>
+          <div className="relative w-full" style={{ maxWidth: "88%" }}>
             {/* Carousel track */}
             <div
               className="overflow-hidden rounded-md"
