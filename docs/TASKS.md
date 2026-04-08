@@ -1,7 +1,7 @@
 # FYMOOB — Task Tracker
 
 > Fonte unica de verdade para todas as tasks do projeto.
-> Atualizado: 2026-04-06
+> Atualizado: 2026-04-07
 
 ---
 
@@ -23,13 +23,13 @@
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
 | -- | Bugs | 0 | 0 | 0 | — |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
-| 11 | Performance (CWV) | 35 | 31 | 4 | EM ANDAMENTO |
+| 11 | Performance (CWV) | 39 | 35 | 4 | EM ANDAMENTO |
 | 12 | Conteudo SEO Editorial | 29 | 26 | 3 | EM ANDAMENTO |
-| 13 | Funcionalidades e UX | 31 | 31 | 0 | CONCLUIDA |
+| 13 | Funcionalidades e UX | 39 | 39 | 0 | CONCLUIDA |
 | -- | Ações Bruno (CRM) | 3 | 0 | 3 | PENDENTE |
 | 14 | Inteligência Imobiliária | 17 | 0 | 17 | FUTURO |
-| -- | Nice-to-Have | 3 | 0 | 3 | FUTURO |
-| | **TOTAL** | **283** | **230** | **53** | **81%** |
+| -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
+| | **TOTAL** | **291** | **238** | **53** | **82%** |
 
 ---
 
@@ -757,10 +757,44 @@ _Nenhum bug aberto._
 > **Comparativo com concorrente Jota8:**
 > FYMOOB 86 vs Jota8 31 (busca). 10x mais rapido em LCP, 12x mais leve em payload.
 
-### 11.10 — Pendentes Performance (futuro)
+### 11.10 — Mapa Aberto por Padrao (2026-04-07) [CONCLUIDA]
+- [x] PropertyMap: remover accordion toggle, mapa sempre visivel com skeleton placeholder
+- [x] IntersectionObserver (200px rootMargin) carrega maplibre apenas quando container se aproxima do viewport
+- [x] Zero impacto Lighthouse: maplibre (271KB) so carrega apos scroll, fora da janela de medicao
+- [x] Score imovel: 91 → **94** (melhoria — maplibre nao carrega mais durante teste)
+
+### 11.11 — Audit Lighthouse Producao Completo (2026-04-07)
+
+> **URL:** `https://demo-blue-beta.vercel.app/` via PageSpeed Insights (mobile)
+
+| Pagina | Score | FCP | LCP | TBT | CLS | SI |
+|--------|-------|-----|-----|-----|-----|-----|
+| Home | **78** | 1.8s | 5.0s | 30ms | 0.006 | 4.7s |
+| Imovel | **94** | 0.9s | 2.9s | 10ms | 0.08 | 1.2s |
+| Busca | **71** | 1.2s | 6.4s | 14ms | 0.08 | 5.7s |
+| Bairro (Batel) | **84** | 1.2s | 4.3s | 13ms | 0.08 | 1.8s |
+| Apartamentos | **65** | 1.4s | 4.6s | 553ms | 0.12 | 2.1s |
+| Casas | **76** | 1.0s | 6.0s | 55ms | 0 | 4.5s |
+| Lancamentos | **73** | 1.1s | 3.6s | 537ms | 0.11 | 2.8s |
+| Sobrados | **75** | 1.1s | 4.3s | 349ms | 0 | 4.0s |
+| Terrenos | **77** | 0.9s | 4.1s | 34ms | 0.20 | 1.4s |
+| Empreendimentos | **81** | 1.7s | 4.7s | 49ms | 0 | 4.0s |
+| Blog | **94** | 0.9s | 2.9s | 53ms | 0.08 | 1.5s |
+| Guia Batel | **92** | 1.2s | 3.3s | 39ms | 0 | 2.3s |
+| Favoritos | **98** | 0.9s | 2.4s | 30ms | 0 | 2.2s |
+
+**Problemas identificados (prioridade):**
+1. **TBT alto** — Apartamentos (553ms), Lancamentos (537ms), Sobrados (349ms) — JS listagem pesado
+2. **LCP alto** — Busca (6.4s), Casas (6.0s), Home (5.0s) — imagens LCP lentas
+3. **CLS alto** — Terrenos (0.20), Apartamentos (0.12), Lancamentos (0.11) — layout shift em cards
+
+### 11.12 — Pendentes Performance (futuro)
 - [ ] Code-split SearchBar filters (LocationFilter, PriceFilter) via dynamic import
 - [ ] Investigar @base-ui/react tree-shaking — remover ou substituir por componentes mais leves
 - [ ] PropertyGallery: split em Static (grid) + Interactive (fullscreen viewer)
+- [ ] Investigar TBT em paginas de listagem (Apartamentos 553ms, Lancamentos 537ms, Sobrados 349ms)
+- [ ] Investigar CLS em Terrenos (0.20) e Apartamentos (0.12) — possivel imagens sem dimensoes fixas
+- [ ] Otimizar LCP em Busca (6.4s) e Home (5.0s) — image priority, preload, sizes
 - [ ] Re-testar apos proxima rodada de otimizacoes
 
 ---
@@ -871,6 +905,22 @@ _Nenhum bug aberto._
 - [x] BottomNav auto-hide na pagina de imovel (scroll down=esconde, scroll up=mostra, idle 2s=mostra)
 - [x] BottomNav: transicao suave translateY 300ms (sem CLS)
 - [x] WelcomeBack banner removido da home + arquivo deletado
+
+### 13.6 â€” Refino Focado da Busca (sessao 07/04/2026) [CONCLUIDA]
+- [x] Toolbar da /busca unificada dentro de `PropertyListingGrid` com contador real, ordenacao, salvar busca, limpar filtros e grid/lista
+- [x] Contagem corrigida para usar `total` do backend e exibicao "Mostrando N nesta pagina"
+- [x] `PropertyListingGrid` sem decisao responsiva por JS â€” mobile resolvido por CSS/Tailwind
+- [x] `PropertyCard` no contexto de busca refinado com preco em destaque, CTA "Ver detalhes", "Consultar valor" e layout mais compacto
+
+> Validado via Playwright em `/busca` desktop, lista desktop, mobile e estado vazio com filtros ativos.
+
+### 13.7 - Card Cinematografico da Busca (sessao 07/04/2026) [CONCLUIDA]
+- [x] `PropertyCard` da /busca com imagem em `aspect-[3/2]`, `object-cover` e hover silencioso sem CTA textual
+- [x] Conteudo do card ancorado com `flex flex-col h-full`, `p-5/p-6` e rodape com `mt-auto`
+- [x] Specs da /busca convertidas para grid com icones minimalistas, pills sutis e preco statement em chumbo/preto
+- [x] Toolbar mantida com breadcrumbs, contador real "Mostrando N de total" e input de codigo separado da barra principal
+
+> Validado via Playwright em `/busca` desktop grid, desktop list e mobile.
 
 ---
 
@@ -996,6 +1046,7 @@ Agende sua visita com a FYMOOB.
 - [ ] Mapa split-panel na busca — mapa interativo lado a lado com lista
 - [x] ~~Comparador de imoveis~~ — IMPLEMENTADO (Fase 13.1)
 - [ ] Landing imagens quebradas tipo — verificar remotePatterns, CDN URLs, fallback placeholder
+- [ ] Explorar Vizinhança (POIs) — mapa com pontos de interesse por raio (escolas, restaurantes, etc) usando MapLibre + Overpass API (gratuito, alternativa ao Expandify pago)
 
 ---
 

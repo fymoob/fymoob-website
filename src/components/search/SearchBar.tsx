@@ -88,7 +88,7 @@ const SegmentTrigger = forwardRef<HTMLButtonElement, SegmentTriggerProps>(
         type="button"
         className={cn(
           "group flex h-14 w-full min-w-0 items-center gap-2 px-1 text-left transition-colors md:px-5",
-          withDivider && "md:border-r md:border-neutral-200",
+          withDivider && "md:border-r md:border-slate-200",
           className
         )}
         {...buttonProps}
@@ -166,7 +166,6 @@ export function SearchBar({
     setPendingFilters,
     bairroOptions,
     cidadeOptions,
-    tipoOptions,
     filteredTipoOptions,
     groupedBairroOptions,
     cidadeSummaries,
@@ -215,7 +214,7 @@ export function SearchBar({
     if (maxPrice < priceBounds.max) params.set("precoMax", String(maxPrice))
     const query = params.toString()
     heroRouter.push(query ? `/lancamentos?${query}` : "/lancamentos")
-  }, [pendingFilters.bairros, pendingFilters.cidades, pendingFilters.quartos, minPrice, maxPrice, priceBounds, heroRouter])
+  }, [pendingFilters.bairros, pendingFilters.cidades, pendingFilters.quartos, pendingFilters.tipos, minPrice, maxPrice, priceBounds, heroRouter])
 
   const applyFilters = isLancamentos ? applyLancamentosSearch : applyFiltersBase
 
@@ -267,11 +266,15 @@ export function SearchBar({
 
   // Chip definitions for mobile — order: Finalidade → Location → Tipo → Quartos → Preço
   const chips = [
-    {
-      label: finalidadeLabel,
-      active: pendingFilters.finalidades.length > 0,
-      icon: Building2,
-    },
+    ...(pendingFilters.finalidades.includes("locacao")
+      ? [
+          {
+            label: finalidadeLabel,
+            active: true,
+            icon: Building2,
+          },
+        ]
+      : []),
     {
       label: pendingFilters.bairros.length > 0 || pendingFilters.cidades.length > 0
         ? locationLabel : "Localização",
@@ -295,6 +298,11 @@ export function SearchBar({
       icon: Tag,
     },
   ]
+
+  const secondaryControlsClass = isHome
+    ? "text-white/80 hover:text-white"
+    : "text-neutral-500 hover:text-neutral-800"
+  const secondarySeparatorClass = isHome ? "text-white/30" : "text-neutral-300"
 
   return (
     <>
@@ -532,7 +540,7 @@ export function SearchBar({
                 : "pointer-events-none absolute inset-x-0 top-0 mx-auto max-w-[60%] opacity-0"
             )}
           >
-            <div className="w-full max-w-full rounded-3xl border border-neutral-200 bg-white p-4 shadow-sm md:rounded-full md:p-0 md:shadow-lg">
+            <div className="w-full max-w-full rounded-3xl border border-slate-200/80 bg-white p-4 shadow-sm md:rounded-full md:p-0 md:shadow-xl md:shadow-slate-200/50">
               <div className={cn(
                 "flex flex-col md:items-center md:gap-0",
                 isHome
@@ -768,25 +776,36 @@ export function SearchBar({
           </div>
         </div>
 
-        <div className="mt-4 flex items-center justify-center gap-4">
+        <div className={cn(
+          "mt-2 flex items-center gap-4",
+          isHome ? "justify-center" : "justify-end"
+        )}>
           <button
             type="button"
             onClick={() =>
               setSearchMode((current) => (current === "filters" ? "code" : "filters"))
             }
-            className="inline-flex items-center gap-2 text-sm text-white/80 transition-colors hover:text-white"
+            className={cn(
+              "inline-flex items-center gap-1.5 text-sm transition-colors cursor-pointer",
+              isHome
+                ? secondaryControlsClass
+                : "text-slate-500 hover:text-brand-primary"
+            )}
           >
-            <Search className="size-4" />
+            <Search className="size-3.5" />
             {modeToggleLabel}
           </button>
 
-          {hasAnyFilter && searchMode === "filters" && (
+          {isHome && hasAnyFilter && searchMode === "filters" && (
             <>
-              <span className="text-white/30">|</span>
+              <span className={secondarySeparatorClass}>|</span>
               <button
                 type="button"
                 onClick={clearAllFilters}
-                className="inline-flex items-center gap-1.5 text-sm text-white/80 transition-colors hover:text-white"
+                className={cn(
+                  "inline-flex items-center gap-1.5 text-sm transition-colors",
+                  secondaryControlsClass
+                )}
               >
                 <X className="size-3.5" />
                 Limpar filtros

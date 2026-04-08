@@ -1,0 +1,138 @@
+"use client"
+
+import Image from "next/image"
+import Link from "next/link"
+import { Heart } from "lucide-react"
+
+import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
+import { cn } from "@/lib/utils"
+import type { Property } from "@/types/property"
+import { usePropertyCard } from "./hooks/usePropertyCard"
+
+interface PropertyCardListProps {
+  property: Property
+  prioritizeFirstImage?: boolean
+}
+
+export function PropertyCardList({
+  property,
+  prioritizeFirstImage = false,
+}: PropertyCardListProps) {
+  const {
+    alt,
+    hasPrice,
+    displayPrice,
+    displayPhotos,
+    badge,
+    isFavorite,
+    propertyHref,
+    loadPhotosOnHover,
+    toggleFavorite,
+  } = usePropertyCard(property)
+
+  return (
+    <article
+      onMouseEnter={loadPhotosOnHover}
+      className="group relative flex overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition-all duration-300 hover:border-slate-300 hover:shadow-xl"
+    >
+      {/* Image — fixed width, clean */}
+      <div className="relative w-[300px] shrink-0 self-stretch overflow-hidden">
+        <Image
+          src={displayPhotos[0]}
+          alt={alt}
+          fill
+          priority={prioritizeFirstImage}
+          loading={prioritizeFirstImage ? "eager" : "lazy"}
+          className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-105"
+          sizes="300px"
+        />
+
+        {/* Badge only */}
+        {badge && (
+          <span
+            className={cn(
+              "absolute left-3 top-3 z-20 rounded-md px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-white",
+              badge.color
+            )}
+          >
+            {badge.text}
+          </span>
+        )}
+      </div>
+
+      {/* Content — 2 column layout */}
+      <div className="flex min-w-0 flex-1 flex-row justify-between p-6">
+        {/* Left: Info */}
+        <div className="flex min-w-0 flex-1 flex-col">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-slate-100/90 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">
+              {property.tipo}
+            </span>
+            {property.bairro && (
+              <span className="rounded-full bg-slate-100/90 px-2.5 py-1 text-[11px] font-medium text-slate-500">
+                {property.bairro}
+              </span>
+            )}
+          </div>
+
+          <h2 className="mt-3 line-clamp-2 text-lg font-semibold leading-snug tracking-tight text-slate-800 transition-colors group-hover:text-slate-600">
+            {property.titulo}
+          </h2>
+
+          <div className="mt-auto pt-4">
+            <PropertyFeatures
+              dormitorios={property.dormitorios}
+              banheiros={property.banheiros}
+              vagas={property.vagas}
+              areaPrivativa={property.areaPrivativa}
+              cardCompact
+            />
+          </div>
+        </div>
+
+        {/* Right: Conversion */}
+        <div className="flex flex-col items-end justify-between pl-6">
+          <button
+            type="button"
+            onClick={toggleFavorite}
+            className="group/wishlist z-20 inline-flex size-9 items-center justify-center transition-transform hover:scale-110"
+            aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+            aria-pressed={isFavorite}
+          >
+            <Heart
+              className={cn(
+                "size-5 stroke-[2px] drop-shadow-sm transition-all duration-200",
+                isFavorite
+                  ? "scale-110 fill-brand-primary stroke-brand-primary"
+                  : "fill-transparent stroke-slate-300 group-hover/wishlist:stroke-slate-400"
+              )}
+            />
+          </button>
+
+          <div className="flex flex-col items-end gap-1">
+            <span className="text-xs font-medium uppercase text-slate-400">
+              {property.codigo}
+            </span>
+            <p
+              className={cn(
+                "text-2xl font-extrabold tracking-tight",
+                hasPrice ? "text-slate-900" : "text-slate-500"
+              )}
+            >
+              {displayPrice}
+              {property.finalidade !== "Venda" && hasPrice && (
+                <span className="text-sm font-normal text-neutral-500"> /mês</span>
+              )}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <Link
+        href={propertyHref}
+        className="absolute inset-0 z-10"
+        aria-label={`Ver detalhes de ${property.titulo}`}
+      />
+    </article>
+  )
+}

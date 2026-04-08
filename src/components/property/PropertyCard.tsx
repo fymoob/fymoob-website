@@ -3,62 +3,50 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { ChevronLeft, ChevronRight, Heart, Clock } from "lucide-react"
+import { ChevronLeft, ChevronRight, Heart } from "lucide-react"
 
-import type { Property } from "@/types/property"
+import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
+import { getTopViewedCodes } from "@/lib/view-tracker"
 import {
   cn,
   filterPropertyPhotos,
   formatPrice,
   generateImageAlt,
   getPropertyImage,
-  truncateText,
 } from "@/lib/utils"
-import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
-// CSS scroll-snap carousel — no embla dependency (~50KB saved)
-import { getTopViewedCodes } from "@/lib/view-tracker"
+import type { Property } from "@/types/property"
 
 const WISHLIST_STORAGE_KEY = "fymoob:wishlist"
 const RECENT_STORAGE_KEY = "fymoob:recent"
 const RECENT_MAX = 8
+const MAX_CARD_PHOTOS = 5
 
-// ---------------------------------------------------------------------------
-// Badge logic
-// ---------------------------------------------------------------------------
-
-function getBadge(property: Property, topViewed?: Set<string>): { text: string; color: string } | null {
-  // Priority: NOVO > LANÇAMENTO > MAIS VISTO
+function getBadge(
+  property: Property,
+  topViewed?: Set<string>
+): { text: string; color: string } | null {
   if (property.dataCadastro) {
     const days = Math.floor(
-      (Date.now() - new Date(property.dataCadastro).getTime()) / (1000 * 60 * 60 * 24)
+      (Date.now() - new Date(property.dataCadastro).getTime()) /
+        (1000 * 60 * 60 * 24)
     )
     if (days <= 7) return { text: "NOVO", color: "bg-emerald-500" }
   }
 
-  if (property.lancamento) return { text: "LANÇAMENTO", color: "bg-slate-900" }
+  if (property.lancamento) {
+    return { text: "LANÇAMENTO", color: "bg-slate-900" }
+  }
 
-  if (topViewed?.has(property.codigo)) return { text: "MAIS VISTO", color: "bg-neutral-900/80 backdrop-blur-sm" }
+  if (topViewed?.has(property.codigo)) {
+    return { text: "MAIS VISTO", color: "bg-neutral-900/80 backdrop-blur-sm" }
+  }
 
   return null
 }
-
-function getDaysAgo(date: string | null): string | null {
-  if (!date) return null
-  const days = Math.floor(
-    (Date.now() - new Date(date).getTime()) / (1000 * 60 * 60 * 24)
-  )
-  if (days === 0) return "Hoje"
-  if (days === 1) return "Ontem"
-  if (days <= 30) return `Há ${days} dias`
-  return null
-}
-
-// ---------------------------------------------------------------------------
-// Recently viewed
-// ---------------------------------------------------------------------------
 
 export function saveToRecentlyViewed(property: Property) {
   if (typeof window === "undefined") return
+
   try {
     const raw = localStorage.getItem(RECENT_STORAGE_KEY)
     const recent: Array<{
@@ -71,7 +59,7 @@ export function saveToRecentlyViewed(property: Property) {
       timestamp: number
     }> = raw ? JSON.parse(raw) : []
 
-    const filtered = recent.filter((r) => r.codigo !== property.codigo)
+    const filtered = recent.filter((item) => item.codigo !== property.codigo)
     filtered.unshift({
       codigo: property.codigo,
       slug: property.slug,
@@ -87,7 +75,7 @@ export function saveToRecentlyViewed(property: Property) {
       JSON.stringify(filtered.slice(0, RECENT_MAX))
     )
   } catch {
-    // ignore
+    // Ignore local storage failures.
   }
 }
 
@@ -101,6 +89,7 @@ export function getRecentlyViewed(): Array<{
   timestamp: number
 }> {
   if (typeof window === "undefined") return []
+
   try {
     const raw = localStorage.getItem(RECENT_STORAGE_KEY)
     return raw ? JSON.parse(raw) : []
@@ -109,15 +98,13 @@ export function getRecentlyViewed(): Array<{
   }
 }
 
-// ---------------------------------------------------------------------------
-// Wishlist helpers
-// ---------------------------------------------------------------------------
-
 function getWishlistCodes(): Set<string> {
   if (typeof window === "undefined") return new Set<string>()
+
   try {
     const raw = window.localStorage.getItem(WISHLIST_STORAGE_KEY)
     if (!raw) return new Set<string>()
+
     const parsed = JSON.parse(raw)
     return Array.isArray(parsed)
       ? new Set(parsed.filter((item): item is string => typeof item === "string"))
@@ -129,9 +116,11 @@ function getWishlistCodes(): Set<string> {
 
 export function getWishlistProperties(): string[] {
   if (typeof window === "undefined") return []
+
   try {
     const raw = window.localStorage.getItem(WISHLIST_STORAGE_KEY)
     if (!raw) return []
+
     const parsed = JSON.parse(raw)
     return Array.isArray(parsed) ? parsed : []
   } catch {
@@ -139,30 +128,21 @@ export function getWishlistProperties(): string[] {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Photo helpers
-// ---------------------------------------------------------------------------
-
-const MAX_CARD_PHOTOS = 5
-
 function getPropertyPhotos(property: Property): string[] {
-  const merged = [getPropertyImage(property), ...filterPropertyPhotos(property.fotos)].filter(
-    Boolean
-  )
+  const merged = [getPropertyImage(property), ...filterPropertyPhotos(property.fotos)]
+    .filter(Boolean)
   const uniquePhotos = Array.from(new Set(merged))
   const photos = uniquePhotos.length > 0 ? uniquePhotos : ["/logo.png"]
+
   return photos.slice(0, MAX_CARD_PHOTOS)
 }
-
-// ---------------------------------------------------------------------------
-// PropertyCard
-// ---------------------------------------------------------------------------
 
 interface PropertyCardProps {
   property: Property
   prioritizeFirstImage?: boolean
   variant?: "vertical" | "horizontal" | "responsive"
   compactFeatures?: boolean
+  context?: "default" | "search"
 }
 
 export function PropertyCard({
@@ -170,13 +150,11 @@ export function PropertyCard({
   prioritizeFirstImage = false,
   variant = "vertical",
   compactFeatures = false,
+  context = "default",
 }: PropertyCardProps) {
-  const articleRef = useRef<HTMLElement>(null)
   const alt = generateImageAlt(property)
   const price = property.precoVenda ?? property.precoAluguel
   const photos = useMemo(() => getPropertyPhotos(property), [property])
-  const daysAgo = useMemo(() => getDaysAgo(property.dataCadastro), [property.dataCadastro])
-
   const [topViewed, setTopViewed] = useState<Set<string>>(new Set())
   useEffect(() => {
     const load = () => setTopViewed(getTopViewedCodes())
@@ -186,19 +164,19 @@ export function PropertyCard({
       load()
     }
   }, [])
-  const badge = useMemo(() => getBadge(property, topViewed), [property, topViewed])
 
+  const badge = useMemo(() => getBadge(property, topViewed), [property, topViewed])
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isFavorite, setIsFavorite] = useState(false)
-
-  // Lazy-load extra photos on first hover (only if we have 1 photo)
   const [dynamicPhotos, setDynamicPhotos] = useState<string[] | null>(null)
   const fetchedRef = useRef(false)
+
   const loadPhotosOnHover = useCallback(() => {
     if (fetchedRef.current || photos.length > 1) return
+
     fetchedRef.current = true
     fetch(`/api/photos/${property.codigo}`)
-      .then((r) => r.ok ? r.json() : [])
+      .then((response) => (response.ok ? response.json() : []))
       .then((apiPhotos: string[]) => {
         if (apiPhotos.length > 1) {
           setDynamicPhotos(apiPhotos)
@@ -219,9 +197,19 @@ export function PropertyCard({
     }
   }, [property.codigo])
 
-  // No auto-cycle — carousel navigates only via arrow clicks
-
   const propertyHref = `/imovel/${property.slug}`
+  const isHorizontal = variant === "horizontal"
+  const isResponsive = variant === "responsive"
+  const isSearchContext = context === "search"
+  const isCompactCard = compactFeatures && !isHorizontal && !isResponsive
+  const useInlineFeatures =
+    (isResponsive || compactFeatures || (isHorizontal && !isSearchContext)) && !isCompactCard
+  const hasPrice = price !== null && price > 0
+  const displayPrice = hasPrice
+    ? formatPrice(price)
+    : isSearchContext
+      ? "Consultar valor"
+      : formatPrice(price)
 
   const toggleFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
@@ -249,13 +237,15 @@ export function PropertyCard({
   const goPrev = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     event.stopPropagation()
-    setCurrentSlide((prev) => prev <= 0 ? displayPhotos.length - 1 : prev - 1)
+    setCurrentSlide((previous) =>
+      previous <= 0 ? displayPhotos.length - 1 : previous - 1
+    )
   }
 
   const goNext = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     event.stopPropagation()
-    setCurrentSlide((prev) => (prev + 1) % displayPhotos.length)
+    setCurrentSlide((previous) => (previous + 1) % displayPhotos.length)
   }
 
   const goToSlide = (index: number, event: React.MouseEvent<HTMLButtonElement>) => {
@@ -264,32 +254,37 @@ export function PropertyCard({
     setCurrentSlide(index)
   }
 
-  const isHorizontal = variant === "horizontal"
-  const isResponsive = variant === "responsive"
-  const useInlineFeatures = isHorizontal || isResponsive || compactFeatures
-
   return (
     <article
-      ref={articleRef}
       onMouseEnter={loadPhotosOnHover}
       className={cn(
-        "group overflow-hidden transition-all duration-300",
+        "group relative overflow-hidden transition-all duration-300",
         isResponsive
-          ? "flex flex-row sm:flex-col rounded-2xl border border-neutral-200 bg-white hover:shadow-lg sm:hover:-translate-y-1.5 sm:hover:border-brand-primary/30 sm:hover:shadow-2xl"
+          ? "flex flex-row rounded-2xl border border-neutral-200 bg-white hover:shadow-lg sm:flex-col sm:hover:-translate-y-1.5 sm:hover:border-brand-primary/30 sm:hover:shadow-2xl"
           : isHorizontal
-            ? "flex flex-col sm:flex-row rounded-2xl border border-neutral-200 bg-white hover:shadow-lg sm:hover:shadow-xl"
-            : "flex flex-col rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+            ? "flex flex-col rounded-2xl border border-neutral-200 bg-white hover:shadow-lg sm:flex-row sm:hover:shadow-xl"
+            : isSearchContext
+              ? "flex h-full flex-col rounded-2xl border border-neutral-200 bg-white shadow-sm hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl"
+              : isCompactCard
+                ? "flex h-full flex-col rounded-2xl border border-slate-200 bg-white shadow-md hover:-translate-y-1.5 hover:shadow-xl"
+                : "flex flex-col rounded-xl border border-slate-200 bg-white shadow-sm hover:-translate-y-1 hover:shadow-xl"
       )}
     >
-      {/* Photo section */}
-      <div className={cn(
-        "relative overflow-hidden",
-        isResponsive
-          ? "w-28 shrink-0 self-stretch sm:w-full sm:shrink sm:self-auto sm:aspect-[4/3]"
-          : isHorizontal ? "aspect-[4/3] sm:aspect-auto sm:w-2/5 sm:min-h-[250px] sm:shrink-0 sm:self-stretch" : "aspect-[21/9] max-h-[400px] xl:max-h-[480px]"
-      )}>
-        {(isHorizontal && !isResponsive) ? (
-          /* Horizontal: single image, no carousel */
+      <div
+        className={cn(
+          "relative overflow-hidden",
+          isResponsive
+            ? "w-28 shrink-0 self-stretch sm:w-full sm:shrink sm:self-auto sm:aspect-[4/3]"
+            : isHorizontal
+              ? "aspect-[4/3] sm:aspect-auto sm:min-h-[250px] sm:w-2/5 sm:shrink-0 sm:self-stretch"
+              : isSearchContext
+                ? "aspect-[16/9]"
+                : isCompactCard
+                  ? "aspect-[16/10]"
+                  : "aspect-[21/9] max-h-[400px] xl:max-h-[480px]"
+        )}
+      >
+        {isHorizontal && !isResponsive ? (
           <Image
             src={displayPhotos[0]}
             alt={alt}
@@ -300,80 +295,105 @@ export function PropertyCard({
             sizes="(max-width: 640px) 100vw, 40vw"
           />
         ) : (
-          /* Transform-based carousel — no scroll, no library */
           <div className="relative h-full w-full overflow-hidden">
             <div
               className="flex h-full transition-transform duration-300 ease-out"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
-            {displayPhotos.map((photo, index) => {
-              const shouldPrioritize = prioritizeFirstImage && index === 0
-              return (
-                <div key={`${property.codigo}-${index}`} className="relative h-full min-w-full shrink-0 overflow-hidden">
-                  <Image
-                    src={photo}
-                    alt={`${alt} - foto ${index + 1}`}
-                    fill
-                    priority={shouldPrioritize}
-                    loading={shouldPrioritize ? "eager" : "lazy"}
-                    className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-110"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                  />
-                </div>
-              )
-            })}
+              {displayPhotos.map((photo, index) => {
+                const shouldPrioritize = prioritizeFirstImage && index === 0
+                return (
+                  <div
+                    key={`${property.codigo}-${index}`}
+                    className="relative h-full min-w-full shrink-0 overflow-hidden"
+                  >
+                    <Image
+                      src={photo}
+                      alt={`${alt} - foto ${index + 1}`}
+                      fill
+                      priority={shouldPrioritize}
+                      loading={shouldPrioritize ? "eager" : "lazy"}
+                      className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-110"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                    />
+                  </div>
+                )
+              })}
             </div>
           </div>
         )}
 
         <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/40 to-transparent" />
+        {isSearchContext && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/60 via-black/25 to-transparent" />
+        )}
 
-        {/* Badge */}
         {badge && (
           <span
             className={cn(
               "absolute z-20 font-semibold uppercase text-white",
               badge.color,
-              (isHorizontal || isResponsive)
-                ? "top-1.5 left-1.5 rounded-full px-1.5 py-0.5 text-[8px] tracking-wider shadow-md sm:top-3 sm:left-3 sm:px-2.5 sm:py-1 sm:text-[11px]"
-                : "top-3 left-3 rounded-md px-2.5 py-1 text-[10px] tracking-widest"
+              isHorizontal || isResponsive
+                ? "left-1.5 top-1.5 rounded-full px-1.5 py-0.5 text-[8px] tracking-wider shadow-md sm:left-3 sm:top-3 sm:px-2.5 sm:py-1 sm:text-[11px]"
+                : "left-3 top-3 rounded-md px-2.5 py-1 text-[10px] tracking-widest"
             )}
           >
             {badge.text}
           </span>
         )}
 
-        {/* Wishlist heart */}
-        <button
-          type="button"
-          onClick={toggleFavorite}
-          className={cn(
-            "group/wishlist absolute z-20 inline-flex items-center justify-center transition-transform hover:scale-110",
-            (isHorizontal || isResponsive)
-              ? "top-1.5 right-1.5 size-6 sm:top-3 sm:right-3 sm:size-9"
-              : "top-3 right-3 size-9"
-          )}
-          aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
-          aria-pressed={isFavorite}
-        >
-          <Heart
+        {!isCompactCard && (
+          <button
+            type="button"
+            onClick={toggleFavorite}
             className={cn(
-              "text-transparent stroke-white stroke-[2px] drop-shadow-lg transition-all duration-200",
-              (isHorizontal || isResponsive) ? "size-3.5 sm:size-5" : "size-5",
-              isFavorite
-                ? "fill-brand-primary stroke-brand-primary text-brand-primary scale-110"
-                : "group-hover/wishlist:fill-brand-primary/90 group-hover/wishlist:stroke-brand-primary"
+              "group/wishlist absolute z-20 inline-flex items-center justify-center transition-transform hover:scale-110",
+              isHorizontal || isResponsive
+                ? "right-1.5 top-1.5 size-6 sm:right-3 sm:top-3 sm:size-9"
+                : "right-3 top-3 size-9"
             )}
-          />
-        </button>
+            aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+            aria-pressed={isFavorite}
+          >
+            <Heart
+              className={cn(
+                "text-transparent stroke-white stroke-[2px] drop-shadow-lg transition-all duration-200",
+                isHorizontal || isResponsive ? "size-3.5 sm:size-5" : "size-5",
+                isFavorite
+                  ? "fill-brand-primary stroke-brand-primary text-brand-primary scale-110"
+                  : "group-hover/wishlist:fill-brand-primary/90 group-hover/wishlist:stroke-brand-primary"
+              )}
+            />
+          </button>
+        )}
 
-        {/* Carousel controls — only show if multiple photos available */}
-        {!isHorizontal && displayPhotos.length > 1 && (
+        {isCompactCard && displayPhotos.length > 1 && (
           <>
             <button
               type="button"
               onClick={goPrev}
-              className="absolute top-1/2 left-3 z-20 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition hover:bg-black/60 sm:opacity-0 sm:group-hover:opacity-100 sm:inline-flex"
+              className="absolute left-2 top-1/2 z-20 hidden size-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm transition hover:bg-white/40 sm:inline-flex sm:opacity-0 sm:group-hover:opacity-100"
+              aria-label="Foto anterior"
+            >
+              <ChevronLeft className="size-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={goNext}
+              className="absolute right-2 top-1/2 z-20 hidden size-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm transition hover:bg-white/40 sm:inline-flex sm:opacity-0 sm:group-hover:opacity-100"
+              aria-label="Proxima foto"
+            >
+              <ChevronRight className="size-3.5" />
+            </button>
+          </>
+        )}
+
+        {!isHorizontal && !isCompactCard && displayPhotos.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={goPrev}
+              className="absolute left-3 top-1/2 z-20 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition hover:bg-black/60 sm:inline-flex sm:opacity-0 sm:group-hover:opacity-100"
               aria-label="Foto anterior"
             >
               <ChevronLeft className="size-4" />
@@ -382,13 +402,16 @@ export function PropertyCard({
             <button
               type="button"
               onClick={goNext}
-              className="absolute top-1/2 right-3 z-20 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition hover:bg-black/60 sm:opacity-0 sm:group-hover:opacity-100 sm:inline-flex"
+              className="absolute right-3 top-1/2 z-20 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition hover:bg-black/60 sm:inline-flex sm:opacity-0 sm:group-hover:opacity-100"
               aria-label="Proxima foto"
             >
               <ChevronRight className="size-4" />
             </button>
 
-            <div className="absolute bottom-2.5 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-1 rounded-full bg-black/30 px-1.5 py-0.5 backdrop-blur-sm sm:flex">
+            <div className={cn(
+              "absolute left-1/2 z-20 hidden -translate-x-1/2 items-center gap-1 rounded-full bg-black/30 px-1.5 py-0.5 backdrop-blur-sm sm:flex",
+              isSearchContext ? "bottom-12" : "bottom-2.5"
+            )}>
               {displayPhotos.slice(0, 6).map((_, index) => (
                 <button
                   key={index}
@@ -402,72 +425,129 @@ export function PropertyCard({
                 />
               ))}
               {displayPhotos.length > 6 && (
-                <span className="text-[9px] text-white/70">+{displayPhotos.length - 6}</span>
+                <span className="text-[9px] text-white/70">
+                  +{displayPhotos.length - 6}
+                </span>
               )}
             </div>
           </>
         )}
 
-        <Link
-          href={propertyHref}
-          className="absolute inset-0 z-10"
-          aria-label={`Ver detalhes de ${property.titulo}`}
-        />
-      </div>
-
-      {/* Content section */}
-      <div className={cn(
-        isResponsive
-          ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3 sm:flex-none sm:gap-0 sm:space-y-1.5 sm:p-4 md:p-5"
-          : isHorizontal
-            ? "flex min-w-0 flex-1 flex-col justify-center gap-1.5 p-4 sm:gap-2 sm:p-6"
-            : "flex flex-1 flex-col space-y-3 p-5"
-      )}>
-        {/* Line 1: Type · Location */}
-        {(isHorizontal || isResponsive) ? (
-          <p className="text-xs text-neutral-500">
-            {property.tipo}
-            <span className="mx-2">•</span>
-            {property.bairro}
-          </p>
-        ) : (
-          <div className="flex items-center gap-2">
-            <span className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600">{property.tipo}</span>
-            <span className="rounded-md bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">{property.bairro}</span>
+        {isSearchContext && (
+          <div className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-between px-5 pb-4">
+            <p className="text-3xl font-extrabold tracking-tight text-white drop-shadow-md">
+              {displayPrice}
+              {property.finalidade !== "Venda" && hasPrice && (
+                <span className="text-sm font-normal text-white/80"> /mês</span>
+              )}
+            </p>
+            <span className="text-sm font-medium uppercase text-slate-200 drop-shadow-md">
+              {property.codigo}
+            </span>
           </div>
         )}
 
-        {/* Line 2: Title (1 line) */}
-        <Link href={propertyHref} className="block">
-          <h2 className={cn(
-            "truncate tracking-tight transition-colors hover:text-brand-primary",
-            isHorizontal ? "text-sm sm:text-lg font-bold text-neutral-900" : isResponsive ? "text-sm sm:text-base font-bold text-neutral-900" : "text-lg font-semibold leading-snug text-slate-800"
-          )}>
-            {property.titulo}
-          </h2>
-        </Link>
+      </div>
 
-        {/* Price — above features for inline variants */}
+      <div
+        className={cn(
+          isResponsive
+            ? "flex min-w-0 flex-1 flex-col justify-center gap-1 p-3 sm:flex-none sm:gap-0 sm:space-y-1.5 sm:p-4 md:p-5"
+            : isSearchContext
+                ? "flex min-w-0 flex-1 flex-col gap-3 p-4 sm:p-5"
+                : isHorizontal
+                  ? "flex min-w-0 flex-1 flex-col justify-center gap-1.5 p-4 sm:gap-2 sm:p-6"
+                  : isCompactCard
+                    ? "flex flex-1 flex-col gap-2.5 p-4"
+                    : "flex flex-1 flex-col space-y-3 p-5"
+        )}
+      >
+        {isSearchContext ? (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-slate-100/90 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">
+              {property.tipo}
+            </span>
+            {property.bairro && (
+              <span className="rounded-full bg-slate-100/90 px-2.5 py-1 text-[11px] font-medium text-slate-500">
+                {property.bairro}
+              </span>
+            )}
+          </div>
+        ) : isHorizontal || isResponsive ? (
+          <p className="text-xs text-neutral-500">
+            {property.tipo}
+            {property.bairro && (
+              <>
+                <span className="mx-2">•</span>
+                {property.bairro}
+              </>
+            )}
+          </p>
+        ) : isCompactCard ? (
+          <p className="text-xs uppercase tracking-wide text-slate-500">
+            {property.tipo}
+            {property.bairro && (
+              <>
+                <span className="mx-1.5 text-slate-300">&bull;</span>
+                {property.bairro}
+              </>
+            )}
+          </p>
+        ) : null}
+
+        <h2
+          className={cn(
+            "tracking-tight transition-colors",
+            isSearchContext
+              ? "line-clamp-2 text-lg font-semibold leading-snug text-slate-800 group-hover:text-slate-600"
+              : isHorizontal
+                ? "line-clamp-2 text-sm font-bold text-neutral-900 sm:text-lg"
+                : isResponsive
+                ? "line-clamp-2 text-sm font-bold text-neutral-900 sm:text-base"
+                : isCompactCard
+                  ? "line-clamp-2 text-[15px] font-semibold leading-snug text-slate-800"
+                  : "truncate text-lg font-semibold leading-snug text-slate-800"
+          )}
+        >
+          {property.titulo}
+        </h2>
+
         {useInlineFeatures && (
-          <p className={cn(
-            "font-semibold tracking-tight",
-            isHorizontal ? "text-lg sm:text-xl" : isResponsive ? "text-base sm:text-lg" : "text-xl",
-            price ? "text-slate-900" : "text-neutral-400"
-          )}>
-            {formatPrice(price)}
-            {property.finalidade !== "Venda" && price && <span className="text-xs font-normal text-neutral-500"> /mês</span>}
+          <p
+            className={cn(
+              "font-semibold tracking-tight text-slate-900",
+              isHorizontal
+                ? "text-lg sm:text-xl"
+                : isResponsive
+                  ? "text-base sm:text-lg"
+                  : "text-xl",
+              hasPrice ? "text-slate-900" : "text-slate-500"
+            )}
+          >
+            {displayPrice}
+            {property.finalidade !== "Venda" && hasPrice && (
+              <span className="text-xs font-normal text-neutral-500"> /mês</span>
+            )}
           </p>
         )}
 
-        {/* Features — editorial (stacked) for grid, inline for list/responsive/compact */}
-        {!useInlineFeatures ? (
-          <div className="border-y border-gray-100">
+        {isCompactCard ? (
+          <PropertyFeatures
+            dormitorios={property.dormitorios}
+            banheiros={property.banheiros}
+            vagas={property.vagas}
+            areaPrivativa={property.areaPrivativa}
+            cardCompact
+          />
+        ) : !useInlineFeatures ? (
+          <div className="pb-1">
             <PropertyFeatures
               dormitorios={property.dormitorios}
               banheiros={property.banheiros}
               vagas={property.vagas}
               areaPrivativa={property.areaPrivativa}
-              editorial
+              cardCompact={isSearchContext}
+              editorial={!isSearchContext}
             />
           </div>
         ) : (
@@ -481,23 +561,90 @@ export function PropertyCard({
           />
         )}
 
-        {/* Price + Code footer — editorial grid */}
-        {!useInlineFeatures && (
-          <div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-4">
-            <p className={cn(
-              "text-2xl font-bold tracking-tight",
-              price ? "text-slate-900" : "text-neutral-400"
-            )}>
-              {formatPrice(price)}
-              {property.finalidade !== "Venda" && price && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
+        {isCompactCard ? (
+          <div className="mt-auto">
+            {/* Pill: dots + divider + heart */}
+            <div className="mx-auto flex w-max items-center rounded-full border border-slate-100 bg-slate-50 px-4 py-1.5">
+              {displayPhotos.length > 1 ? (
+                <div className="flex items-center gap-1.5">
+                  {displayPhotos.slice(0, 6).map((_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={(event) => goToSlide(index, event)}
+                      className={cn(
+                        "size-1.5 rounded-full transition-all",
+                        index === currentSlide ? "bg-brand-primary" : "bg-slate-300"
+                      )}
+                      aria-label={`Ir para foto ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <span className="size-1.5" />
+              )}
+              <span className="mx-3 h-4 w-px bg-slate-200" />
+              <button
+                type="button"
+                onClick={toggleFavorite}
+                className="relative z-20 inline-flex items-center justify-center transition-transform hover:scale-110"
+                aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+                aria-pressed={isFavorite}
+              >
+                <Heart
+                  className={cn(
+                    "size-4 transition-all duration-200",
+                    isFavorite
+                      ? "fill-brand-primary stroke-brand-primary"
+                      : "fill-transparent stroke-slate-300 hover:stroke-slate-400"
+                  )}
+                />
+              </button>
+            </div>
+
+            {/* Price + Code */}
+            <div className="mt-4 flex items-end justify-between border-t border-slate-100 pt-3">
+              <p
+                className={cn(
+                  "text-2xl font-extrabold tracking-tight",
+                  hasPrice ? "text-slate-900" : "text-slate-400"
+                )}
+              >
+                {displayPrice}
+                {property.finalidade !== "Venda" && hasPrice && (
+                  <span className="text-xs font-normal text-slate-500"> /mês</span>
+                )}
+              </p>
+              <span className="text-sm font-semibold uppercase text-slate-500">
+                {property.codigo}
+              </span>
+            </div>
+          </div>
+        ) : !useInlineFeatures && !isSearchContext ? (
+          <div className="mt-auto flex items-end justify-between gap-4 border-t border-slate-100 pt-4">
+            <p
+              className={cn(
+                "text-2xl font-extrabold tracking-tight",
+                hasPrice ? "text-slate-900" : "text-slate-500"
+              )}
+            >
+              {displayPrice}
+              {property.finalidade !== "Venda" && hasPrice && (
+                <span className="text-sm font-normal text-neutral-500"> /mês</span>
+              )}
             </p>
-            <span className="rounded-md bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-400">
+            <span className="shrink-0 text-right text-xs font-medium text-slate-400">
               {property.codigo}
             </span>
           </div>
-        )}
-
+        ) : null}
       </div>
+
+      <Link
+        href={propertyHref}
+        className="absolute inset-0 z-10"
+        aria-label={`Ver detalhes de ${property.titulo}`}
+      />
     </article>
   )
 }

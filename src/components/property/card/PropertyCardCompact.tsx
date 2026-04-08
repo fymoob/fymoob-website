@@ -1,0 +1,199 @@
+"use client"
+
+import Image from "next/image"
+import Link from "next/link"
+import { ChevronLeft, ChevronRight, Heart } from "lucide-react"
+
+import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
+import { cn, formatPrice } from "@/lib/utils"
+import type { Property } from "@/types/property"
+import { usePropertyCard } from "./hooks/usePropertyCard"
+
+interface PropertyCardCompactProps {
+  property: Property
+  prioritizeFirstImage?: boolean
+}
+
+export function PropertyCardCompact({
+  property,
+  prioritizeFirstImage = false,
+}: PropertyCardCompactProps) {
+  const {
+    alt,
+    hasPrice,
+    displayPrice,
+    displayPhotos,
+    badge,
+    currentSlide,
+    isFavorite,
+    propertyHref,
+    loadPhotosOnHover,
+    toggleFavorite,
+    goPrev,
+    goNext,
+    goToSlide,
+  } = usePropertyCard(property)
+
+  return (
+    <article
+      onMouseEnter={loadPhotosOnHover}
+      className="group relative flex h-full flex-col rounded-2xl border border-slate-200 bg-white shadow-md transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl"
+    >
+      {/* Image */}
+      <div className="relative aspect-[16/10] overflow-hidden rounded-t-2xl">
+        <div className="relative h-full w-full overflow-hidden">
+          <div
+            className="flex h-full transition-transform duration-300 ease-out"
+            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          >
+            {displayPhotos.map((photo, index) => {
+              const shouldPrioritize = prioritizeFirstImage && index === 0
+              return (
+                <div
+                  key={`${property.codigo}-${index}`}
+                  className="relative h-full min-w-full shrink-0 overflow-hidden"
+                >
+                  <Image
+                    src={photo}
+                    alt={`${alt} - foto ${index + 1}`}
+                    fill
+                    priority={shouldPrioritize}
+                    loading={shouldPrioritize ? "eager" : "lazy"}
+                    className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                  />
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Top gradient */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/40 to-transparent" />
+
+        {/* Badge */}
+        {badge && (
+          <span
+            className={cn(
+              "absolute left-3 top-3 z-20 rounded-md px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-white",
+              badge.color
+            )}
+          >
+            {badge.text}
+          </span>
+        )}
+
+        {/* Carousel controls */}
+        {displayPhotos.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={goPrev}
+              className="absolute left-2 top-1/2 z-20 hidden size-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm transition hover:bg-white/40 sm:inline-flex sm:opacity-0 sm:group-hover:opacity-100"
+              aria-label="Foto anterior"
+            >
+              <ChevronLeft className="size-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={goNext}
+              className="absolute right-2 top-1/2 z-20 hidden size-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm transition hover:bg-white/40 sm:inline-flex sm:opacity-0 sm:group-hover:opacity-100"
+              aria-label="Proxima foto"
+            >
+              <ChevronRight className="size-3.5" />
+            </button>
+          </>
+        )}
+      </div>
+
+      {/* Content */}
+      <div className="flex flex-1 flex-col gap-2.5 p-4">
+        <p className="text-xs uppercase tracking-wide text-slate-500">
+          {property.tipo}
+          {property.bairro && (
+            <>
+              <span className="mx-1.5 text-slate-300">&bull;</span>
+              {property.bairro}
+            </>
+          )}
+        </p>
+
+        <h2 className="line-clamp-2 text-[15px] font-semibold leading-snug tracking-tight text-slate-800">
+          {property.titulo}
+        </h2>
+
+        <PropertyFeatures
+          dormitorios={property.dormitorios}
+          banheiros={property.banheiros}
+          vagas={property.vagas}
+          areaPrivativa={property.areaPrivativa}
+          cardCompact
+        />
+
+        {/* Footer: dots + heart pill, then price */}
+        <div className="mt-auto">
+          <div className="mx-auto flex w-max items-center rounded-full border border-slate-100 bg-slate-50 px-4 py-1.5">
+            {displayPhotos.length > 1 ? (
+              <div className="flex items-center gap-1.5">
+                {displayPhotos.slice(0, 6).map((_, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={(event) => goToSlide(index, event)}
+                    className={cn(
+                      "size-1.5 rounded-full transition-all",
+                      index === currentSlide ? "bg-brand-primary" : "bg-slate-300"
+                    )}
+                    aria-label={`Ir para foto ${index + 1}`}
+                  />
+                ))}
+              </div>
+            ) : (
+              <span className="size-1.5" />
+            )}
+            <span className="mx-3 h-4 w-px bg-slate-200" />
+            <button
+              type="button"
+              onClick={toggleFavorite}
+              className="relative z-20 inline-flex items-center justify-center transition-transform hover:scale-110"
+              aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+              aria-pressed={isFavorite}
+            >
+              <Heart
+                className={cn(
+                  "size-4 transition-all duration-200",
+                  isFavorite
+                    ? "fill-brand-primary stroke-brand-primary"
+                    : "fill-transparent stroke-slate-300 hover:stroke-slate-400"
+                )}
+              />
+            </button>
+          </div>
+
+          <div className="mt-4 flex items-end justify-between border-t border-slate-100 pt-3">
+            <p
+              className={cn(
+                "text-2xl font-extrabold tracking-tight",
+                hasPrice ? "text-slate-900" : "text-slate-400"
+              )}
+            >
+              {displayPrice}
+              {property.finalidade !== "Venda" && hasPrice && (
+                <span className="text-xs font-normal text-slate-500"> /mês</span>
+              )}
+            </p>
+            <span className="text-sm font-semibold uppercase text-slate-500">
+              {property.codigo}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <Link
+        href={propertyHref}
+        className="absolute inset-0 z-10"
+        aria-label={`Ver detalhes de ${property.titulo}`}
+      />
+    </article>
+  )
+}
