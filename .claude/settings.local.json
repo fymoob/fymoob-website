@@ -18,7 +18,9 @@
       "mcp__playwright__browser_press_key",
       "WebFetch(domain:www.lilachbullock.com)",
       "mcp__playwright__browser_network_requests",
-      "mcp__playwright__browser_hover"
+      "mcp__playwright__browser_hover",
+      "mcp__playwright__browser_wait_for",
+      "mcp__playwright__browser_run_code"
     ],
     "additionalDirectories": [
       "c:\\Users\\Vine\\.claude\\projects\\c--Users-Vine-demo\\memory"

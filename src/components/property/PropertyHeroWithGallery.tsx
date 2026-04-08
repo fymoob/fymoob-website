@@ -10,6 +10,7 @@ interface PropertyHeroWithGalleryProps {
   alt: string
   tipo: string
   bairro: string
+  titulo: string
 }
 
 export function PropertyHeroWithGallery({
@@ -18,21 +19,22 @@ export function PropertyHeroWithGallery({
   alt,
   tipo,
   bairro,
+  titulo,
 }: PropertyHeroWithGalleryProps) {
   const [galleryOpen, setGalleryOpen] = useState(false)
 
   return (
     <>
       <PropertyHero
+        fotos={fotos}
         mainImage={mainImage}
         alt={alt}
         tipo={tipo}
         bairro={bairro}
-        photoCount={fotos.length}
+        titulo={titulo}
         onOpenGallery={() => setGalleryOpen(true)}
       />
 
-      {/* Gallery: opens in fullscreen lightbox, with grid accessible via button */}
       {galleryOpen && (
         <PropertyGallery
           fotos={fotos}

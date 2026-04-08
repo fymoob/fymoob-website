@@ -121,6 +121,7 @@ export default async function PropertyPage({ params }: PageProps) {
       <RecentlyViewedTracker property={property} />
 
       {/* ══════ Hero Section ══════ */}
+      {/* Breadcrumbs + actions above full-bleed hero */}
       <div className="mx-auto w-full max-w-7xl px-4 pt-4 md:px-8 md:pt-6">
         {/* Mobile: back + actions */}
         <div className="mb-3 flex items-center justify-between md:hidden">
@@ -141,76 +142,72 @@ export default async function PropertyPage({ params }: PageProps) {
             <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} />
           </div>
         </div>
-
-        {/* Hero Image */}
-        <PropertyHeroWithGallery
-          fotos={allPhotos}
-          mainImage={mainImage}
-          alt={alt}
-          tipo={property.tipo}
-          bairro={property.bairro}
-        />
       </div>
+
+      {/* Full-bleed hero image */}
+      <PropertyHeroWithGallery
+        fotos={allPhotos}
+        mainImage={mainImage}
+        alt={alt}
+        tipo={property.tipo}
+        bairro={property.bairro}
+        titulo={shortTitle || property.titulo}
+      />
 
       {/* ══════ Info Strip + Content ══════ */}
       <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
-        {/* Info strip below hero */}
-        <div className="mt-6 md:mt-8">
-          {/* Badges */}
-          <div className="flex flex-wrap items-center gap-2">
-            <PropertyBadge variant="type">{property.tipo}</PropertyBadge>
-            <PropertyBadge variant={property.finalidade === "Venda" ? "sale" : "rent"}>{property.finalidade}</PropertyBadge>
-            <PropertyBadge variant="code">Cód: {property.codigo}</PropertyBadge>
-          </div>
+        {/* SEO h1 — sr-only since title is visible on hero overlay */}
+        <h1 className="sr-only">{shortTitle || property.titulo}</h1>
 
-          {/* Title */}
-          <h1 className="mt-3 line-clamp-2 font-display text-2xl font-bold tracking-tight text-neutral-950 md:text-3xl">
-            {shortTitle || property.titulo}
-          </h1>
-
-          {/* Address */}
-          {(property.endereco || property.bairro) && (
-            <p className="mt-2 flex items-center gap-1.5 text-sm text-neutral-500">
-              <MapPin size={14} className="shrink-0 text-neutral-400" />
-              {property.endereco
-                ? `${[property.endereco, property.numero, property.bairro].filter(Boolean).join(", ")}, ${property.cidade} - ${property.estado}`
-                : `${property.bairro}, ${property.cidade} - ${property.estado}`}
-            </p>
-          )}
-
-          {/* Price */}
-          <div className="mt-3">
-            <div className="flex items-baseline gap-2">
-              <p className="font-display text-2xl font-bold text-slate-900 md:text-3xl">
-                {formatPrice(price)}
-              </p>
-              {property.finalidade !== "Venda" && (
-                <span className="text-sm text-neutral-500">/mês</span>
-              )}
+        {/* ══════ Two Column Layout — contact card overlaps hero ══════ */}
+        <div className="grid grid-cols-1 gap-8 pb-40 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)] md:pb-0">
+          {/* Left column */}
+          <div className="mt-6 md:mt-8">
+            {/* Compact info strip: badges + address + price + specs inline */}
+            <div className="flex flex-wrap items-center gap-2">
+              <PropertyBadge variant={property.finalidade === "Venda" ? "sale" : "rent"}>{property.finalidade}</PropertyBadge>
+              <PropertyBadge variant="code">Cód: {property.codigo}</PropertyBadge>
             </div>
+
+            {(property.endereco || property.bairro) && (
+              <p className="mt-3 flex items-center gap-1.5 text-sm text-neutral-500">
+                <MapPin size={14} className="shrink-0 text-neutral-400" />
+                {property.endereco
+                  ? `${[property.endereco, property.numero, property.bairro].filter(Boolean).join(", ")}, ${property.cidade} - ${property.estado}`
+                  : `${property.bairro}, ${property.cidade} - ${property.estado}`}
+              </p>
+            )}
+
+            {/* Price + specs inline */}
+            <div className="mt-4 flex flex-wrap items-center gap-6">
+              <div className="flex items-baseline gap-2">
+                <p className="font-display text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
+                  {formatPrice(price)}
+                </p>
+                {property.finalidade !== "Venda" && (
+                  <span className="text-sm text-neutral-500">/mês</span>
+                )}
+              </div>
+
+              <span className="hidden h-8 w-px bg-slate-200 md:block" />
+
+              <PropertyFeatures
+                dormitorios={property.dormitorios}
+                banheiros={property.banheiros}
+                vagas={property.vagas}
+                areaPrivativa={property.areaPrivativa}
+                size="sm"
+              />
+            </div>
+
             {property.finalidade !== "Venda" && (property.valorCondominio || property.valorIptu) && (
-              <p className="mt-1 text-sm text-slate-500">
+              <p className="mt-2 text-sm text-slate-500">
                 {[
                   property.valorCondominio && property.valorCondominio > 0 && `Condomínio: ${formatPrice(property.valorCondominio)}`,
                   property.valorIptu && property.valorIptu > 0 && `IPTU: ${formatPrice(property.valorIptu)}`,
                 ].filter(Boolean).join("  •  ")}
               </p>
             )}
-          </div>
-        </div>
-
-        {/* ══════ Two Column Layout ══════ */}
-        <div className="mt-8 grid grid-cols-1 gap-8 pb-40 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)] md:pb-0">
-          {/* Left column — seamless flow, no card wrappers */}
-          <div>
-            {/* Quick Glance — 4 main icons */}
-            <PropertyFeatures
-              dormitorios={property.dormitorios}
-              banheiros={property.banheiros}
-              vagas={property.vagas}
-              areaPrivativa={property.areaPrivativa}
-              editorial
-            />
 
             {/* Ficha Técnica — complementary specs only */}
             <div className="mt-4">
@@ -238,9 +235,9 @@ export default async function PropertyPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Right sidebar — desktop only */}
-          <aside className="hidden lg:block">
-            <div className="sticky top-24">
+          {/* Right sidebar — floats up over hero */}
+          <aside className="relative z-30 hidden lg:block">
+            <div className="sticky top-24 -mt-36">
               <LazyContactSidebar
                 propertyTitle={property.titulo}
                 propertyCode={property.codigo}

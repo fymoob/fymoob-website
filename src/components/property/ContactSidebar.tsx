@@ -1,13 +1,30 @@
 "use client"
 
-import { Phone, ShieldCheck } from "lucide-react"
+import { useEffect, useState } from "react"
+import { Heart, Phone, ShieldCheck } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { formatPrice } from "@/lib/utils"
+import { cn, formatPrice } from "@/lib/utils"
 import type { Property } from "@/types/property"
+
+const WISHLIST_STORAGE_KEY = "fymoob:wishlist"
+
+function getWishlistCodes(): Set<string> {
+  if (typeof window === "undefined") return new Set<string>()
+  try {
+    const raw = window.localStorage.getItem(WISHLIST_STORAGE_KEY)
+    if (!raw) return new Set<string>()
+    const parsed = JSON.parse(raw)
+    return Array.isArray(parsed)
+      ? new Set(parsed.filter((item): item is string => typeof item === "string"))
+      : new Set<string>()
+  } catch {
+    return new Set<string>()
+  }
+}
 
 interface ContactSidebarProps {
   propertyTitle: string
@@ -40,9 +57,47 @@ export function ContactSidebar({
     ? price + (valorCondominio ?? 0) + (valorIptu ?? 0)
     : null
 
+  const [isFavorite, setIsFavorite] = useState(false)
+  useEffect(() => {
+    setIsFavorite(getWishlistCodes().has(propertyCode))
+  }, [propertyCode])
+
+  const toggleFavorite = () => {
+    setIsFavorite((prev) => {
+      const next = !prev
+      const wishlist = getWishlistCodes()
+      if (next) wishlist.add(propertyCode)
+      else wishlist.delete(propertyCode)
+      window.localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(Array.from(wishlist)))
+      return next
+    })
+  }
+
   return (
-    <Card className="sticky top-20 z-10 border border-neutral-200 py-0 shadow-xl">
+    <Card className="relative z-30 border border-white/50 bg-white/95 py-0 shadow-xl backdrop-blur-xl">
       <CardContent className="px-6 py-7">
+        {/* Header: code + favorite */}
+        <div className="mb-4 flex items-center justify-between">
+          <span className="rounded-md bg-sky-900 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
+            Ref. {propertyCode}
+          </span>
+          <button
+            type="button"
+            onClick={toggleFavorite}
+            className="inline-flex items-center gap-1.5 text-sm text-slate-400 transition-colors hover:text-slate-600"
+          >
+            <Heart
+              className={cn(
+                "size-4 transition-all",
+                isFavorite
+                  ? "fill-brand-primary stroke-brand-primary text-brand-primary"
+                  : "fill-transparent"
+              )}
+            />
+            Favoritar
+          </button>
+        </div>
+
         {/* Price block */}
         <div className="mb-5">
           <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
