@@ -77,8 +77,10 @@ export default async function Home() {
     getRecentPosts(3),
   ])
 
-  const highlight = featured[0]
-  const destaques = featured.slice(1, 7)
+  const lancamentos = featured.filter((p) => p.lancamento)
+  const prontos = featured.filter((p) => !p.lancamento)
+  const highlight = prontos[0] || featured[0]
+  const destaques = lancamentos.slice(0, 6)
   const bairros = allBairros.slice(0, 6)
   const bairroNames = allBairros.map((b) => b.bairro)
   const tipoNames = types.map((t) => t.tipo)

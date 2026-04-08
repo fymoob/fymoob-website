@@ -2,7 +2,7 @@
 
 > Solicitacoes de alteracao feitas pelo cliente (Bruno).
 > Atualizado: 2026-04-06
-> **Total: 21 solicitacoes** | ACEITO: 4 | AVALIAR: 17 | Implementadas: 16/21 (76%)
+> **Total: 21 solicitacoes** | ACEITO: 4 | AVALIAR: 17 | Implementadas: 17/21 (81%)
 
 ---
 
@@ -207,9 +207,9 @@
   - Comentario: **Opiniao dividida entre socios.** Wagner quer mais clean, Bruno aprovou o atual. Precisa alinhar entre Vinicius, Wagner e Bruno antes de alterar. Possivel solucao: apresentar ambas versoes para decisao final.
   - Data: 2026-04-08
 
-### 18. BUG: Secao "Destaques de lancamento" mostrando imoveis prontos (Home)
-- [ ] A secao "Destaques de lancamento" na home esta exibindo imoveis que nao sao lancamentos (ex: Sobrado Santa Quiteria cod 69804095, Apto Mobiliado Agua Verde cod 69804752)
-- [ ] Apenas imoveis realmente em fase de lancamento/na planta deveriam aparecer nessa secao
+### 18. BUG: Secao "Destaques de lancamento" mostrando imoveis prontos (Home) ✅
+- [x] A secao "Destaques de lancamento" na home esta exibindo imoveis que nao sao lancamentos (ex: Sobrado Santa Quiteria cod 69804095, Apto Mobiliado Agua Verde cod 69804752)
+- [x] Apenas imoveis realmente em fase de lancamento/na planta deveriam aparecer nessa secao
   - Tipo: **AVALIAR**
   - Comentario: **Bug de filtro.** Provavel causa: a query que alimenta essa secao nao esta filtrando corretamente por status de lancamento. Pode estar usando apenas `Destaque=true` sem verificar se e lancamento. Investigar campo da API que diferencia lancamento de imovel pronto (ex: `Situacao`, `Status`, `Categoria`, ou campo customizado no CRM).
   - Investigar:
