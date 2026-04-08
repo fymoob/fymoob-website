@@ -77,6 +77,7 @@ export function PropertyHero({
                   loading={index === 0 ? "eager" : "lazy"}
                   className="object-cover"
                   sizes="100vw"
+                  quality={90}
                 />
               </div>
             ))}
