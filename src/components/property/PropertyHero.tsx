@@ -112,7 +112,6 @@ export function PropertyHero({
           if (e.key === "Enter" || e.key === " ") onOpenGallery()
         }}
         aria-label="Abrir galeria de fotos"
-        style={{ minHeight: "72vh" }}
       >
         {/* Background Layer 1: blurred photo fill */}
         <div
@@ -135,13 +134,14 @@ export function PropertyHero({
           aria-hidden="true"
         />
 
-        {/* The Focus — centered artwork */}
-        <div className="relative z-10 flex items-center justify-center px-10 py-10 lg:px-20 lg:py-12" style={{ minHeight: "72vh" }}>
-          <div className="relative w-full" style={{ maxWidth: "88%" }}>
+        {/* The Focus — centered artwork with responsive height cap */}
+        <div
+          className="relative z-10 flex items-center justify-center px-10 py-8 lg:px-20 lg:py-10"
+          style={{ height: "clamp(420px, 56vh, 640px)" }}
+        >
+          <div className="relative w-full" style={{ maxWidth: "85%" }}>
             {/* Carousel track */}
-            <div
-              className="overflow-hidden rounded-xl"
-            >
+            <div className="overflow-hidden rounded-xl">
               <div
                 className="flex transition-transform duration-500 ease-out"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -158,7 +158,7 @@ export function PropertyHero({
                       className="h-auto max-w-full rounded-xl"
                       sizes="(max-width: 1400px) 80vw, 1120px"
                       quality={90}
-                      style={{ maxHeight: "750px" }}
+                      style={{ maxHeight: "clamp(360px, 48vh, 560px)" }}
                     />
                   </div>
                 ))}
@@ -183,14 +183,14 @@ export function PropertyHero({
           </div>
         </div>
 
-        {/* Stage info — bottom left */}
-        <div className="absolute bottom-0 inset-x-0 z-20">
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black/60 to-transparent" />
-          <div className="relative mx-auto px-10 pb-6 lg:px-20 lg:pb-8" style={{ maxWidth: "90%" }}>
+        {/* Stage info — dedicated strip below image, inside dark area */}
+        <div className="relative z-20 pb-5">
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent" />
+          <div className="relative mx-auto px-10 lg:px-20" style={{ maxWidth: "90%" }}>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/80 backdrop-blur-sm">
               {tipo} &bull; {bairro}
             </span>
-            <h2 className="mt-2 max-w-2xl text-xl font-semibold leading-snug text-white/95 md:text-2xl">
+            <h2 className="mt-1.5 max-w-2xl text-xl font-semibold leading-snug text-white/95 md:text-2xl">
               {titulo}
             </h2>
           </div>
