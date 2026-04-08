@@ -57,7 +57,7 @@ function renderWithInlineCaps(text: string): React.ReactNode {
   return parts.map((part, i) => {
     const letters = part.replace(/[^a-zA-ZÀ-ÿ]/g, "")
     if (letters.length >= 2 && letters === letters.toUpperCase()) {
-      return <strong key={i} className="font-bold">{part}</strong>
+      return <strong key={i} className="font-bold text-slate-900">{part}</strong>
     }
     return part
   })
@@ -143,7 +143,7 @@ export function PropertyDescription({ descricao }: PropertyDescriptionProps) {
             return (
               <h3
                 key={i}
-                className="mt-8 mb-4 text-base font-bold text-slate-900 first:mt-0"
+                className="mt-8 mb-4 text-base font-bold text-slate-900 md:text-lg first:mt-0"
               >
                 {block.content}
                 {block.subtitle && (
