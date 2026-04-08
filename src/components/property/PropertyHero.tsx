@@ -48,18 +48,15 @@ export function PropertyHero({
         }}
         aria-label="Abrir galeria de fotos"
       >
-        {/* Blurred background — the image itself scaled up and blurred for cinematic side fill */}
-        <div className="absolute inset-0 overflow-hidden">
-          <Image
-            src={photos[currentSlide]}
-            alt=""
-            fill
-            className="scale-[1.3] object-cover brightness-[0.45] blur-[20px] saturate-[1.2]"
-            sizes="100vw"
-            quality={30}
-            aria-hidden="true"
-          />
-        </div>
+        {/* Blurred background — native img, decorative only (Spotify/Netflix style) */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={photos[currentSlide]}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover"
+          style={{ filter: "blur(25px) brightness(0.55) saturate(1.2)", transform: "scale(1.15)" }}
+        />
 
         {/* Top gradient for badge area */}
         <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-24 bg-gradient-to-b from-black/40 to-transparent" />
