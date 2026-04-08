@@ -342,8 +342,7 @@ export function PropertyCard({
           </span>
         )}
 
-        {!isCompactCard && (
-          <button
+        <button
             type="button"
             onClick={toggleFavorite}
             className={cn(
@@ -365,7 +364,6 @@ export function PropertyCard({
               )}
             />
           </button>
-        )}
 
         {isCompactCard && displayPhotos.length > 1 && (
           <>
@@ -563,47 +561,7 @@ export function PropertyCard({
 
         {isCompactCard ? (
           <div className="mt-auto">
-            {/* Pill: dots + divider + heart */}
-            <div className="mx-auto flex w-max items-center rounded-full border border-slate-100 bg-slate-50 px-4 py-1.5">
-              {displayPhotos.length > 1 ? (
-                <div className="flex items-center gap-1.5">
-                  {displayPhotos.slice(0, 6).map((_, index) => (
-                    <button
-                      key={index}
-                      type="button"
-                      onClick={(event) => goToSlide(index, event)}
-                      className={cn(
-                        "size-1.5 rounded-full transition-all",
-                        index === currentSlide ? "bg-brand-primary" : "bg-slate-300"
-                      )}
-                      aria-label={`Ir para foto ${index + 1}`}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <span className="size-1.5" />
-              )}
-              <span className="mx-3 h-4 w-px bg-slate-200" />
-              <button
-                type="button"
-                onClick={toggleFavorite}
-                className="relative z-20 inline-flex items-center justify-center transition-transform hover:scale-110"
-                aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
-                aria-pressed={isFavorite}
-              >
-                <Heart
-                  className={cn(
-                    "size-4 transition-all duration-200",
-                    isFavorite
-                      ? "fill-brand-primary stroke-brand-primary"
-                      : "fill-transparent stroke-slate-300 hover:stroke-slate-400"
-                  )}
-                />
-              </button>
-            </div>
-
-            {/* Price + Code */}
-            <div className="mt-4 flex items-end justify-between border-t border-slate-100 pt-3">
+            <div className="flex items-end justify-between border-t border-slate-100 pt-3">
               <p
                 className={cn(
                   "text-2xl font-extrabold tracking-tight",
