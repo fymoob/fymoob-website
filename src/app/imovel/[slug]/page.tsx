@@ -183,6 +183,12 @@ export default async function PropertyPage({ params }: PageProps) {
             {/* Price + specs inline */}
             <div className="mt-4 flex flex-wrap items-center gap-6">
               <div>
+                {/* --- Preço principal (venda ou aluguel) --- */}
+                {isDual && (
+                  <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
+                    Valor venda
+                  </p>
+                )}
                 <div className="flex items-baseline gap-2">
                   <p className="font-display text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
                     {formatPrice(price)}
@@ -191,10 +197,17 @@ export default async function PropertyPage({ params }: PageProps) {
                     <span className="text-sm text-neutral-500">/mês</span>
                   )}
                 </div>
+
+                {/* --- Valor aluguel (dual) — igualmente destacado --- */}
                 {isDual && (
-                  <p className="mt-1 text-sm font-semibold text-slate-500">
-                    Aluguel: {formatPrice(property.precoAluguel)} /mês
-                  </p>
+                  <div className="mt-3 border-t border-slate-100 pt-3">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
+                      Valor aluguel
+                    </p>
+                    <p className="mt-0.5 font-display text-2xl font-bold tracking-tight text-slate-900">
+                      {formatPrice(property.precoAluguel)} <span className="text-sm font-normal text-neutral-500">/mês</span>
+                    </p>
+                  </div>
                 )}
               </div>
 
@@ -209,13 +222,16 @@ export default async function PropertyPage({ params }: PageProps) {
               />
             </div>
 
+            {/* Condomínio/IPTU — mobile only (sidebar cobre no desktop) */}
             {(isRental || isDual) && (property.valorCondominio || property.valorIptu) && (
-              <p className="mt-2 text-sm text-slate-500">
-                {[
-                  property.valorCondominio && property.valorCondominio > 0 && `Condomínio: ${formatPrice(property.valorCondominio)}`,
-                  property.valorIptu && property.valorIptu > 0 && `IPTU: ${formatPrice(property.valorIptu)}`,
-                ].filter(Boolean).join("  •  ")}
-              </p>
+              <div className="mt-3 flex items-center gap-4 text-sm text-slate-500 lg:hidden">
+                {property.valorCondominio && property.valorCondominio > 0 && (
+                  <span>Condomínio: <span className="font-medium text-slate-700">{formatPrice(property.valorCondominio)}</span></span>
+                )}
+                {property.valorIptu && property.valorIptu > 0 && (
+                  <span>IPTU: <span className="font-medium text-slate-700">{formatPrice(property.valorIptu)}</span></span>
+                )}
+              </div>
             )}
 
             {/* Ficha Técnica — complementary specs only */}

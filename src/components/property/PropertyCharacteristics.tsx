@@ -1,5 +1,5 @@
 import type { Property } from "@/types/property"
-import { formatArea, formatPrice } from "@/lib/utils"
+import { formatArea } from "@/lib/utils"
 
 interface PropertyCharacteristicsProps {
   property: Property
@@ -15,12 +15,6 @@ export function PropertyCharacteristics({ property }: PropertyCharacteristicsPro
   }
   if (property.areaTotal && property.areaTotal !== property.areaPrivativa) {
     items.push({ label: "Área total", value: formatArea(property.areaTotal) })
-  }
-  if (property.valorCondominio && property.valorCondominio > 0) {
-    items.push({ label: "Condomínio", value: `${formatPrice(property.valorCondominio)}/mês` })
-  }
-  if (property.valorIptu && property.valorIptu > 0) {
-    items.push({ label: "IPTU", value: `${formatPrice(property.valorIptu)}/mês` })
   }
   if (property.anoConstrucao && property.anoConstrucao !== "0") {
     items.push({ label: "Ano", value: property.anoConstrucao })
