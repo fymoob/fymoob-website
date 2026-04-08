@@ -36,10 +36,10 @@ export function PropertyHero({
   }, [photos.length])
 
   return (
-    <div className="group relative w-screen overflow-hidden bg-black" style={{ marginLeft: "calc(-50vw + 50%)" }}>
-      {/* Main image container */}
+    <div className="group relative w-screen overflow-hidden" style={{ marginLeft: "calc(-50vw + 50%)" }}>
+      {/* ═══ MOBILE: full-bleed cover, no stage ═══ */}
       <div
-        className="relative h-[52vh] w-full cursor-pointer md:h-[68vh]"
+        className="relative h-[52vh] w-full cursor-pointer md:hidden"
         onClick={onOpenGallery}
         role="button"
         tabIndex={0}
@@ -48,114 +48,186 @@ export function PropertyHero({
         }}
         aria-label="Abrir galeria de fotos"
       >
-        {/* Blurred background fill — CSS background-image, no extra <Image> */}
-        <div
-          className="absolute inset-0 scale-110 brightness-[0.35] blur-2xl"
-          style={{ backgroundImage: `url(${photos[currentSlide]})`, backgroundSize: "cover", backgroundPosition: "center" }}
-          aria-hidden="true"
-        />
+        {/* Bottom gradient */}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
-        {/* Top gradient for badge area */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-24 bg-gradient-to-b from-black/40 to-transparent" />
-
-        {/* Bottom gradient for text overlay */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-48 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-
-        {/* Image carousel — constrained for sharp display */}
-        <div className="relative mx-auto h-full max-w-6xl overflow-hidden">
+        {/* Mobile carousel — full bleed */}
+        <div className="relative h-full w-full overflow-hidden">
           <div
             className="flex h-full transition-transform duration-500 ease-out"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
             {photos.map((photo, index) => (
-              <div
-                key={`hero-${index}`}
-                className="relative h-full min-w-full shrink-0"
-              >
+              <div key={`mobile-${index}`} className="relative h-full min-w-full shrink-0">
                 <Image
                   src={photo}
                   alt={`${alt} - foto ${index + 1}`}
                   fill
                   priority={index === 0}
                   loading={index === 0 ? "eager" : "lazy"}
-                  className="object-contain drop-shadow-2xl"
-                  sizes="(max-width: 1152px) 100vw, 1152px"
-                  quality={90}
+                  className="object-cover"
+                  sizes="100vw"
+                  quality={85}
                 />
               </div>
             ))}
           </div>
         </div>
 
-        {/* Bottom-left: tipo + bairro + titulo — aligned to contained area */}
+        {/* Mobile: tipo + bairro + titulo */}
+        <div className="absolute bottom-0 inset-x-0 z-20 px-5 pb-5">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/90 backdrop-blur-sm">
+            {tipo} &bull; {bairro}
+          </span>
+          <h2 className="mt-2 max-w-sm text-base font-semibold leading-snug text-white drop-shadow-lg">
+            {titulo}
+          </h2>
+        </div>
+
+        {/* Mobile: counter bottom-right */}
+        {photos.length > 1 && (
+          <div className="absolute bottom-4 right-4 z-20">
+            <span className="rounded-full bg-black/50 px-2.5 py-1 text-[11px] font-medium tabular-nums text-white/90 backdrop-blur-sm">
+              {currentSlide + 1}/{photos.length}
+            </span>
+          </div>
+        )}
+
+        {/* Mobile: Ver fotos */}
+        {photos.length > 1 && (
+          <div className="absolute right-4 top-4 z-20">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-slate-900 shadow-lg backdrop-blur-sm">
+              <Grid className="size-3.5" />
+              Ver {photos.length} fotos
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* ═══ DESKTOP: The Stage ═══ */}
+      <div
+        className="relative hidden w-full cursor-pointer md:block"
+        style={{ backgroundColor: "#0F1115" }}
+        onClick={onOpenGallery}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") onOpenGallery()
+        }}
+        aria-label="Abrir galeria de fotos"
+      >
+        {/* Stage padding + centered artwork */}
+        <div className="mx-auto flex items-center justify-center px-10 py-8 lg:px-16 lg:py-10" style={{ minHeight: "68vh" }}>
+          {/* Carousel container — the artwork frame */}
+          <div className="relative w-full max-w-5xl">
+            {/* Carousel track */}
+            <div className="overflow-hidden rounded-lg" style={{ border: "1px solid rgba(255,255,255,0.05)" }}>
+              <div
+                className="flex transition-transform duration-500 ease-out"
+                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+              >
+                {photos.map((photo, index) => (
+                  <div key={`stage-${index}`} className="relative min-w-full shrink-0">
+                    <Image
+                      src={photo}
+                      alt={`${alt} - foto ${index + 1}`}
+                      width={1200}
+                      height={800}
+                      priority={index === 0}
+                      loading={index === 0 ? "eager" : "lazy"}
+                      className="h-auto max-h-[600px] w-full object-contain"
+                      sizes="(max-width: 1024px) 100vw, 1024px"
+                      quality={90}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Floating shadow beneath the artwork */}
+            <div
+              className="pointer-events-none absolute -bottom-4 left-[10%] right-[10%] h-8 rounded-[50%] opacity-60"
+              style={{ boxShadow: "0 20px 40px rgba(0,0,0,0.4)" }}
+              aria-hidden="true"
+            />
+
+            {/* Photo counter — bottom right inside artwork */}
+            {photos.length > 1 && (
+              <div className="absolute bottom-3 right-3 z-20">
+                <span className="rounded-full bg-black/50 px-3 py-1.5 text-xs font-medium tabular-nums text-white/90 backdrop-blur-md">
+                  {currentSlide + 1} / {photos.length}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Stage: tipo + bairro + titulo — bottom left over dark bg */}
         <div className="absolute bottom-0 inset-x-0 z-20">
-          <div className="mx-auto max-w-6xl px-6 pb-6 md:px-8 md:pb-8">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/90 backdrop-blur-sm">
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0F1115] to-transparent" />
+          <div className="relative mx-auto max-w-5xl px-10 pb-5 lg:px-16 lg:pb-6">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/80">
               {tipo} &bull; {bairro}
             </span>
-            <h2 className="mt-2 max-w-2xl text-lg font-semibold leading-snug text-white drop-shadow-lg md:text-2xl">
+            <h2 className="mt-2 max-w-2xl text-xl font-semibold leading-snug text-white/95 md:text-2xl">
               {titulo}
             </h2>
           </div>
         </div>
 
-        {/* Top-right: Ver fotos button — aligned to contained area */}
+        {/* Stage: Ver fotos — top right */}
         {photos.length > 1 && (
-          <div className="absolute inset-x-0 top-0 z-20">
-            <div className="mx-auto flex max-w-6xl justify-end px-6 pt-4 md:px-8 md:pt-6">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/90 px-3.5 py-2 text-xs font-semibold text-slate-900 shadow-lg backdrop-blur-sm transition-all hover:bg-white hover:shadow-xl md:px-4 md:py-2.5 md:text-sm">
-                <Grid className="size-3.5 md:size-4" />
-                Ver {photos.length} fotos
-              </span>
-            </div>
+          <div className="absolute right-10 top-6 z-20 lg:right-16 lg:top-8">
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold text-white/90 backdrop-blur-sm transition-all hover:bg-white/20">
+              <Grid className="size-4" />
+              Ver {photos.length} fotos
+            </span>
           </div>
         )}
       </div>
 
-      {/* Navigation arrows — anchored to contained area edges */}
+      {/* ═══ Navigation arrows (desktop only) ═══ */}
       {photos.length > 1 && (
-        <div className="pointer-events-none absolute inset-0 z-30">
-          <div className="relative mx-auto h-full max-w-6xl">
-            <button
-              type="button"
-              onClick={(e) => { e.stopPropagation(); goPrev() }}
-              className="pointer-events-auto absolute left-3 top-1/2 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/30 md:inline-flex"
-              aria-label="Foto anterior"
-            >
-              <ChevronLeft className="size-6" />
-            </button>
+        <>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); goPrev() }}
+            className="absolute left-4 top-1/2 z-30 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full text-white/60 transition-all hover:text-white md:inline-flex lg:left-6"
+            aria-label="Foto anterior"
+          >
+            <ChevronLeft className="size-7" strokeWidth={1.5} />
+          </button>
 
-            <button
-              type="button"
-              onClick={(e) => { e.stopPropagation(); goNext() }}
-              className="pointer-events-auto absolute right-3 top-1/2 hidden size-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/30 md:inline-flex"
-              aria-label="Próxima foto"
-            >
-              <ChevronRight className="size-6" />
-            </button>
-          </div>
-        </div>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); goNext() }}
+            className="absolute right-4 top-1/2 z-30 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full text-white/60 transition-all hover:text-white md:inline-flex lg:right-6"
+            aria-label="Próxima foto"
+          >
+            <ChevronRight className="size-7" strokeWidth={1.5} />
+          </button>
+        </>
       )}
 
-      {/* Dots */}
+      {/* ═══ Mobile swipe dots ═══ */}
       {photos.length > 1 && (
-        <div className="absolute bottom-6 left-1/2 z-30 hidden -translate-x-1/2 items-center gap-1.5 md:flex md:bottom-8">
+        <div className="absolute bottom-14 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1.5 md:hidden">
           {photos.slice(0, 8).map((_, index) => (
             <button
               key={index}
               type="button"
               onClick={(e) => { e.stopPropagation(); setCurrentSlide(index) }}
               className={cn(
-                "size-2 rounded-full transition-all",
+                "size-1.5 rounded-full transition-all",
                 index === currentSlide
                   ? "scale-125 bg-white"
-                  : "bg-white/40 hover:bg-white/70"
+                  : "bg-white/40"
               )}
               aria-label={`Ir para foto ${index + 1}`}
             />
           ))}
           {photos.length > 8 && (
-            <span className="text-xs text-white/60">+{photos.length - 8}</span>
+            <span className="text-[10px] text-white/50">+{photos.length - 8}</span>
           )}
         </div>
       )}
