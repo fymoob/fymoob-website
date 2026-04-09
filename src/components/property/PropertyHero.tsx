@@ -62,7 +62,7 @@ export function PropertyHero({
         <Carousel
           setApi={setMobileApi}
           opts={{ align: "start", loop: false, skipSnaps: false }}
-          className="h-full w-full"
+          className="h-full w-full [&>[data-slot=carousel-content]]:h-full"
         >
           <CarouselContent className="h-full -ml-0">
             {photos.map((photo, index) => (
