@@ -78,16 +78,16 @@ export function PropertyFeatures({
 
   if (cardCompact) {
     return (
-      <div className={cn("flex items-center gap-5", className)}>
+      <div className={cn("flex items-center gap-3 sm:gap-5", className)}>
         {features.map((feature) => {
           const Icon = feature.icon
           return (
             <span
               key={feature.label}
-              className="inline-flex items-center gap-2"
+              className="inline-flex items-center gap-1.5 sm:gap-2"
             >
-              <Icon size={20} className="shrink-0 text-slate-500" strokeWidth={1.75} />
-              <span className="text-lg font-bold text-slate-900">
+              <Icon className="shrink-0 size-3.5 sm:size-5 text-slate-400 sm:text-slate-500" strokeWidth={1.75} />
+              <span className="text-sm font-semibold text-slate-800 sm:text-lg sm:font-bold sm:text-slate-900">
                 {feature.value}
               </span>
             </span>

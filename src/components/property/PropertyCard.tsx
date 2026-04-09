@@ -566,16 +566,16 @@ export function PropertyCard({
             <div className="flex items-end justify-between border-t border-slate-100 pt-3">
               <p
                 className={cn(
-                  "text-2xl font-extrabold tracking-tight",
+                  "text-lg font-bold tracking-tight sm:text-2xl sm:font-extrabold",
                   hasPrice ? "text-slate-900" : "text-slate-400"
                 )}
               >
                 {displayPrice}
                 {property.finalidade !== "Venda" && hasPrice && (
-                  <span className="text-xs font-normal text-slate-500"> /mês</span>
+                  <span className="text-[10px] font-normal text-slate-500 sm:text-xs"> /mês</span>
                 )}
               </p>
-              <span className="text-sm font-semibold uppercase text-slate-500">
+              <span className="text-xs font-medium text-slate-400 sm:text-sm sm:font-semibold sm:text-slate-500">
                 {property.codigo}
               </span>
             </div>
