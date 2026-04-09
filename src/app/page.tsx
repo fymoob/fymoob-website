@@ -13,7 +13,6 @@ import { getRecentPosts } from "@/services/blog"
 import { BairroCard } from "@/components/search/BairroCard"
 import { HeroSection } from "@/components/home/HeroSection"
 import { PropertyCard } from "@/components/property/PropertyCard"
-import { PropertyCardFeatured } from "@/components/property/PropertyCardFeatured"
 import { BlogCard } from "@/components/blog/BlogCard"
 import { AnimateOnScroll } from "@/components/shared/AnimateOnScroll"
 import { GoogleReviews } from "@/components/shared/GoogleReviews"
@@ -79,9 +78,7 @@ export default async function Home() {
   ])
 
   const lancamentos = featured.filter((p) => p.lancamento)
-  const prontos = featured.filter((p) => !p.lancamento)
-  const highlight = prontos[0] || featured[0]
-  const prontosParaMorar = prontos.filter((p) => p !== highlight).slice(0, 6)
+  const prontosParaMorar = featured.filter((p) => !p.lancamento).slice(0, 6)
   const destaques = lancamentos.slice(0, 6)
   const bairros = allBairros.slice(0, 6)
   const bairroNames = allBairros.map((b) => b.bairro)
@@ -108,24 +105,6 @@ export default async function Home() {
 
       {/* Saved search banner */}
       <SavedSearchBanner />
-
-      {/* Oportunidade de hoje — vitrine imediata após hero */}
-      {highlight && (
-        <section id="oportunidade" className="py-10 md:py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <AnimateOnScroll>
-              <div>
-                <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-3xl md:font-bold">
-                  Oportunidade de hoje
-                </h2>
-                <div className="mt-8">
-                  <PropertyCardFeatured property={highlight} />
-                </div>
-              </div>
-            </AnimateOnScroll>
-          </div>
-        </section>
-      )}
 
       {/* Imóveis em destaque — Prontos para morar */}
       {prontosParaMorar.length > 0 && (
