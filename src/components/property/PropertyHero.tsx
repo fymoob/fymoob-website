@@ -12,9 +12,6 @@ interface PropertyHeroProps {
   totalPhotos?: number
   mainImage: string
   alt: string
-  tipo: string
-  bairro: string
-  titulo: string
   onOpenGallery: () => void
 }
 
@@ -23,9 +20,6 @@ export function PropertyHero({
   totalPhotos,
   mainImage,
   alt,
-  tipo,
-  bairro,
-  titulo,
   onOpenGallery,
 }: PropertyHeroProps) {
   const photos = fotos.length > 0 ? fotos : [mainImage]
@@ -116,15 +110,6 @@ export function PropertyHero({
           )}
         </div>
 
-        {/* Info below image — clean, no overlay */}
-        <div className="bg-white px-5 pt-4 pb-3">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-slate-600">
-            {tipo} &bull; {bairro}
-          </span>
-          <h2 className="mt-2 text-lg font-semibold leading-snug text-slate-900">
-            {titulo}
-          </h2>
-        </div>
       </div>
 
       {/* ═══ DESKTOP: Palco com Reflexo e Profundidade ═══ */}
@@ -161,7 +146,7 @@ export function PropertyHero({
 
         {/* The Focus — responsive container, object-cover fills naturally */}
         <div
-          className="relative z-10 flex items-center justify-center px-10 pt-14 pb-4 lg:px-20 lg:pt-16 lg:pb-6"
+          className="relative z-10 flex items-center justify-center px-10 py-10 lg:px-20 lg:py-12"
           style={{ height: "clamp(400px, 55vh, 680px)" }}
         >
           <div className="group/hero relative h-full w-full overflow-hidden rounded-xl" style={{ maxWidth: "60%" }}>
@@ -197,31 +182,12 @@ export function PropertyHero({
             )}
           </div>
 
-          {/* Deep floating shadow beneath artwork */}
-          <div
-            className="pointer-events-none absolute bottom-0 left-[14%] right-[14%] h-12"
-            style={{ boxShadow: "0 40px 100px rgba(0,0,0,0.5)", borderRadius: "50%" }}
-            aria-hidden="true"
-          />
         </div>
 
-        {/* Stage info — dedicated strip below image, inside dark area */}
-        <div className="relative z-20 pb-5">
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent" />
-          <div className="relative mx-auto px-10 lg:px-20" style={{ maxWidth: "90%" }}>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/80 backdrop-blur-sm">
-              {tipo} &bull; {bairro}
-            </span>
-            <h2 className="mt-1.5 max-w-2xl text-xl font-semibold leading-snug text-white/95 md:text-2xl">
-              {titulo}
-            </h2>
-          </div>
-        </div>
-
-        {/* Stage: Ver fotos — top right */}
+        {/* Ver fotos — top right */}
         {photos.length > 1 && (
           <div className="absolute right-10 top-6 z-20 lg:right-16 lg:top-8">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold text-white/90 backdrop-blur-sm transition-all hover:bg-white/20">
+            <span className="inline-flex items-center gap-2 rounded-full bg-black/30 px-4 py-2.5 text-sm font-semibold text-white/95 shadow-lg backdrop-blur-md transition-all hover:bg-black/40">
               <Grid className="size-4" />
               Ver {total} fotos
             </span>

@@ -151,22 +151,24 @@ export default async function PropertyPage({ params }: PageProps) {
         fotos={allPhotos}
         mainImage={mainImage}
         alt={alt}
-        tipo={property.tipo}
-        bairro={property.bairro}
-        titulo={shortTitle || property.titulo}
       />
 
-      {/* ══════ Info Strip + Content ══════ */}
+      {/* ══════ Editorial Title + Content ══════ */}
       <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
-        {/* SEO h1 — sr-only since title is visible on hero overlay */}
-        <h1 className="sr-only">{shortTitle || property.titulo}</h1>
-
         {/* ══════ Two Column Layout — contact card overlaps hero ══════ */}
         <div className="grid grid-cols-1 gap-8 pb-40 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)] md:pb-0">
           {/* Left column */}
           <div className="mt-6 md:mt-8">
-            {/* Compact info strip: badges + address + price + specs inline */}
-            <div className="flex flex-wrap items-center gap-2">
+            {/* Editorial title block */}
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+              {property.tipo} &bull; {property.bairro}
+            </span>
+            <h1 className="mt-2 text-2xl font-bold leading-tight tracking-tight text-slate-900 md:text-3xl">
+              {shortTitle || property.titulo}
+            </h1>
+
+            {/* Badges */}
+            <div className="mt-4 flex flex-wrap items-center gap-2">
               <PropertyBadge variant={property.finalidade === "Venda" ? "sale" : "rent"}>{property.finalidade}</PropertyBadge>
               <PropertyBadge variant="code">Cód: {property.codigo}</PropertyBadge>
             </div>

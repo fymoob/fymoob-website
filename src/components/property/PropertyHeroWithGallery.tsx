@@ -8,9 +8,6 @@ interface PropertyHeroWithGalleryProps {
   fotos: string[]
   mainImage: string
   alt: string
-  tipo: string
-  bairro: string
-  titulo: string
 }
 
 // Hero carousel gets limited photos for performance (less DOM nodes).
@@ -21,9 +18,6 @@ export function PropertyHeroWithGallery({
   fotos,
   mainImage,
   alt,
-  tipo,
-  bairro,
-  titulo,
 }: PropertyHeroWithGalleryProps) {
   const [galleryOpen, setGalleryOpen] = useState(false)
   const heroPhotos = fotos.slice(0, HERO_MAX_PHOTOS)
@@ -35,9 +29,6 @@ export function PropertyHeroWithGallery({
         totalPhotos={fotos.length}
         mainImage={mainImage}
         alt={alt}
-        tipo={tipo}
-        bairro={bairro}
-        titulo={titulo}
         onOpenGallery={() => setGalleryOpen(true)}
       />
 
