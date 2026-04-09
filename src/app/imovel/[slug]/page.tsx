@@ -292,6 +292,8 @@ export default async function PropertyPage({ params }: PageProps) {
         finalidade={property.finalidade}
         dataCadastro={property.dataCadastro}
         bairro={property.bairro}
+        valorCondominio={property.valorCondominio}
+        valorIptu={property.valorIptu}
       />
     </div>
   )

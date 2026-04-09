@@ -2,8 +2,9 @@
 
 import Image from "next/image"
 import { ChevronLeft, ChevronRight, Grid } from "lucide-react"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel"
 
 interface PropertyHeroProps {
   fotos: string[]
@@ -27,6 +28,7 @@ export function PropertyHero({
   const photos = fotos.length > 0 ? fotos : [mainImage]
   const [currentSlide, setCurrentSlide] = useState(0)
 
+  // Desktop nav (fade carousel)
   const goPrev = useCallback(() => {
     setCurrentSlide((prev) => (prev <= 0 ? photos.length - 1 : prev - 1))
   }, [photos.length])
@@ -35,45 +37,59 @@ export function PropertyHero({
     setCurrentSlide((prev) => (prev + 1) % photos.length)
   }, [photos.length])
 
+  // Mobile embla carousel
+  const [mobileApi, setMobileApi] = useState<CarouselApi>()
+  const [mobileSlide, setMobileSlide] = useState(0)
+
+  useEffect(() => {
+    if (!mobileApi) return
+    const onSelect = () => setMobileSlide(mobileApi.selectedScrollSnap())
+    onSelect()
+    mobileApi.on("select", onSelect)
+    return () => { mobileApi.off("select", onSelect) }
+  }, [mobileApi])
+
   return (
     <div className="group relative w-screen overflow-hidden" style={{ marginLeft: "calc(-50vw + 50%)" }}>
-      {/* ═══ MOBILE: full-bleed cover ═══ */}
-      <div
-        className="relative h-[52vh] w-full cursor-pointer md:hidden"
-        onClick={onOpenGallery}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") onOpenGallery()
-        }}
-        aria-label="Abrir galeria de fotos"
-      >
+      {/* ═══ MOBILE: embla carousel with swipe ═══ */}
+      <div className="relative h-[52vh] w-full md:hidden">
         <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 
-        <div className="relative h-full w-full overflow-hidden">
-          <div
-            className="flex h-full transition-transform duration-500 ease-out"
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-          >
+        <Carousel
+          setApi={setMobileApi}
+          opts={{ align: "start", loop: false, skipSnaps: false }}
+          className="h-full w-full"
+        >
+          <CarouselContent className="h-full -ml-0">
             {photos.map((photo, index) => (
-              <div key={`mobile-${index}`} className="relative h-full min-w-full shrink-0">
-                <Image
-                  src={photo}
-                  alt={`${alt} - foto ${index + 1}`}
-                  fill
-                  priority={index === 0}
-                  loading={index === 0 ? "eager" : "lazy"}
-                  className="object-cover"
-                  sizes="100vw"
-                  quality={85}
-                />
-              </div>
+              <CarouselItem key={`mobile-${index}`} className="h-full pl-0 basis-full">
+                <div
+                  className="relative h-full w-full cursor-pointer"
+                  onClick={onOpenGallery}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") onOpenGallery()
+                  }}
+                >
+                  <Image
+                    src={photo}
+                    alt={`${alt} - foto ${index + 1}`}
+                    fill
+                    priority={index === 0}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    className="object-cover"
+                    sizes="100vw"
+                    quality={85}
+                  />
+                </div>
+              </CarouselItem>
             ))}
-          </div>
-        </div>
+          </CarouselContent>
+        </Carousel>
 
         {/* Mobile: info overlay */}
-        <div className="absolute bottom-0 inset-x-0 z-20 px-5 pb-5">
+        <div className="absolute bottom-0 inset-x-0 z-20 px-5 pb-5 pointer-events-none">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/90 backdrop-blur-sm">
             {tipo} &bull; {bairro}
           </span>
@@ -82,11 +98,11 @@ export function PropertyHero({
           </h2>
         </div>
 
-        {/* Mobile: counter */}
+        {/* Mobile: counter (no dots — counter is cleaner) */}
         {photos.length > 1 && (
-          <div className="absolute bottom-4 right-4 z-20">
+          <div className="absolute bottom-4 right-4 z-20 pointer-events-none">
             <span className="rounded-full bg-black/50 px-2.5 py-1 text-[11px] font-medium tabular-nums text-white/90 backdrop-blur-sm">
-              {currentSlide + 1}/{photos.length}
+              {mobileSlide + 1}/{photos.length}
             </span>
           </div>
         )}
@@ -94,10 +110,14 @@ export function PropertyHero({
         {/* Mobile: Ver fotos */}
         {photos.length > 1 && (
           <div className="absolute right-4 top-4 z-20">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-slate-900 shadow-lg backdrop-blur-sm">
+            <button
+              type="button"
+              onClick={onOpenGallery}
+              className="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-slate-900 shadow-lg backdrop-blur-sm"
+            >
               <Grid className="size-3.5" />
               Ver {photos.length} fotos
-            </span>
+            </button>
           </div>
         )}
       </div>
@@ -225,29 +245,6 @@ export function PropertyHero({
             <ChevronRight className="size-6" strokeWidth={1.5} />
           </button>
         </>
-      )}
-
-      {/* ═══ Mobile dots ═══ */}
-      {photos.length > 1 && (
-        <div className="absolute bottom-14 left-1/2 z-30 flex -translate-x-1/2 items-center gap-1.5 md:hidden">
-          {photos.slice(0, 8).map((_, index) => (
-            <button
-              key={index}
-              type="button"
-              onClick={(e) => { e.stopPropagation(); setCurrentSlide(index) }}
-              className={cn(
-                "size-1.5 rounded-full transition-all",
-                index === currentSlide
-                  ? "scale-125 bg-white"
-                  : "bg-white/40"
-              )}
-              aria-label={`Ir para foto ${index + 1}`}
-            />
-          ))}
-          {photos.length > 8 && (
-            <span className="text-[10px] text-white/50">+{photos.length - 8}</span>
-          )}
-        </div>
       )}
     </div>
   )

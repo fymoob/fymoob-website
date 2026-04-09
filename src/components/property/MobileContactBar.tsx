@@ -13,6 +13,8 @@ interface MobileContactBarProps {
   dataCadastro?: string | null
   bairro?: string
   precoMedioBairro?: number | null
+  valorCondominio?: number | null
+  valorIptu?: number | null
 }
 
 const FYMOOB_PHONE = "554199978-0517".replace(/\D/g, "")
@@ -57,11 +59,19 @@ export function MobileContactBar({
   dataCadastro,
   bairro,
   precoMedioBairro,
+  valorCondominio,
+  valorIptu,
 }: MobileContactBarProps) {
   const isDual = finalidade === "Venda e Locação" && precoVenda && precoAluguel
   const isRental = !isDual && finalidade !== "Venda"
   const price = isRental ? (precoAluguel ?? precoVenda ?? null) : (precoVenda ?? precoAluguel ?? null)
   const urgency = getUrgencyMessage({ dataCadastro, bairro, precoVenda, precoMedioBairro })
+
+  // Calculate total for rentals (aluguel + condomínio + IPTU)
+  const rentalTotal = isRental && price
+    ? price + (valorCondominio ?? 0) + (valorIptu ?? 0)
+    : null
+  const showTotal = rentalTotal && rentalTotal > (price ?? 0)
 
   // Mirror BottomNav auto-hide: when nav hides, slide down to bottom-0
   const [navHidden, setNavHidden] = useState(false)
@@ -110,9 +120,20 @@ export function MobileContactBar({
       <div className="border-t border-neutral-100 px-4 py-3">
         <div className="mx-auto flex w-full max-w-lg items-center gap-3">
           <div className="min-w-0 flex-1">
-            <p className="truncate text-lg font-extrabold text-slate-900">
-              {formatPrice(price)}{isRental && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
-            </p>
+            {showTotal ? (
+              <>
+                <p className="truncate text-lg font-extrabold text-slate-900">
+                  {formatPrice(rentalTotal)}<span className="text-sm font-normal text-neutral-500"> /mês</span>
+                </p>
+                <p className="truncate text-xs text-neutral-400">
+                  Aluguel {formatPrice(price)} + taxas
+                </p>
+              </>
+            ) : (
+              <p className="truncate text-lg font-extrabold text-slate-900">
+                {formatPrice(price)}{isRental && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
+              </p>
+            )}
             {isDual && (
               <p className="truncate text-sm font-bold text-slate-700">
                 {formatPrice(precoAluguel)} <span className="font-normal text-neutral-500">/mês</span>
