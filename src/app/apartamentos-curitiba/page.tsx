@@ -107,7 +107,7 @@ export default async function ApartamentosCuritibaPage() {
           </Suspense>
         </div>
 
-        <PropertyListingGrid properties={properties} totalLabel="apartamentos" />
+        <PropertyListingGrid properties={properties} totalLabel="apartamentos" cardContext="search" />
       </div>
 
       <SeoInternalLinks groups={[buildBairrosGroup(bairrosComApto, { tipoSlug: "apartamentos", title: "Apartamentos por Bairro" })]} />

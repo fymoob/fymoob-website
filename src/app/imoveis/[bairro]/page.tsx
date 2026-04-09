@@ -166,7 +166,7 @@ export default async function BairroPage({ params }: BairroPageProps) {
           </Suspense>
         </div>
 
-        <PropertyListingGrid properties={properties} />
+        <PropertyListingGrid properties={properties} cardContext="search" />
       </div>
 
       {/* SEO content + FAQ + Related */}

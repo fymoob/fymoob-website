@@ -84,7 +84,7 @@ export default async function CasasCuritibaPage() {
           </Suspense>
         </div>
 
-        <PropertyListingGrid properties={properties} totalLabel="casas" />
+        <PropertyListingGrid properties={properties} totalLabel="casas" cardContext="search" />
       </div>
 
       <SeoInternalLinks groups={[buildBairrosGroup(bairrosComCasa, { tipoSlug: "casas", title: "Casas por Bairro" })]} />

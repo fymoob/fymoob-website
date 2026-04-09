@@ -99,7 +99,7 @@ export default async function LancamentosPage() {
         {/* Grid de imóveis */}
         {properties.length > 0 ? (
           <div className="mt-8">
-            <PropertyListingGrid properties={properties} totalLabel="lançamentos" />
+            <PropertyListingGrid properties={properties} totalLabel="lançamentos" cardContext="search" />
           </div>
         ) : (
           <div className="mt-12 text-center">

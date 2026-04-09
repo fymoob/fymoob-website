@@ -86,7 +86,7 @@ export default async function SobradosCuritibaPage() {
           </Suspense>
         </div>
 
-        <PropertyListingGrid properties={properties} totalLabel="sobrados" />
+        <PropertyListingGrid properties={properties} totalLabel="sobrados" cardContext="search" />
       </div>
 
       <SeoInternalLinks groups={[buildBairrosGroup(bairrosComSobrado, { tipoSlug: "sobrados", title: "Sobrados por Bairro" })]} />

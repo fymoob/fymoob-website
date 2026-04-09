@@ -86,7 +86,7 @@ export default async function TerrenosCuritibaPage() {
           </Suspense>
         </div>
 
-        <PropertyListingGrid properties={properties} totalLabel="terrenos" />
+        <PropertyListingGrid properties={properties} totalLabel="terrenos" cardContext="search" />
       </div>
 
       <SeoInternalLinks groups={[buildBairrosGroup(bairrosComTerreno, { tipoSlug: "terrenos", title: "Terrenos por Bairro" })]} />
