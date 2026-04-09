@@ -79,11 +79,16 @@ export function PropertyHeaderBlock({
       )}
 
       {isPremium && (
-        <div className="mt-10 max-w-2xl border-t border-slate-200/80 pt-8 md:mt-12 md:pt-10">
-          <p className="text-sm leading-7 text-slate-500 md:text-[15px]">
-            Atendimento consultivo com foco na apresentação completa do imóvel,
-            disponibilidade e condições de visita.
-          </p>
+        <div className="mt-10 border-t border-slate-200/80 pt-8 md:mt-12 md:pt-10">
+          <PropertyFeatures
+            dormitorios={property.dormitorios}
+            suites={property.suites}
+            banheiros={property.banheiros}
+            vagas={property.vagas}
+            areaPrivativa={property.areaPrivativa}
+            areaTotal={property.areaTotal}
+            searchGrid
+          />
         </div>
       )}
     </div>

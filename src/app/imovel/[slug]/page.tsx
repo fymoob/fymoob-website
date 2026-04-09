@@ -198,11 +198,11 @@ export default async function PropertyPage({ params }: PageProps) {
             )}
 
             <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-5"}>
-              <PropertyCharacteristics property={property} />
+              <PropertyDescription descricao={descricaoWithTitle} />
             </div>
 
             <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-8 border-t border-slate-200 pt-8"}>
-              <PropertyDescription descricao={descricaoWithTitle} />
+              <PropertyCharacteristics property={property} />
             </div>
 
             <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-8 border-t border-slate-200 pt-8"}>
