@@ -180,52 +180,24 @@ export default async function PropertyPage({ params }: PageProps) {
               </p>
             )}
 
-            {/* Price + specs inline */}
-            <div className="mt-4 flex flex-wrap items-center gap-6">
-              <div>
-                {/* --- Preço principal (venda ou aluguel) --- */}
-                {isDual && (
-                  <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
-                    Valor venda
-                  </p>
-                )}
-                <div className="flex items-baseline gap-2">
-                  <p className="font-display text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
-                    {formatPrice(price)}
-                  </p>
-                  {isRental && (
-                    <span className="text-sm text-neutral-500">/mês</span>
-                  )}
-                </div>
-
-                {/* --- Valor aluguel (dual) — igualmente destacado --- */}
-                {isDual && (
-                  <div className="mt-3 border-t border-slate-100 pt-3">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
-                      Valor aluguel
-                    </p>
-                    <p className="mt-0.5 font-display text-2xl font-bold tracking-tight text-slate-900">
-                      {formatPrice(property.precoAluguel)} <span className="text-sm font-normal text-neutral-500">/mês</span>
-                    </p>
-                  </div>
-                )}
+            {/* Brand accent line + Features in highlight */}
+            <div className="mt-5">
+              <div className="h-0.5 w-16 rounded-full bg-brand-primary" />
+              <div className="mt-4">
+                <PropertyFeatures
+                  dormitorios={property.dormitorios}
+                  suites={property.suites}
+                  banheiros={property.banheiros}
+                  vagas={property.vagas}
+                  areaPrivativa={property.areaPrivativa}
+                  searchGrid
+                />
               </div>
-
-              <span className="hidden h-8 w-px bg-slate-200 md:block" />
-
-              <PropertyFeatures
-                dormitorios={property.dormitorios}
-                suites={property.suites}
-                banheiros={property.banheiros}
-                vagas={property.vagas}
-                areaPrivativa={property.areaPrivativa}
-                size="sm"
-              />
             </div>
 
             {/* Condomínio/IPTU — mobile only (sidebar cobre no desktop) */}
             {(isRental || isDual) && (property.valorCondominio || property.valorIptu) && (
-              <div className="mt-3 flex items-center gap-4 text-sm text-slate-500 lg:hidden">
+              <div className="mt-4 flex items-center gap-4 text-sm text-slate-500 lg:hidden">
                 {property.valorCondominio && property.valorCondominio > 0 && (
                   <span>Condomínio: <span className="font-medium text-slate-700">{formatPrice(property.valorCondominio)}</span></span>
                 )}
