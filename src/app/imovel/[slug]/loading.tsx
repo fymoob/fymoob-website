@@ -8,8 +8,11 @@ export default function PropertyLoading() {
       </div>
 
       <div className="mt-6 w-screen overflow-hidden bg-slate-950" style={{ marginLeft: "calc(-50vw + 50%)" }}>
-        <div className="relative mx-auto max-w-[1400px] px-6 py-8 lg:px-10 lg:py-10">
-          <Skeleton className="aspect-[16/9] w-full rounded-[28px] bg-white/10" />
+        <div className="relative mx-auto flex max-w-[1500px] justify-center px-6 py-7 lg:px-8 lg:py-8">
+          <Skeleton
+            className="w-full max-w-[1210px] rounded-[28px] bg-white/10"
+            style={{ height: "clamp(420px, 58dvh, 680px)" }}
+          />
         </div>
       </div>
 
@@ -50,7 +53,7 @@ export default function PropertyLoading() {
           </div>
 
           <div className="hidden lg:block">
-            <div className="-mt-16 space-y-4 rounded-[28px] border border-neutral-200 bg-white p-6 shadow-xl">
+            <div className="-mt-12 space-y-4 rounded-[28px] border border-neutral-200 bg-white p-6 shadow-xl">
               <Skeleton className="h-4 w-24" />
               <Skeleton className="h-10 w-56" />
               <div className="grid grid-cols-2 gap-3">

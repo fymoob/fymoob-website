@@ -220,7 +220,7 @@ export default async function PropertyPage({ params }: PageProps) {
           </div>
 
           <aside className="relative z-40 hidden lg:block">
-            <div className={variant === "premium" ? "sticky top-24 -mt-28" : "sticky top-24 -mt-12"}>
+            <div className={variant === "premium" ? "sticky top-24 -mt-20" : "sticky top-24 -mt-10"}>
               <LazyContactSidebar
                 propertyTitle={property.titulo}
                 propertyCode={property.codigo}

@@ -33,8 +33,8 @@ export function PropertyHeaderBlock({
         className={cn(
           "mt-3 leading-tight tracking-tight text-slate-900",
           isPremium
-            ? "max-w-3xl text-3xl font-semibold md:text-[3.35rem] md:leading-[0.96]"
-            : "text-2xl font-bold md:text-3xl"
+            ? "max-w-3xl text-[clamp(2.25rem,1.55rem+1.8vw,3.45rem)] font-semibold md:leading-[0.96]"
+            : "text-[clamp(2rem,1.35rem+1vw,2.7rem)] font-bold"
         )}
       >
         {shortTitle || property.titulo}

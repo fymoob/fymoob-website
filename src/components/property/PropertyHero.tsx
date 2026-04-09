@@ -28,6 +28,14 @@ export function PropertyHero({
   const photos = fotos.length > 0 ? fotos : [mainImage]
   const total = totalPhotos ?? photos.length
   const [currentSlide, setCurrentSlide] = useState(0)
+  const standardStageStyle = {
+    height: "clamp(420px, 58dvh, 680px)",
+    width: "min(100%, calc(clamp(420px, 58dvh, 680px) * 16 / 9))",
+  }
+  const premiumStageStyle = {
+    height: "clamp(460px, 64dvh, 760px)",
+    width: "min(100%, calc(clamp(460px, 64dvh, 760px) * 16 / 9))",
+  }
 
   // Desktop nav (fade carousel)
   const goPrev = useCallback(() => {
@@ -146,8 +154,11 @@ export function PropertyHero({
             aria-hidden="true"
           />
 
-          <div className="relative z-10 mx-auto flex w-full max-w-[1720px] items-center justify-center px-4 py-5 lg:px-6 lg:py-6">
-            <div className="group/hero relative h-[72vh] min-h-[560px] max-h-[860px] w-full max-w-[1520px] overflow-hidden rounded-[24px] border border-white/10 shadow-[0_38px_120px_rgba(0,0,0,0.42)]">
+          <div className="relative z-10 mx-auto flex w-full max-w-[1680px] items-center justify-center px-4 py-5 lg:px-6 lg:py-6">
+            <div
+              className="group/hero relative overflow-hidden rounded-[24px] border border-white/10 shadow-[0_38px_120px_rgba(0,0,0,0.42)]"
+              style={premiumStageStyle}
+            >
               {photos.map((photo, index) => (
                 <div
                   key={`premium-${index}`}
@@ -163,7 +174,7 @@ export function PropertyHero({
                     priority={index === 0}
                     loading={index === 0 ? "eager" : "lazy"}
                     className="object-cover transition-transform duration-[1800ms] ease-out group-hover/hero:scale-[1.02]"
-                    sizes="(max-width: 1720px) 96vw, 1520px"
+                    sizes="(max-width: 1536px) 92vw, 1350px"
                     quality={92}
                   />
                 </div>
@@ -228,8 +239,11 @@ export function PropertyHero({
             aria-hidden="true"
           />
 
-          <div className="relative z-10 mx-auto flex w-full max-w-[1400px] items-center justify-center px-6 py-8 lg:px-10 lg:py-10">
-            <div className="group/hero relative aspect-[16/9] w-full max-w-[1240px] overflow-hidden rounded-[28px] border border-white/10 shadow-[0_28px_80px_rgba(0,0,0,0.38)]">
+          <div className="relative z-10 mx-auto flex w-full max-w-[1460px] items-center justify-center px-6 py-7 lg:px-8 lg:py-8">
+            <div
+              className="group/hero relative overflow-hidden rounded-[28px] border border-white/10 shadow-[0_28px_80px_rgba(0,0,0,0.38)]"
+              style={standardStageStyle}
+            >
               {photos.map((photo, index) => (
                 <div
                   key={`stage-${index}`}
@@ -245,7 +259,7 @@ export function PropertyHero({
                     priority={index === 0}
                     loading={index === 0 ? "eager" : "lazy"}
                     className="object-cover transition-transform duration-[1600ms] ease-out group-hover/hero:scale-[1.03]"
-                    sizes="(max-width: 1536px) 90vw, 1240px"
+                    sizes="(max-width: 1536px) 88vw, 1210px"
                     quality={92}
                   />
                 </div>
