@@ -1,5 +1,4 @@
 import type { Property } from "@/types/property"
-import { formatArea } from "@/lib/utils"
 
 interface PropertyCharacteristicsProps {
   property: Property
@@ -10,17 +9,8 @@ export function PropertyCharacteristics({ property }: PropertyCharacteristicsPro
   // are already visible in badges and Quick Glance icons
   const items: { label: string; value: string }[] = []
 
-  if (property.areaTotal && property.areaTotal !== property.areaPrivativa) {
-    items.push({ label: "Área total", value: formatArea(property.areaTotal) })
-  }
-  if (property.anoConstrucao && property.anoConstrucao !== "0") {
-    items.push({ label: "Ano", value: property.anoConstrucao })
-  }
   if (property.face) {
     items.push({ label: "Face", value: property.face })
-  }
-  if (property.aceitaFinanciamento) {
-    items.push({ label: "Financiamento", value: "Aceita" })
   }
   if (property.aceitaPermuta) {
     items.push({ label: "Permuta", value: "Aceita" })

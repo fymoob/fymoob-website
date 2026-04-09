@@ -8,6 +8,7 @@ interface PropertyFeaturesProps {
   banheiros: number | null
   vagas: number | null
   areaPrivativa: number | null
+  areaTotal?: number | null
   size?: "sm" | "md"
   compact?: boolean
   iconOnly?: boolean
@@ -23,6 +24,7 @@ export function PropertyFeatures({
   banheiros,
   vagas,
   areaPrivativa,
+  areaTotal,
   size = "md",
   compact = false,
   iconOnly = false,
@@ -31,6 +33,8 @@ export function PropertyFeatures({
   cardCompact = false,
   className,
 }: PropertyFeaturesProps) {
+  const showAreaTotal = areaTotal && areaTotal !== areaPrivativa
+
   const features = [
     {
       icon: Maximize,
@@ -40,6 +44,14 @@ export function PropertyFeatures({
       shortLabel: "M²",
       rawValue: areaPrivativa,
     },
+    ...(showAreaTotal ? [{
+      icon: Maximize,
+      value: formatArea(areaTotal),
+      unit: "m² total",
+      label: "Área total",
+      shortLabel: "M² total",
+      rawValue: areaTotal,
+    }] : []),
     {
       icon: BedDouble,
       value: dormitorios,

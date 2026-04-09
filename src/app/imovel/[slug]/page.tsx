@@ -192,6 +192,7 @@ export default async function PropertyPage({ params }: PageProps) {
                   banheiros={property.banheiros}
                   vagas={property.vagas}
                   areaPrivativa={property.areaPrivativa}
+                  areaTotal={property.areaTotal}
                   searchGrid
                 />
               </div>
@@ -210,7 +211,7 @@ export default async function PropertyPage({ params }: PageProps) {
             )}
 
             {/* Ficha Técnica — complementary specs only */}
-            <div className="mt-5 border-t border-slate-200 pt-4">
+            <div className="mt-5">
               <PropertyCharacteristics property={property} />
             </div>
 
@@ -237,7 +238,7 @@ export default async function PropertyPage({ params }: PageProps) {
 
           {/* Right sidebar — floats up over hero */}
           <aside className="relative z-30 hidden lg:block">
-            <div className="sticky top-24 -mt-16">
+            <div className="sticky top-24 -mt-6">
               <LazyContactSidebar
                 propertyTitle={property.titulo}
                 propertyCode={property.codigo}
