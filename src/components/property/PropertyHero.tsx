@@ -147,7 +147,7 @@ export function PropertyHero({
         {/* The Focus — responsive container, object-cover fills naturally */}
         <div
           className="relative z-10 flex items-center justify-center px-10 py-10 lg:px-20 lg:py-12"
-          style={{ height: "clamp(400px, 55vh, 680px)" }}
+          style={{ height: "clamp(450px, 65vh, 780px)" }}
         >
           <div className="group/hero relative h-full w-full overflow-hidden rounded-xl" style={{ maxWidth: "60%" }}>
             {/* Fade carousel — stacked slides with opacity transition */}
