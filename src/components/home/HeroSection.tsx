@@ -54,11 +54,10 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bair
       {/* Content */}
       <div className="relative z-10 mx-auto w-full max-w-4xl px-4 text-center sm:px-6">
         <h1 className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-5xl md:text-7xl leading-[1.05] drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
-          Encontre seu imóvel{"\n"}ideal
+          O seu próximo endereço{"\n"}está aqui.
         </h1>
         <p className="hero-animate-2 mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-white/90 sm:mt-6 sm:text-lg md:text-xl drop-shadow-[0_1px_4px_rgba(0,0,0,0.2)]">
-          Apartamentos, casas e sobrados à venda e para alugar nos melhores
-          bairros da cidade.
+          Imóveis para comprar ou alugar com o acompanhamento próximo e seguro que você merece.
         </p>
 
         {/* Mobile: compact pill → expands to bottom sheet */}
