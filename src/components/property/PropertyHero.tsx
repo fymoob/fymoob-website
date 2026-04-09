@@ -8,6 +8,8 @@ import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/com
 
 interface PropertyHeroProps {
   fotos: string[]
+  /** Total photos available (gallery may have more than hero carousel) */
+  totalPhotos?: number
   mainImage: string
   alt: string
   tipo: string
@@ -18,6 +20,7 @@ interface PropertyHeroProps {
 
 export function PropertyHero({
   fotos,
+  totalPhotos,
   mainImage,
   alt,
   tipo,
@@ -26,6 +29,7 @@ export function PropertyHero({
   onOpenGallery,
 }: PropertyHeroProps) {
   const photos = fotos.length > 0 ? fotos : [mainImage]
+  const total = totalPhotos ?? photos.length
   const [currentSlide, setCurrentSlide] = useState(0)
 
   // Desktop nav (fade carousel)
@@ -102,7 +106,7 @@ export function PropertyHero({
         {photos.length > 1 && (
           <div className="absolute bottom-4 right-4 z-20 pointer-events-none">
             <span className="rounded-full bg-black/50 px-2.5 py-1 text-[11px] font-medium tabular-nums text-white/90 backdrop-blur-sm">
-              {mobileSlide + 1}/{photos.length}
+              {mobileSlide + 1}/{total}
             </span>
           </div>
         )}
@@ -116,7 +120,7 @@ export function PropertyHero({
               className="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-slate-900 shadow-lg backdrop-blur-sm"
             >
               <Grid className="size-3.5" />
-              Ver {photos.length} fotos
+              Ver {total} fotos
             </button>
           </div>
         )}
@@ -186,7 +190,7 @@ export function PropertyHero({
             {photos.length > 1 && (
               <div className="absolute bottom-3 right-3 z-20">
                 <span className="rounded-full bg-black/40 px-3 py-1.5 text-xs font-medium tabular-nums text-white/90 backdrop-blur-md">
-                  {currentSlide + 1} / {photos.length}
+                  {currentSlide + 1} / {total}
                 </span>
               </div>
             )}
@@ -218,7 +222,7 @@ export function PropertyHero({
           <div className="absolute right-10 top-6 z-20 lg:right-16 lg:top-8">
             <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold text-white/90 backdrop-blur-sm transition-all hover:bg-white/20">
               <Grid className="size-4" />
-              Ver {photos.length} fotos
+              Ver {total} fotos
             </span>
           </div>
         )}
