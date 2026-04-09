@@ -102,7 +102,7 @@ export function PropertyFeatures({
     return (
       <div
         className={cn(
-          "grid grid-cols-2 gap-x-5 gap-y-4 sm:grid-cols-4 sm:gap-x-4",
+          "grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-5 sm:gap-x-3",
           className
         )}
       >

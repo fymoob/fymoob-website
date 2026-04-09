@@ -208,7 +208,7 @@ export default async function PropertyPage({ params }: PageProps) {
             )}
 
             {/* Ficha Técnica — complementary specs only */}
-            <div className="mt-4">
+            <div className="mt-5 border-t border-slate-200 pt-4">
               <PropertyCharacteristics property={property} />
             </div>
 
