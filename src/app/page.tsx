@@ -12,7 +12,6 @@ import {
 import { getRecentPosts } from "@/services/blog"
 import { BairroCard } from "@/components/search/BairroCard"
 import { HeroSection } from "@/components/home/HeroSection"
-import { PropertyCard } from "@/components/property/PropertyCard"
 import { BlogCard } from "@/components/blog/BlogCard"
 import { AnimateOnScroll } from "@/components/shared/AnimateOnScroll"
 import { GoogleReviews } from "@/components/shared/GoogleReviews"
@@ -108,67 +107,50 @@ export default async function Home() {
 
       {/* Imóveis em destaque — Prontos para morar */}
       {prontosParaMorar.length > 0 && (
-        <section className="bg-neutral-50 py-10 md:py-16">
+        <section className="py-10 md:py-14">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <AnimateOnScroll>
-              <div className="flex items-center justify-between">
-                <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-3xl md:font-bold">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-2xl">
                   Imóveis em destaque
                 </h2>
-                <Link
-                  href="/busca"
-                  className="text-sm font-medium text-brand-primary transition-colors duration-200 hover:text-brand-primary-hover"
-                >
-                  Ver todos
-                </Link>
+                <p className="mt-1 text-sm text-neutral-500">Prontos para morar nos melhores bairros</p>
               </div>
-              <p className="mt-2 text-sm text-neutral-500">Prontos para morar nos melhores bairros de Curitiba</p>
-            </AnimateOnScroll>
-            {/* Mobile: horizontal carousel */}
-            <div className="mt-6 md:hidden">
-              <HomeCarousel properties={prontosParaMorar} />
+              <Link
+                href="/busca"
+                className="text-sm font-medium text-brand-primary transition-colors duration-200 hover:text-brand-primary-hover"
+              >
+                Ver todos
+              </Link>
             </div>
-            {/* Desktop: grid */}
-            <AnimateOnScroll stagger className="mt-8 hidden gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-              {prontosParaMorar.map((property) => (
-                <div key={property.slug}>
-                  <PropertyCard property={property} compactFeatures />
-                </div>
-              ))}
-            </AnimateOnScroll>
+            <div className="mt-6">
+              <HomeCarousel properties={prontosParaMorar} fadeFrom="from-white" />
+            </div>
           </div>
         </section>
       )}
 
       {/* Destaques de lançamento */}
       {destaques.length > 0 && (
-        <section className="bg-neutral-50 py-10 md:py-16">
+        <section className="bg-neutral-50 py-10 md:py-14">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <AnimateOnScroll>
-              <div className="flex items-center justify-between">
-                <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-3xl md:font-bold">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-2xl">
                   Destaques de lançamento
                 </h2>
-                <Link
-                  href="/lancamentos"
-                  className="text-sm font-medium text-brand-primary transition-colors duration-200 hover:text-brand-primary-hover"
-                >
-                  Ver todos
-                </Link>
+                <p className="mt-1 text-sm text-neutral-500">Novos empreendimentos em Curitiba</p>
               </div>
-            </AnimateOnScroll>
-            {/* Mobile: horizontal carousel */}
-            <div className="mt-6 md:hidden">
-              <HomeCarousel properties={destaques} />
+              <Link
+                href="/lancamentos"
+                className="text-sm font-medium text-brand-primary transition-colors duration-200 hover:text-brand-primary-hover"
+              >
+                Ver todos
+              </Link>
             </div>
-            {/* Desktop: grid */}
-            <AnimateOnScroll stagger className="mt-8 hidden gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-              {destaques.map((property) => (
-                <div key={property.slug} className="">
-                  <PropertyCard property={property} compactFeatures />
-                </div>
-              ))}
-            </AnimateOnScroll>
+            <div className="mt-6">
+              <HomeCarousel properties={destaques} fadeFrom="from-neutral-50" />
+            </div>
           </div>
         </section>
       )}
