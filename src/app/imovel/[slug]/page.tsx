@@ -174,7 +174,7 @@ export default async function PropertyPage({ params }: PageProps) {
       />
 
       <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
-        <div className="grid grid-cols-1 gap-8 pb-40 md:pb-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">
+        <div className="grid grid-cols-1 gap-8 pb-40 md:pb-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)] lg:gap-10">
           <div>
             <PropertyHeaderBlock
               property={property}
@@ -197,19 +197,19 @@ export default async function PropertyPage({ params }: PageProps) {
               </div>
             )}
 
-            <div className={variant === "premium" ? "mt-8" : "mt-5"}>
+            <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-5"}>
               <PropertyCharacteristics property={property} />
             </div>
 
-            <div className={variant === "premium" ? "mt-10 border-t border-slate-200 pt-10" : "mt-8 border-t border-slate-200 pt-8"}>
+            <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-8 border-t border-slate-200 pt-8"}>
               <PropertyDescription descricao={descricaoWithTitle} />
             </div>
 
-            <div className={variant === "premium" ? "mt-10 border-t border-slate-200 pt-10" : "mt-8 border-t border-slate-200 pt-8"}>
+            <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-8 border-t border-slate-200 pt-8"}>
               <PropertyAmenities descricao={descricaoWithTitle} />
             </div>
 
-            <div className={variant === "premium" ? "mt-10 border-t border-slate-200 pt-10" : "mt-8 border-t border-slate-200 pt-8"}>
+            <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-8 border-t border-slate-200 pt-8"}>
               <PropertyMap
                 latitude={property.latitude}
                 longitude={property.longitude}
@@ -220,7 +220,7 @@ export default async function PropertyPage({ params }: PageProps) {
           </div>
 
           <aside className="relative z-40 hidden lg:block">
-            <div className={variant === "premium" ? "sticky top-28 -mt-16" : "sticky top-24 -mt-6"}>
+            <div className={variant === "premium" ? "sticky top-24 -mt-28" : "sticky top-24 -mt-12"}>
               <LazyContactSidebar
                 propertyTitle={property.titulo}
                 propertyCode={property.codigo}

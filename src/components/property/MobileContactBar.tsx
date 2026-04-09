@@ -1,7 +1,8 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
-import { TrendingUp, Sparkles } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { Sparkles, TrendingUp } from "lucide-react"
+
 import { pushAnalyticsEvent } from "@/lib/analytics"
 import { formatPrice } from "@/lib/utils"
 import type { PropertyPageVariant } from "@/types/property"
@@ -38,17 +39,31 @@ function getUrgencyMessage({
     const daysAgo = Math.floor(
       (Date.now() - new Date(dataCadastro).getTime()) / (1000 * 60 * 60 * 24)
     )
+
     if (daysAgo <= 3) {
-      return { icon: Sparkles, text: "Novo — publicado recentemente", color: "text-amber-700 bg-amber-50" }
+      return {
+        icon: Sparkles,
+        text: "Novo publicado recentemente",
+        color: "text-amber-700 bg-amber-50",
+      }
     }
+
     if (daysAgo <= 7) {
-      return { icon: Sparkles, text: `Novo — ${daysAgo} dias atrás`, color: "text-amber-700 bg-amber-50" }
+      return {
+        icon: Sparkles,
+        text: `Novo há ${daysAgo} dias`,
+        color: "text-amber-700 bg-amber-50",
+      }
     }
   }
 
   if (precoVenda && precoMedioBairro && precoVenda < precoMedioBairro * 0.9) {
     const pct = Math.round(((precoMedioBairro - precoVenda) / precoMedioBairro) * 100)
-    return { icon: TrendingUp, text: `${pct}% abaixo da média${bairro ? ` — ${bairro}` : ""}`, color: "text-emerald-700 bg-emerald-50" }
+    return {
+      icon: TrendingUp,
+      text: `${pct}% abaixo da média${bairro ? ` - ${bairro}` : ""}`,
+      color: "text-emerald-700 bg-emerald-50",
+    }
   }
 
   return null
@@ -77,13 +92,11 @@ export function MobileContactBar({
     ? null
     : getUrgencyMessage({ dataCadastro, bairro, precoVenda, precoMedioBairro })
 
-  // Calculate total for rentals (aluguel + condomínio + IPTU)
   const rentalTotal = isRental && price
     ? price + (valorCondominio ?? 0) + (valorIptu ?? 0)
     : null
   const showTotal = rentalTotal && rentalTotal > (price ?? 0)
 
-  // Mirror BottomNav auto-hide: when nav hides, slide down to bottom-0
   const [navHidden, setNavHidden] = useState(false)
   const lastScrollY = useRef(0)
 
@@ -97,6 +110,7 @@ export function MobileContactBar({
       } else {
         setNavHidden(false)
       }
+
       lastScrollY.current = currentY
 
       clearTimeout(idleTimer)
@@ -112,7 +126,11 @@ export function MobileContactBar({
 
   const whatsMessage = `Olá! Tenho interesse no imóvel ${propertyTitle} (Cód: ${propertyCode}). Gostaria de mais informações.`
   const whatsUrl = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent(whatsMessage)}`
-  const whatsLabel = shouldShowConsultPrice ? "Consultar valores" : "Quero visitar"
+  const whatsLabel = shouldShowConsultPrice
+    ? "Consultar valores"
+    : isPremium
+      ? "Falar com consultor"
+      : "Quero visitar"
 
   const trackCTA = () => {
     pushAnalyticsEvent("property_contact_click", {
@@ -129,7 +147,6 @@ export function MobileContactBar({
       className="fixed left-0 z-[100] w-full border-t border-neutral-200 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.08)] transition-[bottom] duration-300 md:hidden"
       style={{ bottom: navHidden ? 0 : 64 }}
     >
-      {/* Urgency strip */}
       {urgency && (
         <div className={`flex items-center justify-center gap-1.5 px-4 py-2 ${urgency.color}`}>
           <urgency.icon size={14} className="shrink-0" />
@@ -137,7 +154,6 @@ export function MobileContactBar({
         </div>
       )}
 
-      {/* Price + CTA */}
       <div className="border-t border-neutral-100 px-4 py-3">
         <div className="mx-auto flex w-full max-w-lg items-center gap-3">
           <div className="min-w-0 flex-1">
@@ -153,23 +169,34 @@ export function MobileContactBar({
             ) : showTotal ? (
               <>
                 <p className="truncate text-lg font-extrabold text-slate-900">
-                  {formatPrice(rentalTotal)}<span className="text-sm font-normal text-neutral-500"> /mês</span>
+                  {formatPrice(rentalTotal)}
+                  <span className="text-sm font-normal text-neutral-500"> /mês</span>
                 </p>
                 <p className="truncate text-xs text-neutral-400">
                   Aluguel {formatPrice(price)} + taxas
                 </p>
               </>
             ) : (
-              <p className="truncate text-lg font-extrabold text-slate-900">
-                {formatPrice(price)}{isRental && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
-              </p>
+              <>
+                <p className="truncate text-lg font-extrabold text-slate-900">
+                  {formatPrice(price)}
+                  {isRental && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
+                </p>
+                {isPremium && !isRental && (
+                  <p className="truncate text-xs text-neutral-400">
+                    Atendimento rápido com corretor especializado
+                  </p>
+                )}
+              </>
             )}
+
             {isDual && !shouldShowConsultPrice && (
               <p className="truncate text-sm font-bold text-slate-700">
                 {formatPrice(precoAluguel)} <span className="font-normal text-neutral-500">/mês</span>
               </p>
             )}
           </div>
+
           <a
             href={whatsUrl}
             target="_blank"
