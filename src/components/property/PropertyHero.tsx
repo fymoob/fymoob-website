@@ -55,75 +55,76 @@ export function PropertyHero({
 
   return (
     <div className="group relative w-screen overflow-hidden" style={{ marginLeft: "calc(-50vw + 50%)" }}>
-      {/* ═══ MOBILE: embla carousel with swipe ═══ */}
-      <div className="relative h-[52vh] w-full md:hidden">
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+      {/* ═══ MOBILE: embla carousel with swipe + info below ═══ */}
+      <div className="md:hidden">
+        {/* Photo carousel */}
+        <div className="relative h-[48vh] w-full">
+          <Carousel
+            setApi={setMobileApi}
+            opts={{ align: "start", loop: false, skipSnaps: false }}
+            className="h-full w-full [&>[data-slot=carousel-content]]:h-full"
+          >
+            <CarouselContent className="h-full -ml-0">
+              {photos.map((photo, index) => (
+                <CarouselItem key={`mobile-${index}`} className="h-full pl-0 basis-full">
+                  <div
+                    className="relative h-full w-full cursor-pointer"
+                    onClick={onOpenGallery}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") onOpenGallery()
+                    }}
+                  >
+                    <Image
+                      src={photo}
+                      alt={`${alt} - foto ${index + 1}`}
+                      fill
+                      priority={index === 0}
+                      loading={index === 0 ? "eager" : "lazy"}
+                      className="object-cover"
+                      sizes="100vw"
+                      quality={85}
+                    />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
 
-        <Carousel
-          setApi={setMobileApi}
-          opts={{ align: "start", loop: false, skipSnaps: false }}
-          className="h-full w-full [&>[data-slot=carousel-content]]:h-full"
-        >
-          <CarouselContent className="h-full -ml-0">
-            {photos.map((photo, index) => (
-              <CarouselItem key={`mobile-${index}`} className="h-full pl-0 basis-full">
-                <div
-                  className="relative h-full w-full cursor-pointer"
-                  onClick={onOpenGallery}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") onOpenGallery()
-                  }}
-                >
-                  <Image
-                    src={photo}
-                    alt={`${alt} - foto ${index + 1}`}
-                    fill
-                    priority={index === 0}
-                    loading={index === 0 ? "eager" : "lazy"}
-                    className="object-cover"
-                    sizes="100vw"
-                    quality={85}
-                  />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
+          {/* Counter — bottom right on image */}
+          {photos.length > 1 && (
+            <div className="absolute bottom-3 right-3 z-20 pointer-events-none">
+              <span className="rounded-full bg-black/50 px-2.5 py-1 text-[11px] font-medium tabular-nums text-white/90 backdrop-blur-sm">
+                {mobileSlide + 1}/{total}
+              </span>
+            </div>
+          )}
 
-        {/* Mobile: info overlay */}
-        <div className="absolute bottom-0 inset-x-0 z-20 px-5 pb-5 pointer-events-none">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-white/90 backdrop-blur-sm">
+          {/* Ver fotos — top right on image */}
+          {photos.length > 1 && (
+            <div className="absolute right-4 top-4 z-20">
+              <button
+                type="button"
+                onClick={onOpenGallery}
+                className="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-slate-900 shadow-lg backdrop-blur-sm"
+              >
+                <Grid className="size-3.5" />
+                Ver {total} fotos
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Info below image — clean, no overlay */}
+        <div className="bg-white px-5 pt-4 pb-3">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-slate-600">
             {tipo} &bull; {bairro}
           </span>
-          <h2 className="mt-2 max-w-sm text-base font-semibold leading-snug text-white drop-shadow-lg">
+          <h2 className="mt-2 text-lg font-semibold leading-snug text-slate-900">
             {titulo}
           </h2>
         </div>
-
-        {/* Mobile: counter (no dots — counter is cleaner) */}
-        {photos.length > 1 && (
-          <div className="absolute bottom-4 right-4 z-20 pointer-events-none">
-            <span className="rounded-full bg-black/50 px-2.5 py-1 text-[11px] font-medium tabular-nums text-white/90 backdrop-blur-sm">
-              {mobileSlide + 1}/{total}
-            </span>
-          </div>
-        )}
-
-        {/* Mobile: Ver fotos */}
-        {photos.length > 1 && (
-          <div className="absolute right-4 top-4 z-20">
-            <button
-              type="button"
-              onClick={onOpenGallery}
-              className="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-slate-900 shadow-lg backdrop-blur-sm"
-            >
-              <Grid className="size-3.5" />
-              Ver {total} fotos
-            </button>
-          </div>
-        )}
       </div>
 
       {/* ═══ DESKTOP: Palco com Reflexo e Profundidade ═══ */}
