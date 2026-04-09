@@ -58,11 +58,12 @@ export function PropertyFeatures({
     },
     {
       icon: Toilet,
-      value: banheiros,
-      unit: banheiros === 1 ? "Banheiro" : "Banheiros",
+      // CRM includes suites in TotalBanheiros — subtract to show only social bathrooms
+      value: banheiros && suites ? banheiros - suites : banheiros,
+      unit: (banheiros && suites ? banheiros - suites : banheiros) === 1 ? "Banheiro" : "Banheiros",
       label: "Banheiros",
       shortLabel: "Banheiros",
-      rawValue: banheiros,
+      rawValue: banheiros && suites ? banheiros - suites : banheiros,
     },
     {
       icon: Car,
