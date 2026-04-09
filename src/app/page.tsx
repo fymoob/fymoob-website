@@ -107,23 +107,21 @@ export default async function Home() {
 
       {/* Imóveis em destaque — Prontos para morar */}
       {prontosParaMorar.length > 0 && (
-        <section className="py-10 md:py-14">
+        <section className="py-8 md:py-12">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-2xl">
-                  Imóveis em destaque
-                </h2>
-                <p className="mt-1 text-sm text-neutral-500">Prontos para morar nos melhores bairros</p>
-              </div>
+            <div className="flex items-baseline justify-between">
+              <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-2xl">
+                Imóveis em destaque
+              </h2>
               <Link
                 href="/busca"
                 className="text-sm font-medium text-brand-primary transition-colors duration-200 hover:text-brand-primary-hover"
               >
-                Ver todos
+                Ver todos &rsaquo;
               </Link>
             </div>
-            <div className="mt-6">
+            <p className="mt-1 text-sm text-neutral-400">Prontos para morar nos melhores bairros</p>
+            <div className="mt-5">
               <HomeCarousel properties={prontosParaMorar} fadeFrom="from-white" />
             </div>
           </div>
@@ -132,23 +130,21 @@ export default async function Home() {
 
       {/* Destaques de lançamento */}
       {destaques.length > 0 && (
-        <section className="bg-neutral-50 py-10 md:py-14">
+        <section className="bg-neutral-50 py-8 md:py-12">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-2xl">
-                  Destaques de lançamento
-                </h2>
-                <p className="mt-1 text-sm text-neutral-500">Novos empreendimentos em Curitiba</p>
-              </div>
+            <div className="flex items-baseline justify-between">
+              <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-2xl">
+                Destaques de lançamento
+              </h2>
               <Link
                 href="/lancamentos"
                 className="text-sm font-medium text-brand-primary transition-colors duration-200 hover:text-brand-primary-hover"
               >
-                Ver todos
+                Ver todos &rsaquo;
               </Link>
             </div>
-            <div className="mt-6">
+            <p className="mt-1 text-sm text-neutral-400">Novos empreendimentos em Curitiba</p>
+            <div className="mt-5">
               <HomeCarousel properties={destaques} fadeFrom="from-neutral-50" />
             </div>
           </div>
