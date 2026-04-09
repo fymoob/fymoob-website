@@ -114,17 +114,15 @@ export function PropertyFeatures({
               : feature.value
 
           return (
-            <span key={feature.label} className="inline-flex items-start gap-3">
+            <span key={feature.label} className="inline-flex items-center gap-3">
               <Icon
                 size={16}
-                className="mt-0.5 shrink-0 text-slate-400"
+                className="shrink-0 text-slate-400"
                 strokeWidth={1.9}
               />
-              <span className="flex flex-col gap-1">
-                <span className="text-lg font-semibold tracking-tight text-slate-900">
-                  {displayValue}
-                </span>
-                <span className="text-[10px] font-medium uppercase tracking-[0.18em] text-slate-500">
+              <span className="text-lg font-semibold tracking-tight text-slate-900">
+                {displayValue}
+                <span className="ml-1 text-xs font-medium uppercase tracking-wide text-slate-500">
                   {feature.shortLabel}
                 </span>
               </span>
