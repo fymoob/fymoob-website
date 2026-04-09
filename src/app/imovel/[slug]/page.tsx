@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
+
 import {
   getPropertyBySlug,
   getSimilarProperties,
@@ -9,10 +10,22 @@ import {
   generatePropertySchema,
   generatePropertyDescription,
 } from "@/lib/seo"
-import { generateImageAlt, getPropertyImage, filterPropertyPhotos, generateShortTitle, formatPrice } from "@/lib/utils"
+import {
+  getPropertyPriceBucket,
+  isConsultPriceProperty,
+  resolvePropertyPageVariant,
+} from "@/lib/property-page-variant"
+import {
+  filterPropertyPhotos,
+  formatPrice,
+  generateImageAlt,
+  generateShortTitle,
+  getPropertyImage,
+} from "@/lib/utils"
+import { PropertyPageAnalytics } from "@/components/analytics/PropertyPageAnalytics"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
+import { PropertyHeaderBlock } from "@/components/property/PropertyHeaderBlock"
 import { PropertyHeroWithGallery } from "@/components/property/PropertyHeroWithGallery"
-import { PropertyDetails } from "@/components/property/PropertyDetails"
 import { PropertyDescription } from "@/components/property/PropertyDescription"
 import { LazyContactSidebar } from "@/components/property/LazyContactSidebar"
 import { PropertyCharacteristics } from "@/components/property/PropertyCharacteristics"
@@ -25,9 +38,6 @@ import { ShareButton } from "@/components/shared/ShareButton"
 import { WishlistButton } from "@/components/property/WishlistButton"
 import { CompareButton } from "@/components/property/CompareButton"
 import { BackButton } from "@/components/shared/BackButton"
-import { PropertyBadge } from "@/components/shared/PropertyBadge"
-import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
-import { MapPin } from "lucide-react"
 
 export const revalidate = 900
 export const dynamicParams = true
@@ -93,15 +103,22 @@ export default async function PropertyPage({ params }: PageProps) {
     ...p,
     fotos: p.fotos.slice(0, 3),
   }))
+
   const propertySchema = generatePropertySchema(property)
   const alt = generateImageAlt(property)
   const shortTitle = generateShortTitle(property)
   const hasLongTitle = property.titulo.length > 60
   const mainImage = getPropertyImage(property)
   const allPhotos = filterPropertyPhotos(property.fotos)
-  const isDual = property.finalidade === "Venda e Locação" && property.precoVenda && property.precoAluguel
+  const isDual =
+    property.finalidade === "Venda e Locação" && property.precoVenda && property.precoAluguel
   const isRental = !isDual && property.finalidade !== "Venda"
-  const price = isRental ? (property.precoAluguel ?? property.precoVenda) : (property.precoVenda ?? property.precoAluguel)
+  const price = isRental
+    ? (property.precoAluguel ?? property.precoVenda)
+    : (property.precoVenda ?? property.precoAluguel)
+  const variant = resolvePropertyPageVariant(property)
+  const isConsultPrice = isConsultPriceProperty(property)
+  const priceBucket = getPropertyPriceBucket(property)
 
   const breadcrumbItems = [
     { name: "Home", url: "/" },
@@ -119,13 +136,17 @@ export default async function PropertyPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(propertySchema) }}
       />
+      <PropertyPageAnalytics
+        propertyCode={property.codigo}
+        variant={variant}
+        isConsultPrice={isConsultPrice}
+        priceBucket={priceBucket}
+        price={isConsultPrice ? null : price}
+      />
 
       <RecentlyViewedTracker property={property} />
 
-      {/* ══════ Hero Section ══════ */}
-      {/* Breadcrumbs + actions above full-bleed hero */}
       <div className="mx-auto w-full max-w-7xl px-4 pt-4 md:px-8 md:pt-6">
-        {/* Mobile: back + actions */}
         <div className="mb-3 flex items-center justify-between md:hidden">
           <BackButton />
           <div className="flex items-center gap-2">
@@ -135,7 +156,6 @@ export default async function PropertyPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Desktop: breadcrumbs + actions */}
         <div className="mb-4 hidden items-center justify-between md:flex">
           <Breadcrumbs items={breadcrumbItems} />
           <div className="flex items-center gap-2">
@@ -146,87 +166,50 @@ export default async function PropertyPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Full-bleed hero image */}
       <PropertyHeroWithGallery
         fotos={allPhotos}
         mainImage={mainImage}
         alt={alt}
+        variant={variant}
       />
 
-      {/* ══════ Editorial Title + Content ══════ */}
       <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
-        {/* ══════ Two Column Layout — contact card overlaps hero ══════ */}
-        <div className="grid grid-cols-1 gap-8 pb-40 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)] md:pb-0">
-          {/* Left column */}
-          <div className="mt-6 md:mt-8">
-            {/* Editorial title block */}
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-              {property.tipo} &bull; {property.bairro}
-            </span>
-            <h1 className="mt-2 text-2xl font-bold leading-tight tracking-tight text-slate-900 md:text-3xl">
-              {shortTitle || property.titulo}
-            </h1>
+        <div className="grid grid-cols-1 gap-8 pb-40 md:pb-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,380px)]">
+          <div>
+            <PropertyHeaderBlock
+              property={property}
+              shortTitle={shortTitle}
+              variant={variant}
+            />
 
-            {/* Badges */}
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              <PropertyBadge variant={property.finalidade === "Venda" ? "sale" : "rent"}>{property.finalidade}</PropertyBadge>
-              <PropertyBadge variant="code">Cód: {property.codigo}</PropertyBadge>
-            </div>
-
-            {(property.endereco || property.bairro) && (
-              <p className="mt-3 flex items-center gap-1.5 text-sm text-neutral-500">
-                <MapPin size={14} className="shrink-0 text-neutral-400" />
-                {property.endereco
-                  ? `${[property.endereco, property.numero, property.bairro].filter(Boolean).join(", ")}, ${property.cidade} - ${property.estado}`
-                  : `${property.bairro}, ${property.cidade} - ${property.estado}`}
-              </p>
-            )}
-
-            {/* Brand accent line + Features in highlight */}
-            <div className="mt-5">
-              <div className="h-0.5 w-16 rounded-full bg-brand-primary" />
-              <div className="mt-4">
-                <PropertyFeatures
-                  dormitorios={property.dormitorios}
-                  suites={property.suites}
-                  banheiros={property.banheiros}
-                  vagas={property.vagas}
-                  areaPrivativa={property.areaPrivativa}
-                  areaTotal={property.areaTotal}
-                  searchGrid
-                />
-              </div>
-            </div>
-
-            {/* Condomínio/IPTU — mobile only (sidebar cobre no desktop) */}
-            {(isRental || isDual) && (property.valorCondominio || property.valorIptu) && (
+            {variant === "standard" && (isRental || isDual) && (property.valorCondominio || property.valorIptu) && (
               <div className="mt-4 flex items-center gap-4 text-sm text-slate-500 lg:hidden">
                 {property.valorCondominio && property.valorCondominio > 0 && (
-                  <span>Condomínio: <span className="font-medium text-slate-700">{formatPrice(property.valorCondominio)}</span></span>
+                  <span>
+                    Condomínio: <span className="font-medium text-slate-700">{formatPrice(property.valorCondominio)}</span>
+                  </span>
                 )}
                 {property.valorIptu && property.valorIptu > 0 && (
-                  <span>IPTU: <span className="font-medium text-slate-700">{formatPrice(property.valorIptu)}</span></span>
+                  <span>
+                    IPTU: <span className="font-medium text-slate-700">{formatPrice(property.valorIptu)}</span>
+                  </span>
                 )}
               </div>
             )}
 
-            {/* Ficha Técnica — complementary specs only */}
-            <div className="mt-5">
+            <div className={variant === "premium" ? "mt-8" : "mt-5"}>
               <PropertyCharacteristics property={property} />
             </div>
 
-            {/* Description */}
-            <div className="mt-8 border-t border-slate-200 pt-8">
+            <div className={variant === "premium" ? "mt-10 border-t border-slate-200 pt-10" : "mt-8 border-t border-slate-200 pt-8"}>
               <PropertyDescription descricao={descricaoWithTitle} />
             </div>
 
-            {/* Amenities */}
-            <div className="mt-8 border-t border-slate-200 pt-8">
+            <div className={variant === "premium" ? "mt-10 border-t border-slate-200 pt-10" : "mt-8 border-t border-slate-200 pt-8"}>
               <PropertyAmenities descricao={descricaoWithTitle} />
             </div>
 
-            {/* Map */}
-            <div className="mt-8 border-t border-slate-200 pt-8">
+            <div className={variant === "premium" ? "mt-10 border-t border-slate-200 pt-10" : "mt-8 border-t border-slate-200 pt-8"}>
               <PropertyMap
                 latitude={property.latitude}
                 longitude={property.longitude}
@@ -236,9 +219,8 @@ export default async function PropertyPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Right sidebar — floats up over hero */}
-          <aside className="relative z-30 hidden lg:block">
-            <div className="sticky top-24 -mt-6">
+          <aside className="relative z-40 hidden lg:block">
+            <div className={variant === "premium" ? "sticky top-28 -mt-16" : "sticky top-24 -mt-6"}>
               <LazyContactSidebar
                 propertyTitle={property.titulo}
                 propertyCode={property.codigo}
@@ -247,24 +229,26 @@ export default async function PropertyPage({ params }: PageProps) {
                 finalidade={property.finalidade}
                 valorCondominio={property.valorCondominio}
                 valorIptu={property.valorIptu}
+                valorSobConsulta={property.valorSobConsulta}
+                variant={variant}
               />
             </div>
           </aside>
         </div>
       </div>
 
-      {/* Similar properties */}
       <div className="mt-2">
         <LazySimilarProperties properties={similarProperties} />
       </div>
 
-      {/* Mobile fixed CTA bar */}
       <MobileContactBar
         propertyTitle={property.titulo}
         propertyCode={property.codigo}
         precoVenda={property.precoVenda}
         precoAluguel={property.precoAluguel}
         finalidade={property.finalidade}
+        valorSobConsulta={property.valorSobConsulta}
+        variant={variant}
         dataCadastro={property.dataCadastro}
         bairro={property.bairro}
         valorCondominio={property.valorCondominio}

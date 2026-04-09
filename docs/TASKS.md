@@ -1,7 +1,7 @@
 # FYMOOB — Task Tracker
 
 > Fonte unica de verdade para todas as tasks do projeto.
-> Atualizado: 2026-04-08
+> Atualizado: 2026-04-09
 
 ---
 
@@ -29,8 +29,34 @@
 | -- | Ações Bruno (CRM) | 3 | 0 | 3 | PENDENTE |
 | 14 | Inteligência Imobiliária | 17 | 0 | 17 | FUTURO |
 | 15 | Lead Capture + CRM | 14 | 0 | 14 | PENDENTE |
+| 16 | Claude Managed Agents | 14 | 0 | 14 | MEDIO PRAZO |
+| 17 | Agentes como Produto SaaS | 14 | 0 | 14 | LONGO PRAZO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **305** | **238** | **67** | **78%** |
+| | **TOTAL** | **333** | **238** | **95** | **71%** |
+
+---
+
+## Sessao 2026-04-09 - PDP standard/premium [CONCLUIDA]
+
+<details>
+<summary>Variacao da pagina de imovel implementada</summary>
+
+- [x] Tipos `PropertyPageVariant` e `PropertyPageVariantOverride` adicionados
+- [x] Mapeamento de `ValorACombinar` da Loft para `valorSobConsulta`
+- [x] Resolver `price-led` com overrides internos e hints de bairro/categoria/midia
+- [x] Modulo de configuracao para thresholds, bairros premium e overrides
+- [x] Hero da PDP com variante `standard` e `premium`
+- [x] Hero premium em modelo de palco imersivo com fundo solido + blur
+- [x] Header editorial da PDP extraido para componente com variantes
+- [x] Sidebar de contato adaptada para `standard` e `premium`
+- [x] CTA/copy de "Valor sob consulta" implementados
+- [x] MobileContactBar adaptada para variantes e imovel sob consulta
+- [x] Tracking GA4 de `property_page_view` com `page_variant`, `price_bucket`, `is_consult_price`
+- [x] Tracking de clique de contato (WhatsApp/telefone) com variante
+- [x] Loading skeleton da PDP ajustado para o novo hero e sidebar
+- [x] Build de producao executado com sucesso apos as mudancas
+
+</details>
 
 ---
 
@@ -1111,6 +1137,126 @@ cadastro={"lead":{"nome":"...", "email":"...", "fone":"...", "interesse":"Venda"
 
 ---
 
+## Fase 16 — Claude Managed Agents (Médio Prazo — Pós-Deploy)
+
+> **Contexto:** Anthropic lançou Claude Managed Agents em beta público (08/04/2026).
+> Plataforma managed para agentes IA com infra, scaling e segurança inclusos.
+> Custo: tokens do modelo + $0.08/hora de runtime do agente.
+> Docs: https://platform.claude.com/docs/en/managed-agents/overview
+
+### 16.1 — Agente de Qualificação de Leads
+> Prioridade alta — impacto direto na conversão do site.
+- [ ] Criar agente que recebe leads do formulário do site (POST /api/lead)
+- [ ] Agente qualifica via conversa: bairro preferido, faixa de preço, tipo de imóvel, urgência
+- [ ] Integrar com API Loft (read-only) como tool — agente sugere imóveis compatíveis
+- [ ] Enviar lead qualificado ao CRM com dados enriquecidos (interesse, faixa, bairros)
+- [ ] Fallback: se agente indisponível, fluxo atual (WhatsApp direto) continua funcionando
+
+**Como implementar:**
+1. Definir agent com tools: `search_properties` (GET API Loft), `submit_lead` (POST /lead)
+2. Guardrails: read-only na API Loft (REGRA ABSOLUTA), max tokens por sessão, timeout 5min
+3. System prompt com contexto FYMOOB: bairros, faixas de preço, tipos disponíveis
+4. Deploy via Claude Platform (managed infra)
+5. Endpoint exposto como API route no Next.js (`/api/agent/qualify`)
+
+**Custo estimado:** ~$58/mês runtime (24/7) + ~$20-50/mês tokens = ~$80-110/mês
+
+### 16.2 — Agente de Atendimento Imobiliário (Chat 24h)
+> Corretor virtual que responde dúvidas sobre imóveis específicos.
+- [ ] Widget de chat na página do imóvel (lazy load, abaixo do fold)
+- [ ] Tools do agente: buscar detalhes do imóvel, fotos, localização, imóveis similares
+- [ ] Responde perguntas: "Aceita pet?", "Tem vaga?", "Valor do condomínio?", "Perto de escola?"
+- [ ] Se não souber, direciona para WhatsApp do corretor
+- [ ] Dados de conversa enviados ao CRM como contexto do lead
+
+**Como implementar:**
+1. Agent com tools: `get_property_details`, `search_similar`, `get_neighborhood_info`
+2. System prompt: tom consultivo, nunca inventar dados, sempre citar fonte (CRM)
+3. UI: botão "Perguntar sobre este imóvel" → chat modal lightweight
+4. Sessão persistente por imóvel (memory do Managed Agents)
+
+### 16.3 — Agente de Monitoramento SEO Automático
+> Já temos skills SEO — transformar em agente scheduled.
+- [ ] Migrar lógica do `/project:seo-report` para Managed Agent
+- [ ] Schedule semanal: analisa GSC, Lighthouse, indexação
+- [ ] Gera relatório em `docs/seo-reports/` automaticamente
+- [ ] Alerta via email/WhatsApp se ranking cair >20% em keyword importante
+- [ ] Sugere ações corretivas baseado nos dados
+
+**Como implementar:**
+1. Agent com tools: GSC API, PageSpeed Insights, sitemap reader
+2. Cron via Claude Platform (schedule semanal)
+3. Output: markdown report + alertas condicionais
+
+---
+
+## Fase 17 — Agentes como Produto SaaS (Longo Prazo)
+
+> **Visão:** Empacotar agentes FYMOOB como produto para vender a outras imobiliárias.
+> Modelo: $1.500-3.000 setup + $500/mês por cliente (margem alta, manutenção baixa).
+> Base: Fase 14 (Inteligência Imobiliária) + Fase 16 (Managed Agents).
+> Referência: tweet Corey Ganim — "business in a box" com nicho imobiliário.
+
+### 17.1 — Produto: Agente de Leads para Imobiliárias
+> Replicar o agente 16.1 como produto white-label.
+- [ ] Multi-tenant: cada imobiliária tem seu agente com dados próprios (API key, bairros, estoque)
+- [ ] Onboarding automatizado: cliente fornece API key do CRM → agente configurado em horas
+- [ ] Dashboard de métricas: leads qualificados, taxa de conversão, tempo de resposta
+- [ ] Personalização: tom de voz, bairros prioritários, faixas de preço
+- [ ] Billing: Stripe integration para cobrança mensal recorrente
+
+**Como implementar:**
+1. Template de agente parametrizável (CRM endpoint, API key, config de negócio)
+2. Admin dashboard Next.js para gerenciar clientes e agentes
+3. Cada cliente = 1 Managed Agent com tools e guardrails próprios
+4. Custo por cliente: ~$80-110/mês (Anthropic) → cobrar $500/mês = margem ~80%
+
+### 17.2 — Produto: Monitor de Mercado Imobiliário
+> Transformar Fase 14 em serviço managed.
+- [ ] Agente de scraping + análise que roda periodicamente
+- [ ] Detecta novos lançamentos, mudanças de preço, imóveis vendidos
+- [ ] Relatório semanal automatizado por email com insights acionáveis
+- [ ] Alertas em tempo real: "Construtora X lançou no Batel sem parceira"
+- [ ] API para integrar com CRMs dos clientes
+
+**Como implementar:**
+1. Managed Agent com tools: Playwright (scraping), Claude API (extração), PostgreSQL (storage)
+2. Cron schedules: diário (scraping), semanal (relatório), real-time (alertas)
+3. Multi-tenant: cada cliente monitora seus concorrentes e bairros de interesse
+
+### 17.3 — Produto: Gerador de Conteúdo SEO Imobiliário
+> Agente que gera conteúdo otimizado automaticamente.
+- [ ] Gera descrições profissionais para imóveis novos no CRM
+- [ ] Cria/atualiza landing pages programáticas com dados frescos
+- [ ] Produz artigos de blog sobre tendências do mercado local
+- [ ] Review humano obrigatório antes de publicar (guardrail)
+
+**Como implementar:**
+1. Agent com tools: CRM API (dados), GSC (keywords), content templates
+2. Trigger: webhook do CRM quando novo imóvel entra
+3. Output: markdown pronto para publicação, aguardando aprovação
+
+### 17.4 — Go-to-Market
+- [ ] Landing page do produto (subdomínio ou domínio separado)
+- [ ] 3 imobiliárias beta (incluindo FYMOOB como caso de uso)
+- [ ] Case study com métricas reais (leads qualificados, tempo de resposta, conversão)
+- [ ] Precificação por tier: Basic ($300/mês), Pro ($500/mês), Enterprise (custom)
+- [ ] Parceria com CRMs (Loft/Vista, Jetimob, Kenlo) para canal de distribuição
+
+### Modelo Financeiro Estimado
+```
+Setup: R$5.000-10.000 por cliente (configuração + onboarding)
+Mensal: R$1.500-2.500 por cliente
+Custo Anthropic: ~R$400-600/mês por cliente
+Margem bruta: ~70-80%
+
+10 clientes = R$15.000-25.000/mês recorrente
+Custo total Anthropic: ~R$5.000/mês
+Lucro operacional: ~R$10.000-20.000/mês
+```
+
+---
+
 ## Prioridade de Execucao
 
 ```
@@ -1131,12 +1277,23 @@ PARALELO:
 
 APOS GO-LIVE:
   Fase 9 → Painel Blog Admin
+  Fase 15 → Lead Capture + CRM (pré-requisito para agentes)
   11.10 → Performance fine-tuning (SearchBar code-split, @base-ui audit)
+
+MEDIO PRAZO (pos-deploy + Fase 15 concluida):
+  Fase 16 → Claude Managed Agents
+    16.1 Agente de Qualificacao de Leads (~$80-110/mes)
+    16.2 Agente de Atendimento 24h
+    16.3 Agente de Monitoramento SEO
+
+LONGO PRAZO (produto):
+  Fase 14 → Inteligencia Imobiliaria (scraping, IA, dashboard)
+  Fase 17 → Agentes como Produto SaaS
+    17.1 Agente de Leads white-label para imobiliarias
+    17.2 Monitor de Mercado como servico
+    17.3 Gerador de Conteudo SEO automatizado
+    17.4 Go-to-Market (10 clientes = R$15-25K/mes recorrente)
 
 QUANDO POSSIVEL:
   Nice-to-haves
-
-PRODUTO FUTURO:
-  Fase 14 → Inteligência Imobiliária (scraping, IA, dashboard)
-  Pode ser vendido como SaaS ou consultoria separada
 ```

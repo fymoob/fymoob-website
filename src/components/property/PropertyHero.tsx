@@ -5,6 +5,7 @@ import { ChevronLeft, ChevronRight, Grid } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel"
+import type { PropertyPageVariant } from "@/types/property"
 
 interface PropertyHeroProps {
   fotos: string[]
@@ -12,6 +13,7 @@ interface PropertyHeroProps {
   totalPhotos?: number
   mainImage: string
   alt: string
+  variant: PropertyPageVariant
   onOpenGallery: () => void
 }
 
@@ -20,6 +22,7 @@ export function PropertyHero({
   totalPhotos,
   mainImage,
   alt,
+  variant,
   onOpenGallery,
 }: PropertyHeroProps) {
   const photos = fotos.length > 0 ? fotos : [mainImage]
@@ -112,88 +115,155 @@ export function PropertyHero({
 
       </div>
 
-      {/* ═══ DESKTOP: Palco com Reflexo e Profundidade ═══ */}
-      <div
-        className="relative hidden w-full cursor-pointer overflow-hidden md:block"
-        onClick={onOpenGallery}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") onOpenGallery()
-        }}
-        aria-label="Abrir galeria de fotos"
-      >
-        {/* Background Layer 1: blurred photo fill */}
+      {variant === "premium" ? (
         <div
-          className="absolute inset-0 scale-110"
-          style={{
-            backgroundImage: `url(${photos[currentSlide]})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            filter: "blur(10px) brightness(0.55)",
+          className="relative hidden w-full cursor-pointer overflow-hidden bg-slate-950 md:block"
+          onClick={onOpenGallery}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") onOpenGallery()
           }}
-          aria-hidden="true"
-        />
-
-        {/* Background Layer 2: radial gradient overlay — dark edges, lighter center */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: "radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.7) 100%)",
-          }}
-          aria-hidden="true"
-        />
-
-        {/* The Focus — responsive container, object-cover fills naturally */}
-        <div
-          className="relative z-10 flex items-center justify-center px-10 py-10 lg:px-20 lg:py-12"
-          style={{ height: "clamp(450px, 65vh, 780px)" }}
+          aria-label="Abrir galeria de fotos"
         >
-          <div className="group/hero relative h-full w-full overflow-hidden rounded-xl" style={{ maxWidth: "60%" }}>
-            {/* Fade carousel — stacked slides with opacity transition */}
-            {photos.map((photo, index) => (
-              <div
-                key={`stage-${index}`}
-                className={cn(
-                  "absolute inset-0 transition-opacity duration-700 ease-out",
-                  index === currentSlide ? "opacity-100" : "opacity-0 pointer-events-none"
-                )}
-              >
-                <Image
-                  src={photo}
-                  alt={`${alt} - foto ${index + 1}`}
-                  fill
-                  priority={index === 0}
-                  loading={index === 0 ? "eager" : "lazy"}
-                  className="object-cover transition-transform duration-[1500ms] ease-out group-hover/hero:scale-105"
-                  sizes="(max-width: 1400px) 85vw, 1200px"
-                  quality={90}
-                />
-              </div>
-            ))}
+          <div className="absolute inset-0 bg-slate-950" aria-hidden="true" />
+          <div
+            className="absolute inset-0 scale-110 opacity-90"
+            style={{
+              backgroundImage: `url(${photos[currentSlide]})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              filter: "blur(38px) brightness(0.45)",
+            }}
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(15,23,42,0.08) 0%, rgba(15,23,42,0.42) 58%, rgba(2,6,23,0.84) 100%)",
+            }}
+            aria-hidden="true"
+          />
 
-            {/* Counter — bottom right inside artwork */}
-            {photos.length > 1 && (
-              <div className="absolute bottom-3 right-3 z-20">
-                <span className="rounded-full bg-black/40 px-3 py-1.5 text-xs font-medium tabular-nums text-white/90 backdrop-blur-md">
-                  {currentSlide + 1} / {total}
-                </span>
-              </div>
-            )}
+          <div className="relative z-10 mx-auto flex w-full max-w-[1400px] items-center justify-center px-6 py-8 lg:px-10 lg:py-10">
+            <div className="group/hero relative aspect-[16/9] w-full max-w-[1240px] overflow-hidden rounded-[28px] border border-white/10 shadow-[0_28px_80px_rgba(0,0,0,0.38)]">
+              {photos.map((photo, index) => (
+                <div
+                  key={`premium-${index}`}
+                  className={cn(
+                    "absolute inset-0 transition-opacity duration-700 ease-out",
+                    index === currentSlide ? "opacity-100" : "pointer-events-none opacity-0"
+                  )}
+                >
+                  <Image
+                    src={photo}
+                    alt={`${alt} - foto ${index + 1}`}
+                    fill
+                    priority={index === 0}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    className="object-cover transition-transform duration-[1600ms] ease-out group-hover/hero:scale-[1.03]"
+                    sizes="(max-width: 1536px) 90vw, 1240px"
+                    quality={92}
+                  />
+                </div>
+              ))}
+
+              {photos.length > 1 && (
+                <div className="absolute bottom-4 right-4 z-20">
+                  <span className="rounded-full bg-black/45 px-3 py-1.5 text-xs font-medium tabular-nums text-white/90 backdrop-blur-md">
+                    {currentSlide + 1} / {total}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
 
+          {photos.length > 1 && (
+            <div className="absolute right-8 top-6 z-20 lg:right-12 lg:top-8">
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold text-white shadow-lg ring-1 ring-white/10 backdrop-blur-md">
+                <Grid className="size-4" />
+                Ver {total} fotos
+              </span>
+            </div>
+          )}
         </div>
+      ) : (
+        <div
+          className="relative hidden w-full cursor-pointer overflow-hidden md:block"
+          onClick={onOpenGallery}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") onOpenGallery()
+          }}
+          aria-label="Abrir galeria de fotos"
+        >
+          <div
+            className="absolute inset-0 scale-110"
+            style={{
+              backgroundImage: `url(${photos[currentSlide]})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              filter: "blur(10px) brightness(0.55)",
+            }}
+            aria-hidden="true"
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.7) 100%)",
+            }}
+            aria-hidden="true"
+          />
 
-        {/* Ver fotos — top right */}
-        {photos.length > 1 && (
-          <div className="absolute right-10 top-6 z-20 lg:right-16 lg:top-8">
-            <span className="inline-flex items-center gap-2 rounded-full bg-black/30 px-4 py-2.5 text-sm font-semibold text-white/95 shadow-lg backdrop-blur-md transition-all hover:bg-black/40">
-              <Grid className="size-4" />
-              Ver {total} fotos
-            </span>
+          <div
+            className="relative z-10 flex items-center justify-center px-10 py-10 lg:px-20 lg:py-12"
+            style={{ height: "clamp(450px, 65vh, 780px)" }}
+          >
+            <div className="group/hero relative h-full w-full overflow-hidden rounded-xl" style={{ maxWidth: "60%" }}>
+              {photos.map((photo, index) => (
+                <div
+                  key={`stage-${index}`}
+                  className={cn(
+                    "absolute inset-0 transition-opacity duration-700 ease-out",
+                    index === currentSlide ? "opacity-100" : "opacity-0 pointer-events-none"
+                  )}
+                >
+                  <Image
+                    src={photo}
+                    alt={`${alt} - foto ${index + 1}`}
+                    fill
+                    priority={index === 0}
+                    loading={index === 0 ? "eager" : "lazy"}
+                    className="object-cover transition-transform duration-[1500ms] ease-out group-hover/hero:scale-105"
+                    sizes="(max-width: 1400px) 85vw, 1200px"
+                    quality={90}
+                  />
+                </div>
+              ))}
+
+              {photos.length > 1 && (
+                <div className="absolute bottom-3 right-3 z-20">
+                  <span className="rounded-full bg-black/40 px-3 py-1.5 text-xs font-medium tabular-nums text-white/90 backdrop-blur-md">
+                    {currentSlide + 1} / {total}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
-        )}
-      </div>
+
+          {photos.length > 1 && (
+            <div className="absolute right-10 top-6 z-20 lg:right-16 lg:top-8">
+              <span className="inline-flex items-center gap-2 rounded-full bg-black/30 px-4 py-2.5 text-sm font-semibold text-white/95 shadow-lg backdrop-blur-md transition-all hover:bg-black/40">
+                <Grid className="size-4" />
+                Ver {total} fotos
+              </span>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* ═══ Navigation arrows (desktop) — glass circles on blur area ═══ */}
       {photos.length > 1 && (

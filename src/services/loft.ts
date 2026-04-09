@@ -105,7 +105,7 @@ const INFRA_LABELS: Record<string, string> = {
 // Slim fields for cards/listings (~28KB per 50 properties vs ~134KB)
 const CARD_FIELDS = [
   "Codigo", "Categoria", "Status", "BairroComercial", "Bairro", "Cidade", "UF",
-  "ValorVenda", "ValorLocacao", "Dormitorios", "Suites", "Vagas", "TotalBanheiros",
+  "ValorVenda", "ValorLocacao", "ValorACombinar", "Dormitorios", "Suites", "Vagas", "TotalBanheiros",
   "AreaPrivativa", "AreaTotal", "FotoDestaque", "TituloSite",
   "ExibirNoSite", "DestaqueWeb", "SuperDestaqueWeb", "Lancamento",
   "Empreendimento", "Construtora", "DataCadastro", "DataAtualizacao",
@@ -116,7 +116,7 @@ const CARD_FIELDS = [
 // Full fields for detail pages (single property)
 const DETAIL_FIELDS = [
   "Codigo", "Referencia", "Categoria", "Status", "Finalidade", "Situacao", "Ocupacao",
-  "ValorVenda", "ValorLocacao", "ValorCondominio", "ValorIptu", "ValorM2",
+  "ValorVenda", "ValorLocacao", "ValorCondominio", "ValorIptu", "ValorM2", "ValorACombinar",
   "Bairro", "BairroComercial", "Cidade", "Endereco", "Numero", "Complemento",
   "Bloco", "CEP", "UF", "Latitude", "Longitude", "GMapsLatitude", "GMapsLongitude",
   "AreaTotal", "AreaPrivativa", "AreaTerreno", "Dormitorios", "Suites",
@@ -169,6 +169,16 @@ function parseNumber(val: string | undefined | null): number | null {
 
 function parseBool(val: string | undefined): boolean {
   return val === "Sim"
+}
+
+function parseOptionalFlag(val: unknown): boolean {
+  if (typeof val === "number") return val > 0
+  if (typeof val !== "string") return false
+
+  const normalized = val.trim().toLowerCase()
+  if (!normalized) return false
+
+  return ["sim", "s", "true", "1", "yes", "y"].includes(normalized)
 }
 
 function generateSlug(raw: LoftPropertyRaw): string {
@@ -242,6 +252,7 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
     valorCondominio: parseNumber(raw.ValorCondominio),
     valorIptu: parseNumber(raw.ValorIptu),
     valorM2: parseNumber(raw.ValorM2),
+    valorSobConsulta: parseOptionalFlag(raw.ValorACombinar),
     bairro: raw.BairroComercial || raw.Bairro || "",
     bairroComercial: raw.BairroComercial || raw.Bairro || "",
     cidade: raw.Cidade || "Curitiba",

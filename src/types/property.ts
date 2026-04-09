@@ -21,6 +21,9 @@ export type PropertyFinalidade = "Venda" | "Locação" | "Venda e Locação";
 
 export type PropertyStatus = "Disponível" | "Vendido" | "Alugado" | "Reservado";
 
+export type PropertyPageVariant = "standard" | "premium";
+export type PropertyPageVariantOverride = "auto" | "standard" | "premium";
+
 export interface Property {
   // Identificação
   codigo: string;
@@ -44,6 +47,7 @@ export interface Property {
   valorCondominio: number | null;
   valorIptu: number | null;
   valorM2: number | null;
+  valorSobConsulta: boolean;
 
   // Localização
   bairro: string;
@@ -189,6 +193,7 @@ export interface LoftPropertyRaw {
   ValorCondominio?: string;
   ValorIptu?: string;
   ValorM2?: string;
+  ValorACombinar?: string;
 
   // Localização
   Bairro: string;

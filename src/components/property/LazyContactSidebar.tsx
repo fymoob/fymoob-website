@@ -27,6 +27,8 @@ interface LazyContactSidebarProps {
   finalidade: Property["finalidade"]
   valorCondominio: number | null
   valorIptu: number | null
+  valorSobConsulta: boolean
+  variant: "standard" | "premium"
 }
 
 export function LazyContactSidebar(props: LazyContactSidebarProps) {
