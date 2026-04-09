@@ -29,7 +29,7 @@ export function PropertyCharacteristics({ property }: PropertyCharacteristicsPro
   if (property.ocupacao) {
     details.push({ label: "Ocupação", value: property.ocupacao })
   }
-  if (property.anoConstrucao) {
+  if (property.anoConstrucao && property.anoConstrucao !== "0") {
     details.push({ label: "Ano de construção", value: property.anoConstrucao })
   }
 

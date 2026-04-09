@@ -267,6 +267,42 @@
   - Tipo: **RESOLVIDO**
   - Data: 2026-04-08
 
+### 22. Publicar PWA na Google Play Store (TWA)
+- [ ] Site ja funciona como PWA (manifest + HTTPS) — Chrome oferece "Adicionar a tela inicial"
+- [ ] Empacotar como TWA (Trusted Web Activity) usando Bubblewrap ou PWABuilder.com
+- [ ] Publicar na Play Store como app real da FYMOOB
+- [ ] Requisitos: conta Google Play ($25 unica), arquivo `.well-known/assetlinks.json` no dominio
+  - Tipo: **AVALIAR**
+  - Comentario: Rapido de implementar. Gera presenca na Play Store, icone real no celular. Nao e app nativo — e o site em wrapper Chrome. Push notifications possiveis no futuro.
+  - Prioridade: Baixa — melhoria de distribuicao, nao bloqueia funcionalidade
+  - Data: 2026-04-09
+
+### 21. Prefixo "CODIGO" antes do numero nos cards maiores
+- [ ] Nos cards de 2 colunas (PropertyCardGrid), o codigo do imovel aparece apenas como numero (ex: "69804502")
+- [ ] Deveria mostrar "CODIGO 69804502" ou "Cod. 69804502" para ficar mais claro
+- [ ] Aplicar apenas nos cards maiores (grid 2 colunas), nao nos compactos
+  - Tipo: **AVALIAR**
+  - Comentario: Mudanca simples de texto no componente PropertyCardGrid. Melhora clareza para o visitante.
+  - Data: 2026-04-08
+
+---
+
+## Perguntas para os socios (aguardando decisao)
+
+### P1. Cards de imoveis — ajustes visuais para sofisticacao
+> Analise feita em 08/04. Envolve alterar estrutura de titulo e metragem — precisa aprovacao.
+
+1. **Features row sobrecarregada** — Com 5 itens (area + quartos + suites + banheiros + vagas) fica denso numa linha so. Opcoes:
+   - (A) Esconder banheiros quando suites > 0 (ficam 4 itens no maximo)
+   - (B) Manter todos mas com layout 2 linhas
+   - (C) Deixar como esta — quem busca imovel quer ver tudo
+2. **Area com decimais** — "106,86 m²" quebra a linha nos cards menores. Arredondar para "107 m²" nos cards? Na pagina do imovel manteria os decimais completos.
+3. **Titulo muito longo** — Titulos de 2 linhas competem com o preco. Opcoes:
+   - (A) Reduzir tamanho do texto do titulo
+   - (B) Limitar a 1 linha com "..." (line-clamp-1)
+   - (C) Editar titulos no CRM para ficarem mais curtos (ideal mas trabalhoso)
+4. **Espaçamento interno** — Aumentar "ar" entre titulo, features e preco para visual mais premium
+
 ---
 
 _Adicionar novas solicitacoes acima desta linha._
