@@ -129,22 +129,43 @@ export function PropertyListingGrid({
           {properties.map((property, index) => {
             if (cardContext === "search" && viewMode === "grid") {
               return (
-                <PropertyCardGrid
-                  key={property.slug}
-                  property={property}
-                  prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
-                  priceContext={priceContext}
-                />
+                <div key={property.slug}>
+                  {/* Mobile: clean card (model 1). Desktop: search grid card (model 2) */}
+                  <div className="md:hidden">
+                    <PropertyCard
+                      property={property}
+                      prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
+                      compactFeatures
+                    />
+                  </div>
+                  <div className="hidden md:block">
+                    <PropertyCardGrid
+                      property={property}
+                      prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
+                      priceContext={priceContext}
+                    />
+                  </div>
+                </div>
               )
             }
             if (cardContext === "search" && viewMode === "grid3") {
               return (
-                <PropertyCardCompact
-                  key={property.slug}
-                  property={property}
-                  prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
-                  priceContext={priceContext}
-                />
+                <div key={property.slug}>
+                  <div className="md:hidden">
+                    <PropertyCard
+                      property={property}
+                      prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
+                      compactFeatures
+                    />
+                  </div>
+                  <div className="hidden md:block">
+                    <PropertyCardCompact
+                      property={property}
+                      prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
+                      priceContext={priceContext}
+                    />
+                  </div>
+                </div>
               )
             }
             if (cardContext === "search" && viewMode === "list") {
