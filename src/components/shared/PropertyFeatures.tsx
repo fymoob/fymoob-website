@@ -114,7 +114,7 @@ export function PropertyFeatures({
     return (
       <div
         className={cn(
-          "grid grid-cols-3 gap-4 sm:grid-cols-5 sm:gap-x-3 sm:gap-y-3",
+          "grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-5 sm:gap-x-3 sm:gap-y-3",
           className
         )}
       >
@@ -128,13 +128,13 @@ export function PropertyFeatures({
                 : feature.value
 
           return (
-            <div key={feature.label} className="flex flex-col items-center gap-1.5 sm:flex-row sm:items-center sm:gap-3">
+            <div key={feature.label} className="flex items-center gap-2.5 sm:flex-col sm:items-center sm:gap-1.5">
               <Icon
-                className="size-5 shrink-0 text-slate-500 sm:size-4"
+                className="size-4 shrink-0 text-slate-400 sm:size-4 sm:text-slate-500"
                 strokeWidth={2}
               />
-              <div className="text-center sm:text-left">
-                <span className="text-lg font-bold tracking-tight text-slate-900 sm:text-lg">
+              <div className="sm:text-center">
+                <span className="text-sm font-bold tracking-tight text-slate-900 sm:text-lg">
                   {displayValue}
                 </span>
                 <span className="ml-1 text-xs font-medium text-slate-500">
