@@ -515,7 +515,7 @@ export function SearchBar({
 
             {/* ── Individual filter bottom sheets ── */}
             <Sheet open={activeChipSheet === "location"} onOpenChange={(open) => !open && setActiveChipSheet(null)}>
-              <SheetContent side="bottom" className="flex max-h-[70dvh] flex-col rounded-t-2xl">
+              <SheetContent side="bottom" className="flex h-[100dvh] flex-col">
                 <SheetHeader><SheetTitle>Localização</SheetTitle></SheetHeader>
                 <div className="flex-1 overflow-y-auto px-4 pb-4">
                   <LocationFilter
@@ -546,7 +546,7 @@ export function SearchBar({
             </Sheet>
 
             <Sheet open={activeChipSheet === "type"} onOpenChange={(open) => !open && setActiveChipSheet(null)}>
-              <SheetContent side="bottom" className="flex max-h-[70dvh] flex-col rounded-t-2xl">
+              <SheetContent side="bottom" className="flex h-[100dvh] flex-col">
                 <SheetHeader><SheetTitle>Tipo de imóvel</SheetTitle></SheetHeader>
                 <div className="flex-1 overflow-y-auto px-4 pb-4">
                   <TypeFilter
