@@ -9,9 +9,13 @@ interface PropertyMapProps {
   longitude: number | null
   bairro: string
   titulo: string
+  endereco?: string | null
+  numero?: string | null
+  cidade?: string | null
+  estado?: string | null
 }
 
-export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMapProps) {
+export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, numero, cidade, estado }: PropertyMapProps) {
   const [hasEnteredViewport, setHasEnteredViewport] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [interactive, setInteractive] = useState(false)
@@ -128,9 +132,15 @@ export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMap
 
   return (
     <section>
-      <h2 className="pb-4 font-display text-xl font-semibold tracking-tight text-neutral-950">
+      <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950">
         Localização
       </h2>
+      {(endereco || bairro) && (
+        <p className="mt-2 flex items-center gap-1.5 pb-4 text-sm text-slate-500">
+          <MapPin className="size-3.5 shrink-0 text-slate-400" />
+          {[endereco, numero, bairro].filter(Boolean).join(", ")}{cidade && `, ${cidade}`}{estado && ` - ${estado}`}
+        </p>
+      )}
 
       <div className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
         <div
