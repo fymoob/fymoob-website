@@ -37,6 +37,8 @@ export function PropertyGallery({ fotos, alt, initialMode, onClose: onCloseExter
   const [animating, setAnimating] = React.useState(false)
   const touchStartX = React.useRef(0)
   const touchEndX = React.useRef(0)
+  const [showUI, setShowUI] = React.useState(true)
+  const tapTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const images = fotos.length > 0 ? fotos : ["/placeholder-property.jpg"]
   const count = images.length
@@ -48,6 +50,7 @@ export function PropertyGallery({ fotos, alt, initialMode, onClose: onCloseExter
   }
   const openFullscreen = (index: number) => {
     setCurrentIndex(index)
+    setShowUI(true)
     setAnimating(true)
     setMode("fullscreen")
     requestAnimationFrame(() => setAnimating(false))
@@ -84,6 +87,7 @@ export function PropertyGallery({ fotos, alt, initialMode, onClose: onCloseExter
       if (diff > 0) goNext()
       else goPrev()
     }
+    touchEndX.current = 0
   }
 
   // Keyboard nav
@@ -291,11 +295,14 @@ export function PropertyGallery({ fotos, alt, initialMode, onClose: onCloseExter
       {/* ===== Fullscreen Viewer (Immersive) ===== */}
       {mode === "fullscreen" && (
         <div
-          className="fixed inset-0 z-[9999] flex h-[100dvh] w-screen flex-col bg-black/95 animate-[fadeIn_0.2s_ease-out]"
-          onClick={close}
+          className="fixed inset-0 z-[9999] flex h-[100dvh] w-screen flex-col bg-black animate-[fadeIn_0.2s_ease-out]"
+          onClick={() => setShowUI((v) => !v)}
         >
-          {/* Top bar */}
-          <div className="flex h-14 shrink-0 items-center justify-between px-4 sm:px-6">
+          {/* Top bar — toggles with tap */}
+          <div className={cn(
+            "flex h-14 shrink-0 items-center justify-between px-4 transition-opacity duration-200 sm:px-6",
+            showUI ? "opacity-100" : "pointer-events-none opacity-0"
+          )}>
             <button
               type="button"
               onClick={(e) => { e.stopPropagation(); backToGrid() }}
@@ -317,27 +324,43 @@ export function PropertyGallery({ fotos, alt, initialMode, onClose: onCloseExter
             </button>
           </div>
 
-          {/* Image area with swipe */}
+          {/* Image area with swipe + pinch-to-zoom */}
           <div
-            className="flex flex-1 items-center justify-center px-4 sm:px-16"
+            className="flex flex-1 items-center justify-center overflow-hidden px-2 sm:px-16"
+            style={{ touchAction: "pan-y pinch-zoom" }}
             onClick={(e) => e.stopPropagation()}
-            onTouchStart={handleTouchStart}
+            onTouchStart={(e) => {
+              handleTouchStart(e)
+              // Clear any pending tap
+              if (tapTimeout.current) clearTimeout(tapTimeout.current)
+            }}
             onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
+            onTouchEnd={(e) => {
+              const diff = touchStartX.current - touchEndX.current
+              if (Math.abs(diff) > 50) {
+                // Swipe — navigate
+                if (diff > 0) goNext()
+                else goPrev()
+              } else {
+                // Tap — toggle UI
+                tapTimeout.current = setTimeout(() => setShowUI((v) => !v), 200)
+              }
+              touchEndX.current = 0
+            }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               key={currentIndex}
               src={images[currentIndex]}
               alt={`${alt} - Foto ${currentIndex + 1}`}
-              className="max-h-[calc(100dvh-8rem)] max-w-full rounded-lg object-contain animate-[fadeIn_0.15s_ease-out]"
+              className="max-h-[calc(100dvh-4rem)] w-full object-contain animate-[fadeIn_0.15s_ease-out]"
               draggable={false}
             />
           </div>
 
-          {/* Navigation arrows (desktop) */}
+          {/* Navigation arrows (desktop) — toggles with UI */}
           {count > 1 && (
-            <>
+            <div className={cn("transition-opacity duration-200", showUI ? "opacity-100" : "pointer-events-none opacity-0")}>
               <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); goPrev() }}
@@ -354,7 +377,7 @@ export function PropertyGallery({ fotos, alt, initialMode, onClose: onCloseExter
               >
                 <ChevronRight className="size-6" />
               </button>
-            </>
+            </div>
           )}
         </div>
       )}
