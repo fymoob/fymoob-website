@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { MapPin } from "lucide-react"
+import { ExternalLink, MapPin, Navigation } from "lucide-react"
 import { getPropertyCoordinates } from "@/lib/bairro-coordinates"
 
 interface PropertyMapProps {
@@ -9,9 +9,23 @@ interface PropertyMapProps {
   longitude: number | null
   bairro: string
   titulo: string
+  endereco?: string
+  numero?: string
+  cidade?: string
+  estado?: string
 }
 
-export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMapProps) {
+function buildAddressLine(props: Pick<PropertyMapProps, "endereco" | "numero" | "bairro" | "cidade" | "estado">) {
+  const parts = [props.endereco, props.numero, props.bairro].filter(Boolean).join(", ")
+  const cityState = [props.cidade, props.estado].filter(Boolean).join(" - ")
+  return parts ? `${parts}, ${cityState}` : `${props.bairro}, ${cityState}`
+}
+
+function buildMapsUrl(coords: { lat: number; lng: number }, address: string) {
+  return `https://www.google.com/maps/search/?api=1&query=${coords.lat},${coords.lng}&query_place_id=${encodeURIComponent(address)}`
+}
+
+export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, numero, cidade, estado }: PropertyMapProps) {
   const [hasEnteredViewport, setHasEnteredViewport] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const mapContainerRef = useRef<HTMLDivElement>(null)
@@ -21,6 +35,9 @@ export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMap
     () => getPropertyCoordinates(latitude, longitude, bairro),
     [latitude, longitude, bairro]
   )
+
+  const addressLine = buildAddressLine({ endereco, numero, bairro, cidade, estado })
+  const mapsUrl = coords ? buildMapsUrl(coords, addressLine) : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressLine)}`
 
   // IntersectionObserver — trigger maplibre load when container approaches viewport
   useEffect(() => {
@@ -106,24 +123,56 @@ export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMap
 
   return (
     <section>
-      <h2 className="pt-2 pb-4 font-display text-xl font-semibold tracking-tight text-neutral-950">
-        Mapa do imóvel
-      </h2>
-
-      <div className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
-        <div className="relative z-0 h-[350px] sm:h-[400px]">
-          <div ref={mapContainerRef} className="h-full w-full rounded-xl" />
-          {!loaded && (
-            <div className="absolute inset-0 flex animate-pulse items-center justify-center bg-neutral-100 text-neutral-400">
-              <MapPin size={24} className="mr-2" />
-              Carregando mapa...
-            </div>
-          )}
-        </div>
+      {/* Mobile: compact address card — no map rendering, opens Google Maps */}
+      <div className="md:hidden">
+        <h2 className="pt-2 pb-4 font-display text-xl font-semibold tracking-tight text-neutral-950">
+          Localização
+        </h2>
+        <a
+          href={mapsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 transition-colors active:bg-slate-50"
+        >
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary">
+            <MapPin className="size-5" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-medium text-slate-800">
+              {addressLine}
+            </p>
+            <p className="mt-0.5 flex items-center gap-1 text-xs text-slate-400">
+              <Navigation className="size-3" />
+              Toque para abrir no mapa
+            </p>
+          </div>
+          <ExternalLink className="size-4 shrink-0 text-slate-400" />
+        </a>
+        <p className="mt-2 text-xs text-neutral-500">
+          Localização aproximada
+        </p>
       </div>
-      <p className="mt-2 text-xs text-neutral-500">
-        Localização aproximada
-      </p>
+
+      {/* Desktop: interactive map */}
+      <div className="hidden md:block">
+        <h2 className="pt-2 pb-4 font-display text-xl font-semibold tracking-tight text-neutral-950">
+          Mapa do imóvel
+        </h2>
+        <div className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
+          <div className="relative z-0 h-[350px] sm:h-[400px]">
+            <div ref={mapContainerRef} className="h-full w-full rounded-xl" />
+            {!loaded && (
+              <div className="absolute inset-0 flex animate-pulse items-center justify-center bg-neutral-100 text-neutral-400">
+                <MapPin size={24} className="mr-2" />
+                Carregando mapa...
+              </div>
+            )}
+          </div>
+        </div>
+        <p className="mt-2 text-xs text-neutral-500">
+          Localização aproximada
+        </p>
+      </div>
     </section>
   )
 }

@@ -213,6 +213,10 @@ export default async function PropertyPage({ params }: PageProps) {
                 longitude={property.longitude}
                 bairro={property.bairro}
                 titulo={property.titulo}
+                endereco={property.endereco}
+                numero={property.numero}
+                cidade={property.cidade}
+                estado={property.estado}
               />
             </div>
           </div>
