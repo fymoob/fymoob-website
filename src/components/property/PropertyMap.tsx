@@ -19,6 +19,7 @@ export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, num
   const [hasEnteredViewport, setHasEnteredViewport] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [interactive, setInteractive] = useState(false)
+  const navControlAdded = useRef(false)
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<unknown>(null)
 
@@ -131,9 +132,12 @@ export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, num
     map.touchZoomRotate.enable()
     map.doubleClickZoom.enable()
 
-    import("maplibre-gl").then(({ default: maplibregl }) => {
-      map.addControl(new maplibregl.NavigationControl(), "top-right")
-    })
+    if (!navControlAdded.current) {
+      import("maplibre-gl").then(({ default: maplibregl }) => {
+        map.addControl(new maplibregl.NavigationControl(), "top-right")
+        navControlAdded.current = true
+      })
+    }
 
     // Start idle timer
     resetIdleTimer()
