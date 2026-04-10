@@ -927,24 +927,18 @@ export function SearchBar({
       </div>
     )}
 
-    {/* Type — full-screen overlay (outside aside for correct fixed positioning) */}
-    {activeChipSheet === "type" && (
-      <div className="fixed inset-0 z-[9999] flex flex-col bg-white md:hidden">
-        <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
-          <h2 className="text-lg font-semibold text-neutral-900">Tipo de imóvel</h2>
-          <button type="button" onClick={() => setActiveChipSheet(null)}
-            className="flex size-9 items-center justify-center rounded-full hover:bg-neutral-100">
-            <X className="size-5 text-neutral-600" />
-          </button>
-        </div>
-        <div className="flex-1 overflow-y-auto px-4 py-4">
+    {/* Type — bottom sheet (no text input, no keyboard) */}
+    <Sheet open={activeChipSheet === "type"} onOpenChange={(open) => !open && setActiveChipSheet(null)}>
+      <SheetContent side="bottom" className="flex max-h-[70dvh] flex-col rounded-t-2xl">
+        <SheetHeader><SheetTitle>Tipo de imóvel</SheetTitle></SheetHeader>
+        <div className="flex-1 overflow-y-auto px-4 pb-4">
           <TypeFilter
             typeOptions={filteredTipoOptions}
             selectedTipos={pendingFilters.tipos}
             onTiposChange={(values) => setPendingFilters((c) => ({ ...c, tipos: values }))}
           />
         </div>
-        <div className="sticky bottom-0 border-t border-neutral-100 bg-white px-4 py-3 pb-safe">
+        <SheetFooter className="sticky bottom-0 border-t border-neutral-100 bg-white pb-safe">
           <div className="flex gap-3">
             {pendingFilters.tipos.length > 0 && (
               <button type="button" onClick={() => setPendingFilters((c) => ({ ...c, tipos: [] }))}
@@ -957,9 +951,9 @@ export function SearchBar({
               Aplicar
             </button>
           </div>
-        </div>
-      </div>
-    )}
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
 
     {/* Advanced filters modal — portal outside aside */}
     <AdvancedFiltersModal
