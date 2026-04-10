@@ -136,6 +136,7 @@ export function PropertyListingGrid({
                       property={property}
                       prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
                       compactFeatures
+                      priceContext={priceContext}
                     />
                   </div>
                   <div className="hidden md:block h-full">
@@ -156,6 +157,7 @@ export function PropertyListingGrid({
                       property={property}
                       prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
                       compactFeatures
+                      priceContext={priceContext}
                     />
                   </div>
                   <div className="hidden md:block h-full">
@@ -185,6 +187,7 @@ export function PropertyListingGrid({
                 prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
                 variant={viewMode === "list" ? "horizontal" : "responsive"}
                 context={cardContext}
+                priceContext={priceContext}
               />
             )
           })}

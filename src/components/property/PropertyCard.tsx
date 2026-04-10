@@ -137,12 +137,15 @@ function getPropertyPhotos(property: Property): string[] {
   return photos.slice(0, MAX_CARD_PHOTOS)
 }
 
+type PriceContext = "venda" | "locacao" | null
+
 interface PropertyCardProps {
   property: Property
   prioritizeFirstImage?: boolean
   variant?: "vertical" | "horizontal" | "responsive"
   compactFeatures?: boolean
   context?: "default" | "search"
+  priceContext?: PriceContext
 }
 
 export function PropertyCard({
@@ -151,13 +154,16 @@ export function PropertyCard({
   variant = "vertical",
   compactFeatures = false,
   context = "default",
+  priceContext = null,
 }: PropertyCardProps) {
   const alt = generateImageAlt(property)
   const venda = property.precoVenda && property.precoVenda > 0 ? property.precoVenda : null
   const aluguel = property.precoAluguel && property.precoAluguel > 0 ? property.precoAluguel : null
   const isDual = property.finalidade === "Venda e Locação" && !!venda && !!aluguel
-  const price = venda ?? aluguel
-  const isRental = !venda && !!aluguel
+  const primaryIsRental = isDual ? priceContext === "locacao" : !venda && !!aluguel
+  const price = isDual && priceContext === "locacao" ? aluguel : (venda ?? aluguel)
+  const secondaryPrice = isDual ? (primaryIsRental ? venda : aluguel) : null
+  const isRental = primaryIsRental
   const photos = useMemo(() => getPropertyPhotos(property), [property])
   const [topViewed, setTopViewed] = useState<Set<string>>(new Set())
   useEffect(() => {
@@ -440,13 +446,15 @@ export function PropertyCard({
             <div>
               <p className="text-3xl font-extrabold tracking-tight text-white drop-shadow-md">
                 {displayPrice}
-                {(isRental || (isDual && !venda)) && hasPrice && (
+                {isRental && hasPrice && (
                   <span className="text-sm font-normal text-white/80"> /mês</span>
                 )}
               </p>
-              {isDual && (
+              {isDual && secondaryPrice && (
                 <p className="mt-0.5 text-sm font-semibold text-white/80 drop-shadow-md">
-                  Aluguel {formatPrice(aluguel)} /mês
+                  {primaryIsRental ? "Venda " : "Aluguel "}
+                  {formatPrice(secondaryPrice)}
+                  {!primaryIsRental && " /mês"}
                 </p>
               )}
             </div>
@@ -539,9 +547,11 @@ export function PropertyCard({
                 <span className="text-xs font-normal text-neutral-500"> /mês</span>
               )}
             </p>
-            {isDual && (
+            {isDual && secondaryPrice && (
               <p className="text-xs font-semibold text-slate-500 sm:text-sm">
-                Aluguel {formatPrice(aluguel)} /mês
+                {primaryIsRental ? "Venda " : "Aluguel "}
+                {formatPrice(secondaryPrice)}
+                {!primaryIsRental && " /mês"}
               </p>
             )}
           </div>
@@ -594,9 +604,11 @@ export function PropertyCard({
                     <span className="text-[10px] font-normal text-slate-500 sm:text-xs"> /mês</span>
                   )}
                 </p>
-                {isDual && (
+                {isDual && secondaryPrice && (
                   <p className="mt-0.5 text-xs font-semibold text-slate-500 sm:text-sm">
-                    Aluguel {formatPrice(aluguel)} /mês
+                    {primaryIsRental ? "Venda " : "Aluguel "}
+                    {formatPrice(secondaryPrice)}
+                    {!primaryIsRental && " /mês"}
                   </p>
                 )}
               </div>
@@ -619,9 +631,11 @@ export function PropertyCard({
                   <span className="text-sm font-normal text-neutral-500"> /mês</span>
                 )}
               </p>
-              {isDual && (
+              {isDual && secondaryPrice && (
                 <p className="mt-0.5 text-sm font-semibold text-slate-500">
-                  Aluguel {formatPrice(aluguel)} /mês
+                  {primaryIsRental ? "Venda " : "Aluguel "}
+                  {formatPrice(secondaryPrice)}
+                  {!primaryIsRental && " /mês"}
                 </p>
               )}
             </div>
