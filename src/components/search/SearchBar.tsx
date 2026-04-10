@@ -515,78 +515,7 @@ export function SearchBar({
               })}
             </div>
 
-            {/* ── Individual filter bottom sheets ── */}
-            {/* Location — full-screen overlay (keyboard-safe) */}
-            {activeChipSheet === "location" && (
-              <div className="fixed inset-0 z-[9999] flex flex-col bg-white">
-                <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
-                  <h2 className="text-lg font-semibold text-neutral-900">Localização</h2>
-                  <button type="button" onClick={() => setActiveChipSheet(null)}
-                    className="flex size-9 items-center justify-center rounded-full hover:bg-neutral-100">
-                    <X className="size-5 text-neutral-600" />
-                  </button>
-                </div>
-                <div className="flex-1 overflow-y-auto px-4 py-4">
-                  <LocationFilter
-                    bairros={bairroOptions}
-                    cidades={cidadeOptions}
-                    groupedBairros={groupedBairroOptions}
-                    selectedBairros={pendingFilters.bairros}
-                    selectedCidades={pendingFilters.cidades}
-                    onBairrosChange={(values) => setPendingFilters((c) => ({ ...c, bairros: values }))}
-                    onCidadesChange={(values) => setPendingFilters((c) => ({ ...c, cidades: values }))}
-                  />
-                </div>
-                <div className="sticky bottom-0 border-t border-neutral-100 bg-white px-4 py-3 pb-safe">
-                  <div className="flex gap-3">
-                    {(pendingFilters.bairros.length > 0 || pendingFilters.cidades.length > 0) && (
-                      <button type="button" onClick={() => setPendingFilters((c) => ({ ...c, bairros: [], cidades: [] }))}
-                        className="flex-1 rounded-xl border border-neutral-200 py-3 text-sm font-medium text-neutral-600">
-                        Limpar
-                      </button>
-                    )}
-                    <button type="button" onClick={() => { applyFilters(); setActiveChipSheet(null) }}
-                      className="flex-[2] rounded-xl bg-brand-primary py-3 text-sm font-semibold text-white">
-                      Aplicar
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Type — full-screen overlay (keyboard-safe) */}
-            {activeChipSheet === "type" && (
-              <div className="fixed inset-0 z-[9999] flex flex-col bg-white">
-                <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
-                  <h2 className="text-lg font-semibold text-neutral-900">Tipo de imóvel</h2>
-                  <button type="button" onClick={() => setActiveChipSheet(null)}
-                    className="flex size-9 items-center justify-center rounded-full hover:bg-neutral-100">
-                    <X className="size-5 text-neutral-600" />
-                  </button>
-                </div>
-                <div className="flex-1 overflow-y-auto px-4 py-4">
-                  <TypeFilter
-                    typeOptions={filteredTipoOptions}
-                    selectedTipos={pendingFilters.tipos}
-                    onTiposChange={(values) => setPendingFilters((c) => ({ ...c, tipos: values }))}
-                  />
-                </div>
-                <div className="sticky bottom-0 border-t border-neutral-100 bg-white px-4 py-3 pb-safe">
-                  <div className="flex gap-3">
-                    {pendingFilters.tipos.length > 0 && (
-                      <button type="button" onClick={() => setPendingFilters((c) => ({ ...c, tipos: [] }))}
-                        className="flex-1 rounded-xl border border-neutral-200 py-3 text-sm font-medium text-neutral-600">
-                        Limpar
-                      </button>
-                    )}
-                    <button type="button" onClick={() => { applyFilters(); setActiveChipSheet(null) }}
-                      className="flex-[2] rounded-xl bg-brand-primary py-3 text-sm font-semibold text-white">
-                      Aplicar
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
+            {/* Individual filter sheets rendered outside aside via portal below */}
 
             <Sheet open={activeChipSheet === "bedrooms"} onOpenChange={(open) => !open && setActiveChipSheet(null)}>
               <SheetContent side="bottom" className="flex flex-col rounded-t-2xl">
@@ -959,6 +888,78 @@ export function SearchBar({
         </div>
       </div>
     </aside>
+
+    {/* Location — full-screen overlay (outside aside for correct fixed positioning) */}
+    {activeChipSheet === "location" && (
+      <div className="fixed inset-0 z-[9999] flex flex-col bg-white md:hidden">
+        <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
+          <h2 className="text-lg font-semibold text-neutral-900">Localização</h2>
+          <button type="button" onClick={() => setActiveChipSheet(null)}
+            className="flex size-9 items-center justify-center rounded-full hover:bg-neutral-100">
+            <X className="size-5 text-neutral-600" />
+          </button>
+        </div>
+        <div className="flex-1 overflow-y-auto px-4 py-4">
+          <LocationFilter
+            bairros={bairroOptions}
+            cidades={cidadeOptions}
+            groupedBairros={groupedBairroOptions}
+            selectedBairros={pendingFilters.bairros}
+            selectedCidades={pendingFilters.cidades}
+            onBairrosChange={(values) => setPendingFilters((c) => ({ ...c, bairros: values }))}
+            onCidadesChange={(values) => setPendingFilters((c) => ({ ...c, cidades: values }))}
+          />
+        </div>
+        <div className="sticky bottom-0 border-t border-neutral-100 bg-white px-4 py-3 pb-safe">
+          <div className="flex gap-3">
+            {(pendingFilters.bairros.length > 0 || pendingFilters.cidades.length > 0) && (
+              <button type="button" onClick={() => setPendingFilters((c) => ({ ...c, bairros: [], cidades: [] }))}
+                className="flex-1 rounded-xl border border-neutral-200 py-3 text-sm font-medium text-neutral-600">
+                Limpar
+              </button>
+            )}
+            <button type="button" onClick={() => { applyFilters(); setActiveChipSheet(null) }}
+              className="flex-[2] rounded-xl bg-brand-primary py-3 text-sm font-semibold text-white">
+              Aplicar
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Type — full-screen overlay (outside aside for correct fixed positioning) */}
+    {activeChipSheet === "type" && (
+      <div className="fixed inset-0 z-[9999] flex flex-col bg-white md:hidden">
+        <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
+          <h2 className="text-lg font-semibold text-neutral-900">Tipo de imóvel</h2>
+          <button type="button" onClick={() => setActiveChipSheet(null)}
+            className="flex size-9 items-center justify-center rounded-full hover:bg-neutral-100">
+            <X className="size-5 text-neutral-600" />
+          </button>
+        </div>
+        <div className="flex-1 overflow-y-auto px-4 py-4">
+          <TypeFilter
+            typeOptions={filteredTipoOptions}
+            selectedTipos={pendingFilters.tipos}
+            onTiposChange={(values) => setPendingFilters((c) => ({ ...c, tipos: values }))}
+          />
+        </div>
+        <div className="sticky bottom-0 border-t border-neutral-100 bg-white px-4 py-3 pb-safe">
+          <div className="flex gap-3">
+            {pendingFilters.tipos.length > 0 && (
+              <button type="button" onClick={() => setPendingFilters((c) => ({ ...c, tipos: [] }))}
+                className="flex-1 rounded-xl border border-neutral-200 py-3 text-sm font-medium text-neutral-600">
+                Limpar
+              </button>
+            )}
+            <button type="button" onClick={() => { applyFilters(); setActiveChipSheet(null) }}
+              className="flex-[2] rounded-xl bg-brand-primary py-3 text-sm font-semibold text-white">
+              Aplicar
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
 
     {/* Advanced filters modal — portal outside aside */}
     <AdvancedFiltersModal
