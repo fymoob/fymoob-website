@@ -257,7 +257,7 @@ export function ContactSidebar({
               )}
               {totalPacote && rentalBase && totalPacote > rentalBase && (
                 <div className="flex items-center justify-between border-t border-neutral-100 pt-2">
-                  <span className="text-sm font-semibold text-slate-700">Valor total</span>
+                  <span className="text-sm font-semibold text-slate-700">Aluguel + Cond. + IPTU</span>
                   <span className="text-lg font-bold text-slate-900">{formatPrice(totalPacote)}</span>
                 </div>
               )}

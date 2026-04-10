@@ -81,7 +81,7 @@ export function MobilePriceCard({
           </p>
           {showTotal && (
             <p className="mt-1 text-sm font-semibold text-slate-700">
-              Pacote locação {formatPrice(totalPacote)}/mês
+              Aluguel + Condomínio + IPTU = {formatPrice(totalPacote)}/mês
             </p>
           )}
         </div>
