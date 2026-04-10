@@ -63,13 +63,13 @@ export function PropertyHeaderBlock({
       )}
 
       {!isPremium && isSaleOnly && property.precoVenda && (
-        <p className="mt-5 text-2xl font-extrabold tracking-tight text-slate-900 lg:hidden">
+        <p className="mt-6 text-2xl font-extrabold tracking-tight text-slate-900 lg:hidden">
           {formatPrice(property.precoVenda)}
         </p>
       )}
 
       {!isPremium && (
-        <div className={isSaleOnly && property.precoVenda ? "mt-4 lg:mt-5" : "mt-5"}>
+        <div className={isSaleOnly && property.precoVenda ? "mt-5 lg:mt-5" : "mt-5"}>
           <div className="h-0.5 w-16 rounded-full bg-brand-primary" />
           <div className="mt-4">
             <PropertyFeatures
