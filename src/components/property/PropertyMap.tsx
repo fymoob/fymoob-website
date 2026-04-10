@@ -94,6 +94,28 @@ export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, num
     }
   }, [coords, hasEnteredViewport])
 
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const lockMap = () => {
+    if (!mapRef.current) return
+    const map = mapRef.current as {
+      scrollZoom: { disable: () => void }
+      dragPan: { disable: () => void }
+      touchZoomRotate: { disable: () => void }
+      doubleClickZoom: { disable: () => void }
+    }
+    map.scrollZoom.disable()
+    map.dragPan.disable()
+    map.touchZoomRotate.disable()
+    map.doubleClickZoom.disable()
+    setInteractive(false)
+  }
+
+  const resetIdleTimer = () => {
+    if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
+    idleTimerRef.current = setTimeout(lockMap, 5000)
+  }
+
   // Enable interactivity
   useEffect(() => {
     if (!interactive || !mapRef.current) return
@@ -112,6 +134,13 @@ export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, num
     import("maplibre-gl").then(({ default: maplibregl }) => {
       map.addControl(new maplibregl.NavigationControl(), "top-right")
     })
+
+    // Start idle timer
+    resetIdleTimer()
+
+    return () => {
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current)
+    }
   }, [interactive])
 
   // Cleanup on unmount
@@ -146,6 +175,8 @@ export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, num
         <div
           className="relative z-0 h-[200px] md:h-[350px] lg:h-[400px]"
           onClick={activateMap}
+          onTouchStart={interactive ? resetIdleTimer : undefined}
+          onMouseMove={interactive ? resetIdleTimer : undefined}
         >
           <div ref={mapContainerRef} className="h-full w-full" />
 
@@ -166,6 +197,17 @@ export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, num
                 <Hand className="size-4" />
                 Toque para interagir
               </span>
+            </button>
+          )}
+
+          {loaded && interactive && (
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); lockMap() }}
+              className="absolute top-3 left-3 z-10 flex items-center gap-1.5 rounded-full bg-white/95 px-3 py-1.5 text-xs font-medium text-slate-600 shadow-md backdrop-blur-sm transition hover:bg-white"
+            >
+              <Hand className="size-3.5" />
+              Bloquear mapa
             </button>
           )}
         </div>
