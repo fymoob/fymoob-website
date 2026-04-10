@@ -1133,6 +1133,7 @@ cadastro={"lead":{"nome":"...", "email":"...", "fone":"...", "interesse":"Venda"
 - [ ] Mapa split-panel na busca — mapa interativo lado a lado com lista
 - [x] ~~Comparador de imoveis~~ — IMPLEMENTADO (Fase 13.1)
 - [ ] Landing imagens quebradas tipo — verificar remotePatterns, CDN URLs, fallback placeholder
+- [ ] Rever todas as imagens de bairros — substituir placeholders Unsplash por fotos reais de Curitiba (pedir ao Bruno ou buscar fotos licenciadas). Verificar `src/lib/bairro-images.ts` e `public/images/bairros/`
 - [ ] Explorar Vizinhança (POIs) — mapa com pontos de interesse por raio (escolas, restaurantes, etc) usando MapLibre + Overpass API (gratuito, alternativa ao Expandify pago)
 
 ---

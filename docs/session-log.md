@@ -6,6 +6,55 @@ Registro de progresso do projeto. Atualizado automaticamente via `/project:check
 
 <!-- Novas sessões são adicionadas no topo -->
 
+## Sessão 2026-04-09/10
+**Fase:** Multi-fase — UX Mobile, Ícones, Preços Dual, Mapa, Portal de Serviços, Estratégia
+**Commits:** 18
+
+**Tarefas concluídas:**
+- Auditoria e correção de 101 ícones de características/infraestrutura (0 fallbacks)
+- Dual price (Venda + Locação) em todos os cards (Grid, Compact, List, PropertyCard) com priceContext
+- MobilePriceCard compacto: Venda, Aluguel, Cond., IPTU, Pacote locação em 4 linhas
+- Mapa com overlay "Toque para interagir" (resolve scroll capture no mobile)
+- Reordenação da página do imóvel: Preços → Descrição → Características → Infraestrutura → Mapa
+- PropertyFeatures: stroke 2, sentence case, grid 3 colunas vertical no mobile
+- Features bar no premium (substituiu texto genérico)
+- Removida seção "Detalhes complementares" e divider duplo
+- Renomeado "Infraestrutura do condomínio" → "Área comum"
+- 6 imagens de bairros adicionadas/corrigidas (Campo de Santana foto real)
+- Equalização de altura dos cards no grid (h-full propagado)
+- Fases 16-17 adicionadas ao TASKS.md (Claude Managed Agents + SaaS)
+- contrato-plus.md: 9 funcionalidades detalhadas com pesquisa de mercado
+- google-forms-script.js: Google Forms automático com 39 perguntas
+- ecossistema-estrategico.md: visão de produto em 4 camadas com dados verificados
+
+**Arquivos criados:**
+- `src/components/property/MobilePriceCard.tsx`
+- `docs/contrato-plus.md`
+- `docs/google-forms-script.js`
+- `docs/ecossistema-estrategico.md`
+- `public/images/bairros/{batel,bigorrilho,campina-do-siqueira,campo-de-santana,novo-mundo,xaxim}.jpg`
+
+**Arquivos modificados:**
+- `src/app/imovel/[slug]/page.tsx`, `src/components/property/{PropertyHeaderBlock,PropertyCharacteristics,PropertyAmenities,PropertyMap,MobileContactBar,PropertyCard,propertyFeatureIcons}.tsx`
+- `src/components/property/card/{PropertyCardGrid,PropertyCardList,PropertyCardCompact,hooks/usePropertyCard}.ts(x)`
+- `src/components/search/PropertyListingGrid.tsx`, `src/components/shared/PropertyFeatures.tsx`
+- `src/services/loft.ts`, `docs/TASKS.md`, `docs/solicitacoes.md`
+
+**Decisões:**
+- Mapa: overlay tap-to-activate, não link externo (Bruno quer mapa no site)
+- Sequência página: funil de conversão (descrição antes do mapa)
+- MobilePriceCard: "Pacote locação" em vez de "Valor total" (evita ambiguidade)
+- Portal de Serviços: fora do contrato, precificar separadamente
+- Ecossistema: SaaS + dados (alta margem) > transações (baixa margem)
+
+**Próxima tarefa:**
+- Aguardar respostas do Bruno no Google Forms
+- Resolver 404 na página do imóvel (dev local)
+- Fase 7: Deploy produção (fymoob.com)
+- Fase 15: Lead Capture + CRM
+
+---
+
 ## Sessão 2026-03-14 (5)
 **Fase:** 4 — Blog e Conteúdo
 **Tarefas concluídas:**
