@@ -17,7 +17,6 @@ import {
 } from "@/lib/property-page-variant"
 import {
   filterPropertyPhotos,
-  formatPrice,
   generateImageAlt,
   generateShortTitle,
   getPropertyImage,
@@ -33,6 +32,7 @@ import { PropertyAmenities } from "@/components/property/PropertyAmenities"
 import { LazySimilarProperties } from "@/components/property/LazySimilarProperties"
 import { PropertyMap } from "@/components/property/PropertyMap"
 import { MobileContactBar } from "@/components/property/MobileContactBar"
+import { MobilePriceCard } from "@/components/property/MobilePriceCard"
 import { RecentlyViewedTracker } from "@/components/property/RecentlyViewedTracker"
 import { ShareButton } from "@/components/shared/ShareButton"
 import { WishlistButton } from "@/components/property/WishlistButton"
@@ -182,20 +182,16 @@ export default async function PropertyPage({ params }: PageProps) {
               variant={variant}
             />
 
-            {variant === "standard" && (isRental || isDual) && (property.valorCondominio || property.valorIptu) && (
-              <div className="mt-4 flex items-center gap-4 text-sm text-slate-500 lg:hidden">
-                {property.valorCondominio && property.valorCondominio > 0 && (
-                  <span>
-                    Condomínio: <span className="font-medium text-slate-700">{formatPrice(property.valorCondominio)}</span>
-                  </span>
-                )}
-                {property.valorIptu && property.valorIptu > 0 && (
-                  <span>
-                    IPTU: <span className="font-medium text-slate-700">{formatPrice(property.valorIptu)}</span>
-                  </span>
-                )}
-              </div>
-            )}
+            <div className="mt-5 lg:hidden">
+              <MobilePriceCard
+                precoVenda={property.precoVenda}
+                precoAluguel={property.precoAluguel}
+                finalidade={property.finalidade}
+                valorCondominio={property.valorCondominio}
+                valorIptu={property.valorIptu}
+                valorSobConsulta={property.valorSobConsulta}
+              />
+            </div>
 
             <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-5"}>
               <PropertyDescription descricao={descricaoWithTitle} />
@@ -253,8 +249,6 @@ export default async function PropertyPage({ params }: PageProps) {
         variant={variant}
         dataCadastro={property.dataCadastro}
         bairro={property.bairro}
-        valorCondominio={property.valorCondominio}
-        valorIptu={property.valorIptu}
       />
     </div>
   )

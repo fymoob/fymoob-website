@@ -18,8 +18,6 @@ interface MobileContactBarProps {
   dataCadastro?: string | null
   bairro?: string
   precoMedioBairro?: number | null
-  valorCondominio?: number | null
-  valorIptu?: number | null
 }
 
 const FYMOOB_PHONE = "554199978-0517".replace(/\D/g, "")
@@ -80,8 +78,6 @@ export function MobileContactBar({
   dataCadastro,
   bairro,
   precoMedioBairro,
-  valorCondominio,
-  valorIptu,
 }: MobileContactBarProps) {
   const isPremium = variant === "premium"
   const isDual = finalidade === "Venda e Locação" && precoVenda && precoAluguel
@@ -91,11 +87,6 @@ export function MobileContactBar({
   const urgency = isPremium
     ? null
     : getUrgencyMessage({ dataCadastro, bairro, precoVenda, precoMedioBairro })
-
-  const rentalTotal = isRental && price
-    ? price + (valorCondominio ?? 0) + (valorIptu ?? 0)
-    : null
-  const showTotal = rentalTotal && rentalTotal > (price ?? 0)
 
   const [navHidden, setNavHidden] = useState(false)
   const lastScrollY = useRef(0)
@@ -166,14 +157,13 @@ export function MobileContactBar({
                   Atendimento consultivo e disponibilidade pelo WhatsApp
                 </p>
               </>
-            ) : showTotal ? (
+            ) : isDual ? (
               <>
                 <p className="truncate text-lg font-extrabold text-slate-900">
-                  {formatPrice(rentalTotal)}
-                  <span className="text-sm font-normal text-neutral-500"> /mês</span>
+                  {formatPrice(price)}
                 </p>
-                <p className="truncate text-xs text-neutral-400">
-                  Aluguel {formatPrice(price)} + taxas
+                <p className="truncate text-xs font-semibold text-slate-500">
+                  Aluguel {formatPrice(precoAluguel)} <span className="font-normal">/mês</span>
                 </p>
               </>
             ) : (
@@ -188,12 +178,6 @@ export function MobileContactBar({
                   </p>
                 )}
               </>
-            )}
-
-            {isDual && !shouldShowConsultPrice && (
-              <p className="truncate text-sm font-bold text-slate-700">
-                {formatPrice(precoAluguel)} <span className="font-normal text-neutral-500">/mês</span>
-              </p>
             )}
           </div>
 
