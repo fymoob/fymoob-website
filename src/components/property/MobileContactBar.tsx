@@ -160,24 +160,15 @@ export function MobileContactBar({
                   {formatPrice(price)}
                 </p>
                 <p className="truncate text-xs font-semibold text-slate-500">
-                  {showPacote ? (
-                    <>Pacote: {formatPrice(totalPacote)} <span className="font-normal">/mês</span></>
-                  ) : (
-                    <>Aluguel {formatPrice(precoAluguel)} <span className="font-normal">/mês</span></>
-                  )}
+                  Aluguel {formatPrice(precoAluguel)} <span className="font-normal">/mês</span>
                 </p>
               </>
             ) : (
               <>
                 <p className={`truncate font-extrabold text-slate-900 ${isRental ? "text-lg" : "text-xl"}`}>
-                  {isRental && showPacote ? formatPrice(totalPacote) : formatPrice(price)}
+                  {formatPrice(price)}
                   {isRental && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
                 </p>
-                {isRental && showPacote && (
-                  <p className="truncate text-xs text-neutral-400">
-                    Aluguel + encargos
-                  </p>
-                )}
                 {isPremium && !isRental && (
                   <p className="truncate text-xs text-neutral-400">
                     Atendimento rápido com corretor especializado
