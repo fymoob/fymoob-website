@@ -26,73 +26,59 @@ export function MobilePriceCard({
     ? rentalBase + (valorCondominio ?? 0) + (valorIptu ?? 0)
     : null
   const showTotal = totalPacote && rentalBase && totalPacote > rentalBase
-  const showTaxes = (isRental || isDual) && (valorCondominio || valorIptu)
+
+  const hasCond = valorCondominio && valorCondominio > 0
+  const hasIptu = valorIptu && valorIptu > 0
+  const showTaxes = (isRental || isDual) && (hasCond || hasIptu)
 
   if (showConsult) return null
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 lg:hidden">
+    <div className="rounded-2xl border border-slate-200 bg-white px-5 py-4 lg:hidden">
       {isDual ? (
-        <>
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-              Valor venda
-            </p>
-            <p className="mt-1 text-2xl font-extrabold tracking-tight text-slate-900">
+        <div className="space-y-1.5">
+          <div className="flex items-baseline justify-between">
+            <p className="text-2xl font-extrabold tracking-tight text-slate-900">
               {formatPrice(precoVenda)}
             </p>
+            <span className="text-sm font-medium text-slate-400">Venda</span>
           </div>
-
-          <div className="mt-4 border-t border-slate-100 pt-4">
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-              Valor aluguel
-            </p>
-            <p className="mt-1 text-xl font-bold tracking-tight text-slate-900">
+          <div className="flex items-baseline justify-between">
+            <p className="text-xl font-bold tracking-tight text-slate-900">
               {formatPrice(precoAluguel)}
               <span className="text-sm font-normal text-slate-500"> /mês</span>
             </p>
+            <span className="text-sm font-medium text-slate-400">Aluguel</span>
           </div>
-        </>
+        </div>
       ) : isRental ? (
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-            Valor aluguel
-          </p>
-          <p className="mt-1 text-2xl font-extrabold tracking-tight text-slate-900">
+        <div className="flex items-baseline justify-between">
+          <p className="text-2xl font-extrabold tracking-tight text-slate-900">
             {formatPrice(precoAluguel ?? precoVenda)}
             <span className="text-sm font-normal text-slate-500"> /mês</span>
           </p>
+          <span className="text-sm font-medium text-slate-400">Aluguel</span>
         </div>
       ) : (
-        <div>
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-            Valor venda
-          </p>
-          <p className="mt-1 text-2xl font-extrabold tracking-tight text-slate-900">
+        <div className="flex items-baseline justify-between">
+          <p className="text-2xl font-extrabold tracking-tight text-slate-900">
             {formatPrice(precoVenda ?? precoAluguel)}
           </p>
+          <span className="text-sm font-medium text-slate-400">Venda</span>
         </div>
       )}
 
       {showTaxes && (
-        <div className="mt-4 space-y-2 border-t border-slate-100 pt-4">
-          {valorCondominio && valorCondominio > 0 && (
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-slate-500">Condomínio</span>
-              <span className="font-medium text-slate-700">{formatPrice(valorCondominio)}</span>
-            </div>
-          )}
-          {valorIptu && valorIptu > 0 && (
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-slate-500">IPTU</span>
-              <span className="font-medium text-slate-700">{formatPrice(valorIptu)}</span>
-            </div>
-          )}
+        <div className="mt-3 border-t border-slate-100 pt-3">
+          <p className="text-sm text-slate-500">
+            {hasCond && <>Cond. {formatPrice(valorCondominio)}</>}
+            {hasCond && hasIptu && <span className="mx-1.5">·</span>}
+            {hasIptu && <>IPTU {formatPrice(valorIptu)}</>}
+          </p>
           {showTotal && (
-            <div className="flex items-center justify-between border-t border-slate-100 pt-2">
-              <span className="text-sm font-semibold text-slate-700">Valor total</span>
-              <span className="text-lg font-bold text-slate-900">{formatPrice(totalPacote)}</span>
-            </div>
+            <p className="mt-1 text-sm font-semibold text-slate-700">
+              Pacote locação {formatPrice(totalPacote)}/mês
+            </p>
           )}
         </div>
       )}
