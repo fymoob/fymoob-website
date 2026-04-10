@@ -299,7 +299,7 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
 
 
       <PropertyListingGrid
-        properties={properties}
+        properties={properties.map(p => ({ ...p, fotos: p.fotos.slice(0, 3) }))}
         total={total}
         totalLabel="imóveis"
         cardContext="search"
