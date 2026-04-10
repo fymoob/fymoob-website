@@ -411,8 +411,8 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
           tipos={tipos.map((item) => item.tipo)}
           cidades={cidades}
           priceBounds={{ min: minPrice, max: maxPrice }}
-          bairroSummaries={bairros}
-          tipoSummaries={tipos}
+          bairroSummaries={bairros.map(({ bairro, slug, total, cidade, tipos: t, porFinalidade }) => ({ bairro, slug, total, cidade, tipos: t, porFinalidade }))}
+          tipoSummaries={tipos.map(({ tipo, slug, total, porFinalidade }) => ({ tipo, slug, total, porFinalidade }))}
           sticky
         />
       </div>
