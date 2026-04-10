@@ -193,20 +193,7 @@ export default async function PropertyPage({ params }: PageProps) {
               />
             </div>
 
-            <div className="mt-5">
-              <PropertyMap
-                latitude={property.latitude}
-                longitude={property.longitude}
-                bairro={property.bairro}
-                titulo={property.titulo}
-                endereco={property.endereco}
-                numero={property.numero}
-                cidade={property.cidade}
-                estado={property.estado}
-              />
-            </div>
-
-            <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-8 border-t border-slate-200 pt-8"}>
+            <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-5"}>
               <PropertyDescription descricao={descricaoWithTitle} />
             </div>
 
@@ -219,6 +206,15 @@ export default async function PropertyPage({ params }: PageProps) {
                 <PropertyAmenities infraestrutura={property.infraestrutura} />
               </div>
             )}
+
+            <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-8 border-t border-slate-200 pt-8"}>
+              <PropertyMap
+                latitude={property.latitude}
+                longitude={property.longitude}
+                bairro={property.bairro}
+                titulo={property.titulo}
+              />
+            </div>
           </div>
 
           <aside className="relative z-40 hidden lg:block">

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { MapPin, Hand } from "lucide-react"
+import { Hand, MapPin } from "lucide-react"
 import { getPropertyCoordinates } from "@/lib/bairro-coordinates"
 
 interface PropertyMapProps {
@@ -9,19 +9,9 @@ interface PropertyMapProps {
   longitude: number | null
   bairro: string
   titulo: string
-  endereco?: string | null
-  numero?: string | null
-  cidade?: string | null
-  estado?: string | null
 }
 
-function buildAddressLine(props: Pick<PropertyMapProps, "endereco" | "numero" | "bairro" | "cidade" | "estado">) {
-  const parts = [props.endereco, props.numero, props.bairro].filter(Boolean).join(", ")
-  const cityState = [props.cidade, props.estado].filter(Boolean).join(" - ")
-  return parts ? `${parts}, ${cityState}` : `${props.bairro}, ${cityState}`
-}
-
-export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, numero, cidade, estado }: PropertyMapProps) {
+export function PropertyMap({ latitude, longitude, bairro, titulo }: PropertyMapProps) {
   const [hasEnteredViewport, setHasEnteredViewport] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const [interactive, setInteractive] = useState(false)
@@ -32,8 +22,6 @@ export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, num
     () => getPropertyCoordinates(latitude, longitude, bairro),
     [latitude, longitude, bairro]
   )
-
-  const addressLine = buildAddressLine({ endereco, numero, bairro, cidade, estado })
 
   // IntersectionObserver — trigger maplibre load when container approaches viewport
   useEffect(() => {
@@ -140,10 +128,9 @@ export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, num
 
   return (
     <section>
-      <div className="flex items-center gap-3 pb-4">
-        <MapPin className="size-4 shrink-0 text-brand-primary" />
-        <p className="text-sm text-slate-600">{addressLine}</p>
-      </div>
+      <h2 className="pb-4 font-display text-xl font-semibold tracking-tight text-neutral-950">
+        Localização
+      </h2>
 
       <div className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
         <div
