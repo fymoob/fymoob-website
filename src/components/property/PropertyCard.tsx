@@ -153,7 +153,11 @@ export function PropertyCard({
   context = "default",
 }: PropertyCardProps) {
   const alt = generateImageAlt(property)
-  const price = property.precoVenda ?? property.precoAluguel
+  const venda = property.precoVenda && property.precoVenda > 0 ? property.precoVenda : null
+  const aluguel = property.precoAluguel && property.precoAluguel > 0 ? property.precoAluguel : null
+  const isDual = property.finalidade === "Venda e Locação" && !!venda && !!aluguel
+  const price = venda ?? aluguel
+  const isRental = !venda && !!aluguel
   const photos = useMemo(() => getPropertyPhotos(property), [property])
   const [topViewed, setTopViewed] = useState<Set<string>>(new Set())
   useEffect(() => {
@@ -433,12 +437,19 @@ export function PropertyCard({
 
         {isSearchContext && (
           <div className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-between px-5 pb-4">
-            <p className="text-3xl font-extrabold tracking-tight text-white drop-shadow-md">
-              {displayPrice}
-              {property.finalidade !== "Venda" && hasPrice && (
-                <span className="text-sm font-normal text-white/80"> /mês</span>
+            <div>
+              <p className="text-3xl font-extrabold tracking-tight text-white drop-shadow-md">
+                {displayPrice}
+                {(isRental || (isDual && !venda)) && hasPrice && (
+                  <span className="text-sm font-normal text-white/80"> /mês</span>
+                )}
+              </p>
+              {isDual && (
+                <p className="mt-0.5 text-sm font-semibold text-white/80 drop-shadow-md">
+                  Aluguel {formatPrice(aluguel)} /mês
+                </p>
               )}
-            </p>
+            </div>
             <span className="text-sm font-medium uppercase text-slate-200 drop-shadow-md">
               {property.codigo}
             </span>
@@ -511,22 +522,29 @@ export function PropertyCard({
         </h2>
 
         {useInlineFeatures && (
-          <p
-            className={cn(
-              "font-semibold tracking-tight text-slate-900",
-              isHorizontal
-                ? "text-lg sm:text-xl"
-                : isResponsive
-                  ? "text-base sm:text-lg"
-                  : "text-xl",
-              hasPrice ? "text-slate-900" : "text-slate-500"
+          <div>
+            <p
+              className={cn(
+                "font-semibold tracking-tight text-slate-900",
+                isHorizontal
+                  ? "text-lg sm:text-xl"
+                  : isResponsive
+                    ? "text-base sm:text-lg"
+                    : "text-xl",
+                hasPrice ? "text-slate-900" : "text-slate-500"
+              )}
+            >
+              {displayPrice}
+              {isRental && hasPrice && (
+                <span className="text-xs font-normal text-neutral-500"> /mês</span>
+              )}
+            </p>
+            {isDual && (
+              <p className="text-xs font-semibold text-slate-500 sm:text-sm">
+                Aluguel {formatPrice(aluguel)} /mês
+              </p>
             )}
-          >
-            {displayPrice}
-            {property.finalidade !== "Venda" && hasPrice && (
-              <span className="text-xs font-normal text-neutral-500"> /mês</span>
-            )}
-          </p>
+          </div>
         )}
 
         {isCompactCard ? (
@@ -564,17 +582,24 @@ export function PropertyCard({
         {isCompactCard ? (
           <div className="mt-auto">
             <div className="flex items-end justify-between border-t border-slate-100 pt-3">
-              <p
-                className={cn(
-                  "text-lg font-bold tracking-tight sm:text-2xl sm:font-extrabold",
-                  hasPrice ? "text-slate-900" : "text-slate-400"
+              <div>
+                <p
+                  className={cn(
+                    "text-lg font-bold tracking-tight sm:text-2xl sm:font-extrabold",
+                    hasPrice ? "text-slate-900" : "text-slate-400"
+                  )}
+                >
+                  {displayPrice}
+                  {isRental && hasPrice && (
+                    <span className="text-[10px] font-normal text-slate-500 sm:text-xs"> /mês</span>
+                  )}
+                </p>
+                {isDual && (
+                  <p className="mt-0.5 text-xs font-semibold text-slate-500 sm:text-sm">
+                    Aluguel {formatPrice(aluguel)} /mês
+                  </p>
                 )}
-              >
-                {displayPrice}
-                {property.finalidade !== "Venda" && hasPrice && (
-                  <span className="text-[10px] font-normal text-slate-500 sm:text-xs"> /mês</span>
-                )}
-              </p>
+              </div>
               <span className="text-xs font-medium text-slate-400 sm:text-sm sm:font-semibold sm:text-slate-500">
                 {property.codigo}
               </span>
@@ -582,17 +607,24 @@ export function PropertyCard({
           </div>
         ) : !useInlineFeatures && !isSearchContext ? (
           <div className="mt-auto flex items-end justify-between gap-4 border-t border-slate-100 pt-4">
-            <p
-              className={cn(
-                "text-2xl font-extrabold tracking-tight",
-                hasPrice ? "text-slate-900" : "text-slate-500"
+            <div>
+              <p
+                className={cn(
+                  "text-2xl font-extrabold tracking-tight",
+                  hasPrice ? "text-slate-900" : "text-slate-500"
+                )}
+              >
+                {displayPrice}
+                {isRental && hasPrice && (
+                  <span className="text-sm font-normal text-neutral-500"> /mês</span>
+                )}
+              </p>
+              {isDual && (
+                <p className="mt-0.5 text-sm font-semibold text-slate-500">
+                  Aluguel {formatPrice(aluguel)} /mês
+                </p>
               )}
-            >
-              {displayPrice}
-              {property.finalidade !== "Venda" && hasPrice && (
-                <span className="text-sm font-normal text-neutral-500"> /mês</span>
-              )}
-            </p>
+            </div>
             <span className="shrink-0 text-right text-xs font-medium text-slate-400">
               {property.codigo}
             </span>
