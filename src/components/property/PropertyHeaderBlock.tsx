@@ -85,6 +85,9 @@ export function PropertyHeaderBlock({
               searchGrid
             />
           </div>
+          {!isSaleOnly && (
+            <div className="mt-6 border-t border-slate-200 lg:hidden" />
+          )}
         </div>
       )}
 

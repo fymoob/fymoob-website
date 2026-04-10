@@ -182,7 +182,7 @@ export default async function PropertyPage({ params }: PageProps) {
               variant={variant}
             />
 
-            <div className="mt-5 lg:hidden">
+            <div className="mt-6 lg:hidden">
               <MobilePriceCard
                 precoVenda={property.precoVenda}
                 precoAluguel={property.precoAluguel}
