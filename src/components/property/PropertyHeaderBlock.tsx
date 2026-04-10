@@ -3,7 +3,7 @@ import { MapPin } from "lucide-react"
 import type { Property, PropertyPageVariant } from "@/types/property"
 import { PropertyBadge } from "@/components/shared/PropertyBadge"
 import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
-import { cn } from "@/lib/utils"
+import { cn, formatPrice } from "@/lib/utils"
 
 interface PropertyHeaderBlockProps {
   property: Property
@@ -17,6 +17,7 @@ export function PropertyHeaderBlock({
   variant,
 }: PropertyHeaderBlockProps) {
   const isPremium = variant === "premium"
+  const isSaleOnly = property.finalidade === "Venda"
 
   return (
     <div className={cn("mt-6 md:mt-8", isPremium && "mt-10 md:mt-14")}>
@@ -61,8 +62,14 @@ export function PropertyHeaderBlock({
         </p>
       )}
 
+      {!isPremium && isSaleOnly && property.precoVenda && (
+        <p className="mt-5 text-2xl font-extrabold tracking-tight text-slate-900 lg:hidden">
+          {formatPrice(property.precoVenda)}
+        </p>
+      )}
+
       {!isPremium && (
-        <div className="mt-5">
+        <div className={isSaleOnly && property.precoVenda ? "mt-4 lg:mt-5" : "mt-5"}>
           <div className="h-0.5 w-16 rounded-full bg-brand-primary" />
           <div className="mt-4">
             <PropertyFeatures

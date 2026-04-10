@@ -12,6 +12,8 @@ interface MobileContactBarProps {
   propertyCode: string
   precoVenda?: number | null
   precoAluguel?: number | null
+  valorCondominio?: number | null
+  valorIptu?: number | null
   finalidade?: string
   valorSobConsulta?: boolean
   variant: PropertyPageVariant
@@ -72,6 +74,8 @@ export function MobileContactBar({
   propertyCode,
   precoVenda,
   precoAluguel,
+  valorCondominio,
+  valorIptu,
   finalidade,
   valorSobConsulta = false,
   variant,
@@ -84,6 +88,12 @@ export function MobileContactBar({
   const isRental = !isDual && finalidade !== "Venda"
   const shouldShowConsultPrice = valorSobConsulta && !isRental
   const price = isRental ? (precoAluguel ?? precoVenda ?? null) : (precoVenda ?? precoAluguel ?? null)
+
+  const rentalBase = isDual ? precoAluguel : isRental ? (precoAluguel ?? precoVenda) : null
+  const totalPacote = rentalBase
+    ? rentalBase + (valorCondominio ?? 0) + (valorIptu ?? 0)
+    : null
+  const showPacote = totalPacote && rentalBase && totalPacote > rentalBase
   const urgency = isPremium
     ? null
     : getUrgencyMessage({ dataCadastro, bairro, precoVenda, precoMedioBairro })
@@ -121,7 +131,9 @@ export function MobileContactBar({
     ? "Consultar valores"
     : isPremium
       ? "Falar com consultor"
-      : "Quero visitar"
+      : isRental
+        ? "Agendar visita"
+        : "Quero visitar"
 
   const trackCTA = () => {
     pushAnalyticsEvent("property_contact_click", {
@@ -163,15 +175,24 @@ export function MobileContactBar({
                   {formatPrice(price)}
                 </p>
                 <p className="truncate text-xs font-semibold text-slate-500">
-                  Aluguel {formatPrice(precoAluguel)} <span className="font-normal">/mês</span>
+                  {showPacote ? (
+                    <>Pacote: {formatPrice(totalPacote)} <span className="font-normal">/mês</span></>
+                  ) : (
+                    <>Aluguel {formatPrice(precoAluguel)} <span className="font-normal">/mês</span></>
+                  )}
                 </p>
               </>
             ) : (
               <>
-                <p className="truncate text-lg font-extrabold text-slate-900">
-                  {formatPrice(price)}
+                <p className={`truncate font-extrabold text-slate-900 ${isRental ? "text-lg" : "text-xl"}`}>
+                  {isRental && showPacote ? formatPrice(totalPacote) : formatPrice(price)}
                   {isRental && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
                 </p>
+                {isRental && showPacote && (
+                  <p className="truncate text-xs text-neutral-400">
+                    Aluguel + encargos
+                  </p>
+                )}
                 {isPremium && !isRental && (
                   <p className="truncate text-xs text-neutral-400">
                     Atendimento rápido com corretor especializado

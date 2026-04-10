@@ -33,6 +33,10 @@ export function MobilePriceCard({
 
   if (showConsult) return null
 
+  // Sale-only: price is shown inline in PropertyHeaderBlock, no card needed
+  const isSaleOnly = !isDual && !isRental
+  if (isSaleOnly) return null
+
   return (
     <div className="rounded-2xl border border-slate-200 bg-white px-5 py-4 lg:hidden">
       {isDual ? (

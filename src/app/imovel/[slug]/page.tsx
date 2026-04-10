@@ -248,6 +248,8 @@ export default async function PropertyPage({ params }: PageProps) {
         propertyCode={property.codigo}
         precoVenda={property.precoVenda}
         precoAluguel={property.precoAluguel}
+        valorCondominio={property.valorCondominio}
+        valorIptu={property.valorIptu}
         finalidade={property.finalidade}
         valorSobConsulta={property.valorSobConsulta}
         variant={variant}
