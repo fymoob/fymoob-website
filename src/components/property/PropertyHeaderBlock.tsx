@@ -62,8 +62,11 @@ export function PropertyHeaderBlock({
         </p>
       )}
 
-      {!isPremium && isSaleOnly && property.precoVenda && (
-        <p className="mt-6 text-2xl font-extrabold tracking-tight text-slate-900 lg:hidden">
+      {isSaleOnly && property.precoVenda && (
+        <p className={cn(
+          "text-2xl font-extrabold tracking-tight text-slate-900 lg:hidden",
+          isPremium ? "mt-8" : "mt-6"
+        )}>
           {formatPrice(property.precoVenda)}
         </p>
       )}
@@ -86,7 +89,10 @@ export function PropertyHeaderBlock({
       )}
 
       {isPremium && (
-        <div className="mt-10 border-t border-slate-200/80 pt-8 md:mt-12 md:pt-10">
+        <div className={cn(
+          "border-t border-slate-200/80 pt-8 md:pt-10",
+          isSaleOnly && property.precoVenda ? "mt-6 md:mt-12" : "mt-10 md:mt-12"
+        )}>
           <PropertyFeatures
             dormitorios={property.dormitorios}
             suites={property.suites}
