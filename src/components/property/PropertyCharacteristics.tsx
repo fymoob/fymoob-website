@@ -11,7 +11,7 @@ export function PropertyCharacteristics({ property }: PropertyCharacteristicsPro
   return (
     <section>
       <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950">
-        Características da unidade
+        Área privativa
       </h2>
       <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 xl:grid-cols-3">
         {property.caracteristicas.map((item) => {
