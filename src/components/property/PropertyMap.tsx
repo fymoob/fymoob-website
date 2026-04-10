@@ -9,10 +9,10 @@ interface PropertyMapProps {
   longitude: number | null
   bairro: string
   titulo: string
-  endereco?: string
-  numero?: string
-  cidade?: string
-  estado?: string
+  endereco?: string | null
+  numero?: string | null
+  cidade?: string | null
+  estado?: string | null
 }
 
 function buildAddressLine(props: Pick<PropertyMapProps, "endereco" | "numero" | "bairro" | "cidade" | "estado">) {
