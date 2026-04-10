@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { Sparkles, TrendingUp } from "lucide-react"
 
 import { pushAnalyticsEvent } from "@/lib/analytics"
@@ -99,30 +99,15 @@ export function MobileContactBar({
     : getUrgencyMessage({ dataCadastro, bairro, precoVenda, precoMedioBairro })
 
   const [navHidden, setNavHidden] = useState(false)
-  const lastScrollY = useRef(0)
 
   useEffect(() => {
-    let idleTimer: ReturnType<typeof setTimeout>
-
-    const handleScroll = () => {
-      const currentY = window.scrollY
-      if (currentY > lastScrollY.current && currentY > 100) {
-        setNavHidden(true)
-      } else {
-        setNavHidden(false)
-      }
-
-      lastScrollY.current = currentY
-
-      clearTimeout(idleTimer)
-      idleTimer = setTimeout(() => setNavHidden(false), 2000)
+    const handleToggle = (e: Event) => {
+      const hidden = (e as CustomEvent).detail?.hidden ?? false
+      setNavHidden(hidden)
     }
 
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-      clearTimeout(idleTimer)
-    }
+    window.addEventListener("bottomnav-toggle", handleToggle)
+    return () => window.removeEventListener("bottomnav-toggle", handleToggle)
   }, [])
 
   const whatsMessage = `Olá! Tenho interesse no imóvel ${propertyTitle} (Cód: ${propertyCode}). Gostaria de mais informações.`
@@ -147,8 +132,8 @@ export function MobileContactBar({
 
   return (
     <div
-      className="fixed left-0 z-[100] w-full border-t border-neutral-200 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.08)] transition-[bottom] duration-300 md:hidden"
-      style={{ bottom: navHidden ? 0 : 56 }}
+      className="fixed bottom-14 left-0 z-[100] w-full border-t border-neutral-200 bg-white shadow-[0_-2px_10px_rgba(0,0,0,0.08)] transition-transform duration-300 md:hidden"
+      style={{ transform: navHidden ? "translateY(56px)" : "translateY(0)" }}
     >
       {urgency && (
         <div className={`flex items-center justify-center gap-1.5 px-4 py-2 ${urgency.color}`}>

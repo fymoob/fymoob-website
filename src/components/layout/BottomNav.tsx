@@ -33,16 +33,17 @@ export function BottomNav() {
 
     const handleScroll = () => {
       const currentY = window.scrollY
-      if (currentY > lastScrollY.current && currentY > 100) {
-        setHidden(true) // scrolling down → hide
-      } else {
-        setHidden(false) // scrolling up → show
-      }
+      const shouldHide = currentY > lastScrollY.current && currentY > 100
+      setHidden(shouldHide)
+      window.dispatchEvent(new CustomEvent("bottomnav-toggle", { detail: { hidden: shouldHide } }))
       lastScrollY.current = currentY
 
       // Show again after 2s idle (user stopped scrolling)
       clearTimeout(idleTimer)
-      idleTimer = setTimeout(() => setHidden(false), 2000)
+      idleTimer = setTimeout(() => {
+        setHidden(false)
+        window.dispatchEvent(new CustomEvent("bottomnav-toggle", { detail: { hidden: false } }))
+      }, 2000)
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
