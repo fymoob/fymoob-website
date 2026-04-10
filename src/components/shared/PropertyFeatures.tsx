@@ -41,7 +41,7 @@ export function PropertyFeatures({
       value: areaPrivativa ? formatArea(areaPrivativa) : null,
       unit: "m²",
       label: "Área",
-      shortLabel: "M²",
+      shortLabel: "m²",
       rawValue: areaPrivativa,
     },
     ...(showAreaTotal ? [{
@@ -49,40 +49,40 @@ export function PropertyFeatures({
       value: formatArea(areaTotal),
       unit: "m² total",
       label: "Área total",
-      shortLabel: "M² total",
+      shortLabel: "m² total",
       rawValue: areaTotal,
     }] : []),
     {
       icon: BedDouble,
       value: dormitorios,
-      unit: dormitorios === 1 ? "Quarto" : "Quartos",
+      unit: dormitorios === 1 ? "quarto" : "quartos",
       label: "Quartos",
-      shortLabel: "Quartos",
+      shortLabel: dormitorios === 1 ? "quarto" : "quartos",
       rawValue: dormitorios,
     },
     {
       icon: ShowerHead,
       value: suites,
-      unit: suites === 1 ? "Suíte" : "Suítes",
+      unit: suites === 1 ? "suíte" : "suítes",
       label: "Suítes",
-      shortLabel: "Suítes",
+      shortLabel: suites === 1 ? "suíte" : "suítes",
       rawValue: suites,
     },
     {
       icon: Toilet,
       // CRM includes suites in TotalBanheiros — subtract to show only social bathrooms
       value: banheiros && suites ? banheiros - suites : banheiros,
-      unit: (banheiros && suites ? banheiros - suites : banheiros) === 1 ? "Banheiro" : "Banheiros",
+      unit: (banheiros && suites ? banheiros - suites : banheiros) === 1 ? "banheiro" : "banheiros",
       label: "Banheiros",
-      shortLabel: "Banheiros",
+      shortLabel: (banheiros && suites ? banheiros - suites : banheiros) === 1 ? "banheiro" : "banheiros",
       rawValue: banheiros && suites ? banheiros - suites : banheiros,
     },
     {
       icon: Car,
       value: vagas,
-      unit: vagas === 1 ? "Vaga" : "Vagas",
+      unit: vagas === 1 ? "vaga" : "vagas",
       label: "Vagas",
-      shortLabel: "Vagas",
+      shortLabel: vagas === 1 ? "vaga" : "vagas",
       rawValue: vagas,
     },
   ].filter((feature) => feature.value !== null && feature.value !== 0)
@@ -99,7 +99,7 @@ export function PropertyFeatures({
               key={feature.label}
               className="inline-flex items-center gap-1.5 sm:gap-2"
             >
-              <Icon className="shrink-0 size-3.5 sm:size-5 text-slate-400 sm:text-slate-500" strokeWidth={1.75} />
+              <Icon className="shrink-0 size-3.5 sm:size-5 text-slate-500" strokeWidth={2} />
               <span className="text-sm font-semibold text-slate-800 sm:text-lg sm:font-bold sm:text-slate-900">
                 {feature.value}
               </span>
@@ -114,7 +114,7 @@ export function PropertyFeatures({
     return (
       <div
         className={cn(
-          "grid grid-cols-2 gap-x-4 gap-y-3 sm:grid-cols-5 sm:gap-x-3",
+          "grid grid-cols-3 gap-4 sm:grid-cols-5 sm:gap-x-3 sm:gap-y-3",
           className
         )}
       >
@@ -123,22 +123,25 @@ export function PropertyFeatures({
           const displayValue =
             feature.label === "Área" && typeof feature.rawValue === "number"
               ? feature.rawValue.toLocaleString("pt-BR")
-              : feature.value
+              : feature.label === "Área total" && typeof feature.rawValue === "number"
+                ? feature.rawValue.toLocaleString("pt-BR")
+                : feature.value
 
           return (
-            <span key={feature.label} className="inline-flex items-center gap-3">
+            <div key={feature.label} className="flex flex-col items-center gap-1.5 sm:flex-row sm:items-center sm:gap-3">
               <Icon
-                size={16}
-                className="shrink-0 text-slate-400"
-                strokeWidth={1.9}
+                className="size-5 shrink-0 text-slate-500 sm:size-4"
+                strokeWidth={2}
               />
-              <span className="text-lg font-semibold tracking-tight text-slate-900">
-                {displayValue}
-                <span className="ml-1 text-xs font-medium uppercase tracking-wide text-slate-500">
+              <div className="text-center sm:text-left">
+                <span className="text-lg font-bold tracking-tight text-slate-900 sm:text-lg">
+                  {displayValue}
+                </span>
+                <span className="ml-1 text-xs font-medium text-slate-500">
                   {feature.shortLabel}
                 </span>
-              </span>
-            </span>
+              </div>
+            </div>
           )
         })}
       </div>
@@ -156,7 +159,7 @@ export function PropertyFeatures({
               key={feature.label}
               className="inline-flex flex-col items-center gap-1.5"
             >
-              <Icon size={18} className="text-gray-500" strokeWidth={2} />
+              <Icon size={18} className="text-slate-500" strokeWidth={2} />
               <span className="text-lg font-medium text-slate-800">
                 {feature.value}
               </span>
@@ -178,7 +181,7 @@ export function PropertyFeatures({
 
           return (
             <span key={feature.label} className="inline-flex items-center gap-1">
-              <Icon size={12} className="shrink-0 text-neutral-400" />
+              <Icon size={12} className="shrink-0 text-neutral-500" strokeWidth={2} />
               <span className="text-[11px] font-bold text-neutral-700">
                 {feature.value}
               </span>
@@ -219,7 +222,8 @@ export function PropertyFeatures({
           >
             <Icon
               size={size === "sm" ? 14 : 16}
-              className="shrink-0 text-neutral-400"
+              className="shrink-0 text-neutral-500"
+              strokeWidth={2}
             />
             <span className="font-bold text-neutral-900">{feature.value}</span>
             <span className="text-neutral-400">{feature.unit}</span>
