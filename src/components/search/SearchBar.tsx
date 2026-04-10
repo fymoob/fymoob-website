@@ -514,10 +514,17 @@ export function SearchBar({
             </div>
 
             {/* ── Individual filter bottom sheets ── */}
-            <Sheet open={activeChipSheet === "location"} onOpenChange={(open) => !open && setActiveChipSheet(null)}>
-              <SheetContent side="bottom" className="flex h-[100dvh] flex-col">
-                <SheetHeader><SheetTitle>Localização</SheetTitle></SheetHeader>
-                <div className="flex-1 overflow-y-auto px-4 pb-4">
+            {/* Location — full-screen overlay (keyboard-safe) */}
+            {activeChipSheet === "location" && (
+              <div className="fixed inset-0 z-[9999] flex flex-col bg-white">
+                <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
+                  <h2 className="text-lg font-semibold text-neutral-900">Localização</h2>
+                  <button type="button" onClick={() => setActiveChipSheet(null)}
+                    className="flex size-9 items-center justify-center rounded-full hover:bg-neutral-100">
+                    <X className="size-5 text-neutral-600" />
+                  </button>
+                </div>
+                <div className="flex-1 overflow-y-auto px-4 py-4">
                   <LocationFilter
                     bairros={bairroOptions}
                     cidades={cidadeOptions}
@@ -528,7 +535,7 @@ export function SearchBar({
                     onCidadesChange={(values) => setPendingFilters((c) => ({ ...c, cidades: values }))}
                   />
                 </div>
-                <SheetFooter className="sticky bottom-0 border-t border-neutral-100 bg-white pb-safe">
+                <div className="sticky bottom-0 border-t border-neutral-100 bg-white px-4 py-3 pb-safe">
                   <div className="flex gap-3">
                     {(pendingFilters.bairros.length > 0 || pendingFilters.cidades.length > 0) && (
                       <button type="button" onClick={() => setPendingFilters((c) => ({ ...c, bairros: [], cidades: [] }))}
@@ -541,21 +548,28 @@ export function SearchBar({
                       Aplicar
                     </button>
                   </div>
-                </SheetFooter>
-              </SheetContent>
-            </Sheet>
+                </div>
+              </div>
+            )}
 
-            <Sheet open={activeChipSheet === "type"} onOpenChange={(open) => !open && setActiveChipSheet(null)}>
-              <SheetContent side="bottom" className="flex h-[100dvh] flex-col">
-                <SheetHeader><SheetTitle>Tipo de imóvel</SheetTitle></SheetHeader>
-                <div className="flex-1 overflow-y-auto px-4 pb-4">
+            {/* Type — full-screen overlay (keyboard-safe) */}
+            {activeChipSheet === "type" && (
+              <div className="fixed inset-0 z-[9999] flex flex-col bg-white">
+                <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
+                  <h2 className="text-lg font-semibold text-neutral-900">Tipo de imóvel</h2>
+                  <button type="button" onClick={() => setActiveChipSheet(null)}
+                    className="flex size-9 items-center justify-center rounded-full hover:bg-neutral-100">
+                    <X className="size-5 text-neutral-600" />
+                  </button>
+                </div>
+                <div className="flex-1 overflow-y-auto px-4 py-4">
                   <TypeFilter
                     typeOptions={filteredTipoOptions}
                     selectedTipos={pendingFilters.tipos}
                     onTiposChange={(values) => setPendingFilters((c) => ({ ...c, tipos: values }))}
                   />
                 </div>
-                <SheetFooter className="sticky bottom-0 border-t border-neutral-100 bg-white pb-safe">
+                <div className="sticky bottom-0 border-t border-neutral-100 bg-white px-4 py-3 pb-safe">
                   <div className="flex gap-3">
                     {pendingFilters.tipos.length > 0 && (
                       <button type="button" onClick={() => setPendingFilters((c) => ({ ...c, tipos: [] }))}
@@ -568,9 +582,9 @@ export function SearchBar({
                       Aplicar
                     </button>
                   </div>
-                </SheetFooter>
-              </SheetContent>
-            </Sheet>
+                </div>
+              </div>
+            )}
 
             <Sheet open={activeChipSheet === "bedrooms"} onOpenChange={(open) => !open && setActiveChipSheet(null)}>
               <SheetContent side="bottom" className="flex flex-col rounded-t-2xl">
