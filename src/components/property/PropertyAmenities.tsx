@@ -1,5 +1,3 @@
-import { Building2 } from "lucide-react"
-
 import { getPropertyFeatureIcon } from "@/components/property/propertyFeatureIcons"
 
 interface PropertyAmenitiesProps {
@@ -11,19 +9,9 @@ export function PropertyAmenities({ infraestrutura }: PropertyAmenitiesProps) {
 
   return (
     <section>
-      <div className="flex items-center gap-3">
-        <span className="flex size-10 items-center justify-center rounded-full bg-slate-100 text-slate-700">
-          <Building2 className="size-5" strokeWidth={2} />
-        </span>
-        <div>
-          <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950">
-            Infraestrutura do condomínio
-          </h2>
-          <p className="mt-1 text-sm text-slate-500">
-            Itens cadastrados no CRM para a área comum e estrutura do empreendimento.
-          </p>
-        </div>
-      </div>
+      <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950">
+        Área comum
+      </h2>
 
       <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2 xl:grid-cols-3">
         {infraestrutura.map((item) => {

@@ -70,23 +70,20 @@ function resolvePrice(property: Property, ctx: PriceContext) {
   const isDual = property.finalidade === "Venda e Locação" && venda && aluguel
 
   if (isDual && ctx === "locacao") {
-    return { price: aluguel, secondaryPrice: null, isRental: true }
-  }
-  if (isDual && ctx === "venda") {
-    return { price: venda, secondaryPrice: null, isRental: false }
+    return { price: aluguel, secondaryPrice: venda, isRental: true, secondaryIsRental: false }
   }
   if (isDual) {
-    return { price: venda, secondaryPrice: aluguel, isRental: false }
+    return { price: venda, secondaryPrice: aluguel, isRental: false, secondaryIsRental: true }
   }
 
   const price = venda ?? aluguel
   const isRental = !venda && !!aluguel
-  return { price, secondaryPrice: null, isRental }
+  return { price, secondaryPrice: null, isRental, secondaryIsRental: false }
 }
 
 export function usePropertyCard(property: Property, priceContext: PriceContext = null) {
   const alt = generateImageAlt(property)
-  const { price, secondaryPrice, isRental } = resolvePrice(property, priceContext)
+  const { price, secondaryPrice, isRental, secondaryIsRental } = resolvePrice(property, priceContext)
   const photos = useMemo(() => getPropertyPhotos(property), [property])
   const [topViewed, setTopViewed] = useState<Set<string>>(new Set())
 
@@ -187,6 +184,7 @@ export function usePropertyCard(property: Property, priceContext: PriceContext =
     isRental,
     secondaryPrice,
     hasSecondaryPrice,
+    secondaryIsRental,
     displaySecondaryPrice: hasSecondaryPrice ? formatPrice(secondaryPrice) : null,
     photos,
     displayPhotos,

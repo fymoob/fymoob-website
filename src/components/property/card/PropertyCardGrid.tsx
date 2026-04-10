@@ -34,6 +34,7 @@ export function PropertyCardGrid({
     propertyHref,
     loadPhotosOnHover,
     toggleFavorite,
+    secondaryIsRental,
     goPrev,
     goNext,
     goToSlide,
@@ -159,7 +160,9 @@ export function PropertyCardGrid({
             </p>
             {hasSecondaryPrice && (
               <p className="mt-0.5 text-sm font-semibold text-white/80 drop-shadow-md">
-                {displaySecondaryPrice} /mês
+                {secondaryIsRental ? "Aluguel " : "Venda "}
+                {displaySecondaryPrice}
+                {secondaryIsRental && " /mês"}
               </p>
             )}
           </div>

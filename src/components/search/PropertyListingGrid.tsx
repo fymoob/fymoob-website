@@ -129,16 +129,16 @@ export function PropertyListingGrid({
           {properties.map((property, index) => {
             if (cardContext === "search" && viewMode === "grid") {
               return (
-                <div key={property.slug}>
+                <div key={property.slug} className="h-full">
                   {/* Mobile: clean card (model 1). Desktop: search grid card (model 2) */}
-                  <div className="md:hidden">
+                  <div className="md:hidden h-full">
                     <PropertyCard
                       property={property}
                       prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
                       compactFeatures
                     />
                   </div>
-                  <div className="hidden md:block">
+                  <div className="hidden md:block h-full">
                     <PropertyCardGrid
                       property={property}
                       prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
@@ -150,15 +150,15 @@ export function PropertyListingGrid({
             }
             if (cardContext === "search" && viewMode === "grid3") {
               return (
-                <div key={property.slug}>
-                  <div className="md:hidden">
+                <div key={property.slug} className="h-full">
+                  <div className="md:hidden h-full">
                     <PropertyCard
                       property={property}
                       prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}
                       compactFeatures
                     />
                   </div>
-                  <div className="hidden md:block">
+                  <div className="hidden md:block h-full">
                     <PropertyCardCompact
                       property={property}
                       prioritizeFirstImage={index < ABOVE_THE_FOLD_PRIORITY_CARDS}

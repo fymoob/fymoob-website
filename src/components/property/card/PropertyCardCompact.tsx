@@ -26,6 +26,7 @@ export function PropertyCardCompact({
     displayPrice,
     isRental,
     hasSecondaryPrice,
+    secondaryIsRental,
     displaySecondaryPrice,
     displayPhotos,
     badge,
@@ -157,26 +158,30 @@ export function PropertyCardCompact({
         {/* Price + Code */}
         <div className="mt-auto">
           <div className="flex items-end justify-between border-t border-slate-100 pt-3">
-            <p
-              className={cn(
-                "text-2xl font-extrabold tracking-tight",
-                hasPrice ? "text-slate-900" : "text-slate-400"
+            <div>
+              <p
+                className={cn(
+                  "text-2xl font-extrabold tracking-tight",
+                  hasPrice ? "text-slate-900" : "text-slate-400"
+                )}
+              >
+                {displayPrice}
+                {isRental && hasPrice && (
+                  <span className="text-xs font-normal text-slate-500"> /mês</span>
+                )}
+              </p>
+              {hasSecondaryPrice && (
+                <p className="mt-0.5 text-sm font-semibold text-slate-500">
+                  {secondaryIsRental ? "Aluguel " : "Venda "}
+                  {displaySecondaryPrice}
+                  {secondaryIsRental && " /mês"}
+                </p>
               )}
-            >
-              {displayPrice}
-              {isRental && hasPrice && (
-                <span className="text-xs font-normal text-slate-500"> /mês</span>
-              )}
-            </p>
+            </div>
             <span className="text-sm font-semibold uppercase text-slate-500">
               {property.codigo}
             </span>
           </div>
-          {hasSecondaryPrice && (
-            <p className="mt-1 text-sm font-semibold text-slate-500">
-              {displaySecondaryPrice} /mês
-            </p>
-          )}
         </div>
       </div>
 

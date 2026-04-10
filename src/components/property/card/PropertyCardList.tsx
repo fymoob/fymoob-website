@@ -26,6 +26,7 @@ export function PropertyCardList({
     displayPrice,
     isRental,
     hasSecondaryPrice,
+    secondaryIsRental,
     displaySecondaryPrice,
     displayPhotos,
     badge,
@@ -132,7 +133,9 @@ export function PropertyCardList({
             </p>
             {hasSecondaryPrice && (
               <p className="text-sm font-semibold text-slate-500">
-                {displaySecondaryPrice} /mês
+                {secondaryIsRental ? "Aluguel " : "Venda "}
+                {displaySecondaryPrice}
+                {secondaryIsRental && " /mês"}
               </p>
             )}
           </div>
