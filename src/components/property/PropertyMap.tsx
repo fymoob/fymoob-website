@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { ExternalLink, MapPin, Navigation } from "lucide-react"
+import { MapPin, Hand } from "lucide-react"
 import { getPropertyCoordinates } from "@/lib/bairro-coordinates"
 
 interface PropertyMapProps {
@@ -21,13 +21,10 @@ function buildAddressLine(props: Pick<PropertyMapProps, "endereco" | "numero" | 
   return parts ? `${parts}, ${cityState}` : `${props.bairro}, ${cityState}`
 }
 
-function buildMapsUrl(coords: { lat: number; lng: number }, address: string) {
-  return `https://www.google.com/maps/search/?api=1&query=${coords.lat},${coords.lng}&query_place_id=${encodeURIComponent(address)}`
-}
-
 export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, numero, cidade, estado }: PropertyMapProps) {
   const [hasEnteredViewport, setHasEnteredViewport] = useState(false)
   const [loaded, setLoaded] = useState(false)
+  const [interactive, setInteractive] = useState(false)
   const mapContainerRef = useRef<HTMLDivElement>(null)
   const mapRef = useRef<unknown>(null)
 
@@ -37,7 +34,6 @@ export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, num
   )
 
   const addressLine = buildAddressLine({ endereco, numero, bairro, cidade, estado })
-  const mapsUrl = coords ? buildMapsUrl(coords, addressLine) : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressLine)}`
 
   // IntersectionObserver — trigger maplibre load when container approaches viewport
   useEffect(() => {
@@ -81,9 +77,9 @@ export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, num
         center: [coords!.lng, coords!.lat],
         zoom: 15,
         attributionControl: false,
+        interactive: false,
       })
 
-      map.addControl(new maplibregl.NavigationControl(), "top-right")
       map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-left")
 
       // Custom marker
@@ -97,9 +93,6 @@ export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, num
 
       mapRef.current = map
       setLoaded(true)
-
-      // Disable scroll zoom for better UX
-      map.scrollZoom.disable()
     }
 
     initMap()
@@ -108,6 +101,26 @@ export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, num
       cancelled = true
     }
   }, [coords, hasEnteredViewport])
+
+  // Enable interactivity
+  useEffect(() => {
+    if (!interactive || !mapRef.current) return
+    const map = mapRef.current as {
+      scrollZoom: { enable: () => void }
+      dragPan: { enable: () => void }
+      touchZoomRotate: { enable: () => void }
+      doubleClickZoom: { enable: () => void }
+      addControl: (ctrl: unknown, pos: string) => void
+    }
+    map.scrollZoom.enable()
+    map.dragPan.enable()
+    map.touchZoomRotate.enable()
+    map.doubleClickZoom.enable()
+
+    import("maplibre-gl").then(({ default: maplibregl }) => {
+      map.addControl(new maplibregl.NavigationControl(), "top-right")
+    })
+  }, [interactive])
 
   // Cleanup on unmount
   useEffect(() => {
@@ -121,58 +134,47 @@ export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, num
 
   if (!coords) return null
 
+  const activateMap = () => {
+    if (!interactive) setInteractive(true)
+  }
+
   return (
     <section>
-      {/* Mobile: compact address card — no map rendering, opens Google Maps */}
-      <div className="md:hidden">
-        <h2 className="pt-2 pb-4 font-display text-xl font-semibold tracking-tight text-neutral-950">
-          Localização
-        </h2>
-        <a
-          href={mapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 transition-colors active:bg-slate-50"
-        >
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary">
-            <MapPin className="size-5" />
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium text-slate-800">
-              {addressLine}
-            </p>
-            <p className="mt-0.5 flex items-center gap-1 text-xs text-slate-400">
-              <Navigation className="size-3" />
-              Toque para abrir no mapa
-            </p>
-          </div>
-          <ExternalLink className="size-4 shrink-0 text-slate-400" />
-        </a>
-        <p className="mt-2 text-xs text-neutral-500">
-          Localização aproximada
-        </p>
+      <div className="flex items-center gap-3 pb-4">
+        <MapPin className="size-4 shrink-0 text-brand-primary" />
+        <p className="text-sm text-slate-600">{addressLine}</p>
       </div>
 
-      {/* Desktop: interactive map */}
-      <div className="hidden md:block">
-        <h2 className="pt-2 pb-4 font-display text-xl font-semibold tracking-tight text-neutral-950">
-          Mapa do imóvel
-        </h2>
-        <div className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
-          <div className="relative z-0 h-[350px] sm:h-[400px]">
-            <div ref={mapContainerRef} className="h-full w-full rounded-xl" />
-            {!loaded && (
-              <div className="absolute inset-0 flex animate-pulse items-center justify-center bg-neutral-100 text-neutral-400">
-                <MapPin size={24} className="mr-2" />
-                Carregando mapa...
-              </div>
-            )}
-          </div>
+      <div className="overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50">
+        <div
+          className="relative z-0 h-[200px] md:h-[350px] lg:h-[400px]"
+          onClick={activateMap}
+        >
+          <div ref={mapContainerRef} className="h-full w-full" />
+
+          {!loaded && (
+            <div className="absolute inset-0 flex animate-pulse items-center justify-center bg-neutral-100 text-neutral-400">
+              <MapPin size={24} className="mr-2" />
+              Carregando mapa...
+            </div>
+          )}
+
+          {loaded && !interactive && (
+            <button
+              type="button"
+              onClick={activateMap}
+              className="absolute inset-0 z-10 flex cursor-pointer items-center justify-center bg-black/0 transition-colors hover:bg-black/5"
+            >
+              <span className="flex items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-sm font-medium text-slate-700 shadow-lg backdrop-blur-sm">
+                <Hand className="size-4" />
+                Toque para interagir
+              </span>
+            </button>
+          )}
         </div>
-        <p className="mt-2 text-xs text-neutral-500">
-          Localização aproximada
-        </p>
       </div>
+
+      <p className="mt-2 text-xs text-neutral-500">Localização aproximada</p>
     </section>
   )
 }
