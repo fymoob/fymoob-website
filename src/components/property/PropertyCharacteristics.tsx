@@ -1,14 +1,12 @@
 import type { Property } from "@/types/property"
 import { getPropertyFeatureIcon } from "@/components/property/propertyFeatureIcons"
-import { deduplicateFeatures } from "@/lib/deduplicate-features"
 
 interface PropertyCharacteristicsProps {
   property: Property
 }
 
 export function PropertyCharacteristics({ property }: PropertyCharacteristicsProps) {
-  const items = deduplicateFeatures(property.caracteristicas)
-  if (items.length === 0) return null
+  if (property.caracteristicas.length === 0) return null
 
   return (
     <section>
@@ -16,7 +14,7 @@ export function PropertyCharacteristics({ property }: PropertyCharacteristicsPro
         Características da unidade
       </h2>
       <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 xl:grid-cols-3">
-        {items.map((item) => {
+        {property.caracteristicas.map((item) => {
           const Icon = getPropertyFeatureIcon(item)
 
           return (

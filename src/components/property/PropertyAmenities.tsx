@@ -1,13 +1,11 @@
 import { getPropertyFeatureIcon } from "@/components/property/propertyFeatureIcons"
-import { deduplicateFeatures } from "@/lib/deduplicate-features"
 
 interface PropertyAmenitiesProps {
   infraestrutura: string[]
 }
 
 export function PropertyAmenities({ infraestrutura }: PropertyAmenitiesProps) {
-  const items = deduplicateFeatures(infraestrutura)
-  if (items.length === 0) return null
+  if (infraestrutura.length === 0) return null
 
   return (
     <section>
@@ -16,7 +14,7 @@ export function PropertyAmenities({ infraestrutura }: PropertyAmenitiesProps) {
       </h2>
 
       <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-4 xl:grid-cols-3">
-        {items.map((item) => {
+        {infraestrutura.map((item) => {
           const Icon = getPropertyFeatureIcon(item)
 
           return (
