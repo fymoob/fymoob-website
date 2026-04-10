@@ -19,13 +19,8 @@ import {
   X,
 } from "lucide-react"
 
-import { AdvancedFiltersModal } from "@/components/search/filters/AdvancedFiltersModal"
-import { BedroomsFilter } from "@/components/search/filters/BedroomsFilter"
-import { LocationAutocomplete } from "@/components/search/filters/LocationAutocomplete"
-import { LocationFilter } from "@/components/search/filters/LocationFilter"
-import { PriceFilter } from "@/components/search/filters/PriceFilter"
+import dynamic from "next/dynamic"
 import { type PriceBounds } from "@/components/search/filters/search-state"
-import { TypeFilter } from "@/components/search/filters/TypeFilter"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import {
@@ -36,6 +31,13 @@ import {
   SheetTitle,
   SheetFooter,
 } from "@/components/ui/sheet"
+
+const AdvancedFiltersModal = dynamic(() => import("@/components/search/filters/AdvancedFiltersModal").then(m => m.AdvancedFiltersModal))
+const BedroomsFilter = dynamic(() => import("@/components/search/filters/BedroomsFilter").then(m => m.BedroomsFilter))
+const LocationAutocomplete = dynamic(() => import("@/components/search/filters/LocationAutocomplete").then(m => m.LocationAutocomplete))
+const LocationFilter = dynamic(() => import("@/components/search/filters/LocationFilter").then(m => m.LocationFilter))
+const PriceFilter = dynamic(() => import("@/components/search/filters/PriceFilter").then(m => m.PriceFilter))
+const TypeFilter = dynamic(() => import("@/components/search/filters/TypeFilter").then(m => m.TypeFilter))
 import { cn } from "@/lib/utils"
 import { useSearchBarController } from "./useSearchBarController"
 import { SlidersHorizontal } from "lucide-react"
