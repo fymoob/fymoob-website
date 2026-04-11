@@ -27,6 +27,7 @@ const DeferredGA = dynamic(
   () => import("@/components/analytics/DeferredGA").then((m) => ({ default: m.DeferredGA })),
   { ssr: true }
 );
+import { ScrollToTop } from "@/components/layout/ScrollToTop";
 
 const satoshi = localFont({
   src: "../../public/fonts/Satoshi-Variable.woff2",
@@ -88,6 +89,7 @@ export default function RootLayout({
         <Header />
         <main className="min-h-screen overflow-x-clip">{children}</main>
         <Footer />
+        <ScrollToTop />
         <DeferredHydration>
           <Suspense fallback={null}>
             <NavigationProgress />
