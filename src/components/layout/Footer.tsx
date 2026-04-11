@@ -17,6 +17,8 @@ const tipoLinks = [
   { href: "/casas-curitiba", label: "Casas" },
   { href: "/sobrados-curitiba", label: "Sobrados" },
   { href: "/terrenos-curitiba", label: "Terrenos" },
+  { href: "/lancamentos", label: "Lançamentos" },
+  { href: "/empreendimentos", label: "Empreendimentos" },
 ]
 
 const socialLinks = [
