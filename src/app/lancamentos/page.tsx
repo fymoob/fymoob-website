@@ -10,6 +10,7 @@ import Link from "next/link"
 import { Building2, TrendingUp, MapPin } from "lucide-react"
 import { SeoInternalLinks, buildBairrosGroup } from "@/components/seo/SeoInternalLinks"
 import { projectForCard } from "@/lib/property-projection"
+import { Pagination } from "@/components/search/Pagination"
 
 export async function generateMetadata(): Promise<Metadata> {
   const { properties } = await getProperties({ lancamento: true, limit: 1000 })
@@ -28,9 +29,14 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function LancamentosPage() {
-  const [{ properties }, bairros, allTypes, cidades, stats] = await Promise.all([
-    getProperties({ lancamento: true, limit: 1000 }),
+const PAGE_SIZE = 24
+
+export default async function LancamentosPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
+  const params = await searchParams
+  const page = Math.max(1, parseInt(params.page || "1", 10) || 1)
+
+  const [{ properties, total }, bairros, allTypes, cidades, stats] = await Promise.all([
+    getProperties({ lancamento: true, page, limit: PAGE_SIZE }),
     getAllBairros(),
     getAllTypes(),
     getAllCities(),
@@ -100,7 +106,8 @@ export default async function LancamentosPage() {
         {/* Grid de imóveis */}
         {properties.length > 0 ? (
           <div className="mt-8">
-            <PropertyListingGrid properties={properties.map(p => projectForCard(p))} totalLabel="lançamentos" cardContext="search" />
+            <PropertyListingGrid properties={properties.map(p => projectForCard(p))} total={total} totalLabel="lançamentos" cardContext="search" />
+            <Pagination currentPage={page} totalPages={Math.max(1, Math.ceil(total / PAGE_SIZE))} basePath="/lancamentos" />
           </div>
         ) : (
           <div className="mt-12 text-center">

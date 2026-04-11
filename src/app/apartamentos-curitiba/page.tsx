@@ -13,6 +13,7 @@ import {
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyListingGrid } from "@/components/search/PropertyListingGrid"
 import { projectForCard } from "@/lib/property-projection"
+import { Pagination } from "@/components/search/Pagination"
 
 export async function generateMetadata(): Promise<Metadata> {
   const { properties } = await getProperties({ tipo: "Apartamento", limit: 1000 })
@@ -32,14 +33,21 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function ApartamentosCuritibaPage() {
-  const [{ properties }, bairros, tipos, cidades, stats] = await Promise.all([
-    getProperties({ tipo: "Apartamento", limit: 1000 }),
+const PAGE_SIZE = 24
+
+export default async function ApartamentosCuritibaPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
+  const params = await searchParams
+  const page = Math.max(1, parseInt(params.page || "1", 10) || 1)
+
+  const [{ properties, total }, bairros, tipos, cidades, stats] = await Promise.all([
+    getProperties({ tipo: "Apartamento", page, limit: PAGE_SIZE }),
     getAllBairros(),
     getAllTypes(),
     getAllCities(),
     getPropertyStats(),
   ])
+
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
 
   const precos = properties
     .map((p) => p.precoVenda ?? p.precoAluguel)
@@ -108,7 +116,8 @@ export default async function ApartamentosCuritibaPage() {
           </Suspense>
         </div>
 
-        <PropertyListingGrid properties={properties.map(p => projectForCard(p))} totalLabel="apartamentos" cardContext="search" />
+        <PropertyListingGrid properties={properties.map(p => projectForCard(p))} total={total} totalLabel="apartamentos" cardContext="search" />
+        <Pagination currentPage={page} totalPages={totalPages} basePath="/apartamentos-curitiba" />
       </div>
 
       <SeoInternalLinks groups={[buildBairrosGroup(bairrosComApto, { tipoSlug: "apartamentos", title: "Apartamentos por Bairro" })]} />
