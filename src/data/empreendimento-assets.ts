@@ -1,0 +1,64 @@
+/**
+ * Static marketing assets for empreendimentos.
+ * These are provided by construtoras with authorization.
+ * When an empreendimento has assets here, the landing page uses them
+ * for a richer, more immersive experience.
+ */
+
+export interface EmpreendimentoAssets {
+  logo?: string
+  heroImage: string
+  parallaxImages: string[]
+  torres?: {
+    nome: string
+    logo?: string
+    render?: string
+    planta?: string
+    descricao?: string
+  }[]
+  videoUrl?: string
+  mapEmbedUrl?: string
+  descricaoMarketing?: string
+}
+
+const assetsMap: Record<string, EmpreendimentoAssets> = {
+  "reserva-barigui": {
+    logo: "/images/empreendimentos/reserva-barigui/logo-reserva-main.png",
+    heroImage: "/images/empreendimentos/reserva-barigui/panoramica.jpg",
+    parallaxImages: [
+      "/images/empreendimentos/reserva-barigui/piscina.jpg",
+      "/images/empreendimentos/reserva-barigui/vista-parque.jpg",
+      "/images/empreendimentos/reserva-barigui/localizacao.jpg",
+    ],
+    torres: [
+      {
+        nome: "Reserva Lago",
+        logo: "/images/empreendimentos/reserva-barigui/logo-lago.png",
+        render: "/images/empreendimentos/reserva-barigui/fachada-lago.jpg",
+        planta: "/images/empreendimentos/reserva-barigui/planta-lago.jpg",
+        descricao: "Apartamentos com 1 a 2 quartos, em formato de studio, loft, garden, ou duplex. Entrega prevista para Agosto/26.",
+      },
+      {
+        nome: "Reserva Colina",
+        logo: "/images/empreendimentos/reserva-barigui/logo-colina.png",
+        render: "/images/empreendimentos/reserva-barigui/render-colina.jpg",
+        planta: "/images/empreendimentos/reserva-barigui/planta-colina.jpg",
+        descricao: "Apartamentos de 3 a 4 suítes, com plantas de garden, laje, ou coberturas duplex. Entrega prevista para Julho/27.",
+      },
+      {
+        nome: "Reserva Mirante",
+        logo: "/images/empreendimentos/reserva-barigui/logo-mirante.png",
+        render: "/images/empreendimentos/reserva-barigui/render-mirante.jpg",
+        planta: "/images/empreendimentos/reserva-barigui/planta-mirante.png",
+        descricao: "Salas comerciais, lojas e lajes corporativas, de 38m² a 1.222m². Entrega prevista para Setembro/27.",
+      },
+    ],
+    videoUrl: "https://www.youtube.com/embed/8F1lKx4xgEo",
+    mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3603.0946163108147!2d-49.318648700000004!3d-25.4351001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94dce3d178de8429%3A0x9d7c4792a4141dc0!2sR.%20Clara%20Vendramin%2C%20445%20-%20Mossungu%C3%AA%2C%20Curitiba%20-%20PR%2C%2081200-170!5e0!3m2!1spt-BR!2sbr!4v1670858575948!5m2!1spt-BR!2sbr",
+    descricaoMarketing: "Na frente, o Parque. Ao lado, o Shopping. No centro, você.\n\nUm complexo imobiliário de alto padrão para você morar e trabalhar com a mais bela moldura do Parque Barigui — um ícone de sofisticação, design e bem-estar.\n\nCercado por uma mata nativa preservada e um bosque de 8 mil m², o Reserva Barigui é um condomínio de três empreendimentos. Assine ao vídeo e descubra os detalhes de alto padrão construtivo que tornam este lugar verdadeiramente excepcional.",
+  },
+}
+
+export function getEmpreendimentoAssets(slug: string): EmpreendimentoAssets | null {
+  return assetsMap[slug] || null
+}
