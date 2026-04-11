@@ -39,12 +39,7 @@ const valores = [
 
 // diferenciais são buscados dinamicamente na função do componente
 
-const etapas = [
-  { num: "01", title: "Portfólio diversificado", text: "Mais de 250 imóveis ativos em 65 bairros de Curitiba, com opções para todos os perfis e orçamentos." },
-  { num: "02", title: "Atendimento personalizado", text: "Não somos um portal. Somos corretores que conhecem cada imóvel e cada bairro de Curitiba." },
-  { num: "03", title: "Segurança jurídica", text: "Registro CRECI J 9420. Todas as transações seguem as normas do COFECI e legislação vigente." },
-  { num: "04", title: "Especialistas em Curitiba", text: "Conhecemos os bairros, as tendências de valorização e as melhores oportunidades da cidade." },
-]
+// etapas moved inside component to use dynamic totalImoveis/totalBairros
 
 const diretoria = [
   {
@@ -83,6 +78,13 @@ export default async function SobrePage() {
   const totalImoveis = bairros.reduce((sum, b) => sum + b.total, 0)
   const totalBairros = bairros.length
   const totalEmpreendimentos = empreendimentos.length
+
+  const etapas = [
+    { num: "01", title: "Portfólio diversificado", text: `Mais de ${totalImoveis} imóveis ativos em ${totalBairros} bairros de Curitiba, com opções para todos os perfis e orçamentos.` },
+    { num: "02", title: "Atendimento personalizado", text: "Não somos um portal. Somos corretores que conhecem cada imóvel e cada bairro de Curitiba." },
+    { num: "03", title: "Segurança jurídica", text: "Registro CRECI J 9420. Todas as transações seguem as normas do COFECI e legislação vigente." },
+    { num: "04", title: "Especialistas em Curitiba", text: "Conhecemos os bairros, as tendências de valorização e as melhores oportunidades da cidade." },
+  ]
 
   const diferenciais = [
     { number: totalImoveis, suffix: "+", label: "Imóveis ativos", icon: Building2 },
@@ -386,7 +388,7 @@ export default async function SobrePage() {
             Pronto para encontrar seu imóvel?
           </p>
           <p className="mx-auto mt-4 max-w-lg text-sm text-neutral-400">
-            Explore nosso portfólio com mais de 250 imóveis em Curitiba ou entre em contato para um atendimento personalizado.
+            Explore nosso portfólio com mais de {totalImoveis} imóveis em Curitiba ou entre em contato para um atendimento personalizado.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <Link

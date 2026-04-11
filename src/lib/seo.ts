@@ -49,7 +49,7 @@ export function generateLocalBusinessSchema() {
     image: `${SITE_URL}/logo.png`,
     telephone: "+554199978-0517",
     email: "fymoob@gmail.com",
-    priceRange: "R$ 15.000 - R$ 11.000.000",
+    priceRange: "$$",
     address: {
       "@type": "PostalAddress",
       streetAddress: "Rua Engenheiro Heitor Soares Gomes, 778, Esquina",
