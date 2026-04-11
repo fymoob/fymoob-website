@@ -876,6 +876,21 @@ _Nenhum bug aberto._
 - [ ] Fotos reais do escritorio e equipe
 - [ ] Indice FYMOOB de Precos (pagina com dados do CRM)
 
+### 12.6 — Auditoria e Revisao do Blog [PENDENTE]
+> Enviar agentes especialistas para validar todos os 15 artigos publicados.
+> Pesquisar padroes de escrita de blog imobiliario na web e aplicar melhorias.
+
+- [ ] Auditar todos os 15 artigos: precisao de dados, links quebrados, informacoes desatualizadas
+- [ ] Verificar dados numericos (ITBI, precos m², custos financiamento) — atualizar se mudaram
+- [ ] Revisar estrutura SEO: titles, meta descriptions, headings hierarchy (H1→H2→H3)
+- [ ] Verificar internal linking: cada artigo linka para imoveis, bairros e outros artigos relacionados?
+- [ ] Verificar CTAs: cada artigo tem call-to-action claro para contato/busca/WhatsApp?
+- [ ] Pesquisar padroes de escrita de blogs imobiliarios de alta performance (QuintoAndar, ZAP, Loft blog)
+- [ ] Verificar legibilidade: paragrafos curtos, bullet points, tabelas, imagens
+- [ ] Verificar E-E-A-T: AuthorBio presente, dados com fonte, experiencia demonstrada
+- [ ] Verificar schema markup: BlogPosting JSON-LD correto em todos os artigos
+- [ ] Gerar relatorio com lista de correcoes por artigo
+
 ---
 
 ## Fase 13 — Funcionalidades e UX Polish [CONCLUIDA]
