@@ -25,10 +25,7 @@ const SavedSearchBanner = dynamic(
   () => import("@/components/search/SavedSearchBanner").then((m) => ({ default: m.SavedSearchBanner })),
   { ssr: true }
 )
-const HomeCarousel = dynamic(
-  () => import("@/components/home/HomeCarousel").then((m) => ({ default: m.HomeCarousel })),
-  { loading: () => <div className="h-72 animate-pulse rounded-xl bg-neutral-100" /> }
-)
+import { LazyHomeCarousel as HomeCarousel } from "@/components/home/LazyHomeCarousel"
 
 export const metadata: Metadata = {
   title: "Imóveis à Venda e Aluguel em Curitiba | FYMOOB",
