@@ -5,7 +5,6 @@ import { generateOrganizationSchema, generateLocalBusinessSchema } from "@/lib/s
 import { Suspense } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { DeferredHydration } from "@/components/shared/DeferredHydration";
 import "./globals.css";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
@@ -90,13 +89,11 @@ export default function RootLayout({
         <main className="min-h-screen overflow-x-clip">{children}</main>
         <Footer />
         <ScrollToTop />
-        <DeferredHydration>
-          <Suspense fallback={null}>
-            <NavigationProgress />
-          </Suspense>
-          <WhatsAppFloat />
-          <BottomNav />
-        </DeferredHydration>
+        <Suspense fallback={null}>
+          <NavigationProgress />
+        </Suspense>
+        <WhatsAppFloat />
+        <BottomNav />
         {GA_ID && <DeferredGA gaId={GA_ID} />}
       </body>
     </html>
