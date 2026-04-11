@@ -16,6 +16,7 @@ import {
 } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyListingGrid } from "@/components/search/PropertyListingGrid"
+import { projectForCard } from "@/lib/property-projection"
 import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { RelatedPages } from "@/components/seo/RelatedPages"
 
@@ -166,7 +167,7 @@ export default async function BairroPage({ params }: BairroPageProps) {
           </Suspense>
         </div>
 
-        <PropertyListingGrid properties={properties} cardContext="search" />
+        <PropertyListingGrid properties={properties.map(p => projectForCard(p))} cardContext="search" />
       </div>
 
       {/* SEO content + FAQ + Related */}

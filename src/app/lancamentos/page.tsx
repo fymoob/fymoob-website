@@ -9,6 +9,7 @@ import { PropertyListingGrid } from "@/components/search/PropertyListingGrid"
 import Link from "next/link"
 import { Building2, TrendingUp, MapPin } from "lucide-react"
 import { SeoInternalLinks, buildBairrosGroup } from "@/components/seo/SeoInternalLinks"
+import { projectForCard } from "@/lib/property-projection"
 
 export async function generateMetadata(): Promise<Metadata> {
   const { properties } = await getProperties({ lancamento: true, limit: 1000 })
@@ -99,7 +100,7 @@ export default async function LancamentosPage() {
         {/* Grid de imóveis */}
         {properties.length > 0 ? (
           <div className="mt-8">
-            <PropertyListingGrid properties={properties} totalLabel="lançamentos" cardContext="search" />
+            <PropertyListingGrid properties={properties.map(p => projectForCard(p))} totalLabel="lançamentos" cardContext="search" />
           </div>
         ) : (
           <div className="mt-12 text-center">

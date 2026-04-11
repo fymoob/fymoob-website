@@ -12,6 +12,7 @@ import {
 } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyListingGrid } from "@/components/search/PropertyListingGrid"
+import { projectForCard } from "@/lib/property-projection"
 
 export async function generateMetadata(): Promise<Metadata> {
   const { properties } = await getProperties({ tipo: "Apartamento", limit: 1000 })
@@ -107,7 +108,7 @@ export default async function ApartamentosCuritibaPage() {
           </Suspense>
         </div>
 
-        <PropertyListingGrid properties={properties} totalLabel="apartamentos" cardContext="search" />
+        <PropertyListingGrid properties={properties.map(p => projectForCard(p))} totalLabel="apartamentos" cardContext="search" />
       </div>
 
       <SeoInternalLinks groups={[buildBairrosGroup(bairrosComApto, { tipoSlug: "apartamentos", title: "Apartamentos por Bairro" })]} />

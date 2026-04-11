@@ -10,6 +10,7 @@ import { slugify, formatPrice } from "@/lib/utils"
 import { generateItemListSchema, generateLandingStats, generateDynamicFAQ } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyGrid } from "@/components/search/PropertyGrid"
+import { projectForCard } from "@/lib/property-projection"
 import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { RelatedPages } from "@/components/seo/RelatedPages"
 
@@ -212,7 +213,7 @@ export default async function EmpreendimentoPage({
         </h2>
 
         <div className="mt-6">
-          <PropertyGrid properties={properties} />
+          <PropertyGrid properties={properties.map(p => projectForCard(p))} />
         </div>
       </section>
 

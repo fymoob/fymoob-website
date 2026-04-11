@@ -11,7 +11,7 @@ const ContactSidebar = dynamic(
     ssr: false,
     loading: () => (
       <div className="sticky top-24 space-y-4">
-        <div className="h-96 animate-pulse rounded-xl bg-neutral-100" />
+        <div className="h-[480px] animate-pulse rounded-xl bg-neutral-100" />
       </div>
     ),
   }

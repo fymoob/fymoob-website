@@ -18,6 +18,7 @@ import {
   getPropertyStats,
 } from "@/services/loft"
 import type { PropertyFilters, PropertyFinalidade, PropertyType } from "@/types/property"
+import { projectForCard } from "@/lib/property-projection"
 
 type SearchParamValue = string | string[] | undefined
 type SearchParamsMap = Record<string, SearchParamValue>
@@ -299,7 +300,7 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
 
 
       <PropertyListingGrid
-        properties={properties.map(p => ({ ...p, fotos: p.fotos.slice(0, 3) }))}
+        properties={properties.map(p => projectForCard(p))}
         total={total}
         totalLabel="imóveis"
         cardContext="search"

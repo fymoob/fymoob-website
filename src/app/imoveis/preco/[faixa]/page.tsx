@@ -12,6 +12,7 @@ import {
 } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyGrid } from "@/components/search/PropertyGrid"
+import { projectForCard } from "@/lib/property-projection"
 import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { RelatedPages } from "@/components/seo/RelatedPages"
 import { DollarSign, Home, Maximize2, BedDouble } from "lucide-react"
@@ -209,7 +210,7 @@ export default async function FaixaPrecoPage({ params }: FaixaPageProps) {
       <section className="py-12 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {properties.length > 0 ? (
-            <PropertyGrid properties={properties} />
+            <PropertyGrid properties={properties.map(p => projectForCard(p))} />
           ) : (
             <div className="py-16 text-center">
               <p className="text-lg text-neutral-500">

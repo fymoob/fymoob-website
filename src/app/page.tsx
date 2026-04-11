@@ -27,7 +27,7 @@ const SavedSearchBanner = dynamic(
 )
 const HomeCarousel = dynamic(
   () => import("@/components/home/HomeCarousel").then((m) => ({ default: m.HomeCarousel })),
-  { ssr: true }
+  { loading: () => <div className="h-72 animate-pulse rounded-xl bg-neutral-100" /> }
 )
 
 export const metadata: Metadata = {

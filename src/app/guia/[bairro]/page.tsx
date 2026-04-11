@@ -13,6 +13,7 @@ import { AuthorBio } from "@/components/blog/AuthorBio"
 import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { RelatedPages } from "@/components/seo/RelatedPages"
 import { PropertyGrid } from "@/components/search/PropertyGrid"
+import { projectForCard } from "@/lib/property-projection"
 
 export const revalidate = 3600 // 1 hour
 
@@ -181,7 +182,7 @@ export default async function GuiaBairroPage({ params }: PageProps) {
             <h2 className="mb-6 font-display text-2xl font-bold tracking-tight text-neutral-950">
               Imóveis à venda no {bairroName}
             </h2>
-            <PropertyGrid properties={propertiesVenda.slice(0, 6)} />
+            <PropertyGrid properties={propertiesVenda.slice(0, 6).map(p => projectForCard(p))} />
             {propertiesVenda.length > 6 && (
               <div className="mt-6 text-center">
                 <a
@@ -201,7 +202,7 @@ export default async function GuiaBairroPage({ params }: PageProps) {
             <h2 className="mb-6 font-display text-2xl font-bold tracking-tight text-neutral-950">
               Imóveis para alugar no {bairroName}
             </h2>
-            <PropertyGrid properties={propertiesAluguel.slice(0, 4)} />
+            <PropertyGrid properties={propertiesAluguel.slice(0, 4).map(p => projectForCard(p))} />
             {propertiesAluguel.length > 4 && (
               <div className="mt-6 text-center">
                 <a

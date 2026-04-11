@@ -14,7 +14,7 @@ interface PropertyHeroWithGalleryProps {
 
 // Hero carousel gets limited photos for performance (less DOM nodes).
 // Gallery gets ALL photos — only mounts when user clicks "Ver fotos".
-const HERO_MAX_PHOTOS = 10
+const HERO_MAX_PHOTOS = 5
 
 export function PropertyHeroWithGallery({
   fotos,
