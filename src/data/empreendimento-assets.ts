@@ -8,7 +8,10 @@
 export interface EmpreendimentoAssets {
   logo?: string
   heroImage: string
+  heroOverlayImage?: string
   parallaxImages: string[]
+  implantacaoImage?: string
+  lifestyleImage?: string
   torres?: {
     nome: string
     logo?: string
@@ -19,17 +22,24 @@ export interface EmpreendimentoAssets {
   videoUrl?: string
   mapEmbedUrl?: string
   descricaoMarketing?: string
+  tagline?: string
+  subtitulo?: string
 }
 
 const assetsMap: Record<string, EmpreendimentoAssets> = {
   "reserva-barigui": {
     logo: "/images/empreendimentos/reserva-barigui/logo-reserva-main.png",
-    heroImage: "/images/empreendimentos/reserva-barigui/panoramica.jpg",
+    heroImage: "/images/empreendimentos/reserva-barigui/folhas-bg.jpg",
+    heroOverlayImage: "/images/empreendimentos/reserva-barigui/folhas-hero.png",
     parallaxImages: [
       "/images/empreendimentos/reserva-barigui/piscina.jpg",
-      "/images/empreendimentos/reserva-barigui/vista-parque.jpg",
+      "/images/empreendimentos/reserva-barigui/panoramica.jpg",
       "/images/empreendimentos/reserva-barigui/localizacao.jpg",
     ],
+    implantacaoImage: "/images/empreendimentos/reserva-barigui/implantacao.jpg",
+    lifestyleImage: "/images/empreendimentos/reserva-barigui/lifestyle.jpg",
+    tagline: "CURITIBA | REGIÃO DO BARIGUI",
+    subtitulo: "LANÇAMENTO",
     torres: [
       {
         nome: "Reserva Lago",

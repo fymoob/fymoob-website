@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { Building2, MapPin, DollarSign, Home, BedDouble, Car, ShowerHead, Phone, Maximize, Play } from "lucide-react"
+import { Building2, MapPin, BedDouble, Car, ShowerHead, Phone, ChevronDown } from "lucide-react"
 import {
   getAllEmpreendimentos,
   getPropertiesByEmpreendimento,
@@ -10,7 +10,6 @@ import {
 import { slugify, formatPrice, formatArea } from "@/lib/utils"
 import { generateItemListSchema, generateLandingStats, generateDynamicFAQ } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
-import { projectForCard } from "@/lib/property-projection"
 import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { RelatedPages } from "@/components/seo/RelatedPages"
 import { PropertyMap } from "@/components/property/PropertyMap"
@@ -115,78 +114,13 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
 
   const whatsMessage = `Olá! Tenho interesse no empreendimento ${emp.nome}. Gostaria de mais informações.`
   const whatsUrl = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent(whatsMessage)}`
-  const hasImmersive = !!assets
+  const hasEditorial = !!assets
 
-  return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([realEstateSchema, itemListSchema]) }} />
-
-      {/* ===== HERO ===== */}
-      {hasImmersive ? (
-        /* Immersive hero with parallax */
-        <section className="relative flex min-h-[70vh] items-end overflow-hidden bg-neutral-900 sm:min-h-[80vh]">
-          <div className="absolute inset-0">
-            <Image
-              src={assets.heroImage}
-              alt={emp.nome}
-              fill
-              className="object-cover"
-              sizes="100vw"
-              priority
-              style={{ objectPosition: "center 30%" }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/60 to-transparent" />
-          </div>
-
-          <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-            <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Empreendimentos", url: "/empreendimentos" }, { name: emp.nome, url: `/empreendimento/${slug}` }]} />
-
-            {assets.logo && (
-              <div className="mt-6 mb-4">
-                <Image src={assets.logo} alt={`Logo ${emp.nome}`} width={280} height={80} className="h-16 w-auto sm:h-20" />
-              </div>
-            )}
-
-            {!assets.logo && (
-              <h1 className="mt-6 font-display text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
-                {emp.nome}
-              </h1>
-            )}
-
-            <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-white/80">
-              {construtora && <span className="flex items-center gap-1.5"><Building2 className="h-4 w-4" /> {construtora}</span>}
-              {bairros.length > 0 && <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4" /> {bairros.join(", ")}, Curitiba</span>}
-              {situacao && <span className="rounded-full bg-white/20 px-3 py-0.5 text-xs font-semibold backdrop-blur">{situacao}</span>}
-            </div>
-
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
-              <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm">
-                <p className="text-2xl font-bold text-white">{properties.length}</p>
-                <p className="text-xs text-white/60">{properties.length === 1 ? "Unidade" : "Unidades"}</p>
-              </div>
-              {precoMin && (
-                <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm">
-                  <p className="text-lg font-bold text-white">{formatPrice(precoMin)}</p>
-                  <p className="text-xs text-white/60">A partir de</p>
-                </div>
-              )}
-              {areaMin && areaMax && (
-                <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm">
-                  <p className="text-lg font-bold text-white">{areaMin === areaMax ? `${formatArea(areaMin)} m²` : `${formatArea(areaMin)} - ${formatArea(areaMax)} m²`}</p>
-                  <p className="text-xs text-white/60">Área privativa</p>
-                </div>
-              )}
-              {tipos.length > 0 && (
-                <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur-sm">
-                  <p className="text-sm font-bold text-white">{tipos.join(", ")}</p>
-                  <p className="text-xs text-white/60">{tipos.length === 1 ? "Tipo" : "Tipos"}</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
-      ) : (
-        /* Standard hero with photo grid */
+  if (!hasEditorial) {
+    // Standard layout (existing) for empreendimentos without custom assets
+    return (
+      <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([realEstateSchema, itemListSchema]) }} />
         <section className="bg-neutral-900">
           <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
             <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Empreendimentos", url: "/empreendimentos" }, { name: emp.nome, url: `/empreendimento/${slug}` }]} />
@@ -217,210 +151,489 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
             </div>
           </div>
         </section>
-      )}
+        <StandardContent emp={emp} properties={properties} precoMin={precoMin} precoMax={precoMax} bairros={bairros} unitTypes={unitTypes} infraestrutura={infraestrutura} lat={lat} lng={lng} endereco={endereco} construtora={construtora} slug={slug} empreendimentos={empreendimentos} whatsUrl={whatsUrl} descricao={descricao} />
+      </>
+    )
+  }
 
-      {/* ===== CONTENT ===== */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 py-10 lg:grid-cols-[1fr_340px]">
-          <div className="space-y-16">
+  // ============================================
+  // EDITORIAL LAYOUT (Reserva Barigui and others with full assets)
+  // ============================================
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([realEstateSchema, itemListSchema]) }} />
 
-            {/* Description */}
-            {descricao && (
-              <section>
-                <h2 className="font-display text-2xl font-bold text-neutral-900">Conheça o {emp.nome}</h2>
-                <div className="mt-4 whitespace-pre-line text-sm leading-relaxed text-neutral-600">{descricao}</div>
-              </section>
-            )}
+      {/* ===== EDITORIAL HERO — Full-screen with logo centered ===== */}
+      <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-neutral-900">
+        {/* Background image */}
+        <div className="absolute inset-0">
+          <Image
+            src={assets.heroImage}
+            alt={emp.nome}
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
+            quality={90}
+          />
+          <div className="absolute inset-0 bg-black/40" />
+        </div>
 
-            {/* Parallax divider */}
-            {assets?.parallaxImages?.[0] && (
-              <div className="relative -mx-4 h-[300px] overflow-hidden sm:-mx-6 lg:-mx-8 lg:h-[400px]">
-                <div className="absolute inset-0 bg-fixed bg-center bg-cover" style={{ backgroundImage: `url(${assets.parallaxImages[0]})` }} />
-                <div className="absolute inset-0 bg-black/30" />
-              </div>
-            )}
-
-            {/* Torres — only for immersive */}
-            {assets?.torres && assets.torres.length > 0 && (
-              <section>
-                <h2 className="font-display text-2xl font-bold text-neutral-900">Empreendimentos</h2>
-                <p className="mt-1 text-sm text-neutral-500">Três complexos independentes para você morar, trabalhar ou ambos</p>
-
-                <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3">
-                  {assets.torres.map((torre) => (
-                    <div key={torre.nome} className="overflow-hidden rounded-2xl border border-neutral-200 bg-white">
-                      {torre.render && (
-                        <div className="relative aspect-[4/3]">
-                          <Image src={torre.render} alt={torre.nome} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" loading="lazy" />
-                        </div>
-                      )}
-                      <div className="p-5">
-                        {torre.logo && (
-                          <Image src={torre.logo} alt={torre.nome} width={160} height={50} className="h-10 w-auto" />
-                        )}
-                        {!torre.logo && <h3 className="font-display text-lg font-bold text-neutral-900">{torre.nome}</h3>}
-                        {torre.descricao && <p className="mt-3 text-sm leading-relaxed text-neutral-600">{torre.descricao}</p>}
-                      </div>
-                      {torre.planta && (
-                        <div className="border-t border-neutral-100 p-5">
-                          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-neutral-400">Plantas</p>
-                          <div className="relative aspect-[4/3] overflow-hidden rounded-lg">
-                            <Image src={torre.planta} alt={`Planta ${torre.nome}`} fill className="object-contain bg-neutral-50" sizes="(max-width: 768px) 100vw, 33vw" loading="lazy" />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* Video */}
-            {videoUrl && (
-              <section>
-                <h2 className="font-display text-2xl font-bold text-neutral-900">Vídeo do empreendimento</h2>
-                <div className="mt-4 overflow-hidden rounded-2xl">
-                  <div className="relative aspect-video">
-                    <iframe
-                      src={videoUrl}
-                      title={`Vídeo ${emp.nome}`}
-                      className="absolute inset-0 h-full w-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      loading="lazy"
-                    />
-                  </div>
-                </div>
-              </section>
-            )}
-
-            {/* Parallax divider 2 */}
-            {assets?.parallaxImages?.[1] && (
-              <div className="relative -mx-4 h-[250px] overflow-hidden sm:-mx-6 lg:-mx-8">
-                <div className="absolute inset-0 bg-fixed bg-center bg-cover" style={{ backgroundImage: `url(${assets.parallaxImages[1]})` }} />
-                <div className="absolute inset-0 bg-black/20" />
-              </div>
-            )}
-
-            {/* Unit Types */}
-            <section>
-              <h2 className="font-display text-2xl font-bold text-neutral-900">Tipos de unidades</h2>
-              <p className="mt-1 text-sm text-neutral-500">
-                <Link href={`/busca?empreendimento=${encodeURIComponent(emp.nome)}`} className="text-brand-primary hover:underline">→ Ver preços e unidades disponíveis</Link>
-              </p>
-              <div className="mt-6 space-y-4">
-                {unitTypes.map((ut) => (
-                  <div key={ut.key} className="flex items-center gap-4 rounded-xl border border-neutral-200 p-4 transition hover:border-brand-primary/30 hover:shadow-sm">
-                    {ut.foto && (
-                      <div className="relative hidden h-20 w-28 shrink-0 overflow-hidden rounded-lg sm:block">
-                        <Image src={ut.foto} alt={ut.key} fill className="object-cover" sizes="112px" loading="lazy" />
-                      </div>
-                    )}
-                    <div className="flex-1">
-                      <p className="font-semibold text-neutral-900">{ut.properties[0].tipo} {ut.area > 0 ? `${formatArea(ut.area)}m²` : ""}</p>
-                      <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-neutral-500">
-                        {ut.dorms > 0 && <span className="flex items-center gap-1"><BedDouble className="h-3.5 w-3.5" /> {ut.dorms} {ut.dorms === 1 ? "quarto" : "quartos"}</span>}
-                        {ut.suites > 0 && <span className="flex items-center gap-1"><BedDouble className="h-3.5 w-3.5" /> {ut.suites} {ut.suites === 1 ? "suíte" : "suítes"}</span>}
-                        {ut.banheiros > 0 && <span className="flex items-center gap-1"><ShowerHead className="h-3.5 w-3.5" /> {ut.banheiros}</span>}
-                        {ut.vagas > 0 && <span className="flex items-center gap-1"><Car className="h-3.5 w-3.5" /> {ut.vagas} {ut.vagas === 1 ? "vaga" : "vagas"}</span>}
-                      </div>
-                      {ut.precoMin > 0 && <p className="mt-2 text-sm font-bold text-slate-900">A partir de {formatPrice(ut.precoMin)}</p>}
-                    </div>
-                    <span className="shrink-0 rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600">{ut.count} {ut.count === 1 ? "unidade" : "unidades"}</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Infrastructure */}
-            {infraestrutura.length > 0 && (
-              <section>
-                <h2 className="font-display text-2xl font-bold text-neutral-900">Infraestrutura do condomínio</h2>
-                <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 xl:grid-cols-3">
-                  {infraestrutura.map((item) => {
-                    const Icon = getPropertyFeatureIcon(item)
-                    return (
-                      <div key={item} className="flex items-center gap-2.5">
-                        <Icon className="h-4 w-4 shrink-0 text-neutral-400" strokeWidth={1.9} />
-                        <span className="text-sm text-neutral-700">{item}</span>
-                      </div>
-                    )
-                  })}
-                </div>
-              </section>
-            )}
-
-            {/* Map */}
-            {assets?.mapEmbedUrl ? (
-              <section>
-                <h2 className="font-display text-2xl font-bold text-neutral-900">Localização</h2>
-                {endereco && (
-                  <p className="mt-2 flex items-center gap-1.5 text-sm text-neutral-500">
-                    <MapPin className="h-3.5 w-3.5" /> {[endereco.endereco, endereco.numero, bairros[0]].filter(Boolean).join(", ")}, Curitiba - PR
-                  </p>
-                )}
-                <div className="mt-4 overflow-hidden rounded-xl border border-neutral-200">
-                  <iframe src={assets.mapEmbedUrl} title="Localização" className="h-[300px] w-full md:h-[400px]" loading="lazy" allowFullScreen />
-                </div>
-              </section>
-            ) : lat && lng ? (
-              <section>
-                <PropertyMap latitude={lat} longitude={lng} bairro={bairros[0] || ""} titulo={emp.nome} endereco={endereco?.endereco} numero={endereco?.numero} cidade="Curitiba" estado="PR" />
-              </section>
-            ) : null}
-
-            {/* All Units */}
-            <section>
-              <h2 className="font-display text-2xl font-bold text-neutral-900">Todas as unidades ({properties.length})</h2>
-              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {properties.map((p) => (
-                  <Link key={p.codigo} href={`/imovel/${p.slug}`} className="group overflow-hidden rounded-xl border border-neutral-200 transition hover:border-brand-primary/30 hover:shadow-md">
-                    <div className="relative aspect-[4/3]">
-                      <Image src={p.fotoDestaque || "/placeholder-property.jpg"} alt={p.titulo} fill className="object-cover transition duration-500 group-hover:scale-105" sizes="(max-width: 640px) 100vw, 33vw" loading="lazy" />
-                      {p.lancamento && <span className="absolute top-3 left-3 rounded-full bg-brand-primary px-2.5 py-0.5 text-[10px] font-bold uppercase text-white">Lançamento</span>}
-                    </div>
-                    <div className="p-4">
-                      <p className="text-xs font-medium text-neutral-500">{p.tipo} · {p.bairro}</p>
-                      <p className="mt-1 line-clamp-1 text-sm font-semibold text-neutral-900">{p.titulo}</p>
-                      <div className="mt-2 flex items-center gap-3 text-xs text-neutral-500">
-                        {p.areaPrivativa && <span>{formatArea(p.areaPrivativa)} m²</span>}
-                        {p.dormitorios && <span>{p.dormitorios}q</span>}
-                        {p.vagas && <span>{p.vagas}v</span>}
-                      </div>
-                      {(p.precoVenda || p.precoAluguel) && <p className="mt-2 text-base font-extrabold text-slate-900">{formatPrice(p.precoVenda || p.precoAluguel)}</p>}
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </section>
+        {/* Breadcrumbs floating at top */}
+        <div className="absolute top-20 left-0 right-0 z-10">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="[&_nav]:text-white/70 [&_a]:text-white/70 [&_a:hover]:text-white [&_span]:text-white/90">
+              <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Empreendimentos", url: "/empreendimentos" }, { name: emp.nome, url: `/empreendimento/${slug}` }]} />
+            </div>
           </div>
+        </div>
 
-          {/* Sidebar */}
-          <aside className="hidden lg:block">
-            <div className="sticky top-24 space-y-4">
-              <div className="rounded-2xl border border-neutral-200 bg-white p-6">
-                <h3 className="font-display text-lg font-bold text-neutral-900">Fale com um especialista</h3>
-                <p className="mt-1 text-sm text-neutral-500">Tire suas dúvidas sobre o {emp.nome}</p>
-                <a href={whatsUrl} target="_blank" rel="noopener noreferrer" className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#1da851]">
-                  <svg viewBox="0 0 24 24" className="size-5 fill-white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" /><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a7.96 7.96 0 0 1-4.11-1.14l-.29-.174-3.01.79.8-2.93-.19-.3A7.96 7.96 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z" /></svg>
-                  Falar pelo WhatsApp
-                </a>
-                <a href="tel:+554199978-0517" className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-neutral-200 px-4 py-3 text-sm font-medium text-neutral-700 transition hover:bg-neutral-50">
-                  <Phone className="size-4" /> (41) 99978-0517
-                </a>
-                <p className="mt-4 text-center text-[11px] text-neutral-400">CRECI J 9420 · Atendimento seg-sex 8h30-17h</p>
-              </div>
-              {precoMin && (
-                <div className="rounded-2xl bg-neutral-900 p-6 text-white">
-                  <p className="text-xs text-neutral-400">A partir de</p>
-                  <p className="text-2xl font-extrabold">{formatPrice(precoMin)}</p>
-                  {precoMax && precoMax !== precoMin && <p className="mt-1 text-xs text-neutral-400">Até {formatPrice(precoMax)}</p>}
+        {/* Centered content */}
+        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
+          {assets.tagline && (
+            <p className="text-xs tracking-[0.3em] text-white/80 sm:text-sm">
+              {assets.tagline}
+            </p>
+          )}
+
+          {assets.subtitulo && (
+            <p className="mt-8 text-[11px] tracking-[0.4em] text-white/60 sm:text-xs">
+              {assets.subtitulo}
+            </p>
+          )}
+
+          {assets.logo ? (
+            <div className="mt-6 flex justify-center">
+              <Image
+                src={assets.logo}
+                alt={`Logo ${emp.nome}`}
+                width={500}
+                height={240}
+                className="h-auto max-h-[200px] w-auto max-w-[70vw] object-contain sm:max-h-[280px] sm:max-w-[500px]"
+                priority
+              />
+            </div>
+          ) : (
+            <h1 className="mt-6 font-display text-6xl font-light tracking-widest text-white sm:text-7xl lg:text-8xl">
+              {emp.nome}
+            </h1>
+          )}
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-0 right-0 z-10 flex justify-center">
+          <ChevronDown className="h-6 w-6 animate-bounce text-white/60" />
+        </div>
+      </section>
+
+      {/* ===== SECTION 1 — Intro with video ===== */}
+      <section className="relative bg-neutral-900 py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+            <div>
+              <p className="text-sm font-medium tracking-widest text-brand-primary">NA FRENTE, O PARQUE.</p>
+              <p className="mt-1 text-sm font-medium tracking-widest text-brand-primary">AO LADO, O SHOPPING.</p>
+              <p className="mt-1 text-sm font-medium tracking-widest text-brand-primary">E NO CENTRO, VOCÊ.</p>
+
+              {descricao && (
+                <div className="mt-8 whitespace-pre-line text-sm leading-relaxed text-neutral-300">
+                  {descricao}
                 </div>
               )}
+
+              {precoMin && (
+                <div className="mt-8 flex items-baseline gap-3">
+                  <p className="text-xs uppercase tracking-wider text-neutral-500">A partir de</p>
+                  <p className="text-3xl font-extrabold text-white">{formatPrice(precoMin)}</p>
+                </div>
+              )}
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a
+                  href={whatsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#1da851]"
+                >
+                  <svg viewBox="0 0 24 24" className="size-4 fill-white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" /><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a7.96 7.96 0 0 1-4.11-1.14l-.29-.174-3.01.79.8-2.93-.19-.3A7.96 7.96 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z" /></svg>
+                  Falar pelo WhatsApp
+                </a>
+                <Link
+                  href="#empreendimentos"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:border-white hover:bg-white/10"
+                >
+                  Ver empreendimentos
+                </Link>
+              </div>
             </div>
-          </aside>
+
+            {videoUrl && (
+              <div className="overflow-hidden rounded-2xl">
+                <div className="relative aspect-video">
+                  <iframe
+                    src={videoUrl}
+                    title={`Vídeo ${emp.nome}`}
+                    className="absolute inset-0 h-full w-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* ===== PARALLAX 1 — Piscina/lake ===== */}
+      {assets.parallaxImages[0] && (
+        <div className="relative h-[50vh] overflow-hidden md:h-[70vh]">
+          <div
+            className="absolute inset-0 bg-fixed bg-center bg-cover"
+            style={{ backgroundImage: `url(${assets.parallaxImages[0]})` }}
+          />
+        </div>
+      )}
+
+      {/* ===== SECTION 2 — Saiba mais / Implantação ===== */}
+      <section className="bg-white py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="font-display text-xl font-light tracking-[0.3em] text-neutral-900 sm:text-2xl">
+              SAIBA MAIS SOBRE
+            </h2>
+            <h2 className="mt-1 font-display text-xl font-light tracking-[0.3em] text-neutral-900 sm:text-2xl">
+              O EMPREENDIMENTO
+            </h2>
+
+            <p className="mx-auto mt-6 max-w-xl text-sm text-neutral-500">
+              Confira os detalhes do empreendimento com exclusividade.
+              <br />Nossa equipe entrará em contato.
+            </p>
+
+            <a
+              href={whatsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex items-center gap-2 bg-neutral-900 px-6 py-3 text-xs font-semibold uppercase tracking-wider text-white transition hover:bg-neutral-800"
+            >
+              Fale conosco no WhatsApp
+            </a>
+          </div>
+
+          {assets.implantacaoImage && (
+            <div className="mt-16 grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16">
+              <div className="relative aspect-square overflow-hidden rounded-2xl">
+                <Image
+                  src={assets.implantacaoImage}
+                  alt="Implantação do empreendimento"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  loading="lazy"
+                />
+              </div>
+
+              <div>
+                <h3 className="font-display text-2xl font-light tracking-wider text-neutral-900 sm:text-3xl">
+                  UM COMPLEXO
+                  <br />
+                  IMOBILIÁRIO ÚNICO.
+                </h3>
+
+                <p className="mt-6 text-sm leading-relaxed text-neutral-600">
+                  A vista cinematográfica e a natureza se tornam luxo somente no {emp.nome}.
+                </p>
+
+                <p className="mt-4 text-sm leading-relaxed text-neutral-600">
+                  Um complexo imobiliário de alto padrão, desenhado e planejado para você morar e trabalhar com a mais definitiva do Parque Barigui, ao lado do Shopping.
+                </p>
+
+                <p className="mt-4 text-sm leading-relaxed text-neutral-600">
+                  Localizado em uma região que transforma qualidade em excelência de vida, em frente ao parque e ao lado do Parkshopping.
+                </p>
+
+                <p className="mt-4 text-sm leading-relaxed text-neutral-600">
+                  Mais saiba previamente os 3 empreendimentos independentes para você morar, trabalhar ou ambos.
+                </p>
+
+                <Link
+                  href="#empreendimentos"
+                  className="mt-6 inline-flex items-center gap-2 bg-brand-primary px-6 py-3 text-xs font-semibold uppercase tracking-wider text-white transition hover:bg-brand-primary-hover"
+                >
+                  Saiba mais
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ===== PARALLAX 2 ===== */}
+      {assets.parallaxImages[1] && (
+        <div className="relative h-[40vh] overflow-hidden md:h-[60vh]">
+          <div
+            className="absolute inset-0 bg-fixed bg-center bg-cover"
+            style={{ backgroundImage: `url(${assets.parallaxImages[1]})` }}
+          />
+          <div className="absolute inset-0 bg-black/20" />
+        </div>
+      )}
+
+      {/* ===== SECTION 3 — Torres ===== */}
+      {assets.torres && assets.torres.length > 0 && (
+        <section id="empreendimentos" className="bg-neutral-50 py-20 md:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 className="font-display text-xl font-light tracking-[0.3em] text-neutral-900 sm:text-2xl">
+                TRÊS EMPREENDIMENTOS INDEPENDENTES PARA VOCÊ
+              </h2>
+              <h2 className="mt-1 font-display text-xl font-light tracking-[0.3em] text-neutral-900 sm:text-2xl">
+                MORAR, TRABALHAR OU AMBOS
+              </h2>
+            </div>
+
+            <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
+              {assets.torres.map((torre) => (
+                <div key={torre.nome} className="group">
+                  {torre.render && (
+                    <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-neutral-200">
+                      <Image
+                        src={torre.render}
+                        alt={torre.nome}
+                        fill
+                        className="object-cover transition duration-700 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+
+                  <div className="mt-6 text-center">
+                    {torre.logo ? (
+                      <Image
+                        src={torre.logo}
+                        alt={torre.nome}
+                        width={200}
+                        height={70}
+                        className="mx-auto h-14 w-auto object-contain"
+                      />
+                    ) : (
+                      <h3 className="font-display text-xl font-light tracking-widest text-neutral-900">
+                        {torre.nome}
+                      </h3>
+                    )}
+
+                    {torre.descricao && (
+                      <p className="mt-4 text-sm leading-relaxed text-neutral-600">
+                        {torre.descricao}
+                      </p>
+                    )}
+
+                    {torre.planta && (
+                      <div className="mt-6">
+                        <p className="mb-3 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
+                          Planta
+                        </p>
+                        <div className="relative mx-auto aspect-[4/3] max-w-[280px] overflow-hidden rounded-lg bg-white">
+                          <Image
+                            src={torre.planta}
+                            alt={`Planta ${torre.nome}`}
+                            fill
+                            className="object-contain"
+                            sizes="280px"
+                            loading="lazy"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    <a
+                      href={whatsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-6 inline-flex items-center gap-2 bg-brand-primary px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white transition hover:bg-brand-primary-hover"
+                    >
+                      Agendar visita
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ===== PARALLAX 3 — Lifestyle ===== */}
+      {assets.lifestyleImage && (
+        <div className="relative h-[50vh] overflow-hidden md:h-[70vh]">
+          <div
+            className="absolute inset-0 bg-fixed bg-center bg-cover"
+            style={{ backgroundImage: `url(${assets.lifestyleImage})` }}
+          />
+          <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+            <p className="text-center font-display text-2xl font-light tracking-[0.2em] text-white sm:text-3xl md:text-4xl">
+              VIVA O PADRÃO DE EXCELÊNCIA:
+              <br />
+              <span className="text-brand-primary">CONHEÇA O RESERVA BARIGUI</span>
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* ===== SECTION 4 — Unit Types ===== */}
+      <section className="bg-white py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="font-display text-xl font-light tracking-[0.3em] text-neutral-900 sm:text-2xl">
+              UNIDADES DISPONÍVEIS
+            </h2>
+            <p className="mt-3 text-sm text-neutral-500">{properties.length} unidades para morar ou investir</p>
+          </div>
+
+          <div className="mt-12 space-y-4">
+            {unitTypes.map((ut) => (
+              <div key={ut.key} className="flex items-center gap-4 rounded-xl border border-neutral-200 p-4 transition hover:border-brand-primary/30 hover:shadow-sm md:p-6">
+                {ut.foto && (
+                  <div className="relative hidden h-20 w-28 shrink-0 overflow-hidden rounded-lg md:block md:h-28 md:w-40">
+                    <Image src={ut.foto} alt={ut.key} fill className="object-cover" sizes="160px" loading="lazy" />
+                  </div>
+                )}
+                <div className="flex-1">
+                  <p className="font-display text-lg font-semibold text-neutral-900">
+                    {ut.properties[0].tipo} {ut.area > 0 ? `${formatArea(ut.area)} m²` : ""}
+                  </p>
+                  <div className="mt-2 flex flex-wrap items-center gap-4 text-xs text-neutral-500">
+                    {ut.dorms > 0 && <span className="flex items-center gap-1.5"><BedDouble className="h-3.5 w-3.5" /> {ut.dorms} {ut.dorms === 1 ? "quarto" : "quartos"}</span>}
+                    {ut.suites > 0 && <span className="flex items-center gap-1.5"><BedDouble className="h-3.5 w-3.5" /> {ut.suites} {ut.suites === 1 ? "suíte" : "suítes"}</span>}
+                    {ut.banheiros > 0 && <span className="flex items-center gap-1.5"><ShowerHead className="h-3.5 w-3.5" /> {ut.banheiros}</span>}
+                    {ut.vagas > 0 && <span className="flex items-center gap-1.5"><Car className="h-3.5 w-3.5" /> {ut.vagas} {ut.vagas === 1 ? "vaga" : "vagas"}</span>}
+                  </div>
+                  {ut.precoMin > 0 && (
+                    <p className="mt-3 text-sm">
+                      <span className="text-neutral-500">A partir de </span>
+                      <span className="font-bold text-neutral-900">{formatPrice(ut.precoMin)}</span>
+                    </p>
+                  )}
+                </div>
+                <span className="shrink-0 rounded-full bg-brand-primary/10 px-3 py-1 text-xs font-semibold text-brand-primary">
+                  {ut.count} {ut.count === 1 ? "unid." : "unids."}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* All Units Grid */}
+          <div className="mt-16">
+            <h3 className="font-display text-lg font-semibold text-neutral-900">Todas as unidades</h3>
+            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {properties.map((p) => (
+                <Link key={p.codigo} href={`/imovel/${p.slug}`} className="group overflow-hidden rounded-xl border border-neutral-200 transition hover:border-brand-primary/30 hover:shadow-md">
+                  <div className="relative aspect-[4/3]">
+                    <Image src={p.fotoDestaque || "/placeholder-property.jpg"} alt={p.titulo} fill className="object-cover transition duration-500 group-hover:scale-105" sizes="(max-width: 640px) 100vw, 33vw" loading="lazy" />
+                    {p.lancamento && <span className="absolute top-3 left-3 rounded-full bg-brand-primary px-2.5 py-0.5 text-[10px] font-bold uppercase text-white">Lançamento</span>}
+                  </div>
+                  <div className="p-4">
+                    <p className="text-xs font-medium text-neutral-500">{p.tipo} · {p.bairro}</p>
+                    <p className="mt-1 line-clamp-1 text-sm font-semibold text-neutral-900">{p.titulo}</p>
+                    <div className="mt-2 flex items-center gap-3 text-xs text-neutral-500">
+                      {p.areaPrivativa && <span>{formatArea(p.areaPrivativa)} m²</span>}
+                      {p.dormitorios && <span>{p.dormitorios}q</span>}
+                      {p.vagas && <span>{p.vagas}v</span>}
+                    </div>
+                    {(p.precoVenda || p.precoAluguel) && <p className="mt-2 text-base font-extrabold text-slate-900">{formatPrice(p.precoVenda || p.precoAluguel)}</p>}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SECTION 5 — Infrastructure ===== */}
+      {infraestrutura.length > 0 && (
+        <section className="bg-neutral-50 py-20 md:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 className="font-display text-xl font-light tracking-[0.3em] text-neutral-900 sm:text-2xl">
+                INFRAESTRUTURA DO CONDOMÍNIO
+              </h2>
+            </div>
+            <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3">
+              {infraestrutura.map((item) => {
+                const Icon = getPropertyFeatureIcon(item)
+                return (
+                  <div key={item} className="flex items-center gap-3">
+                    <Icon className="h-5 w-5 shrink-0 text-brand-primary" strokeWidth={1.8} />
+                    <span className="text-sm text-neutral-700">{item}</span>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ===== SECTION 6 — Localização ===== */}
+      <section className="bg-white py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="font-display text-xl font-light tracking-[0.3em] text-neutral-900 sm:text-2xl">
+              LOCALIZAÇÃO
+            </h2>
+            {endereco && (
+              <p className="mt-3 flex items-center justify-center gap-1.5 text-sm text-neutral-500">
+                <MapPin className="h-3.5 w-3.5" /> {[endereco.endereco, endereco.numero, bairros[0]].filter(Boolean).join(", ")}, Curitiba - PR
+              </p>
+            )}
+          </div>
+
+          <div className="mt-12 overflow-hidden rounded-2xl border border-neutral-200">
+            {assets.mapEmbedUrl ? (
+              <iframe src={assets.mapEmbedUrl} title="Localização" className="h-[400px] w-full md:h-[500px]" loading="lazy" allowFullScreen />
+            ) : lat && lng ? (
+              <PropertyMap latitude={lat} longitude={lng} bairro={bairros[0] || ""} titulo={emp.nome} endereco={endereco?.endereco} numero={endereco?.numero} cidade="Curitiba" estado="PR" />
+            ) : null}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SECTION 7 — Final CTA ===== */}
+      <section className="relative overflow-hidden bg-neutral-900 py-20 md:py-28">
+        {assets.parallaxImages[2] && (
+          <div className="absolute inset-0">
+            <Image src={assets.parallaxImages[2]} alt="" fill className="object-cover opacity-30" sizes="100vw" loading="lazy" />
+          </div>
+        )}
+        <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
+          <h2 className="font-display text-2xl font-light tracking-[0.2em] text-white sm:text-3xl">
+            AGENDE SUA VISITA
+          </h2>
+          <p className="mt-4 text-sm text-white/70">
+            Nossos especialistas do {emp.nome} estão prontos para atender você
+          </p>
+
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <a
+              href={whatsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-4 text-sm font-semibold text-white transition hover:bg-[#1da851]"
+            >
+              <svg viewBox="0 0 24 24" className="size-5 fill-white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" /><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a7.96 7.96 0 0 1-4.11-1.14l-.29-.174-3.01.79.8-2.93-.19-.3A7.96 7.96 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z" /></svg>
+              WhatsApp
+            </a>
+            <a
+              href="tel:+554199978-0517"
+              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-8 py-4 text-sm font-semibold text-white transition hover:bg-white/10"
+            >
+              <Phone className="size-5" /> (41) 99978-0517
+            </a>
+          </div>
+
+          <p className="mt-6 text-xs text-white/50">CRECI J 9420 · Atendimento seg-sex 8h30-17h</p>
+        </div>
+      </section>
 
       {/* Mobile CTA */}
       <div className="fixed bottom-14 left-0 z-[100] w-full border-t border-neutral-200 bg-white px-4 py-3 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] lg:hidden">
@@ -436,6 +649,148 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
       </div>
 
       {/* FAQ + Related */}
+      <section className="border-t border-neutral-100 bg-neutral-50 py-12 md:py-16">
+        <div className="mx-auto max-w-4xl space-y-12 px-4 sm:px-6 lg:px-8">
+          <DynamicFAQ
+            questions={(() => {
+              const stats = generateLandingStats(properties)
+              const baseFaq = generateDynamicFAQ(stats, bairros[0])
+              return [{ question: `Quantas unidades estão disponíveis no ${emp.nome}?`, answer: `O ${emp.nome} possui ${properties.length} ${properties.length === 1 ? "unidade disponível" : "unidades disponíveis"} no site da FYMOOB.${precoMin ? ` Preços a partir de ${formatPrice(precoMin)}.` : ""}` }, ...baseFaq.slice(1)]
+            })()}
+            title={`Perguntas frequentes sobre o ${emp.nome}`}
+          />
+          <RelatedPages title="Explore também" links={[...bairros.map((bairro) => ({ href: `/imoveis/${slugify(bairro)}`, label: `Imóveis no ${bairro}` })), ...empreendimentos.filter((e) => e.slug !== slug && e.total >= 3).slice(0, 6).map((e) => ({ href: `/empreendimento/${e.slug}`, label: e.nome }))]} />
+        </div>
+      </section>
+    </>
+  )
+}
+
+// ====================================================
+// Standard content (for empreendimentos without assets)
+// ====================================================
+function StandardContent(props: {
+  emp: { nome: string; slug: string }
+  properties: Property[]
+  precoMin: number | null
+  precoMax: number | null
+  bairros: string[]
+  unitTypes: ReturnType<typeof groupUnitTypes>
+  infraestrutura: string[]
+  lat: number | null
+  lng: number | null
+  endereco: Property | undefined
+  construtora: string | null
+  slug: string
+  empreendimentos: Awaited<ReturnType<typeof getAllEmpreendimentos>>
+  whatsUrl: string
+  descricao: string | null | undefined
+}) {
+  const { emp, properties, precoMin, precoMax, bairros, unitTypes, infraestrutura, lat, lng, endereco, slug, empreendimentos, whatsUrl, descricao } = props
+  return (
+    <>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-10 py-10 lg:grid-cols-[1fr_340px]">
+          <div className="space-y-16">
+            {descricao && (
+              <section>
+                <h2 className="font-display text-2xl font-bold text-neutral-900">Sobre o {emp.nome}</h2>
+                <div className="mt-4 whitespace-pre-line text-sm leading-relaxed text-neutral-600">{descricao}</div>
+              </section>
+            )}
+            <section>
+              <h2 className="font-display text-2xl font-bold text-neutral-900">Tipos de unidades</h2>
+              <div className="mt-6 space-y-4">
+                {unitTypes.map((ut) => (
+                  <div key={ut.key} className="flex items-center gap-4 rounded-xl border border-neutral-200 p-4">
+                    {ut.foto && (
+                      <div className="relative hidden h-20 w-28 shrink-0 overflow-hidden rounded-lg sm:block">
+                        <Image src={ut.foto} alt={ut.key} fill className="object-cover" sizes="112px" loading="lazy" />
+                      </div>
+                    )}
+                    <div className="flex-1">
+                      <p className="font-semibold text-neutral-900">{ut.properties[0].tipo} {ut.area > 0 ? `${formatArea(ut.area)}m²` : ""}</p>
+                      <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-neutral-500">
+                        {ut.dorms > 0 && <span className="flex items-center gap-1"><BedDouble className="h-3.5 w-3.5" /> {ut.dorms} {ut.dorms === 1 ? "quarto" : "quartos"}</span>}
+                        {ut.suites > 0 && <span className="flex items-center gap-1"><BedDouble className="h-3.5 w-3.5" /> {ut.suites} suítes</span>}
+                        {ut.banheiros > 0 && <span className="flex items-center gap-1"><ShowerHead className="h-3.5 w-3.5" /> {ut.banheiros}</span>}
+                        {ut.vagas > 0 && <span className="flex items-center gap-1"><Car className="h-3.5 w-3.5" /> {ut.vagas} vagas</span>}
+                      </div>
+                      {ut.precoMin > 0 && <p className="mt-2 text-sm font-bold text-slate-900">A partir de {formatPrice(ut.precoMin)}</p>}
+                    </div>
+                    <span className="shrink-0 rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600">{ut.count}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+            {infraestrutura.length > 0 && (
+              <section>
+                <h2 className="font-display text-2xl font-bold text-neutral-900">Infraestrutura</h2>
+                <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 xl:grid-cols-3">
+                  {infraestrutura.map((item) => {
+                    const Icon = getPropertyFeatureIcon(item)
+                    return (
+                      <div key={item} className="flex items-center gap-2.5">
+                        <Icon className="h-4 w-4 shrink-0 text-neutral-400" strokeWidth={1.9} />
+                        <span className="text-sm text-neutral-700">{item}</span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </section>
+            )}
+            {lat && lng && (
+              <section>
+                <PropertyMap latitude={lat} longitude={lng} bairro={bairros[0] || ""} titulo={emp.nome} endereco={endereco?.endereco} numero={endereco?.numero} cidade="Curitiba" estado="PR" />
+              </section>
+            )}
+            <section>
+              <h2 className="font-display text-2xl font-bold text-neutral-900">Todas as unidades ({properties.length})</h2>
+              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {properties.map((p) => (
+                  <Link key={p.codigo} href={`/imovel/${p.slug}`} className="group overflow-hidden rounded-xl border border-neutral-200 transition hover:shadow-md">
+                    <div className="relative aspect-[4/3]">
+                      <Image src={p.fotoDestaque || "/placeholder-property.jpg"} alt={p.titulo} fill className="object-cover transition duration-500 group-hover:scale-105" sizes="(max-width: 640px) 100vw, 33vw" loading="lazy" />
+                      {p.lancamento && <span className="absolute top-3 left-3 rounded-full bg-brand-primary px-2.5 py-0.5 text-[10px] font-bold uppercase text-white">Lançamento</span>}
+                    </div>
+                    <div className="p-4">
+                      <p className="text-xs font-medium text-neutral-500">{p.tipo} · {p.bairro}</p>
+                      <p className="mt-1 line-clamp-1 text-sm font-semibold text-neutral-900">{p.titulo}</p>
+                      {(p.precoVenda || p.precoAluguel) && <p className="mt-2 text-base font-extrabold text-slate-900">{formatPrice(p.precoVenda || p.precoAluguel)}</p>}
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          </div>
+          <aside className="hidden lg:block">
+            <div className="sticky top-24 space-y-4">
+              <div className="rounded-2xl border border-neutral-200 bg-white p-6">
+                <h3 className="font-display text-lg font-bold text-neutral-900">Fale com um especialista</h3>
+                <p className="mt-1 text-sm text-neutral-500">Tire suas dúvidas sobre o {emp.nome}</p>
+                <a href={whatsUrl} target="_blank" rel="noopener noreferrer" className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[#25D366] px-4 py-3 text-sm font-semibold text-white">
+                  <svg viewBox="0 0 24 24" className="size-5 fill-white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" /><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a7.96 7.96 0 0 1-4.11-1.14l-.29-.174-3.01.79.8-2.93-.19-.3A7.96 7.96 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z" /></svg>
+                  WhatsApp
+                </a>
+                <a href="tel:+554199978-0517" className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-neutral-200 px-4 py-3 text-sm font-medium text-neutral-700">
+                  <Phone className="size-4" /> (41) 99978-0517
+                </a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+      <div className="fixed bottom-14 left-0 z-[100] w-full border-t border-neutral-200 bg-white px-4 py-3 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] lg:hidden">
+        <div className="mx-auto flex max-w-lg items-center gap-3">
+          <div className="min-w-0 flex-1">
+            {precoMin && <><p className="text-lg font-extrabold text-slate-900">{formatPrice(precoMin)}</p><p className="text-xs text-neutral-500">A partir de</p></>}
+          </div>
+          <a href={whatsUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-semibold text-white">
+            <svg viewBox="0 0 24 24" className="size-5 fill-white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" /><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a7.96 7.96 0 0 1-4.11-1.14l-.29-.174-3.01.79.8-2.93-.19-.3A7.96 7.96 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z" /></svg>
+            Visitar
+          </a>
+        </div>
+      </div>
       <section className="border-t border-neutral-100 bg-neutral-50 py-12 md:py-16">
         <div className="mx-auto max-w-4xl space-y-12 px-4 sm:px-6 lg:px-8">
           <DynamicFAQ
