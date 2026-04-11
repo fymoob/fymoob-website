@@ -11,6 +11,7 @@ import { mdxComponents } from "@/lib/mdx-components"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { RelatedPosts } from "@/components/blog/RelatedPosts"
 import { TableOfContents } from "@/components/blog/TableOfContents"
+import { AuthorBio } from "@/components/blog/AuthorBio"
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -137,8 +138,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               />
             </div>
 
-            {/* Back link */}
+            {/* Author Bio */}
             <div className="mt-12 max-w-3xl mx-auto">
+              <AuthorBio />
+            </div>
+
+            {/* Back link */}
+            <div className="mt-8 max-w-3xl mx-auto">
               <Link
                 href="/blog"
                 className="inline-flex items-center gap-2 text-sm font-medium text-brand-primary transition-colors duration-200 hover:text-brand-primary-hover"

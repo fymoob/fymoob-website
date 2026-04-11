@@ -263,9 +263,14 @@ export function generateBlogPostingSchema(post: BlogPost) {
     datePublished: post.date,
     dateModified: post.date,
     author: {
-      "@type": "Organization",
-      name: "FYMOOB Imobiliária",
-      url: SITE_URL,
+      "@type": "Person",
+      name: "Bruno César de Almeida",
+      jobTitle: "Corretor de Imóveis — CRECI J 9420",
+      affiliation: {
+        "@type": "Organization",
+        name: "FYMOOB Imobiliária",
+        url: SITE_URL,
+      },
     },
     publisher: {
       "@type": "Organization",
