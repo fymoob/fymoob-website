@@ -113,8 +113,12 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         .map((f) => f.foto)
     )
   )]
-  // Fallback: use static assets if no plantas in CRM yet
-  const plantasFinal = plantasFromCRM.length > 0 ? plantasFromCRM : (assets?.plantas || [])
+  // Static fallback is ONLY applied when the slug explicitly matches an
+  // editorial empreendimento. For standard empreendimentos we ONLY show
+  // plantas that come from their OWN properties in the CRM.
+  const plantasFinal = plantasFromCRM.length > 0
+    ? plantasFromCRM
+    : (hasEditorialLayout(slug) ? (assets?.plantas || []) : [])
 
   const itemListSchema = generateItemListSchema(properties, `/empreendimento/${slug}`)
   const realEstateSchema = {
@@ -400,13 +404,12 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
               {assets.torres.map((torre) => {
                 const hasSlugLink = torre.slug && torre.slug !== slug
 
-                // Auto-fetch plantas from CRM for this torre's empreendimento
-                // Fallback to static assets if not classified in CRM yet
-                const torreProperties = torre.slug
-                  ? properties.filter((p) =>
-                      p.empreendimento?.toLowerCase() === torre.nome.toLowerCase()
-                    )
-                  : []
+                // Auto-fetch plantas from CRM for this torre's empreendimento.
+                // Static fallback (torre.plantas) is torre-specific by design —
+                // each torre in the asset map has its own plantas, never shared.
+                const torreProperties = properties.filter((p) =>
+                  p.empreendimento?.toLowerCase() === torre.nome.toLowerCase()
+                )
                 const plantasFromCRM = [...new Set(
                   torreProperties.flatMap((p) =>
                     (p.fotosPorTipo || [])
