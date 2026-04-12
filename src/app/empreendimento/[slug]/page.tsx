@@ -14,7 +14,9 @@ import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { RelatedPages } from "@/components/seo/RelatedPages"
 import { PropertyMap } from "@/components/property/PropertyMap"
 import { getPropertyFeatureIcon } from "@/components/property/propertyFeatureIcons"
-import { getEmpreendimentoAssets } from "@/data/empreendimento-assets"
+import { getEmpreendimentoAssets, hasEditorialLayout } from "@/data/empreendimento-assets"
+import { PlantasCarousel } from "@/components/empreendimento/PlantasCarousel"
+import { PlantasGallery } from "@/components/empreendimento/PlantasGallery"
 import type { Property } from "@/types/property"
 
 interface EmpreendimentoPageProps {
@@ -114,19 +116,21 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
 
   const whatsMessage = `Olá! Tenho interesse no empreendimento ${emp.nome}. Gostaria de mais informações.`
   const whatsUrl = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent(whatsMessage)}`
-  const hasEditorial = !!assets
+  const hasEditorial = hasEditorialLayout(slug) && assets
 
-  if (!hasEditorial) {
+  if (!hasEditorial || !assets) {
     // Standard layout (existing) for empreendimentos without custom assets
     return (
       <>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([realEstateSchema, itemListSchema]) }} />
-        <section className="bg-neutral-900">
-          <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
-            <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Empreendimentos", url: "/empreendimentos" }, { name: emp.nome, url: `/empreendimento/${slug}` }]} />
+        <section className="bg-[#0d0d0d]">
+          <div className="mx-auto max-w-7xl px-4 pt-24 sm:px-6 lg:px-8">
+            <div className="[&_nav]:text-white/60 [&_a]:text-white/60 [&_a:hover]:text-white [&_span]:text-white/80">
+              <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Empreendimentos", url: "/empreendimentos" }, { name: emp.nome, url: `/empreendimento/${slug}` }]} />
+            </div>
           </div>
           {heroPhotos.length > 0 && (
-            <div className="mx-auto mt-4 max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto mt-6 max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-2 gap-2 overflow-hidden rounded-2xl sm:grid-cols-4 sm:grid-rows-2 sm:gap-3 md:h-[420px]">
                 <div className="relative col-span-2 row-span-2 min-h-[240px]">
                   <Image src={heroPhotos[0]} alt={`${emp.nome} — foto principal`} fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" priority />
@@ -139,19 +143,19 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
               </div>
             </div>
           )}
-          <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-            <h1 className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-4xl">{emp.nome}</h1>
-            {construtora && <p className="mt-2 flex items-center gap-1.5 text-neutral-300"><Building2 className="h-4 w-4" /> Construtora {construtora}</p>}
-            {bairros.length > 0 && <p className="mt-1 flex items-center gap-1.5 text-neutral-400"><MapPin className="h-4 w-4" /> {bairros.join(", ")}, Curitiba - PR</p>}
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur"><p className="text-2xl font-bold text-white">{properties.length}</p><p className="text-xs text-neutral-400">{properties.length === 1 ? "Unidade" : "Unidades"}</p></div>
-              {precoMin && <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur"><p className="text-lg font-bold text-white">{formatPrice(precoMin)}</p><p className="text-xs text-neutral-400">A partir de</p></div>}
-              {areaMin && areaMax && <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur"><p className="text-lg font-bold text-white">{areaMin === areaMax ? `${formatArea(areaMin)} m²` : `${formatArea(areaMin)} - ${formatArea(areaMax)} m²`}</p><p className="text-xs text-neutral-400">Área privativa</p></div>}
-              {tipos.length > 0 && <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur"><p className="text-sm font-bold text-white">{tipos.join(", ")}</p><p className="text-xs text-neutral-400">{tipos.length === 1 ? "Tipo" : "Tipos"}</p></div>}
+          <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+            <h1 className="font-serif text-4xl font-light tracking-tight text-white sm:text-5xl">{emp.nome}</h1>
+            {construtora && <p className="mt-3 flex items-center gap-1.5 text-sm text-neutral-300"><Building2 className="h-4 w-4 text-[#c9a876]" /> Construtora {construtora}</p>}
+            {bairros.length > 0 && <p className="mt-1 flex items-center gap-1.5 text-sm text-neutral-400"><MapPin className="h-4 w-4 text-[#c9a876]" /> {bairros.join(", ")}, Curitiba - PR</p>}
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur"><p className="font-serif text-2xl font-light text-white">{properties.length}</p><p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-neutral-400">{properties.length === 1 ? "Unidade" : "Unidades"}</p></div>
+              {precoMin && <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur"><p className="font-serif text-lg font-light text-white">{formatPrice(precoMin)}</p><p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-neutral-400">A partir de</p></div>}
+              {areaMin && areaMax && <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur"><p className="font-serif text-lg font-light text-white">{areaMin === areaMax ? `${formatArea(areaMin)} m²` : `${formatArea(areaMin)} - ${formatArea(areaMax)} m²`}</p><p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-neutral-400">Área privativa</p></div>}
+              {tipos.length > 0 && <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur"><p className="font-serif text-sm font-light text-white">{tipos.join(", ")}</p><p className="mt-1 text-[10px] uppercase tracking-[0.15em] text-neutral-400">{tipos.length === 1 ? "Tipo" : "Tipos"}</p></div>}
             </div>
           </div>
         </section>
-        <StandardContent emp={emp} properties={properties} precoMin={precoMin} precoMax={precoMax} bairros={bairros} unitTypes={unitTypes} infraestrutura={infraestrutura} lat={lat} lng={lng} endereco={endereco} construtora={construtora} slug={slug} empreendimentos={empreendimentos} whatsUrl={whatsUrl} descricao={descricao} />
+        <StandardContent emp={emp} properties={properties} precoMin={precoMin} precoMax={precoMax} bairros={bairros} unitTypes={unitTypes} infraestrutura={infraestrutura} lat={lat} lng={lng} endereco={endereco} construtora={construtora} slug={slug} empreendimentos={empreendimentos} whatsUrl={whatsUrl} descricao={descricao} plantas={assets?.plantas} />
       </>
     )
   }
@@ -227,9 +231,9 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
-              <p className="font-serif text-lg italic tracking-wide text-[#c9a876] sm:text-xl">Na frente, o parque.</p>
-              <p className="mt-1 font-serif text-lg italic tracking-wide text-[#c9a876] sm:text-xl">Ao lado, o shopping.</p>
-              <p className="mt-1 font-serif text-lg italic tracking-wide text-[#c9a876] sm:text-xl">E no centro, você.</p>
+              <p className="font-serif text-3xl font-light italic leading-tight tracking-tight text-[#c9a876] sm:text-4xl lg:text-5xl">Na frente, o parque.</p>
+              <p className="mt-2 font-serif text-3xl font-light italic leading-tight tracking-tight text-[#c9a876] sm:text-4xl lg:text-5xl">Ao lado, o shopping.</p>
+              <p className="mt-2 font-serif text-3xl font-light italic leading-tight tracking-tight text-[#c9a876] sm:text-4xl lg:text-5xl">E no centro, você.</p>
 
               {descricao && (
                 <div className="mt-10 whitespace-pre-line text-[15px] leading-relaxed text-neutral-300">
@@ -291,8 +295,8 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         </div>
       )}
 
-      {/* ===== SECTION 2 — Saiba mais heading + parallax lake + implantação ===== */}
-      <section className="bg-white pt-20 md:pt-28">
+      {/* ===== SECTION 2 — Saiba mais heading + implantação ===== */}
+      <section className="bg-white pt-16 md:pt-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="font-serif text-2xl font-light italic tracking-[0.15em] text-neutral-900 sm:text-3xl">
@@ -302,7 +306,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
               o empreendimento
             </h2>
 
-            <p className="mx-auto mt-6 max-w-xl text-sm text-neutral-500">
+            <p className="mx-auto mt-5 max-w-xl text-sm text-neutral-500">
               Confira os detalhes do empreendimento com exclusividade.
               <br />Nossa equipe entrará em contato.
             </p>
@@ -311,25 +315,15 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
               href={whatsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center gap-2 bg-neutral-900 px-6 py-3 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-neutral-800"
+              className="mt-5 inline-flex items-center gap-2 rounded-full bg-neutral-900 px-6 py-3 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-neutral-800"
             >
               Fale conosco no WhatsApp
             </a>
           </div>
         </div>
 
-        {/* Parallax lake between heading and implantação */}
-        {assets.parallaxImages[1] && (
-          <div className="relative mt-20 h-[40vh] overflow-hidden md:h-[55vh]">
-            <div
-              className="absolute inset-0 bg-fixed bg-center bg-cover"
-              style={{ backgroundImage: `url(${assets.parallaxImages[1]})` }}
-            />
-          </div>
-        )}
-
         {assets.implantacaoImage && (
-          <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-28 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-20 lg:px-8">
             <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16">
               <div className="relative aspect-square overflow-hidden">
                 <Image
@@ -367,7 +361,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
 
                 <Link
                   href="#empreendimentos"
-                  className="mt-8 inline-flex items-center gap-2 bg-[#c9a876] px-6 py-3 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
+                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#c9a876] px-6 py-3 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
                 >
                   Saiba mais
                 </Link>
@@ -393,10 +387,14 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
             <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
               {assets.torres.map((torre) => {
                 const hasSlugLink = torre.slug && torre.slug !== slug
-                const CardContent = (
-                  <>
+
+                return (
+                  <div
+                    key={torre.nome}
+                    className="group flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white p-5 shadow-md transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl"
+                  >
                     {torre.render && (
-                      <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-neutral-200">
+                      <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-neutral-200">
                         <Image
                           src={torre.render}
                           alt={torre.nome}
@@ -429,24 +427,16 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                         </p>
                       )}
                     </div>
-                  </>
-                )
 
-                return (
-                  <div key={torre.nome} className="group flex flex-col">
-                    {hasSlugLink ? (
-                      <Link href={`/empreendimento/${torre.slug}`} className="block">
-                        {CardContent}
-                      </Link>
-                    ) : (
-                      <div>{CardContent}</div>
+                    {torre.plantas && torre.plantas.length > 0 && (
+                      <PlantasCarousel plantas={torre.plantas} torreNome={torre.nome} />
                     )}
 
-                    <div className="mt-6 flex flex-col items-center gap-3">
+                    <div className="mt-auto pt-6 flex flex-col items-center gap-3">
                       {hasSlugLink ? (
                         <Link
                           href={`/empreendimento/${torre.slug}`}
-                          className="inline-flex items-center gap-2 bg-[#c9a876] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
+                          className="inline-flex items-center gap-2 rounded-full bg-[#c9a876] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
                         >
                           Ver empreendimento
                         </Link>
@@ -455,9 +445,9 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                           href={whatsUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 bg-[#c9a876] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
+                          className="inline-flex items-center gap-2 rounded-full bg-[#c9a876] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
                         >
-                          Agendar visita
+                          Ver empreendimento
                         </a>
                       )}
                     </div>
@@ -584,19 +574,6 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         </div>
       </section>
 
-      {/* Mobile CTA */}
-      <div className="fixed bottom-14 left-0 z-[100] w-full border-t border-neutral-200 bg-white px-4 py-3 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] lg:hidden">
-        <div className="mx-auto flex max-w-lg items-center gap-3">
-          <div className="min-w-0 flex-1">
-            {precoMin && <><p className="text-lg font-extrabold text-slate-900">{formatPrice(precoMin)}</p><p className="text-xs text-neutral-500">A partir de</p></>}
-          </div>
-          <a href={whatsUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1da851]">
-            <svg viewBox="0 0 24 24" className="size-5 fill-white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" /><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a7.96 7.96 0 0 1-4.11-1.14l-.29-.174-3.01.79.8-2.93-.19-.3A7.96 7.96 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z" /></svg>
-            Quero visitar
-          </a>
-        </div>
-      </div>
-
       {/* FAQ + Related */}
       <section className="border-t border-neutral-100 bg-neutral-50 py-12 md:py-16">
         <div className="mx-auto max-w-4xl space-y-12 px-4 sm:px-6 lg:px-8">
@@ -634,8 +611,9 @@ function StandardContent(props: {
   empreendimentos: Awaited<ReturnType<typeof getAllEmpreendimentos>>
   whatsUrl: string
   descricao: string | null | undefined
+  plantas?: string[]
 }) {
-  const { emp, properties, precoMin, precoMax, bairros, unitTypes, infraestrutura, lat, lng, endereco, slug, empreendimentos, whatsUrl, descricao } = props
+  const { emp, properties, precoMin, precoMax, bairros, unitTypes, infraestrutura, lat, lng, endereco, slug, empreendimentos, whatsUrl, descricao, plantas } = props
   return (
     <>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -672,6 +650,16 @@ function StandardContent(props: {
                 ))}
               </div>
             </section>
+            {plantas && plantas.length > 0 && (
+              <section>
+                <h2 className="font-serif text-2xl font-light italic tracking-tight text-neutral-900">Plantas disponíveis</h2>
+                <p className="mt-1 text-sm text-neutral-500">{plantas.length} {plantas.length === 1 ? "opção" : "opções"} de planta — clique para ampliar</p>
+                <div className="mt-6">
+                  <PlantasGallery plantas={plantas} />
+                </div>
+              </section>
+            )}
+
             {infraestrutura.length > 0 && (
               <section>
                 <h2 className="font-display text-2xl font-bold text-neutral-900">Infraestrutura</h2>

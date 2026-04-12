@@ -18,8 +18,10 @@ export interface EmpreendimentoAssets {
     logo?: string
     render?: string
     planta?: string
+    plantas?: string[]
     descricao?: string
   }[]
+  plantas?: string[]
   videoUrl?: string
   mapEmbedUrl?: string
   descricaoMarketing?: string
@@ -48,6 +50,11 @@ const assetsMap: Record<string, EmpreendimentoAssets> = {
         logo: "/images/empreendimentos/reserva-barigui/logo-lago.png",
         render: "/images/empreendimentos/reserva-barigui/fachada-lago.jpg",
         descricao: "Apartamentos com 1 a 2 quartos, em formato de studio, loft, garden, ou duplex. Entrega prevista para Agosto/26.",
+        plantas: [
+          "/images/empreendimentos/reserva-barigui/plantas/lago-1.png",
+          "/images/empreendimentos/reserva-barigui/plantas/lago-2.png",
+          "/images/empreendimentos/reserva-barigui/plantas/lago-3.png",
+        ],
       },
       {
         nome: "Reserva Colina",
@@ -55,6 +62,11 @@ const assetsMap: Record<string, EmpreendimentoAssets> = {
         logo: "/images/empreendimentos/reserva-barigui/logo-colina.png",
         render: "/images/empreendimentos/reserva-barigui/render-colina.jpg",
         descricao: "Apartamentos de 3 a 4 suítes, com plantas de garden, laje, ou coberturas duplex. Entrega prevista para Julho/27.",
+        plantas: [
+          "/images/empreendimentos/reserva-barigui/plantas/colina-1.png",
+          "/images/empreendimentos/reserva-barigui/plantas/colina-2.png",
+          "/images/empreendimentos/reserva-barigui/plantas/colina-3.png",
+        ],
       },
       {
         nome: "Reserva Mirante",
@@ -62,6 +74,12 @@ const assetsMap: Record<string, EmpreendimentoAssets> = {
         logo: "/images/empreendimentos/reserva-barigui/logo-mirante.png",
         render: "/images/empreendimentos/reserva-barigui/render-mirante.jpg",
         descricao: "Salas comerciais, lojas e lajes corporativas, de 38m² a 1.222m². Entrega prevista para Setembro/27.",
+        plantas: [
+          "/images/empreendimentos/reserva-barigui/plantas/mirante-1.webp",
+          "/images/empreendimentos/reserva-barigui/plantas/mirante-2.webp",
+          "/images/empreendimentos/reserva-barigui/plantas/mirante-3.webp",
+          "/images/empreendimentos/reserva-barigui/plantas/mirante-4.webp",
+        ],
       },
     ],
     videoUrl: "https://www.youtube.com/embed/8F1lKx4xgEo",
@@ -70,6 +88,33 @@ const assetsMap: Record<string, EmpreendimentoAssets> = {
   },
 }
 
+// Sub-empreendimentos with simple asset entries (plantas only, no full editorial)
+assetsMap["reserva-colina"] = {
+  heroImage: "/images/empreendimentos/reserva-barigui/render-colina.jpg",
+  parallaxImages: [],
+  plantas: [
+    "/images/empreendimentos/reserva-barigui/plantas/colina-1.png",
+    "/images/empreendimentos/reserva-barigui/plantas/colina-2.png",
+    "/images/empreendimentos/reserva-barigui/plantas/colina-3.png",
+  ],
+}
+
+assetsMap["reserva-mirante"] = {
+  heroImage: "/images/empreendimentos/reserva-barigui/render-mirante.jpg",
+  parallaxImages: [],
+  plantas: [
+    "/images/empreendimentos/reserva-barigui/plantas/mirante-1.webp",
+    "/images/empreendimentos/reserva-barigui/plantas/mirante-2.webp",
+    "/images/empreendimentos/reserva-barigui/plantas/mirante-3.webp",
+    "/images/empreendimentos/reserva-barigui/plantas/mirante-4.webp",
+  ],
+}
+
 export function getEmpreendimentoAssets(slug: string): EmpreendimentoAssets | null {
   return assetsMap[slug] || null
+}
+
+export function hasEditorialLayout(slug: string): boolean {
+  const assets = assetsMap[slug]
+  return !!(assets && assets.torres && assets.torres.length > 0)
 }

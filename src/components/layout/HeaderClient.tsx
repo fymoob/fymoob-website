@@ -26,6 +26,8 @@ const navLinks = [
 export function HeaderClient() {
   const pathname = usePathname()
   const isHome = pathname === "/" || pathname === "/sobre"
+  const isEmpreendimento = pathname.startsWith("/empreendimento/")
+  const hasDarkHero = isHome || isEmpreendimento
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
@@ -34,7 +36,7 @@ export function HeaderClient() {
   }, [pathname])
 
   useEffect(() => {
-    if (!isHome) {
+    if (!hasDarkHero) {
       setScrolled(true)
       return
     }
@@ -45,19 +47,23 @@ export function HeaderClient() {
     requestAnimationFrame(handleScroll)
     window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [isHome])
+  }, [hasDarkHero])
 
-  const isTransparent = isHome && !scrolled
+  const isTransparent = hasDarkHero && !scrolled
+  // Header has dark background (transparent over dark hero OR dark brown when scrolled in empreendimento)
+  const isDarkHeader = isTransparent || (isEmpreendimento && scrolled)
 
   return (
     <>
-      {!isHome && <div className="h-16" />}
+      {!hasDarkHero && <div className="h-16" />}
       <header
         className={cn(
           "fixed top-0 z-50 w-full transition-all duration-300",
           isTransparent
-            ? "border-b border-transparent bg-transparent"
-            : "border-b border-neutral-200/50 bg-white/90 backdrop-blur-xl"
+            ? "bg-transparent"
+            : isEmpreendimento
+              ? "bg-[#0d0d0d]/60 backdrop-blur-2xl"
+              : "border-b border-neutral-200/50 bg-white/90 backdrop-blur-xl"
         )}
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 md:h-16 lg:px-8">
@@ -71,7 +77,7 @@ export function HeaderClient() {
               priority
               className={cn(
                 "h-9 w-auto transition-all duration-300 md:h-10",
-                isTransparent && "brightness-0 invert"
+                isDarkHeader && "brightness-0 invert"
               )}
             />
           </Link>
@@ -85,8 +91,8 @@ export function HeaderClient() {
                 className={cn(
                   "font-display text-sm font-medium transition-colors duration-300",
                   pathname === link.href
-                    ? isTransparent ? "text-white" : "text-neutral-950"
-                    : isTransparent ? "text-white/80 hover:text-white" : "text-neutral-600 hover:text-brand-primary"
+                    ? isDarkHeader ? "text-white" : "text-neutral-950"
+                    : isDarkHeader ? "text-white/80 hover:text-white" : "text-neutral-600 hover:text-brand-primary"
                 )}
               >
                 {link.label}
@@ -104,7 +110,7 @@ export function HeaderClient() {
                 rel="noopener noreferrer"
                 className={cn(
                   "flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors duration-300",
-                  isTransparent
+                  isDarkHeader
                     ? "text-white/80 hover:bg-white/10 hover:text-white"
                     : "text-neutral-500 hover:bg-neutral-100 hover:text-neutral-800"
                 )}
@@ -116,7 +122,7 @@ export function HeaderClient() {
                 href="/favoritos"
                 className={cn(
                   "flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors duration-300",
-                  isTransparent
+                  isDarkHeader
                     ? "text-white/80 hover:bg-white/10 hover:text-white"
                     : "text-neutral-500 hover:bg-neutral-100 hover:text-neutral-800"
                 )}
@@ -130,7 +136,7 @@ export function HeaderClient() {
               href="tel:+554199978-0517"
               className={cn(
                 "hidden items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 lg:flex",
-                isTransparent
+                isDarkHeader
                   ? "bg-white/15 text-white backdrop-blur-sm hover:bg-white/25"
                   : "bg-brand-primary text-white hover:bg-brand-primary-hover"
               )}
@@ -149,7 +155,7 @@ export function HeaderClient() {
                   size={22}
                   className={cn(
                     "transition-colors duration-300",
-                    isTransparent ? "text-white" : "text-neutral-950"
+                    isDarkHeader ? "text-white" : "text-neutral-950"
                   )}
                 />
                 <span className="sr-only">Abrir menu</span>
