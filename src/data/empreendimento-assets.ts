@@ -14,6 +14,7 @@ export interface EmpreendimentoAssets {
   lifestyleImage?: string
   torres?: {
     nome: string
+    slug?: string
     logo?: string
     render?: string
     planta?: string
@@ -28,7 +29,7 @@ export interface EmpreendimentoAssets {
 
 const assetsMap: Record<string, EmpreendimentoAssets> = {
   "reserva-barigui": {
-    logo: "/images/empreendimentos/reserva-barigui/logo-reserva-main.png",
+    logo: "/images/empreendimentos/reserva-barigui/logo-reserva-barigui.png",
     heroImage: "/images/empreendimentos/reserva-barigui/folhas-bg.jpg",
     heroOverlayImage: "/images/empreendimentos/reserva-barigui/folhas-hero.png",
     parallaxImages: [
@@ -43,23 +44,23 @@ const assetsMap: Record<string, EmpreendimentoAssets> = {
     torres: [
       {
         nome: "Reserva Lago",
+        slug: "reserva-barigui",
         logo: "/images/empreendimentos/reserva-barigui/logo-lago.png",
         render: "/images/empreendimentos/reserva-barigui/fachada-lago.jpg",
-        planta: "/images/empreendimentos/reserva-barigui/planta-lago.jpg",
         descricao: "Apartamentos com 1 a 2 quartos, em formato de studio, loft, garden, ou duplex. Entrega prevista para Agosto/26.",
       },
       {
         nome: "Reserva Colina",
+        slug: "reserva-colina",
         logo: "/images/empreendimentos/reserva-barigui/logo-colina.png",
         render: "/images/empreendimentos/reserva-barigui/render-colina.jpg",
-        planta: "/images/empreendimentos/reserva-barigui/planta-colina.jpg",
         descricao: "Apartamentos de 3 a 4 suítes, com plantas de garden, laje, ou coberturas duplex. Entrega prevista para Julho/27.",
       },
       {
         nome: "Reserva Mirante",
+        slug: "reserva-mirante",
         logo: "/images/empreendimentos/reserva-barigui/logo-mirante.png",
         render: "/images/empreendimentos/reserva-barigui/render-mirante.jpg",
-        planta: "/images/empreendimentos/reserva-barigui/planta-mirante.png",
         descricao: "Salas comerciais, lojas e lajes corporativas, de 38m² a 1.222m². Entrega prevista para Setembro/27.",
       },
     ],
