@@ -174,6 +174,37 @@ Campos: Ordem, Codigo, ImagemCodigo, Data, Descricao, Destaque, ExibirNoSite, Ex
 
 **Nota:** Ao pedir fotos no `/imoveis/detalhes`, usar a sintaxe de campos aninhados com os nomes corretos da listarcampos. Os nomes de campo de foto são diferentes dos de imóvel.
 
+### Campo Tipo das Fotos (classificação no CRM)
+
+Ao editar uma foto no CRM Loft/Vista, o campo "Categoria" (mostrado na interface)
+é exportado pela API como `Tipo`. O Wagner classifica as fotos escolhendo uma categoria:
+
+| Categoria CRM (UI) | Valor API (`Tipo`) | Uso no site |
+|--------------------|-------------------|-------------|
+| Imagem | `"Imagem"` | Galeria geral |
+| Externa | `"Externa"` | Fotos externas do imóvel |
+| Planta | `"Planta"` | Plantas baixas (seção dedicada) |
+
+**Implementação no site:**
+- `mapRawToProperty` em `src/services/loft.ts` mantém o array `fotos` (todas as URLs) E
+  o array `fotosPorTipo` (com `{ foto, tipo, descricao }` preservando a classificação)
+- Página de empreendimento filtra `fotosPorTipo` onde `tipo === "Planta"` para
+  alimentar a seção de plantas automaticamente
+- Fallback: se nenhuma foto tiver `Tipo = "Planta"`, usa assets estáticos de
+  `src/data/empreendimento-assets.ts` (adicionados manualmente)
+
+**Query de exemplo:**
+```js
+pesquisa: JSON.stringify({
+  fields: ["Codigo", { Foto: ["Foto", "Ordem", "Tipo", "Descricao"] }]
+})
+```
+
+**Instrução para o cliente (Wagner/Bruno):**
+> Ao adicionar uma foto de planta baixa no CRM, selecione a categoria "Planta"
+> no dropdown de Categoria. O site detecta automaticamente e mostra na seção
+> de plantas do empreendimento — sem necessidade de enviar arquivos.
+
 ---
 
 ## Características do Imóvel (81 campos booleanos)

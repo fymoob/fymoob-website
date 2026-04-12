@@ -87,6 +87,7 @@ export interface Property {
   fotoDestaque: string;
   fotoDestaquePequena: string | null;
   fotos: string[];
+  fotosPorTipo: { foto: string; tipo: string; descricao: string }[];
   urlVideo: string | null;
   temTourVirtual: boolean;
 
@@ -239,7 +240,7 @@ export interface LoftPropertyRaw {
   FotoDestaqueEmpreendimento?: string;
   URLVideo?: string;
   TemTourVirtual?: string;
-  Foto?: Record<string, { Foto: string; FotoPequena?: string; FotoOriginal?: string; Ordem?: string; Destaque?: string; Descricao?: string }>;
+  Foto?: Record<string, { Foto: string; FotoPequena?: string; FotoOriginal?: string; Ordem?: string; Destaque?: string; Descricao?: string; Tipo?: string }>;
 
   // Controle de exibição ("Sim"/"Nao")
   ExibirNoSite?: string;

@@ -104,6 +104,18 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
   const lng = properties.find((p) => p.longitude)?.longitude || null
   const videoUrl = assets?.videoUrl || properties.find((p) => p.urlVideo)?.urlVideo
 
+  // Auto-extract plantas from CRM: fotos with Tipo="Planta"
+  // Wagner marks photos as "Planta" in the Loft CRM photo editor
+  const plantasFromCRM = [...new Set(
+    properties.flatMap((p) =>
+      (p.fotosPorTipo || [])
+        .filter((f) => f.tipo.toLowerCase() === "planta")
+        .map((f) => f.foto)
+    )
+  )]
+  // Fallback: use static assets if no plantas in CRM yet
+  const plantasFinal = plantasFromCRM.length > 0 ? plantasFromCRM : (assets?.plantas || [])
+
   const itemListSchema = generateItemListSchema(properties, `/empreendimento/${slug}`)
   const realEstateSchema = {
     "@context": "https://schema.org", "@type": "RealEstateListing", name: emp.nome,
@@ -155,7 +167,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
             </div>
           </div>
         </section>
-        <StandardContent emp={emp} properties={properties} precoMin={precoMin} precoMax={precoMax} bairros={bairros} unitTypes={unitTypes} infraestrutura={infraestrutura} lat={lat} lng={lng} endereco={endereco} construtora={construtora} slug={slug} empreendimentos={empreendimentos} whatsUrl={whatsUrl} descricao={descricao} plantas={assets?.plantas} />
+        <StandardContent emp={emp} properties={properties} precoMin={precoMin} precoMax={precoMax} bairros={bairros} unitTypes={unitTypes} infraestrutura={infraestrutura} lat={lat} lng={lng} endereco={endereco} construtora={construtora} slug={slug} empreendimentos={empreendimentos} whatsUrl={whatsUrl} descricao={descricao} plantas={plantasFinal} />
       </>
     )
   }
@@ -388,6 +400,22 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
               {assets.torres.map((torre) => {
                 const hasSlugLink = torre.slug && torre.slug !== slug
 
+                // Auto-fetch plantas from CRM for this torre's empreendimento
+                // Fallback to static assets if not classified in CRM yet
+                const torreProperties = torre.slug
+                  ? properties.filter((p) =>
+                      p.empreendimento?.toLowerCase() === torre.nome.toLowerCase()
+                    )
+                  : []
+                const plantasFromCRM = [...new Set(
+                  torreProperties.flatMap((p) =>
+                    (p.fotosPorTipo || [])
+                      .filter((f) => f.tipo.toLowerCase() === "planta")
+                      .map((f) => f.foto)
+                  )
+                )]
+                const torrePlantas = plantasFromCRM.length > 0 ? plantasFromCRM : (torre.plantas || [])
+
                 return (
                   <div
                     key={torre.nome}
@@ -428,8 +456,8 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                       )}
                     </div>
 
-                    {torre.plantas && torre.plantas.length > 0 && (
-                      <PlantasCarousel plantas={torre.plantas} torreNome={torre.nome} />
+                    {torrePlantas.length > 0 && (
+                      <PlantasCarousel plantas={torrePlantas} torreNome={torre.nome} />
                     )}
 
                     <div className="mt-auto pt-6 flex flex-col items-center gap-3">

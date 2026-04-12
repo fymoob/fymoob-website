@@ -21,6 +21,7 @@ export function projectForCard(property: Property, maxPhotos = 3): Property {
     infraestrutura: [],
     // Limit photos (cards show 1, hover loads rest via /api/photos)
     fotos: property.fotos.slice(0, maxPhotos),
+    fotosPorTipo: [],
     // Strip location details not used by cards
     complemento: null,
     bloco: null,

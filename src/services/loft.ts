@@ -218,12 +218,20 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
 
   // Extract photo URLs from nested Foto object
   const fotos: string[] = []
+  const fotosPorTipo: { foto: string; tipo: string; descricao: string }[] = []
   if (raw.Foto && typeof raw.Foto === "object") {
     const sorted = Object.values(raw.Foto).sort(
       (a, b) => parseInt(a.Ordem || "0") - parseInt(b.Ordem || "0")
     )
     for (const foto of sorted) {
-      if (foto.Foto) fotos.push(foto.Foto)
+      if (foto.Foto) {
+        fotos.push(foto.Foto)
+        fotosPorTipo.push({
+          foto: foto.Foto,
+          tipo: (foto.Tipo || "").trim(),
+          descricao: (foto.Descricao || "").trim(),
+        })
+      }
     }
   }
 
@@ -286,6 +294,7 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
     fotoDestaque: raw.FotoDestaque || "",
     fotoDestaquePequena: raw.FotoDestaquePequena || null,
     fotos,
+    fotosPorTipo,
     urlVideo: raw.URLVideo || null,
     temTourVirtual: parseBool(raw.TemTourVirtual),
     exibirNoSite: parseBool(raw.ExibirNoSite),
@@ -539,7 +548,7 @@ export async function getPropertyBySlug(slug: string): Promise<Property | null> 
         }),
         fetchLoftAPI<Record<string, unknown>>("/imoveis/detalhes", {
           imovel: codigo,
-          pesquisa: JSON.stringify({ fields: ["Codigo", { Foto: ["Foto", "Ordem"] }] }),
+          pesquisa: JSON.stringify({ fields: ["Codigo", { Foto: ["Foto", "Ordem", "Tipo", "Descricao"] }] }),
         }),
       ])
 
