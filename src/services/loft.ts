@@ -475,11 +475,17 @@ function applyFilters(indexed: IndexedProperty[], filters: PropertyFilters): Pro
     if (filters.precoMin && (item.price === null || item.price < filters.precoMin)) continue
     if (filters.precoMax && (item.price === null || item.price > filters.precoMax)) continue
     if (quartosMin && (p.dormitorios === null || p.dormitorios < quartosMin)) continue
+    if (filters.quartosMax && (p.dormitorios === null || p.dormitorios > filters.quartosMax)) continue
     if (filters.areaMin && (p.areaPrivativa === null || p.areaPrivativa < filters.areaMin)) continue
     if (filters.areaMax && (p.areaPrivativa === null || p.areaPrivativa > filters.areaMax)) continue
     if (filters.vagasMin && (p.vagas === null || p.vagas < filters.vagasMin)) continue
     if (filters.suitesMin && (p.suites === null || p.suites < filters.suitesMin)) continue
     if (filters.banheirosMin && (p.banheiros === null || p.banheiros < filters.banheirosMin)) continue
+    if (filters.caracteristicas && filters.caracteristicas.length > 0) {
+      const allPropertyFeatures = new Set([...p.caracteristicas, ...p.infraestrutura])
+      const hasAll = filters.caracteristicas.every((label) => allPropertyFeatures.has(label))
+      if (!hasAll) continue
+    }
     if (searchTerms.length > 0 && !searchTerms.every((t) => item.searchableText.includes(t))) continue
     result.push(p)
   }

@@ -215,12 +215,13 @@ export function SearchBar({
     for (const b of pendingFilters.bairros) if (b) params.set("bairro", b)
     for (const c of pendingFilters.cidades) if (c) params.set("cidade", c)
     if (pendingFilters.tipos.length > 0) params.set("tipo", pendingFilters.tipos.join(","))
-    if (pendingFilters.quartos) params.set("quartos", pendingFilters.quartos)
+    if (pendingFilters.quartosMin) params.set("quartosMin", pendingFilters.quartosMin)
+    if (pendingFilters.quartosMax) params.set("quartosMax", pendingFilters.quartosMax)
     if (minPrice > priceBounds.min) params.set("precoMin", String(minPrice))
     if (maxPrice < priceBounds.max) params.set("precoMax", String(maxPrice))
     const query = params.toString()
     heroRouter.push(query ? `/lancamentos?${query}` : "/lancamentos")
-  }, [pendingFilters.bairros, pendingFilters.cidades, pendingFilters.quartos, pendingFilters.tipos, minPrice, maxPrice, priceBounds, heroRouter])
+  }, [pendingFilters.bairros, pendingFilters.cidades, pendingFilters.quartosMin, pendingFilters.quartosMax, pendingFilters.tipos, minPrice, maxPrice, priceBounds, heroRouter])
 
   const applyFilters = isLancamentos ? applyLancamentosSearch : applyFiltersBase
 
@@ -232,7 +233,7 @@ export function SearchBar({
     pendingFilters.cidades.length > 0 ||
     pendingFilters.tipos.length > 0 ||
     pendingFilters.finalidades.length > 0 ||
-    Boolean(pendingFilters.quartos) ||
+    Boolean(pendingFilters.quartosMin || pendingFilters.quartosMax) ||
     minPrice > priceBounds.min ||
     maxPrice < priceBounds.max
 
@@ -245,7 +246,8 @@ export function SearchBar({
       cidades: [],
       tipos: [],
       finalidades: [],
-      quartos: "",
+      quartosMin: "",
+      quartosMax: "",
       priceRange: [priceBounds.min, priceBounds.max],
       codigo: "",
       suitesMin: "",
@@ -253,6 +255,7 @@ export function SearchBar({
       vagasMin: "",
       areaMin: "",
       areaMax: "",
+      caracteristicas: [],
     })
 
   const advancedFilterCount =
@@ -261,13 +264,14 @@ export function SearchBar({
     (pendingFilters.banheirosMin ? 1 : 0) +
     (pendingFilters.vagasMin ? 1 : 0) +
     (pendingFilters.areaMin ? 1 : 0) +
-    (pendingFilters.areaMax ? 1 : 0)
+    (pendingFilters.areaMax ? 1 : 0) +
+    (pendingFilters.caracteristicas.length > 0 ? 1 : 0)
 
   const activeFilterCount =
     (pendingFilters.finalidades.length > 0 ? 1 : 0) +
     (pendingFilters.bairros.length > 0 || pendingFilters.cidades.length > 0 ? 1 : 0) +
     (pendingFilters.tipos.length > 0 ? 1 : 0) +
-    (pendingFilters.quartos ? 1 : 0) +
+    (pendingFilters.quartosMin || pendingFilters.quartosMax ? 1 : 0) +
     (minPrice > priceBounds.min || maxPrice < priceBounds.max ? 1 : 0) +
     advancedFilterCount
 
@@ -297,8 +301,8 @@ export function SearchBar({
       sheetKey: "type" as const,
     },
     {
-      label: pendingFilters.quartos ? quartosLabel : "Quartos",
-      active: Boolean(pendingFilters.quartos),
+      label: pendingFilters.quartosMin || pendingFilters.quartosMax ? quartosLabel : "Quartos",
+      active: Boolean(pendingFilters.quartosMin || pendingFilters.quartosMax),
       icon: BedDouble,
       sheetKey: "bedrooms" as const,
     },
@@ -425,9 +429,13 @@ export function SearchBar({
                     <div>
                       <h3 className="mb-2 text-sm font-semibold text-neutral-700">Quartos</h3>
                       <BedroomsFilter
-                        value={pendingFilters.quartos}
-                        onChange={(value) =>
-                          setPendingFilters((c) => ({ ...c, quartos: value }))
+                        minValue={pendingFilters.quartosMin}
+                        maxValue={pendingFilters.quartosMax}
+                        onMinChange={(value) =>
+                          setPendingFilters((c) => ({ ...c, quartosMin: value }))
+                        }
+                        onMaxChange={(value) =>
+                          setPendingFilters((c) => ({ ...c, quartosMax: value }))
                         }
                       />
                     </div>
@@ -522,14 +530,16 @@ export function SearchBar({
                 <SheetHeader><SheetTitle>Quartos</SheetTitle></SheetHeader>
                 <div className="px-4 pb-4">
                   <BedroomsFilter
-                    value={pendingFilters.quartos}
-                    onChange={(value) => setPendingFilters((c) => ({ ...c, quartos: value }))}
+                    minValue={pendingFilters.quartosMin}
+                    maxValue={pendingFilters.quartosMax}
+                    onMinChange={(value) => setPendingFilters((c) => ({ ...c, quartosMin: value }))}
+                    onMaxChange={(value) => setPendingFilters((c) => ({ ...c, quartosMax: value }))}
                   />
                 </div>
                 <SheetFooter className="sticky bottom-0 border-t border-neutral-100 bg-white pb-safe">
                   <div className="flex gap-3">
-                    {pendingFilters.quartos && (
-                      <button type="button" onClick={() => setPendingFilters((c) => ({ ...c, quartos: "" }))}
+                    {(pendingFilters.quartosMin || pendingFilters.quartosMax) && (
+                      <button type="button" onClick={() => setPendingFilters((c) => ({ ...c, quartosMin: "", quartosMax: "" }))}
                         className="flex-1 rounded-xl border border-neutral-200 py-3 text-sm font-medium text-neutral-600">
                         Limpar
                       </button>
@@ -709,19 +719,23 @@ export function SearchBar({
                           icon={BedDouble}
                           title="Quartos"
                           value={quartosLabel}
-                          active={Boolean(pendingFilters.quartos)}
+                          active={Boolean(pendingFilters.quartosMin || pendingFilters.quartosMax)}
                           onClear={() =>
-                            setPendingFilters((c) => ({ ...c, quartos: "" }))
+                            setPendingFilters((c) => ({ ...c, quartosMin: "", quartosMax: "" }))
                           }
                           withDivider
                         />
                       }
                     />
-                    <PopoverContent className="w-[calc(100vw-2rem)] max-w-xs p-3 md:w-72 md:p-4">
+                    <PopoverContent className="w-[calc(100vw-2rem)] max-w-xs p-3 md:w-80 md:p-4">
                       <BedroomsFilter
-                        value={pendingFilters.quartos}
-                        onChange={(value) =>
-                          setPendingFilters((current) => ({ ...current, quartos: value }))
+                        minValue={pendingFilters.quartosMin}
+                        maxValue={pendingFilters.quartosMax}
+                        onMinChange={(value) =>
+                          setPendingFilters((current) => ({ ...current, quartosMin: value }))
+                        }
+                        onMaxChange={(value) =>
+                          setPendingFilters((current) => ({ ...current, quartosMax: value }))
                         }
                       />
                     </PopoverContent>
@@ -962,10 +976,6 @@ export function SearchBar({
       pendingFilters={pendingFilters}
       setPendingFilters={setPendingFilters}
       priceBounds={priceBounds}
-      bairroOptions={bairroOptions}
-      cidadeOptions={cidadeOptions}
-      tipoOptions={filteredTipoOptions}
-      groupedBairroOptions={groupedBairroOptions}
       onApply={applyFilters}
       onClear={clearAllFilters}
     />

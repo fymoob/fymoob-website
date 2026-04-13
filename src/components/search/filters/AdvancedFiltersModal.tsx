@@ -1,15 +1,10 @@
 "use client"
 
-import { useEffect, type Dispatch, type SetStateAction } from "react"
-import { X, Search, Bath, Car, BedDouble, Maximize2, Hash } from "lucide-react"
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react"
+import { X, Search, Bath, Car, BedDouble, Maximize2, Hash, Sparkles } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import type { SearchDraftFilters, PriceBounds } from "./search-state"
-import { LocationFilter } from "./LocationFilter"
-import { PriceFilter } from "./PriceFilter"
-import { TypeFilter } from "./TypeFilter"
-import type { MultiSelectOption } from "./types"
-import type { GroupedBairroOptions } from "../useSearchBarController"
 
 interface AdvancedFiltersModalProps {
   open: boolean
@@ -17,16 +12,59 @@ interface AdvancedFiltersModalProps {
   pendingFilters: SearchDraftFilters
   setPendingFilters: Dispatch<SetStateAction<SearchDraftFilters>>
   priceBounds: PriceBounds
-  bairroOptions: MultiSelectOption[]
-  cidadeOptions: MultiSelectOption[]
-  tipoOptions: MultiSelectOption[]
-  groupedBairroOptions?: GroupedBairroOptions[]
   onApply: () => void
   onClear: () => void
   resultCount?: number
 }
 
-/* ── Number selector (Quartos, Suites, Banheiros, Vagas) ── */
+/* ── Top characteristics shown by default (most universally asked for) ── */
+const TOP_CARACTERISTICAS = [
+  "Churrasqueira",
+  "Piscina",
+  "Quintal",
+  "Sacada com Churrasqueira",
+  "Lareira",
+  "Sauna",
+  "Espaço Gourmet",
+  "Salão de Festas",
+  "Playground",
+  "Sala Fitness",
+  "Piscina Aquecida",
+  "Portaria 24h",
+] as const
+
+/* ── Full list shown after "Ver mais" is clicked ── */
+const MORE_CARACTERISTICAS = [
+  "Aceita Pet",
+  "Ar Condicionado",
+  "Armários Embutidos",
+  "Cozinha Planejada",
+  "Hidromassagem",
+  "Home Theater",
+  "Mobiliado",
+  "Semi Mobiliado",
+  "Suíte Master",
+  "Terraço",
+  "Vista Panorâmica",
+  "Vista para o Mar",
+  "Frente Mar",
+  "Deck",
+  "Reformado",
+  "Brinquedoteca",
+  "Churrasqueira Coletiva",
+  "Coworking",
+  "Elevador",
+  "Quadra de Esportes",
+  "Quadra de Tênis",
+  "Salão de Jogos",
+  "Spa",
+  "Vigilância 24h",
+  "Bicicletário",
+  "Pet Place",
+  "Parque",
+] as const
+
+/* ── Number selector with "Tanto faz" explicit option ── */
 function NumberSelector({
   label,
   icon: Icon,
@@ -58,7 +96,7 @@ function NumberSelector({
                 : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
             )}
           >
-            {opt ? `${opt}+` : "Todos"}
+            {opt ? `${opt}+` : "Tanto faz"}
           </button>
         ))}
       </div>
@@ -107,16 +145,62 @@ function AreaRangeInput({
   )
 }
 
+/* ── Characteristics checkbox grid ── */
+function CaracteristicasCheckboxes({
+  selected,
+  onToggle,
+}: {
+  selected: string[]
+  onToggle: (label: string) => void
+}) {
+  const [showMore, setShowMore] = useState(false)
+  const visible = showMore
+    ? [...TOP_CARACTERISTICAS, ...MORE_CARACTERISTICAS]
+    : TOP_CARACTERISTICAS
+
+  return (
+    <div>
+      <div className="mb-3 flex items-center gap-2">
+        <Sparkles className="size-4 text-neutral-400" />
+        <span className="text-sm font-semibold text-neutral-700">
+          Características
+        </span>
+      </div>
+      <div className="grid grid-cols-1 gap-x-4 gap-y-2.5 sm:grid-cols-2">
+        {visible.map((label) => {
+          const checked = selected.includes(label)
+          return (
+            <label
+              key={label}
+              className="flex cursor-pointer items-center gap-2.5 text-sm text-neutral-700"
+            >
+              <input
+                type="checkbox"
+                checked={checked}
+                onChange={() => onToggle(label)}
+                className="size-4 cursor-pointer rounded border-neutral-300 text-brand-primary focus:ring-brand-primary"
+              />
+              <span>{label}</span>
+            </label>
+          )
+        })}
+      </div>
+      <button
+        type="button"
+        onClick={() => setShowMore((v) => !v)}
+        className="mt-4 text-sm font-medium text-brand-primary hover:text-brand-primary-hover"
+      >
+        {showMore ? "Ver menos" : "Ver mais"}
+      </button>
+    </div>
+  )
+}
+
 export function AdvancedFiltersModal({
   open,
   onClose,
   pendingFilters,
   setPendingFilters,
-  priceBounds,
-  bairroOptions,
-  cidadeOptions,
-  tipoOptions,
-  groupedBairroOptions,
   onApply,
   onClear,
   resultCount,
@@ -139,21 +223,14 @@ export function AdvancedFiltersModal({
 
   if (!open) return null
 
-  const advancedFilterCount =
-    (pendingFilters.codigo ? 1 : 0) +
-    (pendingFilters.suitesMin ? 1 : 0) +
-    (pendingFilters.banheirosMin ? 1 : 0) +
-    (pendingFilters.vagasMin ? 1 : 0) +
-    (pendingFilters.areaMin ? 1 : 0) +
-    (pendingFilters.areaMax ? 1 : 0)
-
-  const totalFilterCount =
-    (pendingFilters.bairros.length > 0 || pendingFilters.cidades.length > 0 ? 1 : 0) +
-    (pendingFilters.tipos.length > 0 ? 1 : 0) +
-    (pendingFilters.quartos ? 1 : 0) +
-    (pendingFilters.finalidades.length > 0 ? 1 : 0) +
-    (pendingFilters.priceRange[0] > priceBounds.min || pendingFilters.priceRange[1] < priceBounds.max ? 1 : 0) +
-    advancedFilterCount
+  const toggleCaracteristica = (label: string) => {
+    setPendingFilters((c) => ({
+      ...c,
+      caracteristicas: c.caracteristicas.includes(label)
+        ? c.caracteristicas.filter((x) => x !== label)
+        : [...c.caracteristicas, label],
+    }))
+  }
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center">
@@ -168,7 +245,7 @@ export function AdvancedFiltersModal({
 
         {/* ── Header ── */}
         <div className="flex shrink-0 items-center justify-between border-b border-neutral-100 px-6 py-4">
-          <h2 className="font-display text-lg font-bold text-neutral-900">Filtros</h2>
+          <h2 className="font-display text-lg font-bold text-neutral-900">Mais filtros</h2>
           <button
             type="button"
             onClick={onClose}
@@ -183,88 +260,8 @@ export function AdvancedFiltersModal({
         <div className="flex-1 overflow-y-auto px-6 py-6">
           <div className="space-y-8">
 
-            {/* Finalidade */}
-            <div>
-              <h3 className="mb-3 text-sm font-semibold text-neutral-700">O que deseja?</h3>
-              <div className="flex gap-2">
-                {(["comprar", "alugar"] as const).map((f) => {
-                  const isActive = f === "comprar"
-                    ? !pendingFilters.finalidades.includes("locacao")
-                    : pendingFilters.finalidades.includes("locacao")
-                  return (
-                    <button
-                      key={f}
-                      type="button"
-                      onClick={() =>
-                        setPendingFilters((c) => ({
-                          ...c,
-                          finalidades: f === "alugar" ? ["locacao"] : ["venda"],
-                        }))
-                      }
-                      className={cn(
-                        "flex-1 rounded-xl py-3 text-sm font-semibold transition-all",
-                        isActive
-                          ? "bg-brand-primary text-white shadow-sm"
-                          : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
-                      )}
-                    >
-                      {f === "comprar" ? "Comprar" : "Alugar"}
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-
-            {/* Localização + Tipo — 2 cols */}
+            {/* Suítes, Banheiros, Vagas — grid 2 cols */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <div>
-                <h3 className="mb-3 text-sm font-semibold text-neutral-700">Localização</h3>
-                <LocationFilter
-                  bairros={bairroOptions}
-                  cidades={cidadeOptions}
-                  groupedBairros={groupedBairroOptions}
-                  selectedBairros={pendingFilters.bairros}
-                  selectedCidades={pendingFilters.cidades}
-                  onBairrosChange={(values) =>
-                    setPendingFilters((c) => ({ ...c, bairros: values }))
-                  }
-                  onCidadesChange={(values) =>
-                    setPendingFilters((c) => ({ ...c, cidades: values }))
-                  }
-                />
-              </div>
-              <div>
-                <h3 className="mb-3 text-sm font-semibold text-neutral-700">Tipo de imóvel</h3>
-                <TypeFilter
-                  typeOptions={tipoOptions}
-                  selectedTipos={pendingFilters.tipos}
-                  onTiposChange={(values) =>
-                    setPendingFilters((c) => ({ ...c, tipos: values }))
-                  }
-                />
-              </div>
-            </div>
-
-            {/* Preço */}
-            <div>
-              <h3 className="mb-3 text-sm font-semibold text-neutral-700">Faixa de preço</h3>
-              <PriceFilter
-                value={pendingFilters.priceRange}
-                bounds={priceBounds}
-                onChange={(value) =>
-                  setPendingFilters((c) => ({ ...c, priceRange: value }))
-                }
-              />
-            </div>
-
-            {/* Quartos, Suites, Banheiros, Vagas — grid 2 cols */}
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <NumberSelector
-                label="Quartos"
-                icon={BedDouble}
-                value={pendingFilters.quartos}
-                onChange={(v) => setPendingFilters((c) => ({ ...c, quartos: v }))}
-              />
               <NumberSelector
                 label="Suítes"
                 icon={BedDouble}
@@ -285,16 +282,20 @@ export function AdvancedFiltersModal({
               />
             </div>
 
-            {/* Area */}
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              <AreaRangeInput
-                label="Área privativa (m²)"
-                minValue={pendingFilters.areaMin}
-                maxValue={pendingFilters.areaMax}
-                onMinChange={(v) => setPendingFilters((c) => ({ ...c, areaMin: v }))}
-                onMaxChange={(v) => setPendingFilters((c) => ({ ...c, areaMax: v }))}
-              />
-            </div>
+            {/* Área privativa */}
+            <AreaRangeInput
+              label="Área privativa (m²)"
+              minValue={pendingFilters.areaMin}
+              maxValue={pendingFilters.areaMax}
+              onMinChange={(v) => setPendingFilters((c) => ({ ...c, areaMin: v }))}
+              onMaxChange={(v) => setPendingFilters((c) => ({ ...c, areaMax: v }))}
+            />
+
+            {/* Características */}
+            <CaracteristicasCheckboxes
+              selected={pendingFilters.caracteristicas}
+              onToggle={toggleCaracteristica}
+            />
 
             {/* Código do imóvel */}
             <div>

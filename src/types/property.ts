@@ -131,11 +131,13 @@ export interface PropertyFilters {
   precoMax?: number;
   dormitoriosMin?: number;
   quartosMin?: number;
+  quartosMax?: number;
   areaMin?: number;
   areaMax?: number;
   vagasMin?: number;
   suitesMin?: number;
   banheirosMin?: number;
+  caracteristicas?: string[];
   lancamento?: boolean;
   busca?: string;
   orderBy?: "preco-asc" | "preco-desc" | "area-asc" | "area-desc" | "recente";

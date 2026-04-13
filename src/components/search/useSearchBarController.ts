@@ -198,9 +198,17 @@ export function useSearchBarController({
       ? `${formatCompactCurrency(minPrice)} - ${formatCompactCurrency(maxPrice)}`
       : "Qualquer preço"
 
-  const quartosLabel = pendingFilters.quartos
-    ? `${pendingFilters.quartos}+ quartos`
-    : "Qualquer quarto"
+  const quartosLabel = (() => {
+    const min = pendingFilters.quartosMin
+    const max = pendingFilters.quartosMax
+    if (!min && !max) return "Qualquer quarto"
+    if (min && max && min === max) {
+      return `${min} ${Number(min) === 1 ? "quarto" : "quartos"}`
+    }
+    if (min && max) return `${min} a ${max} quartos`
+    if (min) return `${min}+ quartos`
+    return `até ${max} quartos`
+  })()
 
   const typeLabel = useMemo(() => {
     if (pendingFilters.tipos.length === 0) return "Todos os tipos"

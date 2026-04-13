@@ -11,7 +11,8 @@ export interface SearchDraftFilters {
   cidades: string[]
   tipos: string[]
   finalidades: string[]
-  quartos: string
+  quartosMin: string
+  quartosMax: string
   priceRange: [number, number]
   codigo: string
   suitesMin: string
@@ -19,6 +20,7 @@ export interface SearchDraftFilters {
   vagasMin: string
   areaMin: string
   areaMax: string
+  caracteristicas: string[]
 }
 
 export const PRICE_STEP = 50_000
@@ -66,7 +68,12 @@ export function createDraftFromSearchParams(
     cidades: parseCsvParam(params.get("cidade")),
     tipos: parseCsvParam(params.get("tipo")),
     finalidades: parseCsvParam(params.get("finalidade")),
-    quartos: params.get("quartos") ?? params.get("dormitoriosMin") ?? "",
+    quartosMin:
+      params.get("quartosMin") ??
+      params.get("quartos") ??
+      params.get("dormitoriosMin") ??
+      "",
+    quartosMax: params.get("quartosMax") ?? "",
     priceRange: normalizeRange([minFromUrl, maxFromUrl], bounds),
     codigo: params.get("codigo") ?? "",
     suitesMin: params.get("suitesMin") ?? "",
@@ -74,6 +81,10 @@ export function createDraftFromSearchParams(
     vagasMin: params.get("vagasMin") ?? "",
     areaMin: params.get("areaMin") ?? "",
     areaMax: params.get("areaMax") ?? "",
+    caracteristicas: (params.get("caracteristicas") ?? "")
+      .split(",")
+      .map((c) => c.trim())
+      .filter(Boolean),
   }
 }
 
@@ -96,11 +107,18 @@ export function applyDraftToSearchParams(
   setCsvParam("tipo", draft.tipos)
   setCsvParam("finalidade", draft.finalidades)
 
-  if (draft.quartos) {
-    params.set("quartos", draft.quartos)
+  if (draft.quartosMin) {
+    params.set("quartosMin", draft.quartosMin)
   } else {
-    params.delete("quartos")
+    params.delete("quartosMin")
   }
+  if (draft.quartosMax) {
+    params.set("quartosMax", draft.quartosMax)
+  } else {
+    params.delete("quartosMax")
+  }
+  // Legacy params — cleaned up in favor of quartosMin/quartosMax
+  params.delete("quartos")
   params.delete("dormitoriosMin")
 
   const [minPrice, maxPrice] = draft.priceRange
@@ -151,6 +169,12 @@ export function applyDraftToSearchParams(
     params.set("areaMax", draft.areaMax)
   } else {
     params.delete("areaMax")
+  }
+
+  if (draft.caracteristicas.length > 0) {
+    params.set("caracteristicas", draft.caracteristicas.join(","))
+  } else {
+    params.delete("caracteristicas")
   }
 
   params.delete("page")

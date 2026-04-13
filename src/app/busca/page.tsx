@@ -35,6 +35,8 @@ interface ParsedSearchState {
   tipos: PropertyType[]
   finalidades: PropertyFinalidade[]
   quartos?: number
+  quartosMax?: number
+  caracteristicas: string[]
   busca?: string
   canonicalQuery: string
   fullQuery: string
@@ -148,8 +150,14 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
   const suitesMin = parseNumberParam(getParamValue(searchParams.suitesMin))
   const banheirosMin = parseNumberParam(getParamValue(searchParams.banheirosMin))
   const quartos =
+    parseNumberParam(getParamValue(searchParams.quartosMin)) ??
     parseNumberParam(getParamValue(searchParams.quartos)) ??
     parseNumberParam(getParamValue(searchParams.dormitoriosMin))
+  const quartosMax = parseNumberParam(getParamValue(searchParams.quartosMax))
+  const caracteristicas = (getParamValue(searchParams.caracteristicas) ?? "")
+    .split(",")
+    .map((c) => c.trim())
+    .filter(Boolean)
   const orderBy = normalizeOrderBy(getParamValue(searchParams.orderBy))
   const page = Math.max(1, parseNumberParam(getParamValue(searchParams.page)) ?? 1)
 
@@ -186,6 +194,8 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
     filters.quartosMin = quartos
     filters.dormitoriosMin = quartos
   }
+  if (quartosMax) filters.quartosMax = quartosMax
+  if (caracteristicas.length > 0) filters.caracteristicas = caracteristicas
   if (busca) filters.busca = busca
   if (orderBy) filters.orderBy = orderBy
   const lancamento = getParamValue(searchParams.lancamento)
@@ -200,7 +210,8 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
   if (finalidades.length > 0) {
     canonicalParams.set("finalidade", finalidades.map(slugify).join(","))
   }
-  if (quartos) canonicalParams.set("quartos", String(quartos))
+  if (quartos) canonicalParams.set("quartosMin", String(quartos))
+  if (quartosMax) canonicalParams.set("quartosMax", String(quartosMax))
   if (precoMin) canonicalParams.set("precoMin", String(precoMin))
   if (precoMax) canonicalParams.set("precoMax", String(precoMax))
   if (busca) canonicalParams.set("busca", busca)
@@ -212,7 +223,9 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
     cidades,
     tipos,
     finalidades,
-    quartos,
+    quartos: quartos ?? undefined,
+    quartosMax: quartosMax ?? undefined,
+    caracteristicas,
     busca,
     canonicalQuery: canonicalParams.toString(),
     fullQuery,
@@ -236,8 +249,16 @@ export async function generateMetadata({
     titleParts.push("em Curitiba")
   }
 
-  if (state.quartos) {
+  if (state.quartos && state.quartosMax) {
+    titleParts.push(
+      state.quartos === state.quartosMax
+        ? `com ${state.quartos} quartos`
+        : `com ${state.quartos} a ${state.quartosMax} quartos`
+    )
+  } else if (state.quartos) {
     titleParts.push(`com ${state.quartos}+ quartos`)
+  } else if (state.quartosMax) {
+    titleParts.push(`até ${state.quartosMax} quartos`)
   }
 
   const title = titleParts.join(" ")
