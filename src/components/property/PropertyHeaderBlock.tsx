@@ -41,7 +41,7 @@ export function PropertyHeaderBlock({
         {shortTitle || property.titulo}
       </h1>
 
-      <div className={cn("mt-4 flex flex-wrap items-center gap-2", isPremium && "mt-5")}>
+      <div className="mt-5 flex flex-wrap items-center gap-2">
         <PropertyBadge variant={property.finalidade === "Venda" ? "sale" : "rent"}>
           {property.finalidade}
         </PropertyBadge>
@@ -51,8 +51,8 @@ export function PropertyHeaderBlock({
       {(property.endereco || property.bairro) && (
         <p
           className={cn(
-            "mt-3 flex items-center gap-1.5 text-sm text-neutral-500",
-            isPremium && "mt-5 text-base text-slate-500"
+            "mt-5 flex items-center gap-1.5 text-sm text-neutral-500",
+            isPremium && "text-base text-slate-500"
           )}
         >
           <MapPin size={14} className="shrink-0 text-neutral-400" />
@@ -63,49 +63,24 @@ export function PropertyHeaderBlock({
       )}
 
       {isSaleOnly && property.precoVenda && (
-        <p className={cn(
-          "text-2xl font-extrabold tracking-tight text-slate-900 lg:hidden",
-          isPremium ? "mt-8" : "mt-6"
-        )}>
+        <p className="mt-6 text-2xl font-extrabold tracking-tight text-slate-900 lg:hidden">
           {formatPrice(property.precoVenda)}
         </p>
       )}
 
-      {!isPremium && (
-        <div className={isSaleOnly && property.precoVenda ? "mt-5 lg:mt-5" : "mt-5"}>
-          <div className="h-0.5 w-16 rounded-full bg-brand-primary" />
-          <div className="mt-4">
-            <PropertyFeatures
-              dormitorios={property.dormitorios}
-              suites={property.suites}
-              banheiros={property.banheiros}
-              vagas={property.vagas}
-              areaPrivativa={property.areaPrivativa}
-              areaTotal={property.areaTotal}
-              searchGrid
-            />
-          </div>
-          {!isSaleOnly && (
-            <div className="mt-6 border-t border-slate-200 lg:hidden" />
-          )}
-        </div>
-      )}
-
-      {isPremium && (
-        <div className={cn(
-          "border-t border-slate-200/80 pt-8 md:pt-10",
-          isSaleOnly && property.precoVenda ? "mt-6 md:mt-12" : "mt-10 md:mt-12"
-        )}>
-          <PropertyFeatures
-            dormitorios={property.dormitorios}
-            suites={property.suites}
-            banheiros={property.banheiros}
-            vagas={property.vagas}
-            areaPrivativa={property.areaPrivativa}
-            areaTotal={property.areaTotal}
-            searchGrid
-          />
-        </div>
+      <div className="mt-6">
+        <PropertyFeatures
+          dormitorios={property.dormitorios}
+          suites={property.suites}
+          banheiros={property.banheiros}
+          vagas={property.vagas}
+          areaPrivativa={property.areaPrivativa}
+          areaTotal={property.areaTotal}
+          searchGrid
+        />
+      </div>
+      {!isSaleOnly && (
+        <div className="mt-6 border-t border-slate-200 lg:hidden" />
       )}
     </div>
   )

@@ -5,7 +5,6 @@ import { ChevronLeft, ChevronRight, Grid } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel"
-import type { PropertyPageVariant } from "@/types/property"
 
 interface PropertyHeroProps {
   fotos: string[]
@@ -13,7 +12,6 @@ interface PropertyHeroProps {
   totalPhotos?: number
   mainImage: string
   alt: string
-  variant: PropertyPageVariant
   onOpenGallery: () => void
 }
 
@@ -22,17 +20,12 @@ export function PropertyHero({
   totalPhotos,
   mainImage,
   alt,
-  variant,
   onOpenGallery,
 }: PropertyHeroProps) {
   const photos = fotos.length > 0 ? fotos : [mainImage]
   const total = totalPhotos ?? photos.length
   const [currentSlide, setCurrentSlide] = useState(0)
-  const standardStageStyle = {
-    height: "clamp(420px, 58dvh, 680px)",
-    width: "min(100%, calc(clamp(420px, 58dvh, 680px) * 16 / 9))",
-  }
-  const premiumStageStyle = {
+  const stageStyle = {
     height: "clamp(460px, 64dvh, 760px)",
     width: "min(100%, calc(clamp(460px, 64dvh, 760px) * 16 / 9))",
   }
@@ -123,168 +116,90 @@ export function PropertyHero({
 
       </div>
 
-      {variant === "premium" ? (
+      <div
+        className="relative hidden w-full cursor-pointer overflow-hidden bg-slate-950 md:block"
+        onClick={onOpenGallery}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") onOpenGallery()
+        }}
+        aria-label="Abrir galeria de fotos"
+      >
+        <div className="absolute inset-0 bg-slate-950" aria-hidden="true" />
         <div
-          className="relative hidden w-full cursor-pointer overflow-hidden bg-slate-950 md:block"
-          onClick={onOpenGallery}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") onOpenGallery()
+          className="absolute inset-0 scale-[1.08] opacity-90"
+          style={{
+            backgroundImage: `url(${photos[currentSlide]})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "blur(52px) brightness(0.36)",
           }}
-          aria-label="Abrir galeria de fotos"
-        >
-          <div className="absolute inset-0 bg-slate-950" aria-hidden="true" />
-          <div
-            className="absolute inset-0 scale-[1.08] opacity-90"
-            style={{
-              backgroundImage: `url(${photos[currentSlide]})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              filter: "blur(52px) brightness(0.36)",
-            }}
-            aria-hidden="true"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse at center, rgba(15,23,42,0.02) 0%, rgba(15,23,42,0.22) 52%, rgba(2,6,23,0.84) 100%)",
-            }}
-            aria-hidden="true"
-          />
+          aria-hidden="true"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, rgba(15,23,42,0.02) 0%, rgba(15,23,42,0.22) 52%, rgba(2,6,23,0.84) 100%)",
+          }}
+          aria-hidden="true"
+        />
 
-          <div className="relative z-10 mx-auto flex w-full max-w-[1680px] items-center justify-center px-4 py-5 lg:px-6 lg:py-6">
-            <div
-              className="group/hero relative overflow-hidden rounded-[24px] border border-white/10 shadow-[0_38px_120px_rgba(0,0,0,0.42)]"
-              style={premiumStageStyle}
-            >
-              {photos.map((photo, index) => (
-                <div
-                  key={`premium-${index}`}
-                  className={cn(
-                    "absolute inset-0 transition-opacity duration-700 ease-out",
-                    index === currentSlide ? "opacity-100" : "pointer-events-none opacity-0"
-                  )}
-                >
-                  <Image
-                    src={photo}
-                    alt={`${alt} - foto ${index + 1}`}
-                    fill
-                    priority={index === 0}
-                    loading={index === 0 ? "eager" : "lazy"}
-                    className="object-cover transition-transform duration-[1800ms] ease-out group-hover/hero:scale-[1.02]"
-                    sizes="(max-width: 1536px) 92vw, 1350px"
-                    quality={92}
-                  />
-                </div>
-              ))}
-
+        <div className="relative z-10 mx-auto flex w-full max-w-[1680px] items-center justify-center px-4 py-5 lg:px-6 lg:py-6">
+          <div
+            className="group/hero relative overflow-hidden rounded-[24px] border border-white/10 shadow-[0_38px_120px_rgba(0,0,0,0.42)]"
+            style={stageStyle}
+          >
+            {photos.map((photo, index) => (
               <div
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(15,23,42,0.05) 0%, rgba(15,23,42,0.12) 42%, rgba(2,6,23,0.34) 100%)",
-                }}
-                aria-hidden="true"
-              />
+                key={`stage-${index}`}
+                className={cn(
+                  "absolute inset-0 transition-opacity duration-700 ease-out",
+                  index === currentSlide ? "opacity-100" : "pointer-events-none opacity-0"
+                )}
+              >
+                <Image
+                  src={photo}
+                  alt={`${alt} - foto ${index + 1}`}
+                  fill
+                  priority={index === 0}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  className="object-cover transition-transform duration-[1800ms] ease-out group-hover/hero:scale-[1.02]"
+                  sizes="(max-width: 1536px) 92vw, 1350px"
+                  quality={92}
+                />
+              </div>
+            ))}
 
-              {photos.length > 1 && (
-                <div className="absolute bottom-4 right-4 z-20">
-                  <span className="rounded-full bg-black/45 px-3 py-1.5 text-xs font-medium tabular-nums text-white/90 backdrop-blur-md">
-                    {currentSlide + 1} / {total}
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {photos.length > 1 && (
-            <div className="absolute right-6 top-6 z-20 lg:right-10 lg:top-8">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold text-white shadow-lg ring-1 ring-white/10 backdrop-blur-md">
-                <Grid className="size-4" />
-                Ver {total} fotos
-              </span>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div
-          className="relative hidden w-full cursor-pointer overflow-hidden bg-slate-950 md:block"
-          onClick={onOpenGallery}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") onOpenGallery()
-          }}
-          aria-label="Abrir galeria de fotos"
-        >
-          <div className="absolute inset-0 bg-slate-950" aria-hidden="true" />
-          <div
-            className="absolute inset-0 scale-110 opacity-90"
-            style={{
-              backgroundImage: `url(${photos[currentSlide]})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              filter: "blur(38px) brightness(0.45)",
-            }}
-            aria-hidden="true"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse at center, rgba(15,23,42,0.08) 0%, rgba(15,23,42,0.42) 58%, rgba(2,6,23,0.84) 100%)",
-            }}
-            aria-hidden="true"
-          />
-
-          <div className="relative z-10 mx-auto flex w-full max-w-[1460px] items-center justify-center px-6 py-7 lg:px-8 lg:py-8">
             <div
-              className="group/hero relative overflow-hidden rounded-[28px] border border-white/10 shadow-[0_28px_80px_rgba(0,0,0,0.38)]"
-              style={standardStageStyle}
-            >
-              {photos.map((photo, index) => (
-                <div
-                  key={`stage-${index}`}
-                  className={cn(
-                    "absolute inset-0 transition-opacity duration-700 ease-out",
-                    index === currentSlide ? "opacity-100" : "opacity-0 pointer-events-none"
-                  )}
-                >
-                  <Image
-                    src={photo}
-                    alt={`${alt} - foto ${index + 1}`}
-                    fill
-                    priority={index === 0}
-                    loading={index === 0 ? "eager" : "lazy"}
-                    className="object-cover transition-transform duration-[1600ms] ease-out group-hover/hero:scale-[1.03]"
-                    sizes="(max-width: 1536px) 88vw, 1210px"
-                    quality={92}
-                  />
-                </div>
-              ))}
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(15,23,42,0.05) 0%, rgba(15,23,42,0.12) 42%, rgba(2,6,23,0.34) 100%)",
+              }}
+              aria-hidden="true"
+            />
 
-              {photos.length > 1 && (
-                <div className="absolute bottom-3 right-3 z-20">
-                  <span className="rounded-full bg-black/40 px-3 py-1.5 text-xs font-medium tabular-nums text-white/90 backdrop-blur-md">
-                    {currentSlide + 1} / {total}
-                  </span>
-                </div>
-              )}
-            </div>
+            {photos.length > 1 && (
+              <div className="absolute bottom-4 right-4 z-20">
+                <span className="rounded-full bg-black/45 px-3 py-1.5 text-xs font-medium tabular-nums text-white/90 backdrop-blur-md">
+                  {currentSlide + 1} / {total}
+                </span>
+              </div>
+            )}
           </div>
-
-          {photos.length > 1 && (
-            <div className="absolute right-8 top-6 z-20 lg:right-12 lg:top-8">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold text-white shadow-lg ring-1 ring-white/10 backdrop-blur-md">
-                <Grid className="size-4" />
-                Ver {total} fotos
-              </span>
-            </div>
-          )}
         </div>
-      )}
+
+        {photos.length > 1 && (
+          <div className="absolute right-6 top-6 z-20 lg:right-8 lg:top-6">
+            <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2.5 text-sm font-semibold text-white shadow-lg ring-1 ring-white/10 backdrop-blur-md">
+              <Grid className="size-4" />
+              Ver {total} fotos
+            </span>
+          </div>
+        )}
+      </div>
 
       {/* ═══ Navigation arrows (desktop) — glass circles on blur area ═══ */}
       {photos.length > 1 && (

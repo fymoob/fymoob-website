@@ -170,7 +170,6 @@ export default async function PropertyPage({ params }: PageProps) {
         fotos={allPhotos}
         mainImage={mainImage}
         alt={alt}
-        variant={variant}
       />
 
       <div className="mx-auto w-full max-w-7xl px-4 md:px-8">
@@ -224,7 +223,7 @@ export default async function PropertyPage({ params }: PageProps) {
           </div>
 
           <aside className="relative z-40 hidden lg:block">
-            <div className={variant === "premium" ? "sticky top-24 -mt-20" : "sticky top-24 -mt-10"}>
+            <div className="sticky top-24 -mt-16">
               <LazyContactSidebar
                 propertyTitle={property.titulo}
                 propertyCode={property.codigo}

@@ -124,35 +124,23 @@ export function ContactSidebar({
         type="text"
         placeholder="Seu nome"
         required
-        className={cn(
-          "h-11 rounded-xl border-neutral-200 placeholder:text-neutral-400",
-          isPremium ? "bg-white" : "bg-neutral-50/70"
-        )}
+        className="h-11 rounded-xl border-neutral-200 bg-neutral-50/70 placeholder:text-neutral-400"
       />
       <Input
         type="email"
         placeholder="Seu e-mail"
         required
-        className={cn(
-          "h-11 rounded-xl border-neutral-200 placeholder:text-neutral-400",
-          isPremium ? "bg-white" : "bg-neutral-50/70"
-        )}
+        className="h-11 rounded-xl border-neutral-200 bg-neutral-50/70 placeholder:text-neutral-400"
       />
       <Input
         type="tel"
         placeholder="Seu telefone"
         required
-        className={cn(
-          "h-11 rounded-xl border-neutral-200 placeholder:text-neutral-400",
-          isPremium ? "bg-white" : "bg-neutral-50/70"
-        )}
+        className="h-11 rounded-xl border-neutral-200 bg-neutral-50/70 placeholder:text-neutral-400"
       />
       <Textarea
         placeholder="Quero saber mais sobre este imóvel..."
-        className={cn(
-          "min-h-24 rounded-xl border-neutral-200 placeholder:text-neutral-400",
-          isPremium ? "bg-white" : "bg-neutral-50/70"
-        )}
+        className="min-h-24 rounded-xl border-neutral-200 bg-neutral-50/70 placeholder:text-neutral-400"
       />
       <Button
         type="submit"
@@ -175,10 +163,10 @@ export function ContactSidebar({
   return (
     <Card
       className={cn(
-        "relative z-40 border py-0 shadow-xl backdrop-blur-xl",
+        "relative z-40 border border-slate-200/80 bg-white/95 py-0 backdrop-blur-xl",
         isPremium
-          ? "rounded-[30px] border-slate-200/80 bg-white/95 shadow-[0_30px_80px_rgba(15,23,42,0.14)]"
-          : "border-white/50 bg-white/95"
+          ? "rounded-[30px] shadow-[0_30px_80px_rgba(15,23,42,0.14)]"
+          : "rounded-3xl shadow-xl"
       )}
     >
       <CardContent className={cn("px-6", isPremium ? "py-7" : "py-7")}>
