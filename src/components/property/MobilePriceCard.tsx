@@ -27,16 +27,29 @@ export function MobilePriceCard({
     : null
   const showTotal = totalPacote && rentalBase && totalPacote > rentalBase
 
-  const hasCond = valorCondominio && valorCondominio > 0
-  const hasIptu = valorIptu && valorIptu > 0
+  const hasCond = valorCondominio !== null && valorCondominio >= 1
+  const hasIptu = valorIptu !== null && valorIptu >= 1
   const showTaxes = hasCond || hasIptu
 
   if (showConsult) return null
 
-  // Sale-only: if there's no Cond/IPTU to show, the price is already in
-  // PropertyHeaderBlock — no card needed. Otherwise we render the taxes here.
   const isSaleOnly = !isDual && !isRental
-  if (isSaleOnly && !showTaxes) return null
+
+  // Sale-only: price already in PropertyHeaderBlock. If there are taxes,
+  // render a bare divider + muted line (no bordered card).
+  if (isSaleOnly) {
+    if (!showTaxes) return null
+    return (
+      <div className="lg:hidden">
+        <div className="h-px w-full bg-slate-200" />
+        <p className="mt-4 text-sm text-slate-500">
+          {hasCond && <>Cond. {formatPrice(valorCondominio)}</>}
+          {hasCond && hasIptu && <span className="mx-1.5">·</span>}
+          {hasIptu && <>IPTU {formatPrice(valorIptu)}</>}
+        </p>
+      </div>
+    )
+  }
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white px-5 py-4 lg:hidden">
@@ -56,7 +69,7 @@ export function MobilePriceCard({
             <span className="text-sm font-medium text-slate-400">Aluguel</span>
           </div>
         </div>
-      ) : isRental ? (
+      ) : (
         <div className="flex items-baseline justify-between">
           <p className="text-2xl font-extrabold tracking-tight text-slate-900">
             {formatPrice(precoAluguel ?? precoVenda)}
@@ -64,11 +77,12 @@ export function MobilePriceCard({
           </p>
           <span className="text-sm font-medium text-slate-400">Aluguel</span>
         </div>
-      ) : null}
+      )}
 
       {showTaxes && (
-        <div className={(isDual || isRental) ? "mt-3 border-t border-slate-100 pt-3" : ""}>
-          <p className="text-sm text-slate-500">
+        <>
+          <div className="mt-4 h-px w-full bg-slate-200" />
+          <p className="mt-4 text-sm text-slate-500">
             {hasCond && <>Cond. {formatPrice(valorCondominio)}</>}
             {hasCond && hasIptu && <span className="mx-1.5">·</span>}
             {hasIptu && <>IPTU {formatPrice(valorIptu)}</>}
@@ -78,7 +92,7 @@ export function MobilePriceCard({
               Aluguel + Condomínio + IPTU = {formatPrice(totalPacote)}/mês
             </p>
           )}
-        </div>
+        </>
       )}
     </div>
   )
