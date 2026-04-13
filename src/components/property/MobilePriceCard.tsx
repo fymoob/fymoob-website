@@ -35,18 +35,39 @@ export function MobilePriceCard({
 
   const isSaleOnly = !isDual && !isRental
 
+  const taxesGrid = (
+    <div className="grid grid-cols-2 gap-4">
+      {hasCond && (
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
+            Condomínio
+          </p>
+          <p className="mt-1 text-base font-semibold text-slate-900">
+            {formatPrice(valorCondominio)}
+          </p>
+        </div>
+      )}
+      {hasIptu && (
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
+            IPTU
+          </p>
+          <p className="mt-1 text-base font-semibold text-slate-900">
+            {formatPrice(valorIptu)}
+          </p>
+        </div>
+      )}
+    </div>
+  )
+
   // Sale-only: price already in PropertyHeaderBlock. If there are taxes,
-  // render a bare divider + muted line (no bordered card).
+  // render a bare divider + grid (no bordered card).
   if (isSaleOnly) {
     if (!showTaxes) return null
     return (
       <div className="lg:hidden">
         <div className="h-px w-full bg-slate-200" />
-        <p className="mt-4 text-sm text-slate-500">
-          {hasCond && <>Cond. {formatPrice(valorCondominio)}</>}
-          {hasCond && hasIptu && <span className="mx-1.5">·</span>}
-          {hasIptu && <>IPTU {formatPrice(valorIptu)}</>}
-        </p>
+        <div className="mt-4">{taxesGrid}</div>
       </div>
     )
   }
@@ -82,13 +103,9 @@ export function MobilePriceCard({
       {showTaxes && (
         <>
           <div className="mt-4 h-px w-full bg-slate-200" />
-          <p className="mt-4 text-sm text-slate-500">
-            {hasCond && <>Cond. {formatPrice(valorCondominio)}</>}
-            {hasCond && hasIptu && <span className="mx-1.5">·</span>}
-            {hasIptu && <>IPTU {formatPrice(valorIptu)}</>}
-          </p>
+          <div className="mt-4">{taxesGrid}</div>
           {showTotal && (
-            <p className="mt-1 text-sm font-semibold text-slate-700">
+            <p className="mt-3 text-sm font-semibold text-slate-700">
               Aluguel + Condomínio + IPTU = {formatPrice(totalPacote)}/mês
             </p>
           )}
