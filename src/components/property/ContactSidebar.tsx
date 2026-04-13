@@ -229,28 +229,30 @@ export function ContactSidebar({
             </div>
           )}
 
-          {(valorCondominio || valorIptu) && (
-            <div className="mt-3 space-y-1.5 border-t border-neutral-100 pt-3">
-              {valorCondominio && valorCondominio > 0 && (
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-slate-500">Condomínio</span>
-                  <span className="text-slate-700">{formatPrice(valorCondominio)}</span>
-                </div>
-              )}
-              {valorIptu && valorIptu > 0 && (
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-slate-500">IPTU</span>
-                  <span className="text-slate-700">{formatPrice(valorIptu)}</span>
-                </div>
-              )}
-              {totalPacote && rentalBase && totalPacote > rentalBase && (
-                <div className="flex items-center justify-between border-t border-neutral-100 pt-2">
-                  <span className="text-sm font-semibold text-slate-700">Aluguel + Cond. + IPTU</span>
-                  <span className="text-lg font-bold text-slate-900">{formatPrice(totalPacote)}</span>
-                </div>
+          <div className="mt-3 space-y-1.5 border-t border-neutral-100 pt-3">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-slate-500">Condomínio</span>
+              {valorCondominio && valorCondominio >= 1 ? (
+                <span className="text-slate-700">{formatPrice(valorCondominio)}</span>
+              ) : (
+                <span className="italic text-slate-400">Não informado</span>
               )}
             </div>
-          )}
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-slate-500">IPTU</span>
+              {valorIptu && valorIptu >= 1 ? (
+                <span className="text-slate-700">{formatPrice(valorIptu)}</span>
+              ) : (
+                <span className="italic text-slate-400">Não informado</span>
+              )}
+            </div>
+            {totalPacote && rentalBase && totalPacote > rentalBase && (
+              <div className="flex items-center justify-between border-t border-neutral-100 pt-2">
+                <span className="text-sm font-semibold text-slate-700">Aluguel + Cond. + IPTU</span>
+                <span className="text-lg font-bold text-slate-900">{formatPrice(totalPacote)}</span>
+              </div>
+            )}
+          </div>
         </div>
 
         {isPremium ? (

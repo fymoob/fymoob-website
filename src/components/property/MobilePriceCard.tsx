@@ -37,26 +37,30 @@ export function MobilePriceCard({
 
   const taxesGrid = (
     <div className="grid grid-cols-2 gap-4">
-      {hasCond && (
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
-            Condomínio
-          </p>
+      <div>
+        <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
+          Condomínio
+        </p>
+        {hasCond ? (
           <p className="mt-1 text-base font-semibold text-slate-900">
             {formatPrice(valorCondominio)}
           </p>
-        </div>
-      )}
-      {hasIptu && (
-        <div>
-          <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
-            IPTU
-          </p>
+        ) : (
+          <p className="mt-1 text-sm italic text-slate-400">Não informado</p>
+        )}
+      </div>
+      <div>
+        <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
+          IPTU
+        </p>
+        {hasIptu ? (
           <p className="mt-1 text-base font-semibold text-slate-900">
             {formatPrice(valorIptu)}
           </p>
-        </div>
-      )}
+        ) : (
+          <p className="mt-1 text-sm italic text-slate-400">Não informado</p>
+        )}
+      </div>
     </div>
   )
 
@@ -100,16 +104,13 @@ export function MobilePriceCard({
         </div>
       )}
 
-      {showTaxes && (
-        <>
-          <div className="mt-4 h-px w-full bg-slate-200" />
-          <div className="mt-4">{taxesGrid}</div>
-          {showTotal && (
-            <p className="mt-3 text-sm font-semibold text-slate-700">
-              Aluguel + Condomínio + IPTU = {formatPrice(totalPacote)}/mês
-            </p>
-          )}
-        </>
+      {/* Rental/dual: always show taxes block — transparency even when values missing */}
+      <div className="mt-4 h-px w-full bg-slate-200" />
+      <div className="mt-4">{taxesGrid}</div>
+      {showTotal && (
+        <p className="mt-3 text-sm font-semibold text-slate-700">
+          Aluguel + Condomínio + IPTU = {formatPrice(totalPacote)}/mês
+        </p>
       )}
     </div>
   )
