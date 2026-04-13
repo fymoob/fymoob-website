@@ -29,13 +29,14 @@ export function MobilePriceCard({
 
   const hasCond = valorCondominio && valorCondominio > 0
   const hasIptu = valorIptu && valorIptu > 0
-  const showTaxes = (isRental || isDual) && (hasCond || hasIptu)
+  const showTaxes = hasCond || hasIptu
 
   if (showConsult) return null
 
-  // Sale-only: price is shown inline in PropertyHeaderBlock, no card needed
+  // Sale-only: if there's no Cond/IPTU to show, the price is already in
+  // PropertyHeaderBlock — no card needed. Otherwise we render the taxes here.
   const isSaleOnly = !isDual && !isRental
-  if (isSaleOnly) return null
+  if (isSaleOnly && !showTaxes) return null
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white px-5 py-4 lg:hidden">
@@ -63,17 +64,10 @@ export function MobilePriceCard({
           </p>
           <span className="text-sm font-medium text-slate-400">Aluguel</span>
         </div>
-      ) : (
-        <div className="flex items-baseline justify-between">
-          <p className="text-2xl font-extrabold tracking-tight text-slate-900">
-            {formatPrice(precoVenda ?? precoAluguel)}
-          </p>
-          <span className="text-sm font-medium text-slate-400">Venda</span>
-        </div>
-      )}
+      ) : null}
 
       {showTaxes && (
-        <div className="mt-3 border-t border-slate-100 pt-3">
+        <div className={(isDual || isRental) ? "mt-3 border-t border-slate-100 pt-3" : ""}>
           <p className="text-sm text-slate-500">
             {hasCond && <>Cond. {formatPrice(valorCondominio)}</>}
             {hasCond && hasIptu && <span className="mx-1.5">·</span>}
