@@ -33,6 +33,7 @@ import { LazySimilarProperties } from "@/components/property/LazySimilarProperti
 import { PropertyMap } from "@/components/property/PropertyMap"
 import { MobileContactBar } from "@/components/property/MobileContactBar"
 import { MobilePriceCard } from "@/components/property/MobilePriceCard"
+import { MobileInlineContactForm } from "@/components/property/MobileInlineContactForm"
 import { RecentlyViewedTracker } from "@/components/property/RecentlyViewedTracker"
 import { ShareButton } from "@/components/shared/ShareButton"
 import { WishlistButton } from "@/components/property/WishlistButton"
@@ -192,6 +193,14 @@ export default async function PropertyPage({ params }: PageProps) {
               />
             </div>
 
+            <a
+              href="#enviar-mensagem"
+              className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-primary hover:text-brand-primary-hover lg:hidden"
+            >
+              Enviar mensagem
+              <span aria-hidden="true">↓</span>
+            </a>
+
             <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-8 border-t border-slate-200 pt-8"}>
               <PropertyDescription descricao={descricaoWithTitle} />
             </div>
@@ -201,6 +210,13 @@ export default async function PropertyPage({ params }: PageProps) {
                 <PropertyCharacteristics property={property} />
               </div>
             )}
+
+            <div className="mt-8 lg:hidden">
+              <MobileInlineContactForm
+                propertyTitle={property.titulo}
+                propertyCode={property.codigo}
+              />
+            </div>
 
             {property.infraestrutura.length > 0 && (
               <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-8 border-t border-slate-200 pt-8"}>
