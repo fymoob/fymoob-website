@@ -32,12 +32,16 @@ import {
   SheetFooter,
 } from "@/components/ui/sheet"
 
+import { BedroomsFilter } from "@/components/search/filters/BedroomsFilter"
+import { LocationAutocomplete } from "@/components/search/filters/LocationAutocomplete"
+import { LocationFilter } from "@/components/search/filters/LocationFilter"
+import { PriceFilter } from "@/components/search/filters/PriceFilter"
+import { TypeFilter } from "@/components/search/filters/TypeFilter"
+
+// Only the modal stays dynamic — it's opened via explicit click (Mais filtros)
+// and is large. Chip dropdowns are inlined to avoid suspense flashes when
+// opening a different chip for the first time.
 const AdvancedFiltersModal = dynamic(() => import("@/components/search/filters/AdvancedFiltersModal").then(m => m.AdvancedFiltersModal))
-const BedroomsFilter = dynamic(() => import("@/components/search/filters/BedroomsFilter").then(m => m.BedroomsFilter))
-const LocationAutocomplete = dynamic(() => import("@/components/search/filters/LocationAutocomplete").then(m => m.LocationAutocomplete))
-const LocationFilter = dynamic(() => import("@/components/search/filters/LocationFilter").then(m => m.LocationFilter))
-const PriceFilter = dynamic(() => import("@/components/search/filters/PriceFilter").then(m => m.PriceFilter))
-const TypeFilter = dynamic(() => import("@/components/search/filters/TypeFilter").then(m => m.TypeFilter))
 import { cn } from "@/lib/utils"
 import { useSearchBarController } from "./useSearchBarController"
 import { SlidersHorizontal } from "lucide-react"

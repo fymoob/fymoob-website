@@ -7,7 +7,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Button } from "@/components/ui/button"
 
 interface BedroomsFilterProps {
   minValue: string
@@ -43,26 +42,33 @@ export function BedroomsFilter({
   }
 
   const renderLabel = (val: string, emptyLabel: string) => {
-    if (!val) return emptyLabel
-    return val === "5" ? "5+" : val
+    if (!val) return <span className="text-neutral-400">{emptyLabel}</span>
+    const display = val === "5" ? "5+" : val
+    return (
+      <span className="font-semibold text-slate-900">
+        {display} <span className="font-normal text-slate-500">{Number(val) === 1 ? "quarto" : "quartos"}</span>
+      </span>
+    )
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">
+          <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
             Mínimo
           </label>
           <Select value={minValue || "any"} onValueChange={handleMinChange}>
-            <SelectTrigger className="w-full rounded-xl">
+            <SelectTrigger className="h-11 w-full rounded-xl border-neutral-200 bg-white px-3.5 hover:border-neutral-300 data-[popup-open]:border-brand-primary data-[popup-open]:ring-2 data-[popup-open]:ring-brand-primary/10">
               <SelectValue>{renderLabel(minValue, "Sem mín.")}</SelectValue>
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="any">Sem mín.</SelectItem>
+            <SelectContent className="rounded-xl border-neutral-200 shadow-lg">
+              <SelectItem value="any" className="py-2.5 text-sm text-neutral-500">
+                Sem mínimo
+              </SelectItem>
               {BEDROOM_OPTIONS.map((n) => (
-                <SelectItem key={n} value={n}>
-                  {n === "5" ? "5+" : n}
+                <SelectItem key={n} value={n} className="py-2.5 text-sm font-medium">
+                  {n === "5" ? "5+" : n} {Number(n) === 1 ? "quarto" : "quartos"}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -70,18 +76,20 @@ export function BedroomsFilter({
         </div>
 
         <div>
-          <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-slate-500">
+          <label className="mb-2 block text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
             Máximo
           </label>
           <Select value={maxValue || "any"} onValueChange={handleMaxChange}>
-            <SelectTrigger className="w-full rounded-xl">
+            <SelectTrigger className="h-11 w-full rounded-xl border-neutral-200 bg-white px-3.5 hover:border-neutral-300 data-[popup-open]:border-brand-primary data-[popup-open]:ring-2 data-[popup-open]:ring-brand-primary/10">
               <SelectValue>{renderLabel(maxValue, "Sem máx.")}</SelectValue>
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="any">Sem máx.</SelectItem>
+            <SelectContent className="rounded-xl border-neutral-200 shadow-lg">
+              <SelectItem value="any" className="py-2.5 text-sm text-neutral-500">
+                Sem máximo
+              </SelectItem>
               {BEDROOM_OPTIONS.map((n) => (
-                <SelectItem key={n} value={n}>
-                  {n === "5" ? "5+" : n}
+                <SelectItem key={n} value={n} className="py-2.5 text-sm font-medium">
+                  {n === "5" ? "5+" : n} {Number(n) === 1 ? "quarto" : "quartos"}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -90,16 +98,16 @@ export function BedroomsFilter({
       </div>
 
       {hasAny && (
-        <Button
-          variant="ghost"
-          className="h-8 px-2 text-sm text-neutral-500 hover:text-[#0B1120]"
+        <button
+          type="button"
           onClick={() => {
             onMinChange("")
             onMaxChange("")
           }}
+          className="text-xs font-medium text-neutral-500 underline underline-offset-2 hover:text-slate-900"
         >
           Limpar quartos
-        </Button>
+        </button>
       )}
     </div>
   )
