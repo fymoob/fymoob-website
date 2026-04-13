@@ -241,7 +241,7 @@ export function ContactSidebar({
             </div>
           )}
 
-          {!isPremium && (valorCondominio || valorIptu) && (
+          {(valorCondominio || valorIptu) && (
             <div className="mt-3 space-y-1.5 border-t border-neutral-100 pt-3">
               {valorCondominio && valorCondominio > 0 && (
                 <div className="flex items-center justify-between text-sm">
