@@ -1,16 +1,35 @@
 "use client"
 
 import { useEffect, type Dispatch, type SetStateAction } from "react"
-import { X, Search, Bath, Building2, Car, BedDouble, Maximize2, Hash, ListChecks } from "lucide-react"
+import {
+  X,
+  Search,
+  Bath,
+  Building2,
+  Car,
+  BedDouble,
+  Maximize2,
+  Hash,
+  ListChecks,
+  MapPin,
+  Tag,
+} from "lucide-react"
 import { Input } from "@/components/ui/input"
 import type { SearchDraftFilters, PriceBounds } from "./search-state"
+import type { MultiSelectOption } from "./types"
 import { FilterSection } from "./FilterSection"
 import { EmpreendimentoFilter } from "./EmpreendimentoFilter"
+import { BedroomsFilter } from "./BedroomsFilter"
+import { LocationFilter } from "./LocationFilter"
+import { PriceFilter } from "./PriceFilter"
+import { TypeFilter } from "./TypeFilter"
 import {
   AreaRangeInput,
   CaracteristicasCheckboxes,
   NumberSelector,
 } from "./AdvancedFields"
+import { cn } from "@/lib/utils"
+import type { GroupedBairroOptions } from "../useSearchBarController"
 
 interface AdvancedFiltersModalProps {
   open: boolean
@@ -18,6 +37,10 @@ interface AdvancedFiltersModalProps {
   pendingFilters: SearchDraftFilters
   setPendingFilters: Dispatch<SetStateAction<SearchDraftFilters>>
   priceBounds: PriceBounds
+  bairroOptions: MultiSelectOption[]
+  cidadeOptions: MultiSelectOption[]
+  tipoOptions: MultiSelectOption[]
+  groupedBairroOptions?: GroupedBairroOptions[]
   empreendimentos?: string[]
   onApply: () => void
   onClear: () => void
@@ -29,6 +52,11 @@ export function AdvancedFiltersModal({
   onClose,
   pendingFilters,
   setPendingFilters,
+  priceBounds,
+  bairroOptions,
+  cidadeOptions,
+  tipoOptions,
+  groupedBairroOptions,
   empreendimentos,
   onApply,
   onClear,
@@ -95,6 +123,108 @@ export function AdvancedFiltersModal({
 
         {/* ── Scrollable content ── */}
         <div className="flex-1 overflow-y-auto px-6 py-2">
+          {/* Finalidade — O que deseja? */}
+          <FilterSection alwaysOpen title="O que deseja?">
+            <div className="flex gap-2">
+              {(["comprar", "alugar"] as const).map((f) => {
+                const isActive = f === "comprar"
+                  ? !pendingFilters.finalidades.includes("locacao")
+                  : pendingFilters.finalidades.includes("locacao")
+                return (
+                  <button
+                    key={f}
+                    type="button"
+                    onClick={() =>
+                      setPendingFilters((c) => ({
+                        ...c,
+                        finalidades: f === "alugar" ? ["locacao"] : ["venda"],
+                      }))
+                    }
+                    className={cn(
+                      "flex-1 rounded-xl py-2.5 text-sm font-semibold transition-all",
+                      isActive
+                        ? "bg-brand-primary text-white"
+                        : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
+                    )}
+                  >
+                    {f === "comprar" ? "Comprar" : "Alugar"}
+                  </button>
+                )
+              })}
+            </div>
+          </FilterSection>
+
+          {/* Localização */}
+          <FilterSection
+            title="Localização"
+            icon={MapPin}
+            activeCount={pendingFilters.bairros.length + pendingFilters.cidades.length}
+            selectionSummary={
+              pendingFilters.bairros.length + pendingFilters.cidades.length > 0
+                ? [...pendingFilters.cidades, ...pendingFilters.bairros].slice(0, 3).join(", ")
+                : null
+            }
+          >
+            <LocationFilter
+              bairros={bairroOptions}
+              cidades={cidadeOptions}
+              groupedBairros={groupedBairroOptions}
+              selectedBairros={pendingFilters.bairros}
+              selectedCidades={pendingFilters.cidades}
+              onBairrosChange={(values) =>
+                setPendingFilters((c) => ({ ...c, bairros: values }))
+              }
+              onCidadesChange={(values) =>
+                setPendingFilters((c) => ({ ...c, cidades: values }))
+              }
+            />
+          </FilterSection>
+
+          {/* Tipo de imóvel */}
+          <FilterSection
+            title="Tipo de imóvel"
+            icon={Building2}
+            activeCount={pendingFilters.tipos.length}
+            selectionSummary={
+              pendingFilters.tipos.length > 0
+                ? pendingFilters.tipos.slice(0, 3).join(", ")
+                : null
+            }
+          >
+            <TypeFilter
+              typeOptions={tipoOptions}
+              selectedTipos={pendingFilters.tipos}
+              onTiposChange={(values) =>
+                setPendingFilters((c) => ({ ...c, tipos: values }))
+              }
+            />
+          </FilterSection>
+
+          {/* Quartos */}
+          <FilterSection alwaysOpen title="Quartos" icon={BedDouble}>
+            <BedroomsFilter
+              minValue={pendingFilters.quartosMin}
+              maxValue={pendingFilters.quartosMax}
+              onMinChange={(value) =>
+                setPendingFilters((c) => ({ ...c, quartosMin: value }))
+              }
+              onMaxChange={(value) =>
+                setPendingFilters((c) => ({ ...c, quartosMax: value }))
+              }
+            />
+          </FilterSection>
+
+          {/* Preço */}
+          <FilterSection alwaysOpen title="Preço" icon={Tag}>
+            <PriceFilter
+              value={pendingFilters.priceRange}
+              bounds={priceBounds}
+              onChange={(value) =>
+                setPendingFilters((c) => ({ ...c, priceRange: value }))
+              }
+            />
+          </FilterSection>
+
           {/* Área privativa */}
           <FilterSection
             alwaysOpen

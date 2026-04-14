@@ -1129,6 +1129,10 @@ export function SearchBar({
       pendingFilters={pendingFilters}
       setPendingFilters={setPendingFilters}
       priceBounds={priceBounds}
+      bairroOptions={bairroOptions}
+      cidadeOptions={cidadeOptions}
+      tipoOptions={filteredTipoOptions}
+      groupedBairroOptions={groupedBairroOptions}
       empreendimentos={empreendimentos}
       onApply={applyFilters}
       onClear={clearAllFilters}
