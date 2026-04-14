@@ -164,7 +164,12 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
     .split(",")
     .map((c) => c.trim())
     .filter(Boolean)
-  const empreendimento = getParamValue(searchParams.empreendimento)
+  const empreendimentosParam =
+    getParamValue(searchParams.empreendimentos) ?? getParamValue(searchParams.empreendimento) ?? ""
+  const empreendimentosSelected = empreendimentosParam
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean)
   const orderBy = normalizeOrderBy(getParamValue(searchParams.orderBy))
   const page = Math.max(1, parseNumberParam(getParamValue(searchParams.page)) ?? 1)
 
@@ -204,7 +209,10 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
   if (quartosMax) filters.quartosMax = quartosMax
   if (caracteristicasUnidade.length > 0) filters.caracteristicasUnidade = caracteristicasUnidade
   if (caracteristicasCondominio.length > 0) filters.caracteristicasCondominio = caracteristicasCondominio
-  if (empreendimento) filters.empreendimento = empreendimento
+  if (empreendimentosSelected.length > 0) {
+    filters.empreendimentos = empreendimentosSelected
+    if (empreendimentosSelected.length === 1) filters.empreendimento = empreendimentosSelected[0]
+  }
   if (busca) filters.busca = busca
   if (orderBy) filters.orderBy = orderBy
   const lancamento = getParamValue(searchParams.lancamento)

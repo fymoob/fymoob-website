@@ -127,6 +127,7 @@ export interface PropertyFilters {
   cidades?: string[];
   codigo?: string;
   empreendimento?: string;
+  empreendimentos?: string[];
   precoMin?: number;
   precoMax?: number;
   dormitoriosMin?: number;

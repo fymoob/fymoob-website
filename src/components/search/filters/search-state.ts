@@ -22,7 +22,7 @@ export interface SearchDraftFilters {
   areaMax: string
   caracteristicasUnidade: string[]
   caracteristicasCondominio: string[]
-  empreendimento: string
+  empreendimentos: string[]
 }
 
 export const PRICE_STEP = 50_000
@@ -91,7 +91,12 @@ export function createDraftFromSearchParams(
       .split(",")
       .map((c) => c.trim())
       .filter(Boolean),
-    empreendimento: params.get("empreendimento") ?? "",
+    empreendimentos: (() => {
+      const plural = params.get("empreendimentos")
+      if (plural) return plural.split(",").map((s) => s.trim()).filter(Boolean)
+      const legacy = params.get("empreendimento")
+      return legacy ? [legacy] : []
+    })(),
   }
 }
 
@@ -191,11 +196,13 @@ export function applyDraftToSearchParams(
   // Legacy single-bucket param — cleaned up in favor of split params
   params.delete("caracteristicas")
 
-  if (draft.empreendimento) {
-    params.set("empreendimento", draft.empreendimento)
+  if (draft.empreendimentos.length > 0) {
+    params.set("empreendimentos", draft.empreendimentos.join(","))
   } else {
-    params.delete("empreendimento")
+    params.delete("empreendimentos")
   }
+  // Legacy single param — cleaned up in favor of plural
+  params.delete("empreendimento")
 
   params.delete("page")
   return params

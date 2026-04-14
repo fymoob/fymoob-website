@@ -275,7 +275,7 @@ export function SearchBar({
       areaMax: "",
       caracteristicasUnidade: [],
       caracteristicasCondominio: [],
-      empreendimento: "",
+      empreendimentos: [],
     })
 
   const advancedFilterCount =
@@ -287,7 +287,7 @@ export function SearchBar({
     (pendingFilters.areaMax ? 1 : 0) +
     (pendingFilters.caracteristicasUnidade.length > 0 ? 1 : 0) +
     (pendingFilters.caracteristicasCondominio.length > 0 ? 1 : 0) +
-    (pendingFilters.empreendimento ? 1 : 0)
+    (pendingFilters.empreendimentos.length > 0 ? 1 : 0)
 
   const activeFilterCount =
     (pendingFilters.finalidades.length > 0 ? 1 : 0) +
@@ -588,19 +588,23 @@ export function SearchBar({
                       />
                     </FilterSection>
 
-                    {/* Empreendimento — collapsed (autocomplete) */}
+                    {/* Empreendimento — collapsed (multi-select autocomplete) */}
                     {empreendimentos && empreendimentos.length > 0 && (
                       <FilterSection
                         title="Empreendimento"
                         icon={Building2}
-                        activeCount={pendingFilters.empreendimento ? 1 : 0}
-                        selectionSummary={pendingFilters.empreendimento || null}
+                        activeCount={pendingFilters.empreendimentos.length}
+                        selectionSummary={
+                          pendingFilters.empreendimentos.length > 0
+                            ? pendingFilters.empreendimentos.slice(0, 2).join(", ")
+                            : null
+                        }
                       >
                         <EmpreendimentoFilter
                           options={empreendimentos}
-                          value={pendingFilters.empreendimento}
+                          values={pendingFilters.empreendimentos}
                           onChange={(v) =>
-                            setPendingFilters((c) => ({ ...c, empreendimento: v }))
+                            setPendingFilters((c) => ({ ...c, empreendimentos: v }))
                           }
                         />
                       </FilterSection>
