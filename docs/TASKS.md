@@ -654,41 +654,108 @@
 
 **Ações críticas (futuro, não-MVP):** MFA via TOTP opcional pra ações irreversíveis (publicar artigo novo, deletar empreendimento). Deixar como feature roadmap.
 
-### 9.1 — Base (auth + shell) [EM ANDAMENTO]
+### 9.1 — Base (auth + shell) [CONCLUIDA — 14/04/2026]
 
 Infraestrutura compartilhada, entregue antes de qualquer feature específica.
 
-- [ ] Instalar dependências: `next-auth@beta`, `resend`, `@upstash/ratelimit`, `@upstash/redis`
-- [ ] Configurar Auth.js v5 em `src/auth.ts` (email provider + session JWT)
-- [ ] Criar rota `/admin/login` com form minimalista (email + Turnstile)
-- [ ] Implementar envio de magic link via Resend
-- [ ] Rate limit por email (5/15min) e IP (20/h) via Upstash
-- [ ] Criar middleware em `src/middleware.ts` bloqueando `/admin/*`
-- [ ] Criar `/admin/layout.tsx` com sidebar de navegação (Blog, Empreendimentos futuro)
-- [ ] Criar `/admin` (dashboard placeholder)
-- [ ] Logout funcional em `/admin/logout`
-- [ ] Env vars documentadas: `AUTH_SECRET`, `RESEND_API_KEY`, `ALLOWED_ADMIN_EMAILS`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`
+- [x] Instalar dependências: `next-auth@beta`, `resend`, `@upstash/ratelimit`, `@upstash/redis`, `@auth/upstash-redis-adapter`
+- [x] Configurar Auth.js v5 em `src/auth.ts` (email provider + session JWT + Upstash adapter pra verification tokens)
+- [x] Criar rota `/admin/login` com form minimalista (email + Turnstile)
+- [x] Implementar envio de magic link via Resend (template HTML customizado)
+- [x] Rate limit por email (5/15min) e IP (20/h) via Upstash Redis
+- [x] Criar `src/proxy.ts` (antigo middleware.ts — Next.js 16 renomeou) bloqueando `/admin/*`
+- [x] Criar `/admin/layout.tsx` com sidebar de navegação (Blog, Empreendimentos, logout)
+- [x] Criar `/admin` (dashboard placeholder com status das features)
+- [x] Logout funcional na sidebar (server action via Auth.js signOut)
+- [x] Env vars documentadas em `.env.example` + `docs/admin-panel-setup.md`
+- [x] Esconder chrome público (Header/Footer/BottomNav/WhatsAppFloat) em `/admin/*`
+- [x] Provisionamento end-to-end validado (Resend + Upstash + Turnstile + AUTH_SECRET + whitelist)
+- [x] Teste ponta-a-ponta: login → magic link → dashboard → logout (14/04/2026)
+
+**Arquivos entregues:**
+- [src/auth.ts](src/auth.ts), [src/proxy.ts](src/proxy.ts), [src/lib/rate-limit.ts](src/lib/rate-limit.ts), [src/lib/turnstile.ts](src/lib/turnstile.ts)
+- [src/app/api/auth/[...nextauth]/route.ts](src/app/api/auth/[...nextauth]/route.ts)
+- [src/app/admin/login/page.tsx](src/app/admin/login/page.tsx), [src/app/admin/login/LoginForm.tsx](src/app/admin/login/LoginForm.tsx), [src/app/admin/login/actions.ts](src/app/admin/login/actions.ts)
+- [src/app/admin/layout.tsx](src/app/admin/layout.tsx), [src/app/admin/page.tsx](src/app/admin/page.tsx)
+- [src/components/layout/ChromeGate.tsx](src/components/layout/ChromeGate.tsx)
+- [docs/admin-panel-setup.md](docs/admin-panel-setup.md)
+
+### 9.1.5 — Ownership & Migração de Contas [PENDENTE — PRIORIDADE ALTA]
+
+**Problema:** todas as contas de infra externas foram criadas com o email pessoal do Vinicius (`dev.viniciusdamas@gmail.com`), não com email da FYMOOB. Risco de governança:
+
+- Se Vinicius sair do projeto, Bruno fica sem acesso à própria infra
+- Se for necessário pagar algum plano no futuro, billing fica no pessoal do Vinicius
+- Não é padrão profissional de client work
+- Direito/propriedade da infra é ambíguo
+
+**Ação prioritária:** Bruno precisa criar um email operacional da FYMOOB (ex: `dev@fymoob.com` ou `sistema@fymoob.com`) e todas as contas devem ser transferidas/recriadas com esse email.
+
+**Mensagem sugerida pro Bruno:**
+> "Bruno, pra garantir que a FYMOOB seja dona de toda a infra do site (contas de banco, email, bot protection, etc.), precisamos criar um email neutro tipo `dev@fymoob.com` — seria só pra cadastrar serviços técnicos. Não é email pessoal teu, é um 'endereço de sistema'. Consegue criar e me passar a senha? Eu cadastro tudo e deixo você como admin também."
+
+**Inventário de contas a migrar:**
+
+| Serviço | Uso | Owner atual | Ação necessária | Dificuldade |
+|---|---|---|---|---|
+| **Resend** | Envio de magic link | `dev.viniciusdamas@gmail.com` (pessoal) | Criar conta nova com email FYMOOB + regenerar API key | Fácil (env var) |
+| **Upstash** | Redis (auth tokens + rate limit) | `dev.viniciusdamas@gmail.com` | Settings → Change Email OU recriar banco (zero custo) | Fácil |
+| **Cloudflare** | Turnstile (anti-bot login) | `dev.viniciusdamas@gmail.com` | Profile → Change email + adicionar Vinicius como member | Fácil |
+| **Supabase** | Banco Postgres (blog + empreendimentos futuros) | A criar | **CRIAR DIRETO com email FYMOOB** | Fácil — ainda não criado |
+| **Vercel** | Deploy | Verificar | Adicionar FYMOOB como owner, Vinicius como collaborator | Médio |
+| **Nhost** | ~~PostgreSQL~~ (**descontinuado — substituído por Supabase**) | — | Cancelar conta ou abandonar | N/A |
+| **GitHub** | Repo `ViniciusDamas/demo` | Vinicius pessoal | Transferir pra org FYMOOB (ou criar nova org + fork) | Médio |
+| **Google Cloud** | OAuth pra Search Console/GA4 MCP (Fase 10) | Vinicius | Futuro — criar com email FYMOOB quando ativar MCPs | Baixa urgência |
+
+**Ordem sugerida de migração (após Bruno criar email):**
+
+- [ ] Bruno criar `dev@fymoob.com` ou similar
+- [ ] Bruno compartilhar credenciais com Vinicius (gerenciador de senhas)
+- [ ] **Supabase**: criar direto com email FYMOOB (antes de provisionar schema)
+- [ ] **Resend**: recriar conta + API key + atualizar env var
+- [ ] **Upstash**: mudar email (ou recriar Redis — zero dados persistentes relevantes)
+- [ ] **Cloudflare Turnstile**: mudar email de conta
+- [ ] **Vercel**: adicionar FYMOOB como owner (Billing no nome da empresa)
+- [ ] **GitHub**: avaliar transferência ou convite de Bruno como collaborator no repo atual
+- [ ] **Nhost**: cancelar (não usamos mais)
+- [ ] **Google Cloud**: quando for ativar MCPs, já criar com email FYMOOB
+- [ ] Atualizar `.env.local` e Vercel env vars com novos tokens onde aplicável
+- [ ] Documentar no `docs/admin-panel-setup.md` quem é owner de cada serviço
 
 ### 9.2 — Blog admin [CONTRATO, PENDENTE]
 
-Depois da 9.1. Usa a mesma auth compartilhada.
+Depois da 9.1.5. Usa a mesma auth compartilhada.
 
-- [ ] Schema no Nhost PostgreSQL: tabela `articles` (id, slug, title, excerpt, content, cover_image, status, published_at, author_id, created_at, updated_at)
-- [ ] Migration dos 15 artigos MDX existentes pra tabela (script one-shot)
-- [ ] `/admin/blog` — lista com status (rascunho/publicado), filtro por autor, busca
-- [ ] `/admin/blog/new` — criar novo artigo
+**Decisão de storage (14/04/2026):** trocar Nhost por **Supabase PostgreSQL**. Motivo:
+- Nhost free tier pausa o banco depois de 1 semana sem uso — inviabiliza produção
+- Supabase free tier: 500MB DB + 1GB storage + 5GB bandwidth — sobra muito pra milhares de artigos
+- Supabase não pausa na prática porque o site público faz query a cada pageview
+- Row Level Security integrada se precisar no futuro
+
+- [ ] Criar projeto Supabase com email FYMOOB (região sa-east-1 São Paulo)
+- [ ] Schema no Supabase PostgreSQL: tabela `articles` (id, slug, title, excerpt, content, cover_image, status, published_at, author_id, created_at, updated_at, seo_title, seo_description, og_image, category, tags JSONB)
+- [ ] Migration dos 15 artigos MDX existentes pra tabela (script one-shot em `scripts/migrate-mdx-to-supabase.ts`)
+- [ ] Instalar deps: `@supabase/supabase-js`, `@tiptap/react`, `@tiptap/starter-kit`, `@tiptap/extension-image`
+- [ ] `/admin/blog` — lista com status (rascunho/publicado), filtro por autor, busca por título
+- [ ] `/admin/blog/new` — criar novo artigo com auto-save draft
 - [ ] `/admin/blog/[id]` — editar artigo existente
-- [ ] Editor: **rich text** com preview live (TipTap ou Lexical)
-- [ ] Upload de imagem: Nhost Storage (já na stack)
-- [ ] Publicar/despublicar sem redeploy (estado no banco)
-- [ ] Render público em `/blog/[slug]` consome do banco
+- [ ] Editor: **TipTap rich text** com toolbar (bold, italic, heading, list, link, image, blockquote, code)
+- [ ] Preview live do artigo ao lado do editor
+- [ ] Upload de imagem: **Supabase Storage** (bucket `articles-covers` e `articles-inline`)
+- [ ] Auto-gerar slug a partir do título (kebab-case, dedupe)
+- [ ] Publicar/despublicar sem redeploy (muda `status` no banco)
+- [ ] Revalidation: ao publicar, `revalidatePath(/blog)` e `revalidatePath(/blog/[slug])`
+- [ ] Render público em `/blog/[slug]` consome do Supabase (com fallback pra MDX durante transição)
 - [ ] Regenerar sitemap dinamicamente ao publicar
+- [ ] Campos SEO específicos: meta title, meta description, OG image
+- [ ] Categoria (dropdown) + tags (multi-input)
+- [ ] Autor pré-selecionado com usuário logado
 
 ### 9.3 — Empreendimentos admin [ESCOPO NOVO, AGUARDANDO DECISÃO DO BRUNO]
 
-Só inicia após fechamento comercial do escopo aditivo.
+Só inicia após fechamento comercial do escopo aditivo (R$ 7.500-9.000 one-time).
 
-- [ ] Schema: tabela `empreendimento_content` (slug FK CRM, hero_text, hero_image_url, video_url, diferenciais_text, torres_json, plantas_extras_json, etc.)
+- [ ] Schema Supabase: tabela `empreendimento_content` (slug FK CRM, hero_text, hero_image_url, video_url, diferenciais_text, torres_json, plantas_extras_json, etc.)
 - [ ] `/admin/empreendimentos` — lista de todos empreendimentos do CRM
 - [ ] `/admin/empreendimentos/[slug]` — editor por empreendimento
 - [ ] Campos editáveis (definidos junto com Bruno via enquete WhatsApp):
@@ -701,12 +768,13 @@ Só inicia após fechamento comercial do escopo aditivo.
   - Diferenciais / área de lazer
   - Vídeo Vturb/YouTube (embed URL)
   - Texto sobre construtora
+- [ ] Upload de assets em Supabase Storage bucket `empreendimentos/[slug]/`
 - [ ] Render público em `/empreendimento/[slug]` lê CRM (auto) + painel (editorial)
 - [ ] Fallback: se não há dados no painel, renderiza só com dados do CRM
 
 ### 9.4 — Auditoria e Observabilidade [futuro]
 
-- [ ] Tabela `audit_logs` (user_id, action, entity, entity_id, metadata_json, ip, user_agent, created_at)
+- [ ] Tabela Supabase `audit_logs` (user_id, action, entity, entity_id, metadata_json, ip, user_agent, created_at)
 - [ ] Middleware de log em todas as server actions de `/admin`
 - [ ] `/admin/logs` — visualização filtrável (só Vinicius / super-admin)
 - [ ] Alertas: email quando algo crítico acontece (ex: >10 tentativas de login falhas em 1h)
@@ -717,6 +785,13 @@ Só inicia após fechamento comercial do escopo aditivo.
 - [ ] Código de recuperação
 - [ ] Fluxo de setup no perfil do admin
 - [ ] Obrigatório só pra ações destrutivas (deletar empreendimento, etc.)
+
+### 9.6 — Avisos técnicos documentados
+
+- **Resend em modo teste**: usando sender `onboarding@resend.dev` (free tier). Limitação: só envia emails pro endereço dono da conta Resend. Pra produção com outros admins, precisa verificar domínio `fymoob.com` (registros DNS — SPF/DKIM/DMARC) e trocar `RESEND_FROM_EMAIL` pra `noreply@fymoob.com`.
+- **Turnstile hostnames configurados**: `demo-blue-beta.vercel.app`, `fymoob.com`, `localhost`. Adicionar outros domínios de preview conforme necessário.
+- **Nhost descontinuado**: env var `NHOST_SUBDOMAIN` pode ser removida após confirmação. Não estamos mais usando.
+- **Next.js 16 rename**: `middleware.ts` foi renomeado pra `proxy.ts` (convenção oficial). Função exportada também mudou de `middleware` pra `proxy`.
 
 ---
 
