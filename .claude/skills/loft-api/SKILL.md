@@ -215,7 +215,226 @@ Agua, AquecedorSolar, AquecimentoCentral, Bicicletario, Brinquedoteca, CabineDeF
 
 ---
 
-## Campos Principais do Imóvel (269 total — destaques)
+## Endpoint `/imoveis/listarcampos` — fonte oficial de todos os campos
+
+**Descoberto 14/04/2026.** Retorna a lista completa de campos disponíveis na API, organizados por recurso. **Sempre consultar este endpoint antes de assumir que um campo não existe.**
+
+```
+GET https://brunoces-rest.vistahost.com.br/imoveis/listarcampos?key={KEY}
+Accept: application/json
+```
+
+**Resposta:** objeto com 14 chaves — `imoveis`, `carac`, `infra`, `codigo`, `Corretor`, `Agencia`, `Autorizacao`, `Foto`, `FotoEmpreendimento`, `Anexo`, `Video`, `PontoInteresse`, `prontuarios`, `proprietarios`. Cada uma é um array de strings com os nomes dos campos expostos.
+
+**Contagem por recurso (snapshot 14/04/2026):**
+
+| Recurso | Campos |
+|---|---|
+| `imoveis` | 271 |
+| `carac` | 81 (características privativas do imóvel) |
+| `infra` | 77 (infraestrutura do condomínio) |
+| `Foto` | 13 |
+| `Corretor` | 58 |
+| `Agencia` | 23 |
+| `Video` | 10 |
+| `PontoInteresse` | 13 |
+| `prontuarios` | 20 |
+| `proprietarios` | 149 |
+
+Total: **~735 campos** distribuídos entre os 14 recursos.
+
+---
+
+## Inventário completo por recurso
+
+### `imoveis` — 271 campos
+
+```
+123iPublicationType, Aberturas, AceitaDacao, AceitaFinanciamento, AceitaPermuta,
+AceitaPermutaCarro, AceitaPermutaOutro, AceitaPermutaTipoVeiculo, AcessoDeficientes,
+AdministradoraCondominio, Agenciador, AlugarJaDestaque, AndarDoApto, Andares,
+AnoConstrucao, AnoMinimoVeicPermuta, AptosAndar, AptosEdificio, AreaArmazem,
+AreaBoxPrivativa, AreaBoxTotal, AreaConstruida, AreaEscritorio, AreaLaje,
+AreaLocavel, AreaMezanino, AreaPrivativa, AreaTerreno, AreaTotal, AssuntoProntuario,
+Bairro, BairroComercial, BanheiroSocialQtd, Bloco, CEP, CampanhaImportacao,
+CaptadorAccountId, CasaMineiraModelo, Categoria, CategoriaGrupo, CategoriaImovel,
+CategoriaMestre, Chave, ChaveNaAgencia, ChavesNaMaoDestaque, Cidade, ClasseDoImovel,
+Closet, Closets, CodigoAgencia, CodigoCategoria, CodigoCorretor, CodigoEmp,
+CodigoEmpreendimento, CodigoEmpresa, CodigoMalote, CodigoMoeda, CodigoProprietario,
+Complemento, ComplementoMigrado, Conjutos, Construtora, ConverterMoeda, CorretorNome,
+CorretorPrimeiroAge, DataAtualizacao, DataCadastro, DataDisponibilizacao, DataEntrega,
+DataFimAutorizacao, DataHoraAtualizacao, DataImportacao, DataInicioAutorizacao,
+DataInicioProntuario, DataLancamento, DataProntuario, DescricaoEmpreendimento,
+DescricaoWeb, DestaquePetropolisImoveis, DestaqueWeb, DimensoesTerreno,
+DivulgarEndereco123i, DivulgarEnderecoLoft, Dormitorios, EEmpreendimento, Elevadores,
+EmitiuNotaFiscalComissao, EmpOrulo, Empreendimento, Endereco, EstacionamentoVagas,
+EstadoConservacaoEdificio, EstadoConservacaoImovel, EstadoProntuario, Exclusivo,
+ExclusivoCorretor, ExibirComentarios, ExibirNoSite, Face, Fachada, Fci, Finalidade,
+FolhaSPModelo, FormatodoGalpao, FotoDestaque, FotoDestaqueEmpreendimento,
+FotoDestaqueEmpreendimentoPequena, FotoDestaquePequena, FotoProprietario, Frente,
+Fundos, GMapsLatitude, GMapsLongitude, GaragemNumeroBox, GaragemTipo,
+GrupoSPTipoOferta, HidroSuite, HoraDomFim, HoraDomInicio, HoraFerFim, HoraFerInicio,
+HoraSabFim, HoraSabInicio, HoraSegSexFim, HoraSegSexInicio, IdadeDoImovel, Iluminacao,
+Imediacoes, ImoCodigo, ImoPlaca, ImoReferenciaExterna,
+ImovelaVendaDestaqueImovelaVenda, ImovelwebModelo, ImovelwebTipoPublicacao,
+ImportadoMalote, Incompleto, Incorporadora, InformacaoVenda, InicioObra, InscricaoGas,
+InscricaoIptu, InscricaoIptuGaragem, InscricaoMunicipal, KeywordsWeb, Lancamento,
+Latitude, Limpeza, ListingId, LivingAmbientes, LocacaoAnual, LocacaoTemporada,
+LocalCargaEDescarga, LocalizacaoPermuta, LoftPublicationType, LojasEdificio,
+Longitude, Lote, LugarCertoDestaqueLugarCerto, Matricula, MercadoLivreTipoML,
+MesConstrucao, Midia, Modulos, Moeda, MoedaIndice, Numero, NumeroEnergiaEletrica,
+NumeroHidrometro, OLXFinalidadesPublicadas, ObsLocacao, ObsVenda, Observacoes,
+Ocupacao, Orientacao, Orulo, PadraoConstrucao, Pais, Pavimentos, PeDireitoAlto,
+PendenteProntuario, PercentualComissao, Piso, PisoAreaIntima, PisoDormitorio,
+PisoSala, Plantao, PlantaoNoLocal, PorteEstrutural, PortfolioUnico, Posicao,
+PosicaoAndar, PotenciaKVA, PrazoDesocupacao, Prestacao, ProjetoArquitetonico,
+Proposta, PropostaLocacao, Proprietario, ProprietarioPesquisa, QTDGalpoes,
+QntDormitoriosPermuta, QntGaragensPermuta, QntSuitesPermuta, QtdVarandas, Quadra,
+Reajuste, Referencia, Regiao, ResponsavelReserva, Salas, SalasEdificio, SaldoDivida,
+SeguroIncendio, Setor, Situacao, SrProprietario, Status, Suites, SummerSale,
+SuperDestaqueWeb, TemPlaca, TemTourVirtual, TextoAnuncio, TipoEndereco, TipoImovel,
+TipoImovelPermuta, TipoOferta321Achei, TipoTeto, TiqueImoveisEmDestaque, TituloSite,
+Topografia, TotalBanheiros, TotalComissao, UF, URLVideo, UnitId, UrlVisita, Vagas,
+VagasCobertas, VagasDescobertas, ValorACombinar, ValorAluguelPorM2, ValorComissao,
+ValorCondominio, ValorCondominioM2, ValorDiaria, ValorIPTUM2, ValorIptu, ValorLimpeza,
+ValorLivreProprietario, ValorLocacao, ValorLocacaoM2, ValorM2, ValorPermutaImovel,
+ValorTotalAluguel, ValorVenda, ValorVendaM2, Varanda, Venda, VideoDestaque,
+VideoDestaqueTipo, Visita, VisitaAcompanhada, VivaRealDestaqueVivaReal,
+VivaRealDivulgarEnderecoVivaReal, VivaRealPublicationType, WebEscritoriosDestaque,
+ZapTipoOferta, ZeladorNome, ZeladorTelefone, Zona
+```
+
+### `carac` — 81 campos (características privativas da unidade)
+
+Usados em `pesquisa.filter` (ex: `"Churrasqueira": "Sim"`) e disponíveis em `/imoveis/detalhes`.
+
+```
+AceitaPet, Adega, AguaQuente, Alarme, AntenaParabolica, AquecimentoEletrico,
+ArCentral, ArCondicionado, AreaServico, ArmarioEmbutido, BanheiroAuxiliar,
+BanheiroSocial, Bar, Calefacao, CanaletasNoRodape, CercaEletrica, Churrasqueira,
+ConstrucaoAlvenaria, Copa, CopaCozinha, Cozinha, CozinhaAmericana, CozinhaArmarios,
+CozinhaComTanque, CozinhaMontada, CozinhaPlanejada, Deck, DependenciaDeEmpregada,
+DependenciadeEmpregada, Despensa, DormitorioComArmario, Edicula, Escritorio,
+EsperaSplit, EstarIntimo, Forro, FrenteMar, Gabinete, Gradeado, Hidromassagem,
+HomeTheater, Horta, Internet, JardimInverno, Lareira, Lavabo, Leste, Living,
+LivingHall, Mezanino, Mobiliado, Monitoramento, Norte, Oeste, Patio, Piscina,
+PisoElevado, Porao, Quintal, Reformado, Sacada, SacadaComChurrasqueira, Sala,
+SalaArmarios, SalaEstar, SalaJantar, SalaTV, Sauna, SemiMobiliado, Sotao, Split,
+SuiteMaster, Sul, TVCabo, Terraco, VigiaExterno, VigiaInterno, VistaMar,
+VistaPanoramica, Vitrine, WCEmpregada
+```
+
+### `infra` — 77 campos (infraestrutura do condomínio)
+
+```
+Agua, AquecedorSolar, AquecimentoCentral, Bicicletario, Brinquedoteca, CabineDeForca,
+Canil, CapacidadePiso, ChurrasqueiraCondominio, CircuitoFechadoTV, CondominioFechado,
+ConstrucaoMista, Coworking, Deposito, EdificioResidencial, Elevador, ElevadorServico,
+EmpresaDeMonitoramento, EnergiaEletrica, EnergiaTrifasica, EntradaServicoIndependente,
+EspacoGourmet, EspacoZen, Estacionamento, EstacionamentoVisitantes, Garagem,
+GaragemCoberta, GasCentral, GeradorEnergia, Gradil, Guarita, Heliponto, HomeMarket,
+HortaColetiva, Interfone, Jardim, Junker, Lavanderia, Marquise,
+NomeEmpresaMonitoramento, OnibusProximo, PainelSolar, Parque, Pavimentacao, PetPlace,
+Pilotis, PiscinaAquecida, PiscinaColetiva, PiscinaInfantil, PistaCaminhada, Playground,
+PocoArtesiano, PortaoEletronico, Portaria, Portaria24Hrs, PortariaBlindada,
+PorteiroEletronico, PortoesComEclusa, PossuiViabilidade, QuadraEsportes,
+QuadraPoliEsportiva, QuadraTenis, Quiosque, RedeEsgoto, SalaDeRecepcao, SalaFitness,
+SalaoFestas, SalaoJogos, SaunaCondominio, SegurancaPatrimonial, Shaft, Spa,
+TerracoColetivo, Tour360, Tubulacao, Vigilancia24Horas, Zelador
+```
+
+### `Foto` — 13 campos (cada objeto do array `Foto[]`)
+
+```
+Codigo, Data, Descricao, Destaque, ExibirNoSite, ExibirSite, Foto, FotoOriginal,
+FotoPequena, ImagemCodigo, Ordem, Origem, Tipo
+```
+
+**Campo-chave:** `Tipo` — categoriza a foto (ex: `"Planta"`, `"Fachada"`, `"Sala"`, `"Cozinha"`...). Usado em `/empreendimento/[slug]` pra auto-extrair plantas.
+
+### `Video` — 10 campos
+
+```
+Codigo, Data, Descricao, DescricaoWeb, Destaque, ExibirNoSite, ExibirSite, Tipo,
+Video, VideoCodigo
+```
+
+### `Corretor` — 58 campos
+
+```
+Administrativo, Agencia, Agenciador, AtuacaoLocacao, AtuacaoVenda, Bairro, Bloco,
+CEP, CNH, CNHExpedicao, CNHVencimento, CPF_CGC, CRECI, CategoriaRanking, Celular,
+Celular1, Celular2, Chat, Cidade, Codigo, CodigoAgencia, CodigoEquipe, Corretor,
+DataUltimoLogin, Datacadastro, Datasaida, Diretor, Email, Empresa, Endereco,
+EnderecoComplemento, EnderecoNumero, EnderecoTipo, Equipe, Estadocivil, Exibirnosite,
+Fax, Fone, Foto, Gerente, Grupoacesso, Grupoacesso2, Inativo, MetaValordeVendas,
+MetadeCaptacoes, Nacionalidade, Nascimento, Nome, Nomecompleto, Observacoes, Pais,
+RGEmissor, RG_Inscricao, Ramal, RecebeClientesemTrocaautomática, Sexo, Tipo, UF
+```
+
+### `Agencia` — 23 campos
+
+```
+Agencia, Bairro, Celular, Cep, Cidade, Cnpj, Codigo, CpfResponsavel, DDD, Email,
+Empresa, Endereco, EnderecoComplemento, EnderecoNumero, Fone, Fone2, Nome, Pais,
+RazaoSocial, Responsavel, Rresponsavel, Site, Uf
+```
+
+### `PontoInteresse` — 13 campos
+
+```
+AreaParque, DiaFeira, Distancia, Endereco, EnemEscola, ExtencaoCliclovia, ID,
+LinhaCPTM, LinhaMetro, LojasShopping, Nome, NumeroFeirantes, PontoInteresse
+```
+
+### `prontuarios` — 20 campos (histórico de atendimento)
+
+```
+Anunciado, Assunto, Bairro, Cliente, CodigoCorretor, Corretor, Data, DataAnuncio,
+Datainicio, Hora, PROPOSTA, Pendente, Privado, Retranca, SolicitanteChave, Status,
+Statusdoimóvel, Texto, ValorProposta, VeiculoPublicado
+```
+
+### `proprietarios` — 149 campos (dados do dono do imóvel)
+
+> **PRIVADO — não expor no site.** Só usar pra operações internas (CRM, contratos, etc.).
+
+```
+Agencia, AgenteFinanceiro, AniversarioConjugeDia, AniversarioConjugeMes,
+AniversarioDia, AniversarioF1Dia, AniversarioF1_Mes, AniversarioF2Dia,
+AniversarioF2Mes, AniversarioMes, Autorizado, BairroComercial, BairroPerfil,
+BairroResidencial, Banco, Bloco, CEPComercial, CEPResidencial, CNH, CPFCNPJ,
+CPFConjuge, CampanhaImportacao, CartaoAdicional, Celular, CelularConjuge,
+CidadeComercial, CidadeResidencial, Classe, Cliente, ClienteFavorito,
+ClienteImportado, Codigo, CodigoCidadeIBGE, Comprador, ConstrutorVendedor, Conta,
+DBM, DBMData, DataAssinatura, DataCadastro, DataEntrada, DataImportacao,
+DataNascimento, DataNascimentoConjuge, DataProposta, DormitoriosPerfil,
+EmailComercial, EmailConjuge, EmailResidencial, Empresa, EnderecoComercial,
+EnderecoComplemento, EnderecoCorrespondencia, EnderecoNumero, EnderecoResidencial,
+EnderecoTipo, EstadoCivil, ExibirEmailCliente, ExibirFoneWeb, FaxComercial,
+FaxResidencial, Fiador, FilhoAniversario, FilhoAniversario2, FilhoNome, FilhoNome2,
+Filhos, FoneComercial, FoneComercialConjuge, FoneExterior, FonePrincipal,
+FoneResidencial, FoneresidencialConjuge, FonesOcultos, FormaPgtoAgenciador,
+FormaPgtoCorretor, FormaPgtoRoyalties, GaragemPerfil, Honorarioscorretores,
+Honorariostotais, ImovelCompradoAreautil, ImovelCompradoEstado, ImovelCompradoNome,
+ImovelCompradoPosse, ImovelCompradoQuantos, ImovelCompradoResidentes,
+ImovelCompradoSacada, ImovelFinalidade, ImovelProprio, ImovelProprioValor,
+ImovelRural, ImovelUrbano, Imovelprocurado, InscricaoEstadual, InscricaoMunicipal,
+Interesse, Investidor, MailingList, Motivacao, Nacionalidade, NacionalidadeConjuge,
+Nascimento, NascimentoConjuge_Responsavel, Naturalidade, Nome, NomeConjuge,
+NumeroBoletim, NumerodeParcelas, Observacoes, ObservacoesProp, OkGerencia,
+PaisComercial, PaisResidencial, PercentualRoyalties, Percentualhonorarios,
+Potencial, Prazofechamento, Profissao, ProfissaoConjuge, Proprietario,
+ProprietarioRestrito, RG, RGConjuge, RGDataExpedicao, RGEmissor, RGEmissorConjuge,
+Ramal, RamalConjuge, ReceberInformacoes, RegimeCasamento, Renda, RendaFamiliar,
+RendadoCasal, SenhaWeb, Sexo, SituacaoNegocio, Status, TipoPessoa, UFComercial,
+UFResidencial, UsuarioWeb, ValorAgenciador, ValorCorretor, ValorEntrada,
+ValorImovelComprado, ValorPerfil, ValorSinal, ValorTerceiraParcela, VeiculoCaptacao
+```
+
+---
+
+## Campos Principais do Imóvel (organizados por categoria — curado)
 
 ### Identificação
 Codigo, Referencia, CodigoEmpreendimento, ImoCodigo, ListingId, UnitId
@@ -227,7 +446,9 @@ Categoria, Status, Finalidade, Situacao, Ocupacao, Exclusivo, Lancamento, Propos
 Endereco, TipoEndereco, Numero, Complemento, Bloco, Bairro, BairroComercial, Cidade, UF, CEP, Pais, Regiao, Zona, Imediacoes, Latitude, Longitude, GMapsLatitude, GMapsLongitude
 
 ### Valores
-ValorVenda, ValorLocacao, ValorCondominio, ValorIptu, ValorM2, ValorVendaM2, ValorLocacaoM2, ValorCondominioM2, ValorIPTUM2, ValorDiaria, ValorTotalAluguel, ValorLivreProprietario, ValorACombinar, Prestacao, SaldoDivida
+ValorVenda, ValorLocacao, ValorCondominio, ValorIptu, **SeguroIncendio**, **Fci**, ValorM2, ValorVendaM2, ValorLocacaoM2, ValorCondominioM2, ValorIPTUM2, ValorAluguelPorM2, ValorDiaria, ValorLimpeza, ValorTotalAluguel, ValorLivreProprietario, ValorACombinar, Prestacao, SaldoDivida
+
+> **SeguroIncendio + Fci** adicionados 14/04/2026 pela Loft após solicitação. Usar só em imóveis de `Finalidade: "Locação"` ou `"Venda e Locação"` — não aparecem em venda-only.
 
 ### Dimensões
 AreaTotal, AreaPrivativa, AreaTerreno, AreaConstruida, AreaBoxPrivativa, AreaBoxTotal, AreaEscritorio, AreaLaje, AreaLocavel, AreaMezanino, AreaArmazem, DimensoesTerreno, Frente, Fundos
