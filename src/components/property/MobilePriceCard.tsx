@@ -6,6 +6,8 @@ interface MobilePriceCardProps {
   finalidade: string
   valorCondominio: number | null
   valorIptu: number | null
+  valorSeguroIncendio: number | null
+  valorFci: number | null
   valorSobConsulta: boolean
 }
 
@@ -15,52 +17,54 @@ export function MobilePriceCard({
   finalidade,
   valorCondominio,
   valorIptu,
+  valorSeguroIncendio,
+  valorFci,
   valorSobConsulta,
 }: MobilePriceCardProps) {
   const isDual = finalidade === "Venda e Locação" && precoVenda && precoAluguel
   const isRental = !isDual && finalidade !== "Venda"
   const showConsult = valorSobConsulta && !isRental
+  const hasRental = Boolean(isDual || isRental)
 
   const rentalBase = isDual ? precoAluguel : isRental ? (precoAluguel ?? precoVenda) : null
   const totalPacote = rentalBase
-    ? rentalBase + (valorCondominio ?? 0) + (valorIptu ?? 0)
+    ? rentalBase +
+      (valorCondominio ?? 0) +
+      (valorIptu ?? 0) +
+      (hasRental ? (valorSeguroIncendio ?? 0) + (valorFci ?? 0) : 0)
     : null
   const showTotal = totalPacote && rentalBase && totalPacote > rentalBase
 
   const hasCond = valorCondominio !== null && valorCondominio >= 1
   const hasIptu = valorIptu !== null && valorIptu >= 1
-  const showTaxes = hasCond || hasIptu
+  const hasSeguro = valorSeguroIncendio !== null && valorSeguroIncendio >= 1
+  const hasFci = valorFci !== null && valorFci >= 1
 
   if (showConsult) return null
 
   const isSaleOnly = !isDual && !isRental
 
+  const taxCell = (label: string, value: number | null, has: boolean) => (
+    <div>
+      <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
+        {label}
+      </p>
+      {has ? (
+        <p className="mt-1 text-base font-semibold text-slate-900">
+          {formatPrice(value)}
+        </p>
+      ) : (
+        <p className="mt-1 text-sm italic text-slate-400">Não informado</p>
+      )}
+    </div>
+  )
+
   const taxesGrid = (
-    <div className="grid grid-cols-2 gap-4">
-      <div>
-        <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
-          Condomínio
-        </p>
-        {hasCond ? (
-          <p className="mt-1 text-base font-semibold text-slate-900">
-            {formatPrice(valorCondominio)}
-          </p>
-        ) : (
-          <p className="mt-1 text-sm italic text-slate-400">Não informado</p>
-        )}
-      </div>
-      <div>
-        <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
-          IPTU
-        </p>
-        {hasIptu ? (
-          <p className="mt-1 text-base font-semibold text-slate-900">
-            {formatPrice(valorIptu)}
-          </p>
-        ) : (
-          <p className="mt-1 text-sm italic text-slate-400">Não informado</p>
-        )}
-      </div>
+    <div className="grid grid-cols-2 gap-x-4 gap-y-4">
+      {taxCell("Condomínio", valorCondominio, hasCond)}
+      {taxCell("IPTU", valorIptu, hasIptu)}
+      {hasRental && taxCell("Seguro Incêndio", valorSeguroIncendio, hasSeguro)}
+      {hasRental && taxCell("FCI", valorFci, hasFci)}
     </div>
   )
 
@@ -109,7 +113,7 @@ export function MobilePriceCard({
       <div className="mt-4">{taxesGrid}</div>
       {showTotal && (
         <p className="mt-3 text-sm font-semibold text-slate-700">
-          Aluguel + Condomínio + IPTU = {formatPrice(totalPacote)}/mês
+          Total mensal estimado: {formatPrice(totalPacote)}/mês
         </p>
       )}
     </div>

@@ -189,6 +189,8 @@ export default async function PropertyPage({ params }: PageProps) {
                 finalidade={property.finalidade}
                 valorCondominio={property.valorCondominio}
                 valorIptu={property.valorIptu}
+                valorSeguroIncendio={property.valorSeguroIncendio}
+                valorFci={property.valorFci}
                 valorSobConsulta={property.valorSobConsulta}
               />
             </div>
@@ -248,6 +250,8 @@ export default async function PropertyPage({ params }: PageProps) {
                 finalidade={property.finalidade}
                 valorCondominio={property.valorCondominio}
                 valorIptu={property.valorIptu}
+                valorSeguroIncendio={property.valorSeguroIncendio}
+                valorFci={property.valorFci}
                 valorSobConsulta={property.valorSobConsulta}
                 variant={variant}
               />

@@ -46,6 +46,8 @@ export interface Property {
   precoAluguel: number | null;
   valorCondominio: number | null;
   valorIptu: number | null;
+  valorSeguroIncendio: number | null;
+  valorFci: number | null;
   valorM2: number | null;
   valorSobConsulta: boolean;
 
@@ -197,6 +199,8 @@ export interface LoftPropertyRaw {
   ValorLocacao?: string;
   ValorCondominio?: string;
   ValorIptu?: string;
+  SeguroIncendio?: string;
+  Fci?: string;
   ValorM2?: string;
   ValorACombinar?: string;
 

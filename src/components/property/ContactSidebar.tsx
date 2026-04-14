@@ -38,6 +38,8 @@ interface ContactSidebarProps {
   finalidade: Property["finalidade"]
   valorCondominio: number | null
   valorIptu: number | null
+  valorSeguroIncendio: number | null
+  valorFci: number | null
   valorSobConsulta: boolean
   variant: "standard" | "premium"
 }
@@ -50,6 +52,8 @@ export function ContactSidebar({
   finalidade,
   valorCondominio,
   valorIptu,
+  valorSeguroIncendio,
+  valorFci,
   valorSobConsulta,
   variant,
 }: ContactSidebarProps) {
@@ -67,8 +71,12 @@ export function ContactSidebar({
         : "VALOR VENDA"
 
   const rentalBase = isDual ? precoAluguel : isRental ? price : null
+  const hasRental = isDual || isRental
   const totalPacote = rentalBase
-    ? rentalBase + (valorCondominio ?? 0) + (valorIptu ?? 0)
+    ? rentalBase +
+      (valorCondominio ?? 0) +
+      (valorIptu ?? 0) +
+      (hasRental ? (valorSeguroIncendio ?? 0) + (valorFci ?? 0) : 0)
     : null
 
   const whatsMessage = `Olá! Tenho interesse no imóvel ${propertyTitle} (Cód: ${propertyCode}).`
@@ -246,9 +254,31 @@ export function ContactSidebar({
                 <span className="italic text-slate-400">Não informado</span>
               )}
             </div>
+            {hasRental && (
+              <>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-slate-500">Seguro Incêndio</span>
+                  {valorSeguroIncendio && valorSeguroIncendio >= 1 ? (
+                    <span className="text-slate-700">{formatPrice(valorSeguroIncendio)}</span>
+                  ) : (
+                    <span className="italic text-slate-400">Não informado</span>
+                  )}
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-slate-500">FCI</span>
+                  {valorFci && valorFci >= 1 ? (
+                    <span className="text-slate-700">{formatPrice(valorFci)}</span>
+                  ) : (
+                    <span className="italic text-slate-400">Não informado</span>
+                  )}
+                </div>
+              </>
+            )}
             {totalPacote && rentalBase && totalPacote > rentalBase && (
               <div className="flex items-center justify-between border-t border-neutral-100 pt-2">
-                <span className="text-sm font-semibold text-slate-700">Aluguel + Cond. + IPTU</span>
+                <span className="text-sm font-semibold text-slate-700">
+                  {hasRental ? "Total mensal" : "Aluguel + Cond. + IPTU"}
+                </span>
                 <span className="text-lg font-bold text-slate-900">{formatPrice(totalPacote)}</span>
               </div>
             )}

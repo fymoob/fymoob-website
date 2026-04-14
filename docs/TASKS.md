@@ -1255,7 +1255,29 @@ Agende sua visita com a FYMOOB.
 - [ ] Falar com Bruno sobre preenchimento de IPTU/Condomínio em todos os imóveis
 - [ ] Decidir se implementamos fallback "Sob consulta" no site enquanto o CRM não for 100% preenchido
 
-### Seguro Incêndio e FCI nos imóveis de locação [BLOQUEADO — aguardando Loft/Vista]
+### Seguro Incêndio e FCI nos imóveis de locação [DESBLOQUEADO + IMPLEMENTADO — 14/04/2026]
+
+**Resolvido 14/04/2026:** Loft expôs os campos na API pública. Nomes oficiais:
+- `SeguroIncendio` (já disponível em `/imoveis/detalhes`)
+- `Fci` (já disponível em `/imoveis/detalhes`)
+- Endpoint novo descoberto: `/imoveis/listarcampos` — lista todos os 271 campos disponíveis
+
+Integração ao site feita em 14/04/2026:
+- [x] Campos `valorSeguroIncendio` e `valorFci` adicionados ao tipo `Property`
+- [x] Parse em `services/loft.ts` (DETAIL_FIELDS)
+- [x] Render em `ContactSidebar` (desktop) — só aparece pra Locação/Venda+Locação
+- [x] Render em `MobilePriceCard` (mobile) — grid 2x2 com Cond/IPTU/Seguro/FCI pra rental
+- [x] Cálculo do "Total mensal" agora inclui Seguro Incêndio + FCI (estimativa realista)
+- [x] Fallback "Não informado" em italic pra campos vazios no CRM (mesmo padrão de IPTU/Cond)
+
+**Nova task pro Bruno (prioridade alta):**
+- [ ] Preencher `Seguro Incêndio` e `FCI` em TODOS os imóveis de locação ativos no CRM. Até ele cadastrar, o site mostra "Não informado" nesses campos nas páginas de aluguel.
+
+---
+
+### (histórico — mantido como referência de debugging)
+
+**Seguro Incêndio e FCI nos imóveis de locação [BLOQUEADO — aguardando Loft/Vista]** — pré 14/04/2026
 
 **Pedido do Bruno (13/04/2026):** incluir os campos **Seguro Incêndio** e **FCI (Fundo de Conservação do Imóvel)** nos imóveis de locação, com fallback "Não informado" quando vazio (mesma regra do IPTU/Condomínio).
 

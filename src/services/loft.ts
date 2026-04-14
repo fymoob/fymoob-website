@@ -121,6 +121,7 @@ const CARD_FIELDS = [
 const DETAIL_FIELDS = [
   "Codigo", "Referencia", "Categoria", "Status", "Finalidade", "Situacao", "Ocupacao",
   "ValorVenda", "ValorLocacao", "ValorCondominio", "ValorIptu", "ValorM2", "ValorACombinar",
+  "SeguroIncendio", "Fci",
   "Bairro", "BairroComercial", "Cidade", "Endereco", "Numero", "Complemento",
   "Bloco", "CEP", "UF", "Latitude", "Longitude", "GMapsLatitude", "GMapsLongitude",
   "AreaTotal", "AreaPrivativa", "AreaTerreno", "Dormitorios", "Suites",
@@ -263,6 +264,8 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
     precoAluguel: parseNumber(raw.ValorLocacao),
     valorCondominio: parseNumber(raw.ValorCondominio),
     valorIptu: parseNumber(raw.ValorIptu),
+    valorSeguroIncendio: parseNumber(raw.SeguroIncendio),
+    valorFci: parseNumber(raw.Fci),
     valorM2: parseNumber(raw.ValorM2),
     valorSobConsulta: parseOptionalFlag(raw.ValorACombinar),
     bairro: raw.BairroComercial || raw.Bairro || "",
