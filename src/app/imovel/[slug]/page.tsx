@@ -211,13 +211,6 @@ export default async function PropertyPage({ params }: PageProps) {
               </div>
             )}
 
-            <div className="mt-8 lg:hidden">
-              <MobileInlineContactForm
-                propertyTitle={property.titulo}
-                propertyCode={property.codigo}
-              />
-            </div>
-
             {property.infraestrutura.length > 0 && (
               <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-8 border-t border-slate-200 pt-8"}>
                 <PropertyAmenities infraestrutura={property.infraestrutura} />
@@ -234,6 +227,13 @@ export default async function PropertyPage({ params }: PageProps) {
                 numero={property.numero}
                 cidade={property.cidade}
                 estado={property.estado}
+              />
+            </div>
+
+            <div className="mt-8 lg:hidden">
+              <MobileInlineContactForm
+                propertyTitle={property.titulo}
+                propertyCode={property.codigo}
               />
             </div>
           </div>
