@@ -7,6 +7,10 @@ const FYMOOB_PHONE = "5541999780517"
 export function WhatsAppFloat() {
   const pathname = usePathname()
   const isPropertyPage = pathname.startsWith("/imovel/")
+  const isAdmin = pathname.startsWith("/admin")
+
+  // Hide on admin panel — internal tool, no public CTAs
+  if (isAdmin) return null
 
   const message = "Olá! Gostaria de mais informações sobre os imóveis da FYMOOB."
   const url = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent(message)}`

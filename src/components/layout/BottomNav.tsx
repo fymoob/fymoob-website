@@ -18,6 +18,8 @@ export function BottomNav() {
   const pathname = usePathname()
   const [favCount, setFavCount] = useState(0)
   const isPropertyPage = pathname.startsWith("/imovel/")
+  const isAdmin = pathname.startsWith("/admin")
+  const isEmpreendimento = pathname.startsWith("/empreendimento/")
 
   // Auto-hide on scroll down (property pages only)
   const [hidden, setHidden] = useState(false)
@@ -85,6 +87,9 @@ export function BottomNav() {
       window.removeEventListener("wishlist-change", handleStorage)
     }
   }, [])
+
+  // Hide on admin panel (own layout) and empreendimento editorial pages (construtora feel)
+  if (isAdmin || isEmpreendimento) return null
 
   return (
     <nav

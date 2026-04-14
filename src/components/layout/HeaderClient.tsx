@@ -27,14 +27,15 @@ export function HeaderClient() {
   const pathname = usePathname()
   const isHome = pathname === "/" || pathname === "/sobre"
   const isEmpreendimento = pathname.startsWith("/empreendimento/")
+  const isAdmin = pathname.startsWith("/admin")
   const hasDarkHero = isHome
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
   // Empreendimento pages hide the global header entirely so the landing feels
   // like it belongs to the construtora (requested by Bruno 13/04/2026).
-  // Only a breadcrumb at the top of the content area identifies FYMOOB.
-  if (isEmpreendimento) return null
+  // Admin panel has its own layout and sidebar — no public header needed.
+  if (isEmpreendimento || isAdmin) return null
 
   useEffect(() => {
     setMenuOpen(false)

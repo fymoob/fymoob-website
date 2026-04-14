@@ -5,6 +5,7 @@ import { generateOrganizationSchema, generateLocalBusinessSchema } from "@/lib/s
 import { Suspense } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { ChromeGate } from "@/components/layout/ChromeGate";
 import "./globals.css";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
@@ -87,7 +88,9 @@ export default function RootLayout({
       >
         <Header />
         <main className="min-h-screen overflow-x-clip">{children}</main>
-        <Footer />
+        <ChromeGate>
+          <Footer />
+        </ChromeGate>
         <ScrollToTop />
         <Suspense fallback={null}>
           <NavigationProgress />
