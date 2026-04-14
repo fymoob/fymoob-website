@@ -64,10 +64,10 @@ export function MobilePriceCard({
     </div>
   )
 
-  // Sale-only: price already in PropertyHeaderBlock. If there are taxes,
-  // render a bare divider + grid (no bordered card).
+  // Sale-only: price already in PropertyHeaderBlock. Always render the taxes
+  // block for consistency — "Não informado" placeholders communicate the CRM
+  // gap transparently instead of hiding the whole section.
   if (isSaleOnly) {
-    if (!showTaxes) return null
     return (
       <div className="lg:hidden">
         <div className="h-px w-full bg-slate-200" />
