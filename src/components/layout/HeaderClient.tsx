@@ -64,12 +64,16 @@ export function HeaderClient() {
       {!hasDarkHero && <div className="h-16" />}
       <header
         className={cn(
-          "fixed top-0 z-50 w-full transition-all duration-300",
+          // Border is ALWAYS present but colored transparent when invisible.
+          // This prevents a ghost white line from appearing during the class
+          // transition when the border is added/removed (1px layout shift +
+          // color animation-in).
+          "fixed top-0 z-50 w-full border-b transition-all duration-300",
           isTransparent
-            ? "bg-transparent"
+            ? "border-transparent bg-transparent"
             : isEmpreendimento
-              ? "bg-[#0d0d0d]/60 backdrop-blur-2xl"
-              : "border-b border-neutral-200/50 bg-white/90 backdrop-blur-xl"
+              ? "border-white/5 bg-[#0d0d0d]/60 backdrop-blur-2xl"
+              : "border-neutral-200/50 bg-white/90 backdrop-blur-xl"
         )}
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 md:h-16 lg:px-8">
