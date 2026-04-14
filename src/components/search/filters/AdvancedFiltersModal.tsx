@@ -92,33 +92,23 @@ export function AdvancedFiltersModal({
 
         {/* ── Scrollable content ── */}
         <div className="flex-1 overflow-y-auto px-6 py-2">
-          {/* Características — collapsed (long list, two groups) */}
+          {/* Área privativa */}
           <FilterSection
             alwaysOpen
-            title="Características"
-            icon={ListChecks}
-            activeCount={
-              pendingFilters.caracteristicasUnidade.length +
-              pendingFilters.caracteristicasCondominio.length
-            }
+            title="Área privativa (m²)"
+            icon={Maximize2}
+            activeCount={(pendingFilters.areaMin ? 1 : 0) + (pendingFilters.areaMax ? 1 : 0)}
             selectionSummary={
-              pendingFilters.caracteristicasUnidade.length +
-                pendingFilters.caracteristicasCondominio.length >
-              0
-                ? [
-                    ...pendingFilters.caracteristicasUnidade,
-                    ...pendingFilters.caracteristicasCondominio,
-                  ]
-                    .slice(0, 3)
-                    .join(", ")
+              pendingFilters.areaMin || pendingFilters.areaMax
+                ? `${pendingFilters.areaMin || "0"} a ${pendingFilters.areaMax || "—"} m²`
                 : null
             }
           >
-            <CaracteristicasCheckboxes
-              selectedUnidade={pendingFilters.caracteristicasUnidade}
-              selectedCondominio={pendingFilters.caracteristicasCondominio}
-              onToggleUnidade={toggleUnidade}
-              onToggleCondominio={toggleCondominio}
+            <AreaRangeInput
+              minValue={pendingFilters.areaMin}
+              maxValue={pendingFilters.areaMax}
+              onMinChange={(v) => setPendingFilters((c) => ({ ...c, areaMin: v }))}
+              onMaxChange={(v) => setPendingFilters((c) => ({ ...c, areaMax: v }))}
             />
           </FilterSection>
 
@@ -164,23 +154,33 @@ export function AdvancedFiltersModal({
             />
           </FilterSection>
 
-          {/* Área privativa */}
+          {/* Características — long list with two groups */}
           <FilterSection
             alwaysOpen
-            title="Área privativa (m²)"
-            icon={Maximize2}
-            activeCount={(pendingFilters.areaMin ? 1 : 0) + (pendingFilters.areaMax ? 1 : 0)}
+            title="Características"
+            icon={ListChecks}
+            activeCount={
+              pendingFilters.caracteristicasUnidade.length +
+              pendingFilters.caracteristicasCondominio.length
+            }
             selectionSummary={
-              pendingFilters.areaMin || pendingFilters.areaMax
-                ? `${pendingFilters.areaMin || "0"} a ${pendingFilters.areaMax || "—"} m²`
+              pendingFilters.caracteristicasUnidade.length +
+                pendingFilters.caracteristicasCondominio.length >
+              0
+                ? [
+                    ...pendingFilters.caracteristicasUnidade,
+                    ...pendingFilters.caracteristicasCondominio,
+                  ]
+                    .slice(0, 3)
+                    .join(", ")
                 : null
             }
           >
-            <AreaRangeInput
-              minValue={pendingFilters.areaMin}
-              maxValue={pendingFilters.areaMax}
-              onMinChange={(v) => setPendingFilters((c) => ({ ...c, areaMin: v }))}
-              onMaxChange={(v) => setPendingFilters((c) => ({ ...c, areaMax: v }))}
+            <CaracteristicasCheckboxes
+              selectedUnidade={pendingFilters.caracteristicasUnidade}
+              selectedCondominio={pendingFilters.caracteristicasCondominio}
+              onToggleUnidade={toggleUnidade}
+              onToggleCondominio={toggleCondominio}
             />
           </FilterSection>
 
