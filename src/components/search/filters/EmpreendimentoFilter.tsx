@@ -56,47 +56,47 @@ export function EmpreendimentoFilter({ options, values, onChange }: Empreendimen
       )}
 
       {/* Search input */}
-      <div className="relative">
-        <Input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onFocus={() => setFocused(true)}
-          onBlur={() => {
-            setTimeout(() => setFocused(false), 150)
-          }}
-          placeholder={
-            values.length > 0 ? "Adicionar outro..." : "Digite para buscar..."
-          }
-          className="h-10 rounded-xl text-sm"
-        />
-        {focused && suggestions.length > 0 && (
-          <div className="absolute left-0 right-0 top-full z-20 mt-1 max-h-64 overflow-y-auto rounded-xl border border-neutral-200 bg-white shadow-lg">
-            <ul className="py-1">
-              {suggestions.map((name) => (
-                <li key={name}>
-                  <button
-                    type="button"
-                    onMouseDown={(e) => {
-                      e.preventDefault()
-                      toggle(name)
-                      setQuery("")
-                    }}
-                    className="block w-full px-3 py-2 text-left text-sm text-neutral-700 transition-colors hover:bg-neutral-50"
-                  >
-                    {name}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        {focused && query.trim() && suggestions.length === 0 && (
-          <div className="absolute left-0 right-0 top-full z-20 mt-1 rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-500 shadow-lg">
-            Nenhum empreendimento encontrado
-          </div>
-        )}
-      </div>
+      <Input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => {
+          setTimeout(() => setFocused(false), 150)
+        }}
+        placeholder={
+          values.length > 0 ? "Adicionar outro..." : "Digite para buscar..."
+        }
+        className="h-10 rounded-xl text-sm"
+      />
+
+      {/* Inline suggestions — always-expanded while typing, no overflow clip */}
+      {focused && suggestions.length > 0 && (
+        <div className="max-h-60 overflow-y-auto rounded-xl border border-neutral-200 bg-white">
+          <ul className="py-1">
+            {suggestions.map((name) => (
+              <li key={name}>
+                <button
+                  type="button"
+                  onMouseDown={(e) => {
+                    e.preventDefault()
+                    toggle(name)
+                    setQuery("")
+                  }}
+                  className="block w-full px-3 py-2 text-left text-sm text-neutral-700 transition-colors hover:bg-neutral-50"
+                >
+                  {name}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {focused && query.trim() && suggestions.length === 0 && (
+        <div className="rounded-xl border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-500">
+          Nenhum empreendimento encontrado
+        </div>
+      )}
     </div>
   )
 }
