@@ -1,5 +1,35 @@
 import NextAuth from "next-auth"
 import Resend from "next-auth/providers/resend"
+import { UpstashRedisAdapter } from "@auth/upstash-redis-adapter"
+import { Redis } from "@upstash/redis"
+
+/**
+ * Upstash Redis adapter — stores verification tokens for the magic link flow.
+ *
+ * Even though we use JWT sessions (no DB needed for sessions), the magic link
+ * provider requires a durable store for:
+ *   1. The one-time token that goes in the email URL
+ *   2. Token expiration (10 min default) and single-use marking
+ *
+ * Reusing the same Upstash Redis instance that powers rate limiting — zero
+ * extra infra. The adapter auto-creates the needed keys (with prefixes).
+ *
+ * Only enabled when Redis env vars are present — fails explicit in production
+ * if missing (Auth.js requires an adapter for magic link, can't silently skip).
+ */
+const hasRedisConfig =
+  Boolean(process.env.UPSTASH_REDIS_REST_URL) &&
+  Boolean(process.env.UPSTASH_REDIS_REST_TOKEN)
+
+const adapter = hasRedisConfig
+  ? UpstashRedisAdapter(
+      new Redis({
+        url: process.env.UPSTASH_REDIS_REST_URL!,
+        token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+      }),
+      { baseKeyPrefix: "fymoob:auth:" }
+    )
+  : undefined
 
 /**
  * Admin whitelist — only emails in this list can authenticate via magic link.
@@ -20,6 +50,7 @@ function getAllowedAdmins(): Set<string> {
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  adapter,
   providers: [
     Resend({
       apiKey: process.env.RESEND_API_KEY,
