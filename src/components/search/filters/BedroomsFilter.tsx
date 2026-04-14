@@ -62,7 +62,7 @@ export function BedroomsFilter({
             <SelectTrigger className="h-11 w-full rounded-xl border-neutral-200 bg-white px-3.5 hover:border-neutral-300 data-[popup-open]:border-brand-primary data-[popup-open]:ring-2 data-[popup-open]:ring-brand-primary/10">
               <SelectValue>{renderLabel(minValue, "Sem mín.")}</SelectValue>
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-neutral-200 shadow-lg">
+            <SelectContent alignItemWithTrigger={false} className="rounded-xl border-neutral-200 shadow-lg">
               <SelectItem value="any" className="py-2.5 text-sm text-neutral-500">
                 Sem mínimo
               </SelectItem>
@@ -83,7 +83,7 @@ export function BedroomsFilter({
             <SelectTrigger className="h-11 w-full rounded-xl border-neutral-200 bg-white px-3.5 hover:border-neutral-300 data-[popup-open]:border-brand-primary data-[popup-open]:ring-2 data-[popup-open]:ring-brand-primary/10">
               <SelectValue>{renderLabel(maxValue, "Sem máx.")}</SelectValue>
             </SelectTrigger>
-            <SelectContent className="rounded-xl border-neutral-200 shadow-lg">
+            <SelectContent alignItemWithTrigger={false} className="rounded-xl border-neutral-200 shadow-lg">
               <SelectItem value="any" className="py-2.5 text-sm text-neutral-500">
                 Sem máximo
               </SelectItem>
