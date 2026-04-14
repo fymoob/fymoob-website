@@ -16,10 +16,10 @@ import {
   Car,
   ChevronDown,
   Hash,
+  ListChecks,
   MapPin,
   Maximize2,
   Search,
-  Sparkles,
   Tag,
   X,
 } from "lucide-react"
@@ -483,7 +483,7 @@ export function SearchBar({
                     {/* Características — collapsed (long list) */}
                     <FilterSection
                       title="Características"
-                      icon={Sparkles}
+                      icon={ListChecks}
                       activeCount={pendingFilters.caracteristicas.length}
                       selectionSummary={
                         pendingFilters.caracteristicas.length > 0

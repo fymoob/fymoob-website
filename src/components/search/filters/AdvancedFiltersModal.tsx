@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, type Dispatch, type SetStateAction } from "react"
-import { X, Search, Bath, Car, BedDouble, Maximize2, Hash, Sparkles } from "lucide-react"
+import { X, Search, Bath, Car, BedDouble, Maximize2, Hash, ListChecks } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import type { SearchDraftFilters, PriceBounds } from "./search-state"
 import { FilterSection } from "./FilterSection"
@@ -87,7 +87,7 @@ export function AdvancedFiltersModal({
           {/* Características — collapsed (long list) */}
           <FilterSection
             title="Características"
-            icon={Sparkles}
+            icon={ListChecks}
             activeCount={pendingFilters.caracteristicas.length}
             selectionSummary={
               pendingFilters.caracteristicas.length > 0
