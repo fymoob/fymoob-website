@@ -68,17 +68,10 @@ export function MobilePriceCard({
     </div>
   )
 
-  // Sale-only: price already in PropertyHeaderBlock. Always render the taxes
-  // block for consistency — "Não informado" placeholders communicate the CRM
-  // gap transparently instead of hiding the whole section.
-  if (isSaleOnly) {
-    return (
-      <div className="lg:hidden">
-        <div className="h-px w-full bg-slate-200" />
-        <div className="mt-4">{taxesGrid}</div>
-      </div>
-    )
-  }
+  // Monthly costs (Cond + IPTU) — shown on sale-only as "Custos mensais estimados"
+  // since summing with sale price would mix time scales (total vs monthly).
+  const custoMensal = (valorCondominio ?? 0) + (valorIptu ?? 0)
+  const showCustoMensal = custoMensal > 0
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white px-5 py-4 lg:hidden">
@@ -98,6 +91,13 @@ export function MobilePriceCard({
             <span className="text-sm font-medium text-slate-400">Aluguel</span>
           </div>
         </div>
+      ) : isSaleOnly ? (
+        <div className="flex items-baseline justify-between">
+          <p className="text-2xl font-extrabold tracking-tight text-slate-900">
+            {formatPrice(precoVenda)}
+          </p>
+          <span className="text-sm font-medium text-slate-400">Venda</span>
+        </div>
       ) : (
         <div className="flex items-baseline justify-between">
           <p className="text-2xl font-extrabold tracking-tight text-slate-900">
@@ -108,12 +108,21 @@ export function MobilePriceCard({
         </div>
       )}
 
-      {/* Rental/dual: always show taxes block — transparency even when values missing */}
+      {/* All variants: always render taxes grid for consistency */}
       <div className="mt-4 h-px w-full bg-slate-200" />
       <div className="mt-4">{taxesGrid}</div>
-      {showTotal && (
+
+      {/* Rental/dual: total includes Aluguel + Cond + IPTU + Seguro + FCI */}
+      {hasRental && showTotal && (
         <p className="mt-3 text-sm font-semibold text-slate-700">
           Total mensal estimado: {formatPrice(totalPacote)}/mês
+        </p>
+      )}
+
+      {/* Sale-only: monthly carry cost (Cond + IPTU only — sale price is not monthly) */}
+      {isSaleOnly && showCustoMensal && (
+        <p className="mt-3 text-sm font-semibold text-slate-700">
+          Custos mensais estimados: {formatPrice(custoMensal)}/mês
         </p>
       )}
     </div>
