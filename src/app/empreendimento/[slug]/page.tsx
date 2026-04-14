@@ -140,7 +140,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
       <>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([realEstateSchema, itemListSchema]) }} />
         <section className="bg-[#0d0d0d]">
-          <div className="mx-auto max-w-7xl px-4 pt-24 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 sm:pt-8 lg:px-8">
             <div className="[&_nav]:text-white/60 [&_a]:text-white/60 [&_a:hover]:text-white [&_span]:text-white/80">
               <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Empreendimentos", url: "/empreendimentos" }, { name: emp.nome, url: `/empreendimento/${slug}` }]} />
             </div>
@@ -198,7 +198,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
           <div className="absolute inset-0 bg-black/50" />
         </div>
 
-        <div className="absolute top-20 left-0 right-0 z-10">
+        <div className="absolute top-6 left-0 right-0 z-10 sm:top-8">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="[&_nav]:text-white/70 [&_a]:text-white/70 [&_a:hover]:text-white [&_span]:text-white/90">
               <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Empreendimentos", url: "/empreendimentos" }, { name: emp.nome, url: `/empreendimento/${slug}` }]} />
