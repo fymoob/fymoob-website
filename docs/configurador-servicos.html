@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FYMOOB — Configurador de Servicos</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.5; }
+
+  .container { max-width: 1400px; margin: 0 auto; padding: 24px 16px 120px; }
+  .grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 640px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+
+  h1 { font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 4px; color: #f1f5f9; }
+  .subtitle { text-align: center; color: #94a3b8; font-size: 14px; margin-bottom: 8px; }
+  .intro { text-align: center; color: #64748b; font-size: 13px; margin-bottom: 32px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+  .section { background: #1e293b; border-radius: 16px; border: 1px solid #334155; padding: 20px; display: flex; flex-direction: column; }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .section-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .section-title { font-size: 16px; font-weight: 700; color: #f1f5f9; }
+  .section-desc { font-size: 13px; color: #94a3b8; margin-bottom: 16px; margin-left: 46px; }
+
+  .example { font-size: 12px; color: #64748b; margin-bottom: 12px; margin-left: 46px; padding: 8px 12px; background: rgba(41,171,226,0.06); border-left: 2px solid #29ABE2; border-radius: 0 8px 8px 0; font-style: italic; }
+
+  .option { display: flex; align-items: flex-start; gap: 12px; padding: 14px; border-radius: 12px; border: 2px solid #334155; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; }
+  .option:hover { border-color: #64748b; }
+  .option.selected { border-color: #29ABE2; background: rgba(41,171,226,0.1); }
+  .option.disabled { opacity: 0.4; pointer-events: none; }
+
+  .option input[type="radio"],
+  .option input[type="checkbox"] { margin-top: 2px; accent-color: #29ABE2; width: 16px; height: 16px; flex-shrink: 0; }
+
+  .option-content { flex: 1; min-width: 0; }
+  .option-label { font-size: 14px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; color: #e2e8f0; }
+  .option-price { color: #29ABE2; font-weight: 700; white-space: nowrap; margin-left: 8px; }
+  .option-detail { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+
+  details { margin-top: auto; padding-top: 8px; }
+  details summary { font-size: 12px; color: #29ABE2; cursor: pointer; font-weight: 600; padding: 4px 0; }
+  details .req-list { font-size: 12px; color: #94a3b8; padding: 8px 12px; background: #0f172a; border-radius: 8px; margin-top: 4px; }
+  details .req-list li { margin-bottom: 4px; }
+  details .req-list li strong { color: #e2e8f0; font-weight: 600; }
+
+  .footer { position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; border-top: 1px solid #334155; padding: 16px; z-index: 100; }
+  .footer-inner { max-width: 680px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+  .total-label { font-size: 13px; color: #94a3b8; }
+  .total-value { font-size: 28px; font-weight: 800; color: #f1f5f9; }
+  .total-items { font-size: 12px; color: #64748b; }
+
+  .custo-mensal { font-size: 11px; color: #f59e0b; margin-top: 6px; }
+
+  @media (max-width: 480px) {
+    .total-value { font-size: 24px; }
+    .option-label { flex-direction: column; align-items: flex-start; gap: 2px; }
+    .option-price { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>FYMOOB — Servicos Adicionais</h1>
+  <p class="subtitle">Monte o pacote que faz sentido para a imobiliaria. O valor atualiza conforme voce seleciona.</p>
+  <p class="intro">Cada item funciona de forma independente. Escolha o que quiser, na ordem que preferir. Tudo fica integrado ao site que ja existe.</p>
+
+  <div class="grid">
+
+  <!-- Hub de Servicos -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(59,130,246,0.15);color:#60a5fa;">&#9783;</div>
+      <div class="section-title">Pagina de Servicos</div>
+    </div>
+    <p class="section-desc">Uma pagina no site que reune todos os servicos da FYMOOB em um so lugar. O menu do site muda de "Anunciar" para "Servicos".</p>
+    <div class="example">Ex: O cliente entra no site, clica em "Servicos" no menu e ve as opcoes: certidoes, avaliacao, anunciar imovel, etc.</div>
+    <label class="option" id="opt-hub">
+      <input type="checkbox" onchange="calc()" data-price="800" data-id="hub">
+      <div class="option-content">
+        <div class="option-label">Pagina de servicos + menu atualizado <span class="option-price">R$ 800</span></div>
+        <div class="option-detail">Pagina com os servicos organizados em cards. Cada card leva pra pagina do servico correspondente. Funciona no celular e computador.</div>
+      </div>
+    </label>
+    <details>
+      <summary>O que esta incluso?</summary>
+      <ul class="req-list">
+        <li>Pagina nova no site com visual profissional</li>
+        <li>Menu do site atualizado com o link "Servicos"</li>
+        <li>Funciona em celular, tablet e computador</li>
+        <li><strong>O que preciso de voces:</strong> confirmar quais servicos querem exibir</li>
+      </ul>
+    </details>
+  </div>
+
+  <!-- Pack de Certidoes -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(217,119,6,0.15);color:#fbbf24;">&#128196;</div>
+      <div class="section-title">Pack de Certidoes</div>
+    </div>
+    <p class="section-desc">O cliente entra no site, escolhe o pacote de certidoes que precisa, paga e voces recebem o pedido por email pra solicitar nos cartorios e orgaos normalmente.</p>
+    <div class="example">Ex: Cliente precisa de certidoes pra comprar um imovel. Entra no site, escolhe o "Pack Completo", paga R$ 1.200 via Pix, e voces recebem um email com todos os dados pra iniciar o processo.</div>
+
+    <label class="option" id="opt-cert-a">
+      <input type="radio" name="certidoes" onchange="calc()" data-price="1800" data-id="cert-a">
+      <div class="option-content">
+        <div class="option-label">Pagamento via Pix manual <span class="option-price">R$ 1.800</span></div>
+        <div class="option-detail">O cliente preenche os dados, ve a chave Pix na tela e paga. Voces recebem um email com o pedido e confirmam o pagamento manualmente antes de iniciar.</div>
+      </div>
+    </label>
+
+    <label class="option" id="opt-cert-b">
+      <input type="radio" name="certidoes" onchange="calc()" data-price="3500" data-id="cert-b">
+      <div class="option-content">
+        <div class="option-label">Pagamento online automatico <span class="option-price">R$ 3.500</span></div>
+        <div class="option-detail">O cliente paga por cartao de credito ou Pix direto no site (igual comprar numa loja online). O pagamento e confirmado na hora, sem voces precisarem verificar nada.</div>
+      </div>
+    </label>
+
+    <label class="option disabled" id="opt-cert-none">
+      <input type="radio" name="certidoes" onchange="calc()" data-price="0" data-id="cert-none" checked>
+      <div class="option-content">
+        <div class="option-label">Nao incluir <span class="option-price">—</span></div>
+      </div>
+    </label>
+
+    <details>
+      <summary>O que preciso de voces?</summary>
+      <ul class="req-list">
+        <li><strong>Lista de certidoes</strong> que voces providenciam (matricula, onus, IPTU, etc.)</li>
+        <li><strong>Precos</strong> de cada pacote que querem cobrar do cliente</li>
+        <li><strong>Prazo</strong> medio de entrega (ex: 7 dias uteis)</li>
+        <li><strong>Pagamento online:</strong> precisa ter conta no MercadoPago com CNPJ da FYMOOB (so no Nivel B)</li>
+        <li><strong>Email</strong> onde querem receber os pedidos</li>
+      </ul>
+    </details>
+  </div>
+
+  <!-- Calculadora -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(124,58,237,0.15);color:#a78bfa;">&#128202;</div>
+      <div class="section-title">Calculadora de Avaliacao</div>
+    </div>
+    <p class="section-desc">O visitante coloca os dados do imovel (bairro, tipo, metragem, quartos) e recebe uma estimativa de valor na hora. Antes de ver o resultado, deixa nome e telefone — vira um lead pra voces.</p>
+    <div class="example">Ex: Dona Maria quer saber quanto vale o apartamento dela no Agua Verde. Entra no site, preenche os dados, ve que vale entre R$ 450-550 mil, e deixa o telefone. O corretor liga no dia seguinte pra oferecer o servico de avaliacao profissional.</div>
+
+    <label class="option" id="opt-calc-a">
+      <input type="radio" name="calc" onchange="calc()" data-price="2500" data-id="calc-a">
+      <div class="option-content">
+        <div class="option-label">Estimativa por tabela de precos <span class="option-price">R$ 2.500</span></div>
+        <div class="option-detail">Usa dados publicos de preco medio por bairro e tipo de imovel (FipeZap, ITBI da prefeitura). Mostra uma faixa de valor. Sem custo mensal. Os dados precisam ser atualizados por nos de tempos em tempos.</div>
+      </div>
+    </label>
+
+    <label class="option" id="opt-calc-b">
+      <input type="radio" name="calc" onchange="calc()" data-price="5000" data-id="calc-b">
+      <div class="option-content">
+        <div class="option-label">Estimativa com inteligencia artificial <span class="option-price">R$ 5.000</span></div>
+        <div class="option-detail">Funciona igual ao ChatGPT, mas dentro do site da FYMOOB. A IA analisa os dados do imovel e escreve um texto personalizado explicando a avaliacao. Resultado mais completo e profissional.</div>
+        <div class="custo-mensal">* Custo mensal da IA: R$ 50 a R$ 100/mes (pago pela FYMOOB)</div>
+      </div>
+    </label>
+
+    <label class="option disabled" id="opt-calc-none">
+      <input type="radio" name="calc" onchange="calc()" data-price="0" data-id="calc-none" checked>
+      <div class="option-content">
+        <div class="option-label">Nao incluir <span class="option-price">—</span></div>
+      </div>
+    </label>
+
+    <details>
+      <summary>O que preciso de voces?</summary>
+      <ul class="req-list">
+        <li><strong>Regioes:</strong> so Curitiba ou inclui cidades da regiao metropolitana?</li>
+        <li><strong>Cadastro:</strong> o visitante precisa deixar nome e telefone antes de ver o resultado, ou so depois?</li>
+        <li><strong>Nivel B (IA):</strong> a FYMOOB paga uma mensalidade de ~R$ 50-100 pra manter a IA funcionando. E um custo fixo independente de quantas pessoas usarem.</li>
+      </ul>
+    </details>
+  </div>
+
+  <!-- Laudo -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(219,39,119,0.15);color:#f472b6;">&#128203;</div>
+      <div class="section-title">Laudo de Avaliacao Presencial</div>
+    </div>
+    <p class="section-desc">Pagina no site explicando que a FYMOOB faz avaliacao presencial de imoveis. O cliente interessado preenche um formulario com os dados do imovel e voces entram em contato pra agendar a visita.</p>
+    <div class="example">Ex: Um proprietario quer um laudo judicial do imovel. Entra na pagina, ve os tipos de laudo que voces oferecem, preenche endereco e tipo do imovel, e voces recebem tudo organizado pra ligar e agendar.</div>
+
+    <label class="option" id="opt-laudo">
+      <input type="checkbox" onchange="calc()" data-price="1000" data-id="laudo">
+      <div class="option-content">
+        <div class="option-label">Pagina do servico + formulario <span class="option-price">R$ 1.000</span></div>
+        <div class="option-detail">Pagina profissional com explicacao dos tipos de laudo (simples, judicial, financiamento), vantagens de fazer com a FYMOOB e formulario de solicitacao.</div>
+      </div>
+    </label>
+
+    <details>
+      <summary>O que preciso de voces?</summary>
+      <ul class="req-list">
+        <li><strong>Tipos de laudo:</strong> quais voces fazem? (simples, judicial ABNT, financiamento bancario)</li>
+        <li><strong>Precos:</strong> querem mostrar o valor na pagina ou preferem "solicite um orcamento"?</li>
+        <li><strong>Responsavel tecnico:</strong> nome e registro CREA ou CAU de quem assina os laudos (se tiver — passa credibilidade)</li>
+      </ul>
+    </details>
+  </div>
+
+  <!-- Analise de Credito -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(5,150,105,0.15);color:#34d399;">&#128179;</div>
+      <div class="section-title">Ficha de Analise de Credito</div>
+    </div>
+    <p class="section-desc">Formulario online pra quem quer alugar um imovel. O interessado preenche os dados pessoais e financeiros pelo site, e voces recebem tudo organizado por email — sem precisar ficar pedindo documentos por WhatsApp.</p>
+    <div class="example">Ex: Joao quer alugar um apto. Em vez de mandar documentos um por um pelo WhatsApp, ele preenche tudo de uma vez no site: nome, CPF, renda, empregador. Voces recebem um email bonito com todos os dados prontos pra analisar.</div>
+
+    <label class="option" id="opt-credito">
+      <input type="checkbox" onchange="calc()" data-price="1500" data-id="credito">
+      <div class="option-content">
+        <div class="option-label">Formulario completo + envio por email <span class="option-price">R$ 1.500</span></div>
+        <div class="option-detail">Coleta nome completo, CPF, renda mensal, empregador, tempo de empresa e referencias pessoais. Voces continuam fazendo a analise manualmente como ja fazem hoje — so muda a forma de receber os dados.</div>
+      </div>
+    </label>
+
+    <details>
+      <summary>O que preciso de voces?</summary>
+      <ul class="req-list">
+        <li><strong>Lista de dados:</strong> quais informacoes voces pedem hoje do inquilino? (nome, CPF, renda, empregador, referencias, comprovante de renda, etc.)</li>
+        <li><strong>Email</strong> do corretor ou setor que faz a analise</li>
+      </ul>
+    </details>
+  </div>
+
+  <!-- Anuncie Locacao -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(234,88,12,0.15);color:#fb923c;">&#127968;</div>
+      <div class="section-title">Captacao de Imoveis para Locacao</div>
+    </div>
+    <p class="section-desc">O site ja tem a pagina "Anuncie seu Imovel" focada em venda. Esta opcao cria uma versao dedicada pra proprietarios que querem colocar o imovel pra alugar — com textos, beneficios e formulario adaptados pra locacao.</p>
+    <div class="example">Ex: Um proprietario busca no Google "anunciar imovel para alugar curitiba". Cai na pagina da FYMOOB com beneficios especificos de locacao (administracao, vistoria, garantia) e preenche o formulario.</div>
+
+    <label class="option" id="opt-locacao">
+      <input type="checkbox" onchange="calc()" data-price="800" data-id="locacao">
+      <div class="option-content">
+        <div class="option-label">Pagina de captacao para locacao <span class="option-price">R$ 800</span></div>
+        <div class="option-detail">Mesma qualidade da pagina de venda que ja existe, com textos e beneficios reescritos pro publico de locacao. Formulario de captacao com os dados do imovel e do proprietario.</div>
+      </div>
+    </label>
+
+    <details>
+      <summary>O que preciso de voces?</summary>
+      <ul class="req-list">
+        <li><strong>Beneficios:</strong> o que a FYMOOB oferece pro proprietario que quer alugar? (administracao, vistoria, garantia de aluguel, assessoria juridica, etc.)</li>
+        <li><strong>Diferenciais:</strong> o processo de captacao pra locacao e diferente do de venda? Se sim, quais as diferencas?</li>
+      </ul>
+    </details>
+  </div>
+
+  <!-- Lead Capture -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon" style="background:rgba(22,163,74,0.15);color:#4ade80;">&#128172;</div>
+      <div class="section-title">Captura de Contato pelo WhatsApp</div>
+    </div>
+    <p class="section-desc">Hoje quando alguem clica em "Quero visitar" no site, o WhatsApp abre direto e voces nao sabem quem é ate a pessoa mandar mensagem. Com essa funcionalidade, antes de abrir o WhatsApp aparece uma tela rapida pedindo nome e telefone — e esses dados ja vao automaticamente pro CRM com o corretor atribuido pela roleta.</p>
+    <div class="example">Ex: Visitante clica em "Quero visitar" no apartamento do Batel. Aparece uma tela pedindo nome, email e telefone. Ele preenche em 10 segundos, o WhatsApp abre com a mensagem pronta, e o lead ja aparece no CRM pro corretor da vez.</div>
+
+    <label class="option" id="opt-lead">
+      <input type="checkbox" onchange="calc()" data-price="800" data-id="lead">
+      <div class="option-content">
+        <div class="option-label">Formulario rapido + cadastro no CRM <span class="option-price">R$ 800</span></div>
+        <div class="option-detail">Tela simples com 3 campos (nome, email, telefone) que aparece antes de abrir o WhatsApp. O lead e cadastrado automaticamente no CRM Loft com o imovel de interesse e o corretor ja atribuido. Se der qualquer problema, o WhatsApp abre normalmente — o cliente nunca fica travado.</div>
+      </div>
+    </label>
+
+    <details>
+      <summary>Como funciona na pratica?</summary>
+      <ul class="req-list">
+        <li>Funciona em <strong>todos</strong> os botoes de WhatsApp do site (pagina do imovel, barra de contato, botao flutuante)</li>
+        <li>O lead aparece no CRM com: nome do cliente, telefone, email, codigo do imovel que ele estava vendo e a midia "Site FYMOOB"</li>
+        <li>O corretor e atribuido automaticamente pela roleta do CRM — igual quando chega lead dos portais</li>
+        <li>Se a internet cair ou der erro, o WhatsApp abre normalmente sem o formulario (o cliente nunca fica impedido de falar com voces)</li>
+      </ul>
+    </details>
+  </div>
+
+  </div>
+</div>
+
+<!-- Footer fixo com total -->
+<div class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="total-label">Total do pacote</div>
+      <div class="total-value" id="total">R$ 0</div>
+      <div class="total-items" id="item-count">Nenhum item selecionado</div>
+    </div>
+    <div style="text-align:right;">
+      <div class="total-label">Prazo estimado</div>
+      <div style="font-size:20px;font-weight:700;" id="prazo">—</div>
+      <button type="button" id="btn-enviar" onclick="enviarWhatsApp()" disabled
+        style="margin-top:8px;background:#25D366;color:#fff;border:none;padding:10px 20px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all 0.15s;opacity:0.4;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a7.96 7.96 0 0 1-4.11-1.14l-.29-.174-3.01.79.8-2.93-.19-.3A7.96 7.96 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z"/></svg>
+        Enviar selecao
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const LABELS = {
+  'hub': 'Pagina de Servicos',
+  'cert-a': 'Pack de Certidoes (Pix manual)',
+  'cert-b': 'Pack de Certidoes (Pagamento online)',
+  'calc-a': 'Calculadora de Avaliacao (Tabela)',
+  'calc-b': 'Calculadora de Avaliacao (com IA)',
+  'laudo': 'Laudo de Avaliacao Presencial',
+  'credito': 'Ficha de Analise de Credito',
+  'locacao': 'Captacao de Imoveis para Locacao',
+  'lead': 'Captura de Contato pelo WhatsApp'
+};
+
+function calc() {
+  let total = 0;
+  let count = 0;
+  let dias = 0;
+
+  const items = document.querySelectorAll('input[data-price]');
+  items.forEach(input => {
+    const price = parseInt(input.dataset.price);
+    const isSelected = input.checked && price > 0;
+    const option = input.closest('.option');
+
+    if (option) {
+      option.classList.toggle('selected', isSelected);
+    }
+
+    if (isSelected) {
+      total += price;
+      count++;
+    }
+  });
+
+  if (total <= 2000) dias = 3;
+  else if (total <= 4000) dias = 5;
+  else if (total <= 7000) dias = 8;
+  else if (total <= 10000) dias = 12;
+  else dias = 15;
+
+  document.getElementById('total').textContent = total > 0
+    ? 'R$ ' + total.toLocaleString('pt-BR')
+    : 'R$ 0';
+
+  document.getElementById('item-count').textContent = count === 0
+    ? 'Nenhum item selecionado'
+    : count === 1
+      ? '1 funcionalidade selecionada'
+      : count + ' funcionalidades selecionadas';
+
+  document.getElementById('prazo').textContent = total > 0
+    ? dias + ' dias uteis'
+    : '\u2014';
+
+  const btn = document.getElementById('btn-enviar');
+  btn.disabled = count === 0;
+  btn.style.opacity = count === 0 ? '0.4' : '1';
+
+  document.querySelectorAll('input[data-id$="-none"]').forEach(radio => {
+    const opt = radio.closest('.option');
+    if (opt) {
+      opt.classList.toggle('selected', false);
+      opt.classList.toggle('disabled', !radio.checked);
+    }
+  });
+}
+
+function enviarWhatsApp() {
+  let total = 0;
+  let dias = 0;
+  const selecionados = [];
+
+  document.querySelectorAll('input[data-price]').forEach(input => {
+    const price = parseInt(input.dataset.price);
+    if (input.checked && price > 0) {
+      const id = input.dataset.id;
+      const label = LABELS[id] || id;
+      selecionados.push('- ' + label + ': R$ ' + price.toLocaleString('pt-BR'));
+      total += price;
+    }
+  });
+
+  if (selecionados.length === 0) return;
+
+  if (total <= 2000) dias = 3;
+  else if (total <= 4000) dias = 5;
+  else if (total <= 7000) dias = 8;
+  else if (total <= 10000) dias = 12;
+  else dias = 15;
+
+  const msg = '*FYMOOB — Servicos Selecionados*\n\n'
+    + selecionados.join('\n')
+    + '\n\n*Total: R$ ' + total.toLocaleString('pt-BR') + '*'
+    + '\n*Prazo estimado: ' + dias + ' dias uteis*'
+    + '\n\nGostaria de prosseguir com esses itens.';
+
+  const url = 'https://wa.me/5541997277806?text=' + encodeURIComponent(msg);
+  window.open(url, '_blank');
+}
+
+calc();
+</script>
+
+</body>
+</html>

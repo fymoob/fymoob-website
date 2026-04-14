@@ -615,16 +615,108 @@
 
 ---
 
-## Fase 9 — Painel Blog Admin [PENDENTE]
+## Fase 9 — Painel Admin Unificado [EM ANDAMENTO]
 
-> Prometido no contrato (Clausula 2.2b): "area administrativa onde a CONTRATANTE podera
-> criar, editar, publicar e despublicar artigos do blog de forma independente"
+> **Escopo base (Cláusula 2.2b do contrato):** área administrativa para criar, editar,
+> publicar e despublicar **artigos do blog** de forma independente.
+>
+> **Escopo aditivo (em negociação com Bruno, R$ 7.500-9.000 one-time):** painel de
+> edição de empreendimentos (textos editoriais, vídeos Vturb, plantas, banners).
+>
+> **Decisão estratégica (14/04/2026):** construir UMA infraestrutura compartilhada
+> (auth + shell) que serve blog E empreendimentos, ao invés de dois painéis separados.
+> Evita duplicação de código e fornece experiência única de login pro Bruno/Wagner.
 
-- [ ] Definir stack do painel (Nhost CMS / MDX editor / custom admin)
-- [ ] Tela de login para admin (autenticacao Nhost)
-- [ ] Editor de artigos com preview (titulo, conteudo, imagens, SEO fields)
-- [ ] Listagem de artigos com status (rascunho/publicado)
-- [ ] Publicar/despublicar artigos sem necessidade de deploy
+### 9.0 — Arquitetura de Segurança (decidida 14/04/2026)
+
+**Princípio:** defesa em profundidade — 7 camadas independentes.
+
+| Camada | Mecanismo | Ferramenta |
+|---|---|---|
+| 1. URL | `/admin/*` no mesmo domínio (sem subdomain) | Next.js routing |
+| 2. Autenticação | **Magic link** por email (passwordless) | Auth.js v5 (NextAuth) + Resend |
+| 3. Bot filter | Cloudflare Turnstile no form de login | Turnstile widget (free) |
+| 4. Rate limit | 5 magic links / 15 min por email + 20/h por IP | Upstash Redis (free tier) |
+| 5. Auth em runtime | `auth()` check em cada route + server action | Auth.js v5 |
+| 6. Sessão | Cookie HttpOnly + Secure + SameSite=Lax, maxAge 12h | Auth.js default |
+| 7. Audit log | Registra `{user, action, timestamp, IP}` de cada operação | Tabela Postgres |
+
+**Admin list:** via env var `ALLOWED_ADMIN_EMAILS` (CSV). Só emails nesta lista podem receber magic link. Simples pra 2-3 usuários; migrar pra tabela DB quando passar de 5.
+
+**CVE crítica Next.js (março 2025):** garantir versão ≥ 15.2.3 (atual do projeto OK).
+
+**Por que magic link ao invés de senha:**
+- Sem credencial pra vazar (não há senha armazenada)
+- Credential stuffing: impossível
+- Phishing: atacante precisa invadir email do admin (barra alta)
+- Zero fricção de "esqueci a senha"
+- UX melhor pra Bruno (email que ele já usa)
+
+**Ações críticas (futuro, não-MVP):** MFA via TOTP opcional pra ações irreversíveis (publicar artigo novo, deletar empreendimento). Deixar como feature roadmap.
+
+### 9.1 — Base (auth + shell) [EM ANDAMENTO]
+
+Infraestrutura compartilhada, entregue antes de qualquer feature específica.
+
+- [ ] Instalar dependências: `next-auth@beta`, `resend`, `@upstash/ratelimit`, `@upstash/redis`
+- [ ] Configurar Auth.js v5 em `src/auth.ts` (email provider + session JWT)
+- [ ] Criar rota `/admin/login` com form minimalista (email + Turnstile)
+- [ ] Implementar envio de magic link via Resend
+- [ ] Rate limit por email (5/15min) e IP (20/h) via Upstash
+- [ ] Criar middleware em `src/middleware.ts` bloqueando `/admin/*`
+- [ ] Criar `/admin/layout.tsx` com sidebar de navegação (Blog, Empreendimentos futuro)
+- [ ] Criar `/admin` (dashboard placeholder)
+- [ ] Logout funcional em `/admin/logout`
+- [ ] Env vars documentadas: `AUTH_SECRET`, `RESEND_API_KEY`, `ALLOWED_ADMIN_EMAILS`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY`
+
+### 9.2 — Blog admin [CONTRATO, PENDENTE]
+
+Depois da 9.1. Usa a mesma auth compartilhada.
+
+- [ ] Schema no Nhost PostgreSQL: tabela `articles` (id, slug, title, excerpt, content, cover_image, status, published_at, author_id, created_at, updated_at)
+- [ ] Migration dos 15 artigos MDX existentes pra tabela (script one-shot)
+- [ ] `/admin/blog` — lista com status (rascunho/publicado), filtro por autor, busca
+- [ ] `/admin/blog/new` — criar novo artigo
+- [ ] `/admin/blog/[id]` — editar artigo existente
+- [ ] Editor: **rich text** com preview live (TipTap ou Lexical)
+- [ ] Upload de imagem: Nhost Storage (já na stack)
+- [ ] Publicar/despublicar sem redeploy (estado no banco)
+- [ ] Render público em `/blog/[slug]` consome do banco
+- [ ] Regenerar sitemap dinamicamente ao publicar
+
+### 9.3 — Empreendimentos admin [ESCOPO NOVO, AGUARDANDO DECISÃO DO BRUNO]
+
+Só inicia após fechamento comercial do escopo aditivo.
+
+- [ ] Schema: tabela `empreendimento_content` (slug FK CRM, hero_text, hero_image_url, video_url, diferenciais_text, torres_json, plantas_extras_json, etc.)
+- [ ] `/admin/empreendimentos` — lista de todos empreendimentos do CRM
+- [ ] `/admin/empreendimentos/[slug]` — editor por empreendimento
+- [ ] Campos editáveis (definidos junto com Bruno via enquete WhatsApp):
+  - Logo (upload)
+  - Imagem de capa
+  - Frase de destaque
+  - Descrição editorial
+  - Imagens de parallax (3-5)
+  - Torres (nome + foto + descrição cada)
+  - Diferenciais / área de lazer
+  - Vídeo Vturb/YouTube (embed URL)
+  - Texto sobre construtora
+- [ ] Render público em `/empreendimento/[slug]` lê CRM (auto) + painel (editorial)
+- [ ] Fallback: se não há dados no painel, renderiza só com dados do CRM
+
+### 9.4 — Auditoria e Observabilidade [futuro]
+
+- [ ] Tabela `audit_logs` (user_id, action, entity, entity_id, metadata_json, ip, user_agent, created_at)
+- [ ] Middleware de log em todas as server actions de `/admin`
+- [ ] `/admin/logs` — visualização filtrável (só Vinicius / super-admin)
+- [ ] Alertas: email quando algo crítico acontece (ex: >10 tentativas de login falhas em 1h)
+
+### 9.5 — MFA opcional [futuro]
+
+- [ ] TOTP (Google Authenticator) como segundo fator opcional
+- [ ] Código de recuperação
+- [ ] Fluxo de setup no perfil do admin
+- [ ] Obrigatório só pra ações destrutivas (deletar empreendimento, etc.)
 
 ---
 
@@ -1031,6 +1123,56 @@ Agende sua visita com a FYMOOB.
 - [ ] Falar com Bruno sobre padronização de títulos no CRM
 - [ ] Falar com Bruno sobre padronização de descrições no CRM
 - [ ] Criar documento/guia simplificado para o Bruno seguir
+
+### Cadastro de IPTU e Condomínio (todos os imóveis)
+
+**Problema:** Quando o imóvel não tem `valorIptu` ou `valorCondominio` preenchidos no CRM, o campo simplesmente não aparece no site (ContactSidebar desktop e MobilePriceCard). Para venda e locação, isso pode dar impressão equivocada de isenção.
+
+**Comportamento atual:**
+- Se `valorIptu` for `null`/`0` → linha "IPTU" some (não aparece nem "Sob consulta")
+- Se `valorCondominio` for `null`/`0` → linha "Condomínio" some
+- Se ambos forem nulos → o bloco inteiro de taxas não é renderizado
+
+**Ação:** Pedir ao Bruno para preencher `ValorIptu` e `ValorCondominio` em TODOS os imóveis ativos (venda e locação) — mesmo quando o valor for estimativa ou faixa, manter um número cadastrado evita a omissão silenciosa no site.
+
+**Alternativa (dev):** Se o Bruno não puder cadastrar todos, avaliar exibir rótulo "IPTU sob consulta" / "Condomínio sob consulta" quando o campo estiver ausente, para reforçar transparência.
+
+- [ ] Falar com Bruno sobre preenchimento de IPTU/Condomínio em todos os imóveis
+- [ ] Decidir se implementamos fallback "Sob consulta" no site enquanto o CRM não for 100% preenchido
+
+### Seguro Incêndio e FCI nos imóveis de locação [BLOQUEADO — aguardando Loft/Vista]
+
+**Pedido do Bruno (13/04/2026):** incluir os campos **Seguro Incêndio** e **FCI (Fundo de Conservação do Imóvel)** nos imóveis de locação, com fallback "Não informado" quando vazio (mesma regra do IPTU/Condomínio).
+
+**Status:** BLOQUEADO. Esses campos **não existem na API REST** que o site consome (`brunoces-rest.vistahost.com.br`). Confirmado por:
+
+1. **Teste direto na API:** todas as variações testadas (~50) retornam `"Campo X não está disponível"`. Exemplos testados: `ValorSeguroIncendio`, `SeguroIncendio`, `ValorFci`, `FCI`, `FundoConservacao`, `ValorFundoConservacao`, `OutrasTaxas`, `TaxasDiversas`, `Rateio`, etc.
+2. **Documentação oficial da Vista** ([vistasoft.com.br/api/](https://www.vistasoft.com.br/api/)): lista todos os campos financeiros disponíveis — nenhum relacionado a seguro ou FCI.
+3. **Form de busca do CRM (crmx.novovista.com.br)** decodificado: não tem campos de Seguro Incêndio ou FCI na pesquisa. Só `VLR_VENDA` e `VLR_ALUGUEL`.
+4. **Dois sistemas diferentes identificados:** `crmx.novovista.com.br` (NovoVista, onde Bruno edita) ≠ `brunoces-rest.vistahost.com.br` (Vista clássico, que alimenta o site).
+
+**Hipóteses prováveis:**
+- Os valores são **calculados automaticamente** por regra (ex: FCI = X% do condomínio) — nesse caso, basta saber a fórmula.
+- Os valores ficam **no contrato de locação** (módulo separado), não no cadastro do imóvel.
+- Existe uma **API nova do NovoVista** que expõe esses campos, mas não está sendo usada.
+
+**Perguntas para o Bruno abrir com o suporte Loft/Vista:**
+
+1. Os valores de Seguro Incêndio e FCI são **calculados automaticamente** (% do condomínio/aluguel/m²) ou cadastrados manualmente?
+   - Se calculados: **qual a fórmula?** A gente replica no site.
+   - Se manuais: **qual o nome exato do campo na API REST** e quando estará disponível?
+2. Existe uma **API REST do NovoVista** (ex: `api.novovista.com.br`) com schema atualizado? Se sim, **credenciais + documentação**.
+
+**Implementação (quando desbloqueado):**
+- Adicionar `valorSeguroIncendio` e `valorFci` em `Property` type
+- Adicionar extração em `services/loft.ts` (fields + parse)
+- Adicionar renderização em `MobilePriceCard.tsx` e `ContactSidebar.tsx` — só para finalidade "Locação" ou "Venda e Locação"
+- Regra de exibição: valor real se cadastrado, "Não informado" se null/0 (mesma lógica já implementada para IPTU/Cond)
+- Atualizar `totalPacote` (Aluguel + Cond + IPTU + Seguro + FCI) quando todos os componentes estiverem disponíveis
+
+- [ ] Bruno: perguntar à Loft se valores são calculados ou manuais + nome do campo na API
+- [ ] Bruno: verificar se existe API REST do NovoVista com schema atualizado
+- [ ] Dev: implementar extração + renderização assim que soubermos o nome do campo / fórmula
 
 ---
 
