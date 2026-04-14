@@ -13,6 +13,7 @@ import { slugify } from "@/lib/utils"
 import {
   getAllBairros,
   getAllCities,
+  getAllEmpreendimentos,
   getAllTypes,
   getProperties,
   getPropertyStats,
@@ -163,6 +164,7 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
     .split(",")
     .map((c) => c.trim())
     .filter(Boolean)
+  const empreendimento = getParamValue(searchParams.empreendimento)
   const orderBy = normalizeOrderBy(getParamValue(searchParams.orderBy))
   const page = Math.max(1, parseNumberParam(getParamValue(searchParams.page)) ?? 1)
 
@@ -202,6 +204,7 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
   if (quartosMax) filters.quartosMax = quartosMax
   if (caracteristicasUnidade.length > 0) filters.caracteristicasUnidade = caracteristicasUnidade
   if (caracteristicasCondominio.length > 0) filters.caracteristicasCondominio = caracteristicasCondominio
+  if (empreendimento) filters.empreendimento = empreendimento
   if (busca) filters.busca = busca
   if (orderBy) filters.orderBy = orderBy
   const lancamento = getParamValue(searchParams.lancamento)
@@ -413,11 +416,12 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
   const params = await searchParams
   const state = parseSearchState(params)
 
-  const [bairros, tipos, cidades, stats] = await Promise.all([
+  const [bairros, tipos, cidades, stats, empreendimentos] = await Promise.all([
     getAllBairros(),
     getAllTypes(),
     getAllCities(),
     getPropertyStats(),
+    getAllEmpreendimentos(),
   ])
 
   const minPrice = stats.precoMin ?? 50_000
@@ -439,6 +443,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
           bairros={bairros.map((item) => item.bairro)}
           tipos={tipos.map((item) => item.tipo)}
           cidades={cidades}
+          empreendimentos={empreendimentos.map((e) => e.nome)}
           priceBounds={{ min: minPrice, max: maxPrice }}
           bairroSummaries={bairros.map(({ bairro, slug, total, cidade, tipos: t, porFinalidade }) => ({ bairro, slug, total, cidade, tipos: t, porFinalidade }))}
           tipoSummaries={tipos.map(({ tipo, slug, total, porFinalidade }) => ({ tipo, slug, total, porFinalidade }))}

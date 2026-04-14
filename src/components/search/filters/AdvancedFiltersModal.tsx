@@ -1,10 +1,11 @@
 "use client"
 
 import { useEffect, type Dispatch, type SetStateAction } from "react"
-import { X, Search, Bath, Car, BedDouble, Maximize2, Hash, ListChecks } from "lucide-react"
+import { X, Search, Bath, Building2, Car, BedDouble, Maximize2, Hash, ListChecks } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import type { SearchDraftFilters, PriceBounds } from "./search-state"
 import { FilterSection } from "./FilterSection"
+import { EmpreendimentoFilter } from "./EmpreendimentoFilter"
 import {
   AreaRangeInput,
   CaracteristicasCheckboxes,
@@ -17,6 +18,7 @@ interface AdvancedFiltersModalProps {
   pendingFilters: SearchDraftFilters
   setPendingFilters: Dispatch<SetStateAction<SearchDraftFilters>>
   priceBounds: PriceBounds
+  empreendimentos?: string[]
   onApply: () => void
   onClear: () => void
   resultCount?: number
@@ -27,6 +29,7 @@ export function AdvancedFiltersModal({
   onClose,
   pendingFilters,
   setPendingFilters,
+  empreendimentos,
   onApply,
   onClear,
   resultCount,
@@ -183,6 +186,25 @@ export function AdvancedFiltersModal({
               onToggleCondominio={toggleCondominio}
             />
           </FilterSection>
+
+          {/* Empreendimento (autocomplete) */}
+          {empreendimentos && empreendimentos.length > 0 && (
+            <FilterSection
+              alwaysOpen
+              title="Empreendimento"
+              icon={Building2}
+              activeCount={pendingFilters.empreendimento ? 1 : 0}
+              selectionSummary={pendingFilters.empreendimento || null}
+            >
+              <EmpreendimentoFilter
+                options={empreendimentos}
+                value={pendingFilters.empreendimento}
+                onChange={(v) =>
+                  setPendingFilters((c) => ({ ...c, empreendimento: v }))
+                }
+              />
+            </FilterSection>
+          )}
 
           {/* Código */}
           <FilterSection

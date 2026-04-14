@@ -22,6 +22,7 @@ export interface SearchDraftFilters {
   areaMax: string
   caracteristicasUnidade: string[]
   caracteristicasCondominio: string[]
+  empreendimento: string
 }
 
 export const PRICE_STEP = 50_000
@@ -90,6 +91,7 @@ export function createDraftFromSearchParams(
       .split(",")
       .map((c) => c.trim())
       .filter(Boolean),
+    empreendimento: params.get("empreendimento") ?? "",
   }
 }
 
@@ -188,6 +190,12 @@ export function applyDraftToSearchParams(
   }
   // Legacy single-bucket param — cleaned up in favor of split params
   params.delete("caracteristicas")
+
+  if (draft.empreendimento) {
+    params.set("empreendimento", draft.empreendimento)
+  } else {
+    params.delete("empreendimento")
+  }
 
   params.delete("page")
   return params

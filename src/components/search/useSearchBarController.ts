@@ -23,6 +23,7 @@ export interface SearchBarControllerProps {
   bairros: string[]
   cidades: string[]
   tipos: string[]
+  empreendimentos?: string[]
   priceBounds: PriceBounds
   targetPath?: string
   bairroSummaries?: BairroSummary[]

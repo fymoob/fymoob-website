@@ -38,6 +38,7 @@ import {
 } from "@/components/ui/sheet"
 
 import { BedroomsFilter } from "@/components/search/filters/BedroomsFilter"
+import { EmpreendimentoFilter } from "@/components/search/filters/EmpreendimentoFilter"
 import { LocationAutocomplete } from "@/components/search/filters/LocationAutocomplete"
 import { LocationFilter } from "@/components/search/filters/LocationFilter"
 import { PriceFilter } from "@/components/search/filters/PriceFilter"
@@ -65,6 +66,7 @@ export interface SearchBarProps {
   bairros: string[]
   cidades: string[]
   tipos: string[]
+  empreendimentos?: string[]
   priceBounds: PriceBounds
   bairroSummaries?: BairroSummary[]
   tipoSummaries?: TypeSummary[]
@@ -162,6 +164,7 @@ export function SearchBar({
   bairros,
   cidades,
   tipos,
+  empreendimentos,
   priceBounds,
   bairroSummaries,
   tipoSummaries,
@@ -272,6 +275,7 @@ export function SearchBar({
       areaMax: "",
       caracteristicasUnidade: [],
       caracteristicasCondominio: [],
+      empreendimento: "",
     })
 
   const advancedFilterCount =
@@ -282,7 +286,8 @@ export function SearchBar({
     (pendingFilters.areaMin ? 1 : 0) +
     (pendingFilters.areaMax ? 1 : 0) +
     (pendingFilters.caracteristicasUnidade.length > 0 ? 1 : 0) +
-    (pendingFilters.caracteristicasCondominio.length > 0 ? 1 : 0)
+    (pendingFilters.caracteristicasCondominio.length > 0 ? 1 : 0) +
+    (pendingFilters.empreendimento ? 1 : 0)
 
   const activeFilterCount =
     (pendingFilters.finalidades.length > 0 ? 1 : 0) +
@@ -582,6 +587,24 @@ export function SearchBar({
                         }
                       />
                     </FilterSection>
+
+                    {/* Empreendimento — collapsed (autocomplete) */}
+                    {empreendimentos && empreendimentos.length > 0 && (
+                      <FilterSection
+                        title="Empreendimento"
+                        icon={Building2}
+                        activeCount={pendingFilters.empreendimento ? 1 : 0}
+                        selectionSummary={pendingFilters.empreendimento || null}
+                      >
+                        <EmpreendimentoFilter
+                          options={empreendimentos}
+                          value={pendingFilters.empreendimento}
+                          onChange={(v) =>
+                            setPendingFilters((c) => ({ ...c, empreendimento: v }))
+                          }
+                        />
+                      </FilterSection>
+                    )}
 
                     {/* Código — collapsed */}
                     <FilterSection
@@ -1102,6 +1125,7 @@ export function SearchBar({
       pendingFilters={pendingFilters}
       setPendingFilters={setPendingFilters}
       priceBounds={priceBounds}
+      empreendimentos={empreendimentos}
       onApply={applyFilters}
       onClear={clearAllFilters}
     />
