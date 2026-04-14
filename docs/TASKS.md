@@ -786,6 +786,46 @@ Só inicia após fechamento comercial do escopo aditivo (R$ 7.500-9.000 one-time
 - [ ] Fluxo de setup no perfil do admin
 - [ ] Obrigatório só pra ações destrutivas (deletar empreendimento, etc.)
 
+### 9.7 — Imagens de Bairros (bônus) [NOVO — solicitado 14/04/2026]
+
+**Problema identificado:** as imagens dos bairros (Batel, Água Verde, Bigorrilho, Portão, etc.) hoje estão salvas localmente em `public/images/bairros/*.jpg` — 13 arquivos. Pra trocar qualquer uma, precisa commit + deploy. Bruno não consegue atualizar de forma independente.
+
+**Onde essas imagens aparecem no site:**
+- Cards de bairro na listagem `/imoveis/[bairro]`
+- Guias de bairro (`content/bairros/*.mdx`)
+- Possivelmente em cards da home e /busca (verificar)
+- SEO `og:image` em algumas páginas
+
+**Escopo do painel bônus:**
+
+- [ ] Schema Supabase: tabela `bairros_content` (slug PK, nome, cover_image_url, thumbnail_url, descricao_curta, updated_at, updated_by)
+- [ ] Seed inicial: migrar as 13 imagens atuais (`public/images/bairros/*.jpg`) pro Supabase Storage + tabela
+- [ ] `/admin/bairros` — grid com todos os bairros da base (inclusive os que ainda não têm imagem customizada), mostrando thumbnail atual
+- [ ] Editor por bairro: upload de nova capa (drag-drop), crop opcional, preview antes de salvar
+- [ ] Fallback inteligente: se Supabase tem imagem customizada → usa. Se não → usa `public/images/bairros/[slug].jpg` (retrocompat). Se nem local existe → placeholder genérico.
+- [ ] Todas as queries de bairro no site usam um helper `getBairroImage(slug)` que resolve essa cascata
+- [ ] Revalidate automático ao salvar: `revalidatePath('/imoveis/[bairro]')`, `/busca`, home
+- [ ] Audit log: registra quem trocou qual imagem e quando
+
+**Vantagens:**
+- Bruno pode atualizar fotos de bairros em tempo real (sazonais, eventos, novas perspectivas)
+- Mesmo padrão do painel de empreendimentos — reuso de componentes (upload, cropper, revalidate)
+- Custo zero (Supabase Storage free tier é 1 GB — 13 imagens médias = ~5 MB total)
+- Escala pra qualquer bairro novo sem deploy
+
+**Estimativa de esforço:**
+- Schema + migration das 13 imagens: ~1h
+- `/admin/bairros` grid: ~1.5h
+- Editor individual com upload: ~2h
+- Helper `getBairroImage` + refactor de callers: ~1h
+- Revalidate + audit log: ~1h
+- **Total: ~6-7h** (feature pequena, reusa componentes do blog/empreendimentos)
+
+**Ordem de execução sugerida:**
+1. Depois do Blog admin (9.2) — já tem o padrão de upload/edit estabelecido
+2. Antes ou paralelo ao Empreendimentos admin (9.3) — compartilham padrões de asset management
+3. Pode ser feito como "freebie" pra consolidar o painel admin unificado antes da entrega final
+
 ### 9.6 — Avisos técnicos documentados
 
 - **Resend em modo teste**: usando sender `onboarding@resend.dev` (free tier). Limitação: só envia emails pro endereço dono da conta Resend. Pra produção com outros admins, precisa verificar domínio `fymoob.com` (registros DNS — SPF/DKIM/DMARC) e trocar `RESEND_FROM_EMAIL` pra `noreply@fymoob.com`.
