@@ -75,7 +75,7 @@ export function AdvancedFiltersModal({
       />
 
       {/* Modal container */}
-      <div className="relative z-10 flex max-h-[90vh] w-full max-w-2xl flex-col bg-white shadow-2xl max-md:h-full max-md:max-h-full max-md:max-w-full md:mx-4 md:rounded-2xl">
+      <div className="relative z-10 flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden bg-white shadow-2xl max-md:h-full max-md:max-h-full max-md:max-w-full md:mx-4 md:rounded-2xl">
 
         {/* ── Header ── */}
         <div className="flex shrink-0 items-center justify-between border-b border-neutral-100 px-6 py-4">
@@ -94,6 +94,7 @@ export function AdvancedFiltersModal({
         <div className="flex-1 overflow-y-auto px-6 py-2">
           {/* Características — collapsed (long list, two groups) */}
           <FilterSection
+            alwaysOpen
             title="Características"
             icon={ListChecks}
             activeCount={
@@ -123,6 +124,7 @@ export function AdvancedFiltersModal({
 
           {/* Suítes */}
           <FilterSection
+            alwaysOpen
             title="Suítes"
             icon={BedDouble}
             activeCount={pendingFilters.suitesMin ? 1 : 0}
@@ -136,6 +138,7 @@ export function AdvancedFiltersModal({
 
           {/* Banheiros */}
           <FilterSection
+            alwaysOpen
             title="Banheiros"
             icon={Bath}
             activeCount={pendingFilters.banheirosMin ? 1 : 0}
@@ -149,6 +152,7 @@ export function AdvancedFiltersModal({
 
           {/* Vagas */}
           <FilterSection
+            alwaysOpen
             title="Vagas de garagem"
             icon={Car}
             activeCount={pendingFilters.vagasMin ? 1 : 0}
@@ -162,6 +166,7 @@ export function AdvancedFiltersModal({
 
           {/* Área privativa */}
           <FilterSection
+            alwaysOpen
             title="Área privativa (m²)"
             icon={Maximize2}
             activeCount={(pendingFilters.areaMin ? 1 : 0) + (pendingFilters.areaMax ? 1 : 0)}
@@ -181,6 +186,7 @@ export function AdvancedFiltersModal({
 
           {/* Código */}
           <FilterSection
+            alwaysOpen
             title="Código do imóvel"
             icon={Hash}
             activeCount={pendingFilters.codigo ? 1 : 0}
