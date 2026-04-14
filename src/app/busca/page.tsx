@@ -36,7 +36,8 @@ interface ParsedSearchState {
   finalidades: PropertyFinalidade[]
   quartos?: number
   quartosMax?: number
-  caracteristicas: string[]
+  caracteristicasUnidade: string[]
+  caracteristicasCondominio: string[]
   busca?: string
   canonicalQuery: string
   fullQuery: string
@@ -154,7 +155,11 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
     parseNumberParam(getParamValue(searchParams.quartos)) ??
     parseNumberParam(getParamValue(searchParams.dormitoriosMin))
   const quartosMax = parseNumberParam(getParamValue(searchParams.quartosMax))
-  const caracteristicas = (getParamValue(searchParams.caracteristicas) ?? "")
+  const caracteristicasUnidade = (getParamValue(searchParams.caracUnidade) ?? "")
+    .split(",")
+    .map((c) => c.trim())
+    .filter(Boolean)
+  const caracteristicasCondominio = (getParamValue(searchParams.caracCondominio) ?? "")
     .split(",")
     .map((c) => c.trim())
     .filter(Boolean)
@@ -195,7 +200,8 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
     filters.dormitoriosMin = quartos
   }
   if (quartosMax) filters.quartosMax = quartosMax
-  if (caracteristicas.length > 0) filters.caracteristicas = caracteristicas
+  if (caracteristicasUnidade.length > 0) filters.caracteristicasUnidade = caracteristicasUnidade
+  if (caracteristicasCondominio.length > 0) filters.caracteristicasCondominio = caracteristicasCondominio
   if (busca) filters.busca = busca
   if (orderBy) filters.orderBy = orderBy
   const lancamento = getParamValue(searchParams.lancamento)
@@ -225,7 +231,8 @@ function parseSearchState(searchParams: SearchParamsMap): ParsedSearchState {
     finalidades,
     quartos: quartos ?? undefined,
     quartosMax: quartosMax ?? undefined,
-    caracteristicas,
+    caracteristicasUnidade,
+    caracteristicasCondominio,
     busca,
     canonicalQuery: canonicalParams.toString(),
     fullQuery,

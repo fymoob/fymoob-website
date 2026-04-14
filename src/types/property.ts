@@ -137,7 +137,8 @@ export interface PropertyFilters {
   vagasMin?: number;
   suitesMin?: number;
   banheirosMin?: number;
-  caracteristicas?: string[];
+  caracteristicasUnidade?: string[];
+  caracteristicasCondominio?: string[];
   lancamento?: boolean;
   busca?: string;
   orderBy?: "preco-asc" | "preco-desc" | "area-asc" | "area-desc" | "recente";

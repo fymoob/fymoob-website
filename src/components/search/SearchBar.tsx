@@ -270,7 +270,8 @@ export function SearchBar({
       vagasMin: "",
       areaMin: "",
       areaMax: "",
-      caracteristicas: [],
+      caracteristicasUnidade: [],
+      caracteristicasCondominio: [],
     })
 
   const advancedFilterCount =
@@ -280,7 +281,8 @@ export function SearchBar({
     (pendingFilters.vagasMin ? 1 : 0) +
     (pendingFilters.areaMin ? 1 : 0) +
     (pendingFilters.areaMax ? 1 : 0) +
-    (pendingFilters.caracteristicas.length > 0 ? 1 : 0)
+    (pendingFilters.caracteristicasUnidade.length > 0 ? 1 : 0) +
+    (pendingFilters.caracteristicasCondominio.length > 0 ? 1 : 0)
 
   const activeFilterCount =
     (pendingFilters.finalidades.length > 0 ? 1 : 0) +
@@ -480,25 +482,44 @@ export function SearchBar({
                       />
                     </FilterSection>
 
-                    {/* Características — collapsed (long list) */}
+                    {/* Características — collapsed (long list, two groups) */}
                     <FilterSection
                       title="Características"
                       icon={ListChecks}
-                      activeCount={pendingFilters.caracteristicas.length}
+                      activeCount={
+                        pendingFilters.caracteristicasUnidade.length +
+                        pendingFilters.caracteristicasCondominio.length
+                      }
                       selectionSummary={
-                        pendingFilters.caracteristicas.length > 0
-                          ? pendingFilters.caracteristicas.slice(0, 3).join(", ")
+                        pendingFilters.caracteristicasUnidade.length +
+                          pendingFilters.caracteristicasCondominio.length >
+                        0
+                          ? [
+                              ...pendingFilters.caracteristicasUnidade,
+                              ...pendingFilters.caracteristicasCondominio,
+                            ]
+                              .slice(0, 3)
+                              .join(", ")
                           : null
                       }
                     >
                       <CaracteristicasCheckboxes
-                        selected={pendingFilters.caracteristicas}
-                        onToggle={(label) =>
+                        selectedUnidade={pendingFilters.caracteristicasUnidade}
+                        selectedCondominio={pendingFilters.caracteristicasCondominio}
+                        onToggleUnidade={(label) =>
                           setPendingFilters((c) => ({
                             ...c,
-                            caracteristicas: c.caracteristicas.includes(label)
-                              ? c.caracteristicas.filter((x) => x !== label)
-                              : [...c.caracteristicas, label],
+                            caracteristicasUnidade: c.caracteristicasUnidade.includes(label)
+                              ? c.caracteristicasUnidade.filter((x) => x !== label)
+                              : [...c.caracteristicasUnidade, label],
+                          }))
+                        }
+                        onToggleCondominio={(label) =>
+                          setPendingFilters((c) => ({
+                            ...c,
+                            caracteristicasCondominio: c.caracteristicasCondominio.includes(label)
+                              ? c.caracteristicasCondominio.filter((x) => x !== label)
+                              : [...c.caracteristicasCondominio, label],
                           }))
                         }
                       />

@@ -481,9 +481,14 @@ function applyFilters(indexed: IndexedProperty[], filters: PropertyFilters): Pro
     if (filters.vagasMin && (p.vagas === null || p.vagas < filters.vagasMin)) continue
     if (filters.suitesMin && (p.suites === null || p.suites < filters.suitesMin)) continue
     if (filters.banheirosMin && (p.banheiros === null || p.banheiros < filters.banheirosMin)) continue
-    if (filters.caracteristicas && filters.caracteristicas.length > 0) {
-      const allPropertyFeatures = new Set([...p.caracteristicas, ...p.infraestrutura])
-      const hasAll = filters.caracteristicas.every((label) => allPropertyFeatures.has(label))
+    if (filters.caracteristicasUnidade && filters.caracteristicasUnidade.length > 0) {
+      const unitFeatures = new Set(p.caracteristicas)
+      const hasAll = filters.caracteristicasUnidade.every((label) => unitFeatures.has(label))
+      if (!hasAll) continue
+    }
+    if (filters.caracteristicasCondominio && filters.caracteristicasCondominio.length > 0) {
+      const condoFeatures = new Set(p.infraestrutura)
+      const hasAll = filters.caracteristicasCondominio.every((label) => condoFeatures.has(label))
       if (!hasAll) continue
     }
     if (searchTerms.length > 0 && !searchTerms.every((t) => item.searchableText.includes(t))) continue

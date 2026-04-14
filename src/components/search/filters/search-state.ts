@@ -20,7 +20,8 @@ export interface SearchDraftFilters {
   vagasMin: string
   areaMin: string
   areaMax: string
-  caracteristicas: string[]
+  caracteristicasUnidade: string[]
+  caracteristicasCondominio: string[]
 }
 
 export const PRICE_STEP = 50_000
@@ -81,7 +82,11 @@ export function createDraftFromSearchParams(
     vagasMin: params.get("vagasMin") ?? "",
     areaMin: params.get("areaMin") ?? "",
     areaMax: params.get("areaMax") ?? "",
-    caracteristicas: (params.get("caracteristicas") ?? "")
+    caracteristicasUnidade: (params.get("caracUnidade") ?? "")
+      .split(",")
+      .map((c) => c.trim())
+      .filter(Boolean),
+    caracteristicasCondominio: (params.get("caracCondominio") ?? "")
       .split(",")
       .map((c) => c.trim())
       .filter(Boolean),
@@ -171,11 +176,18 @@ export function applyDraftToSearchParams(
     params.delete("areaMax")
   }
 
-  if (draft.caracteristicas.length > 0) {
-    params.set("caracteristicas", draft.caracteristicas.join(","))
+  if (draft.caracteristicasUnidade.length > 0) {
+    params.set("caracUnidade", draft.caracteristicasUnidade.join(","))
   } else {
-    params.delete("caracteristicas")
+    params.delete("caracUnidade")
   }
+  if (draft.caracteristicasCondominio.length > 0) {
+    params.set("caracCondominio", draft.caracteristicasCondominio.join(","))
+  } else {
+    params.delete("caracCondominio")
+  }
+  // Legacy single-bucket param — cleaned up in favor of split params
+  params.delete("caracteristicas")
 
   params.delete("page")
   return params
