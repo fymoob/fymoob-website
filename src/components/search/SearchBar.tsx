@@ -10,11 +10,16 @@ import {
 } from "react"
 import { useRouter } from "next/navigation"
 import {
+  Bath,
   BedDouble,
   Building2,
+  Car,
   ChevronDown,
+  Hash,
   MapPin,
+  Maximize2,
   Search,
+  Sparkles,
   Tag,
   X,
 } from "lucide-react"
@@ -37,6 +42,12 @@ import { LocationAutocomplete } from "@/components/search/filters/LocationAutoco
 import { LocationFilter } from "@/components/search/filters/LocationFilter"
 import { PriceFilter } from "@/components/search/filters/PriceFilter"
 import { TypeFilter } from "@/components/search/filters/TypeFilter"
+import { FilterSection } from "@/components/search/filters/FilterSection"
+import {
+  AreaRangeInput,
+  CaracteristicasCheckboxes,
+  NumberSelector,
+} from "@/components/search/filters/AdvancedFields"
 
 // Only the modal stays dynamic — it's opened via explicit click (Mais filtros)
 // and is large. Chip dropdowns are inlined to avoid suspense flashes when
@@ -366,10 +377,9 @@ export function SearchBar({
                     <SheetTitle>Filtros</SheetTitle>
                   </SheetHeader>
 
-                  <div className="flex-1 space-y-6 overflow-y-auto px-4 pb-4">
-                    {/* Finalidade — Comprar/Alugar */}
-                    <div>
-                      <h3 className="mb-2 text-sm font-semibold text-neutral-700">O que deseja?</h3>
+                  <div className="flex-1 overflow-y-auto px-4 pb-4">
+                    {/* Finalidade — always expanded (short) */}
+                    <FilterSection title="O que deseja?" alwaysOpen>
                       <div className="flex gap-2">
                         {(["comprar", "alugar"] as const).map((f) => {
                           const isActive = f === "comprar"
@@ -397,11 +407,19 @@ export function SearchBar({
                           )
                         })}
                       </div>
-                    </div>
+                    </FilterSection>
 
-                    {/* Location */}
-                    <div>
-                      <h3 className="mb-2 text-sm font-semibold text-neutral-700">Localização</h3>
+                    {/* Location — collapsed (long list) */}
+                    <FilterSection
+                      title="Localização"
+                      icon={MapPin}
+                      activeCount={pendingFilters.bairros.length + pendingFilters.cidades.length}
+                      selectionSummary={
+                        pendingFilters.bairros.length + pendingFilters.cidades.length > 0
+                          ? [...pendingFilters.cidades, ...pendingFilters.bairros].slice(0, 3).join(", ")
+                          : null
+                      }
+                    >
                       <LocationFilter
                         bairros={bairroOptions}
                         cidades={cidadeOptions}
@@ -415,11 +433,19 @@ export function SearchBar({
                           setPendingFilters((c) => ({ ...c, cidades: values }))
                         }
                       />
-                    </div>
+                    </FilterSection>
 
-                    {/* Type */}
-                    <div>
-                      <h3 className="mb-2 text-sm font-semibold text-neutral-700">Tipo de imóvel</h3>
+                    {/* Type — collapsed (many options) */}
+                    <FilterSection
+                      title="Tipo de imóvel"
+                      icon={Building2}
+                      activeCount={pendingFilters.tipos.length}
+                      selectionSummary={
+                        pendingFilters.tipos.length > 0
+                          ? pendingFilters.tipos.slice(0, 3).join(", ")
+                          : null
+                      }
+                    >
                       <TypeFilter
                         typeOptions={filteredTipoOptions}
                         selectedTipos={pendingFilters.tipos}
@@ -427,11 +453,10 @@ export function SearchBar({
                           setPendingFilters((c) => ({ ...c, tipos: values }))
                         }
                       />
-                    </div>
+                    </FilterSection>
 
-                    {/* Bedrooms */}
-                    <div>
-                      <h3 className="mb-2 text-sm font-semibold text-neutral-700">Quartos</h3>
+                    {/* Bedrooms — always expanded (short) */}
+                    <FilterSection title="Quartos" icon={BedDouble} alwaysOpen>
                       <BedroomsFilter
                         minValue={pendingFilters.quartosMin}
                         maxValue={pendingFilters.quartosMax}
@@ -442,11 +467,10 @@ export function SearchBar({
                           setPendingFilters((c) => ({ ...c, quartosMax: value }))
                         }
                       />
-                    </div>
+                    </FilterSection>
 
-                    {/* Price */}
-                    <div>
-                      <h3 className="mb-2 text-sm font-semibold text-neutral-700">Preço</h3>
+                    {/* Price — always expanded (short) */}
+                    <FilterSection title="Preço" icon={Tag} alwaysOpen>
                       <PriceFilter
                         value={pendingFilters.priceRange}
                         bounds={priceBounds}
@@ -454,29 +478,106 @@ export function SearchBar({
                           setPendingFilters((c) => ({ ...c, priceRange: value }))
                         }
                       />
-                    </div>
+                    </FilterSection>
 
-                    {/* Mais filtros button → opens modal */}
-                    <div className="border-t border-neutral-200 pt-4">
-                      <button
-                        type="button"
-                        onClick={() => { setSheetOpen(false); setTimeout(() => setModalOpen(true), 200) }}
-                        className={cn(
-                          "flex w-full items-center justify-center gap-2 rounded-xl border py-3 text-sm font-medium transition-colors",
-                          advancedFilterCount > 0
-                            ? "border-brand-primary bg-brand-primary/5 text-brand-primary"
-                            : "border-neutral-200 text-neutral-600 hover:bg-neutral-50"
-                        )}
-                      >
-                        <SlidersHorizontal className="size-4" />
-                        Mais filtros
-                        {advancedFilterCount > 0 && (
-                          <span className="flex size-5 items-center justify-center rounded-full bg-brand-primary text-[10px] font-bold text-white">
-                            {advancedFilterCount}
-                          </span>
-                        )}
-                      </button>
-                    </div>
+                    {/* Características — collapsed (long list) */}
+                    <FilterSection
+                      title="Características"
+                      icon={Sparkles}
+                      activeCount={pendingFilters.caracteristicas.length}
+                      selectionSummary={
+                        pendingFilters.caracteristicas.length > 0
+                          ? pendingFilters.caracteristicas.slice(0, 3).join(", ")
+                          : null
+                      }
+                    >
+                      <CaracteristicasCheckboxes
+                        selected={pendingFilters.caracteristicas}
+                        onToggle={(label) =>
+                          setPendingFilters((c) => ({
+                            ...c,
+                            caracteristicas: c.caracteristicas.includes(label)
+                              ? c.caracteristicas.filter((x) => x !== label)
+                              : [...c.caracteristicas, label],
+                          }))
+                        }
+                      />
+                    </FilterSection>
+
+                    {/* Suítes — collapsed */}
+                    <FilterSection
+                      title="Suítes"
+                      icon={BedDouble}
+                      activeCount={pendingFilters.suitesMin ? 1 : 0}
+                      selectionSummary={pendingFilters.suitesMin ? `${pendingFilters.suitesMin}+ suítes` : null}
+                    >
+                      <NumberSelector
+                        value={pendingFilters.suitesMin}
+                        onChange={(v) => setPendingFilters((c) => ({ ...c, suitesMin: v }))}
+                      />
+                    </FilterSection>
+
+                    {/* Banheiros — collapsed */}
+                    <FilterSection
+                      title="Banheiros"
+                      icon={Bath}
+                      activeCount={pendingFilters.banheirosMin ? 1 : 0}
+                      selectionSummary={pendingFilters.banheirosMin ? `${pendingFilters.banheirosMin}+ banheiros` : null}
+                    >
+                      <NumberSelector
+                        value={pendingFilters.banheirosMin}
+                        onChange={(v) => setPendingFilters((c) => ({ ...c, banheirosMin: v }))}
+                      />
+                    </FilterSection>
+
+                    {/* Vagas — collapsed */}
+                    <FilterSection
+                      title="Vagas de garagem"
+                      icon={Car}
+                      activeCount={pendingFilters.vagasMin ? 1 : 0}
+                      selectionSummary={pendingFilters.vagasMin ? `${pendingFilters.vagasMin}+ vagas` : null}
+                    >
+                      <NumberSelector
+                        value={pendingFilters.vagasMin}
+                        onChange={(v) => setPendingFilters((c) => ({ ...c, vagasMin: v }))}
+                      />
+                    </FilterSection>
+
+                    {/* Área privativa — collapsed */}
+                    <FilterSection
+                      title="Área privativa (m²)"
+                      icon={Maximize2}
+                      activeCount={(pendingFilters.areaMin ? 1 : 0) + (pendingFilters.areaMax ? 1 : 0)}
+                      selectionSummary={
+                        pendingFilters.areaMin || pendingFilters.areaMax
+                          ? `${pendingFilters.areaMin || "0"} a ${pendingFilters.areaMax || "—"} m²`
+                          : null
+                      }
+                    >
+                      <AreaRangeInput
+                        minValue={pendingFilters.areaMin}
+                        maxValue={pendingFilters.areaMax}
+                        onMinChange={(v) => setPendingFilters((c) => ({ ...c, areaMin: v }))}
+                        onMaxChange={(v) => setPendingFilters((c) => ({ ...c, areaMax: v }))}
+                      />
+                    </FilterSection>
+
+                    {/* Código — collapsed */}
+                    <FilterSection
+                      title="Código do imóvel"
+                      icon={Hash}
+                      activeCount={pendingFilters.codigo ? 1 : 0}
+                      selectionSummary={pendingFilters.codigo || null}
+                    >
+                      <Input
+                        value={pendingFilters.codigo}
+                        onChange={(e) =>
+                          setPendingFilters((c) => ({ ...c, codigo: e.target.value }))
+                        }
+                        placeholder="Ex: AP00296"
+                        className="h-10 rounded-xl text-sm"
+                      />
+                    </FilterSection>
                   </div>
 
                   <SheetFooter className="sticky bottom-0 border-t border-neutral-100 bg-white pb-safe">
