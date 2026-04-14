@@ -90,9 +90,9 @@ export function PropertyHero({
             </CarouselContent>
           </Carousel>
 
-          {/* Counter — bottom right on image */}
+          {/* Counter — bottom left on image (avoids conflict with sticky bottom bar / price card) */}
           {photos.length > 1 && (
-            <div className="absolute bottom-3 right-3 z-20 pointer-events-none">
+            <div className="absolute bottom-3 left-3 z-20 pointer-events-none">
               <span className="rounded-full bg-black/50 px-2.5 py-1 text-[11px] font-medium tabular-nums text-white/90 backdrop-blur-sm">
                 {mobileSlide + 1}/{total}
               </span>
@@ -182,7 +182,7 @@ export function PropertyHero({
             />
 
             {photos.length > 1 && (
-              <div className="absolute bottom-4 right-4 z-20">
+              <div className="absolute bottom-4 left-4 z-20">
                 <span className="rounded-full bg-black/45 px-3 py-1.5 text-xs font-medium tabular-nums text-white/90 backdrop-blur-md">
                   {currentSlide + 1} / {total}
                 </span>
