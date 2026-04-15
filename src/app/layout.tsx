@@ -70,7 +70,7 @@ export default function RootLayout({
   const localBusinessSchema = generateLocalBusinessSchema();
 
   return (
-    <html lang="pt-BR" className={satoshi.variable}>
+    <html lang="pt-BR" className={satoshi.variable} data-scroll-behavior="smooth">
       <head>
         <link rel="preconnect" href="https://cdn.vistahost.com.br" />
         <link rel="dns-prefetch" href="https://cdn.vistahost.com.br" />

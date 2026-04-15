@@ -27,6 +27,9 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    // Next.js 16 requer allowlist explícita. 75 = default cards/fotos,
+    // 85 = hero property thumbnails, 92 = imagem principal do imóvel.
+    qualities: [75, 85, 92],
     remotePatterns: [
       {
         protocol: "https",
