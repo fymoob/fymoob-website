@@ -94,20 +94,32 @@ export function HeaderClient() {
 
           {/* Desktop Nav */}
           <nav className="hidden items-center gap-6 md:flex">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "font-display text-sm font-medium transition-colors duration-300",
-                  pathname === link.href
-                    ? isDarkHeader ? "text-white" : "text-neutral-950"
-                    : isDarkHeader ? "text-white/80 hover:text-white" : "text-neutral-600 hover:text-brand-primary"
-                )}
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "relative font-display text-sm font-medium transition-colors duration-300",
+                    isActive
+                      ? isDarkHeader ? "text-white" : "text-neutral-950"
+                      : isDarkHeader ? "text-white/80 hover:text-white" : "text-neutral-600 hover:text-brand-primary"
+                  )}
+                >
+                  {link.label}
+                  {isActive && (
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "absolute -bottom-1.5 left-0 right-0 h-0.5 rounded-full",
+                        isDarkHeader ? "bg-white" : "bg-brand-primary"
+                      )}
+                    />
+                  )}
+                </Link>
+              )
+            })}
           </nav>
 
           {/* Utility links + Phone CTA + Mobile Menu */}
