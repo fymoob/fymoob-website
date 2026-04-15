@@ -437,10 +437,15 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
 
   return (
     <div
-      className="w-full px-4 py-8 md:px-12 lg:px-20 2xl:px-32"
+      className="w-full bg-white px-4 py-8 md:px-12 lg:px-20 2xl:px-32"
       style={{
-        background:
-          "linear-gradient(180deg, rgba(41, 171, 226, 0.08) 0%, rgba(41, 171, 226, 0.03) 20%, #ffffff 40%)",
+        // Blue beam capped to a fixed 320px height — fades independently of
+        // total page length. Cards (which start ~350px from top) always
+        // render against pure white for maximum photo contrast.
+        backgroundImage:
+          "linear-gradient(180deg, rgba(41, 171, 226, 0.10) 0px, rgba(41, 171, 226, 0.04) 180px, rgba(255, 255, 255, 0) 320px)",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "100% 320px",
       }}
     >
       <Breadcrumbs
