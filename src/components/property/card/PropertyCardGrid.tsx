@@ -75,7 +75,7 @@ export function PropertyCardGrid({
                     fill
                     priority={shouldPrioritize}
                     loading={shouldPrioritize ? "eager" : "lazy"}
-                    className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-110"
+                    className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.05]"
                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                   />
                 </div>
@@ -99,19 +99,19 @@ export function PropertyCardGrid({
           </span>
         )}
 
-        {/* Wishlist */}
+        {/* Wishlist — dark semi-transparent backdrop ensures readability on any photo */}
         <button
           type="button"
           onClick={toggleFavorite}
-          className="group/wishlist absolute right-3 top-3 z-20 inline-flex size-9 items-center justify-center transition-transform hover:scale-110"
+          className="group/wishlist absolute right-3 top-3 z-20 inline-flex size-9 items-center justify-center rounded-full bg-black/25 backdrop-blur-sm transition-all hover:scale-[1.08] hover:bg-black/35"
           aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
           aria-pressed={isFavorite}
         >
           <Heart
             className={cn(
-              "size-5 stroke-white stroke-[2px] text-transparent drop-shadow-lg transition-all duration-200",
+              "size-[18px] stroke-white stroke-[2.2px] text-transparent transition-all duration-200",
               isFavorite
-                ? "scale-110 fill-brand-primary stroke-brand-primary text-brand-primary"
+                ? "scale-105 fill-brand-primary stroke-brand-primary text-brand-primary"
                 : "group-hover/wishlist:fill-brand-primary/90 group-hover/wishlist:stroke-brand-primary"
             )}
           />
@@ -202,7 +202,7 @@ export function PropertyCardGrid({
               className={cn(
                 "tracking-tight",
                 hasPrice
-                  ? "text-2xl font-extrabold text-slate-900"
+                  ? "text-3xl font-extrabold text-slate-900"
                   : "text-base font-medium text-slate-400"
               )}
             >

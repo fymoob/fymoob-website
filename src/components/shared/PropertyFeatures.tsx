@@ -99,7 +99,7 @@ export function PropertyFeatures({
               key={feature.label}
               className="inline-flex items-center gap-1.5 sm:gap-2"
             >
-              <Icon className="shrink-0 size-3.5 sm:size-5 text-slate-500" strokeWidth={2} />
+              <Icon className="shrink-0 size-3.5 sm:size-5 text-slate-700" strokeWidth={2} />
               <span className="text-sm font-semibold text-slate-800 sm:text-lg sm:font-bold sm:text-slate-900">
                 {feature.value}
               </span>
