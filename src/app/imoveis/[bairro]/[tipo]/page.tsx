@@ -90,22 +90,26 @@ export async function generateStaticParams() {
   const params: { bairro: string; tipo: string }[] = []
 
   for (const b of bairros) {
-    // Type combinations
+    // Type combinations — only where the tipo bucket has >=3 imoveis in the bairro.
     for (const { tipo, count } of b.tipos) {
       if (count >= 3) {
         params.push({ bairro: b.slug, tipo: `${slugify(tipo)}s` })
       }
     }
-    // Finalidade combinations
-    if (b.total >= 3) {
-      params.push({ bairro: b.slug, tipo: "venda" })
-      params.push({ bairro: b.slug, tipo: "aluguel" })
-    }
-    // Quartos combinations — 1, 2, 3, 4, 5+ for bairros with 3+ properties.
-    // Zillow-inspired: long-tail programmatic pages maximize indexable surface
-    // ("apartamento 3 quartos Batel", "kitnet 1 quarto Centro", etc.)
-    if (b.total >= 3) {
-      for (const q of [1, 2, 3, 4, 5]) {
+    // Finalidade combinations — check actual count per finalidade, not total,
+    // otherwise a bairro that is 100% venda would get an empty aluguel page.
+    const vendaCount = b.porFinalidade["Venda"] ?? 0
+    const aluguelCount = b.porFinalidade["Locação"] ?? 0
+    if (vendaCount >= 2) params.push({ bairro: b.slug, tipo: "venda" })
+    if (aluguelCount >= 2) params.push({ bairro: b.slug, tipo: "aluguel" })
+    // Quartos combinations — generate page only when that bucket actually has
+    // >=2 matching properties in the bairro (avoid thin-content empty pages).
+    // Zillow-inspired long-tail; drives "apartamento 3 quartos Batel" searches.
+    const porQuartos = b.porQuartos ?? {}
+    for (const q of [1, 2, 3, 4, 5]) {
+      const qKey = q === 5 ? "5+" : String(q)
+      const count = porQuartos[qKey] ?? 0
+      if (count >= 2) {
         params.push({ bairro: b.slug, tipo: `${q}-quartos` })
       }
     }
@@ -126,11 +130,11 @@ export async function generateMetadata({ params }: CombinadaPageProps): Promise<
     const q = parseQuartos(tipoSlug)!
     filters.dormitoriosMin = q
     const { properties: allProps } = await getProperties(filters)
-    const properties = q === 4 ? allProps.filter((p) => (p.dormitorios ?? 0) >= 4) : allProps.filter((p) => p.dormitorios === q)
+    const properties = q >= 5 ? allProps.filter((p) => (p.dormitorios ?? 0) >= 5) : allProps.filter((p) => p.dormitorios === q)
     const precos = properties.map((p) => p.precoVenda ?? p.precoAluguel).filter((p): p is number => p !== null && p > 0)
     return {
-      title: `Imoveis com ${q}${q === 4 ? "+" : ""} Quartos no ${bairro.bairro}, Curitiba | FYMOOB`,
-      description: `${properties.length} imoveis com ${q}${q === 4 ? " ou mais" : ""} quartos no ${bairro.bairro}, Curitiba.${precos.length > 0 ? ` A partir de ${formatPrice(Math.min(...precos))}.` : ""} FYMOOB Imobiliaria.`,
+      title: `Imoveis com ${q}${q >= 5 ? "+" : ""} Quartos no ${bairro.bairro}, Curitiba | FYMOOB`,
+      description: `${properties.length} imoveis com ${q}${q >= 5 ? " ou mais" : ""} quartos no ${bairro.bairro}, Curitiba.${precos.length > 0 ? ` A partir de ${formatPrice(Math.min(...precos))}.` : ""} FYMOOB Imobiliaria.`,
       alternates: { canonical: `/imoveis/${bairroSlug}/${tipoSlug}` },
     }
   }

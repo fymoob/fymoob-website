@@ -12,7 +12,12 @@ const FINALIDADES = {
 interface PageProps { params: Promise<{ finalidade: string }> }
 
 export async function generateStaticParams() {
-  return [{ finalidade: "venda" }, { finalidade: "aluguel" }]
+  const params: { finalidade: string }[] = []
+  for (const [slug, { finalidade }] of Object.entries(FINALIDADES)) {
+    const { properties } = await getProperties({ tipo: "Apartamento", finalidade, limit: 1000 })
+    if (properties.length >= 2) params.push({ finalidade: slug })
+  }
+  return params
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

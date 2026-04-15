@@ -26,7 +26,8 @@ interface BairroPageProps {
 
 export async function generateStaticParams() {
   const bairros = await getAllBairros()
-  return bairros.map((b) => ({ bairro: b.slug }))
+  // Only bairros with >=2 imoveis get a dedicated page — avoid thin content.
+  return bairros.filter((b) => b.total >= 2).map((b) => ({ bairro: b.slug }))
 }
 
 export async function generateMetadata({

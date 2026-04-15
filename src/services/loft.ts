@@ -603,17 +603,21 @@ export async function getAllBairros(limit?: number): Promise<BairroSummary[]> {
   const all = await getAllPropertiesInternal()
   const { bairroImages } = await import("@/lib/bairro-images")
 
-  const bairroMap = new Map<string, { total: number; tipos: Map<PropertyType, number>; cidadeCount: Map<string, number>; finalidadeCount: Map<string, number> }>()
+  const bairroMap = new Map<string, { total: number; tipos: Map<PropertyType, number>; cidadeCount: Map<string, number>; finalidadeCount: Map<string, number>; quartosCount: Map<string, number> }>()
   for (const p of all) {
     const key = p.bairro
     if (!key) continue
-    if (!bairroMap.has(key)) bairroMap.set(key, { total: 0, tipos: new Map(), cidadeCount: new Map(), finalidadeCount: new Map() })
+    if (!bairroMap.has(key)) bairroMap.set(key, { total: 0, tipos: new Map(), cidadeCount: new Map(), finalidadeCount: new Map(), quartosCount: new Map() })
     const entry = bairroMap.get(key)!
     entry.total++
     entry.tipos.set(p.tipo, (entry.tipos.get(p.tipo) ?? 0) + 1)
     entry.cidadeCount.set(p.cidade, (entry.cidadeCount.get(p.cidade) ?? 0) + 1)
     const fin = p.finalidade || "Venda"
     entry.finalidadeCount.set(fin, (entry.finalidadeCount.get(fin) ?? 0) + 1)
+    if (p.dormitorios != null && p.dormitorios > 0) {
+      const qKey = p.dormitorios >= 5 ? "5+" : String(p.dormitorios)
+      entry.quartosCount.set(qKey, (entry.quartosCount.get(qKey) ?? 0) + 1)
+    }
   }
 
   const result = Array.from(bairroMap.entries())
@@ -631,6 +635,7 @@ export async function getAllBairros(limit?: number): Promise<BairroSummary[]> {
         cidade: topCidade,
         tipos: Array.from(info.tipos.entries()).map(([tipo, count]) => ({ tipo, count })),
         porFinalidade: Object.fromEntries(info.finalidadeCount),
+        porQuartos: Object.fromEntries(info.quartosCount),
         imageUrl: bairroImages[bairro],
       }
     })

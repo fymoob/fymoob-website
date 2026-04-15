@@ -78,7 +78,17 @@ interface FaixaPageProps {
 }
 
 export async function generateStaticParams() {
-  return FAIXAS.map((f) => ({ faixa: f.slug }))
+  // Emit only faixas with >=2 imoveis matching (avoid thin content).
+  const params: { faixa: string }[] = []
+  for (const f of FAIXAS) {
+    const { properties } = await getProperties({
+      precoMin: f.min ?? undefined,
+      precoMax: f.max ?? undefined,
+      limit: 1000,
+    })
+    if (properties.length >= 2) params.push({ faixa: f.slug })
+  }
+  return params
 }
 
 export async function generateMetadata({ params }: FaixaPageProps): Promise<Metadata> {

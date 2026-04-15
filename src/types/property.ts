@@ -156,6 +156,7 @@ export interface BairroSummary {
   cidade: string;
   tipos: { tipo: PropertyType; count: number }[];
   porFinalidade: Record<string, number>;
+  porQuartos?: Record<string, number>;
   imageUrl?: string;
 }
 
