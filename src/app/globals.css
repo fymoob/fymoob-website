@@ -182,6 +182,12 @@
   to { opacity: 1; transform: scale(1); }
 }
 
+/* Typewriter cursor para QuickSearch mobile */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
 @keyframes scrollReveal {
   from {
     opacity: 0.4;

@@ -19,6 +19,64 @@ function formatShortPrice(v: number): string {
   return `R$ ${(v / 1000).toFixed(0)}mil`
 }
 
+/** Typewriter animado inspirado no realtor.com.
+ * - Digita, pausa, apaga, troca de frase, repete.
+ * - Typing ~55ms/char, deleting ~30ms/char, pausa 1.6s na frase completa.
+ * - Respeita prefers-reduced-motion: mostra a primeira frase estática.
+ */
+const TYPEWRITER_PHRASES = [
+  "Onde você quer morar?",
+  "Apartamento no Batel?",
+  "Casa com 3 quartos?",
+  "Imóvel até R$ 500 mil?",
+  "Alugar no Água Verde?",
+] as const
+
+function useTypewriter() {
+  const [text, setText] = useState<string>(TYPEWRITER_PHRASES[0])
+  const [phaseIdx, setPhaseIdx] = useState(0)
+
+  useEffect(() => {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (reduced) return
+
+    let phraseIdx = 0
+    let charIdx = TYPEWRITER_PHRASES[0].length
+    let deleting = false
+    let timer: ReturnType<typeof setTimeout>
+
+    const tick = () => {
+      const phrase = TYPEWRITER_PHRASES[phraseIdx]
+      if (!deleting) {
+        charIdx++
+        setText(phrase.slice(0, charIdx))
+        if (charIdx === phrase.length) {
+          timer = setTimeout(() => { deleting = true; tick() }, 1600)
+          return
+        }
+        timer = setTimeout(tick, 55 + Math.random() * 30)
+      } else {
+        charIdx--
+        setText(phrase.slice(0, charIdx))
+        if (charIdx === 0) {
+          deleting = false
+          phraseIdx = (phraseIdx + 1) % TYPEWRITER_PHRASES.length
+          setPhaseIdx(phraseIdx)
+          timer = setTimeout(tick, 400)
+          return
+        }
+        timer = setTimeout(tick, 28 + Math.random() * 15)
+      }
+    }
+
+    // Primeira frase começa "cheia" — espera 2s para começar a apagar e trocar
+    timer = setTimeout(() => { deleting = true; tick() }, 2000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  return { text, key: phaseIdx }
+}
+
 function getCountForFinalidade(
   porFinalidade: Record<string, number>,
   total: number,
@@ -302,6 +360,7 @@ function PriceRangeSlider({
 export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
+  const typewriter = useTypewriter()
   const [finalidade, setFinalidade] = useState<"comprar" | "alugar" | "lancamentos">("comprar")
   const [locationSel, setLocationSel] = useState("")   // single select (bairro or cidade name)
   const [tiposSel, setTiposSel] = useState<string[]>([])
@@ -571,8 +630,14 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-primary">
           <Search className="size-3.5 text-white" />
         </div>
-        <div>
-          <p className="text-xs font-medium text-neutral-800">Onde você quer morar?</p>
+        <div className="min-w-0 flex-1">
+          <p className="flex items-center text-xs font-medium text-neutral-800">
+            <span className="truncate">{typewriter.text}</span>
+            <span
+              aria-hidden
+              className="ml-0.5 inline-block h-3.5 w-[1.5px] shrink-0 animate-[blink_1s_steps(1)_infinite] bg-neutral-800"
+            />
+          </p>
           <p className="text-[10px] text-neutral-400">Bairro · Tipo · Preço</p>
         </div>
       </button>
