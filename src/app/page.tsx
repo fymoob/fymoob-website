@@ -104,7 +104,7 @@ export default async function Home() {
 
       {/* Imóveis em destaque — Prontos para morar */}
       {prontosParaMorar.length > 0 && (
-        <section className="py-8 md:py-12">
+        <section id="destaques" className="scroll-mt-20 py-8 md:py-12">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-baseline justify-between">
               <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-2xl">
@@ -127,7 +127,10 @@ export default async function Home() {
 
       {/* Destaques de lançamento */}
       {destaques.length > 0 && (
-        <section className="bg-neutral-50 py-8 md:py-12">
+        <section
+          id={prontosParaMorar.length === 0 ? "destaques" : undefined}
+          className="scroll-mt-20 bg-neutral-50 py-8 md:py-12"
+        >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-baseline justify-between">
               <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-2xl">

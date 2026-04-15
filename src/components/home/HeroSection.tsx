@@ -83,7 +83,7 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bair
 
       {/* Scroll indicator */}
       <a
-        href="#oportunidade"
+        href="#destaques"
         className="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 animate-bounce text-white/50 transition hover:text-white/80 md:bottom-6"
         aria-label="Rolar para próxima seção"
       >
