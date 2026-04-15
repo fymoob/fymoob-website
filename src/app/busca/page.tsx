@@ -439,19 +439,15 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
     <div
       className="w-full bg-white px-4 py-8 md:px-12 lg:px-20 2xl:px-32"
       style={{
-        // Mesh gradient (Stripe/Linear/Vercel pattern) — real pastels, spread
-        // wide across the top. Three blobs blending into an aurora:
-        //   · Sky blue (dominant) — radiates from top-left
-        //   · Peach warm accent — from top-right
-        //   · Soft violet — center bridge between the two
-        // All bounded to a 640px band so cards lower render on pure white.
+        // Minimal architectural mesh: deep cerulean + warm ocre, both at
+        // very low opacity. Sober, premium feel (Aesop/Apple/Loft pattern)
+        // — the gradient is a background accent, not a protagonist.
         backgroundImage: [
-          "radial-gradient(ellipse 1400px 700px at 10% -15%, rgba(125, 211, 252, 0.55), transparent 72%)",
-          "radial-gradient(ellipse 1200px 700px at 90% -10%, rgba(253, 186, 140, 0.45), transparent 72%)",
-          "radial-gradient(ellipse 900px 500px at 50% 0%, rgba(196, 181, 253, 0.28), transparent 70%)",
+          "radial-gradient(ellipse 1300px 620px at 12% -12%, rgba(2, 132, 199, 0.10), transparent 72%)",
+          "radial-gradient(ellipse 1100px 600px at 88% -8%, rgba(180, 142, 102, 0.07), transparent 72%)",
         ].join(", "),
         backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 640px, 100% 640px, 100% 500px",
+        backgroundSize: "100% 560px, 100% 560px",
       }}
     >
       <Breadcrumbs
