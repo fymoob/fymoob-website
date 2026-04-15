@@ -627,19 +627,16 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
         onClick={() => setOpen(true)}
         className="mx-auto flex w-full max-w-xs items-center gap-2.5 rounded-full border border-white/30 bg-white/80 px-4 py-2.5 text-left shadow-lg backdrop-blur-xl transition hover:bg-white/90 active:scale-[0.98]"
       >
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-primary">
+        <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-primary">
           <Search className="size-3.5 text-white" />
         </div>
-        <div className="min-w-0 flex-1">
-          <p className="flex items-center text-xs font-medium text-neutral-800">
-            <span className="truncate">{typewriter.text}</span>
-            <span
-              aria-hidden
-              className="ml-0.5 inline-block h-3.5 w-[1.5px] shrink-0 animate-[blink_1s_steps(1)_infinite] bg-neutral-800"
-            />
-          </p>
-          <p className="text-[10px] text-neutral-400">Bairro · Tipo · Preço</p>
-        </div>
+        <p className="flex min-w-0 flex-1 items-center text-[13px] font-medium text-neutral-800">
+          <span className="truncate">{typewriter.text}</span>
+          <span
+            aria-hidden
+            className="ml-0.5 inline-block h-3.5 w-[1.5px] shrink-0 animate-[blink_1s_steps(1)_infinite] bg-neutral-800"
+          />
+        </p>
       </button>
       {overlay}
     </>
