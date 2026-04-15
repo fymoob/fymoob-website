@@ -774,10 +774,12 @@ export function SearchBar({
             )}
           >
             <div className={cn(
-              "w-full max-w-full rounded-3xl bg-white p-4 md:rounded-full md:p-0",
+              "w-full max-w-full rounded-3xl p-4 md:rounded-full md:p-0",
               isHome
-                ? "border border-neutral-200 shadow-sm md:shadow-lg"
-                : "border border-slate-200/80 shadow-sm md:shadow-xl md:shadow-slate-200/50"
+                ? "bg-white border border-neutral-200 shadow-sm md:shadow-lg"
+                // Frosted glass on search page — lets the gradient show through
+                // instead of a solid white rectangle cutting the bg
+                : "bg-white/60 backdrop-blur-xl border border-white/80 shadow-sm md:shadow-xl md:shadow-slate-200/50"
             )}>
               <div className={cn(
                 "flex flex-col md:items-center md:gap-0",

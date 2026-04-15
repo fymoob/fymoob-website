@@ -439,13 +439,16 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
     <div
       className="w-full bg-white px-4 py-8 md:px-12 lg:px-20 2xl:px-32"
       style={{
-        // Blue beam capped to a fixed 320px height — fades independently of
-        // total page length. Cards (which start ~350px from top) always
-        // render against pure white for maximum photo contrast.
-        backgroundImage:
-          "linear-gradient(180deg, rgba(41, 171, 226, 0.10) 0px, rgba(41, 171, 226, 0.04) 180px, rgba(255, 255, 255, 0) 320px)",
+        // Mesh gradient (Stripe/Linear/Vercel pattern): two radial blobs
+        // at the top — FYMOOB blue on the left, warm amber on the right —
+        // that blend softly and fade to pure white below 420px. Cards
+        // further down the page always render against pure white.
+        backgroundImage: [
+          "radial-gradient(ellipse 900px 480px at 15% 0%, rgba(41, 171, 226, 0.14), transparent 70%)",
+          "radial-gradient(ellipse 800px 520px at 85% 5%, rgba(255, 193, 128, 0.08), transparent 70%)",
+        ].join(", "),
         backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 320px",
+        backgroundSize: "100% 420px, 100% 420px",
       }}
     >
       <Breadcrumbs
