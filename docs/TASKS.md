@@ -1348,20 +1348,70 @@ O segmento `[tipo]` aceita `N-quartos` polimorficamente.
 **Query alvo:** "apartamento 3 quartos Batel", "casa 2 quartos Água Verde", "kitnet 1 quarto Centro".
 **ROI esperado:** alta — concorrência local baixa, demanda real, 0 custo de manutenção (programático).
 
-### 13.8.2 — Páginas de Bairro com Dados de Mercado [PENDENTE]
+### 13.8.2 — Páginas de Bairro com Dados de Mercado
 
 > **Inspiração Zillow:** cada página de bairro mostra preço médio/m², tempo médio no mercado,
 > variação trimestral. FYMOOB está mostrando só grid de cards — perde força SEO.
 
-**Implementação:**
-- [ ] Query no Loft agregando estatísticas por bairro (preço médio venda, aluguel, preço/m², tempo médio)
-- [ ] Componente `BairroMarketStats` com números destacados + variação vs trimestre anterior
-- [ ] Template de texto editorial por bairro (AI-generated + Bruno revisa no painel)
-- [ ] Schema `Dataset` pra sinalizar ao Google que a página tem dados estruturados
-- [ ] Incluir "Bairros vizinhos" + "Por faixa de preço" + "Por quartos" (já existe parcialmente)
+Dividido em 3 fases conforme infraestrutura disponível:
+
+#### V1 — Dados atuais (100% Loft API) [PENDENTE — Sessão 2]
+
+Usa apenas dados disponíveis HOJE no CRM Loft, sem criar dívida técnica.
+
+- [ ] Agregação por bairro em `src/services/loft.ts` (função `getBairroMarketStats`):
+  - Preço médio de venda (média dos `precoVenda`)
+  - Preço médio de aluguel (média dos `precoAluguel`)
+  - Preço médio por m² (média de `precoVenda / areaPrivativa`)
+  - Faixa de preço (min-max)
+  - Área média (média de `areaPrivativa`)
+  - Distribuição por quartos (já temos em `porQuartos`)
+  - Preço médio agrupado por Nº de quartos
+- [ ] Componente `BairroMarketStats` com números destacados no hero da página de bairro
+- [ ] Schema `Dataset` apontando para os dados agregados
+- [ ] "Bairros vizinhos" via proximidade geográfica (latitude/longitude dos imóveis)
+- [ ] Texto editorial gerado com template: "Em [bairro], temos X imóveis com preço médio de R$ Y. O m² custa em média R$ Z — [comparação implícita com média Curitiba]."
 
 **Query alvo:** "preço m² Batel", "mercado imobiliário Curitiba", "quanto custa imóvel em Água Verde".
 **ROI esperado:** muito alta — **nenhuma imobiliária de Curitiba faz isso**. First-mover + link magnet.
+
+#### V2 — Snapshot Histórico no Supabase [PENDENTE — próximo sprint]
+
+> **Problema resolvido:** Loft não guarda preços passados, impedindo mostrar variação trimestral.
+> **Solução:** gravar snapshots semanais/mensais dos stats agregados em tabela própria.
+
+- [ ] Schema Supabase: tabela `market_snapshots`
+  - `id` (uuid), `bairro_slug` (text), `snapshot_date` (date)
+  - `preco_medio_venda`, `preco_medio_aluguel`, `preco_m2_medio`
+  - `total_imoveis`, `preco_min`, `preco_max`
+  - `stats_por_quartos` (jsonb)
+- [ ] Vercel Cron Job semanal (domingo 2h UTC) chamando `/api/cron/market-snapshot`
+  - Para cada bairro com ≥2 imóveis: calcula stats via `getBairroMarketStats()`
+  - Insere linha em `market_snapshots`
+  - Idempotente: `ON CONFLICT (bairro_slug, snapshot_date) DO UPDATE`
+- [ ] Extender `BairroMarketStats` para comparar último snapshot vs 90 dias atrás:
+  - "+X% em 3 meses" (verde se positivo)
+  - "-Y% em 3 meses" (vermelho se negativo)
+- [ ] Após 90 dias de coleta: primeira comparação real disponível
+- [ ] Após 12 meses: variação anual
+
+**Precondição:** Supabase já configurado (Fase 9.2 admin panel) — não custa infraestrutura nova.
+**ROI:** altíssimo após 3 meses — diferencial sustentável difícil de copiar.
+
+#### V3 — Histórico de Vendas Real [PENDENTE — médio prazo]
+
+> **Problema:** Loft não expõe histórico de transações (imóvel vendido some do endpoint `/imoveis/listar`).
+> **Solução:** parceria com Bruno para exportar CSV mensal do CRM OU dumps direto do banco.
+
+- [ ] Definir formato do export com Bruno (CSV com: código, bairro, tipo, preço, data_cadastro, data_venda)
+- [ ] Schema Supabase: tabela `sales_history`
+- [ ] Script de import mensal (painel admin) — Bruno faz upload do CSV
+- [ ] Nova métrica: **Tempo médio no mercado real** (data_venda - data_cadastro)
+- [ ] Nova métrica: **Nº de vendas trimestrais por bairro** (citável em PR)
+- [ ] Nova métrica: **Taxa de redução de preço** (preço venda vs preço inicial)
+- [ ] Relatório trimestral (13.8.4) ganha dados reais pra press release
+
+**ROI:** alto — habilita 13.8.4 (data journalism para Gazeta do Povo/Tribuna PR) com números que jornalista pode citar.
 
 ### 13.8.3 — Calculadoras (Financiamento + Custo Total) [PENDENTE]
 
