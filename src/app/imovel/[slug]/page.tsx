@@ -40,7 +40,11 @@ import { WishlistButton } from "@/components/property/WishlistButton"
 import { CompareButton } from "@/components/property/CompareButton"
 import { BackButton } from "@/components/shared/BackButton"
 
-export const revalidate = 900
+// 1 hour — CRM data changes far less frequently than 15min.
+// Reduces ISR writes by ~75% vs the previous 900s setting.
+// For instant updates on CRM edit, configure on-demand revalidation
+// via webhook when the Loft/Vista platform supports it.
+export const revalidate = 3600
 export const dynamicParams = true
 
 interface PageProps {

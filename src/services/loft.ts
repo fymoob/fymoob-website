@@ -18,7 +18,10 @@ import { unstable_cache } from "next/cache"
 const LOFT_BASE_URL = "https://brunoces-rest.vistahost.com.br"
 const LOFT_API_KEY = process.env.LOFT_API_KEY || ""
 const PAGE_SIZE = 50 // API max per request
-const REVALIDATE_SECONDS = 900 // 15 minutes
+// 1 hour — aligned with page-level ISR revalidate on /imovel/[slug].
+// Reduces Loft API calls + Next.js ISR writes significantly vs 15min.
+// The CRM data doesn't change fast enough to justify a shorter window.
+const REVALIDATE_SECONDS = 3600 // 1 hour
 
 // ---------------------------------------------------------------------------
 // Characteristic field names (carac + infra) → human-readable labels

@@ -23,7 +23,10 @@ interface EmpreendimentoPageProps {
   params: Promise<{ slug: string }>
 }
 
-export const revalidate = 900
+// 2 hours — empreendimento pages change even less than individual imóveis
+// (new launches, not daily edits). Reduces ISR writes by ~87% vs the
+// previous 900s setting.
+export const revalidate = 7200
 export const dynamicParams = true
 
 const FYMOOB_PHONE = "5541999780517"
