@@ -1322,22 +1322,29 @@ Integração ao site feita em 14/04/2026:
 > multiplicar as combinações de URL em padrões que replicam (proporcionalmente)
 > o "matriz de cobertura" do Zillow, sem depender de orçamento ou escala de dados deles.
 
-### 13.8.1 — Bairro × Quartos pages [EM ANDAMENTO]
+### 13.8.1 — Bairro × Quartos pages [CONCLUIDA — 15/04/2026]
 
 **Descoberto 15/04/2026:** infraestrutura parcial já existe em `src/app/imoveis/[bairro]/[tipo]/page.tsx`.
-O segmento `[tipo]` aceita `N-quartos` polimorficamente (q = 2, 3, 4), quando o bairro tem 5+ imóveis.
+O segmento `[tipo]` aceita `N-quartos` polimorficamente.
 
-**Melhorias a aplicar (expansão Zillow-style):**
-- [x] Rota `/imoveis/[bairro]/[N]-quartos` funcional (q = 2, 3, 4)
-- [x] generateStaticParams com quartos
+**Implementado (commits c8a059a + 19f76eb):**
+- [x] Rota `/imoveis/[bairro]/[N]-quartos` funcional (q = 1, 2, 3, 4, 5+)
+- [x] generateStaticParams com quartos (1 a 5+)
 - [x] generateMetadata com título/descrição otimizada
 - [x] Cross-linking para outras opções de quartos + venda/aluguel
 - [x] Sitemap inclui essas URLs
-- [ ] **Expandir N:** adicionar 1-quarto e 5-quartos (hoje só 2, 3, 4)
-- [ ] **Baixar threshold:** de 5+ imóveis no bairro para 3+ (mais páginas indexadas)
-- [ ] Atualizar sitemap.ts para refletir novos Ns e threshold
+- [x] **Expandido N:** agora inclui 1, 2, 3, 4, 5+ (era só 2, 3, 4)
+- [x] **Threshold dinâmico:** por bucket real, não pelo total do bairro (≥2 imóveis com aquele N)
+- [x] Sitemap atualizado com mesmo filtro
 
-**Target:** ~75 bairros × 5 variações (1, 2, 3, 4, 5+) = ~375 páginas indexáveis de alta intenção.
+**Thin-content guard (todas combinações):**
+- [x] `/imoveis/[bairro]`: só bairros com ≥2 imóveis
+- [x] `/imoveis/[bairro]/venda|aluguel`: checa count real da finalidade
+- [x] `/imoveis/[bairro]/N-quartos`: checa count real do bucket de quartos
+- [x] `/{tipo}-curitiba/[finalidade]`: checa matches reais (sobrados/aluguel excluído — sem imóveis)
+- [x] `/imoveis/preco/[faixa]`: checa matches reais por faixa
+
+**Resultado build:** 100 páginas `/imoveis/[bairro]/[tipo]`, 33 páginas de bairro base, ~521 páginas indexáveis totais.
 **Query alvo:** "apartamento 3 quartos Batel", "casa 2 quartos Água Verde", "kitnet 1 quarto Centro".
 **ROI esperado:** alta — concorrência local baixa, demanda real, 0 custo de manutenção (programático).
 
@@ -1417,6 +1424,59 @@ Documentado para evitar que futuras sessões sugiram:
 - ❌ **Mobile app** — PWA cobre 95%
 - ❌ **Community forum** — moderação > SEO em escala regional
 - ❌ **3D tours Matterport** — ~R$ 300/imóvel, só faz sentido em premium
+
+### 13.8.7 — Timeline de Indexação Google (Pós-Deploy) [REFERÊNCIA — 15/04/2026]
+
+> **Pergunta respondida 15/04/2026:** quanto tempo até ~521 páginas indexarem no Google?
+
+**Dados consolidados (2026, múltiplas fontes SEO):**
+
+| Marco | Timeline |
+|---|---|
+| Primeiras páginas indexadas | 24–72h (com submit manual GSC) |
+| Bulk (~70-80% das páginas) | 2–3 semanas |
+| Indexação completa (~521 páginas) | **2–3 meses** |
+
+**Benchmark por volume de site:**
+- <500 páginas: 3-4 semanas
+- 500–25k páginas: **2-3 meses** (faixa da FYMOOB)
+- Novo domínio: +2-4 semanas para descoberta inicial
+
+**Fatores que aceleram no caso FYMOOB:**
+- ✅ Sitemap.xml dinâmico pronto
+- ✅ Schema.org JSON-LD em todas as páginas (RealEstateListing, Breadcrumb, ItemList)
+- ✅ Conteúdo único por página (bairro, imóvel, quartos, guia)
+- ✅ Internal linking forte (cross-links bairro/tipo/quartos)
+- ✅ Thin-content guard (nenhuma página vazia = crawl budget respeitado)
+
+**Fatores que atrasam:**
+- ⚠️ Site antigo: baixa autoridade de domínio (5 páginas indexadas hoje)
+- ⚠️ Sem backlinks externos ainda
+- ⚠️ Lançamento em batch (~500 páginas de uma vez → Google espaça o crawl)
+
+**Plano de aceleração (a executar no deploy):**
+1. [ ] Submit sitemap no GSC no dia do deploy (`fymoob.com/sitemap.xml`)
+2. [ ] **URL Inspection manual** nas 10 URLs prioritárias: home, /busca, top 5 bairros (Batel, Água Verde, Bigorrilho, Centro, Portão), 2 landings tipo (apartamentos-curitiba, casas-curitiba) → indexação em 24-72h
+3. [ ] **IndexNow ping** (Bing/Yandex) em paralelo — cobertura instantânea fora do Google
+4. [ ] Backlinks iniciais: perfil FYMOOB em portais (ZAP, VivaReal, Chaves na Mão), diretórios de Curitiba (Curitiba Imobiliária, Gazeta do Povo)
+5. [ ] Google Business Profile ativo e atualizado — sinaliza autoridade local (impacta Local Pack, ~15% do tráfego imobiliário)
+6. [ ] Configurar GSC + GA4 + Bing Webmaster Tools **antes** do deploy
+
+**Expectativa realista para FYMOOB (pós-deploy):**
+- Semana 1: ~50 páginas indexadas (priorizadas via URL Inspection)
+- Mês 1: ~300 páginas (~60%)
+- Mês 2-3: ~500 páginas (95%+)
+
+**Monitoramento:**
+- GSC "Coverage" report semanalmente no 1º mês
+- Alertar se <30% indexado após 30 dias → auditar com Screaming Frog
+
+**Fontes:**
+- [CrawlWP — How long before Google indexes](https://crawlwp.com/how-long-before-google-index-new-website-page/)
+- [Conductor — Google indexing speed](https://www.conductor.com/academy/google-index/faq/indexing-speed/)
+- [SEOZoom — Google indexing times](https://www.seozoom.com/google-indexing-time-seo/)
+- [Search Engine Journal](https://www.searchenginejournal.com/how-long-before-google-indexes-my-new-page/464309/)
+- [Google Search Central — Build and Submit a Sitemap](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)
 
 ---
 
