@@ -39,6 +39,32 @@ export function PropertyGallery({ fotos, alt, initialMode, onClose: onCloseExter
   const touchEndX = React.useRef(0)
   const [showUI, setShowUI] = React.useState(true)
   const tapTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const autoHideTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // YouTube/Netflix-style auto-hide: any interaction shows the UI and
+  // restarts a 3.5s timer. Timer is cleared on unmount or when the gallery
+  // closes.
+  const showUIWithAutoHide = React.useCallback(() => {
+    setShowUI(true)
+    if (autoHideTimer.current) clearTimeout(autoHideTimer.current)
+    autoHideTimer.current = setTimeout(() => setShowUI(false), 3500)
+  }, [])
+
+  // Reset/clear timer when fullscreen closes or on unmount
+  React.useEffect(() => {
+    if (mode !== "fullscreen") {
+      if (autoHideTimer.current) {
+        clearTimeout(autoHideTimer.current)
+        autoHideTimer.current = null
+      }
+      return
+    }
+    // Start visible with auto-hide
+    showUIWithAutoHide()
+    return () => {
+      if (autoHideTimer.current) clearTimeout(autoHideTimer.current)
+    }
+  }, [mode, showUIWithAutoHide])
 
   const images = fotos.length > 0 ? fotos : ["/placeholder-property.jpg"]
   const count = images.length
@@ -296,7 +322,8 @@ export function PropertyGallery({ fotos, alt, initialMode, onClose: onCloseExter
       {mode === "fullscreen" && (
         <div
           className="fixed inset-0 z-[9999] flex h-[100dvh] w-screen flex-col bg-black animate-[fadeIn_0.2s_ease-out]"
-          onClick={() => setShowUI((v) => !v)}
+          onClick={showUIWithAutoHide}
+          onMouseMove={showUIWithAutoHide}
         >
           {/* Top bar — toggles with tap */}
           <div className={cn(
@@ -328,23 +355,22 @@ export function PropertyGallery({ fotos, alt, initialMode, onClose: onCloseExter
           <div
             className="flex flex-1 items-center justify-center overflow-hidden px-2 sm:px-16"
             style={{ touchAction: "pan-y pinch-zoom" }}
-            onClick={(e) => e.stopPropagation()}
+            // Click propaga para o wrapper (showUIWithAutoHide). Evita
+            // que tap na foto pareça travado (bug anterior).
             onTouchStart={(e) => {
               handleTouchStart(e)
-              // Clear any pending tap
               if (tapTimeout.current) clearTimeout(tapTimeout.current)
             }}
             onTouchMove={handleTouchMove}
-            onTouchEnd={(e) => {
+            onTouchEnd={() => {
               const diff = touchStartX.current - touchEndX.current
               if (Math.abs(diff) > 50) {
-                // Swipe — navigate
+                // Swipe — navega e reinicia auto-hide
                 if (diff > 0) goNext()
                 else goPrev()
-              } else {
-                // Tap — toggle UI
-                tapTimeout.current = setTimeout(() => setShowUI((v) => !v), 200)
+                showUIWithAutoHide()
               }
+              // Tap simples: o onClick do wrapper ja dispara showUIWithAutoHide
               touchEndX.current = 0
             }}
           >
