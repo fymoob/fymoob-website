@@ -1478,6 +1478,274 @@ Documentado para evitar que futuras sessões sugiram:
 - [Search Engine Journal](https://www.searchenginejournal.com/how-long-before-google-indexes-my-new-page/464309/)
 - [Google Search Central — Build and Submit a Sitemap](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)
 
+### 13.8.8 — Decisão Threshold (validada por 3 agentes em paralelo) [REFERÊNCIA — 15/04/2026]
+
+> **Pergunta:** relaxar thresholds para ≥1 para cumprir os 800+ do contrato?
+> **Resposta consolidada (3 agentes):** NÃO. Mantém ≥2/≥3 — atingir 800+ via novas combinações legítimas.
+
+**Justificativa:**
+- HCU Mar/2024 + Scaled Content Abuse policy penaliza exatamente "800 páginas geradas programaticamente com 1 listing cada"
+- Zillow/Redfin aplicam noindex dinâmico quando inventário < threshold (engenharia reversa via `site:`)
+- Wrapper de schema + FAQ + intro sem inventário real = padrão-alvo do HCU
+- Risco: classificação como "produção em escala com propósito de manipular ranking" → penalidade de core update
+
+**Threshold final (ratificado):**
+
+| Rota | Threshold | Manter |
+|---|---|---|
+| `/imoveis/[bairro]` | ≥2 imóveis | ✅ |
+| `/imoveis/[bairro]/venda\|aluguel` | ≥2 da finalidade | ✅ |
+| `/imoveis/[bairro]/[tipo]` | ≥3 do tipo | ✅ |
+| `/imoveis/[bairro]/N-quartos` | ≥2 do bucket | ✅ |
+| `/imoveis/preco/[faixa]` | ≥2 na faixa | ✅ |
+| `/{tipo}-curitiba/[finalidade]` | ≥2 matches | ✅ |
+
+**Páginas vazias (0 resultados):** `noindex, follow` + mensagem "sem imóveis no momento" + cross-links para bairros vizinhos (NÃO 404, NÃO 302 — URL precisa persistir para quando inventário voltar).
+
+**Caminho para atingir 800+ páginas (ver Fase 13.9):**
+- Long-tail pt-BR não-óbvio: +150-250
+- Guias editoriais por bairro: +75
+- Faixa × tipo: +20
+- Pillars + apoio (13.8.5): +48
+- Bairro × atributos (garagem/varanda/andar): +100
+- **Total projetado: ~920-1020 páginas de qualidade**
+
+---
+
+## Fase 13.9 — SEO 2026 Playbook (AI Search, E-E-A-T, Long-tail não-óbvio)
+
+> **Origem:** Agente especialista em SEO imobiliário 2026 (15/04/2026).
+> **Meta:** Descobertas além do playbook Zillow: otimização para era AI Overviews + E-E-A-T YMYL + long-tail pt-BR que os grandes portais ignoram.
+
+### 13.9.1 — AI Search Optimization (GEO/AEO) [PRIORIDADE ALTA]
+
+> **Por que agora:** AI Overviews já aparecem em ~47% das SERPs imobiliárias US (Q4/25).
+> Zero-click é o novo #1 — citation é o que importa.
+
+**Implementação:**
+- [ ] Passagens auto-contidas 40-60 palavras respondendo 1 pergunta específica ("Quanto custa m² em Batel?")
+- [ ] Tabelas comparativas com dados únicos (AIs citam fontes com dados proprietários)
+- [ ] `/llms.txt` na raiz listando páginas canônicas + dados estruturados
+- [ ] Schema `Dataset` + `Claim` em market reports (13.8.4)
+- [ ] Priorizar clareza factual > prosa (AIs extraem sentenças, não parágrafos)
+
+**ROI esperado:** 15-30% do tráfego futuro via citation-driven clicks.
+
+### 13.9.2 — Entity SEO / Wikidata [PRIORIDADE MÉDIA]
+
+> **Por que:** Entidades rankeiam sem backlinks tradicionais + desbloqueiam Knowledge Panel.
+
+**Implementação:**
+- [ ] Criar item Wikidata "FYMOOB" com P31 (business), P17 (Brasil), P159 (Curitiba), P856 (site), P2002 (X/IG), P1278 (CNPJ)
+- [ ] `sameAs[]` em Organization schema apontando para Wikidata, LinkedIn, IG, FB, GBP, Receita CNPJ
+- [ ] Consistência NAP absoluta em 20+ diretórios (ZAP, VivaReal, Apontador, Telelistas, Guiamais, etc.)
+- [ ] `/sobre` com fatos entity-like (fundação, CRECI-PR, bairros atendidos, CNPJ público)
+- [ ] Publicar co-occurrences "FYMOOB + Curitiba + imóveis" em PR locais
+
+**ROI esperado:** Knowledge Panel em 6-12 meses se sinais consistentes.
+
+### 13.9.3 — E-E-A-T para YMYL Imobiliário [PRIORIDADE ALTA]
+
+> **Por que:** Real estate = YMYL (Your Money Your Life). Google aplica quality raters guidelines rigorosamente.
+
+**Implementação:**
+- [ ] Author schema em todo artigo: `Person` + CRECI + foto + bio + `sameAs` LinkedIn
+- [ ] Schema `RealEstateAgent` por corretor com `hasCredential` (CRECI-PR)
+- [ ] Página `/equipe` com CRECI visível, anos de experiência, especialização por bairro
+- [ ] `Review` + `AggregateRating` schema (importar reviews GBP legalmente)
+- [ ] "Última atualização" + "Revisado por [corretor CRECI X]" em cada listing
+- [ ] Política editorial pública em `/politica-editorial`
+
+**ROI esperado:** +20-40% CTR em SERPs competitivas + proteção contra core updates.
+
+### 13.9.4 — Long-tail Programático pt-BR Não-Óbvio [PRIORIDADE ALTA — escala]
+
+> **Descoberto:** grandes portais (ZAP/VivaReal) ignoram esses padrões. Concorrência baixa, intenção alta.
+
+**URLs a adicionar (volume estimado Curitiba):**
+
+| Padrão | Exemplos | Concorrência |
+|---|---|---|
+| `/imoveis/perto-de-[poi]` | metro, hospital, shopping, universidade, parque Barigui | baixa |
+| `/imoveis/aceita-pet` + `/[bairro]/aceita-pet` | filter por caracteristicas Loft | baixa (em crescimento 2024-26) |
+| `/imoveis/minha-casa-minha-vida-curitiba` | MCMV por faixa/bairro | média |
+| `/apartamentos-pronto-para-morar-[bairro]` | Status construcao | baixa |
+| `/imoveis/ate-[valor]-com-[N]-quartos-[bairro]` | combinação rara | baixa (CPC alto) |
+| `/imoveis/mobiliados-[bairro]` | nicho aluguel | baixa |
+| `/imoveis/planta-[empreendimento]` | busca por empreendimento específico | baixa |
+| `/imoveis/[bairro]/garagem-coberta` | + varanda-gourmet, andar-alto, varanda | baixa |
+
+**Target total:** +150-250 novas URLs programáticas.
+**Query alvo:** "apartamento pet Batel", "MCMV Curitiba", "apartamento mobiliado Centro", "apartamento com varanda gourmet Água Verde".
+
+### 13.9.5 — Image SEO Avançado [PRIORIDADE MÉDIA]
+
+**Implementação:**
+- [ ] Filename: `apartamento-3-quartos-batel-curitiba-sala.jpg` (não `IMG_1234`)
+- [ ] Schema `ImageObject` com `contentUrl`, `caption`, `geo`
+- [ ] Preservar EXIF GPS quando legal (geo-tagging fotos dos imóveis)
+- [ ] Alt descritivo cena+contexto (não keyword stuffing)
+- [ ] AVIF com fallback WebP
+- [ ] Sitemap dedicado `sitemap-images.xml`
+- [ ] Tour 360/vídeo schema `VideoObject` quando disponível
+
+**ROI:** Image Pack em ~30% das queries "imóvel [bairro]".
+
+### 13.9.6 — Core Web Vitals INP Focus [EM ANDAMENTO — Fase 11 continua]
+
+**Thresholds 2026:** LCP <2.5s, INP <200ms (ideal <150ms), CLS <0.1.
+**Diferencial competitivo:** Razzi/JBA estão em 400ms+ INP.
+
+**Técnicas específicas listagem:**
+- [ ] `fetchpriority=high` no LCP hero
+- [ ] `content-visibility: auto` em cards abaixo do fold
+- [ ] Debounce de filtros 150ms + `startTransition`
+- [ ] Responsive images com `sizes` preciso
+- [ ] Evitar hydration de cards (Server Components puros)
+- [ ] INP killer: remover handlers síncronos em filtros → URL state + RSC
+
+### 13.9.7 — Local SEO Checklist [PRIORIDADE ALTA]
+
+**GBP (Google Business Profile):**
+- [ ] Categoria primária "Imobiliária" + secundárias ("Corretor", "Administradora aluguel")
+- [ ] Posts 2x/semana linkando bairros diferentes
+- [ ] Q&A preenchido proativamente
+- [ ] Produtos = imóveis destaque
+- [ ] Meta de reviews: 2-4/semana, responder 100% em <24h, citar bairro na resposta
+
+**Citations BR (NAP consistente):**
+ZAP, VivaReal, Chaves na Mão, OLX, Imovelweb, QuintoAndar, Apontador, Guia Mais, Telelistas, Econodata, Yelp BR, Foursquare.
+
+**Local pack:**
+- [ ] Embed mapa GBP na home + `/contato`
+- [ ] Geo schema com lat/long exata
+- [ ] Review velocity sustentada
+
+**ROI:** Top 3 Local Pack "imobiliária [bairro]" em 4-6 meses.
+
+### 13.9.8 — Conteúdo Editorial que Rankeia em 2026
+
+**Formatos de alto crescimento pt-BR:**
+- [ ] `[Bairro A] vs [Bairro B]: onde morar em Curitiba` (comparativos)
+- [ ] `Os N melhores bairros de Curitiba para [famílias/solteiros/aposentados/pets]`
+- [ ] `Quanto custa morar em [bairro]` (IPTU, condomínio médio, mercado)
+- [ ] `Vale a pena investir em [bairro]` (com dados proprietários)
+- [ ] Data journalism: "Relatório FYMOOB Q[N] 2026" (ver 13.8.4)
+
+### 13.9.9 — Backlinks Orgânicos BR [PRIORIDADE MÉDIA]
+
+- [ ] Data journalism: release trimestral preço/m² → Gazeta do Povo, Bem Paraná, Tribuna PR
+- [ ] HARO/Conector/SourceBottle BR: respostas do Bruno como corretor citado
+- [ ] Guest post: Casa e Jardim, Nubank, Quero Investir
+- [ ] Parcerias locais: arquitetos, mudanças, decoradoras (link recíproco)
+- [ ] Listagem moradia estudantil PUCPR/UFPR
+
+**ROI:** 3-5 backlinks DR60+ em 6 meses via data journalism.
+
+### 13.9.10 — Keywords pt-BR Baixa Concorrência/Alta Intenção
+
+**Padrões que ZAP/VivaReal ignoram:**
+- `financiamento caixa apartamento [bairro]`
+- `imóveis FGTS Curitiba`
+- `apartamento MCMV [bairro]`
+- `imóvel escriturado [bairro]`
+- `imóvel sem entrada Curitiba`
+
+**Vantagem FYMOOB:** ZAP/VivaReal não fazem guias de bairro profundos + E-E-A-T de corretor nomeado.
+
+---
+
+## Fase 13.10 — Indexação Agressiva (Pós-Deploy)
+
+> **Origem:** Agente especialista em indexação Google 2026 (15/04/2026).
+> **Meta:** 70-80% das ~670 páginas indexadas em 3-4 semanas (vs 2-3 meses do padrão).
+
+### 13.10.1 — Descartar (NÃO fazer)
+
+- ❌ **Google Indexing API para real estate** — restrita a `JobPosting` e `BroadcastEvent`. Usar fora disso = BAN manual garantido.
+- ❌ **IndexMeNow, Omega, RapidURLIndexer** — PBN-based ou uso não-autorizado da Indexing API. Risco alto.
+- ❌ **PubSubHubbub/WebSub** — morto para Google desde 2017.
+- ❌ **`<priority>` e `<changefreq>`** no sitemap — ignorados pelo Google desde 2017.
+- ❌ Indexar página `JobPosting` fake para listings — BAN garantido.
+
+### 13.10.2 — Implementar (Day 0 do deploy)
+
+**IndexNow (Bing/Yandex):**
+- [ ] Gerar key `.txt` em `/public/[key].txt`
+- [ ] `src/lib/indexnow.ts`: POST para `api.indexnow.org/indexnow` após `revalidatePath`
+- [ ] Hook no webhook Vercel em cada deploy
+- [ ] Custo zero, cobre 30%+ do tráfego global (Google ainda testando)
+
+**Sitemap segmentado:**
+- [ ] `sitemap-imoveis.xml` (~250 imóveis)
+- [ ] `sitemap-bairros.xml` (bairros + combinações)
+- [ ] `sitemap-blog.xml` (artigos + guias)
+- [ ] `sitemap-static.xml` (landings estáticas)
+- [ ] `sitemap.xml` = index dos 4 acima
+- [ ] Manter `<lastmod>` preciso por URL (confirmado por John Mueller, 2024)
+
+**GSC + GA4 + Bing Webmaster Tools:**
+- [ ] Propriedades criadas e verificadas ANTES do deploy
+- [ ] Submit imediato do sitemap index
+- [ ] URL Inspection manual nas 50 URLs prioritárias (home, top 10 bairros, top 20 imóveis, 4 landings tipo)
+
+**Google Business Profile:**
+- [ ] Perfil "FYMOOB Imóveis Curitiba" verificado antes do deploy
+- [ ] NAP idêntico ao site
+
+### 13.10.3 — Semana 1-4 (automação pós-deploy)
+
+**URL Inspection API automatizada:**
+- [ ] Script Node diário submetendo 2.000 URLs/dia (limite oficial)
+- [ ] Priorização: home > bairros top 10 > tipo+finalidade > imóveis ativos > blog > long-tail
+- [ ] Libs: `google-search-console-indexing` (Python) ou `gsc-indexing-cli`
+- [ ] Rate limit: 600 requests/minuto
+
+**Publicação em ondas (não 670 de uma vez — evitar flag de spam):**
+- [ ] **Day 0:** 200 páginas core (home, bairros, imóveis, tipos principais)
+- [ ] **Day 7:** +250 páginas (bairro+tipo, bairro+quartos, bairro+finalidade)
+- [ ] **Day 14:** +220 páginas (long-tail, blog, guias, calculadoras)
+
+**TagParrot (~$20/mês):**
+- [ ] Complemento legítimo ao URL Inspection API
+- [ ] Múltiplas GSC properties em rotação
+
+### 13.10.4 — Backlinks de Discovery Rápida
+
+Não para ranking, apenas para acelerar crawl:
+- [ ] **Reddit** r/Curitiba, r/brasil — crawl quase imediato
+- [ ] **Medium** — 2-3 artigos linkando hubs
+- [ ] **LinkedIn Pulse** — artigos do Bruno linkando bairros
+- [ ] **Quora Brasil** — respostas genuínas sobre Curitiba imobiliário
+- [ ] **Apontador, Telelistas, Guiamais** — citations locais
+
+### 13.10.5 — Arquitetura Interna para Crawl Budget
+
+- [ ] Home linka direto para top 20 bairros + 4 tipos (apartamentos/casas/sobrados/terrenos)
+- [ ] Breadcrumb depth máximo 3: `Home > Bairro > Imóvel`
+- [ ] Hub pages `/imoveis/[bairro]` linkam 20+ imóveis + bairros vizinhos + tipos filtrados
+- [ ] Related listings em cada imóvel (4-8 similares) — crawl lateral
+- [ ] Evitar footer com 500+ links (flag de spam)
+
+### 13.10.6 — Monitoramento Contínuo
+
+- [ ] **GSC Coverage Report** — semanal (categorias Indexed/Discovered/Crawled)
+- [ ] `site:fymoob.com` — diário, contar resultados
+- [ ] **Screaming Frog** (500 URLs grátis) — crawl semanal vs sitemap
+- [ ] **Sitebulb ou Ahrefs Site Audit** — mensal
+- [ ] **Log files Vercel** — hits do Googlebot por URL
+
+### 13.10.7 — Timeline Realista
+
+| Período | Meta | Tática principal |
+|---|---|---|
+| Day 0 | 0% (deploy) | Sitemap submit + IndexNow + GBP + 50 URLs manuais |
+| Semana 1 | ~30% indexado | URL Inspection API + Reddit/LinkedIn/Medium |
+| Semana 3-4 | **70-80% indexado** | Ondas 2-3 + TagParrot + backlinks locais |
+| Semana 6-8 | 90%+ indexado | Manutenção + data journalism |
+
+**Benchmark:** clientes Jetimob (500-2k páginas) batem 75% em 21 dias com execução similar. Sem Indexing API não dá pra garantir 80% em 2 semanas, mas **4 semanas é factível**.
+
 ---
 
 ## Fase 14 — Inteligência Imobiliária (Produto Futuro)
