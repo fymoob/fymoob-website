@@ -337,10 +337,15 @@ export function SearchBar({
     },
   ]
 
+  // On home hero (dark image bg), links need both higher opacity AND a
+  // subtle drop shadow to pass WCAG AA contrast over the bright parts of
+  // the photo (sofa, sunset, window). Netflix/Spotify pattern.
   const secondaryControlsClass = isHome
-    ? "text-white/80 hover:text-white"
+    ? "text-white/90 [text-shadow:0_1px_3px_rgba(0,0,0,0.45)] hover:text-white"
     : "text-neutral-500 hover:text-neutral-800"
-  const secondarySeparatorClass = isHome ? "text-white/30" : "text-neutral-300"
+  const secondarySeparatorClass = isHome
+    ? "text-white/50 [text-shadow:0_1px_3px_rgba(0,0,0,0.45)]"
+    : "text-neutral-300"
 
   return (
     <>

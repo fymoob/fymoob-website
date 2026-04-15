@@ -42,12 +42,14 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bair
         }}
       />
 
-      {/* Bottom gradient — text/search legibility */}
+      {/* Bottom gradient — asymmetric weight: preserves the sunset beauty
+          at the top (where the city skyline shines) and ramps up contrast
+          below where the title, subtitle and secondary links live. */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.35) 70%, rgba(0,0,0,0.55) 100%)",
+            "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0.45) 65%, rgba(0,0,0,0.68) 100%)",
         }}
       />
 
