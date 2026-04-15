@@ -152,6 +152,15 @@ export function generatePropertySchema(property: Property) {
     }),
     numberOfRooms: property.dormitorios ?? undefined,
     numberOfBathroomsTotal: property.banheiros ?? undefined,
+    // Conectar ao grafo de entidades (FYMOOB + Bruno + Wagner)
+    realEstateAgent: [
+      { "@id": `${SITE_URL}/#localbusiness` },
+      { "@id": `${SITE_URL}/sobre#bruno` },
+    ],
+    provider: { "@id": `${SITE_URL}/#organization` },
+    // Sinal E-E-A-T: imóvel revisado por corretor responsável com CRECI
+    reviewedBy: { "@id": `${SITE_URL}/sobre#bruno` },
+    dateModified: property.dataCadastro,
   }
 }
 
