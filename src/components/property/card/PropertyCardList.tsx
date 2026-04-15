@@ -137,7 +137,12 @@ export function PropertyCardList({
           </button>
 
           <div className="flex flex-col items-end gap-1">
-            <span className="text-xs font-medium uppercase text-slate-400">
+            <span
+              className="relative z-20 cursor-text select-all text-xs font-medium uppercase text-slate-400 hover:text-slate-600"
+              onClick={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
+              title="Clique para selecionar o código"
+            >
               {property.codigo}
             </span>
             <p

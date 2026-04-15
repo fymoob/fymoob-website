@@ -178,7 +178,12 @@ export function PropertyCardCompact({
                 </p>
               )}
             </div>
-            <span className="text-sm font-semibold uppercase text-slate-500">
+            <span
+              className="relative z-20 cursor-text select-all text-sm font-semibold uppercase text-slate-500 hover:text-slate-700"
+              onClick={(e) => e.stopPropagation()}
+              onMouseDown={(e) => e.stopPropagation()}
+              title="Clique para selecionar o código"
+            >
               {property.codigo}
             </span>
           </div>

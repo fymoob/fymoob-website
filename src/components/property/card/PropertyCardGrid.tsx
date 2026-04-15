@@ -40,14 +40,14 @@ export function PropertyCardGrid({
     goToSlide,
   } = usePropertyCard(property, priceContext)
 
-  // Finalidade dot (inline em vez de pill grande — mais limpo)
-  const finalidadeDot =
+  // Finalidade pill colorida
+  const finalidadePill =
     property.finalidade === "Venda"
-      ? { label: "Venda", color: "bg-rose-500" }
+      ? { label: "Venda", className: "bg-rose-50 text-rose-700 ring-1 ring-rose-200/70" }
       : property.finalidade === "Locação"
-        ? { label: "Aluguel", color: "bg-emerald-500" }
+        ? { label: "Aluguel", className: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/70" }
         : property.finalidade === "Venda e Locação"
-          ? { label: "Venda · Aluguel", color: "bg-amber-500" }
+          ? { label: "Venda · Aluguel", className: "bg-amber-50 text-amber-700 ring-1 ring-amber-200/70" }
           : null
 
   return (
@@ -161,15 +161,18 @@ export function PropertyCardGrid({
 
       {/* Content — padrão do Compact, ~20% maior por ter mais largura disponível */}
       <div className="flex min-w-0 flex-1 flex-col gap-3 p-5 sm:p-6">
-        {/* Header inline: dot finalidade · tipo · bairro */}
-        <div className="flex items-center gap-2 text-sm font-medium uppercase tracking-wide text-slate-500">
-          {finalidadeDot && (
-            <span className="inline-flex items-center gap-1.5 text-slate-700">
-              <span aria-hidden className={cn("inline-block size-1.5 rounded-full", finalidadeDot.color)} />
-              <span className="font-semibold">{finalidadeDot.label}</span>
+        {/* Header: pill finalidade + tipo · bairro */}
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 text-sm font-medium uppercase tracking-wide text-slate-500">
+          {finalidadePill && (
+            <span
+              className={cn(
+                "rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider",
+                finalidadePill.className
+              )}
+            >
+              {finalidadePill.label}
             </span>
           )}
-          {finalidadeDot && <span aria-hidden className="text-slate-300">·</span>}
           <span className="font-semibold text-slate-700">{property.tipo}</span>
           {property.bairro && (
             <>
@@ -216,7 +219,12 @@ export function PropertyCardGrid({
               </p>
             )}
           </div>
-          <span className="self-end text-sm font-semibold uppercase tracking-wide text-slate-500">
+          <span
+            className="relative z-20 cursor-text select-all self-end text-sm font-semibold uppercase tracking-wide text-slate-500 hover:text-slate-700"
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            title="Clique para selecionar o código"
+          >
             {property.codigo}
           </span>
         </div>
