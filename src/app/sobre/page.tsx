@@ -93,8 +93,107 @@ export default async function SobrePage() {
     { number: null, text: "J 9420", label: "CRECI ativo", icon: Award },
   ]
 
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: "FYMOOB Imobiliária",
+        url: SITE_URL,
+        logo: `${SITE_URL}/logo.png`,
+        foundingDate: "2024",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Curitiba",
+          addressRegion: "PR",
+          addressCountry: "BR",
+        },
+        hasCredential: {
+          "@type": "EducationalOccupationalCredential",
+          credentialCategory: "CRECI J 9420",
+        },
+        founder: [
+          { "@id": `${SITE_URL}/sobre#bruno` },
+          { "@id": `${SITE_URL}/sobre#wagner` },
+        ],
+        areaServed: {
+          "@type": "City",
+          name: "Curitiba",
+          "@id": "https://www.wikidata.org/wiki/Q40269",
+        },
+      },
+      {
+        "@type": "RealEstateAgent",
+        "@id": `${SITE_URL}/sobre#bruno`,
+        name: "Bruno Cesar de Almeida",
+        jobTitle: "Sócio e Responsável Técnico",
+        image: `${SITE_URL}/images/team/bruno.jpeg`,
+        email: "brunocesar.contato@gmail.com",
+        worksFor: { "@id": `${SITE_URL}/#organization` },
+        hasCredential: [
+          {
+            "@type": "EducationalOccupationalCredential",
+            credentialCategory: "CRECI/PR 24.494",
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            credentialCategory: "Formação em Negócios Imobiliários",
+            recognizedBy: { "@type": "CollegeOrUniversity", name: "UFPR" },
+            dateCreated: "2015",
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            credentialCategory: "Graduação em Direito",
+            recognizedBy: { "@type": "CollegeOrUniversity", name: "Faculdade Curitibana" },
+            dateCreated: "2021",
+          },
+        ],
+        knowsAbout: ["Mercado imobiliário de Curitiba", "Negociação imobiliária", "Direito imobiliário"],
+        description:
+          "Atuante no mercado imobiliário desde 2009, iniciou sua trajetória como auxiliar administrativo, passando por diferentes imobiliárias em Curitiba e adquirindo experiência em diversas áreas do setor.",
+      },
+      {
+        "@type": "RealEstateAgent",
+        "@id": `${SITE_URL}/sobre#wagner`,
+        name: "Wagner Spessatto",
+        jobTitle: "Sócio",
+        email: "wagnerspessatto@gmail.com",
+        worksFor: { "@id": `${SITE_URL}/#organization` },
+        hasCredential: [
+          {
+            "@type": "EducationalOccupationalCredential",
+            credentialCategory: "CRECI/PR 39.357",
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            credentialCategory: "Formação em Psicologia",
+            recognizedBy: { "@type": "CollegeOrUniversity", name: "Faculdades Pequeno Príncipe" },
+            dateCreated: "2017",
+          },
+        ],
+        knowsAbout: ["Mercado imobiliário de Curitiba", "Relações interpessoais", "Consultoria imobiliária"],
+        description:
+          "Reconhecido pelo perfil colaborativo e pela facilidade em construir boas relações, Wagner é um profissional próximo, comprometido e parceiro nos negócios.",
+      },
+      {
+        "@type": "AboutPage",
+        "@id": `${SITE_URL}/sobre#aboutpage`,
+        url: `${SITE_URL}/sobre`,
+        name: "Sobre a FYMOOB",
+        mainEntity: { "@id": `${SITE_URL}/#organization` },
+      },
+    ],
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* ══════ HERO — Imagem de fundo com overlay ══════ */}
       <section className="relative flex min-h-[60vh] items-center overflow-hidden">
         <Image
