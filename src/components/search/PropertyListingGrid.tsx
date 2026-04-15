@@ -87,10 +87,23 @@ export function PropertyListingGrid({
       {showToolbar && (
         <div className="flex flex-col gap-3 px-1 py-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0">
-            <p className="text-lg font-semibold tracking-tight text-slate-900">
-              {showingPartialResults
-                ? `Mostrando ${properties.length} de ${totalResults} ${totalLabel}`
-                : `${totalResults} ${totalLabel} encontrados`}
+            <p className="text-lg tracking-tight text-slate-600">
+              {showingPartialResults ? (
+                <>
+                  Mostrando{" "}
+                  <span className="font-bold text-slate-900">{properties.length}</span>
+                  {" de "}
+                  <span className="font-bold text-slate-900">{totalResults}</span>
+                  {" "}
+                  {totalLabel}
+                </>
+              ) : (
+                <>
+                  <span className="font-bold text-slate-900">{totalResults}</span>
+                  {" "}
+                  {totalLabel} encontrados
+                </>
+              )}
             </p>
             {!showingPartialResults && (
               <p className="text-sm text-neutral-500">Resultados em tempo real.</p>
