@@ -436,7 +436,13 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
   const maxPrice = stats.precoMax ?? 5_000_000
 
   return (
-    <div className="w-full bg-gradient-to-b from-sky-50 via-slate-50 to-white px-4 py-8 md:px-12 lg:px-20 2xl:px-32">
+    <div
+      className="w-full px-4 py-8 md:px-12 lg:px-20 2xl:px-32"
+      style={{
+        background:
+          "linear-gradient(180deg, rgba(41, 171, 226, 0.08) 0%, rgba(41, 171, 226, 0.03) 20%, #ffffff 40%)",
+      }}
+    >
       <Breadcrumbs
         items={[
           { name: "Home", url: "/" },

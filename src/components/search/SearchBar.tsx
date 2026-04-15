@@ -346,7 +346,10 @@ export function SearchBar({
     <>
     <aside
       className={cn(
-        sticky && "sticky top-14 z-40 bg-white/70 py-3 backdrop-blur-lg md:top-16",
+        // Sticky bar: frosted glass that lets the page gradient show through
+        // at the top (no solid rectangle) AND keeps readable contrast over
+        // content when scrolled. 50% white + heavy blur works on both.
+        sticky && "sticky top-14 z-40 bg-white/50 py-3 backdrop-blur-xl md:top-16",
         className
       )}
     >
