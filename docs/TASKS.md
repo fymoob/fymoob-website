@@ -1348,18 +1348,19 @@ O segmento `[tipo]` aceita `N-quartos` polimorficamente.
 **Query alvo:** "apartamento 3 quartos Batel", "casa 2 quartos Água Verde", "kitnet 1 quarto Centro".
 **ROI esperado:** alta — concorrência local baixa, demanda real, 0 custo de manutenção (programático).
 
-### 13.8.2 — Páginas de Bairro com Dados de Mercado
+### 13.8.2 — Páginas de Bairro com Dados de Mercado [V1 CONCLUIDA, V2/V3 PENDENTES]
 
 > **Inspiração Zillow:** cada página de bairro mostra preço médio/m², tempo médio no mercado,
 > variação trimestral. FYMOOB está mostrando só grid de cards — perde força SEO.
 
 Dividido em 3 fases conforme infraestrutura disponível:
 
-#### V1 — Dados atuais (100% Loft API) [PENDENTE — Sessão 2]
+#### V1 — Dados atuais (100% Loft API) [CONCLUIDA — 15/04/2026]
 
 Usa apenas dados disponíveis HOJE no CRM Loft, sem criar dívida técnica.
+Commit a5a7dec.
 
-- [ ] Agregação por bairro em `src/services/loft.ts` (função `getBairroMarketStats`):
+- [x] Agregação por bairro em `src/services/loft.ts` (função `getBairroMarketStats`):
   - Preço médio de venda (média dos `precoVenda`)
   - Preço médio de aluguel (média dos `precoAluguel`)
   - Preço médio por m² (média de `precoVenda / areaPrivativa`)
@@ -1367,10 +1368,12 @@ Usa apenas dados disponíveis HOJE no CRM Loft, sem criar dívida técnica.
   - Área média (média de `areaPrivativa`)
   - Distribuição por quartos (já temos em `porQuartos`)
   - Preço médio agrupado por Nº de quartos
-- [ ] Componente `BairroMarketStats` com números destacados no hero da página de bairro
-- [ ] Schema `Dataset` apontando para os dados agregados
-- [ ] "Bairros vizinhos" via proximidade geográfica (latitude/longitude dos imóveis)
-- [ ] Texto editorial gerado com template: "Em [bairro], temos X imóveis com preço médio de R$ Y. O m² custa em média R$ Z — [comparação implícita com média Curitiba]."
+- [x] Componente `BairroMarketStats` com números destacados (6 cards + grupo por quartos)
+- [x] Schema `Dataset` apontando para os dados agregados (com `variableMeasured`, `temporalCoverage`, `spatialCoverage`, CC-BY 4.0)
+- [x] Tipo `BairroMarketStats` em `types/property.ts`
+- [x] Integrado em `/imoveis/[bairro]/page.tsx` após o grid de imóveis
+- [ ] "Bairros vizinhos" via proximidade geográfica (latitude/longitude dos imóveis) — movido para próxima iteração
+- [ ] Texto editorial gerado com template — movido para próxima iteração (quando V2 trouxer variação)
 
 **Query alvo:** "preço m² Batel", "mercado imobiliário Curitiba", "quanto custa imóvel em Água Verde".
 **ROI esperado:** muito alta — **nenhuma imobiliária de Curitiba faz isso**. First-mover + link magnet.
@@ -1574,9 +1577,10 @@ Documentado para evitar que futuras sessões sugiram:
 
 **Implementação:**
 - [ ] Passagens auto-contidas 40-60 palavras respondendo 1 pergunta específica ("Quanto custa m² em Batel?")
-- [ ] Tabelas comparativas com dados únicos (AIs citam fontes com dados proprietários)
-- [ ] `/llms.txt` na raiz listando páginas canônicas + dados estruturados
-- [ ] Schema `Dataset` + `Claim` em market reports (13.8.4)
+- [x] Tabelas comparativas com dados únicos (BairroMarketStats — commit a5a7dec)
+- [x] `/llms.txt` na raiz listando páginas canônicas + dados estruturados (commit dba648b)
+- [x] Schema `Dataset` com `variableMeasured` em páginas de bairro (commit a5a7dec)
+- [ ] Passagens factuais em cada landing respondendo perguntas específicas
 - [ ] Priorizar clareza factual > prosa (AIs extraem sentenças, não parágrafos)
 
 **ROI esperado:** 15-30% do tráfego futuro via citation-driven clicks.
@@ -1607,8 +1611,9 @@ Documentado para evitar que futuras sessões sugiram:
 - [x] BlogPosting author agora é `RealEstateAgent` com `@id` vinculado a `/sobre#bruno` (CRECI/PR 24.494)
 - [x] AuthorBio: CRECI correto (24.494 pessoal, não J 9420 da empresa) + link para `/sobre#bruno`
 - [ ] `Review` + `AggregateRating` schema (importar reviews GBP legalmente)
-- [ ] "Última atualização" + "Revisado por [corretor CRECI X]" em cada listing
-- [ ] Política editorial pública em `/politica-editorial`
+- [x] RealEstateListing com `reviewedBy` Bruno via `@id` (commit dba648b)
+- [ ] "Última atualização" visível nas páginas de listing (data dinâmica)
+- [x] Política editorial pública em `/politica-editorial` (commit dba648b)
 
 **ROI esperado:** +20-40% CTR em SERPs competitivas + proteção contra core updates.
 
@@ -1724,19 +1729,22 @@ ZAP, VivaReal, Chaves na Mão, OLX, Imovelweb, QuintoAndar, Apontador, Guia Mais
 
 ### 13.10.2 — Implementar (Day 0 do deploy)
 
-**IndexNow (Bing/Yandex):**
-- [ ] Gerar key `.txt` em `/public/[key].txt`
-- [ ] `src/lib/indexnow.ts`: POST para `api.indexnow.org/indexnow` após `revalidatePath`
-- [ ] Hook no webhook Vercel em cada deploy
-- [ ] Custo zero, cobre 30%+ do tráfego global (Google ainda testando)
+**IndexNow (Bing/Yandex):** [IMPLEMENTADO — commit dba648b]
+- [x] Gerar key `.txt` em `/public/[key].txt`
+- [x] `src/lib/indexnow.ts`: função `submitToIndexNow()` + `submitUrl()`
+- [x] Endpoint `POST /api/indexnow` protegido por `INDEXNOW_SECRET`
+- [ ] Adicionar env var `INDEXNOW_SECRET` no Vercel (pós-deploy)
+- [ ] Hook no webhook Vercel em cada deploy (pós-deploy)
+- [ ] Primeiro ping manual das top 50 URLs após go-live
+- Custo zero, cobre 30%+ do tráfego global (Google ainda testando IndexNow)
 
-**Sitemap segmentado:**
-- [ ] `sitemap-imoveis.xml` (~250 imóveis)
-- [ ] `sitemap-bairros.xml` (bairros + combinações)
-- [ ] `sitemap-blog.xml` (artigos + guias)
-- [ ] `sitemap-static.xml` (landings estáticas)
-- [ ] `sitemap.xml` = index dos 4 acima
-- [ ] Manter `<lastmod>` preciso por URL (confirmado por John Mueller, 2024)
+**Sitemap segmentado:** [IMPLEMENTADO — commit dba648b]
+- [x] `/sitemap/0.xml` (~231 imóveis individuais)
+- [x] `/sitemap/1.xml` (bairros + combinações tipo/finalidade/quartos/preço)
+- [x] `/sitemap/2.xml` (blog + guias + pillars)
+- [x] `/sitemap/3.xml` (estático + institucional + empreendimentos)
+- [x] `/sitemap.xml` = index automático via `generateSitemaps`
+- [x] `<lastmod>` preciso por URL (confirmado por John Mueller, 2024)
 
 **GSC + GA4 + Bing Webmaster Tools:**
 - [ ] Propriedades criadas e verificadas ANTES do deploy
