@@ -40,14 +40,14 @@ export function PropertyCardGrid({
     goToSlide,
   } = usePropertyCard(property, priceContext)
 
-  // Finalidade badge (same colors as PropertyCardList for consistency)
-  const finalidadeBadge =
+  // Finalidade dot (inline em vez de pill grande — mais limpo)
+  const finalidadeDot =
     property.finalidade === "Venda"
-      ? { label: "Venda", className: "bg-rose-50 text-rose-700 ring-1 ring-rose-200/70" }
+      ? { label: "Venda", color: "bg-rose-500" }
       : property.finalidade === "Locação"
-        ? { label: "Aluguel", className: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/70" }
+        ? { label: "Aluguel", color: "bg-emerald-500" }
         : property.finalidade === "Venda e Locação"
-          ? { label: "Venda · Aluguel", className: "bg-amber-50 text-amber-700 ring-1 ring-amber-200/70" }
+          ? { label: "Venda · Aluguel", color: "bg-amber-500" }
           : null
 
   return (
@@ -159,30 +159,27 @@ export function PropertyCardGrid({
         )}
       </div>
 
-      {/* Content — all info (including price) below image in black for consistency with industry pattern */}
-      <div className="flex min-w-0 flex-1 flex-col gap-3 p-4 sm:p-5">
-        <div className="flex flex-wrap items-center gap-2">
-          {finalidadeBadge && (
-            <span
-              className={cn(
-                "rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider",
-                finalidadeBadge.className
-              )}
-            >
-              {finalidadeBadge.label}
+      {/* Content — padrão do Compact, ~20% maior por ter mais largura disponível */}
+      <div className="flex min-w-0 flex-1 flex-col gap-3 p-5 sm:p-6">
+        {/* Header inline: dot finalidade · tipo · bairro */}
+        <div className="flex items-center gap-2 text-sm font-medium uppercase tracking-wide text-slate-500">
+          {finalidadeDot && (
+            <span className="inline-flex items-center gap-1.5 text-slate-700">
+              <span aria-hidden className={cn("inline-block size-1.5 rounded-full", finalidadeDot.color)} />
+              <span className="font-semibold">{finalidadeDot.label}</span>
             </span>
           )}
-          <span className="rounded-full bg-slate-100/90 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">
-            {property.tipo}
-          </span>
+          {finalidadeDot && <span aria-hidden className="text-slate-300">·</span>}
+          <span className="font-semibold text-slate-700">{property.tipo}</span>
           {property.bairro && (
-            <span className="rounded-full bg-slate-100/90 px-2.5 py-1 text-[11px] font-medium text-slate-500">
-              {property.bairro}
-            </span>
+            <>
+              <span aria-hidden className="text-slate-300">·</span>
+              <span className="truncate">{property.bairro}</span>
+            </>
           )}
         </div>
 
-        <h2 className="line-clamp-2 text-lg font-semibold leading-snug tracking-tight text-slate-800 transition-colors group-hover:text-slate-600">
+        <h2 className="line-clamp-2 text-xl font-semibold leading-snug tracking-tight text-slate-800 transition-colors group-hover:text-slate-600">
           {property.titulo}
         </h2>
 
@@ -195,31 +192,31 @@ export function PropertyCardGrid({
           cardCompact
         />
 
-        {/* Price block — anchored at bottom, same hierarchy as list view */}
-        <div className="mt-auto flex items-end justify-between border-t border-neutral-100 pt-3">
+        {/* Price block — anchored at bottom, same pattern as Compact */}
+        <div className="mt-auto flex items-end justify-between border-t border-slate-100 pt-4">
           <div>
             <p
               className={cn(
                 "tracking-tight",
                 hasPrice
-                  ? "text-3xl font-extrabold text-slate-900"
+                  ? "text-[28px] font-extrabold leading-none text-slate-900 sm:text-3xl"
                   : "text-base font-medium text-slate-400"
               )}
             >
               {displayPrice}
               {isRental && hasPrice && (
-                <span className="text-sm font-normal text-neutral-500"> /mês</span>
+                <span className="text-sm font-normal text-slate-500"> /mês</span>
               )}
             </p>
             {hasSecondaryPrice && (
-              <p className="text-sm font-semibold text-slate-500">
+              <p className="mt-1 text-sm font-semibold text-slate-500">
                 {secondaryIsRental ? "Aluguel " : "Venda "}
                 {displaySecondaryPrice}
                 {secondaryIsRental && " /mês"}
               </p>
             )}
           </div>
-          <span className="self-end text-xs font-medium uppercase text-slate-400">
+          <span className="self-end text-sm font-semibold uppercase tracking-wide text-slate-500">
             {property.codigo}
           </span>
         </div>
