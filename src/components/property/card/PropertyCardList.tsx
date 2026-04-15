@@ -36,6 +36,16 @@ export function PropertyCardList({
     toggleFavorite,
   } = usePropertyCard(property, priceContext)
 
+  // Finalidade badge color cue for quick scanning (QuintoAndar/ZAP pattern)
+  const finalidadeBadge =
+    property.finalidade === "Venda"
+      ? { label: "Venda", className: "bg-rose-50 text-rose-700 ring-1 ring-rose-200/70" }
+      : property.finalidade === "Locação"
+        ? { label: "Aluguel", className: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/70" }
+        : property.finalidade === "Venda e Locação"
+          ? { label: "Venda · Aluguel", className: "bg-amber-50 text-amber-700 ring-1 ring-amber-200/70" }
+          : null
+
   return (
     <article
       onMouseEnter={loadPhotosOnHover}
@@ -71,6 +81,16 @@ export function PropertyCardList({
         {/* Left: Info */}
         <div className="flex min-w-0 flex-1 flex-col">
           <div className="flex flex-wrap items-center gap-2">
+            {finalidadeBadge && (
+              <span
+                className={cn(
+                  "rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider",
+                  finalidadeBadge.className
+                )}
+              >
+                {finalidadeBadge.label}
+              </span>
+            )}
             <span className="rounded-full bg-slate-100/90 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">
               {property.tipo}
             </span>
@@ -122,8 +142,10 @@ export function PropertyCardList({
             </span>
             <p
               className={cn(
-                "text-2xl font-extrabold tracking-tight",
-                hasPrice ? "text-slate-900" : "text-slate-500"
+                "tracking-tight",
+                hasPrice
+                  ? "text-2xl font-extrabold text-slate-900"
+                  : "text-base font-medium text-slate-400"
               )}
             >
               {displayPrice}
