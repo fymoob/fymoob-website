@@ -132,15 +132,30 @@ export function PropertyCardCompact({
 
       {/* Content */}
       <div className="flex flex-1 flex-col gap-2.5 p-4">
-        <p className="text-xs uppercase tracking-wide text-slate-500">
-          {property.tipo}
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs uppercase tracking-wide text-slate-500">
+          {property.finalidade === "Venda" && (
+            <span className="rounded-full bg-rose-50 px-2 py-0.5 text-[10px] font-semibold text-rose-700 ring-1 ring-rose-200/70">
+              Venda
+            </span>
+          )}
+          {property.finalidade === "Locação" && (
+            <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 ring-1 ring-emerald-200/70">
+              Aluguel
+            </span>
+          )}
+          {property.finalidade === "Venda e Locação" && (
+            <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-700 ring-1 ring-amber-200/70">
+              Venda · Aluguel
+            </span>
+          )}
+          <span className="font-semibold text-slate-600">{property.tipo}</span>
           {property.bairro && (
             <>
-              <span className="mx-1.5 text-slate-300">&bull;</span>
-              {property.bairro}
+              <span aria-hidden className="text-slate-300">·</span>
+              <span className="truncate">{property.bairro}</span>
             </>
           )}
-        </p>
+        </div>
 
         <h2 className="line-clamp-2 text-[15px] font-semibold leading-snug tracking-tight text-slate-800">
           {property.titulo}
