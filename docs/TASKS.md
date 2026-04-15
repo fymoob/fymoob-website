@@ -1549,11 +1549,13 @@ Documentado para evitar que futuras sessões sugiram:
 > **Por que:** Real estate = YMYL (Your Money Your Life). Google aplica quality raters guidelines rigorosamente.
 
 **Implementação:**
-- [ ] Author schema em todo artigo: `Person` + CRECI + foto + bio + `sameAs` LinkedIn
+- [x] CRECI-PR visível no footer (J 9420 imobiliária) + `/sobre` (ambos sócios) + autor de blog — commit b799781
 - [x] Schema `RealEstateAgent` por corretor com `hasCredential` (CRECI-PR) — commit 74c9a12
-- [x] `/sobre` já tem Bruno + Wagner com CRECI, bio, foto, credenciais (não precisou `/equipe` separada)
+- [x] `/sobre` tem Bruno + Wagner com CRECI pessoal, bio, foto, credenciais
 - [x] Schema `Organization` expandido com `founder[]` + CRECI J 9420 da imobiliária
 - [x] Schema `AboutPage` ligando tudo via `@graph`
+- [x] BlogPosting author agora é `RealEstateAgent` com `@id` vinculado a `/sobre#bruno` (CRECI/PR 24.494)
+- [x] AuthorBio: CRECI correto (24.494 pessoal, não J 9420 da empresa) + link para `/sobre#bruno`
 - [ ] `Review` + `AggregateRating` schema (importar reviews GBP legalmente)
 - [ ] "Última atualização" + "Revisado por [corretor CRECI X]" em cada listing
 - [ ] Política editorial pública em `/politica-editorial`
