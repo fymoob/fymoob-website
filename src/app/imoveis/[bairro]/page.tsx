@@ -1,9 +1,8 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { MapPin, Building2, TrendingUp } from "lucide-react"
 import { Suspense } from "react"
-import { getAllBairros, getProperties, getAllTypes, getAllCities, getPropertyStats } from "@/services/loft"
+import { getAllBairros, getProperties, getAllTypes, getAllCities, getPropertyStats, getBairroMarketStats } from "@/services/loft"
 import { SeoInternalLinks } from "@/components/seo/SeoInternalLinks"
 import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
 import { slugify, formatPrice } from "@/lib/utils"
@@ -19,6 +18,7 @@ import { PropertyListingGrid } from "@/components/search/PropertyListingGrid"
 import { projectForCard } from "@/lib/property-projection"
 import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { RelatedPages } from "@/components/seo/RelatedPages"
+import { BairroMarketStats } from "@/components/bairro/BairroMarketStats"
 
 interface BairroPageProps {
   params: Promise<{ bairro: string }>
@@ -80,11 +80,12 @@ function getBairroDescription(bairroName: string): string {
 
 export default async function BairroPage({ params }: BairroPageProps) {
   const { bairro: bairroSlug } = await params
-  const [bairros, tipos, cidades, stats] = await Promise.all([
+  const [bairros, tipos, cidades, stats, marketStats] = await Promise.all([
     getAllBairros(),
     getAllTypes(),
     getAllCities(),
     getPropertyStats(),
+    getBairroMarketStats(bairroSlug),
   ])
   const bairro = bairros.find((b) => b.slug === bairroSlug)
 
@@ -110,6 +111,35 @@ export default async function BairroPage({ params }: BairroPageProps) {
     `/imoveis/${bairroSlug}`
   )
 
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
+  const datasetSchema = marketStats && marketStats.precoMedioVenda
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Dataset",
+        name: `Dados de mercado imobiliário — ${bairro.bairro}, Curitiba`,
+        description: `Estatísticas em tempo real do mercado imobiliário no bairro ${bairro.bairro}: preço médio, preço por m², faixa de valores e área média. Baseado em ${marketStats.totalAtivos} imóveis ativos.`,
+        url: `${SITE_URL}/imoveis/${bairroSlug}`,
+        creator: { "@id": `${SITE_URL}/#organization` },
+        spatialCoverage: {
+          "@type": "Place",
+          name: `${bairro.bairro}, Curitiba, PR, Brasil`,
+        },
+        temporalCoverage: new Date().toISOString().slice(0, 10),
+        license: "https://creativecommons.org/licenses/by/4.0/",
+        keywords: [
+          `preço m² ${bairro.bairro}`,
+          `mercado imobiliário ${bairro.bairro}`,
+          `imóveis ${bairro.bairro} Curitiba`,
+        ],
+        variableMeasured: [
+          marketStats.precoMedioVenda && "Preço médio de venda",
+          marketStats.precoM2Medio && "Preço médio por m²",
+          marketStats.precoMedioAluguel && "Preço médio de aluguel",
+          marketStats.areaMediaVenda && "Área média",
+        ].filter(Boolean),
+      }
+    : null
+
   const descricao = getBairroDescription(bairro.bairro)
 
   return (
@@ -118,6 +148,12 @@ export default async function BairroPage({ params }: BairroPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
       />
+      {datasetSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}
+        />
+      )}
 
       <div className="w-full bg-slate-50 px-4 py-8 md:px-12 lg:px-20 2xl:px-32">
         <Breadcrumbs
@@ -131,25 +167,6 @@ export default async function BairroPage({ params }: BairroPageProps) {
         <h1 className="mt-2 font-display text-2xl font-bold text-neutral-900 sm:text-3xl">
           Imóveis no {bairro.bairro}
         </h1>
-
-        <div className="mt-4 flex flex-wrap gap-4 text-sm text-neutral-600">
-          <span className="flex items-center gap-1.5">
-            <Building2 size={16} className="shrink-0 text-brand-primary" />
-            <span className="font-semibold text-neutral-900">{properties.length}</span> imóveis disponíveis
-          </span>
-          {precoMin && precoMax && (
-            <span className="flex items-center gap-1.5">
-              <TrendingUp size={16} className="shrink-0 text-brand-primary" />
-              De <span className="font-semibold text-neutral-900">{formatPrice(precoMin)}</span> a <span className="font-semibold text-neutral-900">{formatPrice(precoMax)}</span>
-            </span>
-          )}
-          {precoMedio && (
-            <span className="flex items-center gap-1.5">
-              <MapPin size={16} className="shrink-0 text-brand-primary" />
-              Média <span className="font-semibold text-neutral-900">{formatPrice(precoMedio)}</span>
-            </span>
-          )}
-        </div>
 
         <p className="mt-4 max-w-4xl text-neutral-600">{descricao}</p>
 
@@ -170,6 +187,9 @@ export default async function BairroPage({ params }: BairroPageProps) {
 
         <PropertyListingGrid properties={properties.map(p => projectForCard(p))} cardContext="search" />
       </div>
+
+      {/* Dados de mercado agregados (Fase 13.8.2 V1) */}
+      {marketStats && <BairroMarketStats stats={marketStats} />}
 
       {/* SEO content + FAQ + Related */}
       <section className="border-t border-neutral-200 bg-neutral-50 py-12 md:py-16">

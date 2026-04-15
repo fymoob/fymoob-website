@@ -167,6 +167,22 @@ export interface TypeSummary {
   porFinalidade: Record<string, number>;
 }
 
+export interface BairroMarketStats {
+  bairro: string;
+  slug: string;
+  totalAtivos: number;
+  totalVenda: number;
+  totalAluguel: number;
+  precoMedioVenda: number | null;
+  precoMedioAluguel: number | null;
+  precoM2Medio: number | null;
+  precoMinVenda: number | null;
+  precoMaxVenda: number | null;
+  areaMediaVenda: number | null;
+  // Média de venda agrupado por Nº de dormitórios (chaves: "1","2","3","4","5+")
+  precoMedioPorQuartos: Record<string, number>;
+}
+
 export interface EmpreendimentoSummary {
   nome: string;
   slug: string;

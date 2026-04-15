@@ -2,6 +2,7 @@ import type {
   Property,
   PropertyFilters,
   BairroSummary,
+  BairroMarketStats,
   TypeSummary,
   PropertyType,
   PropertyStats,
@@ -591,6 +592,63 @@ export async function getPropertiesByBairro(bairro: string, limit?: number): Pro
   const all = await getAllPropertiesInternal()
   const filtered = all.filter((p) => slugify(p.bairro) === slugify(bairro))
   return limit ? filtered.slice(0, limit) : filtered
+}
+
+function avg(nums: number[]): number | null {
+  if (nums.length === 0) return null
+  return Math.round(nums.reduce((a, b) => a + b, 0) / nums.length)
+}
+
+// Agregação de dados de mercado por bairro — fonte: Loft API (tempo real).
+// Usado na página /imoveis/[bairro] para mostrar stats no estilo Zillow.
+export async function getBairroMarketStats(bairroSlug: string): Promise<BairroMarketStats | null> {
+  const all = await getAllPropertiesInternal()
+  const properties = all.filter((p) => slugify(p.bairro) === bairroSlug)
+  if (properties.length === 0) return null
+
+  const venda = properties.filter((p) => p.finalidade === "Venda" && p.precoVenda && p.precoVenda > 0)
+  const aluguel = properties.filter((p) => p.finalidade === "Locação" && p.precoAluguel && p.precoAluguel > 0)
+
+  const precosVenda = venda.map((p) => p.precoVenda!).filter((v) => v > 0)
+  const precosAluguel = aluguel.map((p) => p.precoAluguel!).filter((v) => v > 0)
+  const areasVenda = venda.map((p) => p.areaPrivativa).filter((v): v is number => v != null && v > 0)
+
+  const precosM2 = venda
+    .map((p) => {
+      const area = p.areaPrivativa
+      if (!area || area <= 0 || !p.precoVenda || p.precoVenda <= 0) return null
+      return p.precoVenda / area
+    })
+    .filter((v): v is number => v != null && isFinite(v) && v > 0)
+
+  // Preço médio por Nº de dormitórios (só venda para ser comparável)
+  const porQuartosAcc = new Map<string, number[]>()
+  for (const p of venda) {
+    if (p.dormitorios == null || p.dormitorios <= 0) continue
+    const key = p.dormitorios >= 5 ? "5+" : String(p.dormitorios)
+    if (!porQuartosAcc.has(key)) porQuartosAcc.set(key, [])
+    porQuartosAcc.get(key)!.push(p.precoVenda!)
+  }
+  const precoMedioPorQuartos: Record<string, number> = {}
+  for (const [key, prices] of porQuartosAcc) {
+    const m = avg(prices)
+    if (m != null) precoMedioPorQuartos[key] = m
+  }
+
+  return {
+    bairro: properties[0].bairro,
+    slug: bairroSlug,
+    totalAtivos: properties.length,
+    totalVenda: venda.length,
+    totalAluguel: aluguel.length,
+    precoMedioVenda: avg(precosVenda),
+    precoMedioAluguel: avg(precosAluguel),
+    precoM2Medio: avg(precosM2),
+    precoMinVenda: precosVenda.length > 0 ? Math.min(...precosVenda) : null,
+    precoMaxVenda: precosVenda.length > 0 ? Math.max(...precosVenda) : null,
+    areaMediaVenda: avg(areasVenda),
+    precoMedioPorQuartos,
+  }
 }
 
 export async function getPropertiesByType(tipo: PropertyType, limit?: number): Promise<Property[]> {
