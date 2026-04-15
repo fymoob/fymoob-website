@@ -1544,14 +1544,16 @@ Documentado para evitar que futuras sessões sugiram:
 
 **ROI esperado:** Knowledge Panel em 6-12 meses se sinais consistentes.
 
-### 13.9.3 — E-E-A-T para YMYL Imobiliário [PRIORIDADE ALTA]
+### 13.9.3 — E-E-A-T para YMYL Imobiliário [EM ANDAMENTO]
 
 > **Por que:** Real estate = YMYL (Your Money Your Life). Google aplica quality raters guidelines rigorosamente.
 
 **Implementação:**
 - [ ] Author schema em todo artigo: `Person` + CRECI + foto + bio + `sameAs` LinkedIn
-- [ ] Schema `RealEstateAgent` por corretor com `hasCredential` (CRECI-PR)
-- [ ] Página `/equipe` com CRECI visível, anos de experiência, especialização por bairro
+- [x] Schema `RealEstateAgent` por corretor com `hasCredential` (CRECI-PR) — commit 74c9a12
+- [x] `/sobre` já tem Bruno + Wagner com CRECI, bio, foto, credenciais (não precisou `/equipe` separada)
+- [x] Schema `Organization` expandido com `founder[]` + CRECI J 9420 da imobiliária
+- [x] Schema `AboutPage` ligando tudo via `@graph`
 - [ ] `Review` + `AggregateRating` schema (importar reviews GBP legalmente)
 - [ ] "Última atualização" + "Revisado por [corretor CRECI X]" em cada listing
 - [ ] Política editorial pública em `/politica-editorial`
