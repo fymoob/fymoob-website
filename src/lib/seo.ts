@@ -8,13 +8,23 @@ export function generateOrganizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${SITE_URL}/#organization`,
     name: "FYMOOB Imobiliária",
     url: SITE_URL,
     logo: `${SITE_URL}/logo.png`,
+    foundingDate: "2024",
     description:
       "Imobiliária em Curitiba especializada em apartamentos, casas e sobrados. Encontre seu imóvel ideal com a FYMOOB.",
     telephone: ["+554199978-0517", "+554132655051"],
     email: "fymoob@gmail.com",
+    hasCredential: {
+      "@type": "EducationalOccupationalCredential",
+      credentialCategory: "CRECI J 9420",
+    },
+    founder: [
+      { "@id": `${SITE_URL}/sobre#bruno` },
+      { "@id": `${SITE_URL}/sobre#wagner` },
+    ],
     address: {
       "@type": "PostalAddress",
       streetAddress: "Rua Engenheiro Heitor Soares Gomes, 778, Esquina",
@@ -41,6 +51,7 @@ export function generateLocalBusinessSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
+    "@id": `${SITE_URL}/#localbusiness`,
     name: "FYMOOB Imobiliária",
     description:
       "Imobiliária em Curitiba — CRECI J 9420. Apartamentos, casas e sobrados à venda e para alugar.",
@@ -50,6 +61,15 @@ export function generateLocalBusinessSchema() {
     telephone: "+554199978-0517",
     email: "fymoob@gmail.com",
     priceRange: "$$",
+    hasCredential: {
+      "@type": "EducationalOccupationalCredential",
+      credentialCategory: "CRECI J 9420",
+    },
+    parentOrganization: { "@id": `${SITE_URL}/#organization` },
+    employee: [
+      { "@id": `${SITE_URL}/sobre#bruno` },
+      { "@id": `${SITE_URL}/sobre#wagner` },
+    ],
     address: {
       "@type": "PostalAddress",
       streetAddress: "Rua Engenheiro Heitor Soares Gomes, 778, Esquina",
