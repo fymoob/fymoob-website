@@ -439,16 +439,19 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
     <div
       className="w-full bg-white px-4 py-8 md:px-12 lg:px-20 2xl:px-32"
       style={{
-        // Mesh gradient (Stripe/Linear/Vercel pattern): two radial blobs
-        // at the top — FYMOOB blue on the left, warm amber on the right —
-        // that blend softly and fade to pure white below 420px. Cards
-        // further down the page always render against pure white.
+        // Mesh gradient (Stripe/Linear/Vercel pattern) — real pastels, spread
+        // wide across the top. Three blobs blending into an aurora:
+        //   · Sky blue (dominant) — radiates from top-left
+        //   · Peach warm accent — from top-right
+        //   · Soft violet — center bridge between the two
+        // All bounded to a 640px band so cards lower render on pure white.
         backgroundImage: [
-          "radial-gradient(ellipse 900px 480px at 15% 0%, rgba(41, 171, 226, 0.14), transparent 70%)",
-          "radial-gradient(ellipse 800px 520px at 85% 5%, rgba(255, 193, 128, 0.08), transparent 70%)",
+          "radial-gradient(ellipse 1400px 700px at 10% -15%, rgba(125, 211, 252, 0.55), transparent 72%)",
+          "radial-gradient(ellipse 1200px 700px at 90% -10%, rgba(253, 186, 140, 0.45), transparent 72%)",
+          "radial-gradient(ellipse 900px 500px at 50% 0%, rgba(196, 181, 253, 0.28), transparent 70%)",
         ].join(", "),
         backgroundRepeat: "no-repeat",
-        backgroundSize: "100% 420px, 100% 420px",
+        backgroundSize: "100% 640px, 100% 640px, 100% 500px",
       }}
     >
       <Breadcrumbs

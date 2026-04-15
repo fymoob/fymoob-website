@@ -346,10 +346,11 @@ export function SearchBar({
     <>
     <aside
       className={cn(
-        // Sticky bar: frosted glass that lets the page gradient show through
-        // at the top (no solid rectangle) AND keeps readable contrast over
-        // content when scrolled. 50% white + heavy blur works on both.
-        sticky && "sticky top-14 z-40 bg-white/50 py-3 backdrop-blur-xl md:top-16",
+        // Sticky wrapper is fully transparent — the inner pill container
+        // (rounded-full bg-white/60 + backdrop-blur-xl) handles visual
+        // separation. Keeping the wrapper transparent means the mesh
+        // gradient is never cut by an outer rectangle.
+        sticky && "sticky top-14 z-40 py-3 md:top-16",
         className
       )}
     >
