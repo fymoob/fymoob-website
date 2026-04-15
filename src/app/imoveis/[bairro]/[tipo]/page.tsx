@@ -101,9 +101,11 @@ export async function generateStaticParams() {
       params.push({ bairro: b.slug, tipo: "venda" })
       params.push({ bairro: b.slug, tipo: "aluguel" })
     }
-    // Quartos combinations — only for neighborhoods with 5+ properties
-    if (b.total >= 5) {
-      for (const q of [2, 3, 4]) {
+    // Quartos combinations — 1, 2, 3, 4, 5+ for bairros with 3+ properties.
+    // Zillow-inspired: long-tail programmatic pages maximize indexable surface
+    // ("apartamento 3 quartos Batel", "kitnet 1 quarto Centro", etc.)
+    if (b.total >= 3) {
+      for (const q of [1, 2, 3, 4, 5]) {
         params.push({ bairro: b.slug, tipo: `${q}-quartos` })
       }
     }
@@ -192,15 +194,16 @@ export default async function CombinadaPage({ params }: CombinadaPageProps) {
   }
   const { properties: rawProperties } = await getProperties(filters)
 
-  // For quartos, filter to exact match (4 = 4+)
+  // For quartos, filter to exact match (5 = 5+, i.e. the highest bucket caps
+  // to avoid starving 6+ quarto homes of a dedicated page at FYMOOB's scale)
   const properties = isQ && quartosNum
-    ? quartosNum >= 4
-      ? rawProperties.filter((p) => (p.dormitorios ?? 0) >= 4)
+    ? quartosNum >= 5
+      ? rawProperties.filter((p) => (p.dormitorios ?? 0) >= 5)
       : rawProperties.filter((p) => p.dormitorios === quartosNum)
     : rawProperties
 
   // Labels
-  const quartosLabel = quartosNum ? `${quartosNum}${quartosNum >= 4 ? "+" : ""} Quartos` : ""
+  const quartosLabel = quartosNum ? `${quartosNum}${quartosNum >= 5 ? "+" : ""} Quartos` : ""
   const pageTitle = isQ
     ? `Imoveis com ${quartosLabel} no ${bairro.bairro}`
     : isFin
@@ -226,11 +229,11 @@ export default async function CombinadaPage({ params }: CombinadaPageProps) {
 
   if (isQ) {
     // Link to other quartos options
-    for (const q of [2, 3, 4]) {
+    for (const q of [1, 2, 3, 4, 5]) {
       if (q !== quartosNum) {
         relatedLinks.push({
           href: `/imoveis/${bairroSlug}/${q}-quartos`,
-          label: `${q}${q >= 4 ? "+" : ""} quartos no ${bairro.bairro}`,
+          label: `${q}${q >= 5 ? "+" : ""} quartos no ${bairro.bairro}`,
         })
       }
     }

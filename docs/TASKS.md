@@ -1313,6 +1313,113 @@ Integração ao site feita em 14/04/2026:
 
 ---
 
+## Fase 13.8 — SEO Programático Inspirado em Zillow [EM ANDAMENTO — 15/04/2026]
+
+> **Origem:** Pesquisa profunda (5 agentes em paralelo) sobre como Zillow.com chegou a ~200M visitas/mês.
+> **Insight central:** Zillow domina long-tail programático — ~110M páginas indexadas,
+> ~40M keywords ranqueando, cada URL trazendo 2-3 visitas/mês = 200M total.
+> **Aplicável à FYMOOB em Curitiba** (~231 imóveis, ~75 bairros):
+> multiplicar as combinações de URL em padrões que replicam (proporcionalmente)
+> o "matriz de cobertura" do Zillow, sem depender de orçamento ou escala de dados deles.
+
+### 13.8.1 — Bairro × Quartos pages [EM ANDAMENTO]
+
+**Descoberto 15/04/2026:** infraestrutura parcial já existe em `src/app/imoveis/[bairro]/[tipo]/page.tsx`.
+O segmento `[tipo]` aceita `N-quartos` polimorficamente (q = 2, 3, 4), quando o bairro tem 5+ imóveis.
+
+**Melhorias a aplicar (expansão Zillow-style):**
+- [x] Rota `/imoveis/[bairro]/[N]-quartos` funcional (q = 2, 3, 4)
+- [x] generateStaticParams com quartos
+- [x] generateMetadata com título/descrição otimizada
+- [x] Cross-linking para outras opções de quartos + venda/aluguel
+- [x] Sitemap inclui essas URLs
+- [ ] **Expandir N:** adicionar 1-quarto e 5-quartos (hoje só 2, 3, 4)
+- [ ] **Baixar threshold:** de 5+ imóveis no bairro para 3+ (mais páginas indexadas)
+- [ ] Atualizar sitemap.ts para refletir novos Ns e threshold
+
+**Target:** ~75 bairros × 5 variações (1, 2, 3, 4, 5+) = ~375 páginas indexáveis de alta intenção.
+**Query alvo:** "apartamento 3 quartos Batel", "casa 2 quartos Água Verde", "kitnet 1 quarto Centro".
+**ROI esperado:** alta — concorrência local baixa, demanda real, 0 custo de manutenção (programático).
+
+### 13.8.2 — Páginas de Bairro com Dados de Mercado [PENDENTE]
+
+> **Inspiração Zillow:** cada página de bairro mostra preço médio/m², tempo médio no mercado,
+> variação trimestral. FYMOOB está mostrando só grid de cards — perde força SEO.
+
+**Implementação:**
+- [ ] Query no Loft agregando estatísticas por bairro (preço médio venda, aluguel, preço/m², tempo médio)
+- [ ] Componente `BairroMarketStats` com números destacados + variação vs trimestre anterior
+- [ ] Template de texto editorial por bairro (AI-generated + Bruno revisa no painel)
+- [ ] Schema `Dataset` pra sinalizar ao Google que a página tem dados estruturados
+- [ ] Incluir "Bairros vizinhos" + "Por faixa de preço" + "Por quartos" (já existe parcialmente)
+
+**Query alvo:** "preço m² Batel", "mercado imobiliário Curitiba", "quanto custa imóvel em Água Verde".
+**ROI esperado:** muito alta — **nenhuma imobiliária de Curitiba faz isso**. First-mover + link magnet.
+
+### 13.8.3 — Calculadoras (Financiamento + Custo Total) [PENDENTE]
+
+> **Inspiração Zillow:** calculadoras são páginas SEO independentes com alta conversão —
+> quem calcula está com intenção real de compra.
+
+**Implementação:**
+- [ ] `/calculadora-financiamento` — SAC + Price + simulador CEF. Pura matemática client-side.
+- [ ] `/calculadora-custo-total` — ITBI + cartório + escritura Curitiba (~3% em Curitiba)
+- [ ] Cada calculadora é PÁGINA SEO (não widget escondido): título, explicação, FAQ, schema `WebApplication`
+- [ ] Captura de email ao final (lead qualificado)
+
+**Query alvo:** "simulador financiamento imóvel", "ITBI Curitiba calculadora", "quanto preciso ganhar pra comprar imóvel".
+**Esforço:** 3-5 dias (client-side).
+**ROI esperado:** alta — evergreen, link magnet, leads qualificados.
+
+### 13.8.4 — Relatório Trimestral de Mercado [PENDENTE]
+
+> **Inspiração Zillow:** publicam Home Value Index mensal, Rental Report, Market Reports —
+> jornalistas citam, gera backlinks de alta autoridade (Bloomberg, WSJ, NYT).
+> **Aplicação FYMOOB:** pitchar pra Gazeta do Povo, Bem Paraná, Tribuna, Bondenews.
+
+**Implementação:**
+- [ ] Template de relatório: preço médio por bairro + variação trimestral + tempo médio no mercado
+- [ ] PDF baixável + página HTML indexável
+- [ ] Cadência trimestral (Q1, Q2, Q3, Q4)
+- [ ] Enviar press release pra 5 veículos locais
+- [ ] Fonte citável: "Bruno César, diretor da FYMOOB, informa que..."
+
+**ROI esperado:** alta (longo prazo) — cada trimestre = 2-5 backlinks de alta autoridade. Em 1 ano: +10-20 backlinks qualificados = salto perceptível no DA.
+
+### 13.8.5 — Guide Library (12 artigos pillar em 2026) [PENDENTE]
+
+> **Inspiração Zillow:** guides drive more traffic than listings do.
+> Top pattern: pillar article + 3-5 supporting articles clusterizados.
+
+**Temas priorizados:**
+1. [ ] Como financiar imóvel em Curitiba 2026
+2. [ ] ITBI Curitiba: calculadora + passo a passo
+3. [ ] Documentação para comprar imóvel na planta
+4. [ ] Aluguel sem fiador em Curitiba
+5. [ ] Guia do primeiro imóvel em Curitiba
+6. [ ] Caução vs seguro-fiança vs fiador (comparativo)
+7. [ ] Escritura vs registro: diferenças e custos
+8. [ ] Como avaliar o valor real de um imóvel
+9. [ ] Reforma x imóvel pronto: vale a pena?
+10. [ ] Financiamento: SAC ou Price?
+11. [ ] Vender ou alugar imóvel: o que compensa?
+12. [ ] Mercado imobiliário de Curitiba em 2026 (panorama anual)
+
+**Cadência:** 1 pillar/mês + 2-3 artigos de apoio por pillar. Trabalho via painel admin (Fase 9.2) quando pronto.
+
+### 13.8.6 — NÃO REPLICAR (armadilhas Zillow)
+
+Documentado para evitar que futuras sessões sugiram:
+
+- ❌ **Zestimate/AVM próprio** — impossível sem base nacional de transações (nem ZAP conseguiu)
+- ❌ **School-zone pages** — Brasil não precifica por escola
+- ❌ **Agent marketplace** — FYMOOB é a agência
+- ❌ **Mobile app** — PWA cobre 95%
+- ❌ **Community forum** — moderação > SEO em escala regional
+- ❌ **3D tours Matterport** — ~R$ 300/imóvel, só faz sentido em premium
+
+---
+
 ## Fase 14 — Inteligência Imobiliária (Produto Futuro)
 
 > Plataforma de dados e IA para vantagem competitiva da FYMOOB.

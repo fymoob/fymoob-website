@@ -173,9 +173,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Bairro + quartos pages (e.g., /imoveis/batel/3-quartos)
   const quartosPages: MetadataRoute.Sitemap = bairros
-    .filter((b) => b.total >= 5)
+    .filter((b) => b.total >= 3)
     .flatMap((b) =>
-      [2, 3, 4].map((q) => ({
+      [1, 2, 3, 4, 5].map((q) => ({
         url: `${SITE_URL}/imoveis/${b.slug}/${q}-quartos`,
         lastModified: now,
         changeFrequency: "weekly" as const,
