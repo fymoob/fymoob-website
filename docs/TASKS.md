@@ -1706,9 +1706,10 @@ ZAP, VivaReal, Chaves na Mão, OLX, Imovelweb, QuintoAndar, Apontador, Guia Mais
 - [ ] **Day 7:** +250 páginas (bairro+tipo, bairro+quartos, bairro+finalidade)
 - [ ] **Day 14:** +220 páginas (long-tail, blog, guias, calculadoras)
 
-**TagParrot (~$20/mês):**
-- [ ] Complemento legítimo ao URL Inspection API
-- [ ] Múltiplas GSC properties em rotação
+**TagParrot (OPCIONAL — só com budget aprovado):**
+- Serviço pago de terceiros (~$20/mês) que automatiza URL Inspection API em rotação
+- **NÃO necessário** — script próprio + submit manual cobrem 90% do valor
+- Listar aqui apenas para referência caso precise escalar no futuro com aprovação do Bruno
 
 ### 13.10.4 — Backlinks de Discovery Rápida
 
@@ -1741,7 +1742,7 @@ Não para ranking, apenas para acelerar crawl:
 |---|---|---|
 | Day 0 | 0% (deploy) | Sitemap submit + IndexNow + GBP + 50 URLs manuais |
 | Semana 1 | ~30% indexado | URL Inspection API + Reddit/LinkedIn/Medium |
-| Semana 3-4 | **70-80% indexado** | Ondas 2-3 + TagParrot + backlinks locais |
+| Semana 3-4 | **70-80% indexado** | Ondas 2-3 + backlinks locais |
 | Semana 6-8 | 90%+ indexado | Manutenção + data journalism |
 
 **Benchmark:** clientes Jetimob (500-2k páginas) batem 75% em 21 dias com execução similar. Sem Indexing API não dá pra garantir 80% em 2 semanas, mas **4 semanas é factível**.
