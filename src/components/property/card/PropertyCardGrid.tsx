@@ -40,6 +40,16 @@ export function PropertyCardGrid({
     goToSlide,
   } = usePropertyCard(property, priceContext)
 
+  // Finalidade badge (same colors as PropertyCardList for consistency)
+  const finalidadeBadge =
+    property.finalidade === "Venda"
+      ? { label: "Venda", className: "bg-rose-50 text-rose-700 ring-1 ring-rose-200/70" }
+      : property.finalidade === "Locação"
+        ? { label: "Aluguel", className: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/70" }
+        : property.finalidade === "Venda e Locação"
+          ? { label: "Venda · Aluguel", className: "bg-amber-50 text-amber-700 ring-1 ring-amber-200/70" }
+          : null
+
   return (
     <article
       onMouseEnter={loadPhotosOnHover}
@@ -74,9 +84,8 @@ export function PropertyCardGrid({
           </div>
         </div>
 
-        {/* Gradients */}
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/40 to-transparent" />
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/60 via-black/25 to-transparent" />
+        {/* Top gradient — subtle, only to ensure badge + wishlist readability */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/30 to-transparent" />
 
         {/* Badge */}
         {badge && (
@@ -127,7 +136,7 @@ export function PropertyCardGrid({
             >
               <ChevronRight className="size-4" />
             </button>
-            <div className="absolute bottom-12 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-1 rounded-full bg-black/30 px-1.5 py-0.5 backdrop-blur-sm sm:flex">
+            <div className="absolute bottom-3 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-1 rounded-full bg-black/30 px-1.5 py-0.5 backdrop-blur-sm sm:flex">
               {displayPhotos.slice(0, 6).map((_, index) => (
                 <button
                   key={index}
@@ -148,33 +157,21 @@ export function PropertyCardGrid({
             </div>
           </>
         )}
-
-        {/* Price + Code overlay */}
-        <div className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-between px-5 pb-4">
-          <div>
-            <p className="text-3xl font-extrabold tracking-tight text-white drop-shadow-md">
-              {displayPrice}
-              {isRental && hasPrice && (
-                <span className="text-sm font-normal text-white/80"> /mês</span>
-              )}
-            </p>
-            {hasSecondaryPrice && (
-              <p className="mt-0.5 text-sm font-semibold text-white/80 drop-shadow-md">
-                {secondaryIsRental ? "Aluguel " : "Venda "}
-                {displaySecondaryPrice}
-                {secondaryIsRental && " /mês"}
-              </p>
-            )}
-          </div>
-          <span className="text-sm font-medium uppercase text-slate-200 drop-shadow-md">
-            {property.codigo}
-          </span>
-        </div>
       </div>
 
-      {/* Content */}
+      {/* Content — all info (including price) below image in black for consistency with industry pattern */}
       <div className="flex min-w-0 flex-1 flex-col gap-3 p-4 sm:p-5">
         <div className="flex flex-wrap items-center gap-2">
+          {finalidadeBadge && (
+            <span
+              className={cn(
+                "rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider",
+                finalidadeBadge.className
+              )}
+            >
+              {finalidadeBadge.label}
+            </span>
+          )}
           <span className="rounded-full bg-slate-100/90 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">
             {property.tipo}
           </span>
@@ -189,15 +186,42 @@ export function PropertyCardGrid({
           {property.titulo}
         </h2>
 
-        <div className="pb-1">
-          <PropertyFeatures
-            dormitorios={property.dormitorios}
-            suites={property.suites}
-            banheiros={property.banheiros}
-            vagas={property.vagas}
-            areaPrivativa={property.areaPrivativa}
-            cardCompact
-          />
+        <PropertyFeatures
+          dormitorios={property.dormitorios}
+          suites={property.suites}
+          banheiros={property.banheiros}
+          vagas={property.vagas}
+          areaPrivativa={property.areaPrivativa}
+          cardCompact
+        />
+
+        {/* Price block — anchored at bottom, same hierarchy as list view */}
+        <div className="mt-auto flex items-end justify-between border-t border-neutral-100 pt-3">
+          <div>
+            <p
+              className={cn(
+                "tracking-tight",
+                hasPrice
+                  ? "text-2xl font-extrabold text-slate-900"
+                  : "text-base font-medium text-slate-400"
+              )}
+            >
+              {displayPrice}
+              {isRental && hasPrice && (
+                <span className="text-sm font-normal text-neutral-500"> /mês</span>
+              )}
+            </p>
+            {hasSecondaryPrice && (
+              <p className="text-sm font-semibold text-slate-500">
+                {secondaryIsRental ? "Aluguel " : "Venda "}
+                {displaySecondaryPrice}
+                {secondaryIsRental && " /mês"}
+              </p>
+            )}
+          </div>
+          <span className="self-end text-xs font-medium uppercase text-slate-400">
+            {property.codigo}
+          </span>
         </div>
       </div>
 
