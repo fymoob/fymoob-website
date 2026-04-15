@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 
 interface AuthorBioProps {
   compact?: boolean
@@ -7,10 +8,13 @@ interface AuthorBioProps {
 export function AuthorBio({ compact = false }: AuthorBioProps) {
   if (compact) {
     return (
-      <div className="flex items-center gap-3">
+      <Link
+        href="/sobre#bruno"
+        className="flex items-center gap-3 transition-opacity hover:opacity-80"
+      >
         <div className="relative size-10 overflow-hidden rounded-full bg-neutral-200">
           <Image
-            src="/images/team/bruno.jpg"
+            src="/images/team/bruno.jpeg"
             alt="Bruno César de Almeida"
             fill
             className="object-cover"
@@ -19,9 +23,9 @@ export function AuthorBio({ compact = false }: AuthorBioProps) {
         </div>
         <div>
           <p className="text-sm font-medium text-neutral-900">Bruno César de Almeida</p>
-          <p className="text-xs text-neutral-500">CRECI J 9420 · Corretor de Imóveis</p>
+          <p className="text-xs text-neutral-500">CRECI/PR 24.494 · Corretor de Imóveis</p>
         </div>
-      </div>
+      </Link>
     )
   }
 
@@ -30,7 +34,7 @@ export function AuthorBio({ compact = false }: AuthorBioProps) {
       <div className="flex items-start gap-4">
         <div className="relative size-16 shrink-0 overflow-hidden rounded-full bg-neutral-200">
           <Image
-            src="/images/team/bruno.jpg"
+            src="/images/team/bruno.jpeg"
             alt="Bruno César de Almeida"
             fill
             className="object-cover"
@@ -42,12 +46,15 @@ export function AuthorBio({ compact = false }: AuthorBioProps) {
             Bruno César de Almeida
           </p>
           <p className="mt-0.5 text-sm text-brand-primary">
-            CRECI J 9420 · Corretor de Imóveis
+            CRECI/PR 24.494 · Corretor de Imóveis
           </p>
           <p className="mt-2 text-sm leading-relaxed text-neutral-600">
-            Especialista no mercado imobiliário de Curitiba há mais de 10 anos.
-            Fundador da FYMOOB Imobiliária, conhece cada bairro da cidade e
-            ajuda famílias a encontrarem o imóvel ideal com atendimento personalizado.
+            Especialista no mercado imobiliário de Curitiba desde 2009. Sócio-fundador
+            da FYMOOB Imobiliária (CRECI J 9420), com formação em Negócios Imobiliários
+            (UFPR) e Direito (Faculdade Curitibana).{" "}
+            <Link href="/sobre#bruno" className="text-brand-primary hover:underline">
+              Saiba mais
+            </Link>
           </p>
         </div>
       </div>
