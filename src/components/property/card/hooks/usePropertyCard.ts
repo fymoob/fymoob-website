@@ -18,12 +18,17 @@ function getBadge(
   property: Property,
   topViewed?: Set<string>
 ): { text: string; color: string } | null {
-  if (property.dataCadastro) {
+  // "Recém publicado": usa dataAtualizacao (fallback dataCadastro) pra capturar
+  // imoveis REATIVADOS — ex: alugado por 1 ano, desocupou, fotos novas, status
+  // voltou pra Aluguel. Pro usuario final e um anuncio novo, mesmo que o cadastro
+  // no CRM seja antigo. "Recem publicado" evita a ambiguidade de "NOVO" que
+  // pode ser interpretado como imovel fisico na planta (vs usado).
+  const dateStr = property.dataAtualizacao ?? property.dataCadastro
+  if (dateStr) {
     const days = Math.floor(
-      (Date.now() - new Date(property.dataCadastro).getTime()) /
-        (1000 * 60 * 60 * 24)
+      (Date.now() - new Date(dateStr).getTime()) / (1000 * 60 * 60 * 24)
     )
-    if (days <= 7) return { text: "NOVO", color: "bg-emerald-500" }
+    if (days <= 7) return { text: "RECÉM PUBLICADO", color: "bg-emerald-500" }
   }
 
   if (property.lancamento) {
