@@ -1811,74 +1811,59 @@ Não para ranking, apenas para acelerar crawl:
 
 ---
 
-## Fase 13.11 — Auditoria Pré-Deploy [PRIORITÁRIA — 15/04/2026]
+## Fase 13.11 — Auditoria Pré-Deploy [ONDA 1+2 CONCLUIDAS, ONDA 3 PÓS-DEPLOY — 15/04/2026]
 
 > **Origem:** 4 agentes em paralelo (SEO + Security + Rotas + Integrações) + build local.
 > **Status:** bloqueadores identificados — fix obrigatório antes de ir ao ar.
 > **Contexto:** site vai para `https://fymoob.com.br` (primary) + `https://fymoob.com` (redirect).
 
-### 13.11.1 — ONDA 1: Bloqueadores de Deploy [CRÍTICO]
+### 13.11.1 — ONDA 1: Bloqueadores de Deploy [CONCLUIDA — 15/04/2026, commit c0759ca]
 
-#### 13.11.1.a — `/api/lead` sem proteção
-- [ ] Adicionar rate limit (Upstash, 5/IP/10min)
-- [ ] Validar Turnstile token server-side
-- [ ] Validar inputs: email regex, telefone BR regex, nome min 2 chars, mensagem max 2000
-- [ ] Sanitizar `nome.trim()`, `nome.slice(0, 120)`, `mensagem.slice(0, 2000)`
-- **Impacto:** spammer pode injetar 10k leads falsos → queima CRM do Bruno, reputação Resend/Loft
-- **Arquivo:** `src/app/api/lead/route.ts`
+#### 13.11.1.a — `/api/lead` protegido
+- [x] Adicionar rate limit (Upstash, 5/IP/10min) — `checkLeadRateLimit` em `rate-limit.ts`
+- [x] Validar Turnstile token server-side
+- [x] Validar inputs: email regex, telefone BR regex, nome min 2 chars, mensagem max 2000
+- [x] Sanitizar `nome.trim()`, `nome.slice(0, 120)`, `mensagem.slice(0, 2000)`
+- [x] `AbortSignal.timeout(8000)` no fetch Loft
+- [x] Consentimento LGPD obrigatório (`consentLGPD`)
 
 #### 13.11.1.b — LGPD (obrigatório legal)
-- [ ] `ContactForm.tsx`: checkbox obrigatório "Autorizo o contato e tratamento dos meus dados conforme a Política de Privacidade"
-- [ ] Criar `/politica-de-privacidade/page.tsx` com texto LGPD adequado
-- [ ] Linkar política no Footer
-- **Impacto:** exigência legal. Coleta de dados sem consent = infração LGPD
+- [x] `ContactForm.tsx`: checkbox obrigatório + Turnstile widget renderizado + token enviado
+- [x] Criar `/politica-de-privacidade/page.tsx` com texto LGPD (13 seções)
+- [x] Linkar política no Footer ("Privacidade" + "Política Editorial")
 
-#### 13.11.1.c — Fallbacks hardcoded `https://fymoob.com` (em vez de `.com.br`)
-- [ ] `src/app/layout.tsx:47`
-- [ ] `src/lib/seo.ts:5`
-- [ ] `src/lib/indexnow.ts:5`
-- [ ] `src/app/sitemap.ts:7`
-- [ ] `src/app/robots.ts:3`
-- [ ] `src/app/llms.txt/route.ts:5`
-- [ ] `src/app/busca/page.tsx:48`
-- [ ] `src/app/imovel/[slug]/page.tsx:71`
-- [ ] `src/app/imoveis/[bairro]/page.tsx:114`
-- [ ] `src/app/sobre/page.tsx:96`
-- [ ] `src/app/politica-editorial/page.tsx:53`
-- [ ] `.env.example:2`
-- [ ] `README.md:27`
-- **Impacto:** se env var falhar em produção, schema/sitemap/canonical/OG apontam pra domínio redirect
+#### 13.11.1.c — Fallbacks hardcoded `https://fymoob.com` → `.com.br`
+- [x] Bulk replace via sed em 13 arquivos `src/**/*.{ts,tsx}`
+- [x] `src/app/empreendimento/[slug]/page.tsx:130`: schema usa `SITE_URL`
+- [x] `src/app/opengraph-image.tsx:85`: rodapé `fymoob.com.br`
+- [x] `.env.example`: NEXT_PUBLIC_SITE_URL + RESEND_FROM_EMAIL atualizados
+- [x] `src/auth.ts`: fallback noreply@fymoob.com → noreply@fymoob.com.br
+- [x] `src/app/politica-editorial/page.tsx`: email contato@fymoob.com.br → fymoob@gmail.com (commit a79f836)
 
-#### 13.11.1.d — Admin cards 404 (`/admin/blog`, `/admin/empreendimentos` não existem)
-- [ ] Remover cards ou converter em `<div>` não clicáveis até Fase 9.2 implementar
-- **Arquivo:** `src/app/admin/page.tsx`
+#### 13.11.1.d — Admin cards 404
+- [x] Cards convertidos em `<div>` não-clicáveis com `cursor-not-allowed` + `opacity-70`
 
 #### 13.11.1.e — ShareButton com URL hardcoded
-- [ ] `src/components/shared/ShareButton.tsx:16` — usar `NEXT_PUBLIC_SITE_URL`
-- **Impacto:** WhatsApp share envia link errado (.com sem .br)
+- [x] `src/components/shared/ShareButton.tsx`: usa `NEXT_PUBLIC_SITE_URL` com fallback `.com.br`
 
-### 13.11.2 — ONDA 2: Alto — fix antes do deploy
+### 13.11.2 — ONDA 2: Alto [CONCLUIDA — 15/04/2026, commit 6ad1526]
 
-- [ ] Criar `src/app/error.tsx` + `src/app/global-error.tsx` (UX em falha)
-- [ ] `src/app/robots.ts`: adicionar `/admin` no disallow
-- [ ] `src/app/opengraph-image.tsx:85`: fymoob.com → fymoob.com.br
-- [ ] `ContactForm` adicionar Turnstile widget + validação server-side
-- [ ] Regenerar `AUTH_SECRET` com `openssl rand -base64 32` para produção (só no Vercel)
-- [ ] Pillar pages: publisher URL hardcoded — usar `SITE_URL`
-  - `src/app/comprar-imovel-curitiba/page.tsx:71`
-  - `src/app/morar-em-curitiba/page.tsx:60`
-  - `src/app/alugar-curitiba/page.tsx:59`
-  - `src/app/guia/[bairro]/page.tsx:101`
-- [ ] `src/app/empreendimento/[slug]/page.tsx:130`: schema hardcoded → usar `SITE_URL`
-- [ ] WhatsApp tel: remover hífen (`+554199978-0517` → `+5541999780517`) em todos os lugares
-- [ ] Rate limit em `/api/properties/batch`, `/api/property/[code]`, `/api/photos/[code]`
-- [ ] Google Maps embed em `/contato` — substituir placeholder por URL real
+- [x] Criar `src/app/error.tsx` + `src/app/global-error.tsx` (UX com branding, WhatsApp fallback, digest)
+- [x] `src/app/robots.ts`: `/admin` adicionado no disallow
+- [x] `src/app/opengraph-image.tsx:85`: fymoob.com → fymoob.com.br (incluído na Onda 1)
+- [x] `ContactForm` com Turnstile widget + validação server-side (incluído na Onda 1)
+- [ ] Regenerar `AUTH_SECRET` com `openssl rand -base64 32` para produção (só no Vercel — ação manual)
+- [x] Pillar pages: publisher URL corrigido via bulk sed (Onda 1)
+- [x] `src/app/empreendimento/[slug]/page.tsx:130`: schema usa `SITE_URL` (Onda 1)
+- [x] WhatsApp tel: `+554199978-0517` → `+5541999780517` (8 ocorrências, bulk sed)
+- [x] Rate limit em `/api/properties/batch`, `/api/property/[code]`, `/api/photos/[code]` — `checkApiLoftRateLimit` 60/min/IP + validação regex de code
+- [x] Google Maps embed em `/contato` — endereço real via `maps.google.com/maps?q=...`
 
 ### 13.11.3 — ONDA 3: Médio — pode ser pós-deploy
 
 - [ ] CSP + HSTS headers em `next.config.ts`
 - [ ] Rate-limit e Turnstile: fail-closed em produção (hoje fail-open)
-- [ ] `RESEND_FROM_EMAIL` fallback `.com` → `.com.br` em `src/auth.ts`
+- [x] `RESEND_FROM_EMAIL` fallback `.com` → `.com.br` em `src/auth.ts` (feito na Onda 1)
 - [ ] Schema author unification: pillars usarem `@id /sobre#bruno` (hoje `Person` com `credential` inválido)
 - [ ] Wagner schema: adicionar campo `image` (Bruno tem, Wagner não)
 - [ ] Timeouts em fetch Loft (`AbortSignal.timeout(8000)`)
