@@ -1,15 +1,30 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
+import { checkApiLoftRateLimit } from "@/lib/rate-limit"
 
 const LOFT_API_KEY = process.env.LOFT_API_KEY
 const BASE_URL = "https://brunoces-rest.vistahost.com.br"
 
 export async function GET(
-  _request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ code: string }> }
 ) {
+  // Rate limit 60/min/IP
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown"
+  const rate = await checkApiLoftRateLimit(ip)
+  if (!rate.allowed) {
+    return NextResponse.json(
+      { error: rate.reason },
+      { status: 429, headers: rate.retryAfter ? { "Retry-After": String(rate.retryAfter) } : {} }
+    )
+  }
+
   const { code } = await params
 
-  if (!code || !LOFT_API_KEY) {
+  // Valida formato do código para evitar injeção
+  if (!code || !/^[A-Z0-9]{1,20}$/i.test(code) || !LOFT_API_KEY) {
     return NextResponse.json([], { status: 400 })
   }
 

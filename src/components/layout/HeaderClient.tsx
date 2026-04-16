@@ -155,7 +155,7 @@ export function HeaderClient() {
             </div>
 
             <a
-              href="tel:+554199978-0517"
+              href="tel:+5541999780517"
               className={cn(
                 "hidden items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-300 lg:flex",
                 isDarkHeader
@@ -234,7 +234,7 @@ export function HeaderClient() {
                   <Link href="/busca" className="flex h-10 w-full items-center justify-center rounded-full bg-brand-primary text-sm font-semibold text-white transition-colors hover:bg-brand-primary-hover">
                     Buscar imóvel
                   </Link>
-                  <a href="tel:+554199978-0517" className="flex items-center justify-center gap-2 text-sm font-medium text-neutral-500">
+                  <a href="tel:+5541999780517" className="flex items-center justify-center gap-2 text-sm font-medium text-neutral-500">
                     <Phone size={13} className="text-brand-primary" />
                     (41) 99978-0517
                   </a>

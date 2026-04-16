@@ -448,7 +448,7 @@ export default async function SobrePage() {
                 <div className="flex items-center gap-3">
                   <Phone className="size-5 shrink-0 text-brand-primary" />
                   <div>
-                    <a href="tel:+554199978-0517" className="font-medium text-neutral-900 hover:text-brand-primary">(41) 99978-0517</a>
+                    <a href="tel:+5541999780517" className="font-medium text-neutral-900 hover:text-brand-primary">(41) 99978-0517</a>
                     <span className="mx-2 text-neutral-300">|</span>
                     <a href="tel:+554132655051" className="text-sm text-neutral-500 hover:text-brand-primary">(41) 3265-5051</a>
                   </div>

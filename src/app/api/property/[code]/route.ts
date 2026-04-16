@@ -1,13 +1,28 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { getProperties } from "@/services/loft"
+import { checkApiLoftRateLimit } from "@/lib/rate-limit"
 
 export async function GET(
-  _request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ code: string }> }
 ) {
+  // Rate limit 60/min/IP
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "unknown"
+  const rate = await checkApiLoftRateLimit(ip)
+  if (!rate.allowed) {
+    return NextResponse.json(
+      { error: rate.reason },
+      { status: 429, headers: rate.retryAfter ? { "Retry-After": String(rate.retryAfter) } : {} }
+    )
+  }
+
   const { code } = await params
 
-  if (!code) {
+  // Valida formato do código (evita injection)
+  if (!code || !/^[A-Z0-9]{1,20}$/i.test(code)) {
     return NextResponse.json(null, { status: 400 })
   }
 

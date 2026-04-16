@@ -306,7 +306,7 @@ export function ContactSidebar({
               </a>
 
               <a
-                href="tel:+554199978-0517"
+                href="tel:+5541999780517"
                 onClick={() => trackCTA("phone")}
                 className="flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white text-sm font-semibold text-[#0B1120] transition-colors hover:border-brand-primary hover:text-brand-primary"
               >
@@ -345,7 +345,7 @@ export function ContactSidebar({
                 {whatsLabel}
               </a>
               <a
-                href="tel:+554199978-0517"
+                href="tel:+5541999780517"
                 onClick={() => trackCTA("phone")}
                 className="flex h-11 w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white text-sm font-semibold text-[#0B1120] transition-colors hover:border-brand-primary hover:text-brand-primary"
               >

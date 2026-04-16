@@ -71,6 +71,37 @@ export async function checkLeadRateLimit(
   return { allowed: true }
 }
 
+// APIs públicas de dados da Loft (property, photos, batch): 60 req/min/IP.
+// Previne amplificação de ataques contra o CRM sem bloquear uso legítimo.
+export const apiLoftLimiter = redis
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(60, "1 m"),
+      prefix: "fymoob:api:loft",
+    })
+  : null
+
+export async function checkApiLoftRateLimit(
+  ip: string
+): Promise<{ allowed: boolean; reason?: string; retryAfter?: number }> {
+  if (!apiLoftLimiter) {
+    if (process.env.NODE_ENV === "production") {
+      console.warn("[rate-limit] Upstash not configured — Loft API routes NOT rate limited.")
+    }
+    return { allowed: true }
+  }
+
+  const result = await apiLoftLimiter.limit(ip)
+  if (!result.success) {
+    return {
+      allowed: false,
+      reason: "Too many requests. Please slow down.",
+      retryAfter: Math.ceil((result.reset - Date.now()) / 1000),
+    }
+  }
+  return { allowed: true }
+}
+
 export type RateLimitResult = {
   success: boolean
   remaining: number
