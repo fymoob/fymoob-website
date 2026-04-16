@@ -45,7 +45,7 @@ const principios = [
     icon: AlertCircle,
     title: "Correção de Erros",
     description:
-      "Erros identificados são corrigidos em até 48 horas úteis. Correções relevantes ficam registradas no final do artigo. Clientes podem reportar imprecisões via contato@fymoob.com.br.",
+      "Erros identificados são corrigidos em até 48 horas úteis. Correções relevantes ficam registradas no final do artigo. Clientes podem reportar imprecisões via fymoob@gmail.com.",
   },
 ]
 
@@ -132,8 +132,8 @@ export default function PoliticaEditorialPage() {
             <p className="mt-3 text-sm leading-relaxed text-neutral-600">
               Encontrou uma informação desatualizada, imprecisa ou conflitante com a
               legislação atual? Envie um email para{" "}
-              <a href="mailto:contato@fymoob.com.br" className="font-medium text-brand-primary hover:underline">
-                contato@fymoob.com.br
+              <a href="mailto:fymoob@gmail.com" className="font-medium text-brand-primary hover:underline">
+                fymoob@gmail.com
               </a>{" "}
               com o link da página e a correção sugerida. Respondemos em até 48 horas úteis.
             </p>
