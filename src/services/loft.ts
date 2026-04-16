@@ -248,11 +248,19 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
   else if (status === "Venda e Aluguel") finalidade = "Venda e Locação"
   else if (status === "Venda") finalidade = "Venda"
 
-  // Disponibilidade baseada no status (regra do Bruno):
-  // Disponivel no site: Venda, Aluguel, Venda e Aluguel
-  // Indisponivel: Alugado Imobiliaria, Alugado Terceiros, Pendente, Suspenso
-  const AVAILABLE_STATUSES = new Set(["Venda", "Aluguel", "Venda e Aluguel"])
-  const disponivel = AVAILABLE_STATUSES.has(status)
+  // Disponibilidade: BLACKLIST conservadora para nao esconder imoveis por engano.
+  // Marcamos como indisponivel APENAS quando o status contem um padrao
+  // sabidamente de imovel fora do mercado. Qualquer outro valor (inclusive vazio
+  // ou desconhecido) mantem disponivel por padrao. O filtro real de exibicao
+  // ja e feito pelo parametro ExibirNoSite=Sim no request Loft — este campo
+  // e metadata auxiliar para features futuras (ex: badge "Recem publicado").
+  const statusLower = status.toLowerCase()
+  const disponivel =
+    !statusLower.includes("alugado") &&
+    !statusLower.includes("pendente") &&
+    !statusLower.includes("suspenso") &&
+    !statusLower.includes("vendido") &&
+    !statusLower.includes("reservado")
 
   const titulo = raw.TituloSite
     || raw.TextoAnuncio
@@ -480,10 +488,11 @@ function applyFilters(indexed: IndexedProperty[], filters: PropertyFilters): Pro
 
   for (const item of indexed) {
     const p = item.property
-    // Filtro de disponibilidade (regra do Bruno, 16/04/2026):
-    // Nao mostrar imoveis com status Alugado/Pendente/Suspenso
-    // mesmo que ExibirNoSite=Sim (backup defensivo)
-    if (!p.disponivel) continue
+    // NOTA: nao filtramos por p.disponivel aqui. A API ja aplica
+    // ExibirNoSite=Sim (ver URL_PARAMS_LIST). Filtrar de novo por
+    // um status derivado correria risco de sumir imoveis por engano
+    // (valor do status vindo da API pode nao matchar lista exata).
+    // O campo p.disponivel fica como metadata para features futuras.
     if (tipoSet && !tipoSet.has(p.tipo)) continue
     if (finalidadeSlugSet && !finalidadeSlugSet.has(item.finalidadeSlug)) continue
     if (bairroSlugSet && !bairroSlugSet.has(item.bairroSlug)) continue

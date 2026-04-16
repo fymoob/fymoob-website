@@ -104,6 +104,13 @@ npm run test         # Testes
 - Detalhes: `/imoveis/detalhes?key=KEY&imovel=CODIGO`
 - 249 imóveis ativos via API REST (dados ao vivo do CRM)
 
+## Nunca Supor — REGRA FUNDAMENTAL
+- **Toda tarefa é complexa até provado o contrário.** Especialmente filtros, mapeamentos de dados, regras baseadas em valores do CRM/API externa.
+- **NUNCA supor valores de campos enum/status sem validar o que a API realmente retorna.** Screenshot do UI interno do CRM ≠ payload da API.
+- **Blacklist conservadora > whitelist estrita.** Se não tem certeza, remova apenas o que sabidamente é ruim. Filtros do tipo "if valor não está na minha lista curta, descarta" = bug garantido (vide incidente 16/04/2026 quebrando site inteiro por mapear status que não matchava API real).
+- **Testar antes de commitar:** se a mudança altera quantidade de resultados, comparar "antes" vs "depois" (ex: tinha 231 imóveis, agora tem 0 = quebrou).
+- **Buscar provas, não presumir.** Grep no código existente, log temporário, exemplo de resposta real — sempre antes de regras novas.
+
 ## Task Management — REGRA OBRIGATÓRIA
 - **Tasks consolidadas em `docs/TASKS.md`** — fonte única de verdade
 - **APÓS CADA IMPLEMENTAÇÃO:** atualizar `docs/TASKS.md` imediatamente:
