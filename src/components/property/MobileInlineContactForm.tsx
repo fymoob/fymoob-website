@@ -25,6 +25,7 @@ declare global {
         }
       ) => string
       reset: (id?: string) => void
+      remove: (id?: string) => void
     }
   }
 }
