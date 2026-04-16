@@ -35,6 +35,7 @@ export function PropertyCardGrid({
     propertyHref,
     loadPhotosOnHover,
     toggleFavorite,
+    justFavorited,
     secondaryIsRental,
     goPrev,
     goNext,
@@ -102,6 +103,7 @@ export function PropertyCardGrid({
           <Heart
             className={cn(
               "size-[18px] stroke-[2.2px] transition-all duration-200",
+              justFavorited && "animate-heart-pop",
               isFavorite
                 ? "scale-105 fill-brand-primary stroke-brand-primary"
                 : "fill-transparent stroke-neutral-700 group-hover/wishlist:fill-brand-primary/90 group-hover/wishlist:stroke-brand-primary"

@@ -159,6 +159,7 @@ export function PropertyCard({
   const badge = useMemo(() => getBadge(property, topViewed), [property, topViewed])
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isFavorite, setIsFavorite] = useState(false)
+  const [justFavorited, setJustFavorited] = useState(false)
   const [dynamicPhotos, setDynamicPhotos] = useState<string[] | null>(null)
   const fetchedRef = useRef(false)
 
@@ -212,6 +213,8 @@ export function PropertyCard({
 
       if (next) {
         wishlist.add(property.codigo)
+        setJustFavorited(true)
+        setTimeout(() => setJustFavorited(false), 500)
       } else {
         wishlist.delete(property.codigo)
       }
@@ -346,6 +349,7 @@ export function PropertyCard({
             <Heart
               className={cn(
                 "size-4 stroke-[2.2px] transition-all duration-200 sm:size-[18px]",
+                justFavorited && "animate-heart-pop",
                 isFavorite
                   ? "scale-105 fill-brand-primary stroke-brand-primary"
                   : "fill-transparent stroke-neutral-700 group-hover/wishlist:fill-brand-primary/90 group-hover/wishlist:stroke-brand-primary"

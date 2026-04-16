@@ -160,6 +160,7 @@ export function usePropertyCard(property: Property, priceContext: PriceContext =
   const badge = useMemo(() => getBadge(property, topViewed), [property, topViewed])
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isFavorite, setIsFavorite] = useState(false)
+  const [justFavorited, setJustFavorited] = useState(false)
   const [dynamicPhotos, setDynamicPhotos] = useState<string[] | null>(null)
   const fetchedRef = useRef(false)
 
@@ -202,6 +203,9 @@ export function usePropertyCard(property: Property, priceContext: PriceContext =
 
       if (next) {
         wishlist.add(property.codigo)
+        // Trigger animation only when ADDING to favorites (nao ao remover)
+        setJustFavorited(true)
+        setTimeout(() => setJustFavorited(false), 500)
       } else {
         wishlist.delete(property.codigo)
       }
@@ -252,6 +256,7 @@ export function usePropertyCard(property: Property, priceContext: PriceContext =
     badge,
     currentSlide,
     isFavorite,
+    justFavorited,
     propertyHref,
     loadPhotosOnHover,
     toggleFavorite,

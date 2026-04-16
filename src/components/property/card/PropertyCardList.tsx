@@ -35,6 +35,7 @@ export function PropertyCardList({
     propertyHref,
     loadPhotosOnHover,
     toggleFavorite,
+    justFavorited,
   } = usePropertyCard(property, priceContext)
 
   // Finalidade badge color cue for quick scanning (QuintoAndar/ZAP pattern)
@@ -121,6 +122,7 @@ export function PropertyCardList({
             <Heart
               className={cn(
                 "size-5 stroke-[2px] drop-shadow-sm transition-all duration-200",
+                justFavorited && "animate-heart-pop",
                 isFavorite
                   ? "scale-110 fill-brand-primary stroke-brand-primary"
                   : "fill-transparent stroke-slate-300 group-hover/wishlist:stroke-slate-400"
