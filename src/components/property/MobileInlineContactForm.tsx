@@ -44,6 +44,7 @@ export function MobileInlineContactForm({
   const [submitStatus, setSubmitStatus] = useState<"idle" | "sending" | "sent" | "error">("idle")
   const [submitError, setSubmitError] = useState("")
   const [turnstileToken, setTurnstileToken] = useState("")
+  const [consentChecked, setConsentChecked] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
   const widgetContainer = useRef<HTMLDivElement>(null)
   const widgetId = useRef<string | undefined>(undefined)
@@ -210,6 +211,8 @@ export function MobileInlineContactForm({
               type="checkbox"
               name="consentLGPD"
               required
+              checked={consentChecked}
+              onChange={(e) => setConsentChecked(e.target.checked)}
               className="mt-0.5 size-4 shrink-0 rounded border-neutral-300 text-brand-primary focus:ring-brand-primary"
             />
             <span>
@@ -231,7 +234,11 @@ export function MobileInlineContactForm({
 
           <Button
             type="submit"
-            disabled={submitStatus === "sending"}
+            disabled={
+              submitStatus === "sending" ||
+              !consentChecked ||
+              (!!TURNSTILE_SITE_KEY && !turnstileToken)
+            }
             className="h-11 w-full rounded-xl bg-slate-900 text-sm font-semibold text-white hover:bg-slate-800 disabled:opacity-50"
           >
             {submitStatus === "sending" ? (

@@ -21,6 +21,7 @@ export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle")
   const [errorMsg, setErrorMsg] = useState<string>("")
   const [tsToken, setTsToken] = useState<string>("")
+  const [consentChecked, setConsentChecked] = useState(false)
   const widgetContainer = useRef<HTMLDivElement>(null)
   const widgetId = useRef<string | undefined>(undefined)
 
@@ -209,6 +210,8 @@ export function ContactForm() {
             type="checkbox"
             name="consentLGPD"
             required
+            checked={consentChecked}
+            onChange={(e) => setConsentChecked(e.target.checked)}
             className="mt-0.5 size-4 shrink-0 rounded border-neutral-300 text-brand-primary focus:ring-brand-primary"
           />
           <span>
@@ -230,7 +233,11 @@ export function ContactForm() {
 
         <button
           type="submit"
-          disabled={status === "sending"}
+          disabled={
+            status === "sending" ||
+            !consentChecked ||
+            (!!TURNSTILE_SITE_KEY && !tsToken)
+          }
           className="flex w-full items-center justify-center gap-2 rounded-full bg-brand-primary px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-primary-hover disabled:opacity-50"
         >
           {status === "sending" ? (
