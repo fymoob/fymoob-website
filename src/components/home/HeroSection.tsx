@@ -45,12 +45,12 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bair
       {/* Mobile full-hero glass layer: readability boost with cleaner composition */}
       <div className="absolute inset-0 z-[1] bg-black/18 md:hidden" />
 
-      {/* Bottom gradient - desktop only */}
+      {/* Desktop readability gradient: stronger on top/center, transparent toward water */}
       <div
-        className="absolute inset-0 hidden md:block"
+        className="absolute inset-0 z-[1] hidden md:block"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0.45) 65%, rgba(0,0,0,0.68) 100%)",
+            "linear-gradient(to bottom, rgba(9,14,22,0.52) 0%, rgba(9,14,22,0.36) 34%, rgba(9,14,22,0.18) 58%, rgba(9,14,22,0.04) 78%, rgba(9,14,22,0) 100%)",
         }}
       />
 
@@ -59,7 +59,7 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bair
         <h1 className="font-display text-3xl font-extrabold leading-[1.05] tracking-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)] sm:text-5xl md:text-7xl md:drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
           {"Encontre seu im\u00f3vel ideal"}
         </h1>
-        <p className="hero-animate-2 mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-white/95 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)] sm:mt-6 sm:text-lg md:text-xl md:text-white/90 md:drop-shadow-[0_1px_4px_rgba(0,0,0,0.2)]">
+        <p className="hero-animate-2 mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-white/95 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)] sm:mt-6 sm:text-lg md:text-[1.35rem] md:font-medium md:leading-relaxed md:text-white md:drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
           {"Im\u00f3veis para comprar ou alugar com o acompanhamento pr\u00f3ximo e seguro que voc\u00ea merece."}
         </p>
 

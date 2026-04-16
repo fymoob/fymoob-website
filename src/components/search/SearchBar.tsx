@@ -782,7 +782,7 @@ export function SearchBar({
             <div className={cn(
               "w-full max-w-full rounded-3xl p-4 md:rounded-full md:p-0",
               isHome
-                ? "bg-white border border-neutral-200 shadow-sm md:shadow-lg"
+                ? "bg-white border border-neutral-200 shadow-sm md:shadow-[0_20px_52px_-18px_rgba(15,23,42,0.55),0_8px_20px_-12px_rgba(15,23,42,0.42)] md:ring-1 md:ring-white/60"
                 // Frosted glass on search page — lets the gradient show through
                 // instead of a solid white rectangle cutting the bg
                 : "bg-white/70 backdrop-blur-xl border border-slate-200/80 ring-1 ring-slate-900/[0.04] shadow-[0_4px_16px_-4px_rgba(15,23,42,0.08),0_12px_40px_-12px_rgba(15,23,42,0.12)] transition-shadow hover:shadow-[0_8px_28px_-4px_rgba(15,23,42,0.14),0_20px_48px_-12px_rgba(15,23,42,0.18)]"

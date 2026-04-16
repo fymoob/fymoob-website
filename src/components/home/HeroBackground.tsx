@@ -8,14 +8,13 @@ export function HeroBackground() {
         srcSet={heroSrc}
         type="image/webp"
       />
-      <source srcSet={heroSrc} type="image/webp" />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <source media="(min-width: 768px)" srcSet={heroSrc} type="image/webp" />
       <img
         src={heroSrc}
         alt={"Vista panor\u00e2mica de Curitiba - encontre seu im\u00f3vel ideal com a FYMOOB"}
         fetchPriority="high"
         decoding="async"
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full object-cover object-center md:object-[center_82%]"
       />
     </picture>
   )

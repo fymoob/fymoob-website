@@ -30,30 +30,24 @@ export function HeaderClient() {
   const isAdmin = pathname.startsWith("/admin")
   const hasDarkHero = isHome
   const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [mobileMenuPath, setMobileMenuPath] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!hasDarkHero) return
+
+    function handleScroll() {
+      setScrolled(window.scrollY > 50)
+    }
+
+    requestAnimationFrame(handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [hasDarkHero])
 
   // Empreendimento pages hide the global header entirely so the landing feels
   // like it belongs to the construtora (requested by Bruno 13/04/2026).
   // Admin panel has its own layout and sidebar — no public header needed.
   if (isEmpreendimento || isAdmin) return null
-
-  useEffect(() => {
-    setMenuOpen(false)
-  }, [pathname])
-
-  useEffect(() => {
-    if (!hasDarkHero) {
-      setScrolled(true)
-      return
-    }
-    setScrolled(false)
-    function handleScroll() {
-      setScrolled(window.scrollY > 50)
-    }
-    requestAnimationFrame(handleScroll)
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [hasDarkHero])
 
   const isTransparent = hasDarkHero && !scrolled
   // Header has dark background (transparent over dark hero OR dark brown when scrolled in empreendimento)
@@ -101,10 +95,14 @@ export function HeaderClient() {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "relative font-display text-sm font-medium transition-colors duration-300",
+                    "relative font-display text-[15px] font-semibold tracking-[0.01em] transition-colors duration-300",
                     isActive
-                      ? isDarkHeader ? "text-white" : "text-neutral-950"
-                      : isDarkHeader ? "text-white/80 hover:text-white" : "text-neutral-600 hover:text-brand-primary"
+                      ? isDarkHeader
+                        ? "text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.45)]"
+                        : "text-neutral-950"
+                      : isDarkHeader
+                        ? "text-white/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.45)] hover:text-white"
+                        : "text-neutral-600 hover:text-brand-primary"
                   )}
                 >
                   {link.label}
@@ -168,7 +166,10 @@ export function HeaderClient() {
             </a>
 
             {/* Mobile Menu */}
-            <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+            <Sheet
+              open={mobileMenuPath === pathname}
+              onOpenChange={(open) => setMobileMenuPath(open ? pathname : null)}
+            >
               <SheetTrigger
                 id="mobile-menu-trigger"
                 className="md:hidden flex h-11 w-11 items-center justify-center rounded-lg"
