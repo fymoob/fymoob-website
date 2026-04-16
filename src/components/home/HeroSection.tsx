@@ -1,5 +1,5 @@
-// Server Component — NO "use client"
-// h1 and p render without hydration dependency → fast LCP
+// Server Component - NO "use client"
+// h1 and p render without hydration dependency -> fast LCP
 import dynamic from "next/dynamic"
 import { ChevronDown } from "lucide-react"
 import { HeroBackground } from "./HeroBackground"
@@ -34,7 +34,7 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bair
       {/* Background image */}
       <HeroBackground />
 
-      {/* Top gradient — navbar legibility */}
+      {/* Top gradient - navbar legibility */}
       <div
         className="absolute inset-x-0 top-0 z-[1] h-24"
         style={{
@@ -42,11 +42,12 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bair
         }}
       />
 
-      {/* Bottom gradient — asymmetric weight: preserves the sunset beauty
-          at the top (where the city skyline shines) and ramps up contrast
-          below where the title, subtitle and secondary links live. */}
+      {/* Mobile full-hero glass layer: readability boost with cleaner composition */}
+      <div className="absolute inset-0 z-[1] bg-black/18 backdrop-blur-[1.5px] md:hidden" />
+
+      {/* Bottom gradient - desktop only */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 hidden md:block"
         style={{
           background:
             "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0.45) 65%, rgba(0,0,0,0.68) 100%)",
@@ -54,15 +55,15 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bair
       />
 
       {/* Content */}
-      <div className="relative z-10 mx-auto w-full max-w-4xl px-4 text-center sm:px-6">
-        <h1 className="font-display text-3xl font-extrabold tracking-tight text-white sm:text-5xl md:text-7xl leading-[1.05] drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
-          Encontre seu imóvel ideal
+      <div className="relative z-20 mx-auto w-full max-w-4xl px-4 text-center sm:px-6">
+        <h1 className="font-display text-3xl font-extrabold leading-[1.05] tracking-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)] sm:text-5xl md:text-7xl md:drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
+          {"Encontre seu im\u00f3vel ideal"}
         </h1>
-        <p className="hero-animate-2 mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-white/90 sm:mt-6 sm:text-lg md:text-xl drop-shadow-[0_1px_4px_rgba(0,0,0,0.2)]">
-          Imóveis para comprar ou alugar com o acompanhamento próximo e seguro que você merece.
+        <p className="hero-animate-2 mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-white/95 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)] sm:mt-6 sm:text-lg md:text-xl md:text-white/90 md:drop-shadow-[0_1px_4px_rgba(0,0,0,0.2)]">
+          {"Im\u00f3veis para comprar ou alugar com o acompanhamento pr\u00f3ximo e seguro que voc\u00ea merece."}
         </p>
 
-        {/* Mobile: compact pill → expands to bottom sheet */}
+        {/* Mobile: compact pill -> expands to bottom sheet */}
         <div className="hero-animate-3 mt-8 md:hidden">
           <QuickSearch bairroSummaries={bairroSummaries ?? []} tipoSummaries={tipoSummaries ?? []} />
         </div>
@@ -84,8 +85,8 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bair
       {/* Scroll indicator */}
       <a
         href="#destaques"
-        className="absolute bottom-4 left-1/2 z-10 -translate-x-1/2 animate-bounce text-white/50 transition hover:text-white/80 md:bottom-6"
-        aria-label="Rolar para próxima seção"
+        className="absolute bottom-4 left-1/2 z-20 -translate-x-1/2 animate-bounce text-white/50 transition hover:text-white/80 md:bottom-6"
+        aria-label={"Rolar para pr\u00f3xima se\u00e7\u00e3o"}
       >
         <ChevronDown className="h-7 w-7" />
       </a>

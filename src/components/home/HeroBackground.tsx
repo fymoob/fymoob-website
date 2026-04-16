@@ -10,7 +10,7 @@ export function HeroBackground() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/images/hero-home.jpg"
-        alt="Vista panorâmica de Curitiba — encontre seu imóvel ideal com a FYMOOB"
+        alt={"Vista panor\u00e2mica de Curitiba - encontre seu im\u00f3vel ideal com a FYMOOB"}
         fetchPriority="high"
         decoding="async"
         className="absolute inset-0 h-full w-full object-cover"
