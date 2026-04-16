@@ -14,29 +14,85 @@ import type { Property } from "@/types/property"
 const WISHLIST_STORAGE_KEY = "fymoob:wishlist"
 const MAX_CARD_PHOTOS = 5
 
-function getBadge(
+/**
+ * Sistema de badges unificado (glass morphism) — Fase 13.12.
+ *
+ * Tiers semanticos:
+ * - BADGE = status estatico (nao interativo). Aqui.
+ * - PILL = info contextual (venda/aluguel). Ja esta bom no codigo.
+ * - CHIP = filtro interativo. Nos filtros da busca.
+ *
+ * Base visual: glass com accent color (texto + dot). Sobrepoe bem fotos.
+ *
+ * Threshold "RECEM PUBLICADO" = 30 dias (Bruno, 16/04/2026):
+ * negociacao imobiliaria e lenta, 30d ainda e "recente" para o publico.
+ */
+export type BadgeType = "recemPublicado" | "lancamento" | "maisVisto" | "destaque"
+
+export interface CardBadge {
+  type: BadgeType
+  text: string
+  iconName: "Sparkles" | "Rocket" | "Flame" | "Star"
+  textColor: string // text-{color}-700
+  dotColor: string // bg-{color}-500
+  pulse?: boolean // animate-ping dot (somente status temporais)
+}
+
+export function getBadge(
   property: Property,
   topViewed?: Set<string>
-): { text: string; color: string } | null {
-  // "Recém publicado": usa dataAtualizacao (fallback dataCadastro) pra capturar
-  // imoveis REATIVADOS — ex: alugado por 1 ano, desocupou, fotos novas, status
-  // voltou pra Aluguel. Pro usuario final e um anuncio novo, mesmo que o cadastro
-  // no CRM seja antigo. "Recem publicado" evita a ambiguidade de "NOVO" que
-  // pode ser interpretado como imovel fisico na planta (vs usado).
+): CardBadge | null {
+  // Destaque premium (superDestaqueWeb) — prioridade maxima
+  if (property.superDestaqueWeb) {
+    return {
+      type: "destaque",
+      text: "DESTAQUE",
+      iconName: "Star",
+      textColor: "text-amber-700",
+      dotColor: "bg-amber-500",
+    }
+  }
+
+  // Lançamento — antes do recem publicado pq é categoria mais forte
+  if (property.lancamento) {
+    return {
+      type: "lancamento",
+      text: "LANÇAMENTO",
+      iconName: "Rocket",
+      textColor: "text-brand-primary",
+      dotColor: "bg-brand-primary",
+    }
+  }
+
+  // Recem publicado — usa dataAtualizacao (fallback dataCadastro) pra capturar
+  // imoveis REATIVADOS (ex: alugado 1 ano, desocupou, status voltou). Threshold
+  // 30d porque negociacao imobiliaria e mais lenta que e-commerce.
   const dateStr = property.dataAtualizacao ?? property.dataCadastro
   if (dateStr) {
     const days = Math.floor(
       (Date.now() - new Date(dateStr).getTime()) / (1000 * 60 * 60 * 24)
     )
-    if (days <= 7) return { text: "RECÉM PUBLICADO", color: "bg-emerald-500" }
+    if (days <= 30) {
+      return {
+        type: "recemPublicado",
+        text: "RECÉM PUBLICADO",
+        iconName: "Sparkles",
+        textColor: "text-emerald-700",
+        dotColor: "bg-emerald-500",
+        pulse: days <= 7, // pulse vivo pra primeiros 7 dias, estatico depois
+      }
+    }
   }
 
-  if (property.lancamento) {
-    return { text: "LANÇAMENTO", color: "bg-slate-900" }
-  }
-
+  // Mais visto (top 15%) — por ultimo pq e derivado de comportamento
   if (topViewed?.has(property.codigo)) {
-    return { text: "MAIS VISTO", color: "bg-neutral-900/80 backdrop-blur-sm" }
+    return {
+      type: "maisVisto",
+      text: "MAIS VISTO",
+      iconName: "Flame",
+      textColor: "text-rose-700",
+      dotColor: "bg-rose-500",
+    }
   }
 
   return null

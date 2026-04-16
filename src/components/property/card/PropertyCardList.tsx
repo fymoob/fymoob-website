@@ -8,6 +8,7 @@ import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
 import { cn } from "@/lib/utils"
 import type { Property } from "@/types/property"
 import { usePropertyCard, type PriceContext } from "./hooks/usePropertyCard"
+import { CardBadge } from "./CardBadge"
 
 interface PropertyCardListProps {
   property: Property
@@ -63,17 +64,8 @@ export function PropertyCardList({
           sizes="300px"
         />
 
-        {/* Badge only */}
-        {badge && (
-          <span
-            className={cn(
-              "absolute left-3 top-3 z-20 whitespace-nowrap rounded-md px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-white",
-              badge.color
-            )}
-          >
-            {badge.text}
-          </span>
-        )}
+        {/* Badge — glass morphism unificado */}
+        {badge && <CardBadge badge={badge} className="absolute left-3 top-3 z-20" />}
       </div>
 
       {/* Content — 2 column layout */}

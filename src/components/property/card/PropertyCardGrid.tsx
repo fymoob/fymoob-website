@@ -8,6 +8,7 @@ import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
 import { cn } from "@/lib/utils"
 import type { Property } from "@/types/property"
 import { usePropertyCard, type PriceContext } from "./hooks/usePropertyCard"
+import { CardBadge } from "./CardBadge"
 
 interface PropertyCardGridProps {
   property: Property
@@ -87,17 +88,8 @@ export function PropertyCardGrid({
         {/* Top gradient — subtle, only to ensure badge + wishlist readability */}
         <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/30 to-transparent" />
 
-        {/* Badge */}
-        {badge && (
-          <span
-            className={cn(
-              "absolute left-3 top-3 z-20 whitespace-nowrap rounded-md px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-white",
-              badge.color
-            )}
-          >
-            {badge.text}
-          </span>
-        )}
+        {/* Badge — glass morphism unificado */}
+        {badge && <CardBadge badge={badge} className="absolute left-3 top-3 z-20" />}
 
         {/* Wishlist — dark semi-transparent backdrop ensures readability on any photo */}
         <button

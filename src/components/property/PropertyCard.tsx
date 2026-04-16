@@ -15,34 +15,15 @@ import {
   getPropertyImage,
 } from "@/lib/utils"
 import type { Property } from "@/types/property"
+import { getBadge } from "./card/hooks/usePropertyCard"
+import { CardBadge } from "./card/CardBadge"
 
 const WISHLIST_STORAGE_KEY = "fymoob:wishlist"
 const RECENT_STORAGE_KEY = "fymoob:recent"
 const RECENT_MAX = 8
 const MAX_CARD_PHOTOS = 5
 
-function getBadge(
-  property: Property,
-  topViewed?: Set<string>
-): { text: string; color: string } | null {
-  if (property.dataCadastro) {
-    const days = Math.floor(
-      (Date.now() - new Date(property.dataCadastro).getTime()) /
-        (1000 * 60 * 60 * 24)
-    )
-    if (days <= 7) return { text: "NOVO", color: "bg-emerald-500" }
-  }
-
-  if (property.lancamento) {
-    return { text: "LANÇAMENTO", color: "bg-slate-900" }
-  }
-
-  if (topViewed?.has(property.codigo)) {
-    return { text: "MAIS VISTO", color: "bg-neutral-900/80 backdrop-blur-sm" }
-  }
-
-  return null
-}
+// getBadge agora vem unificado do hook (sistema de badges glass morphism).
 
 export function saveToRecentlyViewed(property: Property) {
   if (typeof window === "undefined") return
@@ -339,17 +320,15 @@ export function PropertyCard({
         )}
 
         {badge && (
-          <span
+          <CardBadge
+            badge={badge}
             className={cn(
-              "absolute z-20 font-semibold uppercase text-white",
-              badge.color,
+              "absolute z-20",
               isHorizontal || isResponsive
-                ? "left-1.5 top-1.5 rounded-full px-1.5 py-0.5 text-[8px] tracking-wider shadow-md sm:left-3 sm:top-3 sm:px-2.5 sm:py-1 sm:text-[11px]"
-                : "left-3 top-3 rounded-md px-2.5 py-1 text-[10px] tracking-widest"
+                ? "left-1.5 top-1.5 sm:left-3 sm:top-3"
+                : "left-3 top-3"
             )}
-          >
-            {badge.text}
-          </span>
+          />
         )}
 
         <button
