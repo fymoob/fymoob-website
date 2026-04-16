@@ -58,7 +58,7 @@ const diretoria = [
   {
     nome: "Wagner Spessatto",
     cargo: "Sócio",
-    foto: null, // placeholder até enviar foto
+    foto: "/images/team/wagner.jpeg",
     bio: "Reconhecido pelo perfil colaborativo e pela facilidade em construir boas relações, Wagner é um profissional próximo, comprometido e parceiro nos negócios. Apaixonado por leitura, está sempre disposto a auxiliar colaboradores e clientes na busca pelos melhores resultados.",
     credenciais: [
       { icon: Award, text: "CRECI/PR 39.357" },
@@ -160,6 +160,7 @@ export default async function SobrePage() {
         "@id": `${SITE_URL}/sobre#wagner`,
         name: "Wagner Spessatto",
         jobTitle: "Sócio",
+        image: `${SITE_URL}/images/team/wagner.jpeg`,
         email: "wagnerspessatto@gmail.com",
         worksFor: { "@id": `${SITE_URL}/#organization` },
         hasCredential: [
