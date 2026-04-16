@@ -1,7 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { Heart, Phone, ShieldCheck } from "lucide-react"
+import { type FormEvent, useEffect, useRef, useState } from "react"
+import Link from "next/link"
+import Script from "next/script"
+import { CheckCircle2, Heart, Loader2, Phone, ShieldCheck } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -13,6 +15,25 @@ import type { Property } from "@/types/property"
 
 const WISHLIST_STORAGE_KEY = "fymoob:wishlist"
 const FYMOOB_PHONE = "554199978-0517".replace(/\D/g, "")
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
+
+declare global {
+  interface Window {
+    turnstile?: {
+      render: (
+        el: string | HTMLElement,
+        opts: {
+          sitekey: string
+          callback: (token: string) => void
+          "error-callback"?: () => void
+          "expired-callback"?: () => void
+          theme?: string
+        }
+      ) => string
+      reset: (id?: string) => void
+    }
+  }
+}
 
 function getWishlistCodes(): Set<string> {
   if (typeof window === "undefined") return new Set<string>()
@@ -89,10 +110,37 @@ export function ContactSidebar({
 
   const [isFavorite, setIsFavorite] = useState(false)
   const [showPremiumForm, setShowPremiumForm] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "sending" | "sent" | "error">("idle")
+  const [submitError, setSubmitError] = useState("")
+  const [turnstileToken, setTurnstileToken] = useState("")
+  const formRef = useRef<HTMLFormElement>(null)
+  const widgetContainer = useRef<HTMLDivElement>(null)
+  const widgetId = useRef<string | undefined>(undefined)
 
   useEffect(() => {
     setIsFavorite(getWishlistCodes().has(propertyCode))
   }, [propertyCode])
+
+  function handleTurnstileLoad() {
+    if (!TURNSTILE_SITE_KEY || !widgetContainer.current || !window.turnstile) return
+    if (widgetId.current) return
+
+    widgetId.current = window.turnstile.render(widgetContainer.current, {
+      sitekey: TURNSTILE_SITE_KEY,
+      callback: (token: string) => setTurnstileToken(token),
+      "error-callback": () => setTurnstileToken(""),
+      "expired-callback": () => setTurnstileToken(""),
+      theme: "light",
+    })
+  }
+
+  useEffect(() => {
+    if (!TURNSTILE_SITE_KEY) return
+    if (isPremium && !showPremiumForm) return
+    if (submitStatus !== "idle") return
+
+    handleTurnstileLoad()
+  }, [isPremium, showPremiumForm, submitStatus])
 
   const toggleFavorite = () => {
     setIsFavorite((prev) => {
@@ -115,69 +163,201 @@ export function ContactSidebar({
     })
   }
 
+  const interesse = isRental || isDual ? "Aluguel" : "Venda"
+
+  async function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setSubmitStatus("sending")
+    setSubmitError("")
+
+    const form = event.currentTarget
+    const formData = new FormData(form)
+    const consentLGPD = Boolean(formData.get("consentLGPD"))
+
+    if (!consentLGPD) {
+      setSubmitStatus("error")
+      setSubmitError("E preciso aceitar a Politica de Privacidade para enviar.")
+      return
+    }
+
+    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+      setSubmitStatus("error")
+      setSubmitError("Aguarde a verificacao anti-bot.")
+      return
+    }
+
+    try {
+      const response = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: formData.get("nome"),
+          email: formData.get("email"),
+          fone: formData.get("fone"),
+          mensagem: formData.get("mensagem"),
+          codigoImovel: propertyCode,
+          interesse,
+          consentLGPD,
+          turnstileToken,
+        }),
+      })
+
+      if (!response.ok) {
+        const payload = await response.json().catch(() => ({ error: "Erro ao enviar mensagem" }))
+        throw new Error(payload.error || "Erro ao enviar mensagem")
+      }
+
+      setSubmitStatus("sent")
+      formRef.current?.reset()
+      if (widgetId.current && window.turnstile) {
+        window.turnstile.reset(widgetId.current)
+      }
+      setTurnstileToken("")
+    } catch (error) {
+      setSubmitStatus("error")
+      setSubmitError(error instanceof Error ? error.message : "Erro ao enviar mensagem")
+    }
+  }
+
+  function handleNewMessage() {
+    setSubmitStatus("idle")
+    setSubmitError("")
+    setTurnstileToken("")
+    widgetId.current = undefined
+  }
+
   const form = (
-    <form
-      onSubmit={(event) => event.preventDefault()}
+    <div
       className={cn(
         "space-y-3 border-t border-neutral-100",
         isPremium ? "border-0 pt-0" : "pt-5"
       )}
     >
-      {isPremium && (
-        <p className="text-sm leading-relaxed text-slate-500">
-          Se preferir, deixe seus dados que nosso time entra em contato.
-        </p>
+      {submitStatus === "sent" ? (
+        <div className="space-y-3">
+          <div className="flex items-start gap-2 rounded-xl bg-emerald-50 p-3 text-sm text-emerald-700">
+            <CheckCircle2 className="mt-0.5 size-4 shrink-0" />
+            <p>Mensagem enviada com sucesso. Nosso time retorna em breve.</p>
+          </div>
+          <Button
+            type="button"
+            onClick={handleNewMessage}
+            variant="outline"
+            className="h-10 w-full rounded-xl border-slate-200 text-sm font-semibold"
+          >
+            Enviar nova mensagem
+          </Button>
+        </div>
+      ) : (
+        <form ref={formRef} onSubmit={handleFormSubmit} className="space-y-3">
+          {isPremium && (
+            <p className="text-sm leading-relaxed text-slate-500">
+              Se preferir, deixe seus dados que nosso time entra em contato.
+            </p>
+          )}
+          <Input
+            name="nome"
+            type="text"
+            placeholder="Seu nome"
+            required
+            className="h-11 rounded-xl border-neutral-200 bg-neutral-50/70 placeholder:text-neutral-400"
+          />
+          <Input
+            name="email"
+            type="email"
+            placeholder="Seu e-mail"
+            required
+            className="h-11 rounded-xl border-neutral-200 bg-neutral-50/70 placeholder:text-neutral-400"
+          />
+          <Input
+            name="fone"
+            type="tel"
+            placeholder="Seu telefone"
+            required
+            className="h-11 rounded-xl border-neutral-200 bg-neutral-50/70 placeholder:text-neutral-400"
+          />
+          <Textarea
+            name="mensagem"
+            placeholder="Quero saber mais sobre este imovel..."
+            className="min-h-24 rounded-xl border-neutral-200 bg-neutral-50/70 placeholder:text-neutral-400"
+          />
+
+          {TURNSTILE_SITE_KEY && <div ref={widgetContainer} className="flex justify-center" />}
+
+          <label className="flex items-start gap-2 text-xs text-neutral-500">
+            <input
+              type="checkbox"
+              name="consentLGPD"
+              required
+              className="mt-0.5 size-4 shrink-0 rounded border-neutral-300 text-brand-primary focus:ring-brand-primary"
+            />
+            <span>
+              Autorizo o contato conforme a{" "}
+              <Link
+                href="/politica-de-privacidade"
+                target="_blank"
+                className="font-medium text-brand-primary underline hover:text-brand-primary-hover"
+              >
+                Politica de Privacidade
+              </Link>
+              .
+            </span>
+          </label>
+
+          {submitStatus === "error" && submitError && (
+            <p className="text-sm text-red-600">{submitError}</p>
+          )}
+
+          <Button
+            type="submit"
+            disabled={submitStatus === "sending"}
+            className={cn(
+              "h-11 w-full rounded-xl text-sm font-semibold text-white disabled:opacity-50",
+              isPremium
+                ? "bg-slate-900 hover:bg-slate-800"
+                : "bg-brand-primary hover:bg-brand-primary-hover"
+            )}
+          >
+            {submitStatus === "sending" ? (
+              <span className="inline-flex items-center gap-2">
+                <Loader2 className="size-4 animate-spin" />
+                Enviando...
+              </span>
+            ) : isPremium ? (
+              "Solicitar contato"
+            ) : (
+              "Enviar duvida"
+            )}
+          </Button>
+          <p className="flex items-center justify-center gap-1.5 pt-1 text-xs text-neutral-400">
+            <ShieldCheck size={13} className="shrink-0" />
+            Seus dados estao seguros. Respondemos o mais rapido possivel.
+          </p>
+        </form>
       )}
-      <Input
-        type="text"
-        placeholder="Seu nome"
-        required
-        className="h-11 rounded-xl border-neutral-200 bg-neutral-50/70 placeholder:text-neutral-400"
-      />
-      <Input
-        type="email"
-        placeholder="Seu e-mail"
-        required
-        className="h-11 rounded-xl border-neutral-200 bg-neutral-50/70 placeholder:text-neutral-400"
-      />
-      <Input
-        type="tel"
-        placeholder="Seu telefone"
-        required
-        className="h-11 rounded-xl border-neutral-200 bg-neutral-50/70 placeholder:text-neutral-400"
-      />
-      <Textarea
-        placeholder="Quero saber mais sobre este imóvel..."
-        className="min-h-24 rounded-xl border-neutral-200 bg-neutral-50/70 placeholder:text-neutral-400"
-      />
-      <Button
-        type="submit"
-        className={cn(
-          "h-11 w-full rounded-xl text-sm font-semibold text-white",
-          isPremium
-            ? "bg-slate-900 hover:bg-slate-800"
-            : "bg-brand-primary hover:bg-brand-primary-hover"
-        )}
-      >
-        {isPremium ? "Solicitar contato" : "Enviar dúvida"}
-      </Button>
-      <p className="flex items-center justify-center gap-1.5 pt-1 text-xs text-neutral-400">
-        <ShieldCheck size={13} className="shrink-0" />
-        Seus dados estão seguros. Respondemos o mais rápido possível.
-      </p>
-    </form>
+    </div>
   )
 
   return (
-    <Card
-      className={cn(
-        "relative z-40 border border-slate-200/80 bg-white/95 py-0 backdrop-blur-xl",
-        isPremium
-          ? "rounded-[30px] shadow-[0_30px_80px_rgba(15,23,42,0.14)]"
-          : "rounded-3xl shadow-xl"
+    <>
+      {TURNSTILE_SITE_KEY && (
+        <Script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+          strategy="afterInteractive"
+          onLoad={handleTurnstileLoad}
+          onReady={handleTurnstileLoad}
+        />
       )}
-    >
-      <CardContent className={cn("px-6", isPremium ? "py-7" : "py-7")}>
+
+      <Card
+        className={cn(
+          "relative z-40 border border-slate-200/80 bg-white/95 py-0 backdrop-blur-xl",
+          isPremium
+            ? "rounded-[30px] shadow-[0_30px_80px_rgba(15,23,42,0.14)]"
+            : "rounded-3xl shadow-xl"
+        )}
+      >
+        <CardContent className={cn("px-6", isPremium ? "py-7" : "py-7")}>
         <div className="mb-4 flex items-center justify-between">
           <span
             className={cn(
@@ -357,7 +537,8 @@ export function ContactSidebar({
             {form}
           </>
         )}
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </>
   )
 }

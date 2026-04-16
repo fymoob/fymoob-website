@@ -240,6 +240,7 @@ export default async function PropertyPage({ params }: PageProps) {
               <MobileInlineContactForm
                 propertyTitle={property.titulo}
                 propertyCode={property.codigo}
+                finalidade={property.finalidade}
               />
             </div>
           </div>

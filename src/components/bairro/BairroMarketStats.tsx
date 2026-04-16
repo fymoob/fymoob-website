@@ -216,7 +216,7 @@ export function BairroMarketStats({ stats }: Props) {
         {/* Footer note */}
         <p className="mt-6 text-[11px] leading-relaxed text-neutral-400">
           Médias calculadas sobre o estoque ativo do CRM no momento desta visualização. Dados
-          disponíveis sob licença CC-BY 4.0 — cite como fonte "FYMOOB Imobiliária — fymoob.com".
+          disponíveis sob licença CC-BY 4.0 — cite como fonte "FYMOOB Imobiliária — fymoob.com.br".
         </p>
       </div>
     </section>
