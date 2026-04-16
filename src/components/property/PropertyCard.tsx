@@ -335,9 +335,9 @@ export function PropertyCard({
             type="button"
             onClick={toggleFavorite}
             className={cn(
-              "group/wishlist absolute z-20 inline-flex items-center justify-center transition-transform hover:scale-110",
+              "group/wishlist absolute z-20 inline-flex items-center justify-center rounded-full bg-white/85 shadow-sm ring-1 ring-black/5 backdrop-blur-md transition-all hover:scale-[1.08] hover:bg-white/95",
               isHorizontal || isResponsive
-                ? "right-1.5 top-1.5 size-6 sm:right-3 sm:top-3 sm:size-9"
+                ? "right-1.5 top-1.5 size-7 sm:right-3 sm:top-3 sm:size-9"
                 : "right-3 top-3 size-9"
             )}
             aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
@@ -345,11 +345,11 @@ export function PropertyCard({
           >
             <Heart
               className={cn(
-                "text-transparent stroke-white stroke-[2px] drop-shadow-lg transition-all duration-200",
-                isHorizontal || isResponsive ? "size-3.5 sm:size-5" : "size-5",
+                "stroke-[2.2px] transition-all duration-200",
+                isHorizontal || isResponsive ? "size-3.5 sm:size-[18px]" : "size-[18px]",
                 isFavorite
-                  ? "fill-brand-primary stroke-brand-primary text-brand-primary scale-110"
-                  : "group-hover/wishlist:fill-brand-primary/90 group-hover/wishlist:stroke-brand-primary"
+                  ? "scale-105 fill-brand-primary stroke-brand-primary"
+                  : "fill-transparent stroke-neutral-700 group-hover/wishlist:fill-brand-primary/90 group-hover/wishlist:stroke-brand-primary"
               )}
             />
           </button>

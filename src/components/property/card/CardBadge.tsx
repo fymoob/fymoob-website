@@ -22,10 +22,18 @@ interface CardBadgeProps {
 export function CardBadge({ badge, className }: CardBadgeProps) {
   const Icon = ICONS[badge.iconName]
 
+  // Star (DESTAQUE) e Flame (MAIS VISTO) ficam mais refinadas com fill-current.
+  // Outros icones ficam melhor como outline.
+  const filledIcons: CardBadgeType["iconName"][] = ["Star", "Flame"]
+  const isFilled = filledIcons.includes(badge.iconName)
+
+  // Rocket (LANCAMENTO) ganha leve rotacao pra dinamismo
+  const iconExtra = badge.iconName === "Rocket" ? "-rotate-12" : ""
+
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white/85 px-3 py-1.5 text-[11px] font-bold uppercase tracking-wide shadow-sm ring-1 ring-black/5 backdrop-blur-md",
+        "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white/85 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide shadow-sm ring-1 ring-black/5 backdrop-blur-md",
         badge.textColor,
         className
       )}
@@ -45,7 +53,10 @@ export function CardBadge({ badge, className }: CardBadgeProps) {
           />
         </span>
       ) : (
-        <Icon className="size-3" strokeWidth={2.5} />
+        <Icon
+          className={cn("size-3", iconExtra, isFilled && "fill-current")}
+          strokeWidth={2.5}
+        />
       )}
       <span>{badge.text}</span>
     </span>
