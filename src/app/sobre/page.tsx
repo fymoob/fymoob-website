@@ -255,7 +255,7 @@ export default async function SobrePage() {
           {/* Imagem */}
           <div className="relative aspect-[4/3] overflow-hidden rounded-3xl bg-neutral-200 shadow-xl">
             <Image
-              src="/images/sobre/sobre-horizontal.png"
+              src="/images/sobre/sobre-nossa-historia.png"
               alt="Vista aérea de empreendimento em Curitiba — FYMOOB Imobiliária"
               fill
               className="object-cover"
