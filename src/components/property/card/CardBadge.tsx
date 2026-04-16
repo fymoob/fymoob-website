@@ -33,7 +33,8 @@ export function CardBadge({ badge, className }: CardBadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-white/85 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide shadow-sm ring-1 ring-black/5 backdrop-blur-md",
+        "inline-flex items-center gap-1 whitespace-nowrap rounded-full bg-white/85 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide shadow-sm ring-1 ring-black/5 backdrop-blur-md",
+        "sm:gap-1.5 sm:px-2.5 sm:py-1 sm:text-[11px]",
         badge.textColor,
         className
       )}
@@ -54,7 +55,7 @@ export function CardBadge({ badge, className }: CardBadgeProps) {
         </span>
       ) : (
         <Icon
-          className={cn("size-3", iconExtra, isFilled && "fill-current")}
+          className={cn("size-2.5 sm:size-3", iconExtra, isFilled && "fill-current")}
           strokeWidth={2.5}
         />
       )}
