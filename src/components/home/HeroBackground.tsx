@@ -3,7 +3,7 @@ export function HeroBackground() {
     <picture>
       <source
         media="(max-width: 767px)"
-        srcSet="/images/hero-poster-mobile.webp"
+        srcSet="/images/hero-home-mobile.webp"
         type="image/webp"
       />
       <source srcSet="/images/hero-home.webp" type="image/webp" />
