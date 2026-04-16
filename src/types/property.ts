@@ -19,7 +19,18 @@ export type PropertyType =
 
 export type PropertyFinalidade = "Venda" | "Locação" | "Venda e Locação";
 
-export type PropertyStatus = "Disponível" | "Vendido" | "Alugado" | "Reservado";
+// Status exato vindo do CRM Loft (campo Status na API).
+// Disponiveis no site: "Venda", "Aluguel", "Venda e Aluguel"
+// Indisponiveis: "Alugado Imobiliaria", "Alugado Terceiros", "Pendente", "Suspenso"
+export type PropertyStatus =
+  | "Venda"
+  | "Aluguel"
+  | "Venda e Aluguel"
+  | "Alugado Imobiliária"
+  | "Alugado Terceiros"
+  | "Pendente"
+  | "Suspenso"
+  | string; // outros valores fallback
 
 export type PropertyPageVariant = "standard" | "premium";
 export type PropertyPageVariantOverride = "auto" | "standard" | "premium";
@@ -38,6 +49,7 @@ export interface Property {
   tipo: PropertyType;
   finalidade: PropertyFinalidade;
   status: PropertyStatus;
+  disponivel: boolean; // true se status permite exibir no site (Venda/Aluguel/Venda e Aluguel)
   situacao: string | null;
   ocupacao: string | null;
 

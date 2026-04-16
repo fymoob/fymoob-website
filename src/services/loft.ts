@@ -248,6 +248,12 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
   else if (status === "Venda e Aluguel") finalidade = "Venda e Locação"
   else if (status === "Venda") finalidade = "Venda"
 
+  // Disponibilidade baseada no status (regra do Bruno):
+  // Disponivel no site: Venda, Aluguel, Venda e Aluguel
+  // Indisponivel: Alugado Imobiliaria, Alugado Terceiros, Pendente, Suspenso
+  const AVAILABLE_STATUSES = new Set(["Venda", "Aluguel", "Venda e Aluguel"])
+  const disponivel = AVAILABLE_STATUSES.has(status)
+
   const titulo = raw.TituloSite
     || raw.TextoAnuncio
     || `${raw.Categoria || "Imóvel"} no ${raw.BairroComercial || raw.Bairro || "Curitiba"}`
@@ -262,7 +268,8 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
     textoAnuncio: raw.TextoAnuncio || null,
     tipo: (raw.Categoria || "Apartamento") as PropertyType,
     finalidade,
-    status: "Disponível",
+    status: status as Property["status"],
+    disponivel,
     situacao: raw.Situacao || null,
     ocupacao: raw.Ocupacao || null,
     precoVenda: parseNumber(raw.ValorVenda),
@@ -473,6 +480,10 @@ function applyFilters(indexed: IndexedProperty[], filters: PropertyFilters): Pro
 
   for (const item of indexed) {
     const p = item.property
+    // Filtro de disponibilidade (regra do Bruno, 16/04/2026):
+    // Nao mostrar imoveis com status Alugado/Pendente/Suspenso
+    // mesmo que ExibirNoSite=Sim (backup defensivo)
+    if (!p.disponivel) continue
     if (tipoSet && !tipoSet.has(p.tipo)) continue
     if (finalidadeSlugSet && !finalidadeSlugSet.has(item.finalidadeSlug)) continue
     if (bairroSlugSet && !bairroSlugSet.has(item.bairroSlug)) continue
