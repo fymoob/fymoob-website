@@ -43,7 +43,7 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bair
       />
 
       {/* Mobile full-hero glass layer: readability boost with cleaner composition */}
-      <div className="absolute inset-0 z-[1] bg-black/18 backdrop-blur-[1.5px] md:hidden" />
+      <div className="absolute inset-0 z-[1] bg-black/18 md:hidden" />
 
       {/* Bottom gradient - desktop only */}
       <div
