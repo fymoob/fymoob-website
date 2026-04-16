@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   description:
     "Encontre apartamentos, casas e sobrados em Curitiba. Imobiliária FYMOOB — seu imóvel ideal com atendimento personalizado.",
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
   ),
   openGraph: {
     type: "website",

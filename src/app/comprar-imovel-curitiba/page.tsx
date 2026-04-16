@@ -68,7 +68,7 @@ export default function ComprarImovelPage() {
     publisher: {
       "@type": "Organization",
       name: "FYMOOB Imobiliária",
-      url: "https://fymoob.com",
+      url: "https://fymoob.com.br",
     },
   }
 

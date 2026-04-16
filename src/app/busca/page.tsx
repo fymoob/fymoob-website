@@ -45,7 +45,7 @@ interface ParsedSearchState {
 }
 
 const PAGE_SIZE = 24
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
 
 const TYPE_BY_SLUG: Record<string, PropertyType> = {
   apartamento: "Apartamento",

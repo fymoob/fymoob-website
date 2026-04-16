@@ -4,7 +4,7 @@ import { getAllSlugs as getAllBlogSlugs } from "@/services/blog"
 import { getAllGuiaSlugs } from "@/services/guias"
 import type { PropertyType } from "@/types/property"
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
 
 const TIPO_SLUG_MAP: Partial<Record<PropertyType, string>> = {
   Apartamento: "apartamentos",

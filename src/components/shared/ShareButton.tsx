@@ -13,7 +13,8 @@ interface ShareButtonProps {
 export function ShareButton({ title, url, variant = "default" }: ShareButtonProps) {
   const [copied, setCopied] = useState(false)
   const [canNativeShare, setCanNativeShare] = useState(false)
-  const fullUrl = `https://fymoob.com${url}`
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
+  const fullUrl = url.startsWith("http") ? url : `${siteUrl}${url}`
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${title} — ${fullUrl}`)}`
 
   useEffect(() => {

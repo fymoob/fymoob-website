@@ -2,7 +2,7 @@ const INDEXNOW_KEY = "d7ce36f0730ca0d491f787e07907b113b89651d7f297a09a2bec64e2cd
 const INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow"
 
 function getHost(): string {
-  const url = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
+  const url = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
   return new URL(url).host
 }
 

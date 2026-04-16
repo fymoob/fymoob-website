@@ -82,7 +82,7 @@ export default async function OgImage() {
             marginTop: "16px",
           }}
         >
-          fymoob.com
+          fymoob.com.br
         </p>
       </div>
     ),

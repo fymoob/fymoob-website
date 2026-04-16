@@ -54,14 +54,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Resend({
       apiKey: process.env.RESEND_API_KEY,
-      from: process.env.RESEND_FROM_EMAIL ?? "noreply@fymoob.com",
+      from: process.env.RESEND_FROM_EMAIL ?? "noreply@fymoob.com.br",
       // Override default magic link email to match FYMOOB branding
       sendVerificationRequest: async ({ identifier: email, url }) => {
         const { Resend: ResendClient } = await import("resend")
         const resend = new ResendClient(process.env.RESEND_API_KEY!)
 
         await resend.emails.send({
-          from: process.env.RESEND_FROM_EMAIL ?? "noreply@fymoob.com",
+          from: process.env.RESEND_FROM_EMAIL ?? "noreply@fymoob.com.br",
           to: email,
           subject: "Acesso ao painel FYMOOB",
           html: `

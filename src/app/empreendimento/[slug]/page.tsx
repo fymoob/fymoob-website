@@ -124,10 +124,11 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
     : (hasEditorialLayout(slug) ? (assets?.plantas || []) : [])
 
   const itemListSchema = generateItemListSchema(properties, `/empreendimento/${slug}`)
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
   const realEstateSchema = {
     "@context": "https://schema.org", "@type": "RealEstateListing", name: emp.nome,
     description: descricao || `${emp.total} unidades disponíveis no ${emp.nome}`,
-    url: `https://fymoob.com/empreendimento/${slug}`,
+    url: `${SITE_URL}/empreendimento/${slug}`,
     image: assets?.heroImage || emp.imageUrl || undefined,
     offers: precoMin ? { "@type": "AggregateOffer", lowPrice: precoMin, highPrice: precoMax || precoMin, priceCurrency: "BRL", offerCount: properties.length } : undefined,
     address: { "@type": "PostalAddress", addressLocality: "Curitiba", addressRegion: "PR", addressCountry: "BR" },

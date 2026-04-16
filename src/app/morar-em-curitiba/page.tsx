@@ -57,7 +57,7 @@ export default function MorarEmCuritibaPage() {
     description: frontmatter.description,
     datePublished: frontmatter.date,
     author: { "@type": "Person", name: "Bruno César de Almeida", jobTitle: "Corretor de Imóveis", credential: "CRECI J 9420" },
-    publisher: { "@type": "Organization", name: "FYMOOB Imobiliária", url: "https://fymoob.com" },
+    publisher: { "@type": "Organization", name: "FYMOOB Imobiliária", url: "https://fymoob.com.br" },
   }
 
   return (

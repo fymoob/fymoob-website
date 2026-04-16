@@ -2,7 +2,7 @@ import { getAllBairros } from "@/services/loft"
 
 export const revalidate = 3600
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
 
 export async function GET() {
   const bairros = await getAllBairros()

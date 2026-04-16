@@ -1,27 +1,83 @@
 import { NextRequest, NextResponse } from "next/server"
+import { checkLeadRateLimit } from "@/lib/rate-limit"
+import { verifyTurnstileToken } from "@/lib/turnstile"
 
 const LOFT_BASE_URL = "https://brunoces-rest.vistahost.com.br"
 const LOFT_API_KEY = process.env.LOFT_API_KEY || ""
 
+// Validações de input
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+// BR: aceita (xx) xxxxx-xxxx, xx xxxxx xxxx, +55xx..., 11-13 dígitos
+const PHONE_REGEX = /^[+]?[\d\s()-]{10,20}$/
+
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-
-    const { nome, email, fone, mensagem, codigoImovel, interesse } = body as {
-      nome?: string
-      email?: string
-      fone?: string
-      mensagem?: string
-      codigoImovel?: string
-      interesse?: string
+    // 1. Rate limit por IP (5 req / 10min)
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      request.headers.get("x-real-ip") ||
+      "unknown"
+    const rate = await checkLeadRateLimit(ip)
+    if (!rate.allowed) {
+      return NextResponse.json(
+        { error: rate.reason ?? "Too many requests" },
+        { status: 429, headers: rate.retryAfter ? { "Retry-After": String(rate.retryAfter) } : {} }
+      )
     }
 
-    // Validação básica
-    if (!nome || (!email && !fone)) {
+    const body = await request.json()
+
+    const { nome, email, fone, mensagem, codigoImovel, interesse, consentLGPD, turnstileToken } =
+      body as {
+        nome?: string
+        email?: string
+        fone?: string
+        mensagem?: string
+        codigoImovel?: string
+        interesse?: string
+        consentLGPD?: boolean
+        turnstileToken?: string
+      }
+
+    // 2. Consentimento LGPD obrigatório
+    if (!consentLGPD) {
       return NextResponse.json(
-        { error: "Nome e email ou telefone são obrigatórios" },
+        { error: "Aceite da Política de Privacidade é obrigatório (LGPD)." },
         { status: 400 }
       )
+    }
+
+    // 3. Turnstile anti-bot
+    const turnstile = await verifyTurnstileToken(turnstileToken, ip)
+    if (!turnstile.success) {
+      return NextResponse.json(
+        { error: turnstile.reason ?? "Falha na verificação anti-bot" },
+        { status: 403 }
+      )
+    }
+
+    // 4. Validação e sanitização de inputs
+    const nomeClean = (nome ?? "").trim().slice(0, 120)
+    const emailClean = (email ?? "").trim().toLowerCase().slice(0, 120)
+    const foneClean = (fone ?? "").trim().slice(0, 25)
+    const mensagemClean = (mensagem ?? "").trim().slice(0, 2000)
+    const codigoClean = (codigoImovel ?? "").trim().slice(0, 20)
+    const interesseClean = (interesse ?? "Venda").trim().slice(0, 30)
+
+    if (nomeClean.length < 2) {
+      return NextResponse.json({ error: "Nome inválido" }, { status: 400 })
+    }
+    if (!emailClean && !foneClean) {
+      return NextResponse.json(
+        { error: "Informe ao menos email ou telefone" },
+        { status: 400 }
+      )
+    }
+    if (emailClean && !EMAIL_REGEX.test(emailClean)) {
+      return NextResponse.json({ error: "Email inválido" }, { status: 400 })
+    }
+    if (foneClean && !PHONE_REGEX.test(foneClean)) {
+      return NextResponse.json({ error: "Telefone inválido" }, { status: 400 })
     }
 
     if (!LOFT_API_KEY) {
@@ -32,16 +88,16 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Enviar lead pro CRM Loft
+    // 5. Enviar lead pro CRM Loft
     const leadPayload = {
       lead: {
-        nome,
-        email: email || "",
-        fone: fone || "",
-        interesse: interesse || "Venda",
-        anuncio: codigoImovel || "",
+        nome: nomeClean,
+        email: emailClean,
+        fone: foneClean,
+        interesse: interesseClean,
+        anuncio: codigoClean,
         veiculo: "Site FYMOOB",
-        mensagem: mensagem || "Contato via site FYMOOB",
+        mensagem: mensagemClean || "Contato via site FYMOOB",
       },
     }
 
@@ -52,6 +108,7 @@ export async function POST(request: NextRequest) {
         Accept: "application/json",
       },
       body: JSON.stringify(leadPayload),
+      signal: AbortSignal.timeout(8000),
     })
 
     if (!res.ok) {

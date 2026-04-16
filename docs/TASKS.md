@@ -1811,6 +1811,117 @@ Não para ranking, apenas para acelerar crawl:
 
 ---
 
+## Fase 13.11 — Auditoria Pré-Deploy [PRIORITÁRIA — 15/04/2026]
+
+> **Origem:** 4 agentes em paralelo (SEO + Security + Rotas + Integrações) + build local.
+> **Status:** bloqueadores identificados — fix obrigatório antes de ir ao ar.
+> **Contexto:** site vai para `https://fymoob.com.br` (primary) + `https://fymoob.com` (redirect).
+
+### 13.11.1 — ONDA 1: Bloqueadores de Deploy [CRÍTICO]
+
+#### 13.11.1.a — `/api/lead` sem proteção
+- [ ] Adicionar rate limit (Upstash, 5/IP/10min)
+- [ ] Validar Turnstile token server-side
+- [ ] Validar inputs: email regex, telefone BR regex, nome min 2 chars, mensagem max 2000
+- [ ] Sanitizar `nome.trim()`, `nome.slice(0, 120)`, `mensagem.slice(0, 2000)`
+- **Impacto:** spammer pode injetar 10k leads falsos → queima CRM do Bruno, reputação Resend/Loft
+- **Arquivo:** `src/app/api/lead/route.ts`
+
+#### 13.11.1.b — LGPD (obrigatório legal)
+- [ ] `ContactForm.tsx`: checkbox obrigatório "Autorizo o contato e tratamento dos meus dados conforme a Política de Privacidade"
+- [ ] Criar `/politica-de-privacidade/page.tsx` com texto LGPD adequado
+- [ ] Linkar política no Footer
+- **Impacto:** exigência legal. Coleta de dados sem consent = infração LGPD
+
+#### 13.11.1.c — Fallbacks hardcoded `https://fymoob.com` (em vez de `.com.br`)
+- [ ] `src/app/layout.tsx:47`
+- [ ] `src/lib/seo.ts:5`
+- [ ] `src/lib/indexnow.ts:5`
+- [ ] `src/app/sitemap.ts:7`
+- [ ] `src/app/robots.ts:3`
+- [ ] `src/app/llms.txt/route.ts:5`
+- [ ] `src/app/busca/page.tsx:48`
+- [ ] `src/app/imovel/[slug]/page.tsx:71`
+- [ ] `src/app/imoveis/[bairro]/page.tsx:114`
+- [ ] `src/app/sobre/page.tsx:96`
+- [ ] `src/app/politica-editorial/page.tsx:53`
+- [ ] `.env.example:2`
+- [ ] `README.md:27`
+- **Impacto:** se env var falhar em produção, schema/sitemap/canonical/OG apontam pra domínio redirect
+
+#### 13.11.1.d — Admin cards 404 (`/admin/blog`, `/admin/empreendimentos` não existem)
+- [ ] Remover cards ou converter em `<div>` não clicáveis até Fase 9.2 implementar
+- **Arquivo:** `src/app/admin/page.tsx`
+
+#### 13.11.1.e — ShareButton com URL hardcoded
+- [ ] `src/components/shared/ShareButton.tsx:16` — usar `NEXT_PUBLIC_SITE_URL`
+- **Impacto:** WhatsApp share envia link errado (.com sem .br)
+
+### 13.11.2 — ONDA 2: Alto — fix antes do deploy
+
+- [ ] Criar `src/app/error.tsx` + `src/app/global-error.tsx` (UX em falha)
+- [ ] `src/app/robots.ts`: adicionar `/admin` no disallow
+- [ ] `src/app/opengraph-image.tsx:85`: fymoob.com → fymoob.com.br
+- [ ] `ContactForm` adicionar Turnstile widget + validação server-side
+- [ ] Regenerar `AUTH_SECRET` com `openssl rand -base64 32` para produção (só no Vercel)
+- [ ] Pillar pages: publisher URL hardcoded — usar `SITE_URL`
+  - `src/app/comprar-imovel-curitiba/page.tsx:71`
+  - `src/app/morar-em-curitiba/page.tsx:60`
+  - `src/app/alugar-curitiba/page.tsx:59`
+  - `src/app/guia/[bairro]/page.tsx:101`
+- [ ] `src/app/empreendimento/[slug]/page.tsx:130`: schema hardcoded → usar `SITE_URL`
+- [ ] WhatsApp tel: remover hífen (`+554199978-0517` → `+5541999780517`) em todos os lugares
+- [ ] Rate limit em `/api/properties/batch`, `/api/property/[code]`, `/api/photos/[code]`
+- [ ] Google Maps embed em `/contato` — substituir placeholder por URL real
+
+### 13.11.3 — ONDA 3: Médio — pode ser pós-deploy
+
+- [ ] CSP + HSTS headers em `next.config.ts`
+- [ ] Rate-limit e Turnstile: fail-closed em produção (hoje fail-open)
+- [ ] `RESEND_FROM_EMAIL` fallback `.com` → `.com.br` em `src/auth.ts`
+- [ ] Schema author unification: pillars usarem `@id /sobre#bruno` (hoje `Person` com `credential` inválido)
+- [ ] Wagner schema: adicionar campo `image` (Bruno tem, Wagner não)
+- [ ] Timeouts em fetch Loft (`AbortSignal.timeout(8000)`)
+- [ ] Timeouts em Upstash (`Promise.race` com 3s)
+- [ ] Criar `src/env.ts` com validação zod de env vars críticas (fail fast no build)
+- [ ] Footer: adicionar coluna "Guias" com `/comprar-imovel-curitiba`, `/morar-em-curitiba`, `/alugar-curitiba`
+- [ ] `getAllPropertiesInternal` try/catch retornando `[]` em erro (hoje propaga → 500)
+- [ ] JSON-LD escape `</` via helper compartilhado (XSS via CRM poisoning)
+
+### 13.11.4 — Baixo / polish — pós-deploy
+
+- [ ] Remover senha Supabase do comentário em `.env.local`
+- [ ] Decidir: usar `SUPABASE_SERVICE_ROLE_KEY` ou remover (hoje no env mas não usada)
+- [ ] Docs (`docs/seo-strategy.md`, `docs/admin-panel-setup.md`): atualizar `.com` → `.com.br`
+- [ ] CLAUDE.md: corrigir rota documentada `/imoveis/ate-300-mil` → `/imoveis/preco/[faixa]`
+- [ ] `INDEXNOW_SECRET` adicionar ao `.env.example`
+- [ ] BottomNav: considerar atalho para contato/WhatsApp
+- [ ] `.env.local:40-41`: remover linhas com fragmento de senha
+
+### 13.11.5 — Verificado OK (não precisa fix)
+
+- [x] Build limpo (zero errors, zero warnings, 670 páginas geradas)
+- [x] Todas as rotas CLAUDE.md existem em `src/app/`
+- [x] `notFound()` usado corretamente em 11 rotas dinâmicas
+- [x] `not-found.tsx` existe com design consistente
+- [x] Metadata em todas as 32 páginas públicas
+- [x] Sitemap segmentado em 4 (generateSitemaps funcionando)
+- [x] Schema.org entity graph conectado via `@id` (Organization, LocalBusiness, Bruno, Wagner)
+- [x] llms.txt dinâmico
+- [x] Turnstile fail-closed em caso de rede (bom)
+- [x] Rate limit Upstash com prefixes corretos (`fymoob:auth:`, `fymoob:admin:login:*`)
+- [x] ISR: revalidate 3600s em imóveis, 7200s em empreendimentos
+- [x] IndexNow protegido por secret
+- [x] `proxy.ts` protege `/admin/*` exceto `/admin/login`
+- [x] Loft API com cache `unstable_cache` + fallback vazio se env ausente
+- [x] WhatsApp `5541999780517` consistente em todos os lugares (exceto tel: formatado)
+- [x] `robots.ts` bloqueia `/api/`, `/favoritos`, `/comparar`
+- [x] Nenhum import morto de Nhost/Hasura no código
+- [x] Imagens de bairro: todos os 12 slugs em `/public/images/bairros/` existem
+- [x] Nenhum "lorem ipsum" / "TODO" em conteúdo público
+
+---
+
 ## Fase 14 — Inteligência Imobiliária (Produto Futuro)
 
 > Plataforma de dados e IA para vantagem competitiva da FYMOOB.

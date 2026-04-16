@@ -98,7 +98,7 @@ export default async function GuiaBairroPage({ params }: PageProps) {
     publisher: {
       "@type": "Organization",
       name: "FYMOOB Imobiliária",
-      url: "https://fymoob.com",
+      url: "https://fymoob.com.br",
     },
     about: {
       "@type": "Place",

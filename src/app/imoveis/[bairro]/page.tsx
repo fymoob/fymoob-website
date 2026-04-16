@@ -111,7 +111,7 @@ export default async function BairroPage({ params }: BairroPageProps) {
     `/imoveis/${bairroSlug}`
   )
 
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
   const datasetSchema = marketStats && marketStats.precoMedioVenda
     ? {
         "@context": "https://schema.org",

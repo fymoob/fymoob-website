@@ -68,7 +68,7 @@ export async function generateMetadata({
 
   const shortTitle = generateShortTitle(property)
   const description = generatePropertyDescription(property)
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
 
   return {
     title: shortTitle,

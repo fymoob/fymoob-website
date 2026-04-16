@@ -192,7 +192,21 @@ export function Footer() {
               &copy; {new Date().getFullYear()} FYMOOB Administradora de Imoveis Ltda.
               Todos os direitos reservados.
             </p>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+              <Link
+                href="/politica-de-privacidade"
+                className="text-xs text-neutral-500 transition-colors hover:text-white"
+              >
+                Privacidade
+              </Link>
+              <span className="text-neutral-700">|</span>
+              <Link
+                href="/politica-editorial"
+                className="text-xs text-neutral-500 transition-colors hover:text-white"
+              >
+                Política Editorial
+              </Link>
+              <span className="text-neutral-700">|</span>
               <a
                 href="https://wa.me/5541999780517"
                 target="_blank"

@@ -93,7 +93,7 @@ export default async function SobrePage() {
     { number: null, text: "J 9420", label: "CRECI ativo", icon: Award },
   ]
 
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
 
   const jsonLd = {
     "@context": "https://schema.org",

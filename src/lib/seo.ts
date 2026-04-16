@@ -2,7 +2,7 @@ import type { Property, PropertyType } from "@/types/property"
 import type { BlogPost } from "@/types/blog"
 import { formatPrice, formatArea, getPropertyImage } from "@/lib/utils"
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
 
 export function generateOrganizationSchema() {
   return {

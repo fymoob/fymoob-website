@@ -40,6 +40,37 @@ export const loginIpLimiter = redis
     })
   : null
 
+// Lead form (contato/anuncie): 5 requests per 10 min per IP.
+// Intencionalmente mais restritivo que login para frear spam rápido.
+export const leadIpLimiter = redis
+  ? new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(5, "10 m"),
+      prefix: "fymoob:lead:ip",
+    })
+  : null
+
+export async function checkLeadRateLimit(
+  ip: string
+): Promise<{ allowed: boolean; reason?: string; retryAfter?: number }> {
+  if (!leadIpLimiter) {
+    if (process.env.NODE_ENV === "production") {
+      console.warn("[rate-limit] Upstash not configured — /api/lead NOT rate limited.")
+    }
+    return { allowed: true }
+  }
+
+  const result = await leadIpLimiter.limit(ip)
+  if (!result.success) {
+    return {
+      allowed: false,
+      reason: "Muitas tentativas deste IP. Aguarde 10 minutos e tente novamente.",
+      retryAfter: Math.ceil((result.reset - Date.now()) / 1000),
+    }
+  }
+  return { allowed: true }
+}
+
 export type RateLimitResult = {
   success: boolean
   remaining: number

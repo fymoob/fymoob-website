@@ -50,7 +50,7 @@ const principios = [
 ]
 
 export default function PoliticaEditorialPage() {
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com"
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
 
   const jsonLd = {
     "@context": "https://schema.org",
