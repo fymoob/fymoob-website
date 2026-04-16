@@ -144,7 +144,7 @@ export interface PropertyFilters {
   caracteristicasCondominio?: string[];
   lancamento?: boolean;
   busca?: string;
-  orderBy?: "preco-asc" | "preco-desc" | "area-asc" | "area-desc" | "recente";
+  orderBy?: "preco-asc" | "preco-desc" | "area-asc" | "area-desc" | "recente" | "relevante";
   page?: number;
   limit?: number;
 }

@@ -43,7 +43,7 @@ function getUrgencyMessage({
     if (daysAgo <= 3) {
       return {
         icon: Sparkles,
-        text: "Novo publicado recentemente",
+        text: "Publicado Recentemente",
         color: "text-amber-700 bg-amber-50",
       }
     }
@@ -51,7 +51,7 @@ function getUrgencyMessage({
     if (daysAgo <= 7) {
       return {
         icon: Sparkles,
-        text: `Novo há ${daysAgo} dias`,
+        text: `Publicado há ${daysAgo} dias`,
         color: "text-amber-700 bg-amber-50",
       }
     }

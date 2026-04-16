@@ -10,6 +10,7 @@ import type {
   LoftPropertyRaw,
 } from "@/types/property"
 import { slugify } from "@/lib/utils"
+import { sortByRelevance } from "@/lib/property-relevance"
 import { unstable_cache } from "next/cache"
 
 // ---------------------------------------------------------------------------
@@ -505,32 +506,34 @@ function applyFilters(indexed: IndexedProperty[], filters: PropertyFilters): Pro
     result.push(p)
   }
 
-  const effectiveOrder = filters.orderBy ?? "recente"
-  if (effectiveOrder) {
-    switch (effectiveOrder) {
-      case "preco-asc":
-        result.sort((a, b) => (a.precoVenda ?? a.precoAluguel ?? 0) - (b.precoVenda ?? b.precoAluguel ?? 0))
-        break
-      case "preco-desc":
-        result.sort((a, b) => (b.precoVenda ?? b.precoAluguel ?? 0) - (a.precoVenda ?? a.precoAluguel ?? 0))
-        break
-      case "area-asc":
-        result.sort((a, b) => (a.areaPrivativa ?? 0) - (b.areaPrivativa ?? 0))
-        break
-      case "area-desc":
-        result.sort((a, b) => (b.areaPrivativa ?? 0) - (a.areaPrivativa ?? 0))
-        break
-      case "recente":
-        result.sort((a, b) => {
-          const da = a.dataAtualizacao ?? a.dataCadastro
-          const db = b.dataAtualizacao ?? b.dataCadastro
-          if (!da && !db) return 0
-          if (!da) return 1
-          if (!db) return -1
-          return db.localeCompare(da)
-        })
-        break
-    }
+  // Default: "relevante" (score composto: destaque + qualidade + recência).
+  // Ver src/lib/property-relevance.ts para a fórmula.
+  const effectiveOrder = filters.orderBy ?? "relevante"
+  switch (effectiveOrder) {
+    case "preco-asc":
+      result.sort((a, b) => (a.precoVenda ?? a.precoAluguel ?? 0) - (b.precoVenda ?? b.precoAluguel ?? 0))
+      break
+    case "preco-desc":
+      result.sort((a, b) => (b.precoVenda ?? b.precoAluguel ?? 0) - (a.precoVenda ?? a.precoAluguel ?? 0))
+      break
+    case "area-asc":
+      result.sort((a, b) => (a.areaPrivativa ?? 0) - (b.areaPrivativa ?? 0))
+      break
+    case "area-desc":
+      result.sort((a, b) => (b.areaPrivativa ?? 0) - (a.areaPrivativa ?? 0))
+      break
+    case "recente":
+      result.sort((a, b) => {
+        const da = a.dataAtualizacao ?? a.dataCadastro
+        const db = b.dataAtualizacao ?? b.dataCadastro
+        if (!da && !db) return 0
+        if (!da) return 1
+        if (!db) return -1
+        return db.localeCompare(da)
+      })
+      break
+    case "relevante":
+      return sortByRelevance(result)
   }
 
   return result

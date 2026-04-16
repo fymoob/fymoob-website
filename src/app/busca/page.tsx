@@ -68,6 +68,7 @@ const ORDER_BY_VALUES = new Set<PropertyFilters["orderBy"]>([
   "area-asc",
   "area-desc",
   "recente",
+  "relevante",
 ])
 
 function getParamValue(param: SearchParamValue): string | undefined {
