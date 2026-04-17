@@ -26,7 +26,7 @@ import {
 export const metadata: Metadata = {
   title: "Sobre a FYMOOB | Imobiliária em Curitiba",
   description:
-    "Conheça a Fymoob — imobiliária em Curitiba com atendimento próximo, negociações justas e soluções sob medida. CRECI J 9420. Mais de 15 anos de experiência no mercado imobiliário.",
+    "Conheça a FYMOOB — imobiliária em Curitiba com atendimento próximo, negociações justas e soluções sob medida. CRECI J 9420. Mais de 15 anos no mercado.",
   alternates: { canonical: "/sobre" },
 }
 

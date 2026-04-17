@@ -1,16 +1,11 @@
 import type { Metadata } from "next"
+import { ChevronDown } from "lucide-react"
 import { generateFAQPageSchema } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { faqData } from "@/data/faq-data"
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion"
 
 export const metadata: Metadata = {
-  title: "Perguntas Frequentes | FAQ",
+  title: "Perguntas Frequentes sobre Imóveis em Curitiba | FYMOOB",
   description:
     "Tire suas dúvidas sobre compra, venda, aluguel e financiamento de imóveis em Curitiba. Perguntas frequentes respondidas pela FYMOOB Imobiliária.",
   alternates: {
@@ -58,18 +53,20 @@ export default function FAQPage() {
               <h2 className="mb-4 font-display text-xl font-bold text-fymoob-blue">
                 {category.title}
               </h2>
-              <Accordion>
+              <div className="divide-y divide-neutral-200 rounded-lg border border-neutral-200">
                 {category.items.map((item, index) => (
-                  <AccordionItem key={index} value={`${category.id}-${index}`}>
-                    <AccordionTrigger className="text-left text-base font-medium text-fymoob-gray-dark">
-                      {item.question}
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <p className="text-fymoob-gray-mid">{item.answer}</p>
-                    </AccordionContent>
-                  </AccordionItem>
+                  <details
+                    key={index}
+                    className="group/faq px-4 py-3"
+                  >
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-1 text-left text-base font-medium text-fymoob-gray-dark [&::-webkit-details-marker]:hidden">
+                      <span className="flex-1">{item.question}</span>
+                      <ChevronDown className="size-5 shrink-0 text-neutral-400 transition-transform group-open/faq:rotate-180" />
+                    </summary>
+                    <p className="mt-2 pb-2 text-fymoob-gray-mid">{item.answer}</p>
+                  </details>
                 ))}
-              </Accordion>
+              </div>
             </section>
           ))}
         </div>

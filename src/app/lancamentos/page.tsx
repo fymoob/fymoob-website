@@ -23,7 +23,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const faixa = precoMin && precoMax ? ` de ${precoMin} a ${precoMax}` : ""
 
   return {
-    title: "Lançamentos Imobiliários em Curitiba | Imóveis na Planta — FYMOOB",
+    title: "Lançamentos em Curitiba | Imóveis na Planta — FYMOOB",
     description: `${properties.length} lançamentos e imóveis na planta em Curitiba${faixa}. Apartamentos e empreendimentos novos com condições exclusivas. FYMOOB Imobiliária.`,
     alternates: { canonical: "/lancamentos" },
   }

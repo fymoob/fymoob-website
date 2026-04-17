@@ -15,8 +15,15 @@ export function generateOrganizationSchema() {
     foundingDate: "2024",
     description:
       "Imobiliária em Curitiba especializada em apartamentos, casas e sobrados. Encontre seu imóvel ideal com a FYMOOB.",
-    telephone: ["+554199978-0517", "+554132655051"],
+    telephone: ["+5541999780517", "+554132655051"],
     email: "fymoob@gmail.com",
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: "+5541999780517",
+      contactType: "customer service",
+      areaServed: "BR",
+      availableLanguage: "Portuguese",
+    },
     hasCredential: {
       "@type": "EducationalOccupationalCredential",
       credentialCategory: "CRECI J 9420",
@@ -108,6 +115,13 @@ export function generateLocalBusinessSchema() {
 
 export function generatePropertySchema(property: Property) {
   const price = property.precoVenda ?? property.precoAluguel
+  const rawImage = getPropertyImage(property)
+  // Schema.org RealEstateListing exige URL absoluta em image
+  const image = rawImage
+    ? rawImage.startsWith("http")
+      ? rawImage
+      : `${SITE_URL}${rawImage}`
+    : undefined
 
   return {
     "@context": "https://schema.org",
@@ -115,8 +129,9 @@ export function generatePropertySchema(property: Property) {
     name: property.titulo,
     description: property.descricao,
     url: `${SITE_URL}/imovel/${property.slug}`,
-    image: getPropertyImage(property),
-    datePosted: property.dataCadastro,
+    ...(image && { image }),
+    // datePosted/dateModified: so incluir se dataCadastro for valida (null quebra validacao Google)
+    ...(property.dataCadastro && { datePosted: property.dataCadastro }),
     ...(price && {
       offers: {
         "@type": "Offer",
@@ -128,12 +143,10 @@ export function generatePropertySchema(property: Property) {
     address: {
       "@type": "PostalAddress",
       streetAddress: [property.endereco, property.numero].filter(Boolean).join(", ") || undefined,
-      addressLocality: property.cidade,
+      addressLocality: property.bairro || property.cidade,
       addressRegion: property.estado,
+      postalCode: property.cep || undefined,
       addressCountry: "BR",
-      ...(property.bairro && {
-        addressRegion: `${property.bairro}, ${property.cidade} - ${property.estado}`,
-      }),
     },
     ...(property.latitude &&
       property.longitude && {
@@ -160,7 +173,7 @@ export function generatePropertySchema(property: Property) {
     provider: { "@id": `${SITE_URL}/#organization` },
     // Sinal E-E-A-T: imóvel revisado por corretor responsável com CRECI
     reviewedBy: { "@id": `${SITE_URL}/sobre#bruno` },
-    dateModified: property.dataCadastro,
+    ...(property.dataCadastro && { dateModified: property.dataCadastro }),
   }
 }
 
