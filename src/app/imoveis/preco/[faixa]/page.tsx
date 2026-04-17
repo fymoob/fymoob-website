@@ -10,6 +10,7 @@ import {
   generateLandingStats,
   generateDynamicFAQ,
   generateLandingIntro,
+  safeJsonLd,
 } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyGrid } from "@/components/search/PropertyGrid"
@@ -151,7 +152,7 @@ export default async function FaixaPrecoPage({ params }: FaixaPageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListSchema) }}
       />
 
       <div className="mx-auto w-full max-w-7xl px-4 md:px-8">

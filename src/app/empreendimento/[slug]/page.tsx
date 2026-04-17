@@ -8,7 +8,7 @@ import {
   getPropertiesByEmpreendimento,
 } from "@/services/loft"
 import { slugify, formatPrice, formatArea } from "@/lib/utils"
-import { generateItemListSchema, generateLandingStats, generateDynamicFAQ } from "@/lib/seo"
+import { generateItemListSchema, generateLandingStats, generateDynamicFAQ, safeJsonLd } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { RelatedPages } from "@/components/seo/RelatedPages"
@@ -153,7 +153,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
     // Standard layout (existing) for empreendimentos without custom assets
     return (
       <>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(combinedSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(combinedSchema) }} />
         <section className="bg-[#0d0d0d]">
           <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 sm:pt-8 lg:px-8">
             <div className="[&_nav]:text-white/60 [&_a]:text-white/60 [&_a:hover]:text-white [&_span]:text-white/80">
@@ -196,7 +196,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
   // ============================================
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(combinedSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(combinedSchema) }} />
 
       {/* ===== EDITORIAL HERO — 65vh with logo centered ===== */}
       <section className="relative flex h-[65vh] min-h-[500px] items-center justify-center overflow-hidden bg-neutral-900">

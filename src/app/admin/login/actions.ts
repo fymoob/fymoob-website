@@ -22,8 +22,11 @@ export async function requestMagicLink(
   }
 
   const headerList = await headers()
-  // x-real-ip (Vercel peer TCP) — nao forjavel pelo client
+  // x-real-ip (Vercel peer TCP) — nao forjavel pelo client. Fail-closed.
   const ip = getClientIp(headerList)
+  if (ip === null) {
+    return { status: "error", message: "Não foi possível validar sua conexão." }
+  }
 
   // Layer 3: bot filter
   const turnstile = await verifyTurnstileToken(turnstileToken, ip)

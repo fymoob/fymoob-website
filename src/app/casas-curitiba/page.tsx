@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { safeJsonLd } from "@/lib/seo"
 import Link from "next/link"
 import { Suspense } from "react"
 import { getProperties, getAllBairros, getAllTypes, getAllCities, getPropertyStats } from "@/services/loft"
@@ -63,7 +64,7 @@ export default async function CasasCuritibaPage({ searchParams }: { searchParams
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListSchema) }}
       />
 
       <div className="w-full bg-slate-50 px-4 py-8 md:px-12 lg:px-20 2xl:px-32">

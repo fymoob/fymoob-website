@@ -11,8 +11,12 @@ import { Redis } from "@upstash/redis"
  *
  * Sem esse helper, um atacante rotacionando X-Forwarded-For: <ip-random> burla
  * rate-limits por IP (lead spam, login enumeration).
+ *
+ * Fail-closed: quando rodando em Vercel e nao conseguimos determinar IP,
+ * retorna null. O caller deve rejeitar (evita bucket "unknown" compartilhado
+ * que permite DoS coletivo ou bypass via header vazio).
  */
-export function getClientIp(headers: Headers): string {
+export function getClientIp(headers: Headers): string | null {
   const realIp = headers.get("x-real-ip")?.trim()
   if (realIp) return realIp
 
@@ -23,7 +27,10 @@ export function getClientIp(headers: Headers): string {
     if (parts.length > 0) return parts[parts.length - 1]
   }
 
-  return "unknown"
+  // Fora da Vercel (dev local, testes) — aceita "local" como chave unica.
+  // Em prod, se chegar aqui significa proxy mal configurado — fail-closed.
+  if (process.env.VERCEL) return null
+  return "local"
 }
 
 /**

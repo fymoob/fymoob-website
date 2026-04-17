@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import dynamic from "next/dynamic";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { generateOrganizationSchema, generateLocalBusinessSchema } from "@/lib/seo";
+import { generateOrganizationSchema, generateLocalBusinessSchema, safeJsonLd } from "@/lib/seo";
 import { Suspense } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -98,11 +98,11 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://cdn.vistahost.com.br" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(orgSchema) }}
         />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(localBusinessSchema) }}
         />
       </head>
       <body

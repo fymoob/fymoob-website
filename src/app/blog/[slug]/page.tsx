@@ -6,7 +6,7 @@ import Link from "next/link"
 import { MDXRemote } from "next-mdx-remote/rsc"
 import remarkGfm from "remark-gfm"
 import { getPostBySlug, getAllSlugs, getRelatedPosts } from "@/services/blog"
-import { generateBlogPostingSchema } from "@/lib/seo"
+import { generateBlogPostingSchema, safeJsonLd } from "@/lib/seo"
 import { mdxComponents } from "@/lib/mdx-components"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { RelatedPosts } from "@/components/blog/RelatedPosts"
@@ -64,7 +64,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
       />
 
       {/* Hero Image with title overlay */}

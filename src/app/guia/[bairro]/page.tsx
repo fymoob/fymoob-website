@@ -5,7 +5,7 @@ import { MDXRemote } from "next-mdx-remote/rsc"
 import remarkGfm from "remark-gfm"
 import { getGuiaBySlug, getAllGuiaSlugs } from "@/services/guias"
 import { getProperties, getPropertyStats } from "@/services/loft"
-import { generateLandingStats, generateDynamicFAQ, generateFAQPageSchema, generatePillarSchema } from "@/lib/seo"
+import { generateLandingStats, generateDynamicFAQ, generateFAQPageSchema, generatePillarSchema, safeJsonLd } from "@/lib/seo"
 import { formatPrice } from "@/lib/utils"
 import { mdxComponents } from "@/lib/mdx-components"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
@@ -101,7 +101,7 @@ export default async function GuiaBairroPage({ params }: PageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(articleSchema) }}
       />
 
       <article className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">

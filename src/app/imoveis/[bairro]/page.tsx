@@ -12,6 +12,7 @@ import {
   generateItemListSchema,
   generateLandingStats,
   generateDynamicFAQ,
+  safeJsonLd,
 } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyListingGrid } from "@/components/search/PropertyListingGrid"
@@ -146,12 +147,12 @@ export default async function BairroPage({ params }: BairroPageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListSchema) }}
       />
       {datasetSchema && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(datasetSchema) }}
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(datasetSchema) }}
         />
       )}
 

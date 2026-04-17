@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
-import { generateBreadcrumbSchema } from "@/lib/seo"
+import { generateBreadcrumbSchema , safeJsonLd} from "@/lib/seo"
 
 interface BreadcrumbItem {
   name: string
@@ -20,7 +20,7 @@ export function Breadcrumbs({ items, variant = "light" }: BreadcrumbsProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
       />
       <nav aria-label="Breadcrumb" className="py-4">
         <ol className={`flex flex-wrap items-center gap-1 text-sm ${isDark ? "text-white/70" : "text-neutral-500"}`}>

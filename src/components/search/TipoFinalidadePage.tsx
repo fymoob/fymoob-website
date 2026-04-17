@@ -1,4 +1,5 @@
 import { getProperties, getAllBairros } from "@/services/loft"
+import { safeJsonLd } from "@/lib/seo"
 import { slugify, formatPrice } from "@/lib/utils"
 import type { PropertyType, PropertyFinalidade } from "@/types/property"
 import {
@@ -62,7 +63,7 @@ export async function TipoFinalidadePage({
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListSchema) }}
       />
 
       <section className="bg-neutral-950 py-12 md:py-16">

@@ -56,10 +56,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   // open redirect / session bound ao host do atacante. Em prod, tambem garanta
   // AUTH_URL=https://fymoob.com.br na env da Vercel.
   trustHost: true,
+  // Explicit: mesmo com trustHost, forcar Secure cookie em prod. Previne regresao
+  // se alguem setar AUTH_URL=http://... por engano em preview/staging.
+  useSecureCookies: process.env.NODE_ENV === "production",
   providers: [
     Resend({
       apiKey: process.env.RESEND_API_KEY,
       from: process.env.RESEND_FROM_EMAIL ?? "noreply@fymoob.com.br",
+      // 10 min (default NextAuth Resend e 24h — desalinhado com o corpo do
+      // email que promete 10min). Alinhar reduz janela de replay caso email
+      // seja interceptado via Resend logs / mailbox comprometida.
+      maxAge: 10 * 60,
       // Override default magic link email to match FYMOOB branding
       sendVerificationRequest: async ({ identifier: email, url }) => {
         const { Resend: ResendClient } = await import("resend")

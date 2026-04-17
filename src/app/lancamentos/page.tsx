@@ -3,7 +3,7 @@ import { Suspense } from "react"
 import { getProperties, getAllBairros, getAllTypes, getAllCities, getPropertyStats } from "@/services/loft"
 import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
 import { formatPrice } from "@/lib/utils"
-import { generateItemListSchema } from "@/lib/seo"
+import { generateItemListSchema , safeJsonLd} from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyListingGrid } from "@/components/search/PropertyListingGrid"
 import Link from "next/link"
@@ -62,7 +62,7 @@ export default async function LancamentosPage({ searchParams }: { searchParams: 
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListSchema) }}
       />
 
       <div className="w-full bg-slate-50 px-4 py-8 md:px-12 lg:px-20 2xl:px-32">

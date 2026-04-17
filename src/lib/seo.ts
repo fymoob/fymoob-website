@@ -341,6 +341,22 @@ export function generateBlogPostingSchema(post: BlogPost) {
   }
 }
 
+/**
+ * Serializa objeto JSON-LD de forma segura para embed em <script>.
+ * Escapa `<` como \u003c para prevenir que um `</script>` injetado via
+ * campo de dado (descricao de imovel vinda do CRM, titulo de blog post
+ * de MDX, etc) encerre o script e permita HTML/JS injection.
+ *
+ * Defense-in-depth: em prod o admin controla o CRM, mas uma conta
+ * comprometida ou typo colocando `</script>` numa descrição quebra a
+ * pagina sem esse escape.
+ *
+ * Referencia: OWASP JSON.stringify in script context.
+ */
+export function safeJsonLd(obj: unknown): string {
+  return JSON.stringify(obj).replace(/</g, "\\u003c")
+}
+
 interface PillarSchemaInput {
   title: string
   description: string

@@ -8,8 +8,11 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ code: string }> }
 ) {
-  // Rate limit 60/min/IP — usa x-real-ip (nao forjavel)
+  // Rate limit 60/min/IP — usa x-real-ip (nao forjavel). Fail-closed.
   const ip = getClientIp(request.headers)
+  if (ip === null) {
+    return NextResponse.json({ error: "unable to determine client ip" }, { status: 400 })
+  }
   const rate = await checkApiLoftRateLimit(ip)
   if (!rate.allowed) {
     return NextResponse.json(

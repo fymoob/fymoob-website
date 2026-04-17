@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { safeJsonLd } from "@/lib/seo"
 import Image from "next/image"
 import Link from "next/link"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
@@ -193,7 +194,7 @@ export default async function SobrePage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }}
       />
       {/* ══════ HERO — Imagem de fundo com overlay ══════ */}
       <section className="relative flex min-h-[60vh] items-center overflow-hidden">

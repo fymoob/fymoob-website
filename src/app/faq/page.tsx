@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { ChevronDown } from "lucide-react"
-import { generateFAQPageSchema } from "@/lib/seo"
+import { generateFAQPageSchema , safeJsonLd} from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { faqData } from "@/data/faq-data"
 
@@ -27,7 +27,7 @@ export default function FAQPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
       />
 
       <div className="mx-auto max-w-4xl px-4 py-2 sm:px-6 lg:px-8">

@@ -9,6 +9,7 @@ import {
 import {
   generatePropertySchema,
   generatePropertyDescription,
+  safeJsonLd,
 } from "@/lib/seo"
 import {
   getPropertyPriceBucket,
@@ -139,7 +140,7 @@ export default async function PropertyPage({ params }: PageProps) {
     <div className="min-h-screen bg-slate-50">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(propertySchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(propertySchema) }}
       />
       <PropertyPageAnalytics
         propertyCode={property.codigo}

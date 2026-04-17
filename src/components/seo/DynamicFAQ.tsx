@@ -1,6 +1,6 @@
 // Server Component — zero JS, uses native <details>/<summary>
 import { ChevronDown } from "lucide-react"
-import { generateFAQPageSchema } from "@/lib/seo"
+import { generateFAQPageSchema , safeJsonLd} from "@/lib/seo"
 
 interface DynamicFAQProps {
   questions: { question: string; answer: string }[]
@@ -16,7 +16,7 @@ export function DynamicFAQ({ questions, title = "Perguntas frequentes" }: Dynami
     <section>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
       />
       <h2 className="mb-4 font-display text-xl font-bold text-neutral-900">
         {title}

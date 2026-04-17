@@ -13,7 +13,11 @@ const PHONE_REGEX = /^[+]?[\d\s()-]{10,20}$/
 export async function POST(request: NextRequest) {
   try {
     // 1. Rate limit por IP (5 req / 10min) — usa x-real-ip (nao forjavel)
+    // Fail-closed: sem IP confiavel, rejeita (evita bypass via header vazio).
     const ip = getClientIp(request.headers)
+    if (ip === null) {
+      return NextResponse.json({ error: "unable to determine client ip" }, { status: 400 })
+    }
     const rate = await checkLeadRateLimit(ip)
     if (!rate.allowed) {
       return NextResponse.json(

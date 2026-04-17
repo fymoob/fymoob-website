@@ -8,7 +8,7 @@ import { SkeletonsGrid } from "@/components/search/SkeletonsGrid"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { SaveSearchButton } from "@/components/search/SaveSearchButton"
 import { SortDropdown } from "@/components/search/SortDropdown"
-import { generateItemListSchema } from "@/lib/seo"
+import { generateItemListSchema , safeJsonLd} from "@/lib/seo"
 import { slugify } from "@/lib/utils"
 import {
   getAllBairros,
@@ -315,7 +315,7 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
     <section aria-labelledby="search-results-title" className="space-y-6">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListSchema) }}
       />
 
 

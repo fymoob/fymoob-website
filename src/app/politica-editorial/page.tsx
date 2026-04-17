@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { safeJsonLd } from "@/lib/seo"
 import Link from "next/link"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { Shield, CheckCircle2, Users, BookOpen, RefreshCw, AlertCircle } from "lucide-react"
@@ -66,7 +67,7 @@ export default function PoliticaEditorialPage() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
 
       <main className="bg-white">
         <section className="border-b border-neutral-100 bg-neutral-50">

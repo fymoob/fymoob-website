@@ -9,7 +9,7 @@ import { mdxComponents } from "@/lib/mdx-components"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { AuthorBio } from "@/components/blog/AuthorBio"
 import { RelatedPages } from "@/components/seo/RelatedPages"
-import { generatePillarSchema } from "@/lib/seo"
+import { generatePillarSchema , safeJsonLd} from "@/lib/seo"
 
 function getPillarContent() {
   const filePath = path.join(process.cwd(), "content/pillar/comprar-imovel-curitiba.mdx")
@@ -67,7 +67,7 @@ export default function ComprarImovelPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(articleSchema) }}
       />
 
       <article className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
