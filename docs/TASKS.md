@@ -1,7 +1,7 @@
 # FYMOOB — Task Tracker
 
 > Fonte unica de verdade para todas as tasks do projeto.
-> Atualizado: 2026-04-09
+> Atualizado: 2026-04-17
 
 ---
 
@@ -18,7 +18,7 @@
 | 5.6 | Sessao 02-03/04 | 28 | 28 | 0 | CONCLUIDA |
 | 5.7 | Sessao 03-04/04 | 35 | 35 | 0 | CONCLUIDA |
 | 6 | Institucional e Polish | 7 | 7 | 0 | CONCLUIDA |
-| 7 | QA, Testes, Deploy | 82 | 0 | 82 | PENDENTE |
+| 7 | QA, Testes, Deploy | 120 | 25 | 95 | EM ANDAMENTO |
 | 8 | SEO Programatico | 37 | 33 | 4 | CONCLUIDA (4 pos-deploy) |
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
 | -- | Bugs | 0 | 0 | 0 | — |
@@ -32,7 +32,9 @@
 | 16 | Claude Managed Agents | 14 | 0 | 14 | MEDIO PRAZO |
 | 17 | Agentes como Produto SaaS | 14 | 0 | 14 | LONGO PRAZO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **350** | **249** | **101** | **71%** |
+| | **TOTAL** | **388** | **274** | **114** | **71%** |
+
+**Sessao 2026-04-17:** 25 CRITICAL/HIGH de seguranca/SEO fixados em 5 commits (`0d7b19f`, `50b1f86`, `7bb5f5a`, `19154ec`, `6b13794`). 4 rounds de auditoria convergiram — round 4 retornou 0 CRITICAL. Acoes externas pre-cutover listadas em Fase 7.8. HIGH/MEDIUM remanescentes (hardening pos-cutover, nao blockers) em Fase 7.10.
 
 ---
 
@@ -141,6 +143,144 @@ Sessao dividida em 4 fases, culminando em mudanca de metodologia:
 5. **"Chunk Lucide 74KB parasita no /busca"** \u2192 Agent 1 revelou: n\u00e3o carregado em /busca, \u00e9 /imovel/*
 
 **Conclus\u00e3o:** 5/5 estimativas n\u00e3o materializaram em varios graus. Sistema de protocolos montado para prevenir esse padr\u00e3o em sess\u00f5es futuras.
+
+</details>
+
+---
+
+## Sessao 2026-04-17 - Security Hardening + Pre-Cutover Audit [CONCLUIDA]
+
+<details>
+<summary>4 rounds de auditoria iterativa (17 agentes paralelos no total) — 25+ CRITICAL/HIGH fixados, convergencia atingida (round 4 = 0 CRITICAL, so HIGHs nichados)</summary>
+
+### Contexto
+
+Depois de claim inicial de "pronto pra cutover" apos rodada de fixes SEO, usuario questionou: _"voce falou que estaria pronto na outra vez tambem, executei mais uma rodada de investigacao de agentes e encontraram varios pontos criticos"_. Resposta foi mudar de "auditoria unica" pra **protocolo de convergencia iterativo**: rodar N rounds de auditorias independentes, cada uma com angulos diferentes, ate round N+1 retornar 0 CRITICAL novos.
+
+### Metodologia (convergence protocol)
+
+- Cada round: 4-5 subagents em paralelo com escopos DIFERENTES do round anterior
+- Prompts explicitos: lista do que ja foi fixado, "so reportar CRITICAL/HIGH explorável", "se 0 achado critico diga explicitamente NO CRITICAL FOUND com evidence"
+- Fix imediato entre rounds pra nao acumular debito
+- Build + curl em prod entre rounds pra validacao empirica
+- Convergencia: quando severidade dos achados cai de round pra round E round final retorna 0 CRITICAL
+- Resultado: 4 rounds, padrao claro de convergencia (CRITICAL=8,12,4,0)
+
+### Round 1 — Primeiros 5 angulos (5 agents paralelos) — 8 CRITICAL fixados
+
+**Commit:** `50b1f86`
+
+- **Runtime/prod-only:** filter fotos nao-https (evita `<Image src="">` crash), retry+timeout+fallback em Loft API (5xx blowup), empreendimentos `emp.imageUrl` guard, editorial h1 sr-only (Reserva Barigui renderizava 0 h1)
+- **Integration:** `remotePatterns: "**.vistahost.com.br"` (cobre subdominios Vista), `LOFT_API_KEY` nao loga em fetch failures
+- **Security:** NextAuth `trustHost: true` (open-redirect via Host header), `timingSafeEqual` em `/api/revalidate` + `/api/indexnow`
+- **Auth/middleware:** `proxy.ts` matcher cobre `/api/admin/*` + 401 JSON pra APIs admin
+- **SEO:** `parseNumber` rejeita negativos; raw `<a>` → `<Link>` em /faq e /imoveis/preco
+
+### Round 2 — Dedup + angulos novos (5 agents paralelos) — 12 achados fixados
+
+**Commit:** `7bb5f5a`
+
+- **Prod HTML:** `title: { absolute }` em `/imoveis/[bairro]/[tipo]` (quartos + finalidade) + empreendimento + sobre (elimina `... | FYMOOB | FYMOOB Imobiliaria` em centenas de URLs programaticas)
+- **og:url:** adicionado em layout (fallback) + pillars + empreendimento + blog + guia
+- **Content:** llms.txt aponta 4 shards em vez de `/sitemap.xml` (404); MDX img alt fallback "Ilustracao do artigo"; empreendimento unitTypes alt descritivo
+- **A11y:** aria-label em icon-only X buttons (PropertyGallery, QuickSearch x3, SearchBar)
+- **Security:** `productionBrowserSourceMaps` gated em ANALYZE=true (evita expor source em prod); helper `getClientIp` prioriza `x-real-ip` (XFF nao forjavel) em 5 endpoints
+
+### Round 3 — Foco em env leaks + deep security (4 agents paralelos) — 6 HIGH fixados
+
+**Commit:** `19154ec`
+
+- **Supply chain:** `next 16.1.6 → 16.2.4` (patches GHSA-mq59-m269-xvcx Server Actions CSRF null-origin bypass, GHSA-ggv3-7p47-pfv8 request smuggling, 3 DoS CVEs)
+- **Auth:** `useSecureCookies: process.env.NODE_ENV === "production"` (belt+suspenders vs preview http); Resend `maxAge: 600` (antes default 24h, desalinhado com corpo do email)
+- **Rate-limit:** `getClientIp` retorna `null` em Vercel sem IP confiavel (fail-closed). Todos callers rejeitam. Evita bucket "unknown" compartilhado.
+- **JSON-LD injection defense:** `safeJsonLd()` helper escapa `<` como `\u003c`. Aplicado em ~25 script tags que embedam schemas. Defense-in-depth vs CRM compromise injetando `</script>`.
+
+### Round 4 — Convergencia (3 agents, angulos novos) — 4 HIGH fixados, 0 CRITICAL
+
+**Commit:** `6b13794`
+
+- **Info disclosure:** `/api/revalidate` nao expoe `err.message` em 500 (evita leak sobre internals Next/runtime). Loga server-side.
+- **LGPD:** `auth.ts` email de rejected sign-in agora e `sha256(email).slice(0,12)` em log (era plaintext). Evita PII em logs Vercel + enumeracao via dashboard access.
+- **Cost runaway defense:** `loft.ts` `MAX_PAGES_SAFETY_CAP = 40`. FYMOOB tem ~249 imoveis, 2000 margem. Cap previne runaway Vercel cost se CRM reportar total inflado.
+- **ISR amplification:** regex `VALID_SLUG` em `/imovel/[slug]` + `/empreendimento/[slug]` antes de fetchar. Evita atacante fazer loop `/imovel/aaa-1,aaa-2...` forcando ISR 404 cache entries (cost spike).
+
+### Attack simulation em prod (round 4, agent 1) — 100% resistido
+
+30+ vetores testados via curl em `fymoob-website.vercel.app`. **Todos defendidos:**
+
+- CVE-2025-29927 `x-middleware-subrequest: middleware:middleware:...` → 307 redirect (patched)
+- Forged `authjs.session-token` cookie → 307 (signature valida)
+- `callbackUrl=//evil.com/steal` → nao redirect externo
+- SSRF via `/_next/image?url=http://evil.com` → 502 OPTIMIZED_EXTERNAL_IMAGE_REQUEST_UNAUTHORIZED
+- SSRF `169.254.169.254`, `127.0.0.1`, `file:///etc/passwd` → 400 INVALID_IMAGE_OPTIMIZE_REQUEST
+- Path traversal `/api/photos/%2e%2e%2fetc%2fpasswd` → 404 invalid code
+- Null byte `/api/photos/a%00b` → 400
+- 10MB body `/api/lead` → 413 Payload Too Large
+- Method tampering (PUT/TRACE) → 405
+- Header injection (`Host: evil.com`, `X-Forwarded-Host`) → nao reflete
+- Reflected XSS `/<script>alert(1)</script>` → 404 sem eco
+- Email enumeration timing delta → 34ms de diferenca (ruido, nao distinguivel)
+
+**Security headers confirmados em prod:** HSTS preload, X-Frame-Options DENY, X-Content-Type-Options nosniff, Referrer-Policy strict-origin-when-cross-origin, Permissions-Policy restrictivo.
+
+### Estado final (apos round 4)
+
+| Vetor | Status |
+|-------|--------|
+| Env var leaks | ✅ 0 vazamento (22 chunks + hash testado, 0 matches) |
+| Source maps em prod | ✅ 404 (gated ANALYZE=true) |
+| Next.js CVEs (Server Actions CSRF, smuggling) | ✅ 16.2.4 patched |
+| Auth hijack | ✅ timingSafeEqual + useSecureCookies + trustHost |
+| Rate-limit bypass (XFF spoof) | ✅ x-real-ip + fail-closed |
+| XSS via JSON-LD | ✅ safeJsonLd escape aplicado |
+| CSRF server actions | ✅ Next 16.2.4 + Turnstile + origin |
+| SSRF image proxy | ✅ remotePatterns enforced |
+| Path traversal API | ✅ regex validation + 400 |
+| ISR cost DoS | ✅ slug regex + MAX_PAGES cap |
+| LGPD email em log | ✅ sha256 hash |
+| Info disclosure 500 | ✅ err.message nao exposto |
+
+### HIGH/MEDIUM remanescentes (nao-blockers pra cutover)
+
+Documentados na Fase 7.10 abaixo. Nenhum bloqueia go-live — sao hardening incremental.
+
+### Acoes externas pre-cutover (usuario executa manualmente)
+
+- [ ] Cloudflare Turnstile: adicionar hostname `fymoob.com.br` + `www.fymoob.com.br` ao site key allowlist (atualmente localhost/vercel)
+- [ ] Resend: verificar domínio `fymoob.com.br` (SPF/DKIM/DMARC) antes do cutover — magic link admin vai falhar se nao verificado
+- [ ] Vercel env: setar `AUTH_URL=https://fymoob.com.br` (pin canonical pra magic link URLs)
+- [ ] Vercel env: regenerar `REVALIDATE_SECRET` (valor antigo `1626c6...` foi exposto no chat)
+- [ ] Vercel env: confirmar `ALLOWED_ADMIN_EMAILS` e `INDEXNOW_SECRET` setados
+
+### Commits da sessao
+
+| Commit | Mudanca | Resultado |
+|--------|---------|-----------|
+| `0d7b19f` | SEO blockers (og:image, dateModified, @graph, title template 10 paginas, BlogPosting schema) | 5 blockers + 6 HIGH fixados |
+| `50b1f86` | Round 1: critical resilience (Loft retry, photo filter, trustHost, timingSafeEqual, remotePatterns) | 8 CRITICAL fixados |
+| `7bb5f5a` | Round 2: title dup [tipo] + og:url + XFF→x-real-ip + a11y aria-labels + MDX alt | 12 fixados |
+| `19154ec` | Round 3: Next 16.2.4 + useSecureCookies + maxAge 600 + getClientIp fail-closed + safeJsonLd (25 schemas) | 6 HIGH fixados |
+| `6b13794` | Round 4: info leak + LGPD email hash + MAX_PAGES cap + VALID_SLUG regex anti-ISR-DoS | 4 HIGH fixados, 0 CRITICAL |
+
+### Licoes aprendidas (chave)
+
+1. **"Pronto pra cutover" NAO e binario.** Cada rodada de auditoria com angulos novos acha coisas que a anterior nao achou. Unico jeito honesto de declarar "pronto" e rodar N rounds ate convergencia (severidade + contagem caindo) e ultimo round retornar 0 CRITICAL.
+
+2. **Subagents LLM nao sao deterministicos.** Mesma pergunta pode voltar diferente. Solucao: dar escopo estreito, explicitar o ja-fixado, exigir evidence (file:line, curl output), pedir "se nada critico diga explicitamente".
+
+3. **Attack simulation em prod via curl > auditoria estatica de codigo.** Round 4 agent 1 testou 30+ vetores em HTTPS real. Confirmou que patches aplicados funcionam (ex: CVE-2025-29927 retorna 307 redirect como esperado).
+
+4. **Severidade cai, nao sobe, de round em round.** Rounds iniciais acham CRITICAL gross (title dup em massa, ISR crash, auth bypass). Rounds seguintes acham HIGH finos (info disclosure, LGPD, DoS amplification). Isso e sinal de convergencia.
+
+5. **Auditoria de env var leak precisa PRATICA, nao teorica.** Baixei 22 chunks client de prod, grep por nome e por hash do valor real do secret. 0 matches = prova concreta (nao "provavelmente ok"). Checker statico de `process.env` em client seria insuficiente sozinho.
+
+6. **Defense-in-depth compensa auditoria imperfeita.** Mesmo se um vetor passar: proxy.ts + layout.tsx auth() + page.tsx auth() (3 camadas) protege admin; timingSafeEqual + x-real-ip + Turnstile + rate limit (4 camadas) protege login. Sobreviver > detectar tudo.
+
+7. **npm audit lista devDeps junto com prod.** shadcn CLI e size-limit tinham HIGH mas nao rodam em prod. `npm audit --omit=dev` ou verificar `npm ls <pkg>` pra confirmar path antes de classificar como blocker.
+
+8. **Next 16 quebrou APIs sutis.** `revalidateTag(tag)` virou `revalidateTag(tag, profile)`. `sitemap` recebe `id: Promise<string>` (nao number). `middleware.ts` virou `proxy.ts`. Conferir release notes antes de copiar padrao do Next 14/15.
+
+9. **Attack surface logs e subestimado.** `console.warn(email)` parece inofensivo mas vira PII em log store Vercel (retencao 30d, acessivel a todo membro da equipe). LGPD requer data minimization. Hash ou redact por default.
 
 </details>
 
@@ -706,6 +846,59 @@ O PropertyCard atual tem 638 linhas com `"use client"` inteiro. Com 24 cards na 
 - [ ] Configurar redirects do site antigo → novo (se houver)
 - [ ] Monitorar indexacao primeiros 7 dias (GSC + `site:fymoob.com`)
 - [ ] Confirmar GA4 coletando dados (pageviews, eventos)
+
+### 7.8 — Acoes Externas Pre-Cutover (usuario executa no painel)
+> Confirmar TODAS antes do switch DNS. Sem essas, auth admin ou lead forms quebram.
+
+- [ ] **Cloudflare Turnstile:** adicionar `fymoob.com.br` + `www.fymoob.com.br` ao hostname allowlist do site key (senao captcha retorna `invalid-domain` em prod → todos lead forms + admin login falham silenciosamente)
+- [ ] **Resend:** verificar dominio `fymoob.com.br` via SPF + DKIM + DMARC (senao magic link bounce/spam → admin nao consegue logar)
+- [ ] **Vercel env `AUTH_URL=https://fymoob.com.br`** (pin canonical pra magic link URLs — evita URL com hostname preview no email)
+- [ ] **Vercel env `REVALIDATE_SECRET`:** regenerar (valor antigo `1626c6c4c3860b4b7d6ff08a687ecff1fe7b64e5da9a323dee67d9036f4fafc17` foi exposto em chat). Apos regerar, atualizar qualquer cron/webhook que dispare /api/revalidate.
+- [ ] **Vercel env:** confirmar setados — `LOFT_API_KEY`, `AUTH_SECRET`, `RESEND_API_KEY`, `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`, `TURNSTILE_SECRET_KEY`, `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GA_ID`, `ALLOWED_ADMIN_EMAILS`, `INDEXNOW_SECRET`, `RESEND_FROM_EMAIL`
+- [ ] **Vercel env:** remover variaveis nao usadas (`SUPABASE_*` se existirem — projeto usa Nhost/Upstash, nao Supabase)
+
+### 7.9 — Validacao Pos-Cutover (primeiras 24h)
+> Rodar na ordem. Se falha, reverter DNS antes de debugar.
+
+- [ ] `curl -I https://fymoob.com.br/` → 200 + HSTS
+- [ ] `curl https://fymoob.com.br/sitemap/0.xml | grep -c "<url>"` → ~234 imoveis
+- [ ] `curl -X POST https://fymoob.com.br/api/revalidate -H "x-revalidate-secret: $NEW_SECRET" -d '{"tag":"imoveis"}'` → 200
+- [ ] `curl -X POST https://fymoob.com.br/api/revalidate` (sem secret) → 401
+- [ ] Submeter lead via formulario real em `/contato` → verificar chegada CRM + email Bruno
+- [ ] Magic link admin → receber email + clicar → logar
+- [ ] `site:fymoob.com.br` no Google apos 3-7 dias — primeiras URLs indexando
+- [ ] GSC: coverage report + enhancement (RealEstateListing) detectando
+- [ ] Speed Insights: primeiros RUM data points aparecendo
+- [ ] GA4: pageviews + eventos (lead_submit, property_view) chegando
+
+### 7.10 — HIGH/MEDIUM Remanescentes (hardening pos-cutover)
+> Documentado na Sessao 2026-04-17 acima. NAO sao blockers pra cutover — sao hardening incremental pra rodar em sprint de follow-up (~4-8h total).
+
+**HIGH — segurança nicho:**
+
+- [ ] **CSP (Content-Security-Policy) em `next.config.ts`:** atualmente sem CSP. Risco atual baixo (`dangerouslySetInnerHTML` limitado a JSON-LD via `safeJsonLd`), mas CSP fecha a porta pra XSS se futuro codigo adicionar inline user input. Proposta: `default-src 'self'; script-src 'self' 'unsafe-inline' 'nonce-XXX' https://challenges.cloudflare.com https://*.vercel-insights.com https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn.vistahost.com.br https://*.storage.sa-east-1.nhost.run; font-src 'self' data:; connect-src 'self' https://*.vercel-insights.com https://www.google-analytics.com; frame-src https://challenges.cloudflare.com`. Testar em report-only primeiro por 1 semana.
+- [ ] **JWT sessions — nao tem server-side revoke.** Se `AUTH_SECRET` vazar, atacante forja JWTs validos por 12h sem como invalidar. Fix: (a) adicionar `jwt.callback` checando `sessionVersion` por email contra Redis, bumped em forced logout; OU (b) baixar maxAge pra 2-4h com silent refresh. Nao e CRITICAL porque AUTH_SECRET nao vazou, mas rotation procedure deveria ter.
+- [ ] **Rotation runbook pra AUTH_SECRET + LOFT_API_KEY + REVALIDATE_SECRET.** Criar `docs/runbooks/secret-rotation.md` com passo-a-passo: gerar novo valor → atualizar Vercel env → redeploy → validar endpoints respondem → revogar antigo no provider.
+- [ ] **Next.js image optimizer abuse:** `/_next/image` nao tem rate limit dedicado. Atacante pode forcar Vercel otimizar imagens cdn.vistahost.com.br em todos tamanhos, estourando quota. Fix: Vercel dashboard → set hard limit em image optimization requests, ou adicionar middleware rate-limit em `/_next/image` (complexo, nao prioritario).
+- [ ] **BR date format sort em `getProperties({sortBy: "recente"})`** — Loft API as vezes retorna `DataAtualizacao` em `"dd/mm/yyyy"` (nao ISO). `db.localeCompare(da)` embaralha a ordem. Fix: parse com heuristica BR em `loft.ts:554`. Impacto atual: baixo (ISO e o formato comum), mas silencioso quando falha.
+- [ ] **Bairro slug inconsistency:** codigo em `imovel/[slug]/page.tsx:131` e `guia/[bairro]/page.tsx` + `imoveis/preco/[faixa]/page.tsx` usa `.toLowerCase().replace(/\s+/g, "-")` sem strip de acentos (ex: "Água Verde" → "água-verde"). Mas `slugify()` em `loft.ts` strips acento (→ "agua-verde"). Link 404s em bairros com acento. Fix: trocar TODOS por `slugify(bairro)` consistente.
+- [ ] **generateStaticParams double-fetch em `/[tipo]-curitiba/[finalidade]/page.tsx`:** cada variant chama `getProperties({limit:1000})` 3x (generateStaticParams + generateMetadata + page). Cacheado via `unstable_cache`, mas no primeiro cold start bate Loft 3x. Fix: extrair pra helper `getPropertyStats()` cacheado ou movee count-check pra summary compartilhado.
+
+**MEDIUM — melhorias operacionais:**
+
+- [ ] **Webhook/cron pra `/api/revalidate`:** atualmente ninguem chama. Imoveis alterados no CRM demoram ate 1h (TTL) pra refletir. Fix: Vercel Cron em `vercel.json` (*/15 * * * *) POST pra `/api/revalidate` com `{"tag":"imoveis"}`. Ja validado end-to-end em H-20260417-007 — funciona.
+- [ ] **mover `shadcn` pra devDependencies:** atualmente em `dependencies`, polui node_modules prod + lista como HIGH vuln em `npm audit --omit=dev` (mesmo nao rodando em prod). Mesmo pra `@next/bundle-analyzer`.
+- [ ] **Skip link "pular pro conteudo"** no layout — nice-to-have pra keyboard users, nao bloqueador.
+- [ ] **Gallery modal ESC handler** — `PropertyGallery.tsx` modo "grid" nao wire ESC pra fechar. Keyboard users precisam tab pro X.
+- [ ] **Form submit feedback:** `ContactForm.tsx` precisa `disabled={submitting}` + spinner pra evitar double-submit por keyboard users.
+- [ ] **RUM-driven perf tuning:** aguardar 2-3 semanas de Speed Insights field data pra decidir se `staleTimes: { dynamic: 30 }` fica, se `reactCompiler: true` ajudou p75 TBT real, se H-20260417-004 deve ser retentado com patch Next 16.3+.
+- [ ] **Add `.env.example` com REVALIDATE_SECRET + NEXT_PUBLIC_GA_ID + INDEXNOW_SECRET + RESEND_FROM_EMAIL** — atualmente vazio em placeholders. Dificulta onboarding futuro + deploy manual checklist.
+
+**LOW — cosmeticos:**
+
+- [ ] **Contact form disabled state visual** — se submit em progresso
+- [ ] **Review de alt text em MDX authored content** — MDX fallback aplicado, mas authors deveriam escrever alts reais em artigos novos
+- [ ] **Consolidar CRECI em constante** — CRECI J 9420 vs CRECI/PR 24.494 vs 39.357 espalhados em llms.txt, Footer, FAQ, policies. Centralizar em `src/data/fymoob-info.ts`.
 
 ---
 
