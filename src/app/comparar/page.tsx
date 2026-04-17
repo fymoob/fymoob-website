@@ -6,6 +6,7 @@ import Image from "next/image"
 import Link from "next/link"
 import type { Property } from "@/types/property"
 import { formatPrice, getPropertyImage } from "@/lib/utils"
+import { isVistaImage } from "@/lib/image-optimization"
 
 const COMPARE_KEY = "fymoob:compare"
 const MAX_COMPARE = 3
@@ -136,6 +137,7 @@ export default function CompararPage() {
                     fill
                     className="object-cover"
                     sizes="(max-width: 640px) 50vw, 33vw"
+                    unoptimized={isVistaImage(getPropertyImage(property))}
                   />
                 </div>
                 <div className="p-3">

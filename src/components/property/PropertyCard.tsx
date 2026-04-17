@@ -17,6 +17,7 @@ import {
   getPropertyImage,
 } from "@/lib/utils"
 import type { Property } from "@/types/property"
+import { isVistaImage } from "@/lib/image-optimization"
 import { getBadge } from "./card/hooks/usePropertyCard"
 import { CardBadge } from "./card/CardBadge"
 import { PhotoCarousel } from "./card/PhotoCarousel"
@@ -277,6 +278,7 @@ export function PropertyCard({
             fetchPriority={prioritizeFirstImage ? "high" : "auto"}
             className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, 40vw"
+            unoptimized={isVistaImage(displayPhotos[0])}
           />
         ) : (
           <PhotoCarousel

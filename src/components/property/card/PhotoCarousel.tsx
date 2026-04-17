@@ -5,6 +5,7 @@ import Image from "next/image"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { isVistaImage } from "@/lib/image-optimization"
 
 interface PhotoCarouselProps {
   photos: string[]
@@ -75,6 +76,7 @@ export function PhotoCarousel({
                 fetchPriority={lcpHint && isFirst ? "high" : undefined}
                 className={cn("object-cover", imageClassName)}
                 sizes={sizes}
+                unoptimized={isVistaImage(photo)}
               />
             </div>
           )

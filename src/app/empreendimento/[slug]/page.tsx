@@ -8,6 +8,7 @@ import {
   getPropertiesByEmpreendimento,
 } from "@/services/loft"
 import { slugify, formatPrice, formatArea } from "@/lib/utils"
+import { isVistaImage } from "@/lib/image-optimization"
 import { generateItemListSchema, generateLandingStats, generateDynamicFAQ, safeJsonLd } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
@@ -169,11 +170,11 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
             <div className="mx-auto mt-6 max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-2 gap-2 overflow-hidden rounded-2xl sm:grid-cols-4 sm:grid-rows-2 sm:gap-3 md:h-[420px]">
                 <div className="relative col-span-2 row-span-2 min-h-[240px]">
-                  <Image src={heroPhotos[0]} alt={`${emp.nome} — foto principal`} fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" priority />
+                  <Image src={heroPhotos[0]} unoptimized={isVistaImage(heroPhotos[0])} alt={`${emp.nome} — foto principal`} fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" priority />
                 </div>
                 {heroPhotos.slice(1, 5).map((foto, i) => (
                   <div key={i} className="relative hidden min-h-[120px] sm:block">
-                    <Image src={foto} alt={`${emp.nome} — foto ${i + 2}`} fill className="object-cover" sizes="25vw" loading="lazy" />
+                    <Image src={foto} unoptimized={isVistaImage(foto)} alt={`${emp.nome} — foto ${i + 2}`} fill className="object-cover" sizes="25vw" loading="lazy" />
                   </div>
                 ))}
               </div>
@@ -528,7 +529,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
             {properties.map((p) => (
               <Link key={p.codigo} href={`/imovel/${p.slug}`} className="group overflow-hidden rounded-sm border border-neutral-200 bg-white transition hover:border-[#c9a876] hover:shadow-lg">
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image src={p.fotoDestaque || "/placeholder-property.jpg"} alt={p.titulo} fill className="object-cover transition duration-700 group-hover:scale-105" sizes="(max-width: 640px) 100vw, 33vw" loading="lazy" />
+                  <Image src={p.fotoDestaque || "/placeholder-property.jpg"} alt={p.titulo} fill className="object-cover transition duration-700 group-hover:scale-105" sizes="(max-width: 640px) 100vw, 33vw" loading="lazy" unoptimized={isVistaImage(p.fotoDestaque)} />
                   {p.lancamento && <span className="absolute top-3 left-3 rounded-full bg-[#c9a876] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">Lançamento</span>}
                 </div>
                 <div className="p-5">
@@ -687,7 +688,7 @@ function StandardContent(props: {
                   <div key={ut.key} className="flex items-center gap-4 rounded-xl border border-neutral-200 p-4">
                     {ut.foto && (
                       <div className="relative hidden h-20 w-28 shrink-0 overflow-hidden rounded-lg sm:block">
-                        <Image src={ut.foto} alt={`${emp.nome} — ${ut.properties[0].tipo}${ut.area > 0 ? ` ${formatArea(ut.area)}m²` : ""}`} fill className="object-cover" sizes="112px" loading="lazy" />
+                        <Image src={ut.foto} alt={`${emp.nome} — ${ut.properties[0].tipo}${ut.area > 0 ? ` ${formatArea(ut.area)}m²` : ""}`} fill className="object-cover" sizes="112px" loading="lazy" unoptimized={isVistaImage(ut.foto)} />
                       </div>
                     )}
                     <div className="flex-1">
@@ -742,7 +743,7 @@ function StandardContent(props: {
                 {properties.map((p) => (
                   <Link key={p.codigo} href={`/imovel/${p.slug}`} className="group overflow-hidden rounded-xl border border-neutral-200 transition hover:shadow-md">
                     <div className="relative aspect-[4/3]">
-                      <Image src={p.fotoDestaque || "/placeholder-property.jpg"} alt={p.titulo} fill className="object-cover transition duration-500 group-hover:scale-105" sizes="(max-width: 640px) 100vw, 33vw" loading="lazy" />
+                      <Image src={p.fotoDestaque || "/placeholder-property.jpg"} alt={p.titulo} fill className="object-cover transition duration-500 group-hover:scale-105" sizes="(max-width: 640px) 100vw, 33vw" loading="lazy" unoptimized={isVistaImage(p.fotoDestaque)} />
                       {p.lancamento && <span className="absolute top-3 left-3 rounded-full bg-brand-primary px-2.5 py-0.5 text-[10px] font-bold uppercase text-white">Lançamento</span>}
                     </div>
                     <div className="p-4">

@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import type { Property } from "@/types/property"
 import { formatPrice, generateImageAlt, getPropertyImage } from "@/lib/utils"
+import { isVistaImage } from "@/lib/image-optimization"
 import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
 
 interface PropertyCardFeaturedProps {
@@ -25,6 +26,7 @@ export function PropertyCardFeatured({ property }: PropertyCardFeaturedProps) {
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, 55vw"
+          unoptimized={isVistaImage(getPropertyImage(property))}
         />
       </div>
 

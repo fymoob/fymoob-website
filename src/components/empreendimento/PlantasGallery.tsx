@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react"
 import Image from "next/image"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { isVistaImage } from "@/lib/image-optimization"
 
 interface PlantasGalleryProps {
   plantas: string[]
@@ -62,6 +63,7 @@ export function PlantasGallery({ plantas }: PlantasGalleryProps) {
                 className="object-contain transition-transform duration-500 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, 33vw"
                 loading="lazy"
+                unoptimized={isVistaImage(planta)}
               />
             </div>
             <p className="mt-3 text-center text-[11px] font-medium uppercase tracking-[0.2em] text-neutral-500">
@@ -104,6 +106,7 @@ export function PlantasGallery({ plantas }: PlantasGalleryProps) {
               height={900}
               className="max-h-[calc(100dvh-4rem)] w-auto object-contain animate-[fadeIn_0.15s_ease-out]"
               priority
+              unoptimized={isVistaImage(plantas[index])}
             />
           </div>
 

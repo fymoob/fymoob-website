@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Clock } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
+import { isVistaImage } from "@/lib/image-optimization"
 import { getRecentlyViewed } from "@/components/property/PropertyCard"
 
 export function RecentlyViewed() {
@@ -49,6 +50,7 @@ export function RecentlyViewed() {
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
                 sizes="192px"
+                unoptimized={isVistaImage(item.foto)}
               />
             </div>
             <p className="mt-2 text-sm font-medium text-neutral-900 truncate group-hover:text-brand-primary transition-colors">

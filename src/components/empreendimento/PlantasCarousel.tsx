@@ -5,6 +5,7 @@ import Image from "next/image"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel"
 import { cn } from "@/lib/utils"
+import { isVistaImage } from "@/lib/image-optimization"
 
 interface PlantasCarouselProps {
   plantas: string[]
@@ -60,6 +61,7 @@ export function PlantasCarousel({ plantas, torreNome }: PlantasCarouselProps) {
                     className="object-contain p-3"
                     sizes="(max-width: 768px) 100vw, 33vw"
                     loading="lazy"
+                    unoptimized={isVistaImage(planta)}
                   />
                 </div>
               </CarouselItem>

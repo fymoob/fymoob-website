@@ -4,6 +4,7 @@ import Image from "next/image"
 import { ChevronLeft, ChevronRight, Grid } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
+import { isVistaImage } from "@/lib/image-optimization"
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel"
 
 interface PropertyHeroProps {
@@ -83,6 +84,7 @@ export function PropertyHero({
                       className="object-cover"
                       sizes="100vw"
                       quality={85}
+                      unoptimized={isVistaImage(photo)}
                     />
                   </div>
                 </CarouselItem>
@@ -168,6 +170,7 @@ export function PropertyHero({
                   className="object-cover transition-transform duration-[1800ms] ease-out group-hover/hero:scale-[1.02]"
                   sizes="(max-width: 1536px) 92vw, 1350px"
                   quality={92}
+                  unoptimized={isVistaImage(photo)}
                 />
               </div>
             ))}

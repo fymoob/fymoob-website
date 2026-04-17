@@ -5,6 +5,7 @@ import Image from "next/image"
 import { ArrowLeft, ChevronLeft, ChevronRight, Grid, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { isVistaImage } from "@/lib/image-optimization"
 
 interface PropertyGalleryProps {
   fotos: string[]
@@ -167,6 +168,7 @@ export function PropertyGallery({ fotos, alt, initialMode, onClose: onCloseExter
                 sizes="100vw"
                 priority={index === 0}
                 loading={index === 0 ? "eager" : "lazy"}
+                unoptimized={isVistaImage(foto)}
               />
             </div>
           ))}
@@ -202,25 +204,25 @@ export function PropertyGallery({ fotos, alt, initialMode, onClose: onCloseExter
       >
         {count === 1 && (
           <button type="button" onClick={() => openFullscreen(0)} className={getTileClassName("rounded-xl")}>
-            <Image src={images[0]} alt={`${alt} - Foto 1`} fill className="object-cover" sizes="100vw" priority />
+            <Image src={images[0]} unoptimized={isVistaImage(images[0])} alt={`${alt} - Foto 1`} fill className="object-cover" sizes="100vw" priority />
           </button>
         )}
 
         {count === 2 && images.slice(0, 2).map((foto, index) => (
           <button key={index} type="button" onClick={() => openFullscreen(index)} className={getTileClassName("rounded-xl")}>
-            <Image src={foto} alt={`${alt} - Foto ${index + 1}`} fill loading={index === 0 ? "eager" : "lazy"} className="object-cover" sizes="50vw" priority={index === 0} />
+            <Image src={foto} unoptimized={isVistaImage(foto)} alt={`${alt} - Foto ${index + 1}`} fill loading={index === 0 ? "eager" : "lazy"} className="object-cover" sizes="50vw" priority={index === 0} />
           </button>
         ))}
 
         {count === 3 && (
           <>
             <button type="button" onClick={() => openFullscreen(0)} className={getTileClassName("rounded-xl")}>
-              <Image src={images[0]} alt={`${alt} - Foto 1`} fill className="object-cover" sizes="50vw" priority />
+              <Image src={images[0]} unoptimized={isVistaImage(images[0])} alt={`${alt} - Foto 1`} fill className="object-cover" sizes="50vw" priority />
             </button>
             <div className="grid grid-rows-2 gap-2">
               {images.slice(1, 3).map((foto, index) => (
                 <button key={index} type="button" onClick={() => openFullscreen(index + 1)} className={getTileClassName("rounded-xl")}>
-                  <Image src={foto} alt={`${alt} - Foto ${index + 2}`} fill loading="lazy" className="object-cover" sizes="25vw" />
+                  <Image src={foto} unoptimized={isVistaImage(foto)} alt={`${alt} - Foto ${index + 2}`} fill loading="lazy" className="object-cover" sizes="25vw" />
                 </button>
               ))}
             </div>
@@ -230,16 +232,16 @@ export function PropertyGallery({ fotos, alt, initialMode, onClose: onCloseExter
         {count === 4 && (
           <>
             <button type="button" onClick={() => openFullscreen(0)} className={getTileClassName("rounded-xl")}>
-              <Image src={images[0]} alt={`${alt} - Foto 1`} fill className="object-cover" sizes="50vw" priority />
+              <Image src={images[0]} unoptimized={isVistaImage(images[0])} alt={`${alt} - Foto 1`} fill className="object-cover" sizes="50vw" priority />
             </button>
             <div className="grid grid-rows-2 gap-2">
               <button type="button" onClick={() => openFullscreen(1)} className={getTileClassName("rounded-xl")}>
-                <Image src={images[1]} alt={`${alt} - Foto 2`} fill loading="lazy" className="object-cover" sizes="25vw" />
+                <Image src={images[1]} unoptimized={isVistaImage(images[1])} alt={`${alt} - Foto 2`} fill loading="lazy" className="object-cover" sizes="25vw" />
               </button>
               <div className="grid grid-cols-2 gap-2">
                 {images.slice(2, 4).map((foto, index) => (
                   <button key={index} type="button" onClick={() => openFullscreen(index + 2)} className={getTileClassName("rounded-xl")}>
-                    <Image src={foto} alt={`${alt} - Foto ${index + 3}`} fill loading="lazy" className="object-cover" sizes="12.5vw" />
+                    <Image src={foto} unoptimized={isVistaImage(foto)} alt={`${alt} - Foto ${index + 3}`} fill loading="lazy" className="object-cover" sizes="12.5vw" />
                   </button>
                 ))}
               </div>
@@ -250,11 +252,11 @@ export function PropertyGallery({ fotos, alt, initialMode, onClose: onCloseExter
         {count >= 5 && (
           <>
             <button type="button" onClick={() => openFullscreen(0)} className={getTileClassName("col-span-2 row-span-2 rounded-l-2xl rounded-r-none")}>
-              <Image src={images[0]} alt={`${alt} - Foto 1`} fill className="object-cover" sizes="50vw" priority />
+              <Image src={images[0]} unoptimized={isVistaImage(images[0])} alt={`${alt} - Foto 1`} fill className="object-cover" sizes="50vw" priority />
             </button>
             {images.slice(1, 5).map((foto, index) => (
               <button key={index} type="button" onClick={() => openFullscreen(index + 1)} className={getTileClassName(getFiveImageRadius(index))}>
-                <Image src={foto} alt={`${alt} - Foto ${index + 2}`} fill loading="lazy" className="object-cover" sizes="25vw" />
+                <Image src={foto} unoptimized={isVistaImage(foto)} alt={`${alt} - Foto ${index + 2}`} fill loading="lazy" className="object-cover" sizes="25vw" />
               </button>
             ))}
           </>

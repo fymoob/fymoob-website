@@ -5,6 +5,7 @@ import Link from "next/link"
 
 import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
 import { cn } from "@/lib/utils"
+import { isVistaImage } from "@/lib/image-optimization"
 import type { Property } from "@/types/property"
 import { usePropertyCard, type PriceContext } from "./hooks/usePropertyCard"
 import { CardBadge } from "./CardBadge"
@@ -59,6 +60,7 @@ export function PropertyCardList({
           loading={prioritizeFirstImage ? "eager" : "lazy"}
           className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-105"
           sizes="300px"
+          unoptimized={isVistaImage(displayPhotos[0])}
         />
 
         {/* Badge — glass morphism unificado */}

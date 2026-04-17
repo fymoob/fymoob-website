@@ -3,6 +3,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { getAllEmpreendimentos } from "@/services/loft"
 import { formatPrice } from "@/lib/utils"
+import { isVistaImage } from "@/lib/image-optimization"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { Building2, MapPin, Home } from "lucide-react"
 
@@ -55,6 +56,7 @@ export default async function EmpreendimentosPage() {
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      unoptimized={isVistaImage(emp.imageUrl)}
                     />
                   </div>
                 ) : (
