@@ -394,11 +394,15 @@ async function fetchAllPropertiesRaw(): Promise<Property[]> {
   return allRaw.map(mapRawToProperty)
 }
 
-// Cached version using Next.js cache (persists across Vercel Lambdas)
+// Cached version using Next.js cache (persists across Vercel Lambdas).
+// Tag "imoveis" permite invalidacao granular via POST /api/revalidate
+// (ex: webhook pos-sync do CRM Loft/Vista, ou trigger manual do admin).
+// Todas as ~12 funcoes publicas derivam deste cache via getAllPropertiesInternal,
+// entao 1 tag = invalida tudo do catalogo sem tocar cache de photos/lead/etc.
 const getCachedProperties = unstable_cache(
   fetchAllPropertiesRaw,
   ["fymoob-all-properties"],
-  { revalidate: REVALIDATE_SECONDS }
+  { revalidate: REVALIDATE_SECONDS, tags: ["imoveis"] }
 )
 
 // ---------------------------------------------------------------------------
