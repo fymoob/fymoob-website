@@ -898,8 +898,22 @@ O PropertyCard atual tem 638 linhas com `"use client"` inteiro. Com 24 cards na 
 - [ ] IndexNow: ja temos endpoint `/api/indexnow` implementado. Bing aceita pings pra indexacao quase-imediata. Considerar adicionar Vercel cron ou botao admin que dispara IndexNow quando novo imovel entra no CRM.
 - [ ] Adicionar Bruno como user secundario em Bing + GSC (permissoes granulares, nao compartilhar senha)
 
-### 7.9.C — Cutover do dominio `fymoob.com` (redirect 308 -> .com.br) [EM EXECUCAO]
+### 7.9.C — Cutover do dominio `fymoob.com` (redirect 308 -> .com.br) [CONCLUIDO 2026-04-17]
 > `.com` eh do Bruno tambem (GoDaddy mesma conta). Redirect 308 + Change of Address transfere autoridade historica (92 URLs indexadas, 580 cliques/home, 122 paginas com impressoes em 3 meses) pro `.com.br`. Baseline completo em `docs/metrics-baseline/`. DNS backup completo em `docs/dns-backup-com.md`.
+
+**Status 2026-04-17:**
+- Fase A (DNS + Vercel): ✅ CONCLUIDA
+- Fase B (Change of Address GSC): ✅ CONCLUIDA e ATIVA (Data de início: 17/04/2026)
+- Fases C/D/E: monitoramento passivo nos proximos 180 dias
+
+**🚨 COMMITMENTS CRITICOS A PRESERVAR (nao esquecer):**
+
+1. **NAO DELETAR redirect 308 do `.com` por no mínimo 180 dias** (até ~2026-10-14). Google doc explícito: "Mantenha os redirecionamentos por pelo menos 180 dias". Se alguém acidentalmente remover o domínio `fymoob.com` do Vercel antes desse prazo, a consolidação de autoridade é revertida.
+
+2. **MANTER dominio fymoob.com pagando por no mínimo 1 ano** (até ~2027-04-17). Confirmar renovação automática no GoDaddy. Se expirar, squatters podem comprar pra phishing/malware impersonating a marca FYMOOB.
+
+3. **Banner amarelo "Este site está sendo movido"** aparece em ambas propriedades GSC por 180 dias. Nao clicar "CANCELAR MUDANCA" (botao vermelho) — ele REVERTE o processo.
+
 
 **Tempo estimado total: 24h (~30min execucao + 1h cutover validacao + 23h Change of Address efetivar).**
 
