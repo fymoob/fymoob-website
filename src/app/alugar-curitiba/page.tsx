@@ -28,6 +28,7 @@ export const metadata: Metadata = {
     title: "Alugar Apartamento em Curitiba — Guia Completo 2026",
     description: "Guia completo para alugar imóvel em Curitiba: documentos, garantias, bairros e preços.",
     type: "article",
+    url: "/alugar-curitiba",
   },
 }
 

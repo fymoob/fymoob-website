@@ -28,6 +28,7 @@ export const metadata: Metadata = {
     title: "Comprar Imóvel em Curitiba — Guia Completo 2026",
     description: "Guia definitivo para comprar imóvel em Curitiba: melhores bairros, preços, financiamento e documentação.",
     type: "article",
+    url: "/comprar-imovel-curitiba",
   },
 }
 

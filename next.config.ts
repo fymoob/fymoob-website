@@ -30,11 +30,11 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
-  // Habilitado para permitir source-map-explorer em analises forenses
-  // de bundle (Tier 0 do sistema de pesquisa empirica). NAO aumenta JS
-  // servido: source-maps sao servidos separadamente via .js.map apenas
-  // quando solicitados pelo DevTools.
-  productionBrowserSourceMaps: true,
+  // Source maps so em analise local (ANALYZE=true) — NAO em prod default.
+  // Expor .js.map em prod da ao atacante reconnaissance gratuito (codigo
+  // descompilado + nomes de variaveis + shapes de endpoint). Ligue via
+  // ANALYZE=true npm run build quando quiser rodar source-map-explorer.
+  productionBrowserSourceMaps: process.env.ANALYZE === "true",
   images: {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],

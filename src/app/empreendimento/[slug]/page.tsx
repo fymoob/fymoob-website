@@ -51,12 +51,13 @@ export async function generateMetadata({ params }: EmpreendimentoPageProps): Pro
   const assets = getEmpreendimentoAssets(slug)
 
   return {
-    title: `${emp.nome} | ${bairroText} — FYMOOB`,
+    title: { absolute: `${emp.nome} | ${bairroText}, Curitiba | FYMOOB` },
     description: `${emp.nome} em ${bairroText}, Curitiba. ${emp.total} unidades disponíveis. ${precoText} ${emp.construtora ? `Construtora ${emp.construtora}.` : ""} FYMOOB Imobiliária.`.trim(),
     alternates: { canonical: `/empreendimento/${slug}` },
     openGraph: {
       title: `${emp.nome} | ${bairroText} - Curitiba`,
       description: `${emp.total} unidades disponíveis no ${emp.nome}. ${precoText}`,
+      url: `/empreendimento/${slug}`,
       images: assets?.heroImage ? [{ url: assets.heroImage, width: 1200, height: 630 }] : emp.imageUrl ? [{ url: emp.imageUrl, width: 1200, height: 630 }] : undefined,
     },
   }
@@ -681,7 +682,7 @@ function StandardContent(props: {
                   <div key={ut.key} className="flex items-center gap-4 rounded-xl border border-neutral-200 p-4">
                     {ut.foto && (
                       <div className="relative hidden h-20 w-28 shrink-0 overflow-hidden rounded-lg sm:block">
-                        <Image src={ut.foto} alt={ut.key} fill className="object-cover" sizes="112px" loading="lazy" />
+                        <Image src={ut.foto} alt={`${emp.nome} — ${ut.properties[0].tipo}${ut.area > 0 ? ` ${formatArea(ut.area)}m²` : ""}`} fill className="object-cover" sizes="112px" loading="lazy" />
                       </div>
                     )}
                     <div className="flex-1">

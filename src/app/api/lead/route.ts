@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { checkLeadRateLimit } from "@/lib/rate-limit"
+import { checkLeadRateLimit, getClientIp } from "@/lib/rate-limit"
 import { verifyTurnstileToken } from "@/lib/turnstile"
 
 const LOFT_BASE_URL = "https://brunoces-rest.vistahost.com.br"
@@ -12,11 +12,8 @@ const PHONE_REGEX = /^[+]?[\d\s()-]{10,20}$/
 
 export async function POST(request: NextRequest) {
   try {
-    // 1. Rate limit por IP (5 req / 10min)
-    const ip =
-      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      request.headers.get("x-real-ip") ||
-      "unknown"
+    // 1. Rate limit por IP (5 req / 10min) — usa x-real-ip (nao forjavel)
+    const ip = getClientIp(request.headers)
     const rate = await checkLeadRateLimit(ip)
     if (!rate.allowed) {
       return NextResponse.json(

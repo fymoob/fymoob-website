@@ -1090,6 +1090,7 @@ export function SearchBar({
         <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
           <h2 className="text-lg font-semibold text-neutral-900">Localização</h2>
           <button type="button" onClick={() => setActiveChipSheet(null)}
+            aria-label="Fechar"
             className="flex size-9 items-center justify-center rounded-full hover:bg-neutral-100">
             <X className="size-5 text-neutral-600" />
           </button>

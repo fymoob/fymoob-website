@@ -90,7 +90,9 @@ export const mdxComponents: MDXComponents = {
   img: (props) => (
     <Image
       src={props.src || ""}
-      alt={props.alt || ""}
+      // Alt vazio seria decorativo — ruim pra SEO de imagens em posts.
+      // Fallback: title > alt > label generico.
+      alt={props.alt || props.title || "Ilustração do artigo"}
       width={800}
       height={450}
       className="my-6 rounded-xl"

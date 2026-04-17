@@ -28,6 +28,7 @@ export const metadata: Metadata = {
     title: "Morar em Curitiba — Guia Completo 2026",
     description: "Tudo sobre morar em Curitiba: custo de vida, bairros, transporte, educação e lazer.",
     type: "article",
+    url: "/morar-em-curitiba",
   },
 }
 

@@ -2,6 +2,31 @@ import { Ratelimit } from "@upstash/ratelimit"
 import { Redis } from "@upstash/redis"
 
 /**
+ * getClientIp — extrai IP real do cliente de forma resistente a spoof.
+ *
+ * Em Vercel, `x-real-ip` e setado pelo proxy edge com o IP do peer TCP (confiavel).
+ * `x-forwarded-for` pode ser forjado pelo cliente (primeiro entry e controlado
+ * pelo atacante). Por isso priorizamos x-real-ip e, como fallback, pegamos o
+ * ULTIMO hop de x-forwarded-for (que foi anexado pelo proxy da Vercel).
+ *
+ * Sem esse helper, um atacante rotacionando X-Forwarded-For: <ip-random> burla
+ * rate-limits por IP (lead spam, login enumeration).
+ */
+export function getClientIp(headers: Headers): string {
+  const realIp = headers.get("x-real-ip")?.trim()
+  if (realIp) return realIp
+
+  const xff = headers.get("x-forwarded-for")
+  if (xff) {
+    // Vercel anexa IP confiavel no final. Cliente controla o inicio.
+    const parts = xff.split(",").map((p) => p.trim()).filter(Boolean)
+    if (parts.length > 0) return parts[parts.length - 1]
+  }
+
+  return "unknown"
+}
+
+/**
  * Rate limiting for the admin login flow.
  *
  * Two independent limits applied to every magic link request:

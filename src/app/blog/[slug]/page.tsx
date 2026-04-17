@@ -40,6 +40,7 @@ export async function generateMetadata({
       description: post.description,
       type: "article",
       publishedTime: post.date,
+      url: `/blog/${post.slug}`,
       images: [{ url: post.image }],
     },
   }

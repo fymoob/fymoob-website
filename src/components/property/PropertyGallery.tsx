@@ -290,6 +290,7 @@ export function PropertyGallery({ fotos, alt, initialMode, onClose: onCloseExter
             <button
               type="button"
               onClick={close}
+              aria-label="Fechar galeria"
               className="flex size-9 items-center justify-center rounded-full transition hover:bg-neutral-100"
             >
               <X className="size-5 text-neutral-600" />

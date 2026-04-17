@@ -1,13 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getProperties } from "@/services/loft"
-import { checkApiLoftRateLimit } from "@/lib/rate-limit"
+import { checkApiLoftRateLimit, getClientIp } from "@/lib/rate-limit"
 
 export async function POST(request: NextRequest) {
-  // Rate limit 60/min/IP (cada request aqui dispara até 20 fetches ao Loft)
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    request.headers.get("x-real-ip") ||
-    "unknown"
+  // Rate limit 60/min/IP — usa x-real-ip (nao forjavel)
+  const ip = getClientIp(request.headers)
   const rate = await checkApiLoftRateLimit(ip)
   if (!rate.allowed) {
     return NextResponse.json(

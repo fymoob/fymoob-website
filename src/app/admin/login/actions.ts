@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers"
 import { signIn } from "@/auth"
-import { checkLoginRateLimit } from "@/lib/rate-limit"
+import { checkLoginRateLimit, getClientIp } from "@/lib/rate-limit"
 import { verifyTurnstileToken } from "@/lib/turnstile"
 
 export type LoginState = {
@@ -22,10 +22,8 @@ export async function requestMagicLink(
   }
 
   const headerList = await headers()
-  const ip =
-    headerList.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    headerList.get("x-real-ip") ??
-    "unknown"
+  // x-real-ip (Vercel peer TCP) — nao forjavel pelo client
+  const ip = getClientIp(headerList)
 
   // Layer 3: bot filter
   const turnstile = await verifyTurnstileToken(turnstileToken, ip)

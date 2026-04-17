@@ -24,7 +24,7 @@ import {
 } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Sobre a FYMOOB | Imobiliária em Curitiba",
+  title: { absolute: "Sobre a FYMOOB | Imobiliária em Curitiba" },
   description:
     "Conheça a FYMOOB — imobiliária em Curitiba com atendimento próximo, negociações justas e soluções sob medida. CRECI J 9420. Mais de 15 anos no mercado.",
   alternates: { canonical: "/sobre" },

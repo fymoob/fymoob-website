@@ -133,7 +133,7 @@ export async function generateMetadata({ params }: CombinadaPageProps): Promise<
     const properties = q >= 5 ? allProps.filter((p) => (p.dormitorios ?? 0) >= 5) : allProps.filter((p) => p.dormitorios === q)
     const precos = properties.map((p) => p.precoVenda ?? p.precoAluguel).filter((p): p is number => p !== null && p > 0)
     return {
-      title: `Imoveis com ${q}${q >= 5 ? "+" : ""} Quartos no ${bairro.bairro}, Curitiba | FYMOOB`,
+      title: { absolute: `Imoveis com ${q}${q >= 5 ? "+" : ""} Quartos no ${bairro.bairro}, Curitiba | FYMOOB` },
       description: `${properties.length} imoveis com ${q}${q >= 5 ? " ou mais" : ""} quartos no ${bairro.bairro}, Curitiba.${precos.length > 0 ? ` A partir de ${formatPrice(Math.min(...precos))}.` : ""} FYMOOB Imobiliaria.`,
       alternates: { canonical: `/imoveis/${bairroSlug}/${tipoSlug}` },
     }
@@ -145,7 +145,7 @@ export async function generateMetadata({ params }: CombinadaPageProps): Promise<
     const label = FINALIDADE_LABELS[tipoSlug]
     const precos = properties.map((p) => p.precoVenda ?? p.precoAluguel).filter((p): p is number => p !== null && p > 0)
     return {
-      title: `${label.title} no ${bairro.bairro}, Curitiba | FYMOOB`,
+      title: { absolute: `${label.title} no ${bairro.bairro}, Curitiba | FYMOOB` },
       description: `${properties.length} imoveis ${label.preposition} no ${bairro.bairro}, Curitiba.${precos.length > 0 ? ` Precos a partir de ${formatPrice(Math.min(...precos))}.` : ""} Encontre seu imovel ideal com a FYMOOB.`,
       alternates: { canonical: `/imoveis/${bairroSlug}/${tipoSlug}` },
     }

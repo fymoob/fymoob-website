@@ -56,6 +56,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "pt_BR",
     siteName: "FYMOOB Imobiliária",
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br",
     images: [
       {
         url: "/opengraph-image",

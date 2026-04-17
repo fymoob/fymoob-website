@@ -63,11 +63,10 @@ Todas as páginas usam Schema.org JSON-LD:
 
 ## Sitemap
 
-- [Sitemap index](${SITE_URL}/sitemap.xml)
-  - Imóveis individuais
-  - Bairros + combinações (tipo, finalidade, quartos, preço)
-  - Blog + guias + pillars
-  - Estático + institucional + empreendimentos
+- [Imóveis individuais](${SITE_URL}/sitemap/0.xml)
+- [Bairros + combinações (tipo, finalidade, quartos, preço)](${SITE_URL}/sitemap/1.xml)
+- [Blog + guias + pillars](${SITE_URL}/sitemap/2.xml)
+- [Estático + institucional + empreendimentos](${SITE_URL}/sitemap/3.xml)
 
 ## Contato
 

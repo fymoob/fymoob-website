@@ -40,6 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: guia.description,
       type: "article",
       publishedTime: guia.date,
+      url: `/guia/${bairro}`,
       images: guia.image ? [{ url: guia.image }] : undefined,
     },
   }

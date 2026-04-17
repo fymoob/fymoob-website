@@ -103,7 +103,7 @@ function LocationPicker({
     <div className="fixed inset-0 z-[10000] flex flex-col bg-white">
       {/* Header */}
       <div className="flex shrink-0 items-center justify-between border-b border-neutral-100 px-4 py-4">
-        <button type="button" onClick={onClose} className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-neutral-100">
+        <button type="button" onClick={onClose} aria-label="Fechar busca" className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-neutral-100">
           <X className="size-5 text-neutral-600" />
         </button>
         <p className="font-display text-base font-bold text-neutral-900">Localização</p>
@@ -130,6 +130,7 @@ function LocationPicker({
             <button
               type="button"
               onClick={() => setQuery("")}
+              aria-label="Limpar texto"
               className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400"
             >
               <X className="size-4" />
@@ -222,7 +223,7 @@ function TypePicker({
   return (
     <div className="fixed inset-0 z-[10000] flex flex-col bg-white">
       <div className="flex shrink-0 items-center justify-between border-b border-neutral-100 px-4 py-4">
-        <button type="button" onClick={onClose} className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-neutral-100">
+        <button type="button" onClick={onClose} aria-label="Fechar filtros" className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-neutral-100">
           <X className="size-5 text-neutral-600" />
         </button>
         <p className="font-display text-base font-bold text-neutral-900">Tipo de imóvel</p>
@@ -421,7 +422,7 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
     <div className="fixed inset-0 z-[9999] flex flex-col bg-white">
       {/* Header */}
       <div className="flex shrink-0 items-center justify-between border-b border-neutral-100 px-4 py-4">
-        <button type="button" onClick={() => setOpen(false)} className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-neutral-100">
+        <button type="button" onClick={() => setOpen(false)} aria-label="Fechar" className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-neutral-100">
           <X className="size-5 text-neutral-600" />
         </button>
         <p className="font-display text-base font-bold text-neutral-900">Buscar imóveis</p>
