@@ -67,6 +67,7 @@ export function PropertyCardCompact({
                     fill
                     priority={shouldPrioritize}
                     loading={shouldPrioritize ? "eager" : "lazy"}
+                    fetchPriority={shouldPrioritize ? "high" : "auto"}
                     className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-110"
                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                   />

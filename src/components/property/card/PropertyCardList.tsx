@@ -61,6 +61,7 @@ export function PropertyCardList({
           fill
           priority={prioritizeFirstImage}
           loading={prioritizeFirstImage ? "eager" : "lazy"}
+          fetchPriority={prioritizeFirstImage ? "high" : "auto"}
           className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-105"
           sizes="300px"
         />

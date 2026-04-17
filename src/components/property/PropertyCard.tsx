@@ -285,6 +285,7 @@ export function PropertyCard({
             fill
             priority={prioritizeFirstImage}
             loading={prioritizeFirstImage ? "eager" : "lazy"}
+            fetchPriority={prioritizeFirstImage ? "high" : "auto"}
             className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-105"
             sizes="(max-width: 640px) 100vw, 40vw"
           />
@@ -307,6 +308,7 @@ export function PropertyCard({
                       fill
                       priority={shouldPrioritize}
                       loading={shouldPrioritize ? "eager" : "lazy"}
+                      fetchPriority={shouldPrioritize ? "high" : "auto"}
                       className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-110"
                       sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                     />
