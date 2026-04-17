@@ -115,7 +115,6 @@ function LocationFilterImpl({
                         >
                           <Checkbox checked={checked} />
                           <span className="flex-1 text-sm font-medium">{cidade.label}</span>
-                          <span className="text-xs text-neutral-400">({cidade.count})</span>
                         </button>
                       </li>
                     )
