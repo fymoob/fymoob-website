@@ -45,11 +45,21 @@ export async function generateSitemaps() {
   ]
 }
 
-export default async function sitemap({ id }: { id: number }): Promise<MetadataRoute.Sitemap> {
+export default async function sitemap({
+  id,
+}: {
+  id: Promise<string>
+}): Promise<MetadataRoute.Sitemap> {
   const now = new Date()
+  // Next 16 passa `id` como Promise<string> (mudanca vs Next 15 onde era
+  // number direto). Precisa await + parseInt. Bug descoberto pre-cutover:
+  // JSON.stringify de Promise retorna {} e todas comparacoes falhavam,
+  // gerando shards vazios.
+  const rawId = await id
+  const shardId = parseInt(rawId, 10)
 
   // Segment 0: imóveis individuais
-  if (id === 0) {
+  if (shardId === 0) {
     const slugs = await getAllSlugs()
     return slugs.map((slug) => ({
       url: `${SITE_URL}/imovel/${slug}`,
@@ -60,7 +70,7 @@ export default async function sitemap({ id }: { id: number }): Promise<MetadataR
   }
 
   // Segment 1: bairros + combinações (tipo, finalidade, quartos, preço)
-  if (id === 1) {
+  if (shardId === 1) {
     const [bairros, types] = await Promise.all([getAllBairros(), getAllTypes()])
 
     const typePages: MetadataRoute.Sitemap = types
@@ -170,7 +180,7 @@ export default async function sitemap({ id }: { id: number }): Promise<MetadataR
   }
 
   // Segment 2: blog + guias + pillars
-  if (id === 2) {
+  if (shardId === 2) {
     const [blogSlugs, guiaSlugs] = await Promise.all([getAllBlogSlugs(), getAllGuiaSlugs()])
 
     const pillarPages: MetadataRoute.Sitemap = [
@@ -221,7 +231,7 @@ export default async function sitemap({ id }: { id: number }): Promise<MetadataR
   }
 
   // Segment 3: static + institucional + empreendimentos
-  if (id === 3) {
+  if (shardId === 3) {
     const empreendimentos = await getAllEmpreendimentos()
 
     const staticPages: MetadataRoute.Sitemap = [
