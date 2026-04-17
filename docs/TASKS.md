@@ -23,7 +23,7 @@
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
 | -- | Bugs | 0 | 0 | 0 | — |
 | 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
-| 11 | Performance (CWV) | 39 | 35 | 4 | EM ANDAMENTO |
+| 11 | Performance (CWV) | 56 | 46 | 10 | EM ANDAMENTO |
 | 12 | Conteudo SEO Editorial | 29 | 26 | 3 | EM ANDAMENTO |
 | 13 | Funcionalidades e UX | 39 | 39 | 0 | CONCLUIDA |
 | -- | Ações Bruno (CRM) | 3 | 0 | 3 | PENDENTE |
@@ -32,7 +32,112 @@
 | 16 | Claude Managed Agents | 14 | 0 | 14 | MEDIO PRAZO |
 | 17 | Agentes como Produto SaaS | 14 | 0 | 14 | LONGO PRAZO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **333** | **238** | **95** | **71%** |
+| | **TOTAL** | **350** | **249** | **101** | **71%** |
+
+---
+
+## Sessao 2026-04-16/17 - Otimizacao de Performance (/busca) [EM ANDAMENTO]
+
+<details>
+<summary>Sessao de perf intensiva: 3 subsessoes de otimizacao + refatoracao do sistema de pesquisa empirica</summary>
+
+### Contexto
+
+Sessao dividida em 4 fases, culminando em mudanca de metodologia:
+1. Sessao A + B (bundle split, dynamic imports)
+2. Fix LCP (fetchPriority), Op\u00e7\u00e3o A (LocationFilter sem cmdk), Fix 2-t\u00e1tico B
+3. Fix 2 completo (PhotoCarousel + FavoriteButton islands + CSS scroll-snap)
+4. Fase 1 tentada (Lucide/polyfill) \u2014 2 de 4 items REVERTIDOS por n\u00e3o materializarem
+5. **Meta-mudanca**: montagem de sistema de pesquisa empirica (bundle-analyzer, size-limit, scripts perf, 4 protocolos) motivada por 4/7 estimativas nao terem materializado
+
+### Baseline oficial registrado (5 runs, CoV 4.7%)
+
+`docs/perf/baselines/2026-04-17-busca.json`:
+- Score: 65 (CoV 1.6%)
+- LCP:   4.84s (CoV 9.1%)
+- TBT:   645ms (CoV 4.7%)
+- CLS:   0 mediana, 2/5 samples 0.078 (intermitente)
+- Bundle /busca: 758 KB raw (revisado: 431 KB ap\u00f3s Agent 1 incluir dynamic chunks)
+
+### Tier 0 \u2014 Pre-requisitos de medi\u00e7\u00e3o [CONCLUIDO 2026-04-17]
+
+- [x] `productionBrowserSourceMaps: true` em next.config.ts (destrava source-map-explorer)
+- [x] Instalar `@vercel/speed-insights` e inserir no layout root (destrava RUM field data) \u2014 +4KB bundle
+- [x] Remover `searchResultsSchema` duplicado em src/app/busca/page.tsx (sobrep\u00f5e 100% com itemListSchema)
+- [ ] Atualizar baseline-current.md corrigindo bundle /busca total (247 KB \u2192 431 KB com dynamic) \u2014 pr\u00f3ximo run de baseline
+
+### Tier 1 \u2014 Flags de baixo risco (cada uma seu PR + hip\u00f3tese)
+
+- [ ] `F` \u2014 `font-display: optional` em next/font/local (Satoshi atual swap)
+- [ ] `B` \u2014 `reactCompiler: true` (React Compiler stable Next 16)
+- [ ] `D` \u2014 `experimental.inlineCss: true` (Turbopack suportado)
+
+### Tier 2 \u2014 Cirurgico em @base-ui
+
+- [ ] SortDropdown mobile: trocar Sheet por `<select>` nativo (Agent 3 #1 recomendado)
+- [ ] AdvancedFiltersModal: trocar Dialog @base-ui por `<dialog>` nativo
+
+### Tier 3 \u2014 Refactor moderado (s\u00f3 depois de Tier 1+2 validados via Speed Insights)
+
+- [ ] Parallel routes `/busca/@filters` + `@results` (estimado -150-400ms LCP)
+- [ ] Split SearchBar.tsx (1170 linhas) em Mobile/Desktop (exige refactor real do source, n\u00e3o depende de bundler)
+
+### Tier 4 \u2014 Condicional / adiado
+
+- [ ] Mobile Sheet filtros \u2192 `<dialog side=bottom>` (validar anima\u00e7\u00e3o slide-up Safari 17 primeiro)
+- [ ] Desktop Popover \u2192 Popover API nativo (validar % iOS 17 em GA4 primeiro)
+- [ ] Lucide manual em /imovel/* (n\u00e3o em /busca \u2014 chunk 4bafbefc n\u00e3o \u00e9 carregado l\u00e1)
+
+### Opcoes DESCARTADAS (com razao)
+
+- **PPR / Cache Components** \u2014 issue [#86383](https://github.com/vercel/next.js/issues/86383) relata regressao TBT at\u00e9 3.1s em Next 16. Esperar 16.3+.
+- **Edge Runtime para /busca** \u2014 incompat\u00edvel com `unstable_cache`, exige refactor massivo.
+- **Self-host CDN vistahost** \u2014 custo/benef\u00edcio ruim (j\u00e1 temos preconnect + AVIF).
+- **Desinstalar @base-ui completamente** \u2014 12+ outros componentes usam (Slider, Checkbox, Field, Select, Tabs...).
+- **Fix Lucide manual no /busca** \u2014 chunk 4bafbefc (74.7KB) n\u00e3o \u00e9 carregado em /busca (descoberto via Agent 1 forense). Vale atacar em /imovel/* separadamente.
+
+### Infra de pesquisa empirica (Fase II) - CONCLUIDA
+
+- [x] `@next/bundle-analyzer` ativado (next.config.ts com withBundleAnalyzer wrapper)
+- [x] `size-limit` instalado + `.size-limit.json` com budgets
+- [x] `source-map-explorer` instalado
+- [x] `scripts/perf/lighthouse-median.js` (5 runs, mediana, CoV gate <10%)
+- [x] `scripts/perf/bundle-snapshot.js` (extrai sizes do build-manifest)
+- [x] `scripts/perf/diff-snapshots.js` (compara antes/depois)
+- [x] `docs/perf/baseline-current.md` (canonico)
+- [x] `docs/perf/baselines/` (primeira medicao oficial 2026-04-17)
+- [x] `docs/perf/bundle-snapshots/` (primeira snapshot)
+- [x] 4 protocolos em `.claude/protocols/` (HYPOTHESIS, MEASURE-BEFORE-CLAIM, STATISTICAL-RIGOR, ATTRIBUTION)
+- [x] CLAUDE.md secao "Performance Changes REQUIRE HYPOTHESIS + MEASUREMENT" com escopo (aplica s\u00f3 em claims de KB/ms)
+- [x] `docs/perf/hotfixes.log` (append-only)
+
+### Commits da sessao completa
+
+| Commit | Mudanca | Resultado |
+|--------|---------|-----------|
+| bb2d0c0 | Sessao A (SearchPageSearchBar SSR + PriceFilter dynamic) | consolidado |
+| b6159ce | Sessao B (filtros pesados dynamic) | -40% TBT inicial |
+| 26e5750 | fetchPriority high | ~0ms (neutro) |
+| e9186b4 | LocationFilter sem cmdk | ~estavel |
+| a16ec04 | priority so no mobile + plano Fix 2 | ~estavel |
+| 5385d22 | Favoritos (X + features + bug m\u00b2) | UX fix |
+| 4e21016 | Fix 2 completo (scroll-snap + islands) | ~0ms (mas swipe touch mobile agora funciona) |
+| 61bb4e7 | FilterSection details | marginal |
+| bc53285 | Sistema de pesquisa empirica (Fase I+II) | infra + protocolos |
+| b7162cf | Baseline oficial 2026-04-17 | primeiro dogfood |
+| 348b3fc | Escopo dos protocolos + hotfix exception | clarificacao |
+
+### Li\u00e7\u00f5es aprendidas (chave)
+
+1. **"Remover polyfill salva 110KB"** \u2192 falso (`nomodule`, browsers modernos ignoram)
+2. **"Lucide tree-shake salva 60KB"** \u2192 build quebrou (shadcn alias `CheckIcon` incompat\u00edvel)
+3. **"Fix 2 completo salva 200-400ms TBT"** \u2192 ~0ms (gargalo n\u00e3o era carousel JS)
+4. **"fetchPriority=high -400-600ms LCP"** \u2192 ~0ms (ja era eager via priority)
+5. **"Chunk Lucide 74KB parasita no /busca"** \u2192 Agent 1 revelou: n\u00e3o carregado em /busca, \u00e9 /imovel/*
+
+**Conclus\u00e3o:** 5/5 estimativas n\u00e3o materializaram em varios graus. Sistema de protocolos montado para prevenir esse padr\u00e3o em sess\u00f5es futuras.
+
+</details>
 
 ---
 

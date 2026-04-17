@@ -310,32 +310,12 @@ async function SearchResults({ searchParams }: { searchParams: SearchParamsMap }
   appliedParams.delete("page")
   const hasAppliedFilters = appliedParams.toString().length > 0
   const itemListSchema = generateItemListSchema(properties, pagePath)
-  const searchResultsSchema = {
-    "@context": "https://schema.org",
-    "@type": "SearchResultsPage",
-    name: "Resultados de busca de imóveis em Curitiba",
-    url: `${SITE_URL}${pagePath}`,
-    mainEntity: {
-      "@type": "ItemList",
-      numberOfItems: total,
-      itemListElement: properties.map((property, index) => ({
-        "@type": "ListItem",
-        position: (state.page - 1) * PAGE_SIZE + index + 1,
-        url: `${SITE_URL}/imovel/${property.slug}`,
-        name: property.titulo,
-      })),
-    },
-  }
 
   return (
     <section aria-labelledby="search-results-title" className="space-y-6">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(searchResultsSchema) }}
       />
 
 

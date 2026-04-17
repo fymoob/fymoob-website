@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import dynamic from "next/dynamic";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { generateOrganizationSchema, generateLocalBusinessSchema } from "@/lib/seo";
 import { Suspense } from "react";
 import { Header } from "@/components/layout/Header";
@@ -98,6 +99,10 @@ export default function RootLayout({
         <WhatsAppFloat />
         <BottomNav />
         {GA_ID && <DeferredGA gaId={GA_ID} />}
+        {/* RUM field data (p75 LCP/INP/CLS de usuarios reais) — precondicao
+            para validar empiricamente otimizacoes Tier 1+ do roadmap perf.
+            Dashboard: Vercel > Project > Speed Insights. */}
+        <SpeedInsights />
       </body>
     </html>
   );
