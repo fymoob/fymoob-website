@@ -57,6 +57,9 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react", "@base-ui/react"],
   },
+  // H-20260417-003: memoizacao automatica compile-time. Meta report
+  // 20-40% menos re-renders + LCP +12%. Custo: +30-50% build time.
+  reactCompiler: true,
   async headers() {
     return [
       {
