@@ -3,7 +3,8 @@
 import { useRef, useState } from "react"
 import Link from "next/link"
 import Script from "next/script"
-import { Send, Loader2, CheckCircle2 } from "lucide-react"
+import { Send, Loader2, CheckCircle2, ShieldCheck } from "lucide-react"
+import { formatPhoneBR } from "@/lib/utils"
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 
@@ -22,6 +23,7 @@ export function ContactForm() {
   const [errorMsg, setErrorMsg] = useState<string>("")
   const [tsToken, setTsToken] = useState<string>("")
   const [consentChecked, setConsentChecked] = useState(false)
+  const [phoneValue, setPhoneValue] = useState("")
   const widgetContainer = useRef<HTMLDivElement>(null)
   const widgetId = useRef<string | undefined>(undefined)
 
@@ -133,6 +135,7 @@ export function ContactForm() {
             name="nome"
             type="text"
             required
+            autoComplete="name"
             placeholder="Seu nome"
             className="w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm text-fymoob-gray-dark placeholder:text-neutral-400 focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary"
           />
@@ -148,6 +151,8 @@ export function ContactForm() {
               name="email"
               type="email"
               required
+              autoComplete="email"
+              inputMode="email"
               placeholder="seu@email.com"
               className="w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm text-fymoob-gray-dark placeholder:text-neutral-400 focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary"
             />
@@ -161,6 +166,10 @@ export function ContactForm() {
               name="fone"
               type="tel"
               required
+              autoComplete="tel"
+              inputMode="tel"
+              value={phoneValue}
+              onChange={(e) => setPhoneValue(formatPhoneBR(e.target.value))}
               placeholder="(41) 99999-9999"
               className="w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm text-fymoob-gray-dark placeholder:text-neutral-400 focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary"
             />
@@ -199,9 +208,17 @@ export function ContactForm() {
           />
         </div>
 
-        {/* Turnstile widget */}
+        {/* Turnstile widget — com placeholder de loading pra UX */}
         {TURNSTILE_SITE_KEY && (
-          <div ref={widgetContainer} className="flex justify-center" />
+          <div className="relative flex min-h-[65px] items-center justify-center">
+            {!tsToken && (
+              <div className="absolute inset-0 flex items-center justify-center gap-2 text-xs text-neutral-500">
+                <ShieldCheck className="size-3.5 animate-pulse" />
+                Verificando segurança...
+              </div>
+            )}
+            <div ref={widgetContainer} className="relative z-10" />
+          </div>
         )}
 
         {/* LGPD consent */}

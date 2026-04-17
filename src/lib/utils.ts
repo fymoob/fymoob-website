@@ -45,6 +45,29 @@ export function formatPrice(value: number | null): string {
   })
 }
 
+/**
+ * Mascara BR para telefone — celular (9 digitos) ou fixo (8 digitos).
+ * Aceita com ou sem DDD, formata incrementalmente enquanto o usuario digita.
+ * Exemplos:
+ *   "41" -> "(41)"
+ *   "4199" -> "(41) 99"
+ *   "4199978" -> "(41) 9 9978"
+ *   "41999780517" -> "(41) 99978-0517"
+ *   "4133221111" -> "(41) 3322-1111"
+ */
+export function formatPhoneBR(raw: string): string {
+  const digits = raw.replace(/\D/g, "").slice(0, 11)
+  if (digits.length === 0) return ""
+  if (digits.length <= 2) return `(${digits}`
+  if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`
+  if (digits.length <= 10) {
+    // Fixo: (XX) XXXX-XXXX (ate 10 digitos)
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`
+  }
+  // Celular: (XX) XXXXX-XXXX (11 digitos)
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`
+}
+
 export function slugify(text: string): string {
   return text
     .normalize("NFD")

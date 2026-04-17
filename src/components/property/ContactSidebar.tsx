@@ -10,7 +10,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { pushAnalyticsEvent } from "@/lib/analytics"
-import { cn, formatPrice } from "@/lib/utils"
+import { cn, formatPhoneBR, formatPrice } from "@/lib/utils"
 import type { Property } from "@/types/property"
 
 const WISHLIST_STORAGE_KEY = "fymoob:wishlist"
@@ -115,6 +115,7 @@ export function ContactSidebar({
   const [submitError, setSubmitError] = useState("")
   const [turnstileToken, setTurnstileToken] = useState("")
   const [consentChecked, setConsentChecked] = useState(false)
+  const [phoneValue, setPhoneValue] = useState("")
   const formRef = useRef<HTMLFormElement>(null)
   const widgetContainer = useRef<HTMLDivElement>(null)
   const widgetId = useRef<string | undefined>(undefined)
@@ -260,6 +261,7 @@ export function ContactSidebar({
           <Input
             name="nome"
             type="text"
+            autoComplete="name"
             placeholder="Seu nome"
             required
             className="h-11 rounded-xl border-neutral-200 bg-neutral-50/70 placeholder:text-neutral-400"
@@ -267,6 +269,8 @@ export function ContactSidebar({
           <Input
             name="email"
             type="email"
+            autoComplete="email"
+            inputMode="email"
             placeholder="Seu e-mail"
             required
             className="h-11 rounded-xl border-neutral-200 bg-neutral-50/70 placeholder:text-neutral-400"
@@ -274,7 +278,11 @@ export function ContactSidebar({
           <Input
             name="fone"
             type="tel"
-            placeholder="Seu telefone"
+            autoComplete="tel"
+            inputMode="tel"
+            value={phoneValue}
+            onChange={(e) => setPhoneValue(formatPhoneBR(e.target.value))}
+            placeholder="(41) 99999-9999"
             required
             className="h-11 rounded-xl border-neutral-200 bg-neutral-50/70 placeholder:text-neutral-400"
           />
@@ -284,7 +292,18 @@ export function ContactSidebar({
             className="min-h-24 rounded-xl border-neutral-200 bg-neutral-50/70 placeholder:text-neutral-400"
           />
 
-          {TURNSTILE_SITE_KEY && <div ref={widgetContainer} className="flex justify-center" />}
+          {/* Turnstile — com placeholder loading pra UX */}
+          {TURNSTILE_SITE_KEY && (
+            <div className="relative flex min-h-[65px] items-center justify-center">
+              {!turnstileToken && (
+                <div className="absolute inset-0 flex items-center justify-center gap-2 text-xs text-neutral-500">
+                  <ShieldCheck className="size-3.5 animate-pulse" />
+                  Verificando seguranca...
+                </div>
+              )}
+              <div ref={widgetContainer} className="relative z-10" />
+            </div>
+          )}
 
           <label className="flex items-start gap-2 text-xs text-neutral-500">
             <input
