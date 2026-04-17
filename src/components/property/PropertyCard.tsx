@@ -18,6 +18,7 @@ import {
 } from "@/lib/utils"
 import type { Property } from "@/types/property"
 import { isVistaImage } from "@/lib/image-optimization"
+import { getPropertyPriceDisplay } from "@/lib/property-price"
 import { getBadge } from "./card/hooks/usePropertyCard"
 import { CardBadge } from "./card/CardBadge"
 import { PhotoCarousel } from "./card/PhotoCarousel"
@@ -136,13 +137,11 @@ export function PropertyCard({
   hideSecondaryFeatures = false,
 }: PropertyCardProps) {
   const alt = generateImageAlt(property)
-  const venda = property.precoVenda && property.precoVenda > 0 ? property.precoVenda : null
-  const aluguel = property.precoAluguel && property.precoAluguel > 0 ? property.precoAluguel : null
-  const isDual = property.finalidade === "Venda e Locação" && !!venda && !!aluguel
-  const primaryIsRental = isDual ? priceContext === "locacao" : !venda && !!aluguel
-  const price = isDual && priceContext === "locacao" ? aluguel : (venda ?? aluguel)
-  const secondaryPrice = isDual ? (primaryIsRental ? venda : aluguel) : null
-  const isRental = primaryIsRental
+  // Helper centraliza logica: dual detectado se ambos precos > 0 (nao depende
+  // de Finalidade CRM que as vezes vem vazia mesmo em imoveis dual). Respeita
+  // finalidade explicita "Venda" / "Locação" pra escolher preco primario.
+  const { price, secondaryPrice, isRental, isDual } = getPropertyPriceDisplay(property, priceContext)
+  const primaryIsRental = isRental
   const photos = useMemo(() => getPropertyPhotos(property), [property])
   const [topViewed, setTopViewed] = useState<Set<string>>(new Set())
   useEffect(() => {

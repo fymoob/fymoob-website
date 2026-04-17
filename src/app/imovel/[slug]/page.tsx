@@ -11,6 +11,7 @@ import {
   generatePropertyDescription,
   safeJsonLd,
 } from "@/lib/seo"
+import { getPropertyPriceDisplay } from "@/lib/property-price"
 import {
   getPropertyPriceBucket,
   isConsultPriceProperty,
@@ -130,12 +131,10 @@ export default async function PropertyPage({ params }: PageProps) {
   const hasLongTitle = property.titulo.length > 60
   const mainImage = getPropertyImage(property)
   const allPhotos = filterPropertyPhotos(property.fotos)
-  const isDual =
-    property.finalidade === "Venda e Locação" && property.precoVenda && property.precoAluguel
-  const isRental = !isDual && property.finalidade !== "Venda"
-  const price = isRental
-    ? (property.precoAluguel ?? property.precoVenda)
-    : (property.precoVenda ?? property.precoAluguel)
+  // Helper detecta dual se ambos precos > 0 (nao confia em Finalidade CRM
+  // que as vezes vem vazia mesmo em imoveis dual). Respeita finalidade
+  // explicita "Locação"/"Venda" pra escolher primario.
+  const { price, isRental, isDual } = getPropertyPriceDisplay(property)
   const variant = resolvePropertyPageVariant(property)
   const isConsultPrice = isConsultPriceProperty(property)
   const priceBucket = getPropertyPriceBucket(property)

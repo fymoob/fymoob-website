@@ -9,6 +9,7 @@ import {
   generateImageAlt,
   getPropertyImage,
 } from "@/lib/utils"
+import { getPropertyPriceDisplay, type PriceContext as SharedPriceContext } from "@/lib/property-price"
 import type { Property } from "@/types/property"
 
 const MAX_CARD_PHOTOS = 5
@@ -106,23 +107,13 @@ function getPropertyPhotos(property: Property): string[] {
   return photos.slice(0, MAX_CARD_PHOTOS)
 }
 
-export type PriceContext = "venda" | "locacao" | null
+export type PriceContext = SharedPriceContext
 
 function resolvePrice(property: Property, ctx: PriceContext) {
-  const venda = property.precoVenda && property.precoVenda > 0 ? property.precoVenda : null
-  const aluguel = property.precoAluguel && property.precoAluguel > 0 ? property.precoAluguel : null
-  const isDual = property.finalidade === "Venda e Locação" && venda && aluguel
-
-  if (isDual && ctx === "locacao") {
-    return { price: aluguel, secondaryPrice: venda, isRental: true, secondaryIsRental: false }
-  }
-  if (isDual) {
-    return { price: venda, secondaryPrice: aluguel, isRental: false, secondaryIsRental: true }
-  }
-
-  const price = venda ?? aluguel
-  const isRental = !venda && !!aluguel
-  return { price, secondaryPrice: null, isRental, secondaryIsRental: false }
+  const { price, secondaryPrice, isRental, isDual } = getPropertyPriceDisplay(property, ctx)
+  // secondaryIsRental eh o oposto de isRental quando dual
+  const secondaryIsRental = isDual ? !isRental : false
+  return { price, secondaryPrice, isRental, secondaryIsRental }
 }
 
 export function usePropertyCard(property: Property, priceContext: PriceContext = null) {
