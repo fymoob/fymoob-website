@@ -156,19 +156,46 @@ async function fetchLoftAPI<T>(endpoint: string, params: Record<string, string> 
   for (const [k, v] of Object.entries(params)) {
     url.searchParams.set(k, v)
   }
+  // NUNCA logar url.toString() — contem LOFT_API_KEY no query string.
+  const urlString = url.toString()
 
-  const res = await fetch(url.toString(), {
-    headers: { Accept: "application/json" },
-    next: { revalidate: REVALIDATE_SECONDS },
-  })
+  // Retry simples em 5xx/429/timeout. 1 retry com backoff curto — sem biblioteca.
+  // Timeout 10s por tentativa evita que ISR regeneration fique pendurada.
+  const maxAttempts = 2
+  let lastErr: unknown = null
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const res = await fetch(urlString, {
+        headers: { Accept: "application/json" },
+        next: { revalidate: REVALIDATE_SECONDS },
+        signal: AbortSignal.timeout(10_000),
+      })
 
-  if (!res.ok) {
-    const text = await res.text().catch(() => "")
-    console.error(`[Loft API] ${res.status} on ${endpoint}: ${text.slice(0, 200)}`)
-    throw new Error(`Loft API error: ${res.status}`)
+      if (res.ok) {
+        return res.json() as Promise<T>
+      }
+
+      const text = await res.text().catch(() => "")
+      console.error(`[Loft API] ${res.status} on ${endpoint} (attempt ${attempt}): ${text.slice(0, 200)}`)
+
+      // 4xx nao-429 = bug do client, nao adianta retry
+      if (res.status < 500 && res.status !== 429) {
+        throw new Error(`Loft API error: ${res.status}`)
+      }
+      lastErr = new Error(`Loft API error: ${res.status}`)
+    } catch (err) {
+      // AbortError (timeout) ou network — loga sem url (tem secret)
+      const name = err instanceof Error ? err.name : "UnknownError"
+      console.error(`[Loft API] fetch failed on ${endpoint} (attempt ${attempt}): ${name}`)
+      lastErr = err
+    }
+
+    if (attempt < maxAttempts) {
+      await new Promise((r) => setTimeout(r, 500 * attempt))
+    }
   }
 
-  return res.json() as Promise<T>
+  throw lastErr instanceof Error ? lastErr : new Error("Loft API: max retries exceeded")
 }
 
 // ---------------------------------------------------------------------------
@@ -178,7 +205,8 @@ async function fetchLoftAPI<T>(endpoint: string, params: Record<string, string> 
 function parseNumber(val: string | undefined | null): number | null {
   if (!val) return null
   const n = parseFloat(val)
-  return isNaN(n) || n === 0 ? null : n
+  // Rejeita NaN, zero e negativos (CRM as vezes tem precos negativos por typo).
+  return isNaN(n) || n <= 0 ? null : n
 }
 
 function parseBool(val: string | undefined): boolean {
@@ -226,7 +254,9 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
     }
   }
 
-  // Extract photo URLs from nested Foto object
+  // Extract photo URLs from nested Foto object.
+  // Filter obrigatorio: CRM as vezes retorna string vazia ou URLs relativas que
+  // quebram <Image src=""> do Next (erro "empty string is not allowed").
   const fotos: string[] = []
   const fotosPorTipo: { foto: string; tipo: string; descricao: string }[] = []
   if (raw.Foto && typeof raw.Foto === "object") {
@@ -234,7 +264,7 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
       (a, b) => parseInt(a.Ordem || "0") - parseInt(b.Ordem || "0")
     )
     for (const foto of sorted) {
-      if (foto.Foto) {
+      if (typeof foto.Foto === "string" && foto.Foto.startsWith("https://")) {
         fotos.push(foto.Foto)
         fotosPorTipo.push({
           foto: foto.Foto,
@@ -318,8 +348,9 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
     descricaoEmpreendimento: raw.DescricaoEmpreendimento || null,
     descricao: raw.DescricaoWeb || raw.TextoAnuncio || "",
     keywordsWeb: raw.KeywordsWeb || null,
-    fotoDestaque: raw.FotoDestaque || "",
-    fotoDestaquePequena: raw.FotoDestaquePequena || null,
+    // fotoDestaque so aceita URL https valida — evita Next/Image crash.
+    fotoDestaque: typeof raw.FotoDestaque === "string" && raw.FotoDestaque.startsWith("https://") ? raw.FotoDestaque : "",
+    fotoDestaquePequena: typeof raw.FotoDestaquePequena === "string" && raw.FotoDestaquePequena.startsWith("https://") ? raw.FotoDestaquePequena : null,
     fotos,
     fotosPorTipo,
     urlVideo: raw.URLVideo || null,
@@ -418,7 +449,15 @@ async function getAllPropertiesInternal(): Promise<Property[]> {
     console.warn("[Loft] LOFT_API_KEY not set — returning empty list")
     return []
   }
-  return getCachedProperties()
+  try {
+    return await getCachedProperties()
+  } catch (err) {
+    // Loft indisponivel: degradar pra lista vazia em vez de 500 na pagina inteira.
+    // unstable_cache ja servira o valor anterior enquanto houver cache valido;
+    // esse catch protege o caso de primeiro acesso com Loft offline.
+    console.error("[Loft] getCachedProperties failed — returning empty list:", err instanceof Error ? err.message : err)
+    return []
+  }
 }
 
 // ---------------------------------------------------------------------------

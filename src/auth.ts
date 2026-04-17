@@ -51,6 +51,11 @@ function getAllowedAdmins(): Set<string> {
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter,
+  // trustHost eh obrigatorio em Vercel (proxy). Sem ele, NextAuth pode aceitar
+  // Host header atacante ao montar a URL de callback do magic link → risco de
+  // open redirect / session bound ao host do atacante. Em prod, tambem garanta
+  // AUTH_URL=https://fymoob.com.br na env da Vercel.
+  trustHost: true,
   providers: [
     Resend({
       apiKey: process.env.RESEND_API_KEY,

@@ -47,7 +47,7 @@ export default async function EmpreendimentosPage() {
                 href={`/empreendimento/${emp.slug}`}
                 className="group overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm transition hover:border-brand-primary/30 hover:shadow-md"
               >
-                {emp.imageUrl ? (
+                {emp.imageUrl && emp.imageUrl.startsWith("https://") ? (
                   <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100">
                     <Image
                       src={emp.imageUrl}

@@ -234,16 +234,20 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
           )}
 
           {assets.logo ? (
-            <div className="mt-4 flex justify-center">
-              <Image
-                src={assets.logo}
-                alt={`Logo ${emp.nome}`}
-                width={500}
-                height={240}
-                className="h-auto max-h-[160px] w-auto max-w-[70vw] object-contain sm:max-h-[220px] sm:max-w-[420px]"
-                priority
-              />
-            </div>
+            <>
+              {/* h1 acessivel para SEO/a11y — logo visual nao substitui heading */}
+              <h1 className="sr-only">{emp.nome}</h1>
+              <div className="mt-4 flex justify-center">
+                <Image
+                  src={assets.logo}
+                  alt={`Logo ${emp.nome}`}
+                  width={500}
+                  height={240}
+                  className="h-auto max-h-[160px] w-auto max-w-[70vw] object-contain sm:max-h-[220px] sm:max-w-[420px]"
+                  priority
+                />
+              </div>
+            </>
           ) : (
             <h1 className="mt-6 font-serif text-5xl font-light italic tracking-widest text-white sm:text-6xl lg:text-7xl">
               {emp.nome}

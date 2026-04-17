@@ -16,11 +16,17 @@ import { auth } from "@/auth"
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Protected: everything under /admin EXCEPT /admin/login itself and API auth routes
-  if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
+  // Protected: /admin/* (exceto login) e /api/admin/*
+  const isAdminPage = pathname.startsWith("/admin") && pathname !== "/admin/login"
+  const isAdminApi = pathname.startsWith("/api/admin")
+  if (isAdminPage || isAdminApi) {
     const session = await auth()
     if (!session?.user?.email) {
+      if (isAdminApi) {
+        return NextResponse.json({ error: "unauthorized" }, { status: 401 })
+      }
       const loginUrl = new URL("/admin/login", request.url)
+      loginUrl.searchParams.set("callbackUrl", pathname)
       return NextResponse.redirect(loginUrl)
     }
   }
@@ -29,5 +35,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/api/admin/:path*"],
 }

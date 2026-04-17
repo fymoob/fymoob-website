@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { ChevronDown } from "lucide-react"
 import { generateFAQPageSchema } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
@@ -88,12 +89,12 @@ export default function FAQPage() {
             >
               WhatsApp
             </a>
-            <a
+            <Link
               href="/contato"
               className="inline-flex items-center rounded-lg border border-fymoob-blue px-5 py-2.5 text-sm font-medium text-fymoob-blue transition-colors hover:bg-fymoob-blue/5"
             >
               Contato
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -42,9 +42,13 @@ const nextConfig: NextConfig = {
     // 85 = hero property thumbnails, 92 = imagem principal do imóvel.
     qualities: [75, 85, 92],
     remotePatterns: [
+      // Vista/Loft usa subdominios variados: cdn.vistahost, cdn1.vistahost,
+      // foto.vistahost. Allowlist ampla por sufixo evita Image 400 se o CRM
+      // mudar de host. Filtro adicional startsWith("https://") em loft.ts
+      // previne XSS por URL poisoning.
       {
         protocol: "https",
-        hostname: "cdn.vistahost.com.br",
+        hostname: "**.vistahost.com.br",
         pathname: "/**",
       },
       {

@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 import { getProperties, getAllBairros, getAllTypes, getAllCities, getPropertyStats } from "@/services/loft"
@@ -226,9 +227,9 @@ export default async function FaixaPrecoPage({ params }: FaixaPageProps) {
               <p className="text-lg text-neutral-500">
                 Nenhum imóvel encontrado nesta faixa de preço no momento.
               </p>
-              <a href="/busca" className="mt-4 inline-block text-brand-primary hover:underline">
+              <Link href="/busca" className="mt-4 inline-block text-brand-primary hover:underline">
                 Ver todos os imóveis
-              </a>
+              </Link>
             </div>
           )}
         </div>

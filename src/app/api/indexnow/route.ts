@@ -1,12 +1,22 @@
 import { NextResponse } from "next/server"
+import { timingSafeEqual } from "node:crypto"
 import { submitToIndexNow } from "@/lib/indexnow"
+
+// Comparacao em tempo constante evita timing side-channel.
+function safeEqual(a: string | undefined | null, b: string | undefined | null): boolean {
+  if (!a || !b) return false
+  const ab = Buffer.from(a)
+  const bb = Buffer.from(b)
+  if (ab.length !== bb.length) return false
+  return timingSafeEqual(ab, bb)
+}
 
 // POST /api/indexnow { urls: string[], secret: string }
 // Called after content mutations to ping Bing/Yandex/Seznam immediately.
 // Secret prevents anonymous abuse — match against env var only.
 export async function POST(req: Request) {
   const secret = req.headers.get("x-indexnow-secret")
-  if (!secret || secret !== process.env.INDEXNOW_SECRET) {
+  if (!safeEqual(secret, process.env.INDEXNOW_SECRET)) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 })
   }
 

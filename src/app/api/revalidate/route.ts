@@ -1,5 +1,16 @@
 import { NextResponse } from "next/server"
 import { revalidateTag } from "next/cache"
+import { timingSafeEqual } from "node:crypto"
+
+// Comparacao em tempo constante evita timing side-channel na recuperacao
+// byte-a-byte do secret. Retorna false se tamanhos divergem (sem leak).
+function safeEqual(a: string | undefined | null, b: string | undefined | null): boolean {
+  if (!a || !b) return false
+  const ab = Buffer.from(a)
+  const bb = Buffer.from(b)
+  if (ab.length !== bb.length) return false
+  return timingSafeEqual(ab, bb)
+}
 
 // POST /api/revalidate { tag: string }
 // Headers: { "x-revalidate-secret": "<REVALIDATE_SECRET>" }
@@ -19,7 +30,7 @@ const VALID_TAGS = new Set(["imoveis"])
 
 export async function POST(req: Request) {
   const secret = req.headers.get("x-revalidate-secret")
-  if (!secret || secret !== process.env.REVALIDATE_SECRET) {
+  if (!safeEqual(secret, process.env.REVALIDATE_SECRET)) {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 })
   }
 
