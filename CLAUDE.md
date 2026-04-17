@@ -33,7 +33,20 @@ npm run dev          # Desenvolvimento local
 npm run build        # Build de produção
 npm run lint         # Linting
 npm run test         # Testes
+npm run smoke        # Smoke test (25 rotas em prod fymoob.com.br)
+npm run smoke https://preview.xxx.vercel.app   # testar preview URL
 ```
+
+## Smoke Test (CI)
+> Pós-deploy roda automaticamente via `.github/workflows/smoke-test.yml` quando
+> Vercel conclui deploy de produção. Valida 25 rotas incluindo 1 `/imovel/` real
+> extraído do sitemap/0.xml (não hardcoded). Se falhar, commit fica marcado ❌
+> no GitHub — visibilidade imediata pra reverter.
+>
+> Cobertura: home, busca, sitemaps (4 shards), 1 imóvel + 1 empreendimento real,
+> landings programáticas, blog, guia, pillars, robots, llms, OG image, proteção
+> admin (307), /api/revalidate sem secret (401), /api/lead GET (405), /api/photos
+> inválido (400). Ver `scripts/smoke-test.mjs`.
 
 ## Convenções de Código
 - Todo código da aplicação fica dentro de `src/`

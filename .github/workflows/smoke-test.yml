@@ -1,0 +1,44 @@
+name: Smoke Test
+
+# Roda automaticamente quando Vercel conclui um deploy de produção.
+# Se falhar, o commit fica marcado com ❌ vermelho no GitHub — visibilidade
+# imediata pra reverter antes que usuários notem.
+#
+# NÃO bloqueia o deploy (roda DEPOIS que Vercel já promoveu). Pra bloquear
+# antes da promoção, seria necessário mover pra workflow de PR + protected
+# branch — mas isso adiciona fricção no fluxo solo-dev atual.
+#
+# Validações: 25 rotas críticas (home, busca, /imovel/ real do sitemap,
+# empreendimento real, landings programáticas, sitemaps, robots, API 401/405).
+
+on:
+  # Vercel envia eventos de deployment_status via integração GitHub
+  # (instalada automaticamente quando conecta o projeto na Vercel).
+  deployment_status:
+
+jobs:
+  smoke:
+    # Só roda quando deploy concluiu com sucesso E é Production (não preview)
+    if: >
+      github.event.deployment_status.state == 'success' &&
+      (github.event.deployment_status.environment == 'Production' ||
+       github.event.deployment_status.environment == 'production')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Print deployment info
+        run: |
+          echo "Environment: ${{ github.event.deployment_status.environment }}"
+          echo "Target URL:  ${{ github.event.deployment_status.target_url }}"
+          echo "Commit:      ${{ github.event.deployment.sha }}"
+
+      - name: Run smoke test
+        run: node scripts/smoke-test.mjs "${{ github.event.deployment_status.target_url }}"
+        # 15s timeout por fetch, ~30-60s total — bem abaixo do job limit (6h)

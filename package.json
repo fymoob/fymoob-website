@@ -11,7 +11,8 @@
     "size": "size-limit",
     "perf:baseline": "node scripts/perf/lighthouse-median.js",
     "perf:bundle": "node scripts/perf/bundle-snapshot.js",
-    "perf:diff": "node scripts/perf/diff-snapshots.js"
+    "perf:diff": "node scripts/perf/diff-snapshots.js",
+    "smoke": "node scripts/smoke-test.mjs"
   },
   "dependencies": {
     "@auth/upstash-redis-adapter": "^2.11.1",
