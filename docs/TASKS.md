@@ -866,16 +866,37 @@ O PropertyCard atual tem 638 linhas com `"use client"` inteiro. Com 24 cards na 
 ### 7.9 — Validacao Pos-Cutover (primeiras 24h)
 > Rodar na ordem. Se falha, reverter DNS antes de debugar.
 
-- [ ] `curl -I https://fymoob.com.br/` → 200 + HSTS
-- [ ] `curl https://fymoob.com.br/sitemap/0.xml | grep -c "<url>"` → ~234 imoveis
-- [ ] `curl -X POST https://fymoob.com.br/api/revalidate -H "x-revalidate-secret: $NEW_SECRET" -d '{"tag":"imoveis"}'` → 200
-- [ ] `curl -X POST https://fymoob.com.br/api/revalidate` (sem secret) → 401
-- [ ] Submeter lead via formulario real em `/contato` → verificar chegada CRM + email Bruno
-- [ ] Magic link admin → receber email + clicar → logar
+- [x] `curl -I https://fymoob.com.br/` → 200 + HSTS (2026-04-17)
+- [x] `curl https://fymoob.com.br/sitemap/0.xml | grep -c "<url>"` → 234 imoveis
+- [x] `curl -X POST https://fymoob.com.br/api/revalidate` (sem secret) → 401
+- [x] Submeter lead via formulario real em `/contato` → chegou no CRM Loft (com dados reais; dados fake sao rejeitados pelo spam filter Vista)
+- [x] Magic link admin → receber email + clicar → logar
+- [x] GSC: propriedade verificada (URL Prefix via arquivo /google1ae9f26fa4267524.html)
+- [x] GSC: sitemap/3.xml submetido → Status "Processado", 118 paginas encontradas
 - [ ] `site:fymoob.com.br` no Google apos 3-7 dias — primeiras URLs indexando
 - [ ] GSC: coverage report + enhancement (RealEstateListing) detectando
 - [ ] Speed Insights: primeiros RUM data points aparecendo
 - [ ] GA4: pageviews + eventos (lead_submit, property_view) chegando
+
+### 7.9.A — Submissao Faseada de Sitemaps no GSC
+> Submeter 1 shard por vez pra Google criar perfil do dominio com paginas de alta qualidade primeiro. Evita "thin content flag" quando ele ve 560 URLs de cara.
+
+- [x] **D+0 (2026-04-17):** sitemap/3.xml (home + institucional + 113 empreendimentos = 118 URLs)
+- [ ] **D+3 (~2026-04-20):** checar Coverage report 0 errors → submeter sitemap/2.xml (blog + guides + pillars = 29 URLs)
+- [ ] **D+7 (~2026-04-24):** submeter sitemap/1.xml (landings bairro/tipo/preco = 179 URLs)
+- [ ] **D+14 (~2026-05-01):** submeter sitemap/0.xml (imoveis individuais = 234 URLs)
+
+### 7.9.B — Bing Webmaster Tools [PENDENTE]
+> Bing = ~8-10% do trafego BR. Setup grátis + reusa verificacao GSC via OAuth.
+
+- [ ] **BLOCKER (2026-04-17):** Microsoft nao esta deixando criar conta nova agora (error na pagina signup outlook.com). Aguardar destravio ou usar conta Microsoft existente do Vinicius/Bruno.
+- [ ] Quando destravar: criar `fymoob@outlook.com` (conta corporativa, nao pessoal — facilita transferir ownership futuro)
+- [ ] bing.com/webmasters → login com conta Microsoft
+- [ ] Add site → `https://fymoob.com.br`
+- [ ] Verify via "Import from Google Search Console" (OAuth com conta Google que fez GSC hoje — reusa verificacao sem precisar novo DNS/arquivo)
+- [ ] Submeter sitemap/3.xml (mesmo pattern do GSC — faseado)
+- [ ] IndexNow: ja temos endpoint `/api/indexnow` implementado. Bing aceita pings pra indexacao quase-imediata. Considerar adicionar Vercel cron ou botao admin que dispara IndexNow quando novo imovel entra no CRM.
+- [ ] Adicionar Bruno como user secundario em Bing + GSC (permissoes granulares, nao compartilhar senha)
 
 ### 7.10 — HIGH/MEDIUM Remanescentes (hardening pos-cutover)
 > Documentado na Sessao 2026-04-17 acima. NAO sao blockers pra cutover — sao hardening incremental pra rodar em sprint de follow-up (~4-8h total).
