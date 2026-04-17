@@ -65,7 +65,7 @@ export function generateLocalBusinessSchema() {
     url: SITE_URL,
     logo: `${SITE_URL}/logo.png`,
     image: `${SITE_URL}/logo.png`,
-    telephone: "+554199978-0517",
+    telephone: "+5541999780517",
     email: "fymoob@gmail.com",
     priceRange: "$$",
     hasCredential: {
