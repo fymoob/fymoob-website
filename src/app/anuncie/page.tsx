@@ -227,7 +227,15 @@ export default function AnunciePage() {
           para agendar a visita de avaliação. Sem compromisso.
         </p>
         <div className="mx-auto max-w-lg">
-          <ContactForm />
+          <ContactForm
+            interesseLabel="O que você deseja?"
+            interesseOptions={[
+              { value: "Vender imóvel", label: "Quero vender meu imóvel" },
+              { value: "Alugar imóvel", label: "Quero disponibilizar para aluguel" },
+              { value: "Avaliar imóvel", label: "Quero uma avaliação de preço" },
+              { value: "Dúvida geral", label: "Tenho uma dúvida sobre anunciar" },
+            ]}
+          />
         </div>
       </section>
     </div>

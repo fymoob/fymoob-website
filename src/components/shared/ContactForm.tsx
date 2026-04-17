@@ -18,7 +18,30 @@ declare global {
   }
 }
 
-export function ContactForm() {
+interface InteresseOption {
+  value: string
+  label: string
+}
+
+// Opcoes padrao (pagina /contato e generico). Acentos corretos.
+const DEFAULT_INTERESSE_OPTIONS: InteresseOption[] = [
+  { value: "Comprar imóvel", label: "Quero comprar um imóvel" },
+  { value: "Alugar imóvel", label: "Quero alugar um imóvel" },
+  { value: "Vender imóvel", label: "Quero vender meu imóvel" },
+  { value: "Anunciar imóvel", label: "Quero anunciar meu imóvel" },
+  { value: "Dúvida geral", label: "Dúvida geral" },
+  { value: "Outro", label: "Outro" },
+]
+
+export interface ContactFormProps {
+  /** Lista customizada de opcoes do dropdown "Assunto". Se nao passar, usa padrao. */
+  interesseOptions?: InteresseOption[]
+  /** Titulo/label do dropdown. Default: "Assunto". */
+  interesseLabel?: string
+}
+
+export function ContactForm({ interesseOptions, interesseLabel = "Assunto" }: ContactFormProps = {}) {
+  const options = interesseOptions ?? DEFAULT_INTERESSE_OPTIONS
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle")
   const [errorMsg, setErrorMsg] = useState<string>("")
   const [tsToken, setTsToken] = useState<string>("")
@@ -178,19 +201,18 @@ export function ContactForm() {
 
         <div>
           <label htmlFor="interesse" className="mb-1 block text-sm font-medium text-fymoob-gray-dark">
-            Assunto
+            {interesseLabel}
           </label>
           <select
             id="interesse"
             name="interesse"
             className="w-full rounded-lg border border-neutral-300 px-4 py-3 text-sm text-fymoob-gray-dark focus:border-brand-primary focus:outline-none focus:ring-1 focus:ring-brand-primary"
           >
-            <option value="Comprar imovel">Quero comprar um imovel</option>
-            <option value="Alugar imovel">Quero alugar um imovel</option>
-            <option value="Vender imovel">Quero vender meu imovel</option>
-            <option value="Anunciar imovel">Quero anunciar meu imovel</option>
-            <option value="Duvida geral">Duvida geral</option>
-            <option value="Outro">Outro</option>
+            {options.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
           </select>
         </div>
 

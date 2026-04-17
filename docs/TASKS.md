@@ -1907,6 +1907,89 @@ Não para ranking, apenas para acelerar crawl:
 
 ---
 
+## Fase 13.12 — Redesign Pagina /anuncie (UX + Conversao)
+
+> **Origem:** usuario apontou que dropdown "Assunto" tinha opcoes erradas
+> + sem acentos + form generico sem coletar dados do imovel (16/04/2026).
+> **Pesquisa:** melhores praticas 2026 (Unicorn Platform, Landingi, NN/G).
+
+### 13.12.A — Fase A: Correcoes criticas [CONCLUIDA]
+
+- [x] Parametrizar `ContactForm` com prop `interesseOptions` (opcoes customizaveis)
+- [x] Parametrizar `ContactForm` com prop `interesseLabel`
+- [x] Fix acentos nas opcoes default (imóvel, Dúvida, etc.)
+- [x] `/anuncie` usa opcoes especificas: Vender, Alugar, Avaliar, Dúvida
+- [x] Label customizado no /anuncie: "O que você deseja?"
+
+### 13.12.B — Fase B: Wizard multi-step [PENDENTE — maior ROI conversao]
+
+> **Por que:** pesquisa 2026 mostra que wizard + staged disclosure
+> aumenta completion rate vs form longo. Bruno tambem recebe lead mais
+> qualificado (sabe tipo + bairro + faixa de preco do imovel).
+
+**Step 1 — O que voce quer fazer?** (segmentacao owner/tenant)
+- 2 cards grandes clicaveis:
+  - "📍 Vender meu imovel" -> avaliacao + fotos + publicacao
+  - "🔑 Alugar meu imovel" -> inquilino qualificado + contrato
+
+**Step 2 — Sobre o imovel**
+- Tipo (chips clicaveis: Apartamento, Casa, Sobrado, Terreno, Comercial, Kitnet)
+- Bairro (autocomplete com os 75 bairros do Loft)
+- Faixa de preco estimada (slider)
+- Tamanho aproximado em m² (input numerico)
+
+**Step 3 — Seus dados**
+- Nome, email, telefone (com mascara ja implementada)
+- Melhor horario pra contato (chips: manha, tarde, noite, qualquer)
+
+**Step 4 — Confirmacao e envio**
+- Resumo dos dados preenchidos
+- Consent LGPD obrigatorio (ja existe)
+- Turnstile (ja existe)
+- Botao "Solicitar avaliação gratuita"
+
+**Componentes a criar:**
+- `src/components/anuncie/AnuncieWizard.tsx` (container)
+- `src/components/anuncie/steps/Step1Finalidade.tsx`
+- `src/components/anuncie/steps/Step2Imovel.tsx`
+- `src/components/anuncie/steps/Step3Contato.tsx`
+- `src/components/anuncie/steps/Step4Confirmar.tsx`
+- `src/components/anuncie/ProgressBar.tsx`
+
+**Backend:**
+- [ ] Expandir `/api/lead` payload: aceitar campos de imovel (tipo, bairro, faixa, area)
+- [ ] Extender mensagem enviada ao Loft com dados estruturados
+- [ ] Validacao server-side dos campos novos
+
+**UX:**
+- [ ] Progress bar no topo (1 de 4, 2 de 4...)
+- [ ] Animacao slide entre steps (CSS transform)
+- [ ] "Voltar" entre steps sem perder dados
+- [ ] State no URL (?step=2) pra compartilhar/voltar
+- [ ] Confirmacao visual ao completar (check animado)
+
+**Estimativa:** 1-2h implementacao + 30min refino.
+**ROI esperado:** +30-50% completion rate vs form atual (dado medio de wizards).
+
+### 13.12.C — Fase C: Polish e conversao [PENDENTE]
+
+- [ ] **Sticky CTA** no mobile ("Anuncie agora →") no topo da pagina
+- [ ] **Hero com form lateral** no desktop (form visivel desde o primeiro pixel)
+- [ ] **Trust block reforcado**: fotos de Bruno/Wagner + CRECI + anos no mercado + portfolio ativo
+- [ ] **Video curto do Bruno** explicando processo (opcional, requer gravacao)
+- [ ] **Depoimentos reais**: pedir pro Bruno 2-3 clientes vendedores pra citacao
+- [ ] **Calculadora de avaliacao estimada** baseada em `BairroMarketStats` (precoM2Medio)
+- [ ] **Tempo medio de venda/locacao** na FYMOOB (requer V3 snapshots de vendas)
+- [ ] **Badge "VERIFICADO FYMOOB"** no processo — sinal de confianca
+
+**Fontes da pesquisa (16/04/2026):**
+- Unicorn Platform 2026: minimize form length + staged approach + audience segmentation
+- Landingi 2026: trust signals + clear CTAs + mobile-first
+- NN/G: progressive disclosure classic pattern = wizard
+- Propphy 2026: visual content + CWV <3s + responsive
+
+---
+
 ## Fase 14 — Inteligência Imobiliária (Produto Futuro)
 
 > Plataforma de dados e IA para vantagem competitiva da FYMOOB.
