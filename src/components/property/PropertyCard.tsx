@@ -5,6 +5,8 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
+import { Trash2 } from "lucide-react"
+
 import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
 import { getTopViewedCodes } from "@/lib/view-tracker"
 import {
@@ -156,7 +158,13 @@ export function PropertyCard({
   const fetchedRef = useRef(false)
   const articleRef = useRef<HTMLElement>(null)
 
+  // Em favoritos (wishlistAction="remove"), nao carregamos fotos extras:
+  // user ja viu as fotos quando favoritou, card funciona como mini-preview
+  // estatico. Zero arrows, zero swipe, zero fetch /api/photos (1 req/card saved).
+  const isFavoritesCard = wishlistAction === "remove"
+
   const loadPhotosOnHover = useCallback(() => {
+    if (isFavoritesCard) return
     if (fetchedRef.current || photos.length > 1) return
 
     fetchedRef.current = true
@@ -168,7 +176,7 @@ export function PropertyCard({
         }
       })
       .catch(() => {})
-  }, [property.codigo, photos.length])
+  }, [property.codigo, photos.length, isFavoritesCard])
 
   // Auto-trigger no mobile (sem hover). IntersectionObserver dispara o fetch
   // quando card entra em viewport. Desktop tambem se beneficia — redundante
@@ -176,6 +184,7 @@ export function PropertyCard({
   // permite { Foto: [...] } em /imoveis/listar (so em /detalhes), entao
   // essa estrategia lazy eh necessaria pra ter multiplas fotos no card.
   useEffect(() => {
+    if (isFavoritesCard) return
     const el = articleRef.current
     if (!el) return
     if (typeof IntersectionObserver === "undefined") {
@@ -194,7 +203,7 @@ export function PropertyCard({
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [loadPhotosOnHover])
+  }, [loadPhotosOnHover, isFavoritesCard])
 
   const displayPhotos = dynamicPhotos ?? photos
 
@@ -301,12 +310,16 @@ export function PropertyCard({
           />
         )}
 
-        <FavoriteButton
-          codigo={property.codigo}
-          action={wishlistAction}
-          onRemove={onRemove}
-          className="right-2 top-2 size-7 sm:right-3 sm:top-3 sm:size-9"
-        />
+        {/* Em favoritos, botao "remover" vai inline no content area (evita
+            colidir com pill DESTAQUE/LANCAMENTO em cards mobile estreitos). */}
+        {!isFavoritesCard && (
+          <FavoriteButton
+            codigo={property.codigo}
+            action={wishlistAction}
+            onRemove={onRemove}
+            className="right-2 top-2 size-7 sm:right-3 sm:top-3 sm:size-9"
+          />
+        )}
 
         {isSearchContext && (
           <div className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-between px-5 pb-4">
@@ -358,15 +371,43 @@ export function PropertyCard({
             )}
           </div>
         ) : isHorizontal || isResponsive ? (
-          <p className="text-xs text-neutral-500">
-            {property.tipo}
-            {property.bairro && (
-              <>
-                <span className="mx-2">•</span>
-                {property.bairro}
-              </>
+          <div className="flex items-start justify-between gap-2">
+            <p className="text-xs text-neutral-500">
+              {property.tipo}
+              {property.bairro && (
+                <>
+                  <span className="mx-2">•</span>
+                  {property.bairro}
+                </>
+              )}
+            </p>
+            {isFavoritesCard && (
+              <button
+                type="button"
+                onClick={(event) => {
+                  event.preventDefault()
+                  event.stopPropagation()
+                  // Mesma logica do FavoriteButton action="remove":
+                  // le wishlist do localStorage, remove codigo, persiste, dispara callback.
+                  try {
+                    const raw = window.localStorage.getItem("fymoob:wishlist")
+                    const current: string[] = raw ? JSON.parse(raw) : []
+                    const next = Array.isArray(current)
+                      ? current.filter((c) => c !== property.codigo)
+                      : []
+                    window.localStorage.setItem("fymoob:wishlist", JSON.stringify(next))
+                  } catch {
+                    // ignore
+                  }
+                  onRemove?.(property.codigo)
+                }}
+                aria-label="Remover dos favoritos"
+                className="group/remove -mt-0.5 -mr-1 inline-flex size-7 shrink-0 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-rose-50 hover:text-rose-600 sm:size-8"
+              >
+                <Trash2 className="size-4 stroke-[2px]" />
+              </button>
             )}
-          </p>
+          </div>
         ) : isCompactCard ? (
           <p className="text-xs uppercase tracking-wide text-slate-500">
             {property.tipo}
