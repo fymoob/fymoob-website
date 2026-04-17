@@ -33,7 +33,12 @@ import { ScrollToTop } from "@/components/layout/ScrollToTop";
 const satoshi = localFont({
   src: "../../public/fonts/Satoshi-Variable.woff2",
   variable: "--font-satoshi",
-  display: "swap",
+  // Hipotese H-20260417-001: `optional` elimina layout shift por font swap.
+  // Se a font nao chegar em ~100ms, browser mantem fallback permanente
+  // naquela sessao (volta ao Satoshi apos cache em navegacoes seguintes).
+  // Trade-off: 3G em navegacao inicial ve Inter (fallback system) — aceito
+  // pelo CLS garantido e meta de Core Web Vitals.
+  display: "optional",
   weight: "300 900",
 });
 
