@@ -62,7 +62,7 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { slug } = await params
   // Early-reject slugs malformados (anti-ISR-amplification — ver VALID_SLUG abaixo)
-  if (!/^[a-z0-9][a-z0-9.-]{9,200}$/.test(slug)) {
+  if (!/^[a-zA-Z0-9][a-zA-Z0-9.-]{9,200}$/.test(slug)) {
     return { title: "Imóvel não encontrado" }
   }
   const property = await getPropertyBySlug(slug)
@@ -101,10 +101,11 @@ export async function generateMetadata({
 }
 
 // Slugs reais seguem pattern `tipo-bairro-cidade-uf-<N>-quartos-<N>m2-<CODIGO>`.
-// Validar antes de fetchar evita ISR amplification: atacante requisitando
-// /imovel/aaa-1, /imovel/aaa-2... geraria entries cached 404 no edge da Vercel
-// (cost spike + bloat). Regex exige minimo 10 chars e caracteres seguros.
-const VALID_SLUG = /^[a-z0-9][a-z0-9.-]{9,200}$/
+// O CODIGO no final e UPPERCASE (ex: AP00900, AP00296) — por isso regex
+// aceita [a-zA-Z]. Validar antes de fetchar evita ISR amplification: atacante
+// requisitando /imovel/aaa-1, /imovel/aaa-2... geraria entries cached 404 no
+// edge da Vercel (cost spike + bloat). Regex exige minimo 10 chars + safe chars.
+const VALID_SLUG = /^[a-zA-Z0-9][a-zA-Z0-9.-]{9,200}$/
 
 export default async function PropertyPage({ params }: PageProps) {
   const { slug } = await params
