@@ -56,10 +56,10 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ["lucide-react", "@base-ui/react"],
-    // H-20260417-004: CSS inline no HTML (Next 16.1 + Turbopack suportado).
-    // Elimina render-blocking CSS request, ganho esperado -100 a -300ms LCP.
-    // Trade-off: HTML cresce ~25KB (nao cacheavel), mas ganho em First Paint.
-    inlineCss: true,
+    // H-20260417-004 REVERTIDO: inlineCss fez HTML crescer +326KB (predicted
+    // era +20-30KB), LCP +238ms, TBT +237ms. Kill criterion triggered em 4
+    // de 5 dimensoes. FCP melhorou (-155ms) mas nao compensou regressao.
+    // Ver docs/perf/hypotheses/H-20260417-004.md para conclusao.
   },
   // H-20260417-003: memoizacao automatica compile-time. Meta report
   // 20-40% menos re-renders + LCP +12%. Custo: +30-50% build time.
