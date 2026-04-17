@@ -90,6 +90,9 @@ export async function POST(request: NextRequest) {
     }
 
     // 5. Enviar lead pro CRM Loft
+    // Formato validado em docs/TASKS.md (lead real 8826568 criado em teste):
+    // Content-Type: application/x-www-form-urlencoded com param `cadastro`
+    // contendo o JSON. NAO aceita JSON puro no body.
     const leadPayload = {
       lead: {
         nome: nomeClean,
@@ -102,13 +105,17 @@ export async function POST(request: NextRequest) {
       },
     }
 
+    const formBody = new URLSearchParams({
+      cadastro: JSON.stringify(leadPayload),
+    }).toString()
+
     const res = await fetch(`${LOFT_BASE_URL}/lead?key=${LOFT_API_KEY}`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
         Accept: "application/json",
       },
-      body: JSON.stringify(leadPayload),
+      body: formBody,
       signal: AbortSignal.timeout(8000),
     })
 
