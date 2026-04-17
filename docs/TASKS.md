@@ -75,7 +75,7 @@ Sessao dividida em 4 fases, culminando em mudanca de metodologia:
 
 ### Tier 2 \u2014 Cirurgico em @base-ui
 
-- [x] **SortDropdown mobile: Sheet \u2192 `<select>` nativo** \u2014 H-20260417-005 **SUCCESS**: -50 linhas c\u00f3digo, bundle -1.6KB, HTML inalterado. Mantido. Valida\u00e7\u00e3o visual mobile pendente do user.
+- [x] **SortDropdown mobile: Sheet \u2192 `<select>` nativo** \u2014 H-20260417-005 **REVERTIDO (UX regression)**: tecnicamente funcionou (-1.6KB, -50 linhas), mas picker Android \u00e9 dark-themed, quebra est\u00e9tica do site. Design > ganho marginal de perf. Revertido via hotfix.
 - [ ] AdvancedFiltersModal: trocar Dialog @base-ui por `<dialog>` nativo
 
 ### Tier 3 \u2014 Refactor moderado (s\u00f3 depois de Tier 1+2 validados via Speed Insights)
