@@ -1,4 +1,6 @@
 export { PropertyCardGrid } from "./PropertyCardGrid"
 export { PropertyCardList } from "./PropertyCardList"
 export { PropertyCardCompact } from "./PropertyCardCompact"
+export { PhotoCarousel } from "./PhotoCarousel"
+export { FavoriteButton } from "./FavoriteButton"
 export { usePropertyCard, type PriceContext } from "./hooks/usePropertyCard"

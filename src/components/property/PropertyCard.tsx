@@ -3,7 +3,6 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { ChevronLeft, ChevronRight, Heart, X } from "lucide-react"
 
 import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
 import { getTopViewedCodes } from "@/lib/view-tracker"
@@ -17,6 +16,8 @@ import {
 import type { Property } from "@/types/property"
 import { getBadge } from "./card/hooks/usePropertyCard"
 import { CardBadge } from "./card/CardBadge"
+import { PhotoCarousel } from "./card/PhotoCarousel"
+import { FavoriteButton } from "./card/FavoriteButton"
 
 const WISHLIST_STORAGE_KEY = "fymoob:wishlist"
 const RECENT_STORAGE_KEY = "fymoob:recent"
@@ -76,22 +77,6 @@ export function getRecentlyViewed(): Array<{
     return raw ? JSON.parse(raw) : []
   } catch {
     return []
-  }
-}
-
-function getWishlistCodes(): Set<string> {
-  if (typeof window === "undefined") return new Set<string>()
-
-  try {
-    const raw = window.localStorage.getItem(WISHLIST_STORAGE_KEY)
-    if (!raw) return new Set<string>()
-
-    const parsed = JSON.parse(raw)
-    return Array.isArray(parsed)
-      ? new Set(parsed.filter((item): item is string => typeof item === "string"))
-      : new Set<string>()
-  } catch {
-    return new Set<string>()
   }
 }
 
@@ -166,9 +151,6 @@ export function PropertyCard({
   }, [])
 
   const badge = useMemo(() => getBadge(property, topViewed), [property, topViewed])
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [isFavorite, setIsFavorite] = useState(false)
-  const [justFavorited, setJustFavorited] = useState(false)
   const [dynamicPhotos, setDynamicPhotos] = useState<string[] | null>(null)
   const fetchedRef = useRef(false)
 
@@ -181,22 +163,12 @@ export function PropertyCard({
       .then((apiPhotos: string[]) => {
         if (apiPhotos.length > 1) {
           setDynamicPhotos(apiPhotos)
-          setCurrentSlide(0)
         }
       })
       .catch(() => {})
   }, [property.codigo, photos.length])
 
   const displayPhotos = dynamicPhotos ?? photos
-
-  useEffect(() => {
-    const check = () => setIsFavorite(getWishlistCodes().has(property.codigo))
-    if ("requestIdleCallback" in window) {
-      requestIdleCallback(check)
-    } else {
-      check()
-    }
-  }, [property.codigo])
 
   const propertyHref = `/imovel/${property.slug}`
   const isHorizontal = variant === "horizontal"
@@ -211,51 +183,6 @@ export function PropertyCard({
     : isSearchContext
       ? "Consultar valor"
       : formatPrice(price)
-
-  const toggleFavorite = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
-
-    setIsFavorite((previous) => {
-      const next = !previous
-      const wishlist = getWishlistCodes()
-
-      if (next) {
-        wishlist.add(property.codigo)
-        setJustFavorited(true)
-        setTimeout(() => setJustFavorited(false), 500)
-      } else {
-        wishlist.delete(property.codigo)
-      }
-
-      window.localStorage.setItem(
-        WISHLIST_STORAGE_KEY,
-        JSON.stringify(Array.from(wishlist))
-      )
-
-      return next
-    })
-  }
-
-  const goPrev = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
-    setCurrentSlide((previous) =>
-      previous <= 0 ? displayPhotos.length - 1 : previous - 1
-    )
-  }
-
-  const goNext = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
-    setCurrentSlide((previous) => (previous + 1) % displayPhotos.length)
-  }
-
-  const goToSlide = (index: number, event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
-    setCurrentSlide(index)
-  }
 
   return (
     <article
@@ -299,33 +226,18 @@ export function PropertyCard({
             sizes="(max-width: 640px) 100vw, 40vw"
           />
         ) : (
-          <div className="relative h-full w-full overflow-hidden">
-            <div
-              className="flex h-full transition-transform duration-300 ease-out"
-              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-            >
-              {displayPhotos.map((photo, index) => {
-                const shouldPrioritize = prioritizeFirstImage && index === 0
-                return (
-                  <div
-                    key={`${property.codigo}-${index}`}
-                    className="relative h-full min-w-full shrink-0 overflow-hidden"
-                  >
-                    <Image
-                      src={photo}
-                      alt={`${alt} - foto ${index + 1}`}
-                      fill
-                      priority={shouldPrioritize}
-                      loading={shouldPrioritize ? "eager" : "lazy"}
-                      fetchPriority={shouldPrioritize ? "high" : "auto"}
-                      className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-110"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                    />
-                  </div>
-                )
-              })}
-            </div>
-          </div>
+          <PhotoCarousel
+            photos={displayPhotos}
+            alt={alt}
+            codigo={property.codigo}
+            prioritizeFirstImage={prioritizeFirstImage}
+            lcpHint={prioritizeFirstImage}
+            imageClassName={
+              isCompactCard
+                ? "transition-transform duration-[1500ms] ease-out group-hover:scale-110"
+                : "transition-transform duration-[1500ms] ease-out group-hover:scale-105"
+            }
+          />
         )}
 
         <div className="pointer-events-none absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/40 to-transparent" />
@@ -345,118 +257,12 @@ export function PropertyCard({
           />
         )}
 
-        {wishlistAction === "remove" ? (
-          <button
-            type="button"
-            onClick={(event) => {
-              event.preventDefault()
-              event.stopPropagation()
-              const wishlist = getWishlistCodes()
-              wishlist.delete(property.codigo)
-              window.localStorage.setItem(
-                WISHLIST_STORAGE_KEY,
-                JSON.stringify(Array.from(wishlist))
-              )
-              onRemove?.(property.codigo)
-            }}
-            className={cn(
-              "group/wishlist absolute z-20 inline-flex items-center justify-center rounded-full bg-white/90 shadow-sm ring-1 ring-black/5 backdrop-blur-md transition-all hover:scale-[1.08] hover:bg-white",
-              "right-2 top-2 size-7 sm:right-3 sm:top-3 sm:size-9"
-            )}
-            aria-label="Remover dos favoritos"
-          >
-            <X className="size-4 stroke-[2.2px] text-neutral-700 transition-colors group-hover/wishlist:text-rose-600 sm:size-[18px]" />
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={toggleFavorite}
-            className={cn(
-              "group/wishlist absolute z-20 inline-flex items-center justify-center rounded-full bg-white/85 shadow-sm ring-1 ring-black/5 backdrop-blur-md transition-all hover:scale-[1.08] hover:bg-white/95",
-              isHorizontal || isResponsive
-                ? "right-2 top-2 size-7 sm:right-3 sm:top-3 sm:size-9"
-                : "right-2 top-2 size-7 sm:right-3 sm:top-3 sm:size-9"
-            )}
-            aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
-            aria-pressed={isFavorite}
-          >
-            <Heart
-              className={cn(
-                "size-4 stroke-[2.2px] transition-all duration-200 sm:size-[18px]",
-                justFavorited && "animate-heart-pop",
-                isFavorite
-                  ? "scale-105 fill-brand-primary stroke-brand-primary"
-                  : "fill-transparent stroke-neutral-700 group-hover/wishlist:fill-brand-primary/90 group-hover/wishlist:stroke-brand-primary"
-              )}
-            />
-          </button>
-        )}
-
-        {isCompactCard && displayPhotos.length > 1 && (
-          <>
-            <button
-              type="button"
-              onClick={goPrev}
-              className="absolute left-2 top-1/2 z-20 hidden size-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm transition hover:bg-white/40 sm:inline-flex sm:opacity-0 sm:group-hover:opacity-100"
-              aria-label="Foto anterior"
-            >
-              <ChevronLeft className="size-3.5" />
-            </button>
-            <button
-              type="button"
-              onClick={goNext}
-              className="absolute right-2 top-1/2 z-20 hidden size-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm transition hover:bg-white/40 sm:inline-flex sm:opacity-0 sm:group-hover:opacity-100"
-              aria-label="Proxima foto"
-            >
-              <ChevronRight className="size-3.5" />
-            </button>
-          </>
-        )}
-
-        {!isHorizontal && !isCompactCard && displayPhotos.length > 1 && (
-          <>
-            <button
-              type="button"
-              onClick={goPrev}
-              className="absolute left-3 top-1/2 z-20 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition hover:bg-black/60 sm:inline-flex sm:opacity-0 sm:group-hover:opacity-100"
-              aria-label="Foto anterior"
-            >
-              <ChevronLeft className="size-4" />
-            </button>
-
-            <button
-              type="button"
-              onClick={goNext}
-              className="absolute right-3 top-1/2 z-20 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition hover:bg-black/60 sm:inline-flex sm:opacity-0 sm:group-hover:opacity-100"
-              aria-label="Proxima foto"
-            >
-              <ChevronRight className="size-4" />
-            </button>
-
-            <div className={cn(
-              "absolute left-1/2 z-20 hidden -translate-x-1/2 items-center gap-1 rounded-full bg-black/30 px-1.5 py-0.5 backdrop-blur-sm sm:flex",
-              isSearchContext ? "bottom-12" : "bottom-2.5"
-            )}>
-              {displayPhotos.slice(0, 6).map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={(event) => goToSlide(index, event)}
-                  className={cn(
-                    "size-1 rounded-full transition-all",
-                    index === currentSlide ? "bg-white" : "bg-white/50"
-                  )}
-                  aria-label={`Ir para foto ${index + 1}`}
-                />
-              ))}
-              {displayPhotos.length > 6 && (
-                <span className="text-[9px] text-white/70">
-                  +{displayPhotos.length - 6}
-                </span>
-              )}
-            </div>
-          </>
-        )}
+        <FavoriteButton
+          codigo={property.codigo}
+          action={wishlistAction}
+          onRemove={onRemove}
+          className="right-2 top-2 size-7 sm:right-3 sm:top-3 sm:size-9"
+        />
 
         {isSearchContext && (
           <div className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-between px-5 pb-4">

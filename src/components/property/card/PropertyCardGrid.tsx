@@ -1,14 +1,14 @@
 "use client"
 
-import Image from "next/image"
 import Link from "next/link"
-import { ChevronLeft, ChevronRight, Heart } from "lucide-react"
 
 import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
 import { cn } from "@/lib/utils"
 import type { Property } from "@/types/property"
 import { usePropertyCard, type PriceContext } from "./hooks/usePropertyCard"
 import { CardBadge } from "./CardBadge"
+import { PhotoCarousel } from "./PhotoCarousel"
+import { FavoriteButton } from "./FavoriteButton"
 
 interface PropertyCardGridProps {
   property: Property
@@ -30,16 +30,9 @@ export function PropertyCardGrid({
     displaySecondaryPrice,
     displayPhotos,
     badge,
-    currentSlide,
-    isFavorite,
     propertyHref,
     loadPhotosOnHover,
-    toggleFavorite,
-    justFavorited,
     secondaryIsRental,
-    goPrev,
-    goNext,
-    goToSlide,
   } = usePropertyCard(property, priceContext)
 
   // Finalidade pill colorida
@@ -59,101 +52,23 @@ export function PropertyCardGrid({
     >
       {/* Image */}
       <div className="relative aspect-[16/9] overflow-hidden">
-        <div className="relative h-full w-full overflow-hidden">
-          <div
-            className="flex h-full transition-transform duration-300 ease-out"
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-          >
-            {displayPhotos.map((photo, index) => {
-              // PropertyCardGrid so renderiza no desktop (hidden md:block).
-              // Nao atribuir priority/fetchpriority evita competir com a
-              // variante mobile (PropertyCard) pelo LCP hint. Em desktop,
-              // primeiro card ainda tem loading="eager".
-              const isFirst = index === 0
-              return (
-                <div
-                  key={`${property.codigo}-${index}`}
-                  className="relative h-full min-w-full shrink-0 overflow-hidden"
-                >
-                  <Image
-                    src={photo}
-                    alt={`${alt} - foto ${index + 1}`}
-                    fill
-                    loading={prioritizeFirstImage && isFirst ? "eager" : "lazy"}
-                    className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.05]"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                  />
-                </div>
-              )
-            })}
-          </div>
-        </div>
+        <PhotoCarousel
+          photos={displayPhotos}
+          alt={alt}
+          codigo={property.codigo}
+          prioritizeFirstImage={prioritizeFirstImage}
+          imageClassName="transition-transform duration-[1500ms] ease-out group-hover:scale-[1.05]"
+        />
 
         {/* Top gradient — subtle, only to ensure badge + wishlist readability */}
         <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-black/30 to-transparent" />
 
-        {/* Badge — glass morphism unificado */}
         {badge && <CardBadge badge={badge} className="absolute left-3 top-3 z-20" />}
 
-        {/* Wishlist — mesmo padrao glass do CardBadge pra coerencia visual */}
-        <button
-          type="button"
-          onClick={toggleFavorite}
-          className="group/wishlist absolute right-3 top-3 z-20 inline-flex size-9 items-center justify-center rounded-full bg-white/85 shadow-sm ring-1 ring-black/5 backdrop-blur-md transition-all hover:scale-[1.08] hover:bg-white/95"
-          aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
-          aria-pressed={isFavorite}
-        >
-          <Heart
-            className={cn(
-              "size-[18px] stroke-[2.2px] transition-all duration-200",
-              justFavorited && "animate-heart-pop",
-              isFavorite
-                ? "scale-105 fill-brand-primary stroke-brand-primary"
-                : "fill-transparent stroke-neutral-700 group-hover/wishlist:fill-brand-primary/90 group-hover/wishlist:stroke-brand-primary"
-            )}
-          />
-        </button>
-
-        {/* Carousel controls */}
-        {displayPhotos.length > 1 && (
-          <>
-            <button
-              type="button"
-              onClick={goPrev}
-              className="absolute left-3 top-1/2 z-20 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition hover:bg-black/60 sm:inline-flex sm:opacity-0 sm:group-hover:opacity-100"
-              aria-label="Foto anterior"
-            >
-              <ChevronLeft className="size-4" />
-            </button>
-            <button
-              type="button"
-              onClick={goNext}
-              className="absolute right-3 top-1/2 z-20 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition hover:bg-black/60 sm:inline-flex sm:opacity-0 sm:group-hover:opacity-100"
-              aria-label="Proxima foto"
-            >
-              <ChevronRight className="size-4" />
-            </button>
-            <div className="absolute bottom-3 left-1/2 z-20 hidden -translate-x-1/2 items-center gap-1 rounded-full bg-black/30 px-1.5 py-0.5 backdrop-blur-sm sm:flex">
-              {displayPhotos.slice(0, 6).map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  onClick={(event) => goToSlide(index, event)}
-                  className={cn(
-                    "size-1 rounded-full transition-all",
-                    index === currentSlide ? "bg-white" : "bg-white/50"
-                  )}
-                  aria-label={`Ir para foto ${index + 1}`}
-                />
-              ))}
-              {displayPhotos.length > 6 && (
-                <span className="text-[9px] text-white/70">
-                  +{displayPhotos.length - 6}
-                </span>
-              )}
-            </div>
-          </>
-        )}
+        <FavoriteButton
+          codigo={property.codigo}
+          className="right-3 top-3 size-9"
+        />
       </div>
 
       {/* Content — padrão do Compact, ~20% maior por ter mais largura disponível */}

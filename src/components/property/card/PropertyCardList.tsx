@@ -2,13 +2,13 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { Heart } from "lucide-react"
 
 import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
 import { cn } from "@/lib/utils"
 import type { Property } from "@/types/property"
 import { usePropertyCard, type PriceContext } from "./hooks/usePropertyCard"
 import { CardBadge } from "./CardBadge"
+import { FavoriteButton } from "./FavoriteButton"
 
 interface PropertyCardListProps {
   property: Property
@@ -31,11 +31,8 @@ export function PropertyCardList({
     displaySecondaryPrice,
     displayPhotos,
     badge,
-    isFavorite,
     propertyHref,
     loadPhotosOnHover,
-    toggleFavorite,
-    justFavorited,
   } = usePropertyCard(property, priceContext)
 
   // Unificado com Grid/Compact — pill colorida de finalidade
@@ -111,24 +108,13 @@ export function PropertyCardList({
 
         {/* Right: Conversion */}
         <div className="flex flex-col items-end justify-between pl-6">
-          {/* Heart com glass unificado */}
-          <button
-            type="button"
-            onClick={toggleFavorite}
-            className="group/wishlist relative z-20 inline-flex size-9 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-black/5 transition-all hover:scale-[1.08] hover:ring-black/10"
-            aria-label={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
-            aria-pressed={isFavorite}
-          >
-            <Heart
-              className={cn(
-                "size-[18px] stroke-[2.2px] transition-all duration-200",
-                justFavorited && "animate-heart-pop",
-                isFavorite
-                  ? "scale-105 fill-brand-primary stroke-brand-primary"
-                  : "fill-transparent stroke-neutral-700 group-hover/wishlist:fill-brand-primary/90 group-hover/wishlist:stroke-brand-primary"
-              )}
+          {/* FavoriteButton — posicionado relative (nao absolute) neste layout */}
+          <div className="relative size-9">
+            <FavoriteButton
+              codigo={property.codigo}
+              className="inset-0 size-9 !bg-white hover:!bg-white"
             />
-          </button>
+          </div>
 
           {/* Bloco de preço com hierarquia clara */}
           <div className="flex flex-col items-end gap-0.5 border-t border-slate-100 pt-3">
