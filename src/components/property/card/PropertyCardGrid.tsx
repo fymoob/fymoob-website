@@ -65,7 +65,11 @@ export function PropertyCardGrid({
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
             {displayPhotos.map((photo, index) => {
-              const shouldPrioritize = prioritizeFirstImage && index === 0
+              // PropertyCardGrid so renderiza no desktop (hidden md:block).
+              // Nao atribuir priority/fetchpriority evita competir com a
+              // variante mobile (PropertyCard) pelo LCP hint. Em desktop,
+              // primeiro card ainda tem loading="eager".
+              const isFirst = index === 0
               return (
                 <div
                   key={`${property.codigo}-${index}`}
@@ -75,9 +79,7 @@ export function PropertyCardGrid({
                     src={photo}
                     alt={`${alt} - foto ${index + 1}`}
                     fill
-                    priority={shouldPrioritize}
-                    loading={shouldPrioritize ? "eager" : "lazy"}
-                    fetchPriority={shouldPrioritize ? "high" : "auto"}
+                    loading={prioritizeFirstImage && isFirst ? "eager" : "lazy"}
                     className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-[1.05]"
                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                   />

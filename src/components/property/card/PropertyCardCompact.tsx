@@ -55,7 +55,9 @@ export function PropertyCardCompact({
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
             {displayPhotos.map((photo, index) => {
-              const shouldPrioritize = prioritizeFirstImage && index === 0
+              // Variante desktop-only (hidden md:block) — sem priority hint
+              // para nao competir com PropertyCard mobile pelo LCP.
+              const isFirst = index === 0
               return (
                 <div
                   key={`${property.codigo}-${index}`}
@@ -65,9 +67,7 @@ export function PropertyCardCompact({
                     src={photo}
                     alt={`${alt} - foto ${index + 1}`}
                     fill
-                    priority={shouldPrioritize}
-                    loading={shouldPrioritize ? "eager" : "lazy"}
-                    fetchPriority={shouldPrioritize ? "high" : "auto"}
+                    loading={prioritizeFirstImage && isFirst ? "eager" : "lazy"}
                     className="object-cover transition-transform duration-[1500ms] ease-out group-hover:scale-110"
                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                   />

@@ -60,6 +60,106 @@
 
 ---
 
+## Sessao 2026-04-16 - Performance /busca (Sessao A + B + LCP + Opcao A) [EM ANDAMENTO]
+
+<details>
+<summary>Otimizacoes aplicadas: bundle split, cmdk removal, fetchPriority cleanup</summary>
+
+### Aplicado nesta sessao
+- [x] **Fix 4 (Sessao A)**: Remover `ssr: false` do SearchPageSearchBar + adicionar Suspense boundary
+- [x] **Fix 5 (Sessao A)**: PriceFilter com native inputs + Slider @base-ui dynamic-imported
+- [x] **Fix 1 (Sessao B)**: 5 filtros pesados (LocationFilter, EmpreendimentoFilter, AreaRangeInput, CaracteristicasCheckboxes) dynamic-imported
+- [x] **Fix LCP**: `fetchPriority="high"` adicionado nas 4 variantes de PropertyCard (PropertyCard, Grid, Compact, List)
+- [x] **Opcao A**: LocationFilter reescrito sem cmdk (native input + lista manual) — elimina re-indexing em remount
+- [x] **Fix 2-tatico B**: Remover `priority`/`fetchPriority` das variantes desktop (Grid/Compact/List) — evita competicao de LCP hint no mobile
+- [x] Lighthouse baseline → v2 → v3: score 59 → 65 → 64 (estavel); TBT 980 → 590 → 600ms (-39%); LCP 4.7 → 4.9 → 4.9s (estavel)
+
+### Resultado
+- TBT mobile reduzido ~40% no /busca
+- Score Lighthouse estavel com variance (±13 pontos entre amostras)
+- LCP nao caiu abaixo de 3.5s (gargalo nao era o hint, e JS parse/hydration)
+
+</details>
+
+---
+
+## Sessao Futura (dedicada) — Fix 2 Completo: PropertyCard Server Shell + Client Island [PLANEJADA]
+
+<details>
+<summary>Refactor do PropertyCard para reduzir TBT ~200-400ms adicional</summary>
+
+### Contexto
+O PropertyCard atual tem 638 linhas com `"use client"` inteiro. Com 24 cards na pagina /busca, todo esse JS precisa ser hidratado no mobile. Este refactor separa a parte visual estatica (server component) das interacoes (client islands menores), reduzindo o JS enviado e hidratado.
+
+### Escopo do refactor
+
+#### 1. Extrair `PropertyCardShell` (Server Component)
+- Novo arquivo: `src/components/property/card/PropertyCardShell.tsx`
+- Renderiza: imagem primeira foto (com alt, sizes, priority), badges, titulo, preco, features, link wrapper
+- Zero JS client — apenas HTML/CSS estatico renderizado no server
+- Props: `Property`, `prioritizeFirstImage`, `variant`, `priceContext`
+
+#### 2. Extrair `FavoriteButton` (Client Island isolado)
+- Novo arquivo: `src/components/property/card/FavoriteButton.tsx`
+- Logica: state do favorite (localStorage `fymoob:wishlist`), animacao heart-pop
+- Mount lazy via `requestIdleCallback` ou IntersectionObserver
+- Size goal: < 2KB gzipped isolado
+
+#### 3. Substituir carousel JS por CSS scroll-snap
+- Container: `overflow-x-auto scroll-smooth snap-x snap-mandatory`
+- Fotos: `snap-center shrink-0 w-full`
+- Mobile: swipe nativo (melhor UX)
+- Desktop: setinhas prev/next mantidas via um mini client component (< 1KB) que usa `scrollBy`
+- Eliminar: `useState<currentSlide>`, `goPrev`, `goNext`, `goToSlide`, indicadores de dots
+- Indicadores: substituir por CSS scrollbar mini ou dots renderizados via server
+
+#### 4. Extrair `ViewTrackerClient` (Client Island)
+- Logica atual: `saveToRecentlyViewed` + `getRecentlyViewed` em localStorage
+- Mover para hook isolado carregado dinamicamente quando user interage (mouseEnter/click)
+- Remover do bundle inicial
+
+#### 5. `loadPhotosOnHover` (hover lazy)
+- Atualmente em client state `dynamicPhotos`
+- Manter mas isolar em um wrapper `<PhotoCarouselClient>` que so monta no hover (IntersectionObserver + mouseEnter trigger)
+- Server renderiza apenas primeira foto; carousel hydrata sob demanda
+
+### Arquivos afetados
+- [ ] `src/components/property/PropertyCard.tsx` (638 linhas) — split em shell + islands
+- [ ] `src/components/property/card/PropertyCardGrid.tsx` (235 linhas)
+- [ ] `src/components/property/card/PropertyCardCompact.tsx`
+- [ ] `src/components/property/card/PropertyCardList.tsx`
+- [ ] `src/components/property/card/hooks/usePropertyCard.ts` — dividir em hooks menores
+- [ ] Criar `src/components/property/card/PropertyCardShell.tsx` (server)
+- [ ] Criar `src/components/property/card/FavoriteButton.tsx` (client)
+- [ ] Criar `src/components/property/card/PhotoCarouselClient.tsx` (client, lazy)
+
+### Criterios de sucesso
+- [ ] TBT /busca mobile < 400ms (de ~600ms atual)
+- [ ] LCP /busca mobile < 3.5s
+- [ ] Score Lighthouse mobile /busca >= 75
+- [ ] Zero regressao visual (aprovado em revisao browser mobile + desktop)
+- [ ] Favorites, carousel, view-tracker continuam funcionais
+- [ ] Todas as 12 paginas que usam PropertyCard testadas
+
+### Riscos
+- **Alto**: refactor de componente usado em 12+ paginas
+- **Medio**: mudanca de UX do carousel (scroll-snap vs buttons) requer aprovacao visual
+- **Baixo**: quebra de localStorage wishlist/recent se migracao mal feita
+
+### Estimativa
+- 2-3 horas de refactor
+- 1 hora de QA visual (mobile + desktop em todas as paginas)
+- Total: meia sessao dedicada
+
+### Pre-requisitos
+- [ ] Branch separada (`perf/property-card-server-shell`)
+- [ ] Snapshot visual de /busca, /lancamentos, /imoveis/[bairro] antes do refactor
+- [ ] Lighthouse baseline ANTES do refactor para comparacao final
+
+</details>
+
+---
+
 ## Fases 0-4 — Fundacao ate Blog [CONCLUIDAS]
 
 <details>
