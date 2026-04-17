@@ -28,13 +28,19 @@
 | 13 | Funcionalidades e UX | 39 | 39 | 0 | CONCLUIDA |
 | -- | Ações Bruno (CRM) | 3 | 0 | 3 | PENDENTE |
 | 14 | Inteligência Imobiliária | 17 | 0 | 17 | FUTURO |
-| 15 | Lead Capture + CRM | 14 | 0 | 14 | PENDENTE |
+| 15 | Lead Capture + CRM | 14 | 14 | 0 | CONCLUIDA (form em prod) |
+| 15.A | Backend Storage (Supabase) | 10 | 0 | 10 | PENDENTE (antes de 15.17) |
 | 16 | Claude Managed Agents | 14 | 0 | 14 | MEDIO PRAZO |
 | 17 | Agentes como Produto SaaS | 14 | 0 | 14 | LONGO PRAZO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **388** | **274** | **114** | **71%** |
+| | **TOTAL** | **398** | **288** | **110** | **72%** |
 
 **Sessao 2026-04-17:** 25 CRITICAL/HIGH de seguranca/SEO fixados em 5 commits (`0d7b19f`, `50b1f86`, `7bb5f5a`, `19154ec`, `6b13794`). 4 rounds de auditoria convergiram — round 4 retornou 0 CRITICAL. Acoes externas pre-cutover listadas em Fase 7.8. HIGH/MEDIUM remanescentes (hardening pos-cutover, nao blockers) em Fase 7.10.
+
+**Sessao 2026-04-17 extras:**
+- Fase 15 marcada concluida — form lead `/api/lead` esta em prod, roda via POST Loft com rate-limit + Turnstile + LGPD (fluxo ja implementado, ver `Estado atual dos formularios`).
+- Nova Fase 15.A — decisao Supabase vs Nhost para backend storage (recomendacao: Supabase, por Auth.js adapter first-party + dashboard cliente-friendly + sa-east-1 confirmado). 10 tasks pra setup inicial antes de persistir leads (Fase 15.17).
+- Favoritos mobile: card simplificado (commit `ccecfe2`) — sem carousel, trash inline, validado via Playwright (arrows=0, trash=2, remove funciona).
 
 ---
 
@@ -2578,6 +2584,86 @@ cadastro={"lead":{"nome":"...", "email":"...", "fone":"...", "interesse":"Venda"
 - Fallback: se a API der erro, o WhatsApp abre normalmente (usuario nao pode ficar travado)
 - O formulario do `/contato` ja existe mas envia email — adaptar para tambem enviar ao CRM
 - Performance: o modal e leve (form simples), nao precisa de dynamic import
+
+### Estado atual dos formularios (2026-04-17)
+
+**Destino dos 2 formularios publicos hoje:**
+
+Tanto `/imovel/[slug]` (form "Envie uma mensagem") quanto `/anuncie` (form "Cadastre seu imovel") caem em `POST /api/lead` que proxyeia para `POST https://brunoces-rest.vistahost.com.br/lead?key=$LOFT_API_KEY`. Ambos aparecem no CRM Loft/Vista com `veiculo = "Site FYMOOB"`.
+
+**Proteges ja aplicadas em `/api/lead/route.ts`:**
+- Rate limit 5 req / 10min por IP (x-real-ip, fail-closed)
+- Turnstile captcha obrigatorio
+- Consent LGPD obrigatorio (valida antes de chegar a API)
+- Sanitizacao inputs (trim + slice max 120/2000 chars)
+- Validacao EMAIL_REGEX + PHONE_REGEX
+- Timeout 8s na chamada a Loft
+- Erro generico pro client se Loft cair (502) — nao vaza detalhes
+
+**O que NAO esta implementado (gaps conscientes):**
+- ❌ Email de notificacao pra Bruno/Wagner quando lead chega (Resend so pra magic link admin hoje)
+- ❌ WhatsApp push notification
+- ❌ Banco proprio (Nhost/Supabase) como backup do CRM
+- ❌ GA4 event `lead_submit` com `property_code` + `interesse` (mede conversao real)
+- ❌ Auto-reply pro usuario confirmando recebimento
+- ❌ Se Loft cair: lead perdido, usuario ve erro e pode desistir
+
+**Melhorias propostas (nao implementadas, discussao aberta com Bruno):**
+- 15.15 — **Fallback Resend**: apos POST Loft OK, disparar email pra `bruno@fymoob.com` + `wagner@fymoob.com` com corpo do lead (redundancia + push notification instantaneo)
+- 15.16 — **GA4 event** `lead_submit` (mede conversao por pagina/imovel/interesse)
+- 15.17 — **Persistencia em DB proprio** (ver Fase 15.A abaixo — decisao Supabase vs Nhost)
+- 15.18 — **Auto-reply** via Resend ao email do usuario confirmando recebimento (UX + reduz ansiedade de "sera que chegou?")
+- 15.19 — **Fallback em caso de Loft offline**: salvar lead em DB proprio + retry via cron quando Loft voltar (zero perda)
+
+---
+
+### Fase 15.A — Decisao Backend/Storage: Supabase vs Nhost [DECIDIR ANTES DE FASE 15.17]
+
+**Contexto:** `.env.example` tem `NHOST_SUBDOMAIN` mas **0 imports de `@nhost/*` ou `@supabase/*` em `src/`** — ambos sao "futuro". Decidir agora qual plataforma usar antes de comecar 15.17 (persistir leads).
+
+**Escopo de uso:**
+- Storage de imagens (upload admin: hero empreendimentos, autored content blog)
+- Tabela `leads` (backup Loft CRM, historico proprio, relatorio)
+- Futuro: `users` + `saved_properties` (logged-in user feature)
+- Auth admin ja esta coberto por NextAuth v5 + Resend magic link (nao trocar)
+
+**Comparativo (pesquisa 2026-04-17):**
+
+| Dimensao | **Supabase** | **Nhost** |
+|---|---|---|
+| Auth.js v5 adapter | **First-party oficial** — NextAuth+Resend continua, Supabase so guarda sessions | Sem adapter. Ou ignora auth deles, ou migra tudo |
+| Dashboard CRUD pra Bruno ver leads | **Table editor (estilo Airtable)** — cliente-friendly | Hasura Console — developer-first, Bruno vai se perder |
+| Postgres + RLS | Puro + RLS maduro, referencia do mercado | Via Hasura permissions — mais verboso, UI propria |
+| Regiao sa-east-1 (Sao Paulo) | ✅ Confirmado publicamente | ❓ Nao documentado, precisa confirmar |
+| Image transforms on-the-fly | So Pro+ ($25/mes) | Free mas region BR nao confirmada |
+| Realtime (admin ve lead chegar) | **Nativo e maduro** (broadcast/presence/changes) | GraphQL subscriptions via Hasura |
+| Maturidade / risco empresa | $200M+ funding, comunidade grande, releases diarios | 6-12 pessoas, ultima rodada 2021 ($3M seed), risco medio |
+| Free tier | 500MB DB, 1GB storage, 5GB bandwidth | 1GB DB, 1GB storage, 5GB egress |
+| Docs Next.js 16 App Router | First-class | OK mas menor |
+
+**Decisao: Supabase.** Tres razoes decisivas:
+1. **Auth.js v5 adapter first-party** — zero refactor do login admin atual
+2. **Dashboard CRUD cliente-friendly** — Bruno consegue ver leads sem a gente codar admin panel
+3. **Maturidade corporativa + sa-east-1 confirmado** reduz risco em projeto long-term
+
+**Trade-off:** perdemos image transforms no free tier. Mas imagens reais vem da CDN Vistahost (fotos imovel) ou `/public/images/` (hero estaticos), que rodam via `next/image` do Vercel sem precisar storage-side transform. So afetaria uploads autorais de blog/empreendimentos no futuro — nesse ponto, Pro ($25/mes) justificado.
+
+**Riscos de migrar hoje:** quase zero. `NHOST_SUBDOMAIN` esta em `.env.example` mas nao importado. Trocar = deletar var, adicionar `NEXT_PUBLIC_SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`, editar CLAUDE.md.
+
+**Estimativa setup inicial:** 2-4h (criar projeto sa-east-1 + 3 migrations base `leads`/`users`/`saved_properties` + RLS + `@supabase/ssr` install + `src/services/supabase.ts` server + browser clients + Auth.js adapter). Schema design dos leads e o que vai demorar, nao a plataforma.
+
+### Tasks Fase 15.A
+
+- [ ] **15.A.1** — Criar projeto Supabase em sa-east-1 (Sao Paulo)
+- [ ] **15.A.2** — Atualizar `.env.example`: remover `NHOST_SUBDOMAIN`, adicionar `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY` + `SUPABASE_SERVICE_ROLE_KEY`
+- [ ] **15.A.3** — Atualizar CLAUDE.md secao "Stack" (Nhost → Supabase) e "Env vars"
+- [ ] **15.A.4** — Instalar `@supabase/ssr` + criar `src/services/supabase.ts` com clients server/browser separados
+- [ ] **15.A.5** — Schema migration inicial: tabela `leads` (id, codigo_imovel, nome, email, fone, interesse, mensagem, veiculo, loft_lead_code, status, created_at)
+- [ ] **15.A.6** — RLS na tabela `leads`: service_role full access, anon role zero (so backend grava)
+- [ ] **15.A.7** — Schema migration: tabela `saved_properties` (user_id, codigo_imovel, created_at) — futuro login
+- [ ] **15.A.8** — Atualizar `/api/lead/route.ts`: apos POST Loft OK, tambem persistir em Supabase (storage 15.17)
+- [ ] **15.A.9** — Criar Storage bucket `public-assets` pra futuras imagens upload (policy: only service_role write, public read)
+- [ ] **15.A.10** — Documentar schema em `docs/db-schema.md` (fonte de verdade pra migrations futuras)
 
 ---
 
