@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "url": "https://fymoob-website.vercel.app/busca",
+    "label": "busca-post-H001-v2",
+    "date": "2026-04-17",
+    "runs": 5,
+    "tool": "lighthouse",
+    "form_factor": "mobile"
+  },
+  "summary": {
+    "score": {
+      "samples": [
+        68,
+        65,
+        63,
+        68,
+        69
+      ],
+      "median": 68,
+      "mean": 66.6,
+      "stdDev": 2.24,
+      "cov_pct": 3.37
+    },
+    "lcp_ms": {
+      "samples": [
+        4834.951,
+        5345.233,
+        4911.336,
+        4763.5689999999995,
+        4803.6849999999995
+      ],
+      "median": 4834.95,
+      "mean": 4931.75,
+      "stdDev": 212.34,
+      "cov_pct": 4.31
+    },
+    "tbt_ms": {
+      "samples": [
+        505,
+        561,
+        815,
+        541,
+        528.5
+      ],
+      "median": 541,
+      "mean": 590.1,
+      "stdDev": 113.91,
+      "cov_pct": 19.3
+    },
+    "cls": {
+      "samples": [
+        0.077764,
+        0,
+        0,
+        0,
+        0
+      ],
+      "median": 0,
+      "mean": 0.02,
+      "stdDev": 0.03,
+      "cov_pct": 200
+    },
+    "fcp_ms": {
+      "samples": [
+        1234.951,
+        1220.233,
+        1236.336,
+        1238.569,
+        1278.685
+      ],
+      "median": 1236.34,
+      "mean": 1241.75,
+      "stdDev": 19.56,
+      "cov_pct": 1.58
+    },
+    "si_ms": {
+      "samples": [
+        2759.1680611819784,
+        3465.1203433382766,
+        2371.9039462780697,
+        2782.7388689981535,
+        2667.519443821739
+      ],
+      "median": 2759.17,
+      "mean": 2809.29,
+      "stdDev": 359.09,
+      "cov_pct": 12.78
+    }
+  },
+  "reliability": "NOISY (rodar mais vezes ou investigar setup)",
+  "max_cov_pct": 19.3
+}
