@@ -12,7 +12,24 @@
 ---
 
 ## Projeto
-Reconstrução do site da imobiliária FYMOOB (Curitiba/PR) com foco em SEO e geração de leads orgânicos via Google. O site atual é invisível para o Google (5 visitas/mês, 5 páginas indexadas de 245 imóveis).
+Reconstrução do site da imobiliária FYMOOB (Curitiba/PR) com foco em SEO e geração de leads orgânicos via Google.
+
+**Baseline real do site antigo (fymoob.com na Atomicat/Loft, GSC 2026-04-17, janela 3m):**
+- 92 páginas indexadas no Google / 291 descobertas não indexadas
+- 122 páginas únicas com impressões nos últimos 3 meses
+- ~580 cliques/mês na home
+- Cobertura do CRM: ~70 imóveis indexados de 1.479 ativos = **<5%**
+- Zero landing pages estratégicas (bairros, tipos, preços, combinações)
+- Query strings indexadas poluindo índice (`/busca?ordenar=...`, `/busca?tipo=Casa&ordenar=`)
+- Duplicate content + soft 404s + URLs de imóveis deletados ainda no índice
+
+**Oportunidade do novo site:**
+- 560 URLs estratégicas (234 imóveis + 65 bairros + tipos + combinações + faixas + conteúdo editorial)
+- Landing pages por intenção de busca específica
+- SEO técnico correto (canonicals, schema.org, sitemap hierárquico)
+- Cobertura CRM: 100% dos imóveis ativos
+
+**Baseline completo e screenshots:** [docs/metrics-baseline/README.md](docs/metrics-baseline/README.md).
 
 ## Stack
 - **Framework:** Next.js 15+ (App Router, TypeScript)
