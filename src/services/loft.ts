@@ -112,6 +112,10 @@ const INFRA_LABELS: Record<string, string> = {
 // ---------------------------------------------------------------------------
 
 // Slim fields for cards/listings (~28KB per 50 properties vs ~134KB)
+// Nota: Vista API NAO aceita { Foto: [...] } em /imoveis/listar
+// (so em /imoveis/detalhes). Fotos adicionais sao carregadas lazy
+// via IntersectionObserver -> /api/photos/[code] quando card entra
+// em viewport.
 const CARD_FIELDS = [
   "Codigo", "Categoria", "Status", "BairroComercial", "Bairro", "Cidade", "UF",
   "ValorVenda", "ValorLocacao", "ValorACombinar", "Dormitorios", "Suites", "Vagas", "TotalBanheiros",

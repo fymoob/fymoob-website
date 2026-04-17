@@ -154,6 +154,7 @@ export function PropertyCard({
   const badge = useMemo(() => getBadge(property, topViewed), [property, topViewed])
   const [dynamicPhotos, setDynamicPhotos] = useState<string[] | null>(null)
   const fetchedRef = useRef(false)
+  const articleRef = useRef<HTMLElement>(null)
 
   const loadPhotosOnHover = useCallback(() => {
     if (fetchedRef.current || photos.length > 1) return
@@ -168,6 +169,32 @@ export function PropertyCard({
       })
       .catch(() => {})
   }, [property.codigo, photos.length])
+
+  // Auto-trigger no mobile (sem hover). IntersectionObserver dispara o fetch
+  // quando card entra em viewport. Desktop tambem se beneficia — redundante
+  // com onMouseEnter mas fetchedRef guard evita duplicacao. Vista API nao
+  // permite { Foto: [...] } em /imoveis/listar (so em /detalhes), entao
+  // essa estrategia lazy eh necessaria pra ter multiplas fotos no card.
+  useEffect(() => {
+    const el = articleRef.current
+    if (!el) return
+    if (typeof IntersectionObserver === "undefined") {
+      // Fallback: trigger imediato em browsers muito antigos
+      loadPhotosOnHover()
+      return
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          loadPhotosOnHover()
+          observer.disconnect()
+        }
+      },
+      { rootMargin: "200px" } // trigger 200px antes do card aparecer
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [loadPhotosOnHover])
 
   const displayPhotos = dynamicPhotos ?? photos
 
@@ -201,6 +228,7 @@ export function PropertyCard({
 
   return (
     <article
+      ref={articleRef}
       onMouseEnter={loadPhotosOnHover}
       onClick={handleCardClick}
       className={cn(
