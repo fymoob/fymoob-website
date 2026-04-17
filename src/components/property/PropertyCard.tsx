@@ -3,7 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { ChevronLeft, ChevronRight, Heart } from "lucide-react"
+import { ChevronLeft, ChevronRight, Heart, X } from "lucide-react"
 
 import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
 import { getTopViewedCodes } from "@/lib/view-tracker"
@@ -127,6 +127,12 @@ interface PropertyCardProps {
   compactFeatures?: boolean
   context?: "default" | "search"
   priceContext?: PriceContext
+  // "toggle" = coracao (adiciona/remove). "remove" = X (pagina de favoritos).
+  wishlistAction?: "toggle" | "remove"
+  // Callback disparado quando user clica no X em wishlistAction="remove".
+  onRemove?: (codigo: string) => void
+  // Esconde suites + banheiros no resumo de features (pagina de favoritos).
+  hideSecondaryFeatures?: boolean
 }
 
 export function PropertyCard({
@@ -136,6 +142,9 @@ export function PropertyCard({
   compactFeatures = false,
   context = "default",
   priceContext = null,
+  wishlistAction = "toggle",
+  onRemove,
+  hideSecondaryFeatures = false,
 }: PropertyCardProps) {
   const alt = generateImageAlt(property)
   const venda = property.precoVenda && property.precoVenda > 0 ? property.precoVenda : null
@@ -336,7 +345,30 @@ export function PropertyCard({
           />
         )}
 
-        <button
+        {wishlistAction === "remove" ? (
+          <button
+            type="button"
+            onClick={(event) => {
+              event.preventDefault()
+              event.stopPropagation()
+              const wishlist = getWishlistCodes()
+              wishlist.delete(property.codigo)
+              window.localStorage.setItem(
+                WISHLIST_STORAGE_KEY,
+                JSON.stringify(Array.from(wishlist))
+              )
+              onRemove?.(property.codigo)
+            }}
+            className={cn(
+              "group/wishlist absolute z-20 inline-flex items-center justify-center rounded-full bg-white/90 shadow-sm ring-1 ring-black/5 backdrop-blur-md transition-all hover:scale-[1.08] hover:bg-white",
+              "right-2 top-2 size-7 sm:right-3 sm:top-3 sm:size-9"
+            )}
+            aria-label="Remover dos favoritos"
+          >
+            <X className="size-4 stroke-[2.2px] text-neutral-700 transition-colors group-hover/wishlist:text-rose-600 sm:size-[18px]" />
+          </button>
+        ) : (
+          <button
             type="button"
             onClick={toggleFavorite}
             className={cn(
@@ -358,6 +390,7 @@ export function PropertyCard({
               )}
             />
           </button>
+        )}
 
         {isCompactCard && displayPhotos.length > 1 && (
           <>
@@ -544,8 +577,8 @@ export function PropertyCard({
         {isCompactCard ? (
           <PropertyFeatures
             dormitorios={property.dormitorios}
-            suites={property.suites}
-            banheiros={property.banheiros}
+            suites={hideSecondaryFeatures ? null : property.suites}
+            banheiros={hideSecondaryFeatures ? null : property.banheiros}
             vagas={property.vagas}
             areaPrivativa={property.areaPrivativa}
             cardCompact
@@ -554,7 +587,7 @@ export function PropertyCard({
           <div className="pb-1">
             <PropertyFeatures
               dormitorios={property.dormitorios}
-              banheiros={property.banheiros}
+              banheiros={hideSecondaryFeatures ? null : property.banheiros}
               vagas={property.vagas}
               areaPrivativa={property.areaPrivativa}
               cardCompact={isSearchContext}
@@ -564,8 +597,8 @@ export function PropertyCard({
         ) : (
           <PropertyFeatures
             dormitorios={property.dormitorios}
-            suites={property.suites}
-            banheiros={property.banheiros}
+            suites={hideSecondaryFeatures ? null : property.suites}
+            banheiros={hideSecondaryFeatures ? null : property.banheiros}
             vagas={property.vagas}
             areaPrivativa={property.areaPrivativa}
             size="sm"

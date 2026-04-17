@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { Heart } from "lucide-react"
 import Link from "next/link"
 import type { Property } from "@/types/property"
-import { PropertyGrid } from "@/components/search/PropertyGrid"
+import { PropertyCard } from "@/components/property/PropertyCard"
 
 const WISHLIST_KEY = "fymoob:wishlist"
 
@@ -18,6 +18,30 @@ function getWishlistCodes(): string[] {
   } catch {
     return []
   }
+}
+
+function FavoritosGrid({
+  properties,
+  onRemove,
+}: {
+  properties: Property[]
+  onRemove: (codigo: string) => void
+}) {
+  return (
+    <section className="flex flex-col gap-3 sm:grid sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
+      {properties.map((property, index) => (
+        <PropertyCard
+          key={property.slug}
+          property={property}
+          prioritizeFirstImage={index < 3}
+          variant="responsive"
+          wishlistAction="remove"
+          hideSecondaryFeatures
+          onRemove={onRemove}
+        />
+      ))}
+    </section>
+  )
 }
 
 export default function FavoritosPage() {
@@ -78,7 +102,16 @@ export default function FavoritosPage() {
           ))}
         </div>
       ) : properties.length > 0 ? (
-        <PropertyGrid properties={properties} />
+        <FavoritosGrid
+          properties={properties}
+          onRemove={(codigo) => {
+            setProperties((prev) => {
+              const next = prev.filter((p) => p.codigo !== codigo)
+              setCount(next.length)
+              return next
+            })
+          }}
+        />
       ) : (
         <div className="rounded-2xl border border-dashed border-neutral-300 bg-neutral-50 py-20 text-center">
           <Heart className="mx-auto size-12 text-neutral-300" />

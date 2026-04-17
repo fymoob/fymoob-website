@@ -91,9 +91,11 @@ export function generatePropertySlug(property: {
   return property.slug
 }
 
+// Retorna apenas o numero formatado. Callers adicionam "m²" quando necessario
+// (evita "m² m²" em variantes de PropertyFeatures que concatenam unit).
 export function formatArea(area: number | null): string {
   if (area === null) return ""
-  return `${area.toLocaleString("pt-BR")} m²`
+  return area.toLocaleString("pt-BR")
 }
 
 export function truncateText(text: string, maxLength: number): string {

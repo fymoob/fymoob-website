@@ -189,7 +189,7 @@ export function generatePropertyTitle(property: Property): string {
   }
 
   if (property.areaPrivativa) {
-    parts.push(formatArea(property.areaPrivativa))
+    parts.push(`${formatArea(property.areaPrivativa)} m²`)
   }
 
   parts.push(`no ${property.bairro}`)
@@ -211,7 +211,7 @@ export function generatePropertyDescription(property: Property): string {
   }
 
   if (property.areaPrivativa) {
-    parts.push(`e ${formatArea(property.areaPrivativa)}`)
+    parts.push(`e ${formatArea(property.areaPrivativa)} m²`)
   }
 
   const price = property.precoVenda ?? property.precoAluguel
