@@ -66,11 +66,12 @@ Sessao dividida em 4 fases, culminando em mudanca de metodologia:
 - [x] Remover `searchResultsSchema` duplicado em src/app/busca/page.tsx (sobrep\u00f5e 100% com itemListSchema)
 - [ ] Atualizar baseline-current.md corrigindo bundle /busca total (247 KB \u2192 431 KB com dynamic) \u2014 pr\u00f3ximo run de baseline
 
-### Tier 1 \u2014 Flags de baixo risco (cada uma seu PR + hip\u00f3tese)
+### Tier 1 \u2014 Flags de baixo risco [CONCLUIDO 2026-04-17]
 
-- [ ] `F` \u2014 `font-display: optional` em next/font/local (Satoshi atual swap)
-- [ ] `B` \u2014 `reactCompiler: true` (React Compiler stable Next 16)
-- [ ] `D` \u2014 `experimental.inlineCss: true` (Turbopack suportado)
+- [x] **`F` \u2014 `font-display: optional`** \u2014 H-20260417-001 **PARTIAL**: CLS rate 40%\u219220%, TBT -110ms (inesperado), LCP +61ms. Mantido.
+- [x] **Investiga\u00e7\u00e3o CLS remanescente** \u2014 H-20260417-002 **STOP**: attribution ao `<main>`, 4 op\u00e7\u00f5es avaliadas, trade-off aceito aguardando Speed Insights field data
+- [x] **`B` \u2014 `reactCompiler: true`** \u2014 H-20260417-003 **SUCCESS**: TBT -68ms (-10.5%), LCP neutro, bundle +20KB, CLS rate 40%\u219220%. Mantido.
+- [x] **`D` \u2014 `experimental.inlineCss: true`** \u2014 H-20260417-004 **FAILED (revertido)**: HTML +326KB, LCP +238ms, TBT +237ms. Kill em 4 de 5. Li\u00e7\u00e3o adicionada ao protocolo ATTRIBUTION (validar HTML size local antes de commit).
 
 ### Tier 2 \u2014 Cirurgico em @base-ui
 

@@ -51,6 +51,7 @@ Copiar pro PR description e marcar conforme avança:
 - [ ] Hipótese registrada em `docs/perf/hypotheses/H-YYYYMMDD-NNN.md` (template: `.claude/protocols/HYPOTHESIS.md`)
 - [ ] Baseline medido: `docs/perf/baselines/YYYY-MM-DD-<route>.json` com CoV < 10%
 - [ ] Bundle snapshot antes: `docs/perf/bundle-snapshots/YYYY-MM-DD-before.json`
+- [ ] **Se a mudança toca HTML size (inlineCss, inline schemas, SSR output, streaming, parallel routes):** `curl local | wc -c` antes/depois em build local — validar que real vs predicted não diverge > 2x
 - [ ] Build local passa (`npm run build` sem erros)
 - [ ] Kill criterion escrito ANTES da mudança
 - [ ] Change aplicada — **uma** hipótese por PR (não bundle múltiplas para manter attribution clara)
@@ -69,6 +70,7 @@ Copiar pro PR description e marcar conforme avança:
 - [ ] Hipótese registrada em `docs/perf/hypotheses/H-YYYYMMDD-NNN.md` (template: `.claude/protocols/HYPOTHESIS.md`)
 - [ ] Baseline medido: `docs/perf/baselines/YYYY-MM-DD-<route>.json` com CoV < 10%
 - [ ] Bundle snapshot antes: `docs/perf/bundle-snapshots/YYYY-MM-DD-before.json`
+- [ ] **Se a mudança toca HTML size (inlineCss, inline schemas, SSR output, streaming, parallel routes):** `curl local | wc -c` antes/depois em build local — validar que real vs predicted não diverge > 2x
 - [ ] Build local passa (`npm run build` sem erros)
 - [ ] Kill criterion escrito ANTES da mudança
 - [ ] Change aplicada — **uma** hipótese por PR (não bundle múltiplas para manter attribution clara)

@@ -61,7 +61,30 @@ Quando o Lighthouse diz "TBT piorou" ou "bundle cresceu", o protocolo para desco
 
 **NÃO aceitar:** "LCP vai melhorar com `fetchpriority=high`" sem ter verificado se o gargalo atual é `Resource Load Delay` (onde fetchpriority ajuda) ou `Render Delay` (onde não ajuda).
 
-### 4. Third-party cost
+### 4. HTML size (qualquer mudança que toque o HTML servido)
+
+**Sinal:** mudança que pode alterar o HTML de resposta (inlineCss, inline schemas, streaming changes, SSR output, after() API, parallel routes).
+
+**Ferramenta obrigatória antes do commit:**
+
+```bash
+# Build local + curl ANTES de push
+npm run build && npm start &
+# Em outro terminal:
+curl -sL http://localhost:3000/<rota> | wc -c
+kill %1
+```
+
+**Compare com baseline anterior. Se crescer > predicted, investigue antes de commitar.**
+
+**Por que isso importa:** nem sempre o número que Lighthouse ou docs reportam bate com a realidade. Ex: `render-blocking-resources` audit fala em "25 KB CSS crítico" mas `inlineCss` embute o CSS **total** da página (pode ser 10× maior).
+
+**Caso real (H-20260417-004):** `inlineCss: true` foi predicted +20-30KB (baseado em audit), virou +326KB real (CSS total do Tailwind + componentes). Teria sido detectado em 10s de `curl | wc -c` local antes do deploy. Regressão de LCP +238ms, TBT +237ms em prod.
+
+**Output esperado da attribution:**
+> "Local build: curl /busca antes = 682KB, depois = 1008KB. +326KB, acima do predicted +30KB. Investigar antes de deployar."
+
+### 5. Third-party cost
 
 **Sinal:** suspeita de GA4, Turnstile, Analytics causando TBT.
 
@@ -74,7 +97,7 @@ Quando o Lighthouse diz "TBT piorou" ou "bundle cresceu", o protocolo para desco
 **Output esperado:**
 > "third-party-summary vazio, zero impacto de third-parties em mobile Lighthouse. Não atacar GA4."
 
-### 5. CLS — layout shift
+### 6. CLS — layout shift
 
 **Sinal:** CLS aumentou de ~0 para > 0.1.
 
