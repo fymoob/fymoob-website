@@ -85,6 +85,53 @@ Dados extraídos do GSC antes do cutover:
 4. **Soft 404s** — páginas que retornam 200 mas conteúdo vazio
 5. **Imóveis deletados no CRM** ainda no índice (10 URLs 404)
 
+### Insights extraídos dos CSVs (análise 2026-04-17)
+
+**Padrão de tráfego — 99% de descoberta de MARCA, 0% de LONG-TAIL:**
+
+| Query | Cliques | % do total | Posição |
+|---|---|---|---|
+| `fymoob` (branded) | 394 | ~58% | 1.11 |
+| `fymob` (typo da marca) | 11 | ~1.6% | 2.65 |
+| Outros (long-tail) | ~276 | <41% | variados |
+
+Significa que **o site atual só é descoberto por quem já conhece a marca FYMOOB**. Zero tráfego de descoberta orgânica (pessoas procurando "apartamento batel", "casa curitiba", etc). Exatamente o que o novo site ataca via landing pages programáticas.
+
+**Distribuição por dispositivo:**
+
+| Device | Cliques | % total |
+|---|---|---|
+| Celular | 486 | 70.1% |
+| Computador | 184 | 26.5% |
+| Tablet | 2 | 0.3% |
+
+**Mobile domina.** Valida estratégia mobile-first do novo site (otimizações touch, viewport, carousel nativo, etc).
+
+**Distribuição geográfica:**
+
+- Brasil: 671 cliques (99%+) — tráfego real
+- Demais países: bots/scrapers internacionais (0-1 cliques cada, 50+ países listados)
+
+**Home context:**
+
+- Posição média 3.84 quando pesquisam "fymoob" — **Google competindo com outras presenças** (Instagram @fymoob, referências Loft, etc). Nem na primeira posição da própria marca.
+- CTR 33.2% — inflado por marca, real CTR de descoberta deve estar <10%
+
+**Landing pages estratégicas mais visitadas (além da home):**
+
+| URL | Cliques | Observação |
+|---|---|---|
+| `/busca?finalidade=Aluguel&order=menor-preco` | 12 | Query string indexada (BAD SEO) |
+| `/contato` | 11 | Institucional, esperado |
+| `/busca?tipo=Casa&ordenar=` | 9 | Query malformada indexada |
+| `/imovel/apartamento-batel-...-69803405` | 9 | Imóvel individual (um exemplo de ~70) |
+| `/sobre` | 7 | Institucional |
+
+**Conclusão pro pitch:** o site antigo tem 3 problemas estruturais críticos:
+1. Tráfego 99% de marca (zero descoberta)
+2. URLs de busca com query strings indexadas (duplicate content + dificulta canonical)
+3. Imóveis individuais indexados acidentalmente, sem landing pages intermediárias que consolidem autoridade
+
 ---
 
 ## Comparação pós-cutover (preencher ao longo do tempo)
