@@ -78,6 +78,10 @@ Sessao dividida em 4 fases, culminando em mudanca de metodologia:
 - [x] **SortDropdown mobile: Sheet \u2192 `<select>` nativo** \u2014 H-20260417-005 **REVERTIDO (UX regression)**: tecnicamente funcionou (-1.6KB, -50 linhas), mas picker Android \u00e9 dark-themed, quebra est\u00e9tica do site. Design > ganho marginal de perf. Revertido via hotfix.
 - [ ] AdvancedFiltersModal: trocar Dialog @base-ui por `<dialog>` nativo
 
+### Tier extra \u2014 Navega\u00e7\u00e3o quente (client router cache)
+
+- [x] **`staleTimes.dynamic: 30`** \u2014 H-20260417-006 **SUCCESS**: fix de navega\u00e7\u00e3o home \u2194 /busca lenta em 2\u00aa+ vezes reportado pelo user em mobile. Validado qualitativamente ("resolveu, era exatamente isso"). Zero impacto em Lighthouse synthetic (mede cold start). Mantido.
+
 ### Tier 3 \u2014 Refactor moderado (s\u00f3 depois de Tier 1+2 validados via Speed Insights)
 
 - [ ] Parallel routes `/busca/@filters` + `@results` (estimado -150-400ms LCP)
