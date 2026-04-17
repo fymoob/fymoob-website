@@ -52,7 +52,7 @@ export function PhotoCarousel({
     <div className="relative h-full w-full overflow-hidden">
       <div
         ref={scrollRef}
-        className="flex h-full snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="flex h-full snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [touch-action:pan-x] [&::-webkit-scrollbar]:hidden"
       >
         {photos.map((photo, index) => {
           const isFirst = index === 0
@@ -79,21 +79,22 @@ export function PhotoCarousel({
 
       {hasMultiple && (
         <>
+          {/* Setas: mobile visiveis sempre (touch affordance), desktop aparecem no hover */}
           <button
             type="button"
             onClick={handleScroll("prev")}
-            className="absolute left-3 top-1/2 z-20 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition hover:bg-black/60 sm:inline-flex sm:opacity-0 sm:group-hover:opacity-100"
             aria-label="Foto anterior"
+            className="absolute left-2 top-1/2 z-20 inline-flex size-7 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition hover:bg-black/70 sm:left-3 sm:size-8 sm:bg-black/40 sm:opacity-0 sm:group-hover:opacity-100"
           >
-            <ChevronLeft className="size-4" />
+            <ChevronLeft className="size-3.5 sm:size-4" />
           </button>
           <button
             type="button"
             onClick={handleScroll("next")}
-            className="absolute right-3 top-1/2 z-20 hidden size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-sm transition hover:bg-black/60 sm:inline-flex sm:opacity-0 sm:group-hover:opacity-100"
             aria-label="Proxima foto"
+            className="absolute right-2 top-1/2 z-20 inline-flex size-7 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition hover:bg-black/70 sm:right-3 sm:size-8 sm:bg-black/40 sm:opacity-0 sm:group-hover:opacity-100"
           >
-            <ChevronRight className="size-4" />
+            <ChevronRight className="size-3.5 sm:size-4" />
           </button>
         </>
       )}

@@ -185,10 +185,12 @@ export function PropertyCard({
       : formatPrice(price)
 
   return (
-    <article
+    <Link
+      href={propertyHref}
+      aria-label={`Ver detalhes de ${property.titulo}`}
       onMouseEnter={loadPhotosOnHover}
       className={cn(
-        "group relative overflow-hidden transition-all duration-300",
+        "group relative block overflow-hidden transition-all duration-300",
         isResponsive
           ? "flex flex-row rounded-2xl border border-neutral-200 bg-white hover:shadow-lg sm:flex-col sm:hover:-translate-y-1.5 sm:hover:border-brand-primary/30 sm:hover:shadow-2xl"
           : isHorizontal
@@ -469,11 +471,6 @@ export function PropertyCard({
         ) : null}
       </div>
 
-      <Link
-        href={propertyHref}
-        className="absolute inset-0 z-10"
-        aria-label={`Ver detalhes de ${property.titulo}`}
-      />
-    </article>
+    </Link>
   )
 }

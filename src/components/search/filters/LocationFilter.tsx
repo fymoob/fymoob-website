@@ -63,14 +63,13 @@ function LocationFilterImpl({
   }, [bairros, query, useGrouped])
 
   const filteredCidades = useMemo(() => {
-    if (useGrouped) return []
     const q = normalize(query.trim())
     if (!q) return cidades
     return cidades.filter((c) => normalize(c.label).includes(q))
-  }, [cidades, query, useGrouped])
+  }, [cidades, query])
 
   const isEmpty = useGrouped
-    ? filteredGroups.length === 0
+    ? filteredGroups.length === 0 && filteredCidades.length === 0
     : filteredBairros.length === 0 && filteredCidades.length === 0
 
   return (
@@ -94,7 +93,40 @@ function LocationFilterImpl({
             Nenhuma localização encontrada.
           </p>
         ) : useGrouped ? (
-          filteredGroups.map((group) => (
+          <>
+            {/* Seção Cidades — disponivel tambem no modo agrupado para UX consistente com desktop.
+                Permite filtrar por cidade inteira sem precisar scrollar ate achar os bairros dela. */}
+            {filteredCidades.length > 0 && (
+              <div className="py-2">
+                <p className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
+                  Cidades disponíveis
+                </p>
+                <ul>
+                  {filteredCidades.map((cidade) => {
+                    const checked = selectedCidades.includes(cidade.value)
+                    return (
+                      <li key={cidade.value}>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            onCidadesChange(toggleValue(selectedCidades, cidade.value))
+                          }
+                          className="flex w-full items-center gap-2 rounded-md px-2 py-2 text-left transition-colors hover:bg-neutral-50"
+                        >
+                          <Checkbox checked={checked} />
+                          <span className="flex-1 text-sm font-medium">{cidade.label}</span>
+                          <span className="text-xs text-neutral-400">({cidade.count})</span>
+                        </button>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            )}
+            {filteredCidades.length > 0 && filteredGroups.length > 0 && (
+              <div className="mx-2 my-1 border-t border-neutral-200" />
+            )}
+            {filteredGroups.map((group) => (
             <div key={group.cidade} className="py-2">
               <p className="mb-1 px-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
                 {group.cidade}
@@ -120,7 +152,8 @@ function LocationFilterImpl({
                 })}
               </ul>
             </div>
-          ))
+            ))}
+          </>
         ) : (
           <>
             {filteredBairros.length > 0 && (
