@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 
 import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
@@ -184,13 +185,26 @@ export function PropertyCard({
       ? "Consultar valor"
       : formatPrice(price)
 
+  const router = useRouter()
+
+  // Handler de click no card inteiro. Verifica se clique foi em elemento
+  // interativo (botao, link interno) antes de navegar — evita navegar
+  // quando user clica em FavoriteButton/setas do carousel/etc.
+  const handleCardClick = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      const target = event.target as HTMLElement
+      if (target.closest('button, a, [role="button"]')) return
+      router.push(propertyHref)
+    },
+    [router, propertyHref]
+  )
+
   return (
-    <Link
-      href={propertyHref}
-      aria-label={`Ver detalhes de ${property.titulo}`}
+    <article
       onMouseEnter={loadPhotosOnHover}
+      onClick={handleCardClick}
       className={cn(
-        "group relative block overflow-hidden transition-all duration-300",
+        "group relative cursor-pointer overflow-hidden transition-all duration-300",
         isResponsive
           ? "flex flex-row rounded-2xl border border-neutral-200 bg-white hover:shadow-lg sm:flex-col sm:hover:-translate-y-1.5 sm:hover:border-brand-primary/30 sm:hover:shadow-2xl"
           : isHorizontal
@@ -471,6 +485,17 @@ export function PropertyCard({
         ) : null}
       </div>
 
-    </Link>
+      {/* Link invisivel so pra SEO (anchor com href para crawlers) +
+          navegacao por teclado (Tab + Enter). Click visual do card
+          inteiro usa handleCardClick via onClick do <article>.
+          sr-only esconde visualmente mas mantem na arvore de acessibilidade. */}
+      <Link
+        href={propertyHref}
+        aria-label={`Ver detalhes de ${property.titulo}`}
+        className="sr-only"
+      >
+        Ver detalhes
+      </Link>
+    </article>
   )
 }
