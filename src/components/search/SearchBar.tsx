@@ -37,22 +37,39 @@ import {
   SheetFooter,
 } from "@/components/ui/sheet"
 
+// Filtros LEVES (poucas linhas, sem @base-ui heavy) — imports eagers OK
 import { BedroomsFilter } from "@/components/search/filters/BedroomsFilter"
-import { EmpreendimentoFilter } from "@/components/search/filters/EmpreendimentoFilter"
-import { LocationAutocomplete } from "@/components/search/filters/LocationAutocomplete"
-import { LocationFilter } from "@/components/search/filters/LocationFilter"
-import { PriceFilter } from "@/components/search/filters/PriceFilter"
 import { TypeFilter } from "@/components/search/filters/TypeFilter"
 import { FilterSection } from "@/components/search/filters/FilterSection"
-import {
-  AreaRangeInput,
-  CaracteristicasCheckboxes,
-  NumberSelector,
-} from "@/components/search/filters/AdvancedFields"
+import { PriceFilter } from "@/components/search/filters/PriceFilter"
+import { NumberSelector } from "@/components/search/filters/AdvancedFields"
 
-// Only the modal stays dynamic — it's opened via explicit click (Mais filtros)
-// and is large. Chip dropdowns are inlined to avoid suspense flashes when
-// opening a different chip for the first time.
+// Filtros PESADOS — so carregam quando o usuario abre o popover/sheet
+// Skeleton leve enquanto baixa (evita layout shift). ssr:false mantido em
+// dynamic aqui pois todos sao puramente interativos — nao beneficiam de SSR.
+const skeleton = () => <div className="h-32 w-full animate-pulse rounded-lg bg-neutral-100" />
+
+const EmpreendimentoFilter = dynamic(
+  () => import("@/components/search/filters/EmpreendimentoFilter").then((m) => ({ default: m.EmpreendimentoFilter })),
+  { ssr: false, loading: skeleton }
+)
+const LocationAutocomplete = dynamic(
+  () => import("@/components/search/filters/LocationAutocomplete").then((m) => ({ default: m.LocationAutocomplete })),
+  { ssr: false, loading: skeleton }
+)
+const LocationFilter = dynamic(
+  () => import("@/components/search/filters/LocationFilter").then((m) => ({ default: m.LocationFilter })),
+  { ssr: false, loading: skeleton }
+)
+const AreaRangeInput = dynamic(
+  () => import("@/components/search/filters/AdvancedFields").then((m) => ({ default: m.AreaRangeInput })),
+  { ssr: false, loading: () => <div className="h-10 w-full animate-pulse rounded-md bg-neutral-100" /> }
+)
+const CaracteristicasCheckboxes = dynamic(
+  () => import("@/components/search/filters/AdvancedFields").then((m) => ({ default: m.CaracteristicasCheckboxes })),
+  { ssr: false, loading: skeleton }
+)
+
 const AdvancedFiltersModal = dynamic(() => import("@/components/search/filters/AdvancedFiltersModal").then(m => m.AdvancedFiltersModal))
 import { cn } from "@/lib/utils"
 import { useSearchBarController } from "./useSearchBarController"

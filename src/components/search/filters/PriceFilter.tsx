@@ -1,7 +1,18 @@
 "use client"
 
-import { Slider } from "@/components/ui/slider"
+import dynamic from "next/dynamic"
 import { PRICE_STEP, type PriceBounds, normalizeRange } from "./search-state"
+
+// Slider @base-ui/react e pesado (RAF, pointer events, range normalization).
+// Nao e LCP nem above-the-fold — renderiza so quando o usuario abre o popover
+// de preco. Dynamic import corta ~20KB do bundle inicial e ~80ms de parse.
+const Slider = dynamic(
+  () => import("@/components/ui/slider").then((m) => ({ default: m.Slider })),
+  {
+    ssr: false,
+    loading: () => <div className="h-5 w-full animate-pulse rounded-full bg-neutral-200" />,
+  }
+)
 
 interface PriceFilterProps {
   value: [number, number]
