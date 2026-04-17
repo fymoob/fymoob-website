@@ -898,6 +898,84 @@ O PropertyCard atual tem 638 linhas com `"use client"` inteiro. Com 24 cards na 
 - [ ] IndexNow: ja temos endpoint `/api/indexnow` implementado. Bing aceita pings pra indexacao quase-imediata. Considerar adicionar Vercel cron ou botao admin que dispara IndexNow quando novo imovel entra no CRM.
 - [ ] Adicionar Bruno como user secundario em Bing + GSC (permissoes granulares, nao compartilhar senha)
 
+### 7.9.C — Cutover do dominio `fymoob.com` (redirect 308 -> .com.br) [EM EXECUCAO]
+> `.com` eh do Bruno tambem (GoDaddy mesma conta). Redirect 308 + Change of Address transfere autoridade historica (92 URLs indexadas, 580 cliques/home, 122 paginas com impressoes em 3 meses) pro `.com.br`. Baseline completo em `docs/metrics-baseline/`. DNS backup completo em `docs/dns-backup-com.md`.
+
+**Tempo estimado total: 24h (~30min execucao + 1h cutover validacao + 23h Change of Address efetivar).**
+
+#### Fase A — Cutover DNS (~30min + 10-30min propagacao)
+
+- [ ] **Vercel**: Project `fymoob-website` > Domains > Add Existing > `fymoob.com`:
+  - Desmarcar checkbox "Redirect fymoob.com to www.fymoob.com"
+  - Modo: "Redirect to Another Domain"
+  - Type: **308 Permanent Redirect**
+  - Target: `fymoob.com.br`
+- [ ] **Vercel**: Add Existing > `www.fymoob.com` (mesma config: 308 -> fymoob.com.br)
+- [ ] Copiar DNS records que Vercel mostra (provavelmente A @ 76.76.21.21 + CNAME www cname.vercel-dns.com)
+- [ ] **GoDaddy** (dominio `fymoob.com`, NAO o .com.br): editar `A @` de `35.227.239.5` -> IP Vercel. TTL 600s.
+- [ ] **GoDaddy**: DELETAR registro `A www` (35.227.239.5). CRIAR novo `CNAME www` -> `cname.vercel-dns.com.`. TTL 600s.
+- [ ] **NAO TOCAR** em MX, SPF TXT, autodiscover/webmail CNAMEs, subdominios (api/premium/destaques), verificacoes Facebook/Google. Detalhes em `docs/dns-backup-com.md`.
+- [ ] Aguardar propagacao DNS (5-30min). Testar: `curl -I https://fymoob.com` deve retornar 308 + `location: https://fymoob.com.br/`
+- [ ] Confirmar Vercel status 🟢 Valid Configuration em ambos dominios
+
+#### Fase B — Change of Address no GSC (~2min, 1h apos Fase A)
+
+- [ ] Aguardar ~1h apos Fase A pra Google bater no `.com` e detectar redirect
+- [ ] GSC -> propriedade `fymoob.com` (Domain) -> Settings (engrenagem) -> **Mudanca de endereco**
+- [ ] Destino: selecionar `fymoob.com.br` (aparece no dropdown porque eh mesma conta Google)
+- [ ] Google valida 3 checks automaticamente:
+  - Ambas propriedades verificadas ✅ (ja estao)
+  - Redirect 301/308 ativo entre dominios ✅ (tera apos Fase A)
+  - Dominio destino tem conteudo equivalente ✅ (tem)
+- [ ] Confirmar submissao
+- [ ] Resultado: Google acelera consolidacao de ~2-3 meses -> **2-3 semanas**
+
+#### Fase C — Monitoramento Coverage (D+1 a D+7)
+
+> Objetivo: detectar URLs antigas do `.com` que 308 redireciona pra slug no `.com.br` que nao existe (404). Principais candidatos: imoveis com codigo numerico antigo (ex: `/imovel/apartamento-batel-curitiba-pr-263m2-69803405`) — novo site usa codigo AP00XXX.
+
+- [ ] D+1: GSC `.com.br` -> Indexacao > Paginas > filtro "Nao encontrado (404)"
+- [ ] Anotar URLs 404 que vieram de `fymoob.com/*` e tem trafego historico
+- [ ] D+7: review completo. Top candidatos esperados (baseado em baseline):
+  - `/imovel/apartamento-batel-curitiba-pr-263m2-69803405` (9 cliques historicos)
+  - `/imovel/loja-xaxim-curitiba-pr-55.85m2-69804208` (7 cliques)
+  - `/imovel/sobrado-cidade-industrial-curitiba-pr-3-quartos-88m2-69803496` (3 cliques)
+  - URLs com format antigo `/imovel/AP00945/apartamento-3-quartos-mossungue-curitiba/venda`
+
+#### Fase D — Redirects especificos (D+7 se necessario)
+
+- [ ] Se Fase C revelar URLs com trafego significativo em 404, adicionar em `next.config.ts`:
+```ts
+async redirects() {
+  return [
+    {
+      source: '/imovel/apartamento-batel-:rest*',
+      destination: '/imoveis/batel/apartamentos',
+      permanent: true,  // 308
+    },
+    // outros padroes conforme GSC Coverage revelar
+  ]
+}
+```
+- [ ] Pattern: redirecionar URLs orfas (sem match de slug exato) pra landing page de bairro+tipo relevante
+- [ ] Commit + deploy. Smoke test do CI valida automaticamente.
+
+#### Fase E — Consolidacao (D+14 a D+21)
+
+> Nada a fazer — acontece em background. Apenas monitorar.
+
+- [ ] D+14: `site:fymoob.com` no Google deve mostrar menos URLs (em declinio)
+- [ ] D+14: `site:fymoob.com.br` deve mostrar mais URLs (em alta)
+- [ ] D+21: Change of Address 100% efetivada. `.com` e "sombra" do `.com.br`.
+- [ ] Atualizar `docs/metrics-baseline/README.md` com colunas D+7, D+14, D+21 preenchidas
+
+#### Notas importantes sobre preservacao
+
+- **Email Umbler funcionando** — MX records preservados em GoDaddy
+- **Subdominios preservados:** `api.fymoob.com`, `premium.fymoob.com`, `www.premium.fymoob.com`, `destaques.fymoob.com`, `autodiscover.fymoob.com`, `webmail.fymoob.com`
+- **Verificacoes preservadas:** Meta Business Manager (Facebook), Google Search Console (TXT ja existente)
+- **SPF email:** `v=spf1 include:spf.umbler.com ~all` intocado
+
 ### 7.10 — HIGH/MEDIUM Remanescentes (hardening pos-cutover)
 > Documentado na Sessao 2026-04-17 acima. NAO sao blockers pra cutover — sao hardening incremental pra rodar em sprint de follow-up (~4-8h total).
 
