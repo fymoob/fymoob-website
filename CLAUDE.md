@@ -64,24 +64,53 @@ npm run test         # Testes
 - **FAQ:** `<details>/<summary>` nativo (zero JS). Nunca Accordion/Radix para FAQ
 
 ## Performance Changes — REQUIRE HYPOTHESIS + MEASUREMENT
-> **Regra dura aplicada a humanos E agentes (Claude):** nunca estimar ganho de KB/ms sem medição empírica.
+> **Escopo: SÓ quando o PR faz claim de impacto em performance.** Para mudanças rotineiras (bug fix, layout, CSS, conteúdo, feature sem claim de perf), **pular o protocolo**.
 
-Toda otimização de performance **obriga**:
-1. Registrar hipótese em [`docs/perf/hypotheses/H-YYYYMMDD-NNN.md`](docs/perf/hypotheses/) (template: [`.claude/protocols/HYPOTHESIS.md`](.claude/protocols/HYPOTHESIS.md)) — formato Thoughtworks HDD "We Believe X Will Result In Y"
-2. Medir baseline com `npm run perf:baseline -- <url>` e `npm run perf:bundle` antes da mudança (CoV < 10%, 5 runs mínimo)
-3. Aplicar **uma** mudança por PR (attribution limpa)
-4. Medir depois; reportar delta no commit com evidência (arquivo em `docs/perf/baselines/`)
-5. Se ganho vier abaixo do kill criterion → reverter. Kill criterion escrito **antes** de implementar.
+### Quando APLICA (obrigatório)
+PR se encaixa em QUALQUER uma destas:
+- Descrição/commit menciona ganho numérico (`-X KB`, `-Y ms`, `+Z score`, `resolve bottleneck`)
+- Adiciona/troca lib ou componente pesado (@base-ui, maplibre, embla, radix)
+- Split/merge de bundle, dynamic imports motivados por perf
+- Alterações em `next.config.ts`, `modularizeImports`, `optimizePackageImports`
+- Mudanças explicitamente para "melhorar Lighthouse/CWV/TBT/LCP"
+- Size-limit falha no CI (regression budget enforcement)
 
-**Quando não dá pra medir, output `MEASUREMENT_REQUIRED` — nunca inventar número.** Este é o erro 4/4 da sessão abril 2026 (polyfill, lucide, Fix 2 completo, fetchPriority): estimativas sem medição que não materializaram.
+Nesse caso:
+1. Registrar hipótese em `docs/perf/hypotheses/H-YYYYMMDD-NNN.md` (template: [`.claude/protocols/HYPOTHESIS.md`](.claude/protocols/HYPOTHESIS.md))
+2. Medir baseline com `npm run perf:baseline -- <url>` e `npm run perf:bundle` antes (CoV < 10%)
+3. **Uma** mudança por PR (attribution limpa)
+4. Medir depois; reportar delta no commit com link pro arquivo `docs/perf/baselines/`
+5. Se não atingiu success criterion e não está dentro do kill → reverter
+6. Quando não dá pra medir, output `MEASUREMENT_REQUIRED` — **NUNCA inventar número**
 
-**Protocolos obrigatórios (ler antes de mexer em perf):**
+### Quando NÃO APLICA (dispensa de burocracia)
+Seguir o fluxo normal, sem hipótese nem medição:
+- **Bug fix**: corrigir comportamento quebrado (lógica, crash, UX errada)
+- **Layout / CSS / visual**: padding, cor, tipografia, espaçamento, responsividade
+- **Conteúdo**: texto, imagens, copy, traduções
+- **Feature nova sem claim de perf**: adicionar página, botão, formulário
+- **Refactor interno**: rename, extrair função, mover arquivo, dividir componente
+- **Docs, testes, infra de dev** (ex: adicionar eslint rule, tipos TS)
+- **Bump de dep** sem claim de perf (ex: patch de segurança)
+
+Se ao fazer uma dessas você acidentalmente **regredir performance** (size-limit falha no CI), aí sim entra no protocolo — mas pra decidir se compensa ou se precisa mitigar.
+
+### Hot fix — atalho explícito
+Prod quebrado, urgência real, sem tempo pra protocolo:
+- Fazer o fix direto, prefixar commit com `hotfix(...)`
+- **Depois do fix no ar**, se a mudança tem relevância de perf, abrir follow-up PR com a hipótese e a medição pós-fato
+- Registrar em `docs/perf/hotfixes.log` (append-only) a data + commit + motivo — pra não acumular débito invisível
+
+### Em dúvida?
+Pergunte: *"estou afirmando um número de KB/ms neste PR?"* Se sim, protocolo. Se não, dispensa.
+
+**Protocolos (ler só se aplica):**
 - [`.claude/protocols/HYPOTHESIS.md`](.claude/protocols/HYPOTHESIS.md) — template HDD
-- [`.claude/protocols/MEASURE-BEFORE-CLAIM.md`](.claude/protocols/MEASURE-BEFORE-CLAIM.md) — checklist obrigatória
+- [`.claude/protocols/MEASURE-BEFORE-CLAIM.md`](.claude/protocols/MEASURE-BEFORE-CLAIM.md) — checklist + escopo detalhado
 - [`.claude/protocols/STATISTICAL-RIGOR.md`](.claude/protocols/STATISTICAL-RIGOR.md) — CoV, mediana, 5 runs
 - [`.claude/protocols/ATTRIBUTION.md`](.claude/protocols/ATTRIBUTION.md) — rastrear causa real antes de propor fix
 
-**Baseline atual:** [`docs/perf/baseline-current.md`](docs/perf/baseline-current.md) — consultar antes de propor mudança.
+**Baseline atual:** [`docs/perf/baseline-current.md`](docs/perf/baseline-current.md).
 
 ## Arquitetura de URLs (SEO)
 ```

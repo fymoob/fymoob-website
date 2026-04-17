@@ -1,0 +1,13 @@
+# Hot fixes log — append-only
+#
+# Registra hot fixes que pularam o protocolo MEASURE-BEFORE-CLAIM.
+# Objetivo: nao acumular debito invisivel de perf.
+#
+# Formato (uma linha por hot fix):
+#   YYYY-MM-DD | <short-sha> | <motivo breve> | follow-up: <commit-sha ou "N/A">
+#
+# Regra: se o hot fix adicionou lib pesada ou mexeu em perf-critical code,
+# a coluna "follow-up" deve apontar para o PR que fez a medicao pos-fato.
+# Se foi so logica/visual, "follow-up: N/A" e ok.
+#
+# ---
