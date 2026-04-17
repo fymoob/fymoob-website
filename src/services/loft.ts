@@ -387,6 +387,10 @@ function extractProperties(data: Record<string, unknown>): LoftPropertyRaw[] {
   return results
 }
 
+// Cap defensivo: FYMOOB tem ~249 imoveis. 40 paginas de 50 = 2000, 8x margem.
+// Sem o cap, bug no CRM (total inflado) + ISR regen = runaway Vercel cost.
+const MAX_PAGES_SAFETY_CAP = 40
+
 async function fetchAllPropertiesRaw(): Promise<Property[]> {
   // First request to get total count
   const firstPesquisa = JSON.stringify({
@@ -401,10 +405,17 @@ async function fetchAllPropertiesRaw(): Promise<Property[]> {
   })
 
   const total = (firstData.total as number) || 0
-  const totalPages = Math.ceil(total / PAGE_SIZE)
+  const rawTotalPages = Math.ceil(total / PAGE_SIZE)
+  const totalPages = Math.min(rawTotalPages, MAX_PAGES_SAFETY_CAP)
+  if (rawTotalPages > MAX_PAGES_SAFETY_CAP) {
+    console.warn(
+      `[Loft] rawTotalPages=${rawTotalPages} excedeu cap de ${MAX_PAGES_SAFETY_CAP} ` +
+      `(total reportado=${total}). Truncando — inspecione CRM.`
+    )
+  }
   const allRaw = extractProperties(firstData)
 
-  // Fetch remaining pages in parallel
+  // Fetch remaining pages in parallel (bounded)
   if (totalPages > 1) {
     const pagePromises = []
     for (let p = 2; p <= totalPages; p++) {

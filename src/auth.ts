@@ -2,6 +2,13 @@ import NextAuth from "next-auth"
 import Resend from "next-auth/providers/resend"
 import { UpstashRedisAdapter } from "@auth/upstash-redis-adapter"
 import { Redis } from "@upstash/redis"
+import { createHash } from "node:crypto"
+
+// Hash de email para logs (LGPD data minimization + evita enumeracao via
+// logs da Vercel). 12 chars do sha256 sao suficientes pra correlacao.
+function hashEmail(email: string): string {
+  return createHash("sha256").update(email).digest("hex").slice(0, 12)
+}
 
 /**
  * Upstash Redis adapter — stores verification tokens for the magic link flow.
@@ -121,7 +128,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (!email) return false
       const allowed = getAllowedAdmins()
       if (!allowed.has(email)) {
-        console.warn(`[auth] rejected sign-in attempt from non-admin email: ${email}`)
+        // Hash evita persistir email em plaintext em logs Vercel (LGPD)
+        console.warn(`[auth] rejected non-admin sign-in (emailHash=${hashEmail(email)})`)
         return false
       }
       return true

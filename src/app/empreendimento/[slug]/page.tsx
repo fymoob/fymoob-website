@@ -40,8 +40,12 @@ export async function generateStaticParams() {
   }
 }
 
+// Slugs validos (anti-ISR-amplification)
+const VALID_EMP_SLUG = /^[a-z0-9][a-z0-9-]{1,100}$/
+
 export async function generateMetadata({ params }: EmpreendimentoPageProps): Promise<Metadata> {
   const { slug } = await params
+  if (!VALID_EMP_SLUG.test(slug)) return {}
   const empreendimentos = await getAllEmpreendimentos()
   const emp = empreendimentos.find((e) => e.slug === slug)
   if (!emp) return {}
@@ -80,6 +84,7 @@ function groupUnitTypes(properties: Property[]) {
 
 export default async function EmpreendimentoPage({ params }: EmpreendimentoPageProps) {
   const { slug } = await params
+  if (!VALID_EMP_SLUG.test(slug)) notFound()
   const empreendimentos = await getAllEmpreendimentos()
   const emp = empreendimentos.find((e) => e.slug === slug)
   if (!emp) notFound()

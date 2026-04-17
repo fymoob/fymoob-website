@@ -67,9 +67,11 @@ export async function POST(req: Request) {
       revalidatedAt: new Date().toISOString(),
     })
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err)
+    // Loga detalhes server-side para debug — NAO expoe err.message ao caller
+    // (evita info disclosure sobre internals do Next/runtime).
+    console.error("[revalidate] failed for tag", tag, err)
     return NextResponse.json(
-      { error: "revalidation failed", message },
+      { error: "revalidation failed" },
       { status: 500 }
     )
   }
