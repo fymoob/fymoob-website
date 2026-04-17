@@ -1990,6 +1990,89 @@ Não para ranking, apenas para acelerar crawl:
 
 ---
 
+## Fase 13.13 — Estratégia de Armazenamento de Imagens [DECISÃO — 16/04/2026]
+
+> **Pergunta:** qual serviço usar para armazenar imagens que não vêm da API Loft
+> (bairros, team, sobre, hero, blog)?
+> **Resposta:** dois momentos distintos.
+
+### 13.13.A — Para lançamento (AGORA) — `public/` + Vercel CDN [ATUAL, NÃO MUDAR]
+
+**Decisão:** manter todas as imagens estáticas em `public/images/` versionadas no Git.
+
+**Estado atual (16/04/2026):**
+- 70 imagens, 19 MB total
+- Bairros: 12 JPGs em `/public/images/bairros/`
+- Team: `bruno.jpeg`, `wagner.jpeg` em `/public/images/team/`
+- Hero home: `hero-home.webp` (261 KB) + `hero-home-mobile.webp` (46 KB) + fallback `.jpg`
+- Sobre: `sobre-maior.jpeg` + `sobre-dreams.jpg`
+- Blog: `/public/images/blog/`
+- Empreendimentos (custom assets editoriais): `/public/images/empreendimentos/`
+
+**Por que NÃO migrar agora:**
+- Volume pequeno — 19 MB é irrelevante pra Git + Vercel
+- Imagens são **estáticas** (bairros, team, hero mudam 1-2 vezes/ano)
+- Vercel CDN tem 40+ edge POPs globais — latência baixa
+- Next.js `<Image />` já converte pra AVIF/WebP + responsive sizes automático
+- Zero setup, zero custo, zero risco
+- Imagens versionadas junto com código = rollback trivial
+
+**Quando este plano quebra:** volume > 500 MB OU upload via painel admin.
+
+### 13.13.B — Para admin editor (FASE 9.2) — Supabase Storage [A CONFIGURAR]
+
+**Decisão:** quando Bruno puder fazer upload de imagens (blog, empreendimentos) via painel admin, usar **Supabase Storage**.
+
+**Por quê Supabase:**
+- Já temos projeto Supabase ativo (env vars configuradas)
+- Free tier (1 GB storage + 2 GB bandwidth) cobre escopo de Bruno
+- Mesma auth da sessão NextAuth do painel admin
+- Policies de RLS protegem upload/delete (só admin)
+- Bruno vê tudo no mesmo dashboard do Supabase
+
+**Buckets a criar (quando Fase 9.2 começar):**
+| Bucket | Uso | Visibilidade |
+|---|---|---|
+| `blog-covers` | Capas de artigos do blog | Public read, admin write |
+| `blog-inline` | Imagens dentro de artigos (editor MDX) | Public read, admin write |
+| `empreendimentos` | Fotos custom de empreendimentos premium (editorial) | Public read, admin write |
+
+**Policies RLS sugeridas:**
+- SELECT: qualquer um (site publico exibe)
+- INSERT/UPDATE/DELETE: apenas usuarios autenticados com email em `ALLOWED_ADMIN_EMAILS`
+
+### 13.13.C — Imagens que NUNCA saem do `public/`
+
+Mesmo quando admin for ativado, estas imagens ficam no Git eternamente (fazem parte do "template" visual do site):
+
+- Logo, favicon, ícones (`/public/logo.png`, `/icon.svg`)
+- Bairro images (raramente mudam, editorial)
+- Hero home (design-driven, atualiza no deploy)
+- Sobre hero (design-driven)
+- Team photos (2 fotos, Bruno pede pra mudar 1-2x/ano)
+- Placeholder/fallback images
+
+### 13.13.D — Alternativas consideradas e descartadas
+
+| Serviço | Free tier | Por que descartado |
+|---|---|---|
+| **Cloudinary** | 25 GB + 25 GB BW | Overkill pra 19 MB; Next.js Image ja faz AVIF/WebP/resize |
+| **Vercel Blob** | 1 GB | Paga desde dia 1 ($0.015/GB); redundante com Supabase |
+| **Cloudflare R2** | 10 GB, egress grátis | API S3 complexa pro beneficio; sem optimization |
+| **AWS S3 + CloudFront** | 5 GB + 50 GB BW | Overkill pra escala FYMOOB; setup complexo |
+| **Nhost Storage** | (descontinuado) | Substituido por Supabase (14/04/2026) |
+
+### 13.13.E — Benchmarks (futuro)
+
+Monitorar após 6 meses de produção:
+- Tamanho total de `/public/images/` (alerta se > 200 MB)
+- Bandwidth Vercel dashboard (Hobby tem limite ~100 GB/mês)
+- Upload volume no Supabase Storage (se admin ativo)
+
+Se bairro images ganharem 100 novas entradas (ex: expansao pra outras cidades), migrar apenas bairros pra Supabase Storage + seed via script.
+
+---
+
 ## Fase 14 — Inteligência Imobiliária (Produto Futuro)
 
 > Plataforma de dados e IA para vantagem competitiva da FYMOOB.
