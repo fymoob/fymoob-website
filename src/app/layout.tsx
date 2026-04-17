@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import dynamic from "next/dynamic";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import { generateOrganizationSchema, generateLocalBusinessSchema, safeJsonLd } from "@/lib/seo";
 import { Suspense } from "react";
 import { Header } from "@/components/layout/Header";
@@ -124,6 +125,10 @@ export default function RootLayout({
             para validar empiricamente otimizacoes Tier 1+ do roadmap perf.
             Dashboard: Vercel > Project > Speed Insights. */}
         <SpeedInsights />
+        {/* Vercel Web Analytics — traffic, top pages, referrers, countries.
+            Hobby plan: 50k events/mes, 30d historico. Cookieless, LGPD-friendly.
+            Dashboard: Vercel > Project > Analytics. */}
+        <Analytics />
       </body>
     </html>
   );
