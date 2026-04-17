@@ -1,9 +1,11 @@
 import { formatPrice } from "@/lib/utils"
+import { getPriceDisplayFromFields } from "@/lib/property-price"
+import type { Property } from "@/types/property"
 
 interface MobilePriceCardProps {
   precoVenda: number | null
   precoAluguel: number | null
-  finalidade: string
+  finalidade: Property["finalidade"]
   valorCondominio: number | null
   valorIptu: number | null
   valorSeguroIncendio: number | null
@@ -21,12 +23,12 @@ export function MobilePriceCard({
   valorFci,
   valorSobConsulta,
 }: MobilePriceCardProps) {
-  const isDual = finalidade === "Venda e Locação" && precoVenda && precoAluguel
-  const isRental = !isDual && finalidade !== "Venda"
+  // Helper unificado: detecta dual por precos > 0 (nao depende de Finalidade CRM)
+  const { isRental, isDual } = getPriceDisplayFromFields({ precoVenda, precoAluguel, finalidade })
   const showConsult = valorSobConsulta && !isRental
   const hasRental = Boolean(isDual || isRental)
 
-  const rentalBase = isDual ? precoAluguel : isRental ? (precoAluguel ?? precoVenda) : null
+  const rentalBase = isRental ? precoAluguel : isDual ? precoAluguel : null
   const totalPacote = rentalBase
     ? rentalBase +
       (valorCondominio ?? 0) +

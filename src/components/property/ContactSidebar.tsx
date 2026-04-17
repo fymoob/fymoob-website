@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { pushAnalyticsEvent } from "@/lib/analytics"
 import { cn, formatPhoneBR, formatPrice } from "@/lib/utils"
+import { getPriceDisplayFromFields } from "@/lib/property-price"
 import type { Property } from "@/types/property"
 
 const WISHLIST_STORAGE_KEY = "fymoob:wishlist"
@@ -80,19 +81,23 @@ export function ContactSidebar({
   variant,
 }: ContactSidebarProps) {
   const isPremium = variant === "premium"
-  const isDual = finalidade === "Venda e Locação" && precoVenda && precoAluguel
-  const isRental = !isDual && finalidade !== "Venda"
-  const price = isRental ? (precoAluguel ?? precoVenda) : (precoVenda ?? precoAluguel)
+  // Helper unificado: detecta dual por precos (nao depende de Finalidade
+  // CRM que as vezes vem vazia mesmo em imoveis dual).
+  const { price, secondaryPrice, isRental, isDual } = getPriceDisplayFromFields({
+    precoVenda,
+    precoAluguel,
+    finalidade,
+  })
   const shouldShowConsultPrice = valorSobConsulta && !isRental
   const priceLabel = shouldShowConsultPrice
     ? "VALOR DO IMÓVEL"
-    : isDual
-      ? "VALOR VENDA"
-      : isRental
-        ? "VALOR ALUGUEL"
-        : "VALOR VENDA"
+    : isRental
+      ? "VALOR ALUGUEL"
+      : "VALOR VENDA"
+  // Label do secundario (quando dual)
+  const secondaryLabel = isRental ? "VALOR DE VENDA" : "VALOR ALUGUEL"
 
-  const rentalBase = isDual ? precoAluguel : isRental ? price : null
+  const rentalBase = isRental ? price : isDual ? precoAluguel : null
   const hasRental = isDual || isRental
   const totalPacote = rentalBase
     ? rentalBase +
@@ -433,13 +438,14 @@ export function ContactSidebar({
             {isRental && <span className="text-sm text-neutral-500">/mês</span>}
           </div>
 
-          {isDual && !shouldShowConsultPrice && (
+          {isDual && secondaryPrice && !shouldShowConsultPrice && (
             <div className="mt-3 space-y-1.5 border-t border-neutral-100 pt-3">
               <p className="text-xs font-semibold uppercase tracking-wider text-neutral-400">
-                VALOR ALUGUEL
+                {secondaryLabel}
               </p>
               <p className="text-xl font-bold tracking-tight text-slate-900">
-                {formatPrice(precoAluguel)} <span className="text-sm font-normal text-neutral-500">/mês</span>
+                {formatPrice(secondaryPrice)}
+                {!isRental && <span className="text-sm font-normal text-neutral-500"> /mês</span>}
               </p>
             </div>
           )}

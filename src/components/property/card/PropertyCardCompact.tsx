@@ -26,6 +26,7 @@ export function PropertyCardCompact({
     hasPrice,
     displayPrice,
     isRental,
+    pillLabel,
     hasSecondaryPrice,
     secondaryIsRental,
     displaySecondaryPrice,
@@ -63,17 +64,17 @@ export function PropertyCardCompact({
       {/* Content */}
       <div className="flex flex-1 flex-col gap-2.5 p-4">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs uppercase tracking-wide text-slate-500">
-          {property.finalidade === "Venda" && (
+          {pillLabel === "Venda" && (
             <span className="rounded-full bg-rose-50 px-2 py-0.5 text-[10px] font-semibold text-rose-700 ring-1 ring-rose-200/70">
               Venda
             </span>
           )}
-          {property.finalidade === "Locação" && (
+          {pillLabel === "Aluguel" && (
             <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 ring-1 ring-emerald-200/70">
               Aluguel
             </span>
           )}
-          {property.finalidade === "Venda e Locação" && (
+          {pillLabel === "Venda e Locação" && (
             <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-700 ring-1 ring-amber-200/70">
               Venda · Aluguel
             </span>

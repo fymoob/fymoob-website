@@ -110,15 +110,15 @@ function getPropertyPhotos(property: Property): string[] {
 export type PriceContext = SharedPriceContext
 
 function resolvePrice(property: Property, ctx: PriceContext) {
-  const { price, secondaryPrice, isRental, isDual } = getPropertyPriceDisplay(property, ctx)
+  const { price, secondaryPrice, isRental, isDual, pillLabel } = getPropertyPriceDisplay(property, ctx)
   // secondaryIsRental eh o oposto de isRental quando dual
   const secondaryIsRental = isDual ? !isRental : false
-  return { price, secondaryPrice, isRental, secondaryIsRental }
+  return { price, secondaryPrice, isRental, secondaryIsRental, isDual, pillLabel }
 }
 
 export function usePropertyCard(property: Property, priceContext: PriceContext = null) {
   const alt = generateImageAlt(property)
-  const { price, secondaryPrice, isRental, secondaryIsRental } = resolvePrice(property, priceContext)
+  const { price, secondaryPrice, isRental, secondaryIsRental, isDual, pillLabel } = resolvePrice(property, priceContext)
   const photos = useMemo(() => getPropertyPhotos(property), [property])
   const [topViewed, setTopViewed] = useState<Set<string>>(new Set())
 
@@ -162,6 +162,8 @@ export function usePropertyCard(property: Property, priceContext: PriceContext =
     hasPrice,
     displayPrice: hasPrice ? formatPrice(price) : "Consultar valor",
     isRental,
+    isDual,
+    pillLabel,
     secondaryPrice,
     hasSecondaryPrice,
     secondaryIsRental,

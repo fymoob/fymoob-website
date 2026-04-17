@@ -4,6 +4,7 @@ import type { Property, PropertyPageVariant } from "@/types/property"
 import { PropertyBadge } from "@/components/shared/PropertyBadge"
 import { PropertyFeatures } from "@/components/shared/PropertyFeatures"
 import { cn } from "@/lib/utils"
+import { getPropertyPriceDisplay } from "@/lib/property-price"
 
 interface PropertyHeaderBlockProps {
   property: Property
@@ -17,6 +18,10 @@ export function PropertyHeaderBlock({
   variant,
 }: PropertyHeaderBlockProps) {
   const isPremium = variant === "premium"
+  // Pill reflete estado real (dual se tem ambos precos, mesmo com Finalidade CRM vazia)
+  const { pillLabel, isDual } = getPropertyPriceDisplay(property)
+  const pillText = pillLabel === "Aluguel" ? "Locação" : pillLabel === "Venda e Locação" ? "Venda e Locação" : pillLabel ?? property.finalidade
+  const pillVariant: "sale" | "rent" = pillLabel === "Venda" ? "sale" : "rent"
 
   return (
     <div className={cn("mt-6 md:mt-8", isPremium && "mt-10 md:mt-14")}>
@@ -41,8 +46,8 @@ export function PropertyHeaderBlock({
       </h1>
 
       <div className="mt-5 flex flex-wrap items-center gap-2">
-        <PropertyBadge variant={property.finalidade === "Venda" ? "sale" : "rent"}>
-          {property.finalidade}
+        <PropertyBadge variant={pillVariant}>
+          {pillText}
         </PropertyBadge>
         {!isPremium && <PropertyBadge variant="code">Cód: {property.codigo}</PropertyBadge>}
       </div>

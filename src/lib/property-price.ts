@@ -11,6 +11,12 @@ export interface PriceDisplay {
   isRental: boolean
   /** Se o imovel tem ambos precos (venda + aluguel) */
   isDual: boolean
+  /**
+   * Label da pill de finalidade pra exibir na UI.
+   * Se isDual=true, eh "Venda e Locação" independente do Status CRM.
+   * Caso contrario usa Finalidade direto.
+   */
+  pillLabel: "Venda" | "Aluguel" | "Venda e Locação" | null
 }
 
 /**
@@ -34,31 +40,67 @@ export interface PriceDisplay {
  *   const { price, secondaryPrice, isRental, isDual } = getPropertyPriceDisplay(property)
  *   const { price } = getPropertyPriceDisplay(property, "locacao")  // filtro busca
  */
-export function getPropertyPriceDisplay(
-  property: Property,
+export interface PriceInput {
+  precoVenda: number | null
+  precoAluguel: number | null
+  finalidade: Property["finalidade"]
+}
+
+/**
+ * Versao que aceita campos avulsos. Usada em components que recebem os
+ * precos como props separados (ex: ContactSidebar desktop).
+ */
+export function getPriceDisplayFromFields(
+  input: PriceInput,
   priceContext: PriceContext = null
 ): PriceDisplay {
-  const venda = property.precoVenda && property.precoVenda > 0 ? property.precoVenda : null
-  const aluguel = property.precoAluguel && property.precoAluguel > 0 ? property.precoAluguel : null
+  const venda = input.precoVenda && input.precoVenda > 0 ? input.precoVenda : null
+  const aluguel = input.precoAluguel && input.precoAluguel > 0 ? input.precoAluguel : null
   const isDual = !!venda && !!aluguel
 
-  // Decide se o primario eh aluguel baseado em finalidade + priceContext.
-  // NAO confia em isDual derivado de finalidade='Venda e Locacao' sozinho
-  // (CRM as vezes tem finalidade vazia mesmo com ambos precos).
   let primaryIsRental: boolean
-  if (property.finalidade === "Locação") {
+  if (input.finalidade === "Locação") {
     primaryIsRental = true
-  } else if (property.finalidade === "Venda") {
+  } else if (input.finalidade === "Venda") {
     primaryIsRental = false
-  } else if (property.finalidade === "Venda e Locação") {
+  } else if (input.finalidade === "Venda e Locação") {
     primaryIsRental = priceContext === "locacao"
   } else {
-    // Fallback: sem venda mas com aluguel -> rental
     primaryIsRental = !venda && !!aluguel
   }
 
   const price = primaryIsRental ? (aluguel ?? venda) : (venda ?? aluguel)
   const secondaryPrice = isDual ? (primaryIsRental ? venda : aluguel) : null
 
-  return { price, secondaryPrice, isRental: primaryIsRental, isDual }
+  // Pill label: se tem ambos precos, forca "Venda e Locacao" na UI mesmo se
+  // Finalidade CRM so disser "Locacao" ou "Venda" (dados inconsistentes).
+  let pillLabel: PriceDisplay["pillLabel"] = null
+  if (isDual) {
+    pillLabel = "Venda e Locação"
+  } else if (input.finalidade === "Venda") {
+    pillLabel = "Venda"
+  } else if (input.finalidade === "Locação" || input.finalidade === "Venda e Locação") {
+    pillLabel = "Aluguel"
+  } else if (aluguel) {
+    pillLabel = "Aluguel"
+  } else if (venda) {
+    pillLabel = "Venda"
+  }
+
+  return { price, secondaryPrice, isRental: primaryIsRental, isDual, pillLabel }
+}
+
+/** Wrapper pra Property completo */
+export function getPropertyPriceDisplay(
+  property: Property,
+  priceContext: PriceContext = null
+): PriceDisplay {
+  return getPriceDisplayFromFields(
+    {
+      precoVenda: property.precoVenda,
+      precoAluguel: property.precoAluguel,
+      finalidade: property.finalidade,
+    },
+    priceContext
+  )
 }

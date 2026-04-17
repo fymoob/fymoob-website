@@ -27,6 +27,7 @@ export function PropertyCardList({
     hasPrice,
     displayPrice,
     isRental,
+    pillLabel,
     hasSecondaryPrice,
     secondaryIsRental,
     displaySecondaryPrice,
@@ -37,12 +38,13 @@ export function PropertyCardList({
   } = usePropertyCard(property, priceContext)
 
   // Unificado com Grid/Compact — pill colorida de finalidade
+  // Usa pillLabel do helper (detecta dual por precos > 0, nao por Finalidade CRM)
   const finalidadePill =
-    property.finalidade === "Venda"
+    pillLabel === "Venda"
       ? { label: "Venda", className: "bg-rose-50 text-rose-700 ring-1 ring-rose-200/70" }
-      : property.finalidade === "Locação"
+      : pillLabel === "Aluguel"
         ? { label: "Aluguel", className: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/70" }
-        : property.finalidade === "Venda e Locação"
+        : pillLabel === "Venda e Locação"
           ? { label: "Venda · Aluguel", className: "bg-amber-50 text-amber-700 ring-1 ring-amber-200/70" }
           : null
 
