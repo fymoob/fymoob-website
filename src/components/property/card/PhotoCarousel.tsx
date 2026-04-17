@@ -50,9 +50,13 @@ export function PhotoCarousel({
 
   return (
     <div className="relative h-full w-full overflow-hidden">
+      {/* Scroll container com overflow-x-auto — default touch-action auto
+          permite scroll vertical pela pagina (pan-y) + horizontal snap-x
+          (pan-x) pelo swipe proprio. NAO setar touch-action explicit,
+          senao um dos dois scrolls sera bloqueado. */}
       <div
         ref={scrollRef}
-        className="flex h-full snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [touch-action:pan-x] [&::-webkit-scrollbar]:hidden"
+        className="flex h-full snap-x snap-mandatory overflow-x-auto scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
         {photos.map((photo, index) => {
           const isFirst = index === 0
@@ -79,22 +83,24 @@ export function PhotoCarousel({
 
       {hasMultiple && (
         <>
-          {/* Setas: mobile visiveis sempre (touch affordance), desktop aparecem no hover */}
+          {/* Setas: mobile visiveis sempre com bg forte (touch affordance).
+              Desktop: aparecem no hover apenas. Especificidade explicita sem
+              modificador 'sm:opacity-0' no mobile pra garantir visibilidade. */}
           <button
             type="button"
             onClick={handleScroll("prev")}
             aria-label="Foto anterior"
-            className="absolute left-2 top-1/2 z-20 inline-flex size-7 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition hover:bg-black/70 sm:left-3 sm:size-8 sm:bg-black/40 sm:opacity-0 sm:group-hover:opacity-100"
+            className="absolute left-2 top-1/2 z-30 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white shadow-md backdrop-blur-sm transition-all hover:bg-black/80 active:scale-95 sm:left-3 sm:bg-black/40 sm:opacity-0 sm:group-hover:opacity-100"
           >
-            <ChevronLeft className="size-3.5 sm:size-4" />
+            <ChevronLeft className="size-4" strokeWidth={2.5} />
           </button>
           <button
             type="button"
             onClick={handleScroll("next")}
             aria-label="Proxima foto"
-            className="absolute right-2 top-1/2 z-20 inline-flex size-7 -translate-y-1/2 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition hover:bg-black/70 sm:right-3 sm:size-8 sm:bg-black/40 sm:opacity-0 sm:group-hover:opacity-100"
+            className="absolute right-2 top-1/2 z-30 inline-flex size-8 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-white shadow-md backdrop-blur-sm transition-all hover:bg-black/80 active:scale-95 sm:right-3 sm:bg-black/40 sm:opacity-0 sm:group-hover:opacity-100"
           >
-            <ChevronRight className="size-3.5 sm:size-4" />
+            <ChevronRight className="size-4" strokeWidth={2.5} />
           </button>
         </>
       )}
