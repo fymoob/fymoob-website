@@ -56,10 +56,16 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ["lucide-react", "@base-ui/react"],
+    // H-20260417-006: cache client-side para rotas dinamicas por 30s.
+    // Next 16 default e 0s (cache expira imediato), causando re-fetch
+    // do RSC payload a cada navegacao home <-> /busca. Trade-off:
+    // dados podem estar ate 30s stale (aceitavel para imobiliaria —
+    // imoveis nao mudam a cada segundo).
+    staleTimes: {
+      dynamic: 30,
+    },
     // H-20260417-004 REVERTIDO: inlineCss fez HTML crescer +326KB (predicted
-    // era +20-30KB), LCP +238ms, TBT +237ms. Kill criterion triggered em 4
-    // de 5 dimensoes. FCP melhorou (-155ms) mas nao compensou regressao.
-    // Ver docs/perf/hypotheses/H-20260417-004.md para conclusao.
+    // era +20-30KB), LCP +238ms, TBT +237ms. Kill triggered em 4 de 5.
   },
   // H-20260417-003: memoizacao automatica compile-time. Meta report
   // 20-40% menos re-renders + LCP +12%. Custo: +30-50% build time.
