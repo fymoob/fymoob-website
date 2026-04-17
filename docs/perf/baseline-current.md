@@ -45,19 +45,25 @@ Medido em build de produção (`.next/static/chunks/`). Números RAW (sem gzip/b
 
 ---
 
-## Lighthouse mobile — `/busca`
+## Lighthouse mobile — `/busca` (MEDIÇÃO OFICIAL 2026-04-17)
 
-Última medição v5 (pós-commits bb2d0c0, b6159ce, 26e5750, e9186b4, a16ec04, 5385d22, 4e21016, 61bb4e7):
+**Fonte:** `docs/perf/baselines/2026-04-17-busca.json` — 5 runs, mediana, CoV gate < 10%, script `lighthouse-median.js` v1.
 
-| Métrica | Mediana | Samples (n=4, 1 outlier excluído) | CoV |
-|---------|---------|----------------------------------|-----|
-| **Score** | **65** | [65, 65, 69] | ~3% |
-| **LCP** | **4.9s** | [4.9s, 5.1s, 4.7s] | ~4% |
-| **TBT** | **580ms** | [560ms, 620ms, 550ms] | ~6% |
-| **CLS** | **0** | [0, 0, 0] | — |
-| **FCP** | **~1.3s** | [1.5s, 1.2s, 1.2s] | — |
+| Métrica | Mediana | Mean | StdDev | CoV | Samples | Reliability |
+|---------|---------|------|--------|-----|---------|-------------|
+| **Score** | **65** | 65 | 1.0 | 1.6% | [65, 66, 65, 67, 64] | ✅ Excelente |
+| **LCP** | **4.84s** | 4.74s | 429ms | 9.1% | [3.9s, 4.75s, 5.19s, 4.84s, 4.98s] | ✅ Aceitável |
+| **TBT** | **645ms** | 638ms | 30ms | 4.7% | [647, 683, 627, 591, 645] | ✅ Excelente |
+| **CLS** | **0.000** | 0.031 | 0.039 | 122.5% | [0.078, 0, 0, 0, 0.078] | ⚠️ 2 samples com shift |
+| **FCP** | **1.23s** | 1.28s | 103ms | 8.1% | [1.49s, 1.23s, 1.22s, 1.24s, 1.23s] | ✅ Aceitável |
+| **SI** | **2.55s** | 3.09s | 1182ms | 38.3% | [5.45s, 2.55s, 2.47s, 2.37s, 2.61s] | ❌ Muito ruidoso |
 
-Outlier excluído (v5c): 57 / 5.2s / 1040ms — investigação indica processo concorrente no host de teste.
+**Max CoV (score/LCP/TBT): 9.1% — passa gate de 10%. Medição aceita como baseline canônico.**
+
+**Observações importantes:**
+- TBT **645ms** (não 580ms como estimei em sessões anteriores sem rigor) — medições pontuais pré-protocolo estavam dentro da variance. Valor real é mais alto.
+- CLS tem 2/5 samples com 0.078 — mediana dá 0 mas há algo shiftando intermitentemente. Investigar.
+- Speed Index com CoV 38% indica que a run 1 foi outlier (5.45s) — típico do "first cold start" em Vercel. Valor mediano confiável: 2.55s.
 
 ---
 
@@ -116,13 +122,13 @@ Por tempo de scripting (média 3 runs, mobile throttled):
 
 Não partir pra próxima mudança **sem** hipótese em `docs/perf/hypotheses/` (template: `.claude/protocols/HYPOTHESIS.md`).
 
-| Métrica | Atual | Meta | Gap |
-|---------|-------|------|-----|
+| Métrica | Atual (oficial 2026-04-17) | Meta | Gap |
+|---------|---------------------------|------|-----|
 | Score mobile | 65 | ≥ 80 | +15 pts |
-| LCP mobile | 4.9s | < 3.5s | -1.4s |
-| TBT mobile | 580ms | < 400ms | -180ms |
-| CLS | 0 | < 0.1 | ✅ OK |
-| Bundle /busca total | 763 KB | < 600 KB | -163 KB |
+| LCP mobile | 4.84s | < 3.5s | -1.34s |
+| TBT mobile | 645ms | < 400ms | -245ms |
+| CLS | 0 mediana (2/5 samples 0.078) | < 0.1 | ⚠️ investigar intermitência |
+| Bundle /busca total | 758 KB | < 600 KB | -158 KB |
 
 **Hipóteses priorizadas** (cada uma deve virar um arquivo `docs/perf/hypotheses/H-*.md` antes de implementar):
 1. Trocar `@base-ui/react` Popover/Sheet por HTML nativo (`<details>`, `<dialog>`) — **predicted -100 KB raw, MEASUREMENT_REQUIRED para TBT**
