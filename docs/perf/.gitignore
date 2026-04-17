@@ -1,0 +1,4 @@
+# Lighthouse raw JSONs sao ~800KB cada — nao versionar.
+# Resumos (extraidos pelo script lighthouse-median.js) vao em baselines/, versionados.
+*.full.json
+/raw/

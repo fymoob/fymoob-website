@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Shared root chunks (toda rota)",
+    "path": [
+      ".next/static/chunks/069*.js",
+      ".next/static/chunks/3f24*.js",
+      ".next/static/chunks/69be*.js",
+      ".next/static/chunks/d8faa*.js",
+      ".next/static/chunks/f0915*.js"
+    ],
+    "limit": "450 KB",
+    "brotli": false,
+    "gzip": false
+  },
+  {
+    "name": "Polyfill legacy (nomodule)",
+    "path": ".next/static/chunks/a6dad*.js",
+    "limit": "120 KB",
+    "brotli": false,
+    "gzip": false
+  }
+]

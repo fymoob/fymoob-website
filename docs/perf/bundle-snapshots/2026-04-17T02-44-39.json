@@ -1,0 +1,980 @@
+{
+  "meta": {
+    "date": "2026-04-17T02:44:39.212Z",
+    "next_version": "16.1.6"
+  },
+  "shared": {
+    "total_kb": 400.7,
+    "chunks": [
+      {
+        "file": "static/chunks/3f246955183e6fd4.js",
+        "size_kb": 9.3
+      },
+      {
+        "file": "static/chunks/f091501564eb2ea3.js",
+        "size_kb": 32.1
+      },
+      {
+        "file": "static/chunks/69be39811437728d.js",
+        "size_kb": 218.2
+      },
+      {
+        "file": "static/chunks/068649e8eb29b8d9.js",
+        "size_kb": 82.5
+      },
+      {
+        "file": "static/chunks/d8faa6dfe10b9fc9.js",
+        "size_kb": 48.6
+      },
+      {
+        "file": "static/chunks/turbopack-7aa82ebd0acbddaa.js",
+        "size_kb": 10
+      }
+    ]
+  },
+  "polyfill": {
+    "total_kb": 110,
+    "note": "Served as <script nomodule> — NOT loaded by modern browsers",
+    "chunks": [
+      {
+        "file": "static/chunks/a6dad97d9634a72d.js",
+        "size_kb": 110
+      }
+    ]
+  },
+  "routes": {
+    "/admin/login": {
+      "first_load_js_kb": 735.9,
+      "route_specific_kb": 225.2,
+      "chunks": 11,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/admin": {
+      "first_load_js_kb": 714,
+      "route_specific_kb": 203.3,
+      "chunks": 10,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/alugar-curitiba": {
+      "first_load_js_kb": 714,
+      "route_specific_kb": 203.3,
+      "chunks": 10,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/anuncie": {
+      "first_load_js_kb": 726.1,
+      "route_specific_kb": 215.4,
+      "chunks": 11,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/apartamentos-curitiba": {
+      "first_load_js_kb": 754.1,
+      "route_specific_kb": 243.4,
+      "chunks": 12,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "0e17e084d2a507e0.js",
+          "size_kb": 39.8
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        }
+      ]
+    },
+    "/apartamentos-curitiba/[finalidade]": {
+      "first_load_js_kb": 737.1,
+      "route_specific_kb": 226.4,
+      "chunks": 11,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/blog": {
+      "first_load_js_kb": 714,
+      "route_specific_kb": 203.3,
+      "chunks": 10,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/blog/[slug]": {
+      "first_load_js_kb": 715.9,
+      "route_specific_kb": 205.2,
+      "chunks": 11,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/busca": {
+      "first_load_js_kb": 758.4,
+      "route_specific_kb": 247.7,
+      "chunks": 12,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "0e17e084d2a507e0.js",
+          "size_kb": 39.8
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        }
+      ]
+    },
+    "/casas-curitiba": {
+      "first_load_js_kb": 754.1,
+      "route_specific_kb": 243.4,
+      "chunks": 12,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "0e17e084d2a507e0.js",
+          "size_kb": 39.8
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        }
+      ]
+    },
+    "/casas-curitiba/[finalidade]": {
+      "first_load_js_kb": 737.1,
+      "route_specific_kb": 226.4,
+      "chunks": 11,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/comparar": {
+      "first_load_js_kb": 722,
+      "route_specific_kb": 211.3,
+      "chunks": 11,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/comprar-imovel-curitiba": {
+      "first_load_js_kb": 714,
+      "route_specific_kb": 203.3,
+      "chunks": 10,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/contato": {
+      "first_load_js_kb": 726.1,
+      "route_specific_kb": 215.4,
+      "chunks": 11,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/empreendimento/[slug]": {
+      "first_load_js_kb": 746.2,
+      "route_specific_kb": 235.5,
+      "chunks": 11,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "080b46150e41cd3d.js",
+          "size_kb": 32.2
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        }
+      ]
+    },
+    "/empreendimentos": {
+      "first_load_js_kb": 714,
+      "route_specific_kb": 203.3,
+      "chunks": 10,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/faq": {
+      "first_load_js_kb": 731.7,
+      "route_specific_kb": 221,
+      "chunks": 11,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/favoritos": {
+      "first_load_js_kb": 739.5,
+      "route_specific_kb": 228.8,
+      "chunks": 11,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "49aa900cef044db6.js",
+          "size_kb": 25.6
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        }
+      ]
+    },
+    "/guia/[bairro]": {
+      "first_load_js_kb": 737.1,
+      "route_specific_kb": 226.4,
+      "chunks": 11,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/imoveis/preco/[faixa]": {
+      "first_load_js_kb": 739.4,
+      "route_specific_kb": 228.7,
+      "chunks": 11,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "d4c3fa42ef69de3f.js",
+          "size_kb": 25.4
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        }
+      ]
+    },
+    "/imoveis/[bairro]": {
+      "first_load_js_kb": 754.1,
+      "route_specific_kb": 243.4,
+      "chunks": 12,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "0e17e084d2a507e0.js",
+          "size_kb": 39.8
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        }
+      ]
+    },
+    "/imoveis/[bairro]/[tipo]": {
+      "first_load_js_kb": 739.4,
+      "route_specific_kb": 228.7,
+      "chunks": 11,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "d4c3fa42ef69de3f.js",
+          "size_kb": 25.4
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        }
+      ]
+    },
+    "/imovel/[slug]": {
+      "first_load_js_kb": 820.7,
+      "route_specific_kb": 310,
+      "chunks": 12,
+      "top5": [
+        {
+          "file": "4bafbefc9e420439.js",
+          "size_kb": 73
+        },
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "0fbf21917db4ab97.js",
+          "size_kb": 33.7
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        }
+      ]
+    },
+    "/lancamentos": {
+      "first_load_js_kb": 754.1,
+      "route_specific_kb": 243.4,
+      "chunks": 12,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "0e17e084d2a507e0.js",
+          "size_kb": 39.8
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        }
+      ]
+    },
+    "/morar-em-curitiba": {
+      "first_load_js_kb": 714,
+      "route_specific_kb": 203.3,
+      "chunks": 10,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/": {
+      "first_load_js_kb": 940.9,
+      "route_specific_kb": 430.2,
+      "chunks": 14,
+      "top5": [
+        {
+          "file": "93d4e8b33d000465.js",
+          "size_kb": 92.3
+        },
+        {
+          "file": "45af271e7b2adc54.js",
+          "size_kb": 59.8
+        },
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "679c9ad3fdd970ae.js",
+          "size_kb": 44.1
+        },
+        {
+          "file": "637d313e11d6baf9.js",
+          "size_kb": 30.8
+        }
+      ]
+    },
+    "/politica-de-privacidade": {
+      "first_load_js_kb": 714,
+      "route_specific_kb": 203.3,
+      "chunks": 10,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/politica-editorial": {
+      "first_load_js_kb": 714,
+      "route_specific_kb": 203.3,
+      "chunks": 10,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/sobrados-curitiba": {
+      "first_load_js_kb": 754.1,
+      "route_specific_kb": 243.4,
+      "chunks": 12,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "0e17e084d2a507e0.js",
+          "size_kb": 39.8
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        }
+      ]
+    },
+    "/sobrados-curitiba/[finalidade]": {
+      "first_load_js_kb": 737.1,
+      "route_specific_kb": 226.4,
+      "chunks": 11,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/sobre": {
+      "first_load_js_kb": 714.7,
+      "route_specific_kb": 204,
+      "chunks": 11,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/terrenos-curitiba": {
+      "first_load_js_kb": 754.1,
+      "route_specific_kb": 243.4,
+      "chunks": 12,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "0e17e084d2a507e0.js",
+          "size_kb": 39.8
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        }
+      ]
+    },
+    "/terrenos-curitiba/[finalidade]": {
+      "first_load_js_kb": 737.1,
+      "route_specific_kb": 226.4,
+      "chunks": 11,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    },
+    "/_global-error": {
+      "first_load_js_kb": 540.9,
+      "route_specific_kb": 30.2,
+      "chunks": 2,
+      "top5": [
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "ff1a16fafef87110.js",
+          "size_kb": 0.3
+        }
+      ]
+    },
+    "/_not-found": {
+      "first_load_js_kb": 714,
+      "route_specific_kb": 203.3,
+      "chunks": 10,
+      "top5": [
+        {
+          "file": "b6049373be712503.js",
+          "size_kb": 56.9
+        },
+        {
+          "file": "3d060d449bada4c1.js",
+          "size_kb": 30
+        },
+        {
+          "file": "7530e557ba60481e.js",
+          "size_kb": 27.1
+        },
+        {
+          "file": "587b2470727b1811.js",
+          "size_kb": 24.5
+        },
+        {
+          "file": "6ebf92c792cd1f9d.js",
+          "size_kb": 23.1
+        }
+      ]
+    }
+  }
+}

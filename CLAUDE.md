@@ -63,6 +63,26 @@ npm run test         # Testes
 - **Animações:** CSS `animation-timeline: view()` com fallback. Nunca `opacity:0` + JS IntersectionObserver para animação de entrada
 - **FAQ:** `<details>/<summary>` nativo (zero JS). Nunca Accordion/Radix para FAQ
 
+## Performance Changes — REQUIRE HYPOTHESIS + MEASUREMENT
+> **Regra dura aplicada a humanos E agentes (Claude):** nunca estimar ganho de KB/ms sem medição empírica.
+
+Toda otimização de performance **obriga**:
+1. Registrar hipótese em [`docs/perf/hypotheses/H-YYYYMMDD-NNN.md`](docs/perf/hypotheses/) (template: [`.claude/protocols/HYPOTHESIS.md`](.claude/protocols/HYPOTHESIS.md)) — formato Thoughtworks HDD "We Believe X Will Result In Y"
+2. Medir baseline com `npm run perf:baseline -- <url>` e `npm run perf:bundle` antes da mudança (CoV < 10%, 5 runs mínimo)
+3. Aplicar **uma** mudança por PR (attribution limpa)
+4. Medir depois; reportar delta no commit com evidência (arquivo em `docs/perf/baselines/`)
+5. Se ganho vier abaixo do kill criterion → reverter. Kill criterion escrito **antes** de implementar.
+
+**Quando não dá pra medir, output `MEASUREMENT_REQUIRED` — nunca inventar número.** Este é o erro 4/4 da sessão abril 2026 (polyfill, lucide, Fix 2 completo, fetchPriority): estimativas sem medição que não materializaram.
+
+**Protocolos obrigatórios (ler antes de mexer em perf):**
+- [`.claude/protocols/HYPOTHESIS.md`](.claude/protocols/HYPOTHESIS.md) — template HDD
+- [`.claude/protocols/MEASURE-BEFORE-CLAIM.md`](.claude/protocols/MEASURE-BEFORE-CLAIM.md) — checklist obrigatória
+- [`.claude/protocols/STATISTICAL-RIGOR.md`](.claude/protocols/STATISTICAL-RIGOR.md) — CoV, mediana, 5 runs
+- [`.claude/protocols/ATTRIBUTION.md`](.claude/protocols/ATTRIBUTION.md) — rastrear causa real antes de propor fix
+
+**Baseline atual:** [`docs/perf/baseline-current.md`](docs/perf/baseline-current.md) — consultar antes de propor mudança.
+
 ## Arquitetura de URLs (SEO)
 ```
 /                                    → Home
