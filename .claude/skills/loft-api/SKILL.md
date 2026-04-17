@@ -96,8 +96,29 @@ Retorna: `["Venda", "Aluguel"]`
 ### Enviar lead (formulário do site → CRM)
 ```
 POST /lead?key={KEY}
-Content-Type: application/json
+Content-Type: application/x-www-form-urlencoded
+
+cadastro={"lead":{...}}
 ```
+
+**⚠️ FORMATO CRÍTICO:** Loft REJEITA `application/json` direto no body com 401
+*"Você deve informar os dados em json no parâmetro 'cadastro'"*. Precisa ser
+`application/x-www-form-urlencoded` com o JSON URL-encoded dentro de `cadastro=...`.
+
+**Implementação:**
+```ts
+const formBody = new URLSearchParams({
+  cadastro: JSON.stringify({ lead: {...} }),
+}).toString()
+
+fetch(`${LOFT_BASE_URL}/lead?key=${LOFT_API_KEY}`, {
+  method: "POST",
+  headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  body: formBody,
+})
+```
+
+**Campos do lead:**
 ```json
 {
   "lead": {
@@ -111,6 +132,18 @@ Content-Type: application/json
   }
 }
 ```
+
+**Resposta sucesso (200):**
+```json
+{"status": 200, "message": "O cadastro foi encontrado.", "Codigo": N, "Corretor": N}
+```
+
+**⚠️ SPAM FILTER IMPORTANTE:** Vista tem filtro anti-spam invisível. Submissions
+com dados claramente de teste (`nome: "TESTE"`, `email: "teste@gmail.com"`,
+`fone: "9999-9999"`) retornam 200 OK mas NÃO criam lead real — são redirecionados
+silenciosamente pro bucket de teste (Código 8826568 "Vanessa/Numero e E-mail Não
+Existe" criado em 2017). Validação end-to-end requer dados reais (nome, email
+e telefone plausíveis). Descoberto 17/04/2026.
 
 ### Lead do site (widget)
 ```
@@ -142,6 +175,80 @@ GET /reloadcache?key={KEY}
 ```
 GET/PUT/POST/DELETE /webhook/{action}?key={KEY}
 ```
+
+---
+
+## Endpoints de Leads/Clientes (descobertos 17/04/2026)
+
+O CRM armazena leads como "clientes". POST /lead cria entrada em `/clientes/listar`.
+
+### Listar leads/clientes
+```
+GET /clientes/listar?key={KEY}&pesquisa={JSON}
+```
+
+**Exemplo:**
+```js
+pesquisa: JSON.stringify({
+  fields: ["Codigo", "Nome", "EmailResidencial", "FonePrincipal", "DataCadastro", "VeiculoCaptacao", "Observacoes", "Interesse", "Status"],
+  filter: { VeiculoCaptacao: "Site FYMOOB" },
+  order: { DataCadastro: "desc" },
+  paginacao: { pagina: 1, quantidade: 20 },
+})
+```
+
+**Campos válidos confirmados (24):** `Codigo`, `Nome`, `EmailResidencial`, `EmailComercial`,
+`FonePrincipal`, `FoneResidencial`, `FoneComercial`, `Celular`, `DataCadastro`,
+`Observacoes`, `VeiculoCaptacao`, `CampanhaImportacao`, `Status`, `Interesse`,
+`Profissao`, `MailingList`, `ClienteImportado`, `Investidor`, `Fiador`, `Potencial`,
+`CPFCNPJ`, `RG`, `Proprietario`, `Corretor`.
+
+**Campos INVÁLIDOS (apesar de lógicos):** `Email` (usar `EmailResidencial`),
+`Fone` (usar `FonePrincipal`), `Veiculo` (usar `VeiculoCaptacao`), `CPF_CGC`
+(usar `CPFCNPJ`), `Cidade`, `Bairro`, `CEP` (não expostos em clientes), `Nascimento`,
+`Comprador`, `ValorPerfil`, `DormitoriosPerfil`, `Imovelprocurado`.
+
+**Mapeamento POST /lead → campos clientes:**
+- `lead.veiculo` → `VeiculoCaptacao`
+- `lead.nome` → `Nome`
+- `lead.email` → `EmailResidencial`
+- `lead.fone` → `FonePrincipal`
+- `lead.mensagem` → `Observacoes`
+- `lead.interesse` → `Interesse` (Venda/Locação)
+
+### Outros endpoints de clientes (swagger /doc)
+- `GET /clientes/imoveisFavoritos` — imóveis favoritados por cliente
+- `GET/PUT/POST /clientes/detalhes` — detalhes de cliente (POST = CRIAR, evitar)
+- `GET /clientes/listarConteudo` — valores distintos de campos (pra dropdowns)
+- `GET /clientes/listarcampos` — 401 (permissão negada na nossa key)
+- `POST /clientes/anexos` — upload anexos (NÃO chamar)
+- `GET /clientes/perfil/listarcampos` — campos de perfil do cliente
+- `GET/POST /clientes/perfil` — perfil de busca do cliente
+- `POST /clientes/favoritarimovel` — favoritar (NÃO chamar)
+- `DELETE /clientes/remove_relacionamento` — **NUNCA CHAMAR** (destrutivo)
+- `POST /rdlead` — integração RD Station
+- `POST /seguro/cadastro` — cadastro de seguro
+- `GET /gooddata/clientes/ativos` — analytics de clientes ativos
+
+**Scripts de referência no projeto:**
+- `scripts/list-recent-leads.mjs` — lista leads com VeiculoCaptacao="Site FYMOOB"
+- `scripts/list-latest-all-leads.mjs` — últimos N leads sem filtro
+- `scripts/find-my-lead.mjs` — busca por nome/email/data específicos
+- `scripts/discover-lead-endpoints.mjs` — descoberta de endpoints por probing
+- `scripts/vista-api-spec.json` — spec OpenAPI completo (117 endpoints) baixado de `/doc`
+
+---
+
+## Documentação oficial (Swagger) — 117 endpoints
+
+```
+https://brunoces-rest.vistahost.com.br/doc
+```
+
+Swagger UI interativo. Spec OpenAPI completo está salvo em `scripts/vista-api-spec.json`.
+
+Endpoints organizados por tags: `Imóveis`, `Clientes`, `Corretores`, `Leads`,
+`Empreendimentos`, `Webhooks`, `Relatórios`, `Agência`.
 
 ---
 
