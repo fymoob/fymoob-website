@@ -5,7 +5,7 @@ import { MDXRemote } from "next-mdx-remote/rsc"
 import remarkGfm from "remark-gfm"
 import { getGuiaBySlug, getAllGuiaSlugs } from "@/services/guias"
 import { getProperties, getPropertyStats } from "@/services/loft"
-import { generateLandingStats, generateDynamicFAQ, generateFAQPageSchema } from "@/lib/seo"
+import { generateLandingStats, generateDynamicFAQ, generateFAQPageSchema, generatePillarSchema } from "@/lib/seo"
 import { formatPrice } from "@/lib/utils"
 import { mdxComponents } from "@/lib/mdx-components"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
@@ -81,25 +81,15 @@ export default async function GuiaBairroPage({ params }: PageProps) {
     { label: "Comprar Imóvel em Curitiba", href: "/comprar-imovel-curitiba" },
   ]
 
-  // Article schema
+  // BlogPosting schema com E-E-A-T canonico (mesmo shape de /blog/[slug])
   const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: guia.title,
-    description: guia.description,
-    datePublished: guia.date,
-    dateModified: guia.date,
-    author: {
-      "@type": "Person",
-      name: "Bruno César de Almeida",
-      jobTitle: "Corretor de Imóveis",
-      credential: "CRECI J 9420",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "FYMOOB Imobiliária",
-      url: "https://fymoob.com.br",
-    },
+    ...generatePillarSchema({
+      title: guia.title,
+      description: guia.description,
+      image: guia.image,
+      date: guia.date,
+      pagePath: `/guia/${bairro}`,
+    }),
     about: {
       "@type": "Place",
       name: `${bairroName}, Curitiba, PR`,

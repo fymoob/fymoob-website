@@ -125,13 +125,23 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
 
   const itemListSchema = generateItemListSchema(properties, `/empreendimento/${slug}`)
   const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
+  const rawHeroImage = assets?.heroImage || emp.imageUrl || undefined
+  const absoluteHeroImage = rawHeroImage
+    ? rawHeroImage.startsWith("http")
+      ? rawHeroImage
+      : `${SITE_URL}${rawHeroImage}`
+    : undefined
   const realEstateSchema = {
-    "@context": "https://schema.org", "@type": "RealEstateListing", name: emp.nome,
+    "@type": "RealEstateListing", name: emp.nome,
     description: descricao || `${emp.total} unidades disponíveis no ${emp.nome}`,
     url: `${SITE_URL}/empreendimento/${slug}`,
-    image: assets?.heroImage || emp.imageUrl || undefined,
+    ...(absoluteHeroImage && { image: absoluteHeroImage }),
     offers: precoMin ? { "@type": "AggregateOffer", lowPrice: precoMin, highPrice: precoMax || precoMin, priceCurrency: "BRL", offerCount: properties.length } : undefined,
     address: { "@type": "PostalAddress", addressLocality: "Curitiba", addressRegion: "PR", addressCountry: "BR" },
+  }
+  const combinedSchema = {
+    "@context": "https://schema.org",
+    "@graph": [realEstateSchema, itemListSchema],
   }
 
   const whatsMessage = `Olá! Tenho interesse no empreendimento ${emp.nome}. Gostaria de mais informações.`
@@ -142,7 +152,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
     // Standard layout (existing) for empreendimentos without custom assets
     return (
       <>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([realEstateSchema, itemListSchema]) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(combinedSchema) }} />
         <section className="bg-[#0d0d0d]">
           <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 sm:pt-8 lg:px-8">
             <div className="[&_nav]:text-white/60 [&_a]:text-white/60 [&_a:hover]:text-white [&_span]:text-white/80">
@@ -185,7 +195,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
   // ============================================
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([realEstateSchema, itemListSchema]) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(combinedSchema) }} />
 
       {/* ===== EDITORIAL HERO — 65vh with logo centered ===== */}
       <section className="relative flex h-[65vh] min-h-[500px] items-center justify-center overflow-hidden bg-neutral-900">

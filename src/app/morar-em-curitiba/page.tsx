@@ -9,6 +9,7 @@ import { mdxComponents } from "@/lib/mdx-components"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { AuthorBio } from "@/components/blog/AuthorBio"
 import { RelatedPages } from "@/components/seo/RelatedPages"
+import { generatePillarSchema } from "@/lib/seo"
 
 function getPillarContent() {
   const filePath = path.join(process.cwd(), "content/pillar/morar-em-curitiba.mdx")
@@ -19,7 +20,7 @@ function getPillarContent() {
 }
 
 export const metadata: Metadata = {
-  title: "Morar em Curitiba — Guia Completo 2026 | FYMOOB",
+  title: { absolute: "Morar em Curitiba — Guia Completo 2026 | FYMOOB" },
   description:
     "Tudo sobre morar em Curitiba: custo de vida, melhores bairros, transporte, educação, saúde, lazer e segurança. O guia definitivo para quem quer se mudar.",
   alternates: { canonical: "/morar-em-curitiba" },
@@ -50,15 +51,13 @@ export default function MorarEmCuritibaPage() {
     { label: "Buscar Imóveis", href: "/busca" },
   ]
 
-  const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: frontmatter.title,
-    description: frontmatter.description,
-    datePublished: frontmatter.date,
-    author: { "@type": "Person", name: "Bruno César de Almeida", jobTitle: "Corretor de Imóveis", credential: "CRECI J 9420" },
-    publisher: { "@type": "Organization", name: "FYMOOB Imobiliária", url: "https://fymoob.com.br" },
-  }
+  const articleSchema = generatePillarSchema({
+    title: frontmatter.title as string,
+    description: frontmatter.description as string,
+    image: frontmatter.image as string | undefined,
+    date: frontmatter.date as string,
+    pagePath: "/morar-em-curitiba",
+  })
 
   return (
     <>

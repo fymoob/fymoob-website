@@ -15,7 +15,7 @@ import {
 } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Anuncie seu Imóvel | FYMOOB Curitiba",
+  title: { absolute: "Anuncie seu Imóvel | FYMOOB Curitiba" },
   description:
     "Anuncie seu imóvel na FYMOOB e alcance milhares de compradores e inquilinos em Curitiba. Avaliação profissional, fotos de qualidade e atendimento personalizado. CRECI J 9420.",
   alternates: {

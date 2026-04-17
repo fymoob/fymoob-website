@@ -3,7 +3,7 @@ import Link from "next/link"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 
 export const metadata: Metadata = {
-  title: "Política de Privacidade | FYMOOB Imobiliária",
+  title: { absolute: "Política de Privacidade | FYMOOB Imobiliária" },
   description:
     "Política de Privacidade da FYMOOB Administradora de Imóveis LTDA. Conheça como tratamos seus dados pessoais conforme a LGPD (Lei 13.709/2018).",
   alternates: { canonical: "/politica-de-privacidade" },

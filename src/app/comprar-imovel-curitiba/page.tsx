@@ -9,6 +9,7 @@ import { mdxComponents } from "@/lib/mdx-components"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { AuthorBio } from "@/components/blog/AuthorBio"
 import { RelatedPages } from "@/components/seo/RelatedPages"
+import { generatePillarSchema } from "@/lib/seo"
 
 function getPillarContent() {
   const filePath = path.join(process.cwd(), "content/pillar/comprar-imovel-curitiba.mdx")
@@ -19,7 +20,7 @@ function getPillarContent() {
 }
 
 export const metadata: Metadata = {
-  title: "Comprar Imóvel em Curitiba — Guia Completo 2026 | FYMOOB",
+  title: { absolute: "Comprar Imóvel em Curitiba — Guia Completo 2026 | FYMOOB" },
   description:
     "Guia definitivo para comprar imóvel em Curitiba: melhores bairros, preços, financiamento, documentação, custos e dicas de especialistas.",
   alternates: { canonical: "/comprar-imovel-curitiba" },
@@ -53,24 +54,13 @@ export default function ComprarImovelPage() {
     { label: "Apartamentos em Curitiba", href: "/apartamentos-curitiba" },
   ]
 
-  const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: frontmatter.title,
-    description: frontmatter.description,
-    datePublished: frontmatter.date,
-    author: {
-      "@type": "Person",
-      name: "Bruno César de Almeida",
-      jobTitle: "Corretor de Imóveis",
-      credential: "CRECI J 9420",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "FYMOOB Imobiliária",
-      url: "https://fymoob.com.br",
-    },
-  }
+  const articleSchema = generatePillarSchema({
+    title: frontmatter.title as string,
+    description: frontmatter.description as string,
+    image: frontmatter.image as string | undefined,
+    date: frontmatter.date as string,
+    pagePath: "/comprar-imovel-curitiba",
+  })
 
   return (
     <>

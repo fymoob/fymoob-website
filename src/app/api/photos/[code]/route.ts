@@ -23,9 +23,15 @@ export async function GET(
 
   const { code } = await params
 
-  // Valida formato do código para evitar injeção
-  if (!code || !/^[A-Z0-9]{1,20}$/i.test(code) || !LOFT_API_KEY) {
-    return NextResponse.json([], { status: 400 })
+  // 400 = input invalido do client. 500 = config do server faltando (observabilidade).
+  // Separar as duas causas evita que uma env var faltante (LOFT_API_KEY) fique
+  // silenciosa como "codigo invalido".
+  if (!code || !/^[A-Z0-9]{1,20}$/i.test(code)) {
+    return NextResponse.json({ error: "invalid code" }, { status: 400 })
+  }
+  if (!LOFT_API_KEY) {
+    console.error("[api/photos] LOFT_API_KEY missing — env misconfigured")
+    return NextResponse.json({ error: "server misconfigured" }, { status: 500 })
   }
 
   try {
@@ -44,17 +50,22 @@ export async function GET(
       return NextResponse.json([], { status: res.status })
     }
 
-    const data = await res.json()
+    const data = (await res.json()) as { Foto?: Record<string, { Foto?: unknown; Ordem?: unknown }> }
 
-    // Extract photo URLs
+    // Extract photo URLs com type guards (defense in depth contra CRM poisoning)
     const photos: string[] = []
     const fotoObj = data?.Foto
     if (fotoObj && typeof fotoObj === "object") {
-      const sorted = Object.values(fotoObj)
-        .sort((a: any, b: any) => parseInt(a.Ordem || "0") - parseInt(b.Ordem || "0"))
+      const sorted = Object.values(fotoObj).sort((a, b) => {
+        const oa = typeof a?.Ordem === "string" ? Number.parseInt(a.Ordem, 10) : 0
+        const ob = typeof b?.Ordem === "string" ? Number.parseInt(b.Ordem, 10) : 0
+        return (Number.isFinite(oa) ? oa : 0) - (Number.isFinite(ob) ? ob : 0)
+      })
 
       for (const foto of sorted) {
-        if ((foto as any).Foto) photos.push((foto as any).Foto)
+        if (typeof foto?.Foto === "string" && foto.Foto.startsWith("https://")) {
+          photos.push(foto.Foto)
+        }
       }
     }
 
@@ -64,7 +75,8 @@ export async function GET(
         "Cache-Control": "public, s-maxage=900, stale-while-revalidate=1800",
       },
     })
-  } catch {
+  } catch (err) {
+    console.error("[api/photos] fetch/parse failed", err)
     return NextResponse.json([], { status: 500 })
   }
 }

@@ -130,7 +130,8 @@ export function generatePropertySchema(property: Property) {
     description: property.descricao,
     url: `${SITE_URL}/imovel/${property.slug}`,
     ...(image && { image }),
-    // datePosted/dateModified: so incluir se dataCadastro for valida (null quebra validacao Google)
+    // datePosted/dateModified: so incluir se datas forem validas (null quebra validacao Google).
+    // datePosted = quando foi listado pela primeira vez. dateModified = ultima edicao no CRM.
     ...(property.dataCadastro && { datePosted: property.dataCadastro }),
     ...(price && {
       offers: {
@@ -173,7 +174,9 @@ export function generatePropertySchema(property: Property) {
     provider: { "@id": `${SITE_URL}/#organization` },
     // Sinal E-E-A-T: imóvel revisado por corretor responsável com CRECI
     reviewedBy: { "@id": `${SITE_URL}/sobre#bruno` },
-    ...(property.dataCadastro && { dateModified: property.dataCadastro }),
+    ...((property.dataAtualizacao || property.dataCadastro) && {
+      dateModified: property.dataAtualizacao ?? property.dataCadastro,
+    }),
   }
 }
 
@@ -334,6 +337,66 @@ export function generateBlogPostingSchema(post: BlogPost) {
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `${SITE_URL}/blog/${post.slug}`,
+    },
+  }
+}
+
+interface PillarSchemaInput {
+  title: string
+  description: string
+  image?: string
+  date: string
+  pagePath: string // ex: "/morar-em-curitiba"
+}
+
+// Usado pelos pillar pages (morar-em, comprar-imovel, alugar) e guia de bairro.
+// Reutiliza a mesma estrutura do BlogPosting para manter consistencia de E-E-A-T:
+// author/publisher/mainEntityOfPage/hasCredential.
+export function generatePillarSchema(input: PillarSchemaInput) {
+  const absoluteImage = input.image
+    ? input.image.startsWith("http")
+      ? input.image
+      : `${SITE_URL}${input.image}`
+    : `${SITE_URL}/opengraph-image`
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: input.title,
+    description: input.description,
+    image: absoluteImage,
+    datePublished: input.date,
+    dateModified: input.date,
+    author: {
+      "@type": "RealEstateAgent",
+      "@id": `${SITE_URL}/sobre#bruno`,
+      name: "Bruno César de Almeida",
+      jobTitle: "Corretor de Imóveis",
+      url: `${SITE_URL}/sobre#bruno`,
+      image: `${SITE_URL}/images/team/bruno.jpeg`,
+      hasCredential: {
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: "CRECI/PR 24.494",
+      },
+      worksFor: {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/#organization`,
+        name: "FYMOOB Imobiliária",
+        url: SITE_URL,
+      },
+    },
+    publisher: {
+      "@type": "Organization",
+      "@id": `${SITE_URL}/#organization`,
+      name: "FYMOOB Imobiliária",
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/logo.png`,
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${SITE_URL}${input.pagePath}`,
     },
   }
 }

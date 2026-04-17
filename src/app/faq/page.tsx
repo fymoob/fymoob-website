@@ -5,7 +5,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { faqData } from "@/data/faq-data"
 
 export const metadata: Metadata = {
-  title: "Perguntas Frequentes sobre Imóveis em Curitiba | FYMOOB",
+  title: { absolute: "Perguntas Frequentes sobre Imóveis em Curitiba | FYMOOB" },
   description:
     "Tire suas dúvidas sobre compra, venda, aluguel e financiamento de imóveis em Curitiba. Perguntas frequentes respondidas pela FYMOOB Imobiliária.",
   alternates: {

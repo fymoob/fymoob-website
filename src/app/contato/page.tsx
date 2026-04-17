@@ -13,7 +13,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
 }
 
 export const metadata: Metadata = {
-  title: "Contato | FYMOOB Imobiliária Curitiba",
+  title: { absolute: "Contato | FYMOOB Imobiliária Curitiba" },
   description:
     "Entre em contato com a FYMOOB Imobiliária. WhatsApp, telefone, e-mail ou visite nosso escritório no Portão, Curitiba. Atendimento personalizado para compra, venda e locação.",
   alternates: {

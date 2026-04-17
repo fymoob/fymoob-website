@@ -7,7 +7,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { Building2, MapPin, Home } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Empreendimentos Imobiliários em Curitiba | FYMOOB",
+  title: { absolute: "Empreendimentos Imobiliários em Curitiba | FYMOOB" },
   description:
     "Conheça os empreendimentos imobiliários em Curitiba. Apartamentos, casas e sobrados em lançamento e prontos para morar. FYMOOB Imobiliária.",
   alternates: {

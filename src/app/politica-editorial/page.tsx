@@ -4,7 +4,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { Shield, CheckCircle2, Users, BookOpen, RefreshCw, AlertCircle } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Política Editorial | FYMOOB Imobiliária",
+  title: { absolute: "Política Editorial | FYMOOB Imobiliária" },
   description:
     "Conheça nossa política editorial: como produzimos, revisamos e atualizamos o conteúdo da FYMOOB. Transparência, credibilidade e responsabilidade CRECI em cada informação publicada.",
   alternates: { canonical: "/politica-editorial" },

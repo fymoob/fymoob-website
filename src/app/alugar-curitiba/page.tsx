@@ -9,6 +9,7 @@ import { mdxComponents } from "@/lib/mdx-components"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { AuthorBio } from "@/components/blog/AuthorBio"
 import { RelatedPages } from "@/components/seo/RelatedPages"
+import { generatePillarSchema } from "@/lib/seo"
 
 function getPillarContent() {
   const filePath = path.join(process.cwd(), "content/pillar/alugar-curitiba.mdx")
@@ -19,7 +20,7 @@ function getPillarContent() {
 }
 
 export const metadata: Metadata = {
-  title: "Alugar Apartamento em Curitiba — Guia Completo 2026 | FYMOOB",
+  title: { absolute: "Alugar Apartamento em Curitiba — Guia Completo 2026 | FYMOOB" },
   description:
     "Guia completo para alugar imóvel em Curitiba: documentos, garantias, direitos do inquilino, melhores bairros e preços atualizados.",
   alternates: { canonical: "/alugar-curitiba" },
@@ -49,15 +50,13 @@ export default function AlugarCuritibaPage() {
     { label: "Buscar Imóveis para Alugar", href: "/busca" },
   ]
 
-  const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: frontmatter.title,
-    description: frontmatter.description,
-    datePublished: frontmatter.date,
-    author: { "@type": "Person", name: "Bruno César de Almeida", jobTitle: "Corretor de Imóveis", credential: "CRECI J 9420" },
-    publisher: { "@type": "Organization", name: "FYMOOB Imobiliária", url: "https://fymoob.com.br" },
-  }
+  const articleSchema = generatePillarSchema({
+    title: frontmatter.title as string,
+    description: frontmatter.description as string,
+    image: frontmatter.image as string | undefined,
+    date: frontmatter.date as string,
+    pagePath: "/alugar-curitiba",
+  })
 
   return (
     <>

@@ -28,7 +28,7 @@ const SavedSearchBanner = dynamic(
 import { LazyHomeCarousel as HomeCarousel } from "@/components/home/LazyHomeCarousel"
 
 export const metadata: Metadata = {
-  title: "Imóveis à Venda e Aluguel em Curitiba | FYMOOB",
+  title: { absolute: "Imóveis à Venda e Aluguel em Curitiba | FYMOOB" },
   description:
     "Encontre apartamentos, casas e sobrados à venda e para alugar em Curitiba. FYMOOB Imobiliária — seu imóvel ideal com atendimento personalizado.",
   alternates: {
