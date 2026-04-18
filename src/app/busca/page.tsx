@@ -12,6 +12,7 @@ import { generateItemListSchema , safeJsonLd} from "@/lib/seo"
 import { slugify } from "@/lib/utils"
 import {
   getAllBairros,
+  getAllBairrosByCidade,
   getAllCities,
   getAllEmpreendimentos,
   getAllTypes,
@@ -405,8 +406,9 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
   const params = await searchParams
   const state = parseSearchState(params)
 
-  const [bairros, tipos, cidades, stats, empreendimentos] = await Promise.all([
+  const [bairros, bairrosByCidade, tipos, cidades, stats, empreendimentos] = await Promise.all([
     getAllBairros(),
+    getAllBairrosByCidade(),
     getAllTypes(),
     getAllCities(),
     getPropertyStats(),
@@ -447,7 +449,7 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
           cidades={cidades}
           empreendimentos={empreendimentos.map((e) => e.nome)}
           priceBounds={{ min: minPrice, max: maxPrice }}
-          bairroSummaries={bairros.map(({ bairro, slug, total, cidade, tipos: t, porFinalidade }) => ({ bairro, slug, total, cidade, tipos: t, porFinalidade }))}
+          bairroSummaries={bairrosByCidade.map(({ bairro, slug, total, cidade, tipos: t, porFinalidade }) => ({ bairro, slug, total, cidade, tipos: t, porFinalidade }))}
           tipoSummaries={tipos.map(({ tipo, slug, total, porFinalidade }) => ({ tipo, slug, total, porFinalidade }))}
           sticky
         />

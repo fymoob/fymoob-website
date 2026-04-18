@@ -790,6 +790,50 @@ export async function getAllCities(): Promise<string[]> {
   return Array.from(citySet).sort((a, b) => a.localeCompare(b, "pt-BR"))
 }
 
+// Variante de getAllBairros que NAO agrega bairros homonimos em cidades
+// distintas (ex: "Centro" de Curitiba vs Araucaria permanecem entries
+// separadas). Usada pelo autocomplete da busca para expor TODAS as cidades
+// presentes no catalogo — senao cidades sem bairro exclusivo (ex: Araucaria
+// se todos seus bairros existem tambem em Curitiba) somem do filtro.
+//
+// Nao substitui getAllBairros() porque rotas e metadata ainda esperam 1
+// entry por slug (ex: /imoveis/centro aponta para uma pagina unica que
+// agrega as duas cidades — comportamento atual mantido deliberadamente).
+export async function getAllBairrosByCidade(): Promise<BairroSummary[]> {
+  const all = await getAllPropertiesInternal()
+  const { bairroImages } = await import("@/lib/bairro-images")
+
+  // Chave composta cidade|bairro — cada par vira um entry proprio.
+  const map = new Map<string, { bairro: string; cidade: string; total: number; tipos: Map<PropertyType, number>; finalidadeCount: Map<string, number>; quartosCount: Map<string, number> }>()
+  for (const p of all) {
+    if (!p.bairro) continue
+    const key = `${p.cidade}|${p.bairro}`
+    if (!map.has(key)) map.set(key, { bairro: p.bairro, cidade: p.cidade, total: 0, tipos: new Map(), finalidadeCount: new Map(), quartosCount: new Map() })
+    const entry = map.get(key)!
+    entry.total++
+    entry.tipos.set(p.tipo, (entry.tipos.get(p.tipo) ?? 0) + 1)
+    const fin = p.finalidade || "Venda"
+    entry.finalidadeCount.set(fin, (entry.finalidadeCount.get(fin) ?? 0) + 1)
+    if (p.dormitorios != null && p.dormitorios > 0) {
+      const qKey = p.dormitorios >= 5 ? "5+" : String(p.dormitorios)
+      entry.quartosCount.set(qKey, (entry.quartosCount.get(qKey) ?? 0) + 1)
+    }
+  }
+
+  return Array.from(map.values())
+    .map((info) => ({
+      bairro: info.bairro,
+      slug: slugify(info.bairro),
+      total: info.total,
+      cidade: info.cidade,
+      tipos: Array.from(info.tipos.entries()).map(([tipo, count]) => ({ tipo, count })),
+      porFinalidade: Object.fromEntries(info.finalidadeCount),
+      porQuartos: Object.fromEntries(info.quartosCount),
+      imageUrl: bairroImages[info.bairro],
+    }))
+    .sort((a, b) => b.total - a.total)
+}
+
 export async function getSimilarProperties(property: Property, limit: number = 4): Promise<Property[]> {
   const all = await getAllPropertiesInternal()
   const price = property.precoVenda ?? property.precoAluguel ?? 0

@@ -5,6 +5,7 @@ import { Building2, Home as HomeIcon, Landmark, TreePine, TrendingUp, MapPin, La
 import {
   getFeaturedProperties,
   getAllBairros,
+  getAllBairrosByCidade,
   getAllCities,
   getAllTypes,
   getPropertyStats,
@@ -64,9 +65,10 @@ const tipoLinks = [
 ]
 
 export default async function Home() {
-  const [featured, allBairros, cities, types, stats, recentPosts] = await Promise.all([
+  const [featured, allBairros, bairrosByCidade, cities, types, stats, recentPosts] = await Promise.all([
     getFeaturedProperties(15),
     getAllBairros(),
+    getAllBairrosByCidade(),
     getAllCities(),
     getAllTypes(),
     getPropertyStats(),
@@ -83,8 +85,11 @@ export default async function Home() {
     min: stats.precoMin ?? 50_000,
     max: stats.precoMax ?? 5_000_000,
   }
-  // Rich data for SearchBar filtering (tasks 6, 8)
-  const bairroSummaries = allBairros
+  // Rich data for SearchBar filtering (tasks 6, 8).
+  // Usa bairrosByCidade para preservar cidades homonimas no autocomplete
+  // (ex: "Centro" Araucaria vs Curitiba) — getAllBairros agrega por slug
+  // e perderia a segunda cidade.
+  const bairroSummaries = bairrosByCidade
   const tipoSummaries = types
 
   return (

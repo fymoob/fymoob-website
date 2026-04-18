@@ -42,6 +42,11 @@
 - Nova Fase 15.A — decisao Supabase vs Nhost para backend storage (recomendacao: Supabase, por Auth.js adapter first-party + dashboard cliente-friendly + sa-east-1 confirmado). 10 tasks pra setup inicial antes de persistir leads (Fase 15.17).
 - Favoritos mobile: card simplificado (commit `ccecfe2`) — sem carousel, trash inline, validado via Playwright (arrows=0, trash=2, remove funciona).
 
+**Sessao 2026-04-18:**
+- Fix pills cards ("Locacao" em vez de "Aluguel") — commit `aca89aa`.
+- Fix autocomplete RMC: Bruno reportou Colombo nao aparecer no filtro de Localizacao. Bug estrutural em `getAllBairros()` agregava bairros homonimos entre cidades. Nova funcao `getAllBairrosByCidade()` com chave composta `cidade|bairro` — usada SO pelo autocomplete. Rotas `/imoveis/[bairro]` inalteradas.
+- Documentacao da decisao: `docs/url-structure-multi-city.md`. Fase 2 (refactor URL pra `/imoveis/[cidade]/[bairro]` estilo Zap/VivaReal) condicionada a gatilhos: volume fora de Curitiba > 15% OU decisao estrategica RMC OU colisao de SEO no GSC.
+
 ---
 
 ## Sessao 2026-04-16/17 - Otimizacao de Performance (/busca) [EM ANDAMENTO]
