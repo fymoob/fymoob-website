@@ -740,13 +740,13 @@ export async function getPropertiesByType(tipo: PropertyType, limit?: number): P
 
 export async function getAllBairros(limit?: number): Promise<BairroSummary[]> {
   const all = await getAllPropertiesInternal()
-  const { bairroImages } = await import("@/lib/bairro-images")
+  const { getBairroImage } = await import("@/lib/bairro-images")
 
-  const bairroMap = new Map<string, { total: number; tipos: Map<PropertyType, number>; cidadeCount: Map<string, number>; finalidadeCount: Map<string, number>; quartosCount: Map<string, number> }>()
+  const bairroMap = new Map<string, { total: number; tipos: Map<PropertyType, number>; cidadeCount: Map<string, number>; finalidadeCount: Map<string, number>; quartosCount: Map<string, number>; fallbackPhoto: string | null }>()
   for (const p of all) {
     const key = p.bairro
     if (!key) continue
-    if (!bairroMap.has(key)) bairroMap.set(key, { total: 0, tipos: new Map(), cidadeCount: new Map(), finalidadeCount: new Map(), quartosCount: new Map() })
+    if (!bairroMap.has(key)) bairroMap.set(key, { total: 0, tipos: new Map(), cidadeCount: new Map(), finalidadeCount: new Map(), quartosCount: new Map(), fallbackPhoto: null })
     const entry = bairroMap.get(key)!
     entry.total++
     entry.tipos.set(p.tipo, (entry.tipos.get(p.tipo) ?? 0) + 1)
@@ -757,6 +757,9 @@ export async function getAllBairros(limit?: number): Promise<BairroSummary[]> {
       const qKey = p.dormitorios >= 5 ? "5+" : String(p.dormitorios)
       entry.quartosCount.set(qKey, (entry.quartosCount.get(qKey) ?? 0) + 1)
     }
+    // Captura primeira fotoDestaque pra fallback visual quando bairro nao
+    // tem imagem curada (getBairroImage trata undefined)
+    if (!entry.fallbackPhoto && p.fotoDestaque) entry.fallbackPhoto = p.fotoDestaque
   }
 
   const result = Array.from(bairroMap.entries())
@@ -775,7 +778,7 @@ export async function getAllBairros(limit?: number): Promise<BairroSummary[]> {
         tipos: Array.from(info.tipos.entries()).map(([tipo, count]) => ({ tipo, count })),
         porFinalidade: Object.fromEntries(info.finalidadeCount),
         porQuartos: Object.fromEntries(info.quartosCount),
-        imageUrl: bairroImages[bairro],
+        imageUrl: getBairroImage(bairro, info.fallbackPhoto),
       }
     })
     .sort((a, b) => b.total - a.total)
@@ -801,14 +804,14 @@ export async function getAllCities(): Promise<string[]> {
 // agrega as duas cidades — comportamento atual mantido deliberadamente).
 export async function getAllBairrosByCidade(): Promise<BairroSummary[]> {
   const all = await getAllPropertiesInternal()
-  const { bairroImages } = await import("@/lib/bairro-images")
+  const { getBairroImage } = await import("@/lib/bairro-images")
 
   // Chave composta cidade|bairro — cada par vira um entry proprio.
-  const map = new Map<string, { bairro: string; cidade: string; total: number; tipos: Map<PropertyType, number>; finalidadeCount: Map<string, number>; quartosCount: Map<string, number> }>()
+  const map = new Map<string, { bairro: string; cidade: string; total: number; tipos: Map<PropertyType, number>; finalidadeCount: Map<string, number>; quartosCount: Map<string, number>; fallbackPhoto: string | null }>()
   for (const p of all) {
     if (!p.bairro) continue
     const key = `${p.cidade}|${p.bairro}`
-    if (!map.has(key)) map.set(key, { bairro: p.bairro, cidade: p.cidade, total: 0, tipos: new Map(), finalidadeCount: new Map(), quartosCount: new Map() })
+    if (!map.has(key)) map.set(key, { bairro: p.bairro, cidade: p.cidade, total: 0, tipos: new Map(), finalidadeCount: new Map(), quartosCount: new Map(), fallbackPhoto: null })
     const entry = map.get(key)!
     entry.total++
     entry.tipos.set(p.tipo, (entry.tipos.get(p.tipo) ?? 0) + 1)
@@ -818,6 +821,7 @@ export async function getAllBairrosByCidade(): Promise<BairroSummary[]> {
       const qKey = p.dormitorios >= 5 ? "5+" : String(p.dormitorios)
       entry.quartosCount.set(qKey, (entry.quartosCount.get(qKey) ?? 0) + 1)
     }
+    if (!entry.fallbackPhoto && p.fotoDestaque) entry.fallbackPhoto = p.fotoDestaque
   }
 
   return Array.from(map.values())
@@ -829,7 +833,7 @@ export async function getAllBairrosByCidade(): Promise<BairroSummary[]> {
       tipos: Array.from(info.tipos.entries()).map(([tipo, count]) => ({ tipo, count })),
       porFinalidade: Object.fromEntries(info.finalidadeCount),
       porQuartos: Object.fromEntries(info.quartosCount),
-      imageUrl: bairroImages[info.bairro],
+      imageUrl: getBairroImage(info.bairro, info.fallbackPhoto),
     }))
     .sort((a, b) => b.total - a.total)
 }

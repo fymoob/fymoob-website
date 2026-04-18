@@ -61,22 +61,58 @@ export async function generateMetadata({
   }
 }
 
+// Descricoes SEO curadas pros bairros premium de Curitiba.
+// Bairros fora dessa lista recebem descricao gerada dinamicamente a partir
+// de stats reais (volume + faixa de preco). Chaves usam nome exato da API.
 const bairroDescriptions: Record<string, string> = {
   "Batel": "O Batel é um dos bairros mais nobres de Curitiba, conhecido pela vida noturna, gastronomia refinada e comércio de alto padrão. Localizado próximo ao centro, oferece fácil acesso a toda a cidade com infraestrutura completa.",
-  "Agua Verde": "O Água Verde combina conveniência urbana com qualidade de vida. Com fartura de comércio, serviços, escolas e fácil acesso ao transporte público, é um dos bairros mais procurados para morar em Curitiba.",
-  "Portao": "O Portão é um bairro tradicional e bem estruturado, com excelente rede de transporte, comércio variado e opções de lazer. Ideal para famílias que buscam praticidade no dia a dia.",
+  "Água Verde": "O Água Verde combina conveniência urbana com qualidade de vida. Com fartura de comércio, serviços, escolas e fácil acesso ao transporte público, é um dos bairros mais procurados para morar em Curitiba.",
+  "Portão": "O Portão é um bairro tradicional e bem estruturado, com excelente rede de transporte, comércio variado e opções de lazer. Ideal para famílias que buscam praticidade no dia a dia.",
   "Centro": "O Centro de Curitiba reúne história, cultura e praticidade. Com acesso a todos os serviços essenciais, transporte público abundante e vida cultural ativa, é perfeito para quem valoriza a vida urbana.",
   "Bigorrilho": "O Bigorrilho é vizinho do Batel e compartilha de sua infraestrutura premium. Bairro residencial com ruas arborizadas, comércio sofisticado e excelente qualidade de vida.",
   "Ecoville": "O Ecoville é um dos bairros mais modernos de Curitiba, com prédios novos, amplas áreas verdes e infraestrutura de primeiro mundo. Ideal para quem busca conforto e modernidade.",
-  "Merces": "O Mercês é um bairro residencial tranquilo, próximo ao Batel e ao Bigorrilho. Oferece boa infraestrutura, ruas calmas e fácil acesso aos principais pontos da cidade.",
-  "Juveve": "O Juvevê é um bairro charmoso e bem localizado, com ruas arborizadas, comércio local variado e proximidade ao centro. Perfeito para quem busca tranquilidade sem abrir mão da conveniência.",
+  "Mercês": "O Mercês é um bairro residencial tranquilo, próximo ao Batel e ao Bigorrilho. Oferece boa infraestrutura, ruas calmas e fácil acesso aos principais pontos da cidade.",
+  "Juvevê": "O Juvevê é um bairro charmoso e bem localizado, com ruas arborizadas, comércio local variado e proximidade ao centro. Perfeito para quem busca tranquilidade sem abrir mão da conveniência.",
   "Cabral": "O Cabral é um bairro nobre com excelente infraestrutura, próximo ao Jardim Botânico e ao centro. Ruas arborizadas, boas escolas e comércio completo fazem dele um dos mais desejados.",
   "Santa Felicidade": "Santa Felicidade é famoso pela gastronomia italiana e pelo charme interiorano dentro da cidade. Com grandes terrenos e casas amplas, é ideal para quem busca espaço e tranquilidade.",
 }
 
-function getBairroDescription(bairroName: string): string {
-  return bairroDescriptions[bairroName] ||
-    `Descubra os melhores imóveis disponíveis no ${bairroName}, em Curitiba. Apartamentos, casas e sobrados com as melhores condições do mercado. A FYMOOB te ajuda a encontrar o imóvel ideal neste bairro.`
+interface BairroStatsForDescription {
+  total: number
+  cidade: string
+  precoMin: number | null
+  precoMax: number | null
+  tiposPredominantes?: string[]
+}
+
+// Gera descricao SEO rica e dinamica pros bairros sem curadoria. Usa dados
+// reais do catalogo (volume + faixa de preco) pra evitar thin content quando
+// Bruno cadastra bairros novos. Inclui keywords de volume + geografia.
+function generateDescriptionFromStats(bairro: string, stats: BairroStatsForDescription): string {
+  const { total, cidade, precoMin, precoMax, tiposPredominantes } = stats
+  const formatPrice = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 0 })
+  const tiposText = tiposPredominantes && tiposPredominantes.length > 0
+    ? tiposPredominantes.slice(0, 3).join(", ").toLowerCase()
+    : "apartamentos, casas e sobrados"
+  const volumeText = total === 1
+    ? `1 imóvel disponível`
+    : `${total} imóveis disponíveis`
+  const precoText = precoMin && precoMax && precoMin !== precoMax
+    ? ` com valores entre R$ ${formatPrice(precoMin)} e R$ ${formatPrice(precoMax)}`
+    : precoMin
+      ? ` a partir de R$ ${formatPrice(precoMin)}`
+      : ""
+  return `Explore ${tiposText} no bairro ${bairro}, em ${cidade}. ${volumeText}${precoText}. A FYMOOB ajuda você a encontrar o imóvel ideal com atendimento personalizado e negociações justas.`
+}
+
+function getBairroDescription(
+  bairroName: string,
+  stats?: BairroStatsForDescription
+): string {
+  const curated = bairroDescriptions[bairroName]
+  if (curated) return curated
+  if (stats) return generateDescriptionFromStats(bairroName, stats)
+  return `Descubra os melhores imóveis disponíveis no ${bairroName}. Apartamentos, casas e sobrados com as melhores condições do mercado. A FYMOOB te ajuda a encontrar o imóvel ideal neste bairro.`
 }
 
 export default async function BairroPage({ params }: BairroPageProps) {
@@ -141,7 +177,16 @@ export default async function BairroPage({ params }: BairroPageProps) {
       }
     : null
 
-  const descricao = getBairroDescription(bairro.bairro)
+  const descricao = getBairroDescription(bairro.bairro, {
+    total: bairro.total,
+    cidade: bairro.cidade || "Curitiba",
+    precoMin,
+    precoMax,
+    tiposPredominantes: bairro.tipos
+      ?.slice()
+      .sort((a, b) => b.count - a.count)
+      .map((t) => t.tipo),
+  })
 
   return (
     <>
