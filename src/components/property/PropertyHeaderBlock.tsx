@@ -20,8 +20,9 @@ export function PropertyHeaderBlock({
   const isPremium = variant === "premium"
   // Pill reflete estado real (dual se tem ambos precos, mesmo com Finalidade CRM vazia)
   const { pillLabel, isDual } = getPropertyPriceDisplay(property)
-  const pillText = pillLabel === "Aluguel" ? "Locação" : pillLabel === "Venda e Locação" ? "Venda e Locação" : pillLabel ?? property.finalidade
-  const pillVariant: "sale" | "rent" = pillLabel === "Venda" ? "sale" : "rent"
+  const pillText = pillLabel === "Aluguel" ? "Locação" : pillLabel === "Venda e Locação" ? "Venda · Locação" : pillLabel ?? property.finalidade
+  const pillVariant: "sale" | "rent" | "dual" =
+    pillLabel === "Venda" ? "sale" : pillLabel === "Venda e Locação" ? "dual" : "rent"
 
   return (
     <div className={cn("mt-6 md:mt-8", isPremium && "mt-10 md:mt-14")}>
