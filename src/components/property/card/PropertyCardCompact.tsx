@@ -71,12 +71,12 @@ export function PropertyCardCompact({
           )}
           {pillLabel === "Aluguel" && (
             <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 ring-1 ring-emerald-200/70">
-              Aluguel
+              Locação
             </span>
           )}
           {pillLabel === "Venda e Locação" && (
             <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold text-amber-700 ring-1 ring-amber-200/70">
-              Venda · Aluguel
+              Venda · Locação
             </span>
           )}
           <span className="font-semibold text-slate-600">{property.tipo}</span>

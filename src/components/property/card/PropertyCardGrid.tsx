@@ -41,9 +41,9 @@ export function PropertyCardGrid({
     pillLabel === "Venda"
       ? { label: "Venda", className: "bg-rose-50 text-rose-700 ring-1 ring-rose-200/70" }
       : pillLabel === "Aluguel"
-        ? { label: "Aluguel", className: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/70" }
+        ? { label: "Locação", className: "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200/70" }
         : pillLabel === "Venda e Locação"
-          ? { label: "Venda · Aluguel", className: "bg-amber-50 text-amber-700 ring-1 ring-amber-200/70" }
+          ? { label: "Venda · Locação", className: "bg-amber-50 text-amber-700 ring-1 ring-amber-200/70" }
           : null
 
   return (
