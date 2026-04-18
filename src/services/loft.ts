@@ -275,10 +275,21 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
     }
   }
 
-  // Map Status to finalidade
-  let finalidade: Property["finalidade"] = "Venda"
+  // Finalidade derivada PRIMEIRO pelos valores (venda + aluguel), DEPOIS
+  // pelo Status do CRM. Bruno cadastra no CRM com Status=Aluguel mesmo
+  // em imoveis dual (ambos precos preenchidos) — ignorar isso esconde o
+  // imovel de quem busca "Venda". Coerente com getPropertyPriceDisplay()
+  // em property-price.ts que detecta dual pelos precos > 0.
   const status = raw.Status || ""
-  if (status === "Aluguel") finalidade = "Locação"
+  const valorVenda = parseNumber(raw.ValorVenda) ?? 0
+  const valorLoc = parseNumber(raw.ValorLocacao) ?? 0
+  let finalidade: Property["finalidade"] = "Venda"
+  if (valorVenda > 0 && valorLoc > 0) finalidade = "Venda e Locação"
+  else if (valorVenda > 0) finalidade = "Venda"
+  else if (valorLoc > 0) finalidade = "Locação"
+  // Fallback pelo Status quando nenhum valor esta preenchido (lancamento,
+  // "a combinar", etc) — mantem comportamento legado.
+  else if (status === "Aluguel") finalidade = "Locação"
   else if (status === "Venda e Aluguel") finalidade = "Venda e Locação"
   else if (status === "Venda") finalidade = "Venda"
 
