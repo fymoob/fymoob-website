@@ -749,16 +749,44 @@ export async function getPropertiesByType(tipo: PropertyType, limit?: number): P
   return limit ? filtered.slice(0, limit) : filtered
 }
 
+// Escolhe a grafia canonica entre variantes do mesmo nome (ex: "Sítio
+// Cercado" vs "Sitio Cercado"). Regras de tiebreak, em ordem:
+// 1) variante mais frequente no catalogo (reflete padrao Bruno usa mais)
+// 2) variante com mais diacriticos (portugues correto tem acentos)
+// 3) ordem alfabetica (determinismo)
+function pickCanonicalLabel(variants: Map<string, number>): string {
+  let best = ""
+  let bestCount = -1
+  let bestDiacritics = -1
+  for (const [label, count] of variants) {
+    const diacritics = (label.normalize("NFD").match(/[\u0300-\u036f]/g) || []).length
+    const isBetter =
+      count > bestCount ||
+      (count === bestCount && diacritics > bestDiacritics) ||
+      (count === bestCount && diacritics === bestDiacritics && label < best)
+    if (best === "" || isBetter) {
+      best = label
+      bestCount = count
+      bestDiacritics = diacritics
+    }
+  }
+  return best
+}
+
 export async function getAllBairros(limit?: number): Promise<BairroSummary[]> {
   const all = await getAllPropertiesInternal()
   const { getBairroImage } = await import("@/lib/bairro-images")
 
-  const bairroMap = new Map<string, { total: number; tipos: Map<PropertyType, number>; cidadeCount: Map<string, number>; finalidadeCount: Map<string, number>; quartosCount: Map<string, number>; fallbackPhoto: string | null }>()
+  // Chave = slug do bairro (normalizado, sem acento) pra unificar grafias
+  // inconsistentes no CRM (ex: "Sítio Cercado" = "Sitio Cercado"). Label
+  // canonico escolhido depois via pickCanonicalLabel.
+  const bairroMap = new Map<string, { variants: Map<string, number>; total: number; tipos: Map<PropertyType, number>; cidadeCount: Map<string, number>; finalidadeCount: Map<string, number>; quartosCount: Map<string, number>; fallbackPhoto: string | null }>()
   for (const p of all) {
-    const key = p.bairro
-    if (!key) continue
-    if (!bairroMap.has(key)) bairroMap.set(key, { total: 0, tipos: new Map(), cidadeCount: new Map(), finalidadeCount: new Map(), quartosCount: new Map(), fallbackPhoto: null })
+    if (!p.bairro) continue
+    const key = slugify(p.bairro)
+    if (!bairroMap.has(key)) bairroMap.set(key, { variants: new Map(), total: 0, tipos: new Map(), cidadeCount: new Map(), finalidadeCount: new Map(), quartosCount: new Map(), fallbackPhoto: null })
     const entry = bairroMap.get(key)!
+    entry.variants.set(p.bairro, (entry.variants.get(p.bairro) ?? 0) + 1)
     entry.total++
     entry.tipos.set(p.tipo, (entry.tipos.get(p.tipo) ?? 0) + 1)
     entry.cidadeCount.set(p.cidade, (entry.cidadeCount.get(p.cidade) ?? 0) + 1)
@@ -768,13 +796,12 @@ export async function getAllBairros(limit?: number): Promise<BairroSummary[]> {
       const qKey = p.dormitorios >= 5 ? "5+" : String(p.dormitorios)
       entry.quartosCount.set(qKey, (entry.quartosCount.get(qKey) ?? 0) + 1)
     }
-    // Captura primeira fotoDestaque pra fallback visual quando bairro nao
-    // tem imagem curada (getBairroImage trata undefined)
     if (!entry.fallbackPhoto && p.fotoDestaque) entry.fallbackPhoto = p.fotoDestaque
   }
 
   const result = Array.from(bairroMap.entries())
-    .map(([bairro, info]) => {
+    .map(([slug, info]) => {
+      const bairro = pickCanonicalLabel(info.variants)
       // Pick the most common city for this bairro
       let topCidade = ""
       let topCount = 0
@@ -783,7 +810,7 @@ export async function getAllBairros(limit?: number): Promise<BairroSummary[]> {
       }
       return {
         bairro,
-        slug: slugify(bairro),
+        slug,
         total: info.total,
         cidade: topCidade,
         tipos: Array.from(info.tipos.entries()).map(([tipo, count]) => ({ tipo, count })),
@@ -799,9 +826,20 @@ export async function getAllBairros(limit?: number): Promise<BairroSummary[]> {
 
 export async function getAllCities(): Promise<string[]> {
   const all = await getAllPropertiesInternal()
-  const citySet = new Set<string>()
-  for (const p of all) citySet.add(p.cidade)
-  return Array.from(citySet).sort((a, b) => a.localeCompare(b, "pt-BR"))
+  // Agrega por slug pra unificar grafias inconsistentes no CRM
+  // (ex: "São Paulo" vs "Sao Paulo" viram a mesma cidade). Label canonico
+  // escolhido por frequencia + preferencia por diacriticos.
+  const cityVariants = new Map<string, Map<string, number>>()
+  for (const p of all) {
+    if (!p.cidade) continue
+    const key = slugify(p.cidade)
+    if (!cityVariants.has(key)) cityVariants.set(key, new Map())
+    const v = cityVariants.get(key)!
+    v.set(p.cidade, (v.get(p.cidade) ?? 0) + 1)
+  }
+  return Array.from(cityVariants.values())
+    .map((variants) => pickCanonicalLabel(variants))
+    .sort((a, b) => a.localeCompare(b, "pt-BR"))
 }
 
 // Variante de getAllBairros que NAO agrega bairros homonimos em cidades
@@ -817,13 +855,17 @@ export async function getAllBairrosByCidade(): Promise<BairroSummary[]> {
   const all = await getAllPropertiesInternal()
   const { getBairroImage } = await import("@/lib/bairro-images")
 
-  // Chave composta cidade|bairro — cada par vira um entry proprio.
-  const map = new Map<string, { bairro: string; cidade: string; total: number; tipos: Map<PropertyType, number>; finalidadeCount: Map<string, number>; quartosCount: Map<string, number>; fallbackPhoto: string | null }>()
+  // Chave composta slug(cidade)|slug(bairro) — unifica variantes de grafia
+  // (ex: "Sitio Cercado" e "Sítio Cercado" viram mesmo entry) e preserva
+  // pares cidade+bairro distintos (ex: "Centro" de Curitiba vs Araucaria).
+  const map = new Map<string, { bairroVariants: Map<string, number>; cidadeVariants: Map<string, number>; total: number; tipos: Map<PropertyType, number>; finalidadeCount: Map<string, number>; quartosCount: Map<string, number>; fallbackPhoto: string | null }>()
   for (const p of all) {
     if (!p.bairro) continue
-    const key = `${p.cidade}|${p.bairro}`
-    if (!map.has(key)) map.set(key, { bairro: p.bairro, cidade: p.cidade, total: 0, tipos: new Map(), finalidadeCount: new Map(), quartosCount: new Map(), fallbackPhoto: null })
+    const key = `${slugify(p.cidade)}|${slugify(p.bairro)}`
+    if (!map.has(key)) map.set(key, { bairroVariants: new Map(), cidadeVariants: new Map(), total: 0, tipos: new Map(), finalidadeCount: new Map(), quartosCount: new Map(), fallbackPhoto: null })
     const entry = map.get(key)!
+    entry.bairroVariants.set(p.bairro, (entry.bairroVariants.get(p.bairro) ?? 0) + 1)
+    entry.cidadeVariants.set(p.cidade, (entry.cidadeVariants.get(p.cidade) ?? 0) + 1)
     entry.total++
     entry.tipos.set(p.tipo, (entry.tipos.get(p.tipo) ?? 0) + 1)
     const fin = p.finalidade || "Venda"
@@ -836,16 +878,20 @@ export async function getAllBairrosByCidade(): Promise<BairroSummary[]> {
   }
 
   return Array.from(map.values())
-    .map((info) => ({
-      bairro: info.bairro,
-      slug: slugify(info.bairro),
-      total: info.total,
-      cidade: info.cidade,
-      tipos: Array.from(info.tipos.entries()).map(([tipo, count]) => ({ tipo, count })),
-      porFinalidade: Object.fromEntries(info.finalidadeCount),
-      porQuartos: Object.fromEntries(info.quartosCount),
-      imageUrl: getBairroImage(info.bairro, info.fallbackPhoto),
-    }))
+    .map((info) => {
+      const bairro = pickCanonicalLabel(info.bairroVariants)
+      const cidade = pickCanonicalLabel(info.cidadeVariants)
+      return {
+        bairro,
+        slug: slugify(bairro),
+        total: info.total,
+        cidade,
+        tipos: Array.from(info.tipos.entries()).map(([tipo, count]) => ({ tipo, count })),
+        porFinalidade: Object.fromEntries(info.finalidadeCount),
+        porQuartos: Object.fromEntries(info.quartosCount),
+        imageUrl: getBairroImage(bairro, info.fallbackPhoto),
+      }
+    })
     .sort((a, b) => b.total - a.total)
 }
 
