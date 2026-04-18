@@ -69,7 +69,10 @@ function isListItem(line: string): boolean {
 }
 
 function cleanListItem(line: string): string {
-  return line.trim().replace(/^[-–•·✓✅]\s*/, "").replace(/[;,.]$/, "")
+  // Remove apenas o bullet do inicio. Pontuacao final (;, ,, .) e preservada
+  // porque Bruno usa ; deliberadamente como padrao de lista nas descricoes
+  // do CRM.
+  return line.trim().replace(/^[-–•·✓✅]\s*/, "")
 }
 
 interface DescriptionBlock {
@@ -166,12 +169,13 @@ export function PropertyDescription({ descricao }: PropertyDescriptionProps) {
             )
           }
 
-          // paragraph
+          // paragraph — texto justificado com hifenizacao automatica (html
+          // lang="pt-BR" no layout garante quebra correta em portugues)
           return (
             <p
               key={i}
               className={cn(
-                "text-base leading-relaxed text-slate-800 md:text-lg md:leading-relaxed",
+                "text-base leading-relaxed text-slate-800 text-justify hyphens-auto md:text-lg md:leading-relaxed",
                 i > 0 && "mt-5"
               )}
             >
