@@ -883,13 +883,17 @@ O PropertyCard atual tem 638 linhas com `"use client"` inteiro. Com 24 cards na 
 - [ ] Speed Insights: primeiros RUM data points aparecendo
 - [ ] GA4: pageviews + eventos (lead_submit, property_view) chegando
 
-### 7.9.A — Submissao Faseada de Sitemaps no GSC
-> Submeter 1 shard por vez pra Google criar perfil do dominio com paginas de alta qualidade primeiro. Evita "thin content flag" quando ele ve 560 URLs de cara.
+### 7.9.A — Submissao de Sitemaps no GSC [REVISADO 2026-04-18]
+> **Estrategia anterior (faseada) descartada.** Pesquisa oficial (Google Search Central, John Mueller, docs de migration) confirma que "thin content flag por volume" e mito SEO — Google avalia qualidade por pagina, nao por timing de submissao. Ping endpoint deprecado em 2023 era pra bots spam, nao submissao GSC.
+>
+> Em cutover (como estamos), atrasar descoberta e contraproducente: prolonga janela de volatilidade entre redirects 308 fymoob.com → .com.br. Submeter tudo agora acelera consolidacao de sinais. Google ja auto-descobre via robots.txt (4 shards listados) — submeter manual so adiciona diagnostico por shard no dashboard.
+>
+> Fontes: [docs Google Search Central sobre sitemap index](https://developers.google.com/search/docs/crawling-indexing/sitemaps/large-sitemaps), [site move guide](https://developers.google.com/search/docs/crawling-indexing/site-move-with-url-changes), [Mueller em SEJ](https://www.searchenginejournal.com/googles-mueller-on-crawl-rate-for-big-and-small-sites/387118/).
 
-- [x] **D+0 (2026-04-17):** sitemap/3.xml (home + institucional + 113 empreendimentos = 118 URLs)
-- [ ] **D+3 (~2026-04-20):** checar Coverage report 0 errors → submeter sitemap/2.xml (blog + guides + pillars = 29 URLs)
-- [ ] **D+7 (~2026-04-24):** submeter sitemap/1.xml (landings bairro/tipo/preco = 179 URLs)
-- [ ] **D+14 (~2026-05-01):** submeter sitemap/0.xml (imoveis individuais = 234 URLs)
+- [x] **D+0 (2026-04-17):** sitemap/3.xml (118 URLs — home + institucional + empreendimentos) → Processado, 118 paginas encontradas
+- [ ] **D+1 (2026-04-18):** submeter sitemap/0.xml (234 URLs — imoveis individuais)
+- [ ] **D+1 (2026-04-18):** submeter sitemap/1.xml (179 URLs — landings bairro/tipo/preco)
+- [ ] **D+1 (2026-04-18):** submeter sitemap/2.xml (29 URLs — blog + guides + pillars)
 
 ### 7.9.B — Bing Webmaster Tools [PENDENTE]
 > Bing = ~8-10% do trafego BR. Setup grátis + reusa verificacao GSC via OAuth.
