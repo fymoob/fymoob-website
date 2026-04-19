@@ -61,6 +61,47 @@
 - Redesign favicon: SVG com "fy" centralizado em paths fechados (sem degrau no f, ponto V afiado no y), PNGs 512x512/180x180 gerados via `scripts/generate-favicons.mjs`. Commits `4f149b3` + `e0d36d4` + `b10f769`.
 - Auditoria Google SEO Starter Guide (19/04): ~85% atendido. Gaps fechados: sitemap de imagem (shard 0 + 3 agora incluem `images`), `rel=nofollow` nos links Loft externos. Author schema do blog ja tinha `RealEstateAgent` + CRECI + foto — OK.
 
+### Add-Ons Fora do Escopo Contratual (orcamento complementar)
+
+> **Base legal:** Clausula 2, §2º do contrato de 04/04/2026 — *"Quaisquer
+> funcionalidades, paginas ou servicos nao listados nesta clausula estao
+> fora do escopo deste contrato e, se solicitados, serao objeto de orcamento
+> complementar aprovado por ambas as partes antes da execucao."*
+>
+> Valores sugeridos. Cada item requer aprovacao por escrito do Bruno
+> (WhatsApp serve, cf. §5º Clausula 13ª) antes de iniciar execucao.
+> Referencia: `docs/configurador-servicos.html` tem formulario visual dos
+> servicos ja apresentados.
+
+**Pacote serviços ao cliente (já apresentados no configurador):**
+
+| # | Item | Valor sugerido | Status |
+|---|------|---|---|
+| 1 | **Pagina de Servicos** (hub + menu "Servicos") | R$ 800 | Pendente aprovacao |
+| 2a | **Pack Certidoes** — pagamento Pix manual | R$ 1.800 | Pendente aprovacao |
+| 2b | **Pack Certidoes** — pagamento online automatico (Pagar.me/Mercado Pago) | R$ 3.500 | Alternativa ao 2a |
+| 3a | **Calculadora Avaliacao** — estimativa por tabela de precos do catalogo | R$ 2.500 | Pendente aprovacao |
+| 3b | **Calculadora Avaliacao** — estimativa com IA (OpenAI/Anthropic + base FYMOOB) | R$ 5.000 | Alternativa ao 3a |
+| 4 | **Laudo Avaliacao Presencial** — pagina + formulario | R$ 1.000 | Pendente aprovacao |
+| 5 | **Ficha Analise de Credito** — form completo + envio email | R$ 1.500 | Pendente aprovacao |
+| 6 | **Captacao Imoveis para Locacao** — landing dedicada | R$ 800 | Pendente aprovacao |
+| 7 | **Captura Contato WhatsApp** — form rapido antes do wa.me + cadastro auto no CRM | R$ 800 | Pendente aprovacao |
+
+**Demandas adicionais fora do configurador original:**
+
+| # | Item | Valor sugerido | Origem/Contexto |
+|---|------|---|---|
+| 8 | **Multi-CRM (parceiros)** — integrar API Loft de outra imobiliaria, prefix codigos, CRECI, lead routing | R$ 1.200 setup + R$ 400/CRM adicional | Pedido Bruno 19/04 — parceiro ainda nao definido |
+| 9 | **Loft Share Button (branding corretores)** — ferramenta interna `/admin/compartilhar` pra corretor gerar link fymoob.com.br + WhatsApp com mensagem pronta, substituindo link imo.bi gerado pelo Loft | R$ 1.000 | Pedido Bruno 19/04 — condicional: primeiro tentar configurar custom domain no suporte Loft (gratis) |
+| 10 | **Padronizacao de Titulos SEO** — planilha de sugestoes (baseada em features + regras copywriting pesquisadas 19/04) + auto-aplicacao para 200 imoveis menores; top 30 revisados por Bruno manualmente no CRM | R$ 800 | Pesquisa de auditoria SEO 19/04 — aguarda decisao Bruno |
+| 11 | **Proposta de Compra (PDF)** — corretor preenche form, site gera PDF com marca FYMOOB, envia por email | R$ 1.200 (estimativa) | Mencionado em `docs/proposta-bruno-portal-servicos.md` — ainda nao precificado formalmente |
+| 12 | **Proposta de Locacao (PDF)** — idem com campos especificos (garantia, prazo) | R$ 1.000 (estimativa — reusa codigo do 11) | Idem 11 |
+| 13 | **Empreendimentos Personalizaveis** — pagina custom por empreendimento (editorial, galeria estendida, plantas, localizacao detalhada) | Escopo pendente — Bruno precisa definir nivel de customizacao | Mencionado 19/04 sem especificacao |
+
+**Se Bruno aprovar o pacote todo (itens 1+2a+3a+4+5+6+7):** R$ 9.200
+
+**Pacote recomendado pra maximizar ROI (itens 3a+4+5+7 — captura leads onde mais converte):** R$ 5.600
+
 ### Pendente — Dependencias do Bruno (SEO)
 
 > Itens do Google Starter Guide que dependem de acao/conteudo do cliente:
