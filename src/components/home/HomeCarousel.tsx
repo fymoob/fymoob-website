@@ -33,25 +33,24 @@ export function HomeCarousel({
   const [isPaused, setIsPaused] = useState(false)
   const [canScrollPrev, setCanScrollPrev] = useState(false)
   const [canScrollNext, setCanScrollNext] = useState(false)
-  const [shuffledOrder, setShuffledOrder] = useState<Property[] | null>(null)
 
-  // Embaralha client-side pos-hydration pra variar ordem entre visitas sem
-  // quebrar SSR (primeira render usa array original, dai substitui).
-  useEffect(() => {
-    if (!shuffle || properties.length <= 1) return
+  // Shuffle no initial state — sem flash. Funciona porque HomeCarousel e
+  // carregado com ssr:false via LazyHomeCarousel, entao primeira render ja
+  // e client-side. Cada mount = nova ordem aleatoria (Fisher-Yates pra
+  // distribuicao uniforme). Pedido do Bruno 19/04 — variar topo dos
+  // destaques entre visitas.
+  const displayProperties = useMemo(() => {
+    if (!shuffle || properties.length <= 1) return properties
     const shuffled = [...properties]
-    // Fisher-Yates shuffle — distribuicao uniforme correta
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
       ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
     }
-    setShuffledOrder(shuffled)
-  }, [properties, shuffle])
-
-  const displayProperties = useMemo(
-    () => shuffledOrder ?? properties,
-    [shuffledOrder, properties]
-  )
+    return shuffled
+    // properties como dep mantem resposta a mudancas de catalogo;
+    // shuffle na dep nao pra nao re-shufflar toda renderizacao
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [properties])
 
   const onSelect = useCallback(() => {
     if (!api) return

@@ -16,6 +16,7 @@ interface LazyHomeCarouselProps {
   autoPlay?: boolean
   intervalMs?: number
   fadeFrom?: string
+  shuffle?: boolean
 }
 
 export function LazyHomeCarousel(props: LazyHomeCarouselProps) {
