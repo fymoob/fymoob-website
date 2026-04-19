@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback, useMemo } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import type { Property } from "@/types/property"
 import { PropertyCard } from "@/components/property/PropertyCard"
@@ -13,6 +13,13 @@ interface HomeCarouselProps {
   intervalMs?: number
   /** Tailwind gradient class for the peek fade (match section bg) */
   fadeFrom?: string
+  /**
+   * Embaralha a ordem dos imoveis a cada visita (client-side apos mount).
+   * Rotacao pedida pelo Bruno 19/04 — visitantes recorrentes nao veem sempre
+   * os mesmos imoveis no topo. Primeira render (SSR) mantem ordem original
+   * pra evitar hydration mismatch; useEffect randomiza depois.
+   */
+  shuffle?: boolean
 }
 
 export function HomeCarousel({
@@ -20,11 +27,31 @@ export function HomeCarousel({
   autoPlay = true,
   intervalMs = 5000,
   fadeFrom = "from-white",
+  shuffle = false,
 }: HomeCarouselProps) {
   const [api, setApi] = useState<CarouselApi>()
   const [isPaused, setIsPaused] = useState(false)
   const [canScrollPrev, setCanScrollPrev] = useState(false)
   const [canScrollNext, setCanScrollNext] = useState(false)
+  const [shuffledOrder, setShuffledOrder] = useState<Property[] | null>(null)
+
+  // Embaralha client-side pos-hydration pra variar ordem entre visitas sem
+  // quebrar SSR (primeira render usa array original, dai substitui).
+  useEffect(() => {
+    if (!shuffle || properties.length <= 1) return
+    const shuffled = [...properties]
+    // Fisher-Yates shuffle — distribuicao uniforme correta
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+    setShuffledOrder(shuffled)
+  }, [properties, shuffle])
+
+  const displayProperties = useMemo(
+    () => shuffledOrder ?? properties,
+    [shuffledOrder, properties]
+  )
 
   const onSelect = useCallback(() => {
     if (!api) return
@@ -79,7 +106,7 @@ export function HomeCarousel({
         className="w-full"
       >
         <CarouselContent className="-ml-3 md:-ml-4">
-          {properties.map((property) => (
+          {displayProperties.map((property) => (
             <CarouselItem
               key={property.slug}
               className="basis-[82%] pl-3 sm:basis-[46%] md:basis-[32%] md:pl-4 lg:basis-[30%]"

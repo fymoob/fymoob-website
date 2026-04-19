@@ -66,7 +66,10 @@ const tipoLinks = [
 
 export default async function Home() {
   const [featured, allBairros, bairrosByCidade, cities, types, stats, recentPosts] = await Promise.all([
-    getFeaturedProperties(15),
+    // Pool maior (30) pra alimentar rotacao dos carrosseis na home.
+    // HomeCarousel embaralha client-side a cada visita (prop shuffle),
+    // entao visitantes recorrentes veem imoveis diferentes no topo.
+    getFeaturedProperties(30),
     getAllBairros(),
     getAllBairrosByCidade(),
     getAllCities(),
@@ -75,9 +78,12 @@ export default async function Home() {
     getRecentPosts(3),
   ])
 
+  // Passamos todos os destaques (nao corta em 6) pro carrossel — o shuffle
+  // client-side do HomeCarousel escolhe ordem nova a cada visita e user
+  // pode swipar pros demais.
   const lancamentos = featured.filter((p) => p.lancamento)
-  const prontosParaMorar = featured.filter((p) => !p.lancamento).slice(0, 6)
-  const destaques = lancamentos.slice(0, 6)
+  const prontosParaMorar = featured.filter((p) => !p.lancamento)
+  const destaques = lancamentos
   const bairros = allBairros.slice(0, 6)
   const bairroNames = allBairros.map((b) => b.bairro)
   const tipoNames = types.map((t) => t.tipo)
@@ -124,7 +130,7 @@ export default async function Home() {
             </div>
             <p className="mt-1 text-sm text-neutral-400">Prontos para morar nos melhores bairros</p>
             <div className="mt-5">
-              <HomeCarousel properties={prontosParaMorar} fadeFrom="from-white" />
+              <HomeCarousel properties={prontosParaMorar} fadeFrom="from-white" shuffle />
             </div>
           </div>
         </section>
@@ -150,7 +156,7 @@ export default async function Home() {
             </div>
             <p className="mt-1 text-sm text-neutral-400">Novos empreendimentos em Curitiba</p>
             <div className="mt-5">
-              <HomeCarousel properties={destaques} fadeFrom="from-neutral-50" />
+              <HomeCarousel properties={destaques} fadeFrom="from-neutral-50" shuffle />
             </div>
           </div>
         </section>
