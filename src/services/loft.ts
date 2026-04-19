@@ -899,23 +899,40 @@ export async function getSimilarProperties(property: Property, limit: number = 4
   const all = await getAllPropertiesInternal()
   const price = property.precoVenda ?? property.precoAluguel ?? 0
 
-  // Score each property by similarity (higher = more similar)
+  // HARD FILTERS (confirmado com Bruno em 18/04): similar deve SEMPRE bater
+  // finalidade, cidade e faixa de preco (60%-160% do alvo). Antes eram soft
+  // scores — imovel 100k mostrava 1M "similar" porque compensava com bairro
+  // + tipo. Bairro, tipo, quartos e area continuam soft (ranking).
+  const PRICE_MIN_RATIO = 0.6
+  const PRICE_MAX_RATIO = 1.6
+  const cidadeSlug = slugify(property.cidade || "")
+
   const scored = all
-    .filter((p) => p.slug !== property.slug)
+    .filter((p) => {
+      if (p.slug === property.slug) return false
+      // Hard: finalidade exata (dual property ja foi ajustada em mapRawToProperty,
+      // entao "Venda e Locação" so bate com outro dual — evita misturar)
+      if (p.finalidade !== property.finalidade) return false
+      // Hard: mesma cidade (normaliza grafias inconsistentes via slugify)
+      if (slugify(p.cidade || "") !== cidadeSlug) return false
+      // Hard: faixa de preco — se ambos tem preco, tem que estar em 60-160%.
+      // Se o alvo nao tem preco (raro), ignoramos esse filtro.
+      if (price > 0) {
+        const pPrice = p.precoVenda ?? p.precoAluguel ?? 0
+        if (pPrice <= 0) return false
+        const ratio = pPrice / price
+        if (ratio < PRICE_MIN_RATIO || ratio > PRICE_MAX_RATIO) return false
+      }
+      return true
+    })
     .map((p) => {
       let score = 0
-
-      // Must match finalidade (hard filter) — never mix venda with locação
-      if (p.finalidade !== property.finalidade) return { property: p, score: -1 }
 
       // Same tipo (Apartamento, Casa, etc.) — strongest signal
       if (p.tipo === property.tipo) score += 30
 
       // Same bairro — strong location signal
       if (p.bairro === property.bairro) score += 25
-
-      // Same cidade (relevant when bairro differs)
-      if (p.cidade === property.cidade) score += 5
 
       // Similar number of bedrooms (±1)
       if (property.dormitorios && p.dormitorios) {
@@ -924,13 +941,12 @@ export async function getSimilarProperties(property: Property, limit: number = 4
         else if (diff === 1) score += 8
       }
 
-      // Similar price range (within 30%)
+      // Proximidade de preco dentro da faixa (70-130% = melhor que 60-160%)
       const pPrice = p.precoVenda ?? p.precoAluguel ?? 0
       if (price > 0 && pPrice > 0) {
         const ratio = pPrice / price
-        if (ratio >= 0.7 && ratio <= 1.3) score += 20
-        else if (ratio >= 0.5 && ratio <= 1.5) score += 10
-        else if (ratio >= 0.3 && ratio <= 2.0) score += 3
+        if (ratio >= 0.8 && ratio <= 1.2) score += 20
+        else if (ratio >= 0.7 && ratio <= 1.3) score += 10
       }
 
       // Similar area (within 30%)
@@ -942,7 +958,6 @@ export async function getSimilarProperties(property: Property, limit: number = 4
 
       return { property: p, score }
     })
-    .filter((s) => s.score > 0)
     .sort((a, b) => b.score - a.score)
 
   return scored.slice(0, limit).map((s) => s.property)
