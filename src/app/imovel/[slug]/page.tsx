@@ -20,7 +20,6 @@ import {
 import {
   filterPropertyPhotos,
   generateImageAlt,
-  generateShortTitle,
   getPropertyImage,
 } from "@/lib/utils"
 import { PropertyPageAnalytics } from "@/components/analytics/PropertyPageAnalytics"
@@ -72,15 +71,14 @@ export async function generateMetadata({
     return { title: "Imóvel não encontrado" }
   }
 
-  const shortTitle = generateShortTitle(property)
   const description = generatePropertyDescription(property)
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
 
   return {
-    title: shortTitle,
+    title: property.titulo,
     description,
     openGraph: {
-      title: shortTitle,
+      title: property.titulo,
       description,
       type: "website",
       url: `${siteUrl}/imovel/${property.slug}`,
@@ -127,8 +125,6 @@ export default async function PropertyPage({ params }: PageProps) {
 
   const propertySchema = generatePropertySchema(property)
   const alt = generateImageAlt(property)
-  const shortTitle = generateShortTitle(property)
-  const hasLongTitle = property.titulo.length > 60
   const mainImage = getPropertyImage(property)
   const allPhotos = filterPropertyPhotos(property.fotos)
   // Helper detecta dual se ambos precos > 0 (nao confia em Finalidade CRM
@@ -142,12 +138,8 @@ export default async function PropertyPage({ params }: PageProps) {
   const breadcrumbItems = [
     { name: "Home", url: "/" },
     { name: property.bairro, url: `/imoveis/${property.bairro.toLowerCase().replace(/\s+/g, "-")}` },
-    { name: shortTitle, url: `/imovel/${property.slug}` },
+    { name: property.titulo, url: `/imovel/${property.slug}` },
   ]
-
-  const descricaoWithTitle = hasLongTitle
-    ? `${property.titulo}\n\n${property.descricao}`
-    : property.descricao
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -170,7 +162,7 @@ export default async function PropertyPage({ params }: PageProps) {
           <BackButton />
           <div className="flex items-center gap-2">
             <CompareButton codigo={property.codigo} size="sm" />
-            <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} variant="overlay" />
+            <ShareButton title={property.titulo} url={`/imovel/${property.slug}`} variant="overlay" />
             <WishlistButton codigo={property.codigo} size="sm" />
           </div>
         </div>
@@ -180,7 +172,7 @@ export default async function PropertyPage({ params }: PageProps) {
           <div className="flex items-center gap-2">
             <CompareButton codigo={property.codigo} />
             <WishlistButton codigo={property.codigo} />
-            <ShareButton title={shortTitle} url={`/imovel/${property.slug}`} />
+            <ShareButton title={property.titulo} url={`/imovel/${property.slug}`} />
           </div>
         </div>
       </div>
@@ -196,7 +188,7 @@ export default async function PropertyPage({ params }: PageProps) {
           <div>
             <PropertyHeaderBlock
               property={property}
-              shortTitle={shortTitle}
+              shortTitle={property.titulo}
               variant={variant}
             />
 
@@ -222,7 +214,7 @@ export default async function PropertyPage({ params }: PageProps) {
             </a>
 
             <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-8 border-t border-slate-200 pt-8"}>
-              <PropertyDescription descricao={descricaoWithTitle} />
+              <PropertyDescription descricao={property.descricao} />
             </div>
 
             {property.caracteristicas.length > 0 && (
