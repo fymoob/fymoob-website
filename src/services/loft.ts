@@ -898,69 +898,95 @@ export async function getAllBairrosByCidade(): Promise<BairroSummary[]> {
 export async function getSimilarProperties(property: Property, limit: number = 4): Promise<Property[]> {
   const all = await getAllPropertiesInternal()
   const price = property.precoVenda ?? property.precoAluguel ?? 0
-
-  // HARD FILTERS (confirmado com Bruno em 18/04): similar deve SEMPRE bater
-  // finalidade, cidade e faixa de preco (60%-160% do alvo). Antes eram soft
-  // scores — imovel 100k mostrava 1M "similar" porque compensava com bairro
-  // + tipo. Bairro, tipo, quartos e area continuam soft (ranking).
-  const PRICE_MIN_RATIO = 0.6
-  const PRICE_MAX_RATIO = 1.6
   const cidadeSlug = slugify(property.cidade || "")
 
-  const scored = all
-    .filter((p) => {
-      if (p.slug === property.slug) return false
-      // Hard: finalidade exata (dual property ja foi ajustada em mapRawToProperty,
-      // entao "Venda e Locação" so bate com outro dual — evita misturar)
-      if (p.finalidade !== property.finalidade) return false
-      // Hard: mesma cidade (normaliza grafias inconsistentes via slugify)
-      if (slugify(p.cidade || "") !== cidadeSlug) return false
-      // Hard: faixa de preco — se ambos tem preco, tem que estar em 60-160%.
-      // Se o alvo nao tem preco (raro), ignoramos esse filtro.
-      if (price > 0) {
-        const pPrice = p.precoVenda ?? p.precoAluguel ?? 0
-        if (pPrice <= 0) return false
-        const ratio = pPrice / price
-        if (ratio < PRICE_MIN_RATIO || ratio > PRICE_MAX_RATIO) return false
-      }
-      return true
-    })
-    .map((p) => {
-      let score = 0
+  // HARD FILTERS (confirmado com Bruno em 18/04): similar deve SEMPRE bater
+  // finalidade e cidade. Faixa de preco comeca estrita (±30%) e alarga
+  // gradativamente se nao atingir 4 resultados. Referencia: erro tipico
+  // de Zestimate/Redfin e ~7% e CMA profissional ~2-4%, entao ±30% e
+  // a janela comum em recomendacoes de marketing imobiliario BR.
+  const PRICE_TIERS = [
+    { min: 0.7, max: 1.3 },   // ±30% — ideal (ticket coerente)
+    { min: 0.5, max: 1.5 },   // ±50% — fallback 1 (bairro com poucos comps)
+    { min: 0.2, max: 1.8 },   // ±80% — fallback final (catalogo muito raso)
+  ]
 
-      // Same tipo (Apartamento, Casa, etc.) — strongest signal
-      if (p.tipo === property.tipo) score += 30
+  // Pre-filtra por finalidade + cidade (invariantes). Depois aplica tiers
+  // de preco progressivos ate conseguir `limit` resultados.
+  const sameCityAndFinalidade = all.filter((p) => {
+    if (p.slug === property.slug) return false
+    // Finalidade exata — dual property so bate com outro dual (mapeamento
+    // em mapRawToProperty ja trata por ValorVenda/ValorLocacao).
+    if (p.finalidade !== property.finalidade) return false
+    // Cidade normalizada por slugify (resolve grafias inconsistentes CRM).
+    if (slugify(p.cidade || "") !== cidadeSlug) return false
+    return true
+  })
 
-      // Same bairro — strong location signal
-      if (p.bairro === property.bairro) score += 25
+  const scoreProperty = (p: Property) => {
+    let score = 0
+    if (p.tipo === property.tipo) score += 30
+    if (p.bairro === property.bairro) score += 25
+    if (property.dormitorios && p.dormitorios) {
+      const diff = Math.abs(p.dormitorios - property.dormitorios)
+      if (diff === 0) score += 15
+      else if (diff === 1) score += 8
+    }
+    // Proximidade de preco premia quem esta mais perto do alvo
+    const pPrice = p.precoVenda ?? p.precoAluguel ?? 0
+    if (price > 0 && pPrice > 0) {
+      const ratio = pPrice / price
+      if (ratio >= 0.9 && ratio <= 1.1) score += 20       // ±10% (super proximo)
+      else if (ratio >= 0.8 && ratio <= 1.2) score += 10  // ±20%
+    }
+    if (property.areaPrivativa && p.areaPrivativa) {
+      const areaRatio = p.areaPrivativa / property.areaPrivativa
+      if (areaRatio >= 0.7 && areaRatio <= 1.3) score += 10
+      else if (areaRatio >= 0.5 && areaRatio <= 1.5) score += 5
+    }
+    return score
+  }
 
-      // Similar number of bedrooms (±1)
-      if (property.dormitorios && p.dormitorios) {
-        const diff = Math.abs(p.dormitorios - property.dormitorios)
-        if (diff === 0) score += 15
-        else if (diff === 1) score += 8
-      }
+  // Imovel alvo sem preco: nao filtra por faixa, usa direto ranking
+  if (price <= 0) {
+    return sameCityAndFinalidade
+      .map((p) => ({ property: p, score: scoreProperty(p) }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, limit)
+      .map((s) => s.property)
+  }
 
-      // Proximidade de preco dentro da faixa (70-130% = melhor que 60-160%)
+  // Iterative price window — comeca ±30%, alarga se < limit
+  for (const tier of PRICE_TIERS) {
+    const inTier = sameCityAndFinalidade.filter((p) => {
       const pPrice = p.precoVenda ?? p.precoAluguel ?? 0
-      if (price > 0 && pPrice > 0) {
-        const ratio = pPrice / price
-        if (ratio >= 0.8 && ratio <= 1.2) score += 20
-        else if (ratio >= 0.7 && ratio <= 1.3) score += 10
-      }
-
-      // Similar area (within 30%)
-      if (property.areaPrivativa && p.areaPrivativa) {
-        const areaRatio = p.areaPrivativa / property.areaPrivativa
-        if (areaRatio >= 0.7 && areaRatio <= 1.3) score += 10
-        else if (areaRatio >= 0.5 && areaRatio <= 1.5) score += 5
-      }
-
-      return { property: p, score }
+      if (pPrice <= 0) return false
+      const ratio = pPrice / price
+      return ratio >= tier.min && ratio <= tier.max
     })
-    .sort((a, b) => b.score - a.score)
+    if (inTier.length >= limit) {
+      return inTier
+        .map((p) => ({ property: p, score: scoreProperty(p) }))
+        .sort((a, b) => b.score - a.score)
+        .slice(0, limit)
+        .map((s) => s.property)
+    }
+  }
 
-  return scored.slice(0, limit).map((s) => s.property)
+  // Mesmo no tier mais amplo nao achou 4 — retorna o que tiver (catalogo
+  // com pouquissimos imoveis naquela cidade+finalidade).
+  const widest = sameCityAndFinalidade.filter((p) => {
+    const pPrice = p.precoVenda ?? p.precoAluguel ?? 0
+    if (pPrice <= 0) return false
+    const { min, max } = PRICE_TIERS[PRICE_TIERS.length - 1]
+    const ratio = pPrice / price
+    return ratio >= min && ratio <= max
+  })
+  return widest
+    .map((p) => ({ property: p, score: scoreProperty(p) }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((s) => s.property)
 }
 
 export async function getAllSlugs(): Promise<string[]> {
