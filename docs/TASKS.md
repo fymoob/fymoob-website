@@ -53,6 +53,24 @@
 - Fix P0 filtros dinamicos: `bairro-images.ts` virou funcao `getBairroImage` com fallback pra foto de imovel ativo; `bairroDescriptions` aceita stats e gera descricao SEO dinamica quando bairro nao tem curadoria. Commit `a1e0791`.
 - Titulo do imovel passa a ser exibido exatamente como vem do CRM (removido `generateShortTitle` nos pontos visiveis ao usuario). Commit `286a95e`.
 
+**Sessao 2026-04-19:**
+- Fix rotacao de destaques na home: `HomeCarousel` embaralha client-side via Fisher-Yates a cada visita (prop `shuffle`). Pool aumentado de 15 pra 30. Commits `62242b3` + `deb5b5b`.
+- Fix badge "DESTAQUE": aparece em ambos `destaqueWeb` e `superDestaqueWeb` (antes so super). Commit `4c1da09`.
+- Threshold "RECEM PUBLICADO": 30d -> 7d com pulse primeiros 3d. Commit `d227663`.
+- Fix "Imoveis semelhantes": hard filters em finalidade + cidade + faixa de preco (tier progressivo ±30%/±50%/±80%). Commits `9b54fd7` + `0ccd555`.
+- Redesign favicon: SVG com "fy" centralizado em paths fechados (sem degrau no f, ponto V afiado no y), PNGs 512x512/180x180 gerados via `scripts/generate-favicons.mjs`. Commits `4f149b3` + `e0d36d4` + `b10f769`.
+- Auditoria Google SEO Starter Guide (19/04): ~85% atendido. Gaps fechados: sitemap de imagem (shard 0 + 3 agora incluem `images`), `rel=nofollow` nos links Loft externos. Author schema do blog ja tinha `RealEstateAgent` + CRECI + foto — OK.
+
+### Pendente — Dependencias do Bruno (SEO)
+
+> Itens do Google Starter Guide que dependem de acao/conteudo do cliente:
+
+- [ ] **Fotos da equipe no Sobre Nos** — verificar se `/images/team/` tem fotos de Wagner alem de Bruno. Ideal: foto profissional de cada socio + corretores. Impacto: E-E-A-T reforcado (Google confia mais em imobiliaria com equipe visivel).
+- [ ] **Bio/autor do blog** — hoje todos os posts usam "Bruno Cesar de Almeida" como autor (RealEstateAgent com CRECI). Se Wagner ou outros escreverem, precisa schema Person extra + foto.
+- [ ] **Cadencia editorial do blog** — site lancou com 5 artigos iniciais. Para ranquear em queries informacionais (ex: "como avaliar um imovel", "qual melhor bairro Curitiba"), publicar 2-4 artigos/mes. Responsavel: Bruno ou marketing.
+- [ ] **Links externos validos pra autoridade** (gov.br/anpd, COFECI, prefeitura Curitiba) — comentar/citar fontes oficiais nos artigos do blog aumenta E-E-A-T. Faq pode citar COFECI em algumas perguntas.
+- [ ] **Marcar mais imoveis como DestaqueWeb=Sim no CRM** — hoje 7 nao-lancamentos + 6 lancamentos. Para rotacao da home ter efeito visivel, idealmente 20-25 nao-lancamentos + 15 lancamentos. Curadoria do Bruno.
+
 ### Pendente de padronizacao (Titulos de imovel)
 > Bruno pediu para primeiro mostrar cru, depois alinhar um padrao. Quando ele confirmar o formato desejado, aplicar em `mapRawToProperty` (src/services/loft.ts:310) ou via funcao de sanitizacao dedicada.
 

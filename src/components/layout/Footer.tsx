@@ -141,7 +141,7 @@ export function Footer() {
                 <a
                   href="https://aluguel.loft.com.br/site/login.php?i=17eb36b074cd570faf13f0c2fff538c2&tipo=cliente"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="nofollow noopener noreferrer"
                   className="text-sm text-neutral-400 transition-colors hover:text-white"
                 >
                   Area do Cliente

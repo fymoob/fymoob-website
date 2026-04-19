@@ -994,6 +994,21 @@ export async function getAllSlugs(): Promise<string[]> {
   return all.map((p) => p.slug)
 }
 
+// Slug + imagens por imovel — usado pelo sitemap pra incluir fotos no
+// shard 0 (sitemap image extension). Google Search Console reconhece
+// imagens do sitemap pra indexacao em Google Imagens, fortalecendo
+// visibilidade dos imoveis em buscas visuais.
+export async function getAllPropertySitemapData(): Promise<
+  { slug: string; fotoDestaque: string | null; fotos: string[] }[]
+> {
+  const all = await getAllPropertiesInternal()
+  return all.map((p) => ({
+    slug: p.slug,
+    fotoDestaque: p.fotoDestaque || null,
+    fotos: p.fotos.slice(0, 5), // max 5 fotos por URL (cap recomendado Google)
+  }))
+}
+
 export async function getAllTypes(): Promise<TypeSummary[]> {
   const all = await getAllPropertiesInternal()
   const typeMap = new Map<PropertyType, { total: number; porFinalidade: Map<string, number> }>()

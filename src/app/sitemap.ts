@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next"
-import { getAllBairros, getAllSlugs, getAllTypes, getAllEmpreendimentos } from "@/services/loft"
+import { getAllBairros, getAllTypes, getAllEmpreendimentos, getAllPropertySitemapData } from "@/services/loft"
 import { getAllSlugs as getAllBlogSlugs } from "@/services/blog"
 import { getAllGuiaSlugs } from "@/services/guias"
 import type { PropertyType } from "@/types/property"
@@ -58,14 +58,21 @@ export default async function sitemap({
   const rawId = await id
   const shardId = parseInt(rawId, 10)
 
-  // Segment 0: imóveis individuais
+  // Segment 0: imóveis individuais (com extensao de imagem — Google Images)
   if (shardId === 0) {
-    const slugs = await getAllSlugs()
-    return slugs.map((slug) => ({
-      url: `${SITE_URL}/imovel/${slug}`,
+    const entries = await getAllPropertySitemapData()
+    return entries.map((entry) => ({
+      url: `${SITE_URL}/imovel/${entry.slug}`,
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.6,
+      // Next.js MetadataRoute.Sitemap suporta `images` — renderiza como
+      // <image:image><image:loc>…</image:loc></image:image> no XML.
+      // Max 5 fotos por URL (cap oficial Google). fotoDestaque primeiro
+      // pra ser a imagem "principal" na SERP de imagens.
+      images: [entry.fotoDestaque, ...entry.fotos]
+        .filter((img): img is string => typeof img === "string" && img.startsWith("http"))
+        .slice(0, 5),
     }))
   }
 
@@ -268,6 +275,7 @@ export default async function sitemap({
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.8,
+      images: e.imageUrl && e.imageUrl.startsWith("http") ? [e.imageUrl] : undefined,
     }))
 
     return [...staticPages, ...institutionalPages, ...empreendimentoPages]
