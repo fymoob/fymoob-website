@@ -24,8 +24,11 @@ const MAX_CARD_PHOTOS = 5
  *
  * Base visual: glass com accent color (texto + dot). Sobrepoe bem fotos.
  *
- * Threshold "RECEM PUBLICADO" = 30 dias (Bruno, 16/04/2026):
- * negociacao imobiliaria e lenta, 30d ainda e "recente" para o publico.
+ * Threshold "RECEM PUBLICADO" = 7 dias (Bruno, 19/04/2026, revisao):
+ * 30d diluia o badge apos cutover (muitos imoveis reativados com
+ * dataAtualizacao fresca). 7d mantem o badge selectivo e real.
+ * Pulse (animacao) so nos primeiros 3 dias — hierarquia visual:
+ * super-novo (pulse) > novo (estatico) > sem badge.
  */
 export type BadgeType = "recemPublicado" | "lancamento" | "maisVisto" | "destaque"
 
@@ -65,21 +68,22 @@ export function getBadge(
   }
 
   // Recem publicado — usa dataAtualizacao (fallback dataCadastro) pra capturar
-  // imoveis REATIVADOS (ex: alugado 1 ano, desocupou, status voltou). Threshold
-  // 30d porque negociacao imobiliaria e mais lenta que e-commerce.
+  // imoveis REATIVADOS (ex: alugado 1 ano, desocupou, status voltou).
+  // Threshold 7d mantem o badge selectivo; pulse primeiros 3d diferencia
+  // "super-novo" de "novo".
   const dateStr = property.dataAtualizacao ?? property.dataCadastro
   if (dateStr) {
     const days = Math.floor(
       (Date.now() - new Date(dateStr).getTime()) / (1000 * 60 * 60 * 24)
     )
-    if (days <= 30) {
+    if (days <= 7) {
       return {
         type: "recemPublicado",
         text: "RECÉM PUBLICADO",
         iconName: "Sparkles",
         textColor: "text-emerald-700",
         dotColor: "bg-emerald-500",
-        pulse: days <= 7, // pulse vivo pra primeiros 7 dias, estatico depois
+        pulse: days <= 3, // pulse vivo nos primeiros 3 dias, estatico dias 4-7
       }
     }
   }
