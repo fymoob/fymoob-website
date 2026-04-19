@@ -45,8 +45,13 @@ export function getBadge(
   property: Property,
   topViewed?: Set<string>
 ): CardBadge | null {
-  // Destaque premium (superDestaqueWeb) — prioridade maxima
-  if (property.superDestaqueWeb) {
+  // Destaque — prioridade maxima. Cobre tanto DestaqueWeb quanto
+  // SuperDestaqueWeb do CRM pra evitar inconsistencia visual: a secao
+  // "Imoveis em destaque" da home puxa do endpoint /imoveis/destaques
+  // (retorna DestaqueWeb=Sim), entao todo imovel na secao precisa ter
+  // o badge (Bruno 19/04). SuperDestaque pode virar variante premium
+  // no futuro se quisermos hierarquia visual (ex: estrela dourada).
+  if (property.superDestaqueWeb || property.destaqueWeb) {
     return {
       type: "destaque",
       text: "DESTAQUE",
