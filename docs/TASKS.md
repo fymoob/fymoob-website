@@ -46,6 +46,23 @@
 - Fix pills cards ("Locacao" em vez de "Aluguel") — commit `aca89aa`.
 - Fix autocomplete RMC: Bruno reportou Colombo nao aparecer no filtro de Localizacao. Bug estrutural em `getAllBairros()` agregava bairros homonimos entre cidades. Nova funcao `getAllBairrosByCidade()` com chave composta `cidade|bairro` — usada SO pelo autocomplete. Rotas `/imoveis/[bairro]` inalteradas.
 - Documentacao da decisao: `docs/url-structure-multi-city.md`. Fase 2 (refactor URL pra `/imoveis/[cidade]/[bairro]` estilo Zap/VivaReal) condicionada a gatilhos: volume fora de Curitiba > 15% OU decisao estrategica RMC OU colisao de SEO no GSC.
+- Fix finalidade por precos: `mapRawToProperty` agora detecta "Venda e Locacao" quando ambos precos > 0 (antes confiava so no Status do CRM que vinha incorreto). Commit `a03b889`.
+- Fix grafias inconsistentes: `getAllBairros`, `getAllBairrosByCidade`, `getAllCities` agregam por slug e escolhem label canonico (mais frequente + mais diacriticos) — unifica "Sitio Cercado" vs "Sítio Cercado". Commit `db7a24b`.
+- Fix descricao do imovel: paragrafos justificados + `;` preservado nos itens de lista (era removido). Commit `fbe2b3b`.
+- Fix pill dual na detail page: `PropertyBadge` alinhada com paleta pastel dos cards, novo variant "dual" em amber. Commit `9282eec`.
+- Fix P0 filtros dinamicos: `bairro-images.ts` virou funcao `getBairroImage` com fallback pra foto de imovel ativo; `bairroDescriptions` aceita stats e gera descricao SEO dinamica quando bairro nao tem curadoria. Commit `a1e0791`.
+- Titulo do imovel passa a ser exibido exatamente como vem do CRM (removido `generateShortTitle` nos pontos visiveis ao usuario). Commit `286a95e`.
+
+### Pendente de padronizacao (Titulos de imovel)
+> Bruno pediu para primeiro mostrar cru, depois alinhar um padrao. Quando ele confirmar o formato desejado, aplicar em `mapRawToProperty` (src/services/loft.ts:310) ou via funcao de sanitizacao dedicada.
+
+- [ ] **Opcao A — Title Case automatico**: "LINDO SOBRADO" → "Lindo Sobrado" (respeitando preposicoes: `de`, `da`, `do`, `com`, `em`, etc)
+- [ ] **Opcao B — Limite de caracteres**: truncar em 120 chars com "..." elegante preservando palavras inteiras
+- [ ] **Opcao C — Sanitizacao light**: remover ALL CAPS gratuito, "!!!" repetido, espacos duplos, caracteres especiais anomalos
+- [ ] **Opcao D — Dois campos no CRM**: padrao "Nome comercial" (curto, ex: "Casa Milano") + "Resumo" (longo) — exige Bruno preencher 2 campos mas da melhor estrutura de SEO
+- [ ] **Opcao E — Correcao ortografica automatica** (risco medio): detectar palavras com erro obvio (ex: "terrreno" 3 Rs) e corrigir — precisa lista de palavras comuns do setor imobiliario
+
+Recomendacao minha: aplicar C + B primeiro (baixo risco, ganho visual imediato), A depois (medio risco, pode quebrar nomes proprios tipo "Cabrall Hills"), D so quando Bruno aceitar mudar processo de cadastro.
 
 ---
 
