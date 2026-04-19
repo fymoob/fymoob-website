@@ -1,4 +1,45 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="6" fill="#29ABE2"/>
-  <text x="4" y="24" font-family="Poppins, Arial, sans-serif" font-weight="700" font-size="18" fill="#ffffff">fy</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" shape-rendering="geometricPrecision">
+  <!-- Fundo: quadrado arredondado no azul FYMOOB #29ABE2 -->
+  <rect width="512" height="512" rx="96" ry="96" fill="#29ABE2"/>
+  <!--
+    "fy" em paths fechados — sem dependencia de fonte instalada (evita fallback
+    Arial inconsistente em renders pequenos). Proporcoes otimizadas pra 16x16
+    manter legibilidade: bold 900, contraste branco sobre azul, padding
+    folgado para nao cortar em aspect-ratio circular (Google trunca ~10%).
+  -->
+  <g fill="#ffffff">
+    <!-- letra "f" — vertical bar + cross bar (stem com topo curvo) -->
+    <path d="M 188 140
+             C 188 118, 208 98, 232 98
+             L 276 98
+             L 276 160
+             L 234 160
+             C 224 160, 222 168, 222 178
+             L 222 200
+             L 276 200
+             L 276 260
+             L 222 260
+             L 222 402
+             L 156 402
+             L 156 260
+             L 118 260
+             L 118 200
+             L 156 200
+             L 156 140 Z"/>
+    <!-- letra "y" — descender angular, cabe bem em quadrado pequeno -->
+    <path d="M 290 200
+             L 356 200
+             L 385 308
+             L 388 308
+             L 415 200
+             L 478 200
+             L 420 376
+             C 405 420, 378 442, 334 442
+             L 298 442
+             L 298 380
+             L 325 380
+             C 340 380, 348 374, 354 360
+             L 360 346
+             L 290 200 Z"/>
+  </g>
 </svg>
