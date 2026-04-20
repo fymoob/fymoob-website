@@ -51,6 +51,7 @@
     "cross-env": "^10.1.0",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "png-to-ico": "^3.0.1",
     "size-limit": "^12.1.0",
     "source-map-explorer": "^2.5.3",
     "tailwindcss": "^4",

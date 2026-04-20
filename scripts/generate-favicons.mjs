@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 /**
- * Gera variantes PNG do favicon a partir do SVG mestre em src/app/icon.svg.
- * Rodar apos editar icon.svg pra propagar pros formatos necessarios:
+ * Gera variantes do favicon a partir do SVG mestre em src/app/icon.svg:
  *
- *   - src/app/icon.png         512x512  (Next.js auto-serve como favicon.png)
+ *   - src/app/icon.png         512x512  (Next.js auto-serve como /icon.png)
  *   - src/app/apple-icon.png   180x180  (iOS home screen)
+ *   - src/app/favicon.ico      multi-size (16/32/48) — Google SERP prioriza
  *
  * Next.js 15+ le automaticamente esses arquivos em src/app/ e gera as tags
  * <link rel="icon"> corretas no <head>. Nao precisa mexer em layout.tsx.
  *
- * Requisitos: sharp (ja instalado como dependencia)
  * Uso: node scripts/generate-favicons.mjs
  */
 import sharp from "sharp"
+import pngToIco from "png-to-ico"
 import { readFileSync, writeFileSync } from "node:fs"
 import { resolve, dirname } from "node:path"
 import { fileURLToPath } from "node:url"
@@ -37,3 +37,16 @@ for (const { path, size } of OUTPUTS) {
     .then((buf) => writeFileSync(outPath, buf))
   console.log(`wrote ${path} (${size}x${size})`)
 }
+
+const icoSizes = [16, 32, 48]
+const icoBuffers = await Promise.all(
+  icoSizes.map((size) =>
+    sharp(svgBuffer, { density: 600 })
+      .resize(size, size, { fit: "contain" })
+      .png()
+      .toBuffer()
+  )
+)
+const icoBuffer = await pngToIco(icoBuffers)
+writeFileSync(resolve(ROOT, "src/app/favicon.ico"), icoBuffer)
+console.log(`wrote src/app/favicon.ico (${icoSizes.join("/")})`)
