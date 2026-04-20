@@ -60,6 +60,28 @@ const bairroLinks = [
   { href: "/imoveis/portao", label: "Portao" },
 ]
 
+// Pillar pages — guias longos de alto valor SEO. Aparecem no footer
+// pra reforcar internal linking (sinal de autoridade ao Google) e
+// ajudar a indexar (foram pro "crawled not indexed" em D+3 pos cutover
+// por falta de links internos apontando pra elas).
+const pillarLinks = [
+  {
+    href: "/comprar-imovel-curitiba",
+    label: "Como comprar imóvel em Curitiba",
+    description: "Guia completo do processo",
+  },
+  {
+    href: "/morar-em-curitiba",
+    label: "Morar em Curitiba",
+    description: "Guia dos melhores bairros",
+  },
+  {
+    href: "/alugar-curitiba",
+    label: "Alugar em Curitiba",
+    description: "Guia completo de locação",
+  },
+]
+
 export function Footer() {
   return (
     <footer className="bg-neutral-950 pb-16 md:pb-0">
@@ -183,6 +205,29 @@ export function Footer() {
                   </Link>
                 ))}
               </nav>
+            </div>
+          </div>
+
+          {/* Guias completos (pillar pages) — internal linking pro SEO */}
+          <div className="mt-12 border-t border-neutral-800 pt-10">
+            <h3 className="mb-5 text-xs font-semibold uppercase tracking-wider text-white">
+              Guias completos
+            </h3>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {pillarLinks.map((pillar) => (
+                <Link
+                  key={pillar.href}
+                  href={pillar.href}
+                  className="group flex flex-col gap-1 rounded-lg border border-neutral-800 bg-neutral-900/40 p-4 transition-colors hover:border-brand-primary/40 hover:bg-neutral-900"
+                >
+                  <span className="text-sm font-semibold text-neutral-200 transition-colors group-hover:text-white">
+                    {pillar.label}
+                  </span>
+                  <span className="text-xs text-neutral-500">
+                    {pillar.description}
+                  </span>
+                </Link>
+              ))}
             </div>
           </div>
 

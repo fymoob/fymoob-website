@@ -144,6 +144,44 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <AuthorBio />
             </div>
 
+            {/* Pillar pages — reforca internal linking (SEO). Todo blog
+                post cita os 3 guias principais, sinalizando autoridade
+                pra comprar/morar/alugar-curitiba ao Google */}
+            <div className="mt-12 mx-auto max-w-3xl rounded-xl border border-neutral-200 bg-neutral-50 p-6">
+              <h3 className="mb-4 text-xs font-semibold uppercase tracking-wider text-neutral-500">
+                Guias completos
+              </h3>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                <Link
+                  href="/comprar-imovel-curitiba"
+                  className="group rounded-lg border border-neutral-200 bg-white p-4 transition-colors hover:border-brand-primary/60 hover:bg-brand-primary/5"
+                >
+                  <div className="text-sm font-semibold text-neutral-900 transition-colors group-hover:text-brand-primary">
+                    Como comprar imóvel em Curitiba
+                  </div>
+                  <div className="mt-1 text-xs text-neutral-500">Guia completo do processo</div>
+                </Link>
+                <Link
+                  href="/morar-em-curitiba"
+                  className="group rounded-lg border border-neutral-200 bg-white p-4 transition-colors hover:border-brand-primary/60 hover:bg-brand-primary/5"
+                >
+                  <div className="text-sm font-semibold text-neutral-900 transition-colors group-hover:text-brand-primary">
+                    Morar em Curitiba
+                  </div>
+                  <div className="mt-1 text-xs text-neutral-500">Guia dos melhores bairros</div>
+                </Link>
+                <Link
+                  href="/alugar-curitiba"
+                  className="group rounded-lg border border-neutral-200 bg-white p-4 transition-colors hover:border-brand-primary/60 hover:bg-brand-primary/5"
+                >
+                  <div className="text-sm font-semibold text-neutral-900 transition-colors group-hover:text-brand-primary">
+                    Alugar em Curitiba
+                  </div>
+                  <div className="mt-1 text-xs text-neutral-500">Guia completo de locação</div>
+                </Link>
+              </div>
+            </div>
+
             {/* Back link */}
             <div className="mt-8 max-w-3xl mx-auto">
               <Link

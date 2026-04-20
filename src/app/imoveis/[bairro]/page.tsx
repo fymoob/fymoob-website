@@ -266,11 +266,15 @@ export default async function BairroPage({ params }: BairroPageProps) {
             title={`Perguntas frequentes sobre imóveis no ${bairro.bairro}`}
           />
 
-          {/* Cross-linking */}
+          {/* Cross-linking — inclui pillar pages (comprar/morar/alugar) no topo
+              pra reforcar internal linking e sinalizar autoridade ao Google */}
           <RelatedPages
             title="Explore também"
             links={[
               { href: `/guia/${bairroSlug}`, label: `Guia completo: Morar no ${bairro.bairro}` },
+              { href: "/comprar-imovel-curitiba", label: "Como comprar imóvel em Curitiba" },
+              { href: "/morar-em-curitiba", label: "Morar em Curitiba — guia dos bairros" },
+              { href: "/alugar-curitiba", label: "Alugar imóvel em Curitiba" },
               ...bairro.tipos
                 .filter((t) => t.count >= 3)
                 .map((t) => ({
