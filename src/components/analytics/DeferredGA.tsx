@@ -27,8 +27,17 @@ export function DeferredGA({ gaId }: { gaId: string }) {
       function gtag(...args: unknown[]) {
         window.dataLayer.push(args)
       }
+      // Cookie self-ID pra filtro de trafego interno (Bruno + Wagner +
+      // corretores). Dispositivos com cookie "fymoob_internal=1" marcam
+      // eventos com traffic_type=internal — GA4 Data Filter descarta.
+      // Ver docs/seo/internal-traffic-filtering.md + /internal-optout.
+      const isInternal = document.cookie.includes("fymoob_internal=1")
+
       gtag("js", new Date())
-      gtag("config", gaId, { page_path: window.location.pathname })
+      gtag("config", gaId, {
+        page_path: window.location.pathname,
+        ...(isInternal ? { traffic_type: "internal" } : {}),
+      })
 
       // Cleanup listeners
       events.forEach((e) => window.removeEventListener(e, load))

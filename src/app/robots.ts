@@ -15,7 +15,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/favoritos", "/comparar", "/admin"],
+        disallow: ["/api/", "/favoritos", "/comparar", "/admin", "/internal-optout"],
       },
     ],
     sitemap: SITEMAP_SHARDS.map((id) => `${SITE_URL}/sitemap/${id}.xml`),
