@@ -131,3 +131,79 @@ export function generateImageAlt(property: {
     : ""
   return `Foto do ${property.tipo}${quartos} no ${property.bairro}, Curitiba`
 }
+
+// Correcoes pontuais pra keys vindas da API Loft que tem separacoes
+// erradas ou abreviacoes feias ("Sala T V" -> "Sala de TV"). Adicionar
+// aqui casos novos conforme aparecerem em auditoria do CRM.
+const CARAC_OVERRIDES: Record<string, string> = {
+  "Sala T V": "Sala de TV",
+  "T V Cabo": "TV a Cabo",
+  "W C Empregada": "WC de Empregada",
+  "Circuito Fechado T V": "Circuito Fechado de TV",
+  "Portaria24 Hrs": "Portaria 24h",
+  "Vigilancia24 Horas": "Vigilância 24h",
+  "Dependenciade Empregada": "Dependência de Empregada",
+  "Dependencia De Empregada": "Dependência de Empregada",
+  "Copa Cozinha": "Copa/Cozinha",
+  "Suite Master": "Suíte Master",
+  "Area Servico": "Área de Serviço",
+  "Cerca Eletrica": "Cerca Elétrica",
+  "Ar Condicionado": "Ar-Condicionado",
+  "Jardim Inverno": "Jardim de Inverno",
+  "Estar Intimo": "Estar Íntimo",
+  "Poco Artesiano": "Poço Artesiano",
+  "Antena Parabolica": "Antena Parabólica",
+  "Canaletas No Rodape": "Canaletas no Rodapé",
+  "Construcao Alvenaria": "Construção em Alvenaria",
+  "Construcao Mista": "Construção Mista",
+  "Edificio Residencial": "Edifício Residencial",
+  "Energia Trifasica": "Energia Trifásica",
+  "Gerador Energia": "Gerador de Energia",
+  "Pavimentacao": "Pavimentação",
+  "Rede Esgoto": "Rede de Esgoto",
+  "Sala De Recepcao": "Sala de Recepção",
+  "Cabine De Forca": "Cabine de Força",
+  "Entrada Servico Independente": "Entrada de Serviço Independente",
+  "Portoes Com Eclusa": "Portões com Eclusa",
+  "Pista Caminhada": "Pista de Caminhada",
+  "Dormitorio Com Armario": "Dormitório com Armário",
+  "Vigia Externo": "Vigia Externo",
+  "Vigia Interno": "Vigia Interno",
+  "Agua Quente": "Água Quente",
+  "Ar Central": "Ar Central",
+  "Espaco Gourmet": "Espaço Gourmet",
+  "Espaco Zen": "Espaço Zen",
+  "Salao Festas": "Salão de Festas",
+  "Salao Jogos": "Salão de Jogos",
+  "Vista Mar": "Vista para o Mar",
+  "Vista Panoramica": "Vista Panorâmica",
+  "Frente Mar": "Frente para o Mar",
+  "Quadra Tenis": "Quadra de Tênis",
+  "Quadra Esportes": "Quadra de Esportes",
+  "Quadra Poli Esportiva": "Quadra Poliesportiva",
+  "Home Theater": "Home Theater",
+  "Home Market": "Home Market",
+  "Seguranca Patrimonial": "Segurança Patrimonial",
+  "Empresa De Monitoramento": "Monitoramento",
+  "Aquecimento Central": "Aquecimento Central",
+  "Aquecedor Solar": "Aquecedor Solar",
+  "Porao": "Porão",
+  "Sotao": "Sótão",
+  "Patio": "Pátio",
+  "Edicula": "Edícula",
+  "Escritorio": "Escritório",
+  "Onibus Proximo": "Próximo a Ônibus",
+  "Aquecimento Eletrico": "Aquecimento Elétrico",
+  "Porteiro Eletronico": "Porteiro Eletrônico",
+  "Portao Eletronico": "Portão Eletrônico",
+}
+
+/**
+ * Humaniza uma key vinda da API Loft pra label amigavel na UI.
+ * A API ja retorna com espacos ("Agua Quente"), mas algumas tem
+ * abreviacoes ou acentuacao faltando. Overrides acima cobrem os casos
+ * conhecidos; demais passam direto (API ja formatou bem).
+ */
+export function humanizeCaracLabel(rawKey: string): string {
+  return CARAC_OVERRIDES[rawKey] ?? rawKey
+}

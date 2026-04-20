@@ -87,6 +87,14 @@ export interface SearchBarProps {
   priceBounds: PriceBounds
   bairroSummaries?: BairroSummary[]
   tipoSummaries?: TypeSummary[]
+  /**
+   * Caracteristicas agregadas do catalogo (ja ordenadas por frequencia
+   * e com group "unidade"|"condominio" inferido). Derivado dinamicamente
+   * de Property.caracteristicas + .infraestrutura de todos imoveis ativos.
+   * Bruno adiciona caracteristica nova no CRM → aparece aqui automatico
+   * apos proximo revalidate do cache (~1h).
+   */
+  caracteristicas?: import("@/services/taxonomy").CaracteristicaOption[]
   sticky?: boolean
   targetPath?: string
   className?: string
@@ -185,6 +193,7 @@ export function SearchBar({
   priceBounds,
   bairroSummaries,
   tipoSummaries,
+  caracteristicas,
   sticky = false,
   targetPath = "/busca",
   className,
@@ -593,6 +602,7 @@ export function SearchBar({
                       }
                     >
                       <CaracteristicasCheckboxes
+                        caracteristicas={caracteristicas ?? []}
                         selectedUnidade={pendingFilters.caracteristicasUnidade}
                         selectedCondominio={pendingFilters.caracteristicasCondominio}
                         onToggleUnidade={(label) =>
@@ -1163,6 +1173,7 @@ export function SearchBar({
       tipoOptions={filteredTipoOptions}
       groupedBairroOptions={groupedBairroOptions}
       empreendimentos={empreendimentos}
+      caracteristicas={caracteristicas}
       onApply={applyFilters}
       onClear={clearAllFilters}
     />

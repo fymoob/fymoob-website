@@ -9,7 +9,7 @@ import type {
   EmpreendimentoSummary,
   LoftPropertyRaw,
 } from "@/types/property"
-import { slugify } from "@/lib/utils"
+import { slugify, humanizeCaracLabel } from "@/lib/utils"
 import { sortByRelevance } from "@/lib/property-relevance"
 import { unstable_cache } from "next/cache"
 
@@ -111,11 +111,16 @@ const INFRA_LABELS: Record<string, string> = {
 // API fields to request
 // ---------------------------------------------------------------------------
 
-// Slim fields for cards/listings (~28KB per 50 properties vs ~134KB)
+// Slim fields for cards/listings.
 // Nota: Vista API NAO aceita { Foto: [...] } em /imoveis/listar
 // (so em /imoveis/detalhes). Fotos adicionais sao carregadas lazy
 // via IntersectionObserver -> /api/photos/[code] quando card entra
 // em viewport.
+//
+// Caracteristicas + InfraEstrutura vem como objects nested — Loft expoe
+// TODOS os campos definidos no CRM sem precisar whitelist. Bruno adiciona
+// "Jacuzzi" no CRM → vem automatico aqui, UI de filtros derivada depois.
+// Custo: payload maior (~4-5x), mas cache de 1h absorve.
 const CARD_FIELDS = [
   "Codigo", "Categoria", "Status", "BairroComercial", "Bairro", "Cidade", "UF",
   "ValorVenda", "ValorLocacao", "ValorACombinar", "Dormitorios", "Suites", "Vagas", "TotalBanheiros",
@@ -124,6 +129,7 @@ const CARD_FIELDS = [
   "Empreendimento", "Construtora", "DataCadastro", "DataAtualizacao",
   "Latitude", "Longitude",
   "FotoDestaquePequena",
+  "Caracteristicas", "InfraEstrutura",
 ]
 
 // Full fields for detail pages (single property)
@@ -142,8 +148,7 @@ const DETAIL_FIELDS = [
   "AceitaFinanciamento", "AceitaPermuta",
   "Face", "GaragemTipo", "Topografia", "AnoConstrucao",
   "DataCadastro", "DataAtualizacao",
-  ...CARAC_FIELDS,
-  ...INFRA_FIELDS,
+  "Caracteristicas", "InfraEstrutura",
 ]
 
 // ---------------------------------------------------------------------------
@@ -239,18 +244,24 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
   const lat = parseNumber(raw.Latitude) ?? parseNumber(raw.GMapsLatitude)
   const lng = parseNumber(raw.Longitude) ?? parseNumber(raw.GMapsLongitude)
 
-  // Extract characteristics that are "Sim"
+  // Caracteristicas + InfraEstrutura: API Loft expoe objects nested com
+  // TODAS as chaves do CRM. Iteramos e incluimos apenas as marcadas como
+  // "Sim" — qualquer campo novo que Bruno cadastre no CRM (ex: "Jacuzzi")
+  // aparece automaticamente sem mudar codigo. humanizeCaracLabel corrige
+  // casos pontuais de formatacao ("Sala T V" → "Sala de TV").
   const caracteristicas: string[] = []
-  for (const field of CARAC_FIELDS) {
-    if ((raw as Record<string, unknown>)[field] === "Sim") {
-      caracteristicas.push(CARAC_LABELS[field] || field)
+  const caracRaw = (raw as Record<string, unknown>).Caracteristicas
+  if (caracRaw && typeof caracRaw === "object") {
+    for (const [key, value] of Object.entries(caracRaw as Record<string, unknown>)) {
+      if (value === "Sim") caracteristicas.push(humanizeCaracLabel(key))
     }
   }
 
   const infraestrutura: string[] = []
-  for (const field of INFRA_FIELDS) {
-    if ((raw as Record<string, unknown>)[field] === "Sim") {
-      infraestrutura.push(INFRA_LABELS[field] || field)
+  const infraRaw = (raw as Record<string, unknown>).InfraEstrutura
+  if (infraRaw && typeof infraRaw === "object") {
+    for (const [key, value] of Object.entries(infraRaw as Record<string, unknown>)) {
+      if (value === "Sim") infraestrutura.push(humanizeCaracLabel(key))
     }
   }
 
@@ -822,6 +833,17 @@ export async function getAllBairros(limit?: number): Promise<BairroSummary[]> {
     .sort((a, b) => b.total - a.total)
 
   return limit ? result.slice(0, limit) : result
+}
+
+// Taxonomia de caracteristicas/infra agregada por frequencia — usada pelos
+// filtros de busca pra render dinamico (sem whitelist). Deriva de todos
+// imoveis ativos via Caracteristicas + InfraEstrutura dos objects raw Loft.
+// Cache via unstable_cache em getAllPropertiesInternal; revalidateTag
+// "imoveis" propaga.
+export async function getAllCaracteristicas() {
+  const all = await getAllPropertiesInternal()
+  const { aggregateCaracteristicas } = await import("./taxonomy")
+  return aggregateCaracteristicas(all)
 }
 
 export async function getAllCities(): Promise<string[]> {

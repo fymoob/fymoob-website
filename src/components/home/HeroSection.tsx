@@ -15,6 +15,7 @@ const HomeSearchBar = dynamic(
 )
 
 import type { BairroSummary, TypeSummary } from "@/types/property"
+import type { CaracteristicaOption } from "@/services/taxonomy"
 
 interface HeroSectionProps {
   bairroNames: string[]
@@ -23,9 +24,10 @@ interface HeroSectionProps {
   priceBounds: { min: number; max: number }
   bairroSummaries?: BairroSummary[]
   tipoSummaries?: TypeSummary[]
+  caracteristicas?: CaracteristicaOption[]
 }
 
-export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bairroSummaries, tipoSummaries }: HeroSectionProps) {
+export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bairroSummaries, tipoSummaries, caracteristicas }: HeroSectionProps) {
   return (
     <section
       id="hero"
@@ -77,6 +79,7 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bair
             priceBounds={priceBounds}
             bairroSummaries={bairroSummaries}
             tipoSummaries={tipoSummaries}
+            caracteristicas={caracteristicas}
             targetPath="/busca"
           />
         </div>

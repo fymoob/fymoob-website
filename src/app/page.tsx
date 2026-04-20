@@ -6,6 +6,7 @@ import {
   getFeaturedProperties,
   getAllBairros,
   getAllBairrosByCidade,
+  getAllCaracteristicas,
   getAllCities,
   getAllTypes,
   getPropertyStats,
@@ -65,13 +66,14 @@ const tipoLinks = [
 ]
 
 export default async function Home() {
-  const [featured, allBairros, bairrosByCidade, cities, types, stats, recentPosts] = await Promise.all([
+  const [featured, allBairros, bairrosByCidade, caracteristicas, cities, types, stats, recentPosts] = await Promise.all([
     // Pool maior (30) pra alimentar rotacao dos carrosseis na home.
     // HomeCarousel embaralha client-side a cada visita (prop shuffle),
     // entao visitantes recorrentes veem imoveis diferentes no topo.
     getFeaturedProperties(30),
     getAllBairros(),
     getAllBairrosByCidade(),
+    getAllCaracteristicas(),
     getAllCities(),
     getAllTypes(),
     getPropertyStats(),
@@ -108,6 +110,7 @@ export default async function Home() {
         priceBounds={priceBounds}
         bairroSummaries={bairroSummaries}
         tipoSummaries={tipoSummaries}
+        caracteristicas={caracteristicas}
       />
 
       {/* Saved search banner */}

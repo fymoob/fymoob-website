@@ -42,6 +42,8 @@ interface AdvancedFiltersModalProps {
   tipoOptions: MultiSelectOption[]
   groupedBairroOptions?: GroupedBairroOptions[]
   empreendimentos?: string[]
+  /** Caracteristicas agregadas por frequencia — vem do server via getAllCaracteristicas */
+  caracteristicas?: import("@/services/taxonomy").CaracteristicaOption[]
   onApply: () => void
   onClear: () => void
   resultCount?: number
@@ -58,6 +60,7 @@ export function AdvancedFiltersModal({
   tipoOptions,
   groupedBairroOptions,
   empreendimentos,
+  caracteristicas,
   onApply,
   onClear,
   resultCount,
@@ -310,6 +313,7 @@ export function AdvancedFiltersModal({
             }
           >
             <CaracteristicasCheckboxes
+              caracteristicas={caracteristicas ?? []}
               selectedUnidade={pendingFilters.caracteristicasUnidade}
               selectedCondominio={pendingFilters.caracteristicasCondominio}
               onToggleUnidade={toggleUnidade}
