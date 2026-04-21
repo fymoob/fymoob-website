@@ -627,4 +627,136 @@ O mercado real é baseado em **assinatura mensal**, não venda única. A Loft co
 
 ---
 
+## 7. Atualização 21/04/2026 — Nova Estrutura Solicitada pelo Bruno
+
+> **Prioridade: ALTA.** Bruno enviou via WhatsApp em 21/04/2026 nova lista de
+> serviços com organização por categoria (Imóvel / Vendas / Locação) — estrutura
+> mais clara que a original. Perguntou quando podemos conversar sobre viabilidade.
+> **Próxima ação:** agendar call de 30min essa semana (quarta/quinta/sexta) pra
+> responder as perguntas prioritárias (7.4) e fechar orçamento total.
+
+### 7.1 Lista recebida (texto original Bruno 21/04/2026)
+
+**Imóvel**
+- Laudo de avaliação judicial (R$)
+- Calculadora de imóvel (igual chat GPT)
+- Laudo de avaliação física do imóvel (R$)
+
+**Vendas**
+- Pack de certidões para compra e venda de imóvel (R$)
+- Proposta on-line (proposta)
+- Anuncie seu imóvel para venda conosco
+
+**Locação**
+- Proposta e análise de crédito (proposta locação)
+- Anuncie seu imóvel para locação conosco
+
+### 7.2 Mapeamento com itens já precificados (docs/TASKS.md Pacote 1 + 2)
+
+| Bruno 21/04 | Item doc/TASKS | Valor já definido | Status |
+|---|---|---|---|
+| Calculadora (igual chat GPT) | 3b — Calculadora com IA | R$ 5.000 | ✅ Orçado |
+| Laudo avaliação física | 4 — Laudo Presencial | R$ 1.000 | ✅ Orçado |
+| **Laudo avaliação JUDICIAL** | **NOVO — não estava no doc** | **A definir (+R$ 600-2.000)** | ⚠️ Escopo pendente |
+| Pack certidões | 2a/2b — Pack Certidões | R$ 1.800 Pix / R$ 3.500 online | ✅ Orçado (escolher 2a ou 2b) |
+| Proposta on-line venda | 11 — Proposta Compra PDF | R$ 1.200 | ✅ Orçado |
+| Anuncie venda | 1.5 doc / já em `/anuncie` | Incluído no site atual | ✅ Pronto |
+| Proposta + análise crédito locação | 12 + 5 combinados | R$ 1.000 + R$ 1.500 = R$ 2.500 | ✅ Orçado |
+| Anuncie locação | 6 — Captação Locação | R$ 800 | ✅ Orçado |
+| Hub Serviços (implícito) | 1 — Página Serviços | R$ 800 | ✅ Orçado |
+
+**Conclusão:** 8 de 9 itens já estão precificados (R$ 13.400 total com Certidões Pix).
+Único item genuinamente novo é o **Laudo Judicial**, que precisa conversa específica.
+
+### 7.3 Item NOVO — Laudo de Avaliação Judicial
+
+**O que é:** Laudo pericial usado em processos judiciais (inventário, divórcio,
+partilha, disputa). Segue norma **ABNT NBR 14653** e exige engenheiro ou arquiteto
+com registro CREA/CAU ativo. Pode virar prova em processo.
+
+**Diferença do laudo físico (item 1.2 / TASKS 4):**
+
+| Aspecto | Laudo Físico (já orçado) | Laudo Judicial (novo) |
+|---|---|---|
+| Uso | Compra/venda particular | Processo judicial |
+| Validade | Referência informal | Prova em juízo |
+| Responsável | Corretor experiente | Engenheiro/arquiteto CREA/CAU |
+| Norma | Livre | ABNT NBR 14653 obrigatória |
+| Preço de mercado | R$ 800-2.000 | R$ 2.000-5.000+ |
+| Complexidade técnica | Baixa | Alta (metodologia, anexos, georreferência) |
+
+**Perguntas pra fechar escopo do laudo judicial:**
+
+1. A FYMOOB já oferece laudo judicial hoje ou é serviço novo que querem entrar?
+2. Tem engenheiro/arquiteto próprio com CREA/CAU ativo, ou vai terceirizar?
+3. Quer página **dedicada** (separada do laudo físico) ou só seção/card adicional na página de laudo?
+4. Preço: fixo, faixa, ou "solicite orçamento"?
+
+**Estimativa preliminar (refinar na call):**
+- **Básico (+R$ 600):** card adicional na página de laudo físico + formulário com campo "finalidade: judicial" + aviso sobre responsável técnico CREA/CAU
+- **Completo (+R$ 2.000):** página dedicada com explicação técnica, fluxo de upload de documentos (matrícula, certidões, processo), integração com responsável técnico, landing SEO pra "laudo judicial curitiba"
+
+### 7.4 Perguntas Prioritárias pra Fechar Preço Total
+
+> Das 38 perguntas da Seção 2, estas são as **10 prioritárias** pra fechar o
+> orçamento consolidado na call. Resto pode resolver durante implementação.
+
+**Calculadora:**
+- **Q1** — Nível A (básica, R$ 2.500), B (intermediária, R$ 3.500), ou C com IA (R$ 5.000)? → Bruno disse "igual chat GPT" → provável C
+- **Q2** — Lead capture: A (sem cadastro), B (cadastro antes), ou C (meio-termo: prévia → cadastro pra relatório completo)?
+
+**Pack Certidões:**
+- **Q9** — Pagamento A (Pix manual, R$ 1.800) ou B (online Pagar.me/MP, R$ 3.500)?
+- **Q10** — Quantos pacotes: único, 2 níveis, ou 3 níveis?
+
+**Propostas:**
+- **Q17** — Quem preenche: corretor (área restrita), público, ou público com código do corretor?
+- **Q18** — Aceite: A (PDF+email), B (link aceite registra IP), ou C (assinatura digital Clicksign R$ 69-349/mês)?
+
+**Análise Crédito:**
+- **Q25** — A (só formulário, R$ 1.500) ou B (formulário + consulta Serasa/SPC, custa +R$ 7-35 por CPF em runtime)?
+
+**Laudo Judicial (novo):**
+- **Qjud** — Básico (card adicional, +R$ 600) ou completo (página dedicada, +R$ 2.000)?
+
+**Geral:**
+- **Q34** — Top 3 pra começar? (sugestão técnica: Hub + Calculadora + Laudo)
+- **Q37** — Prazo: urgente (2-3 sem), normal (1-2 meses em fases), ou sem pressa?
+
+### 7.5 Range de Preço Total por Cenário
+
+Baseado nos itens 7.2 + laudo judicial novo:
+
+| Cenário | Itens inclusos | Valor |
+|---|---|---|
+| **Mínimo (essencial)** | Hub + Calc básica + Laudo físico + Anuncie locação + Proposta venda | R$ 6.300 |
+| **Padrão (recomendado)** | Hub + Calc IA + 2 laudos (físico+judicial básico) + Certidões Pix + Propostas + Análise + Anuncie locação | R$ 14.000 |
+| **Premium (tudo ligado)** | Padrão + Certidões online (em vez de Pix) + Laudo judicial completo + Assinatura digital Clicksign | R$ 17.400 + custo mensal Clicksign |
+
+> Valores finais só após as 10 perguntas da Seção 7.4. Uma hora de call resolve.
+
+### 7.6 Próximos Passos
+
+- [ ] **21/04 (hoje):** Responder Bruno no WhatsApp propondo call 30min essa semana (quarta/quinta/sexta tarde)
+- [ ] **Pré-call (24h antes):** Reenviar `docs/configurador-servicos.html` pro Bruno revisar o que já tá orçado e chegar na call com ideia formada
+- [ ] **Na call:** Rodar as 10 perguntas da Seção 7.4 + escopar laudo judicial com Bruno
+- [ ] **Pós-call:** Atualizar `docs/TASKS.md` com itens aprovados, enviar WhatsApp consolidado com orçamento final
+- [ ] **Aprovação formal:** Bruno confirma por escrito no WhatsApp (ref. Cláusula 13ª §5º contrato original)
+- [ ] **Início desenvolvimento:** Fase A (Hub + Calc + Laudo) em paralelo com acabamento do site principal
+
+### 7.7 Sugestão de Ordem de Execução (pós-aprovação)
+
+Mesma estrutura do Cronograma Seção 5, mas ajustada pra nova lista do Bruno:
+
+| Fase | Entrega | Prazo | Motivo |
+|---|---|---|---|
+| **A** | Hub + Calculadora + Laudo Físico | 5-7 dias | Items de maior SEO/tráfego, geram leads |
+| **B** | Pack Certidões + Anuncie Locação | 3-4 dias | Geração de receita imediata (certidões = margem 40-65%) |
+| **C** | Propostas Compra/Locação + Análise Crédito | 5-7 dias | Modernização operacional (menos impacto SEO, mais interno) |
+| **D** | Laudo Judicial (dedicado, se aprovado completo) | 2-3 dias | Nicho mas alta margem (R$ 2.000-5.000 por laudo) |
+| | **Total** | **15-21 dias** | |
+
+---
+
 _Documento criado em 10/04/2026. Pendente de aprovação do cliente._
+_Última atualização: 21/04/2026 (Seção 7 — lista reorganizada do Bruno + laudo judicial novo)._
