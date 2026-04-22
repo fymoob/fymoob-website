@@ -72,8 +72,10 @@ export function MobilePriceCard({
 
   // Monthly costs (Cond + IPTU) — shown on sale-only as "Custos mensais estimados"
   // since summing with sale price would mix time scales (total vs monthly).
+  // Gate usa hasCond/hasIptu (>= R$ 1) pra evitar mostrar "R$ 0/mês" quando
+  // API retorna valor fracionario < 1 que arredonda pra 0 no formatPrice.
   const custoMensal = (valorCondominio ?? 0) + (valorIptu ?? 0)
-  const showCustoMensal = custoMensal > 0
+  const showCustoMensal = hasCond || hasIptu
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white px-5 py-4 lg:hidden">
