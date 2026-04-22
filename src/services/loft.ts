@@ -286,18 +286,39 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
     }
   }
 
-  // Finalidade derivada PRIMEIRO pelos valores (venda + aluguel), DEPOIS
-  // pelo Status do CRM. Bruno cadastra no CRM com Status=Aluguel mesmo
-  // em imoveis dual (ambos precos preenchidos) — ignorar isso esconde o
-  // imovel de quem busca "Venda". Coerente com getPropertyPriceDisplay()
-  // em property-price.ts que detecta dual pelos precos > 0.
-  const status = raw.Status || ""
+  // Finalidade: hibrido Status + precos.
+  //
+  // Caso especifico que esta regra resolve (incidente 22/04/2026, imovel
+  // 69804147): quando Bruno migra um imovel de dual (venda+locacao) pra
+  // venda-only, ele muda Status pra "Venda" no Loft mas esquece de zerar
+  // o ValorLocacao residual. Pela regra antiga (derivacao so por precos),
+  // o imovel continuava aparecendo no filtro de Locacao mesmo com Status
+  // explicito "Venda".
+  //
+  // Nova logica:
+  // 1. Status EXPLICITAMENTE "Venda" + ValorVenda > 0 → venda-only
+  //    (ignora ValorLocacao residual — respeita intencao do Bruno)
+  // 2. Status "Venda e Aluguel" → dual
+  // 3. Caso contrario (Status="Aluguel" ou vazio) → deriva pelos precos
+  //    (comportamento legado — preserva imoveis dual cadastrados com
+  //    Status="Aluguel", padrao historico do Bruno no CRM)
+  // 4. Ultimo fallback pelo Status quando nenhum valor esta preenchido
+  //    (lancamentos, "a combinar")
+  const status = (raw.Status || "").trim()
   const valorVenda = parseNumber(raw.ValorVenda) ?? 0
   const valorLoc = parseNumber(raw.ValorLocacao) ?? 0
   let finalidade: Property["finalidade"] = "Venda"
-  if (valorVenda > 0 && valorLoc > 0) finalidade = "Venda e Locação"
-  else if (valorVenda > 0) finalidade = "Venda"
-  else if (valorLoc > 0) finalidade = "Locação"
+  if (status === "Venda" && valorVenda > 0) {
+    finalidade = "Venda"
+  } else if (status === "Venda e Aluguel" && (valorVenda > 0 || valorLoc > 0)) {
+    finalidade = "Venda e Locação"
+  } else if (valorVenda > 0 && valorLoc > 0) {
+    finalidade = "Venda e Locação"
+  } else if (valorVenda > 0) {
+    finalidade = "Venda"
+  } else if (valorLoc > 0) {
+    finalidade = "Locação"
+  }
   // Fallback pelo Status quando nenhum valor esta preenchido (lancamento,
   // "a combinar", etc) — mantem comportamento legado.
   else if (status === "Aluguel") finalidade = "Locação"
