@@ -81,8 +81,8 @@ export function ContactSidebar({
   variant,
 }: ContactSidebarProps) {
   const isPremium = variant === "premium"
-  // Helper unificado: detecta dual por precos (nao depende de Finalidade
-  // CRM que as vezes vem vazia mesmo em imoveis dual).
+  // Helper unificado: respeita finalidade normalizada do mapper + precos.
+  // Evita falso-dual quando ha preco residual no CRM.
   const { price, secondaryPrice, isRental, isDual } = getPriceDisplayFromFields({
     precoVenda,
     precoAluguel,

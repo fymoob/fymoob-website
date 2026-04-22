@@ -23,7 +23,7 @@ export function MobilePriceCard({
   valorFci,
   valorSobConsulta,
 }: MobilePriceCardProps) {
-  // Helper unificado: detecta dual por precos > 0 (nao depende de Finalidade CRM)
+  // Helper unificado: respeita finalidade normalizada + precos.
   const { isRental, isDual } = getPriceDisplayFromFields({ precoVenda, precoAluguel, finalidade })
   const showConsult = valorSobConsulta && !isRental
   const hasRental = Boolean(isDual || isRental)

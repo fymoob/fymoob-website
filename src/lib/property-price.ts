@@ -28,8 +28,8 @@ export interface PriceDisplay {
  * e "INTERESSADOS NA LOCACAO" mas Bruno so marcou Status=Aluguel).
  *
  * Regras:
- * 1. Dual (ambos precos > 0) = isDual true, independente de Finalidade
- *    (CRM pode ter Finalidade vazia mesmo sendo dual)
+ * 1. Dual so quando a finalidade normalizada e "Venda e Locacao" E ambos
+ *    os precos existem (>0). Evita falso-dual por preco residual.
  * 2. Finalidade = "Locacao" -> aluguel eh primario, mesmo se venda existir
  * 3. Finalidade = "Venda" -> venda eh primario, mesmo se aluguel existir
  * 4. Finalidade = "Venda e Locacao" -> priceContext decide (busca por aluguel
@@ -56,14 +56,27 @@ export function getPriceDisplayFromFields(
 ): PriceDisplay {
   const venda = input.precoVenda && input.precoVenda > 0 ? input.precoVenda : null
   const aluguel = input.precoAluguel && input.precoAluguel > 0 ? input.precoAluguel : null
-  const isDual = !!venda && !!aluguel
+  const hasBothPrices = !!venda && !!aluguel
+  // Parse defensivo: aceita "Locação"/"Aluguel" e tambem variações com
+  // encoding quebrado (ex: "LocaÃ§Ã£o") sem depender de igualdade exata.
+  const finalidadeRaw = `${input.finalidade ?? ""}`.toLowerCase()
+  const hasVenda = finalidadeRaw.includes("venda")
+  const hasLocacao = finalidadeRaw.includes("loca") || finalidadeRaw.includes("alugu")
+  const isFinalidadeVenda = hasVenda && !hasLocacao
+  const isFinalidadeLocacao = hasLocacao && !hasVenda
+  const isFinalidadeDual = hasVenda && hasLocacao
+
+  // Fonte de verdade para dual deve ser a finalidade ja normalizada no mapper
+  // (src/services/loft.ts). Isso evita falso-dual quando sobra ValorLocacao
+  // residual em imovel explicitamente marcado como "Venda" no CRM.
+  const isDual = isFinalidadeDual && hasBothPrices
 
   let primaryIsRental: boolean
-  if (input.finalidade === "Locação") {
+  if (isFinalidadeLocacao) {
     primaryIsRental = true
-  } else if (input.finalidade === "Venda") {
+  } else if (isFinalidadeVenda) {
     primaryIsRental = false
-  } else if (input.finalidade === "Venda e Locação") {
+  } else if (isFinalidadeDual) {
     primaryIsRental = priceContext === "locacao"
   } else {
     primaryIsRental = !venda && !!aluguel
@@ -72,14 +85,15 @@ export function getPriceDisplayFromFields(
   const price = primaryIsRental ? (aluguel ?? venda) : (venda ?? aluguel)
   const secondaryPrice = isDual ? (primaryIsRental ? venda : aluguel) : null
 
-  // Pill label: se tem ambos precos, forca "Venda e Locacao" na UI mesmo se
-  // Finalidade CRM so disser "Locacao" ou "Venda" (dados inconsistentes).
+  // Pill label segue a finalidade normalizada. Exibimos "Venda e Locacao"
+  // apenas quando a regra de negocio marcou o imovel como dual e ha ambos
+  // os precos disponiveis.
   let pillLabel: PriceDisplay["pillLabel"] = null
   if (isDual) {
     pillLabel = "Venda e Locação"
-  } else if (input.finalidade === "Venda") {
+  } else if (isFinalidadeVenda) {
     pillLabel = "Venda"
-  } else if (input.finalidade === "Locação" || input.finalidade === "Venda e Locação") {
+  } else if (isFinalidadeLocacao || isFinalidadeDual) {
     pillLabel = "Aluguel"
   } else if (aluguel) {
     pillLabel = "Aluguel"
