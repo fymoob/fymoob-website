@@ -23,7 +23,7 @@ const PAGE_SIZE = 50 // API max per request
 // 1 hour — aligned with page-level ISR revalidate on /imovel/[slug].
 // Reduces Loft API calls + Next.js ISR writes significantly vs 15min.
 // The CRM data doesn't change fast enough to justify a shorter window.
-const REVALIDATE_SECONDS = 3600 // 1 hour
+const REVALIDATE_SECONDS = 900 // 15 minutes (reduzido de 1h em 22/04/2026 — acelera reflexo de mudancas do CRM no site. Custo: 4x mais requests ao Loft/dia, ainda insignificante; ganho: Bruno/Wagner veem alteracoes no site em <=15min em vez de <=1h)
 
 // ---------------------------------------------------------------------------
 // Characteristic field names (carac + infra) → human-readable labels
