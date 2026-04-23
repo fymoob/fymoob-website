@@ -22,7 +22,7 @@
 | 8 | SEO Programatico | 37 | 33 | 4 | CONCLUIDA (4 pos-deploy) |
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
 | -- | Bugs | 0 | 0 | 0 | — |
-| 10 | SEO Intelligence | 18 | 7 | 11 | EM ANDAMENTO |
+| 10 | SEO Intelligence | 64 | 7 | 57 | EM ANDAMENTO (+Blog Strategy Q2 23/04) |
 | 11 | Performance (CWV) | 56 | 46 | 10 | EM ANDAMENTO |
 | 12 | Conteudo SEO Editorial | 29 | 26 | 3 | EM ANDAMENTO |
 | 13 | Funcionalidades e UX | 39 | 39 | 0 | CONCLUIDA |
@@ -33,7 +33,7 @@
 | 16 | Claude Managed Agents | 14 | 0 | 14 | MEDIO PRAZO |
 | 17 | Agentes como Produto SaaS | 14 | 0 | 14 | LONGO PRAZO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **398** | **288** | **110** | **72%** |
+| | **TOTAL** | **444** | **288** | **156** | **65%** |
 
 **Sessao 2026-04-17:** 25 CRITICAL/HIGH de seguranca/SEO fixados em 5 commits (`0d7b19f`, `50b1f86`, `7bb5f5a`, `19154ec`, `6b13794`). 4 rounds de auditoria convergiram — round 4 retornou 0 CRITICAL. Acoes externas pre-cutover listadas em Fase 7.8. HIGH/MEDIUM remanescentes (hardening pos-cutover, nao blockers) em Fase 7.10.
 
@@ -1521,6 +1521,101 @@ _Nenhum bug aberto._
 - [ ] Configurar agente agendado: relatorio semanal toda segunda-feira
 - [ ] Configurar agente agendado: auditoria completa todo dia 1 do mes
 - [ ] Configurar alertas: notificar se metrica cair >20%
+
+### 10.5 — Proxy de Imagens pra Google Images [DESCOBERTO 23/04/2026]
+> CDN da Loft/Vista (cdn.vistahost.com.br) bloqueia TODOS os crawlers via
+> robots.txt "Disallow: /". Resultado: 0 imagens dos imoveis indexadas no
+> Google Images. Canal de descoberta visual fechado.
+>
+> **Fix imediato (aplicado commit 72e9b5b):** remover `<image:image>` tags
+> do sitemap — limpa 1187 warnings do GSC. Nao resolve indexacao, so limpa
+> ruido. Zero perda porque imagens ja nao indexavam.
+>
+> **Fix completo (essa task):** implementar proxy no nosso dominio.
+
+- [ ] Criar rota `/api/img` que aceita `?src=<cdn-url>`
+- [ ] Validar que src comeca com `https://cdn.vistahost.com.br/` (prevenir open proxy)
+- [ ] Fetch da imagem do CDN server-side
+- [ ] Cachear via `Cache-Control: public, max-age=2592000` (30 dias) + Vercel CDN
+- [ ] Retornar com Content-Type correto (image/jpeg|png|webp)
+- [ ] Atualizar `sitemap.ts` pra usar URLs `/api/img?src=...` em vez de CDN direto
+- [ ] Garantir que `robots.ts` permite `/api/img` (hoje bloqueia `/api/*` — adicionar Allow explicito)
+- [ ] Testar: Google Search Console → imagens submetidas indexam em 2-4 semanas
+- [ ] Opcional: converter pra WebP on-the-fly via sharp pra reduzir tamanho
+
+**Esforco:** 2-3h
+**Impacto esperado:** recupera canal Google Images — pode gerar 5-15% tráfego adicional em sites imobiliários (imagens de imoveis sao altamente clicadas em pesquisa visual).
+
+### 10.6 — Blog Strategy Q2 2026 [PLANEJADO 23/04/2026]
+> Baseado em analise do baseline GSC pos-cutover. Plano completo em
+> [docs/seo/blog-strategy-2026-q2.md](seo/blog-strategy-2026-q2.md).
+>
+> **Problema identificado:** posts ranqueiam (pos 3-10) mas nao convertem
+> clique no SERP. Caso critico: post `financiamento-caixa-itau-bradesco-comparativo`
+> tem **241 impressoes/semana com 0 cliques** em pos 6.7. Titulos no estilo
+> "informativo" perdem a guerra do clique contra UOL/TNH1/Metropoles que
+> usam curiosity gap.
+>
+> **Referencia:** padrao TNH1 "Adeus Airbnb" — curiosity gap + perda/morte +
+> geolocalizacao vaga + numero concreto. Fluxo de engenharia reversa aplicado
+> aos 15 posts atuais + 40 titulos novos propostos pra expansao BR.
+>
+> **Meta 90 dias:** 300 → 1.500 sessoes/mes blog, CTR 0.8% → 2.5%,
+> 3-5 leads/mes originados via blog.
+>
+> **Ratio de conteudo:** 35% guias evergreen BR + 30% Curitiba local +
+> 25% data-driven + 10% comparativos. Mantem moat local, abre funil nacional.
+
+#### 10.6.1 — Fase 1: Quick Wins (Semana 1-2, 28/abr-11/mai)
+- [ ] **PRIORIDADE MAXIMA** — Reescrever titulo + intro do post `financiamento-caixa-itau-bradesco-comparativo` seguindo template TNH1 (241 imp/sem sem cliques)
+- [ ] Reescrever titulos dos outros 4 top posts: custo-de-vida-curitiba, melhores-bairros-curitiba-2026, itbi-curitiba-valor-como-pagar, batel-vs-agua-verde-curitiba
+- [ ] Reescrever os 10 restantes (batch)
+- [ ] Adicionar frontmatter completo (schema FAQ + reading time + autor com CRECI) nos 15 posts existentes
+- [ ] Implementar internal linking cross-bairro → guia nacional nos 15 posts
+- [ ] Publicar 1 post news: "IPTU Curitiba 2026: como pagar menos" (timing com vencimentos maio)
+
+#### 10.6.2 — Fase 2: Expansao Inicial (Semana 3-8, 12/mai-22/jun)
+- [ ] Publicar "COPOM maio: o que esperar da Selic pra seu financiamento"
+- [ ] Publicar "ITBI Curitiba: guia + calculadora 2026" (expandido)
+- [ ] Publicar "MCMV 2026: tudo que mudou"
+- [ ] Publicar "Custo de vida Curitiba 2026" (reescrever + expandir, ja trending)
+- [ ] Publicar "Reforma Tributaria e imoveis: 3 impactos"
+- [ ] Publicar "10 bairros mais valorizados de Curitiba" (data-driven)
+- [ ] Publicar "Documentos pra comprar imovel: lista 2026" (reescrever)
+- [ ] Publicar "FGTS na entrada do imovel: guia"
+- [ ] Implementar template de copy reutilizavel (snippet MDX) em `src/content/templates/post-template.mdx`
+- [ ] Criar hub central `/guia/glossario` pra linking tecnico (ITBI, averbacao, habite-se, alienacao fiduciaria)
+- [ ] Comecar newsletter semanal (MailerLite free ate 1k subs)
+
+#### 10.6.3 — Fase 3: Autoridade & Data (Semana 9-12, 23/jun-20/jul)
+- [ ] Publicar "Aluguel temporada Curitiba: vale a pena?" (sazonal julho)
+- [ ] Publicar pillar "Caixa x Itau x Bradesco x Santander" (evergreen atualizado)
+- [ ] Publicar "Balanco 1o semestre mercado imobiliario BR" (linkable asset)
+- [ ] Publicar "Preco do m² Curitiba bairro a bairro" (atualizado, data-driven)
+- [ ] Bonus: criar "Vistoria de imovel: checklist 47 itens" com PDF baixavel (lead magnet)
+- [ ] Bonus: batch de reescrita dos posts antigos com insights do novo template
+
+#### 10.6.4 — Infraestrutura e Processo
+- [ ] Implementar componente `<ReadingTime>` calculado automaticamente do MDX
+- [ ] Implementar `<TocCollapsible>` (details nativo) pros posts 1500+ palavras
+- [ ] Padronizar frontmatter MDX com schema `Article | HowTo | FAQPage` (baseado em conteudo)
+- [ ] Implementar `<CalloutBox>` reutilizavel pros destaques de numero/fonte
+- [ ] Implementar `<PullQuote>` reutilizavel pras frases-chave screenshot-friendly
+- [ ] Processo editorial documentado — seg ideacao / ter-qua rascunho / qui revisao / qui-sex publicacao / dia 1 distribuicao
+- [ ] Review mensal: GSC+GA4, posts com >20 imp e 0 clicks reescrevem title em 48h
+
+#### 10.6.5 — Metricas de Sucesso (90 dias)
+- [ ] Tracking: 300 → 1.500 sessoes/mes blog
+- [ ] Tracking: CTR 0.8% → 2.5%
+- [ ] Tracking: 0 → 5 posts com >50 clicks/mes
+- [ ] Tracking: 0 → 3-5 leads/mes originados via blog
+- [ ] Tracking: 3k → 15k impressoes totais blog
+
+**Recursos:** R$ 300-650/mes (freelance 2 posts/mes) + ~14h/mes equipe Bruno/Wagner/Vinicius.
+**Documentos relacionados:**
+- [docs/seo/blog-strategy-2026-q2.md](seo/blog-strategy-2026-q2.md) — plano mestre com titulos, calendario, template de copy
+- [docs/seo/title-optimization-research.md](seo/title-optimization-research.md) — pesquisa Zyppy/Ahrefs (55 chars sweet spot)
+- [docs/seo-reports/2026-04-23-baseline.md](seo-reports/2026-04-23-baseline.md) — baseline GSC pos-cutover
 
 ---
 
