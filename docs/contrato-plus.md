@@ -758,5 +758,66 @@ Mesma estrutura do Cronograma Seção 5, mas ajustada pra nova lista do Bruno:
 
 ---
 
+### 7.8 Pedido adicional 21/04 (tarde) — Bloco Último Vídeo YouTube na Home
+
+> Bruno mandou screenshot do site J8 mostrando bloco de vídeo na home.
+> Ele e Wagner gravam vídeos longos (~20min) de imóveis e postam no canal
+> YouTube da FYMOOB esporadicamente. Quer um bloco que puxe **automaticamente
+> sempre o último vídeo** do canal, posicionado acima de "Bairros em destaque".
+> **Referência visual:** https://j8imoveis.com.br (home, bloco de vídeo).
+
+**Proposta técnica (validada em pesquisa 21/04):**
+
+Usar **YouTube Data API v3** com endpoint `playlistItems.list` na "uploads playlist" do canal. Custo por fetch: **2 unidades** (1 pra resolver channel → 1 pra listar playlist). Quota free tier = 10.000 unidades/dia — com cache de 15 min (ISR Next.js), são **192 unidades/dia (1,9% da quota)**. Folga enorme, zero risco de passar.
+
+**Descartado:** RSS feed do YouTube (`feeds/videos.xml`) funciona hoje mas é feature não-documentada que Google pode remover sem aviso. API v3 é oficial, tem ETag (-71% bandwidth) e é mais previsível pra produção.
+
+**Descartado:** `search.list` da API v3 — custa 100 unidades (50x mais caro), não aplicável.
+
+**Facade pattern obrigatório** (regra performance CLAUDE.md, meta Lighthouse mobile >80):
+- Renderizar thumbnail `i.ytimg.com/vi/<VIDEO_ID>/hqdefault.jpg` com botão play customizado
+- Carregar iframe do YouTube **só no click** (lite-youtube-embed ou caseiro)
+- Embed direto violaria LCP (+1.3-2.6 MB, regressão de 0.5-1.2s no LCP — inaceitável)
+
+**Esforço: 0.5 dia (~3 horas)**
+- Setup Google Cloud API key + resolver Channel ID a partir de `@handle` (30min)
+- Server Component com fetch + ISR 15 min (30min)
+- Componente `<LatestYouTubeVideo />` com facade pattern (45min)
+- Styling + responsive + posicionar na home (30min)
+- Fallback pra caso API falhar (mostra último vídeo em cache estático) (30min)
+- Env vars: `YT_API_KEY`, `YT_CHANNEL_ID` — setup Vercel (15min)
+
+**Valor proposto: R$ 800**
+
+Alinhado com outros itens 0.5 dia já orçados (Anuncie Locação R$ 800, Laudo Físico R$ 1.000). Integração com serviço externo (Google) + facade pattern justificam o valor — não é só um embed simples.
+
+**Custos recorrentes:** Zero. YouTube Data API v3 grátis até 10k unidades/dia, usamos 8.
+
+**Perguntas pra fechar escopo (adicionar à call):**
+
+1. **URL do canal YouTube da FYMOOB?** (ex: `youtube.com/@fymoob` ou channel_id `UC...`)
+2. **Formato:** só o último vídeo (mais limpo) ou carrossel com os últimos 3-5 (mais engajamento)?
+3. **Título do bloco:** sugestão "Conheça imóveis em vídeo" — preferência diferente?
+4. **CTA:** quer botão "Ver todos os vídeos" linkando pro canal YouTube?
+5. **Posicionamento confirmado:** acima de "Bairros em destaque" (como indicado no screenshot)?
+6. **Frequência de atualização:** 15 min (padrão — vídeo novo aparece quase em tempo real) ou outra frequência?
+
+**Impacto no preço total — adicionar aos cenários 7.5:**
+
+| Cenário | Sem YouTube | Com YouTube (+R$ 800) |
+|---|---|---|
+| Mínimo | R$ 6.300 | **R$ 7.100** |
+| Padrão (recomendado) | R$ 14.000 | **R$ 14.800** |
+| Premium | R$ 17.400 | **R$ 18.200** |
+
+**Observações técnicas:**
+
+- API v3 retorna `snippet` completo (title, description, thumbnails em 4 tamanhos, publishedAt) — dá pra exibir título + data + preview rico sem fetch adicional
+- Se Bruno criar vídeo novo, aparece na home em até **15 min** (cache ISR) — praticamente em tempo real, sem botão "atualizar agora" necessário
+- Channel ID é **imutável** — uma vez configurado, não precisa mexer mesmo se canal mudar de nome/handle
+- Se canal for renomeado, URL do canal no CTA precisa atualizar manualmente (1 linha de env var)
+
+---
+
 _Documento criado em 10/04/2026. Pendente de aprovação do cliente._
-_Última atualização: 21/04/2026 (Seção 7 — lista reorganizada do Bruno + laudo judicial novo)._
+_Última atualização: 21/04/2026 (Seção 7 — lista reorganizada do Bruno + laudo judicial novo + bloco YouTube home)._
