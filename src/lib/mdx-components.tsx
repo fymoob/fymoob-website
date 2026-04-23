@@ -2,6 +2,29 @@ import type { MDXComponents } from "mdx/types"
 import Image from "next/image"
 import Link from "next/link"
 
+function CalloutBox({
+  variant = "info",
+  children,
+}: {
+  variant?: "alert" | "info" | "warning"
+  children: React.ReactNode
+}) {
+  // Callout pra destacar numero-chave, aviso ou noticia importante em posts.
+  // TNH1/UOL pattern: quebra o texto com bloco visualmente distinto.
+  const styles = {
+    alert: "border-red-200 bg-red-50 text-red-900",
+    info: "border-brand-primary-muted bg-brand-primary-light text-neutral-800",
+    warning: "border-amber-200 bg-amber-50 text-amber-900",
+  }
+  return (
+    <div
+      className={`my-6 rounded-xl border px-5 py-4 text-sm leading-relaxed ${styles[variant]}`}
+    >
+      {children}
+    </div>
+  )
+}
+
 function CTABox({
   title,
   description,
@@ -102,4 +125,5 @@ export const mdxComponents: MDXComponents = {
     <strong className="font-semibold text-neutral-950" {...props} />
   ),
   CTABox,
+  CalloutBox,
 }
