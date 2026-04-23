@@ -58,7 +58,17 @@ export default async function sitemap({
   const rawId = await id
   const shardId = parseInt(rawId, 10)
 
-  // Segment 0: imóveis individuais (com extensao de imagem — Google Images)
+  // Segment 0: imóveis individuais.
+  //
+  // Nota historica (23/04/2026): tinhamos <image:image> com fotos do CDN Loft
+  // (cdn.vistahost.com.br), mas esse CDN bloqueia TODOS os crawlers no
+  // robots.txt (User-agent: * / Disallow: /). Resultado no GSC apos 6 dias:
+  // 0 imagens indexadas de 241 submetidas + 1187 warnings. Imagens removidas
+  // do sitemap pra limpar o relatorio de warnings.
+  //
+  // Pra recuperar indexacao no Google Images, precisa implementar proxy
+  // proprio (ex: /api/img?src=...) que sirva as imagens pelo nosso dominio
+  // — nosso robots.txt permite Googlebot-Image. Backlogged em Fase 10.
   if (shardId === 0) {
     const entries = await getAllPropertySitemapData()
     return entries.map((entry) => ({
@@ -66,13 +76,6 @@ export default async function sitemap({
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.6,
-      // Next.js MetadataRoute.Sitemap suporta `images` — renderiza como
-      // <image:image><image:loc>…</image:loc></image:image> no XML.
-      // Max 5 fotos por URL (cap oficial Google). fotoDestaque primeiro
-      // pra ser a imagem "principal" na SERP de imagens.
-      images: [entry.fotoDestaque, ...entry.fotos]
-        .filter((img): img is string => typeof img === "string" && img.startsWith("http"))
-        .slice(0, 5),
     }))
   }
 
@@ -275,7 +278,7 @@ export default async function sitemap({
       lastModified: now,
       changeFrequency: "weekly" as const,
       priority: 0.8,
-      images: e.imageUrl && e.imageUrl.startsWith("http") ? [e.imageUrl] : undefined,
+      // images removidas — CDN Loft bloqueia crawlers (ver nota no shard 0)
     }))
 
     return [...staticPages, ...institutionalPages, ...empreendimentoPages]
