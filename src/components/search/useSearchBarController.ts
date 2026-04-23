@@ -488,10 +488,16 @@ export function useSearchBarController({
     return DEFAULT_BEDROOM_OPTIONS
   }, [facets?.quartosDisponiveis])
 
+  // Price bounds NAO cascateiam com os outros filtros (por decisao UX —
+  // Bruno 22/04/2026): usar priceBounds do SSR global do catalogo em vez
+  // de facets.priceBounds. Motivo: quando user alternava Comprar/Alugar,
+  // clampPriceRange colapsava a faixa escolhida pro user (ex: priceRange
+  // [145k, 5M] + bounds rental [800, 145k] → faixa virava [145k, 145k]).
+  // Agora a faixa do slider fica estavel independente de outros filtros;
+  // o ajuste fino fica por conta do user.
   const effectivePriceBounds = useMemo(
-    () =>
-      normalizePriceBounds(facets?.priceBounds ?? priceBounds, priceBounds),
-    [facets?.priceBounds, priceBounds]
+    () => normalizePriceBounds(priceBounds, priceBounds),
+    [priceBounds]
   )
 
   useEffect(() => {

@@ -173,20 +173,6 @@ function buildQuartosFacets(properties: Property[]): string[] {
   return Array.from(set).sort((a, b) => Number(a) - Number(b))
 }
 
-function buildPriceBounds(properties: Property[], fallback: { min: number; max: number }) {
-  const prices = properties
-    .map((property) => property.precoVenda ?? property.precoAluguel)
-    .filter((price): price is number => typeof price === "number" && Number.isFinite(price) && price > 0)
-
-  if (prices.length === 0) return fallback
-
-  const min = Math.min(...prices)
-  const max = Math.max(...prices)
-  if (!Number.isFinite(min) || !Number.isFinite(max) || min >= max) return fallback
-
-  return { min, max }
-}
-
 function withArrayFilter<T>(
   base: T[] | undefined,
   input: T[] | undefined
@@ -348,18 +334,12 @@ export async function POST(request: NextRequest) {
 
   const { properties: quartosStageProperties } = await getProperties(quartosStageFilters)
 
-  const precoStageFilters = buildFilters(scopeFilters, {
-    finalidades: requestedFinalidadeValues,
-    cidades: requestedCidades,
-    bairros: requestedBairros,
-    tipos: requestedTipoValues,
-    quartosMin,
-    quartosMax,
-  })
-
-  const { properties: precoStageProperties } = await getProperties(precoStageFilters)
-
-  const fallbackBounds = {
+  // priceBounds NAO cascateia (decisao UX Bruno 22/04/2026). Retornamos
+  // sempre os bounds globais do catalogo — o slider fica estavel independente
+  // de outros filtros. Isso evita colapso da faixa escolhida pelo user quando
+  // ele alterna Comprar/Alugar. Suprime o priceStage que antes computava
+  // bounds dinamicamente (economiza 1 filtragem em memoria por request).
+  const globalPriceBounds = {
     min: stats.precoMin ?? FALLBACK_PRICE_BOUNDS.min,
     max: stats.precoMax ?? FALLBACK_PRICE_BOUNDS.max,
   }
@@ -369,7 +349,7 @@ export async function POST(request: NextRequest) {
     bairros: buildBairroFacets(bairroStageProperties),
     tipos: buildTipoFacets(tipoStageProperties),
     quartosDisponiveis: buildQuartosFacets(quartosStageProperties),
-    priceBounds: buildPriceBounds(precoStageProperties, fallbackBounds),
+    priceBounds: globalPriceBounds,
   }
 
   return NextResponse.json(response, {
