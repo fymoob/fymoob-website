@@ -3,6 +3,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 import { getAllBairros, getProperties, getAllTypes, getAllCities, getPropertyStats, getBairroMarketStats } from "@/services/loft"
+import { getAllGuiaSlugs } from "@/services/guias"
 import { SeoInternalLinks } from "@/components/seo/SeoInternalLinks"
 import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
 import { slugify, formatPrice } from "@/lib/utils"
@@ -117,13 +118,15 @@ function getBairroDescription(
 
 export default async function BairroPage({ params }: BairroPageProps) {
   const { bairro: bairroSlug } = await params
-  const [bairros, tipos, cidades, stats, marketStats] = await Promise.all([
+  const [bairros, tipos, cidades, stats, marketStats, guiaSlugs] = await Promise.all([
     getAllBairros(),
     getAllTypes(),
     getAllCities(),
     getPropertyStats(),
     getBairroMarketStats(bairroSlug),
+    getAllGuiaSlugs(),
   ])
+  const hasGuia = guiaSlugs.includes(bairroSlug)
   const bairro = bairros.find((b) => b.slug === bairroSlug)
 
   if (!bairro) notFound()
@@ -271,7 +274,13 @@ export default async function BairroPage({ params }: BairroPageProps) {
           <RelatedPages
             title="Explore também"
             links={[
-              { href: `/guia/${bairroSlug}`, label: `Guia completo: Morar no ${bairro.bairro}` },
+              // Guia so aparece se existir MDX em content/guias/{slug}.mdx —
+              // evita 404s que o Google estava reportando pros 50+ bairros
+              // sem guia dedicado (so 10 tem MDX atualmente). Bug reportado
+              // no GSC em 22/04/2026.
+              ...(hasGuia
+                ? [{ href: `/guia/${bairroSlug}`, label: `Guia completo: Morar no ${bairro.bairro}` }]
+                : []),
               { href: "/comprar-imovel-curitiba", label: "Como comprar imóvel em Curitiba" },
               { href: "/morar-em-curitiba", label: "Morar em Curitiba — guia dos bairros" },
               { href: "/alugar-curitiba", label: "Alugar imóvel em Curitiba" },
