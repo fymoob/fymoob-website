@@ -13,6 +13,7 @@ interface BedroomsFilterProps {
   maxValue: string
   onMinChange: (value: string) => void
   onMaxChange: (value: string) => void
+  options?: string[]
 }
 
 const BEDROOM_OPTIONS = ["1", "2", "3", "4", "5"]
@@ -22,7 +23,13 @@ export function BedroomsFilter({
   maxValue,
   onMinChange,
   onMaxChange,
+  options,
 }: BedroomsFilterProps) {
+  const bedroomOptions = (options && options.length > 0 ? options : BEDROOM_OPTIONS)
+    .map((value) => String(value))
+    .filter((value, index, values) => values.indexOf(value) === index)
+    .sort((a, b) => Number(a) - Number(b))
+
   const hasAny = minValue !== "" || maxValue !== ""
 
   const handleMinChange = (value: string | null) => {
@@ -66,7 +73,7 @@ export function BedroomsFilter({
               <SelectItem value="any" className="py-2.5 text-sm text-neutral-500">
                 Sem mínimo
               </SelectItem>
-              {BEDROOM_OPTIONS.map((n) => (
+              {bedroomOptions.map((n) => (
                 <SelectItem key={n} value={n} className="py-2.5 text-sm font-medium">
                   {n === "5" ? "5+" : n} {Number(n) === 1 ? "quarto" : "quartos"}
                 </SelectItem>
@@ -87,7 +94,7 @@ export function BedroomsFilter({
               <SelectItem value="any" className="py-2.5 text-sm text-neutral-500">
                 Sem máximo
               </SelectItem>
-              {BEDROOM_OPTIONS.map((n) => (
+              {bedroomOptions.map((n) => (
                 <SelectItem key={n} value={n} className="py-2.5 text-sm font-medium">
                   {n === "5" ? "5+" : n} {Number(n) === 1 ? "quarto" : "quartos"}
                 </SelectItem>

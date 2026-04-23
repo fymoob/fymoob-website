@@ -39,6 +39,7 @@ import {
 
 // Filtros LEVES (poucas linhas, sem @base-ui heavy) — imports eagers OK
 import { BedroomsFilter } from "@/components/search/filters/BedroomsFilter"
+import { CountedMultiSelect } from "@/components/search/filters/CountedMultiSelect"
 import { TypeFilter } from "@/components/search/filters/TypeFilter"
 import { FilterSection } from "@/components/search/filters/FilterSection"
 import { PriceFilter } from "@/components/search/filters/PriceFilter"
@@ -51,10 +52,6 @@ const skeleton = () => <div className="h-32 w-full animate-pulse rounded-lg bg-n
 
 const EmpreendimentoFilter = dynamic(
   () => import("@/components/search/filters/EmpreendimentoFilter").then((m) => ({ default: m.EmpreendimentoFilter })),
-  { ssr: false, loading: skeleton }
-)
-const LocationAutocomplete = dynamic(
-  () => import("@/components/search/filters/LocationAutocomplete").then((m) => ({ default: m.LocationAutocomplete })),
   { ssr: false, loading: skeleton }
 )
 const LocationFilter = dynamic(
@@ -205,10 +202,11 @@ export function SearchBar({
   const [heroTab, setHeroTab] = useState<"comprar" | "alugar" | "lancamentos">("comprar")
   const [codigo, setCodigo] = useState("")
   const [modalOpen, setModalOpen] = useState(false)
-  const [locationPopoverOpen, setLocationPopoverOpen] = useState(false)
   const heroRouter = useRouter()
 
-  const isLancamentos = isHome && heroTab === "lancamentos"
+  // Pill "Lancamentos" agora funciona tanto em /home quanto em /busca —
+  // quando ativa, redireciona pra /lancamentos em vez de ficar em /busca.
+  const isLancamentos = heroTab === "lancamentos"
 
   const {
     pendingFilters,
@@ -217,8 +215,13 @@ export function SearchBar({
     cidadeOptions,
     filteredTipoOptions,
     groupedBairroOptions,
-    cidadeSummaries,
+    facetedCidadeOptions,
+    facetedBairroOptions,
+    quartosOptions,
+    effectivePriceBounds,
     locationLabel,
+    cityLabel,
+    bairroLabel,
     priceLabel,
     quartosLabel,
     typeLabel,
@@ -244,6 +247,17 @@ export function SearchBar({
     }
   }, [isHome]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Sincroniza pill heroTab com o estado atual dos filtros — necessario pra
+  // deep-links (ex: chegar em /busca?finalidade=alugar deve mostrar "Alugar"
+  // ativo no pill). Lancamentos e intencao de navegacao explicita do usuario;
+  // nao sobrescrevemos automaticamente.
+  useEffect(() => {
+    const nextTab: "comprar" | "alugar" = pendingFilters.finalidades.includes("locacao")
+      ? "alugar"
+      : "comprar"
+    setHeroTab((current) => (current === "lancamentos" ? current : nextTab))
+  }, [pendingFilters.finalidades])
+
   const handleHeroTab = useCallback((tab: "comprar" | "alugar" | "lancamentos") => {
     setHeroTab(tab)
     if (tab !== "lancamentos") {
@@ -256,16 +270,16 @@ export function SearchBar({
 
   const applyLancamentosSearch = useCallback(() => {
     const params = new URLSearchParams()
-    for (const b of pendingFilters.bairros) if (b) params.set("bairro", b)
-    for (const c of pendingFilters.cidades) if (c) params.set("cidade", c)
+    if (pendingFilters.bairros.length > 0) params.set("bairro", pendingFilters.bairros.join(","))
+    if (pendingFilters.cidades.length > 0) params.set("cidade", pendingFilters.cidades.join(","))
     if (pendingFilters.tipos.length > 0) params.set("tipo", pendingFilters.tipos.join(","))
     if (pendingFilters.quartosMin) params.set("quartosMin", pendingFilters.quartosMin)
     if (pendingFilters.quartosMax) params.set("quartosMax", pendingFilters.quartosMax)
-    if (minPrice > priceBounds.min) params.set("precoMin", String(minPrice))
-    if (maxPrice < priceBounds.max) params.set("precoMax", String(maxPrice))
+    if (minPrice > effectivePriceBounds.min) params.set("precoMin", String(minPrice))
+    if (maxPrice < effectivePriceBounds.max) params.set("precoMax", String(maxPrice))
     const query = params.toString()
     heroRouter.push(query ? `/lancamentos?${query}` : "/lancamentos")
-  }, [pendingFilters.bairros, pendingFilters.cidades, pendingFilters.quartosMin, pendingFilters.quartosMax, pendingFilters.tipos, minPrice, maxPrice, priceBounds, heroRouter])
+  }, [pendingFilters.bairros, pendingFilters.cidades, pendingFilters.quartosMin, pendingFilters.quartosMax, pendingFilters.tipos, minPrice, maxPrice, effectivePriceBounds, heroRouter])
 
   const applyFilters = isLancamentos ? applyLancamentosSearch : applyFiltersBase
 
@@ -278,8 +292,8 @@ export function SearchBar({
     pendingFilters.tipos.length > 0 ||
     pendingFilters.finalidades.length > 0 ||
     Boolean(pendingFilters.quartosMin || pendingFilters.quartosMax) ||
-    minPrice > priceBounds.min ||
-    maxPrice < priceBounds.max
+    minPrice > effectivePriceBounds.min ||
+    maxPrice < effectivePriceBounds.max
 
   const [sheetOpen, setSheetOpen] = useState(false)
   const [activeChipSheet, setActiveChipSheet] = useState<"location" | "type" | "bedrooms" | "price" | null>(null)
@@ -320,7 +334,7 @@ export function SearchBar({
     (pendingFilters.bairros.length > 0 || pendingFilters.cidades.length > 0 ? 1 : 0) +
     (pendingFilters.tipos.length > 0 ? 1 : 0) +
     (pendingFilters.quartosMin || pendingFilters.quartosMax ? 1 : 0) +
-    (minPrice > priceBounds.min || maxPrice < priceBounds.max ? 1 : 0) +
+    (minPrice > effectivePriceBounds.min || maxPrice < effectivePriceBounds.max ? 1 : 0) +
     advancedFilterCount
 
   // Chip definitions for mobile — order: Finalidade → Location → Tipo → Quartos → Preço
@@ -355,9 +369,9 @@ export function SearchBar({
       sheetKey: "bedrooms" as const,
     },
     {
-      label: minPrice > priceBounds.min || maxPrice < priceBounds.max
+      label: minPrice > effectivePriceBounds.min || maxPrice < effectivePriceBounds.max
         ? priceLabel : "Preço",
-      active: minPrice > priceBounds.min || maxPrice < priceBounds.max,
+      active: minPrice > effectivePriceBounds.min || maxPrice < effectivePriceBounds.max,
       icon: Tag,
       sheetKey: "price" as const,
     },
@@ -500,6 +514,7 @@ export function SearchBar({
                     {/* Bedrooms — always expanded (short) */}
                     <FilterSection title="Quartos" icon={BedDouble} alwaysOpen>
                       <BedroomsFilter
+                        options={quartosOptions}
                         minValue={pendingFilters.quartosMin}
                         maxValue={pendingFilters.quartosMax}
                         onMinChange={(value) =>
@@ -515,7 +530,7 @@ export function SearchBar({
                     <FilterSection title="Preço" icon={Tag} alwaysOpen>
                       <PriceFilter
                         value={pendingFilters.priceRange}
-                        bounds={priceBounds}
+                        bounds={effectivePriceBounds}
                         onChange={(value) =>
                           setPendingFilters((c) => ({ ...c, priceRange: value }))
                         }
@@ -719,6 +734,7 @@ export function SearchBar({
                 <SheetHeader><SheetTitle>Quartos</SheetTitle></SheetHeader>
                 <div className="px-4 pb-4">
                   <BedroomsFilter
+                    options={quartosOptions}
                     minValue={pendingFilters.quartosMin}
                     maxValue={pendingFilters.quartosMax}
                     onMinChange={(value) => setPendingFilters((c) => ({ ...c, quartosMin: value }))}
@@ -748,14 +764,14 @@ export function SearchBar({
                 <div className="px-4 pb-4">
                   <PriceFilter
                     value={pendingFilters.priceRange}
-                    bounds={priceBounds}
+                    bounds={effectivePriceBounds}
                     onChange={(value) => setPendingFilters((c) => ({ ...c, priceRange: value }))}
                   />
                 </div>
                 <SheetFooter className="sticky bottom-0 border-t border-neutral-100 bg-white pb-safe">
                   <div className="flex gap-3">
-                    {(minPrice > priceBounds.min || maxPrice < priceBounds.max) && (
-                      <button type="button" onClick={() => setPendingFilters((c) => ({ ...c, priceRange: [priceBounds.min, priceBounds.max] }))}
+                    {(minPrice > effectivePriceBounds.min || maxPrice < effectivePriceBounds.max) && (
+                      <button type="button" onClick={() => setPendingFilters((c) => ({ ...c, priceRange: [effectivePriceBounds.min, effectivePriceBounds.max] }))}
                         className="flex-1 rounded-xl border border-neutral-200 py-3 text-sm font-medium text-neutral-600">
                         Limpar
                       </button>
@@ -774,28 +790,38 @@ export function SearchBar({
         {/* ── Desktop: Full search bar (also mobile for home context) ── */}
         <div className={cn(!isHome && "hidden md:block")}>
 
-        {/* Comprar / Alugar / Lançamentos toggle — above search bar on home */}
-        {isHome && (
-          <div className="mb-4 flex justify-center">
-            <div className="inline-flex rounded-full bg-black/30 p-1 backdrop-blur-sm">
-              {(["comprar", "alugar", "lancamentos"] as const).map((tab) => (
+        {/* Comprar / Alugar / Lançamentos toggle — aparece acima da search bar
+            tanto no home (hero escuro, pill branca sobre bg dark) quanto em
+            /busca (fundo claro, pill branca sobre bg slate). */}
+        <div className="mb-4 flex justify-center">
+          <div className={cn(
+            "inline-flex rounded-full p-1",
+            isHome
+              ? "bg-black/30 backdrop-blur-sm"
+              : "bg-slate-100 ring-1 ring-slate-200"
+          )}>
+            {(["comprar", "alugar", "lancamentos"] as const).map((tab) => {
+              const isActive = heroTab === tab
+              return (
                 <button
                   key={tab}
                   type="button"
                   onClick={() => handleHeroTab(tab)}
                   className={cn(
                     "whitespace-nowrap rounded-full px-4 py-2 text-xs font-semibold transition-all sm:px-6 sm:text-sm",
-                    heroTab === tab
+                    isActive
                       ? "bg-white text-neutral-900 shadow-sm"
-                      : "text-white/80 hover:text-white"
+                      : isHome
+                        ? "text-white/80 hover:text-white"
+                        : "text-neutral-600 hover:text-neutral-900"
                   )}
                 >
                   {tab === "comprar" ? "Comprar" : tab === "alugar" ? "Alugar" : "Lançamentos"}
                 </button>
-              ))}
-            </div>
+              )
+            })}
           </div>
-        )}
+        </div>
 
         <div className="relative">
           <div
@@ -817,60 +843,80 @@ export function SearchBar({
               <div className={cn(
                 "flex flex-col md:items-center md:gap-0",
                 isHome
-                  ? "md:grid md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,0.8fr)_minmax(0,1fr)_auto]"
-                  : "md:grid md:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)_minmax(0,0.7fr)_minmax(0,0.9fr)_minmax(0,0.9fr)_auto]"
+                  ? "md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.9fr)_minmax(0,0.8fr)_minmax(0,1fr)_auto]"
+                  : "md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.8fr)_minmax(0,0.7fr)_minmax(0,0.9fr)_minmax(0,0.9fr)_auto]"
               )}>
 
-                {/* 1. Localização — Smart Autocomplete */}
+                {/* 1. Cidade */}
                 <div className="border-b border-neutral-200 md:border-b-0">
-                  <Popover open={locationPopoverOpen} onOpenChange={setLocationPopoverOpen}>
+                  <Popover>
                     <PopoverTrigger
                       render={
                         <SegmentTrigger
                           context={context}
                           icon={MapPin}
-                          title="Localização"
-                          value={locationLabel}
-                          active={
-                            pendingFilters.bairros.length > 0 ||
-                            pendingFilters.cidades.length > 0
-                          }
+                          title="Cidade"
+                          value={cityLabel}
+                          active={pendingFilters.cidades.length > 0}
                           onClear={() =>
-                            setPendingFilters((c) => ({ ...c, bairros: [], cidades: [] }))
+                            setPendingFilters((c) => ({ ...c, cidades: [] }))
                           }
                           withDivider
                         />
                       }
                     />
                     <PopoverContent className="w-[calc(100vw-2rem)] max-w-md p-4 md:w-[420px]">
-                      <LocationAutocomplete
-                        groupedBairros={groupedBairroOptions}
-                        cidades={cidadeSummaries}
-                        selectedBairros={pendingFilters.bairros}
-                        selectedCidades={pendingFilters.cidades}
-                        onSelect={(item) => {
-                          if (item.type === "cidade") {
-                            setPendingFilters((c) => ({
-                              ...c,
-                              cidades: [item.slug],
-                              bairros: [],
-                            }))
-                          } else {
-                            setPendingFilters((c) => ({
-                              ...c,
-                              bairros: [item.slug],
-                              cidades: [],
-                            }))
-                          }
-                          setLocationPopoverOpen(false)
-                        }}
-                        onClose={() => setLocationPopoverOpen(false)}
+                      <CountedMultiSelect
+                        options={facetedCidadeOptions}
+                        selectedValues={pendingFilters.cidades}
+                        onChange={(values) =>
+                          setPendingFilters((current) => ({ ...current, cidades: values }))
+                        }
+                        searchPlaceholder="Buscar cidade..."
+                        emptyText="Nenhuma cidade disponivel."
                       />
                     </PopoverContent>
                   </Popover>
                 </div>
 
-                {/* 2. Tipo */}
+                {/* 2. Bairro */}
+                <div className="border-b border-neutral-200 md:border-b-0">
+                  <Popover>
+                    <PopoverTrigger
+                      render={
+                        <SegmentTrigger
+                          context={context}
+                          icon={MapPin}
+                          title="Bairro"
+                          value={bairroLabel}
+                          active={pendingFilters.bairros.length > 0}
+                          onClear={() =>
+                            setPendingFilters((c) => ({ ...c, bairros: [] }))
+                          }
+                          withDivider
+                        />
+                      }
+                    />
+                    <PopoverContent className="w-[calc(100vw-2rem)] max-w-md p-4 md:w-[420px]">
+                      <CountedMultiSelect
+                        options={facetedBairroOptions.map((opt) => ({
+                          value: opt.value,
+                          label: opt.label,
+                          count: opt.count,
+                          description: opt.cidade,
+                        }))}
+                        selectedValues={pendingFilters.bairros}
+                        onChange={(values) =>
+                          setPendingFilters((current) => ({ ...current, bairros: values }))
+                        }
+                        searchPlaceholder="Buscar bairro..."
+                        emptyText="Nenhum bairro disponivel."
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+
+                {/* 3. Tipo */}
                 <div className="border-b border-neutral-200 md:border-b-0">
                   <Popover>
                     <PopoverTrigger
@@ -900,7 +946,7 @@ export function SearchBar({
                   </Popover>
                 </div>
 
-                {/* 3. Quartos */}
+                {/* 4. Quartos */}
                 <div className="border-b border-neutral-200 md:border-b-0">
                   <Popover>
                     <PopoverTrigger
@@ -920,6 +966,7 @@ export function SearchBar({
                     />
                     <PopoverContent className="w-[calc(100vw-2rem)] max-w-xs p-3 md:w-80 md:p-4">
                       <BedroomsFilter
+                        options={quartosOptions}
                         minValue={pendingFilters.quartosMin}
                         maxValue={pendingFilters.quartosMax}
                         onMinChange={(value) =>
@@ -943,11 +990,11 @@ export function SearchBar({
                           icon={Tag}
                           title="Preço"
                           value={priceLabel}
-                          active={minPrice > priceBounds.min || maxPrice < priceBounds.max}
+                          active={minPrice > effectivePriceBounds.min || maxPrice < effectivePriceBounds.max}
                           onClear={() =>
                             setPendingFilters((c) => ({
                               ...c,
-                              priceRange: [priceBounds.min, priceBounds.max],
+                              priceRange: [effectivePriceBounds.min, effectivePriceBounds.max],
                             }))
                           }
                         />
@@ -956,7 +1003,7 @@ export function SearchBar({
                     <PopoverContent className="w-[calc(100vw-2rem)] max-w-md p-3 md:w-96 md:p-4">
                       <PriceFilter
                         value={pendingFilters.priceRange}
-                        bounds={priceBounds}
+                        bounds={effectivePriceBounds}
                         onChange={(value) =>
                           setPendingFilters((current) => ({ ...current, priceRange: value }))
                         }
