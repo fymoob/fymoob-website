@@ -77,6 +77,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             className="object-cover"
             priority
             sizes="(max-width: 1280px) 100vw, 1280px"
+            // unoptimized: pula /_next/image pro hero de blog. OG images ja
+            // vem pre-dimensionadas 1200x630 e otimizadas (WebP ~30KB). Evita
+            // consumir cota Vercel Image Optimization (402 Payment Required
+            // quando estoura no plano Hobby — 1000 imagens/mes).
+            unoptimized
           />
           <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-950/30 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
