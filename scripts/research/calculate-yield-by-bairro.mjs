@@ -212,9 +212,10 @@ function printTable(results) {
 }
 
 async function main() {
-  console.log("🔎 Buscando imóveis da API Loft/FYMOOB CRM...")
+  const silent = args.format === "json"
+  if (!silent) console.log("🔎 Buscando imóveis da API Loft/FYMOOB CRM...")
   const properties = await fetchAllProperties()
-  console.log(`   ${properties.length} imóveis ativos encontrados\n`)
+  if (!silent) console.log(`   ${properties.length} imóveis ativos encontrados\n`)
 
   const results = calcYield(properties, args.bairro ? slugify(args.bairro) : null)
 

@@ -189,9 +189,10 @@ function printTable(results) {
 }
 
 async function main() {
-  console.log("🔎 Buscando estoque FYMOOB...")
+  const silent = args.format === "json"
+  if (!silent) console.log("🔎 Buscando estoque FYMOOB...")
   const properties = await fetchAllProperties()
-  console.log(`   ${properties.length} imóveis ativos\n`)
+  if (!silent) console.log(`   ${properties.length} imóveis ativos\n`)
 
   const results = extractStock(properties, args.bairro ? slugify(args.bairro) : null)
 
