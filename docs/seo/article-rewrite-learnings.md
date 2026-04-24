@@ -13,7 +13,8 @@
 | 3 | mercado-imobiliario-curitiba-2026 | 23/04/2026 | `dbea2d6` | P0 | ✅ |
 | 4 | itbi-curitiba-valor-como-pagar | 24/04/2026 | `94d2255` | ALTA ⭐ | ✅ |
 | 5 | preco-metro-quadrado-curitiba-bairro | 24/04/2026 | `67b535b` | ALTA | ✅ |
-| 6 | melhores-bairros-curitiba-2026 | 24/04/2026 | TBD | ALTA | ✅ |
+| 6 | melhores-bairros-curitiba-2026 | 24/04/2026 | `4a39e25` | ALTA | ✅ |
+| 7 | batel-vs-agua-verde-curitiba | 24/04/2026 | TBD | ALTA | ✅ |
 
 ---
 
