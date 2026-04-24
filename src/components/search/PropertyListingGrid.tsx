@@ -1,6 +1,6 @@
 "use client"
 
-import { type ReactNode, useCallback, useState } from "react"
+import { type ReactNode, useCallback, useEffect, useState } from "react"
 import { Grid3X3, LayoutGrid, List } from "lucide-react"
 
 import { PropertyCardCompact, PropertyCardGrid, PropertyCardList, type PriceContext } from "@/components/property/card"
@@ -74,7 +74,15 @@ export function PropertyListingGrid({
   cardContext = "default",
   priceContext = null,
 }: PropertyListingGridProps) {
-  const [viewMode, setViewModeState] = useState<ViewMode>(getSavedViewMode)
+  // Default "grid" no primeiro render pra evitar hydration mismatch
+  // (SSR nao tem acesso ao localStorage). useEffect sincroniza com o
+  // valor salvo no cliente apos mount. Trade-off: flicker minimo no
+  // primeiro load pra usuarios que tinham "list"/"grid3" salvo.
+  const [viewMode, setViewModeState] = useState<ViewMode>("grid")
+  useEffect(() => {
+    const saved = getSavedViewMode()
+    if (saved !== "grid") setViewModeState(saved)
+  }, [])
   const setViewMode = useCallback((mode: ViewMode) => {
     setViewModeState(mode)
     try { localStorage.setItem(VIEW_MODE_KEY, mode) } catch {}
