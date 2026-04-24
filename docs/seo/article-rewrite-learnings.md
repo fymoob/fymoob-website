@@ -16,7 +16,8 @@
 | 6 | melhores-bairros-curitiba-2026 | 24/04/2026 | `4a39e25` | ALTA | ✅ |
 | 7 | batel-vs-agua-verde-curitiba | 24/04/2026 | `61c5265` | ALTA | ✅ |
 | 8 | quanto-custa-morar-batel-curitiba | 24/04/2026 | `1c1fb03` | ALTA | ✅ |
-| 9 | ecoville-vs-bigorrilho-curitiba | 24/04/2026 | TBD | ALTA | ✅ |
+| 9 | ecoville-vs-bigorrilho-curitiba | 24/04/2026 | `3f71a8f` | ALTA | ✅ |
+| 10 | checklist-compra-imovel | 24/04/2026 | TBD | ALTA | ✅ |
 
 ---
 
