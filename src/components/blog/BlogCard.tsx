@@ -30,6 +30,9 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
             className="object-cover transition-transform duration-500 group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, 60vw"
             priority
+            // Blog OG images ja sao WebP pre-dimensionadas 1200x630
+            // (~30KB). Pular /_next/image evita estourar cota Vercel.
+            unoptimized
           />
         </div>
 
@@ -80,6 +83,9 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          // Blog OG images ja sao WebP pre-dimensionadas (~30KB).
+          // Pular /_next/image evita estourar cota Vercel.
+          unoptimized
         />
       </div>
 
