@@ -33,15 +33,29 @@ function MethodologyBox({
   lastUpdate,
   nextReview,
 }: {
-  period: string
-  sample: string
-  treatment: string
-  sources: string[]
-  lastUpdate: string
+  period?: string
+  sample?: string
+  treatment?: string
+  sources?: string[] | string
+  lastUpdate?: string
   nextReview?: string
 }) {
   // Research Protocol v1.0 — obrigatório em posts pilar/ranking/YMYL.
   // Transparência de metodologia (IFCN P4). Permite replicação pelo leitor.
+  // Defensive: MDX remote pode serializar props de forma inesperada — aceita
+  // string[] ou string, e gracefully degrada se campo ausente.
+  const sourcesList = Array.isArray(sources)
+    ? sources
+    : typeof sources === "string"
+      ? sources.split(",").map((s) => s.trim()).filter(Boolean)
+      : []
+
+  const formatDate = (d?: string) => {
+    if (!d) return null
+    const date = new Date(d)
+    return isNaN(date.getTime()) ? d : date.toLocaleDateString("pt-BR")
+  }
+
   return (
     <aside
       className="my-8 rounded-xl border border-neutral-200 bg-neutral-50 p-6 text-sm"
@@ -51,27 +65,43 @@ function MethodologyBox({
         Metodologia
       </p>
       <dl className="grid gap-2 text-neutral-700 sm:grid-cols-[max-content_1fr] sm:gap-x-4">
-        <dt className="font-semibold">Período:</dt>
-        <dd>{period}</dd>
-        <dt className="font-semibold">Amostra:</dt>
-        <dd>{sample}</dd>
-        <dt className="font-semibold">Tratamento:</dt>
-        <dd>{treatment}</dd>
-        <dt className="font-semibold">Fontes:</dt>
-        <dd>{sources.join(", ")}</dd>
-        <dt className="font-semibold">Última atualização:</dt>
-        <dd>
-          <time dateTime={lastUpdate}>
-            {new Date(lastUpdate).toLocaleDateString("pt-BR")}
-          </time>
-        </dd>
+        {period && (
+          <>
+            <dt className="font-semibold">Período:</dt>
+            <dd>{period}</dd>
+          </>
+        )}
+        {sample && (
+          <>
+            <dt className="font-semibold">Amostra:</dt>
+            <dd>{sample}</dd>
+          </>
+        )}
+        {treatment && (
+          <>
+            <dt className="font-semibold">Tratamento:</dt>
+            <dd>{treatment}</dd>
+          </>
+        )}
+        {sourcesList.length > 0 && (
+          <>
+            <dt className="font-semibold">Fontes:</dt>
+            <dd>{sourcesList.join(", ")}</dd>
+          </>
+        )}
+        {lastUpdate && (
+          <>
+            <dt className="font-semibold">Última atualização:</dt>
+            <dd>
+              <time dateTime={lastUpdate}>{formatDate(lastUpdate)}</time>
+            </dd>
+          </>
+        )}
         {nextReview && (
           <>
             <dt className="font-semibold">Próxima revisão:</dt>
             <dd>
-              <time dateTime={nextReview}>
-                {new Date(nextReview).toLocaleDateString("pt-BR")}
-              </time>
+              <time dateTime={nextReview}>{formatDate(nextReview)}</time>
             </dd>
           </>
         )}
@@ -85,10 +115,17 @@ interface ChangelogEntry {
   change: string
 }
 
-function Changelog({ entries }: { entries: ChangelogEntry[] }) {
+function Changelog({ entries }: { entries?: ChangelogEntry[] }) {
   // Research Protocol v1.0 — correções transparentes (IFCN P5).
   // Lista o QUE mudou, não só QUANDO. Padrão Reuters + IFCN.
-  if (!entries || entries.length === 0) return null
+  if (!entries || !Array.isArray(entries) || entries.length === 0) return null
+
+  const formatDate = (d?: string) => {
+    if (!d) return ""
+    const date = new Date(d)
+    return isNaN(date.getTime()) ? d : date.toLocaleDateString("pt-BR")
+  }
+
   return (
     <aside
       className="my-8 rounded-xl border border-amber-200 bg-amber-50/50 p-5 text-sm"
@@ -104,7 +141,7 @@ function Changelog({ entries }: { entries: ChangelogEntry[] }) {
               dateTime={e.date}
               className="shrink-0 font-mono text-xs font-semibold text-amber-900"
             >
-              {new Date(e.date).toLocaleDateString("pt-BR")}
+              {formatDate(e.date)}
             </time>
             <span className="leading-relaxed">{e.change}</span>
           </li>
