@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react"
 import { createPortal } from "react-dom"
 import { useRouter } from "next/navigation"
-import { Search, MapPin, Home, BedDouble, DollarSign, X, SlidersHorizontal } from "lucide-react"
+import { Search, MapPin, Home, BedDouble, DollarSign, X, SlidersHorizontal, Hash } from "lucide-react"
 import { cn, slugify } from "@/lib/utils"
 import type { BairroSummary, TypeSummary } from "@/types/property"
 
@@ -310,6 +310,7 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
   const [quartos, setQuartos] = useState("")
   const [precoMin, setPrecoMin] = useState(0)
   const [precoMax, setPrecoMax] = useState(0)
+  const [codigo, setCodigo] = useState("")
   const [mounted, setMounted] = useState(false)
   const [picker, setPicker] = useState<"location" | "tipo" | null>(null)
 
@@ -373,9 +374,19 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
       .sort((a, b) => a.label.localeCompare(b.label, "pt-BR"))
   }, [tipoSummaries, bairroSummaries, finalidade, locationSel])
 
-  const activeFilters = [locationSel ? "1" : "", tiposSel.length > 0 ? "1" : "", quartos, (precoMin > 0 || precoMax > 0) ? "1" : ""].filter(Boolean).length
+  const activeFilters = [locationSel ? "1" : "", tiposSel.length > 0 ? "1" : "", quartos, (precoMin > 0 || precoMax > 0) ? "1" : "", codigo ? "1" : ""].filter(Boolean).length
 
   const handleSearch = useCallback(() => {
+    // Busca por codigo tem prioridade: ignora outros filtros e vai direto
+    // pra /busca com ?codigo=X (mesma rota usada pela /busca desktop).
+    const codigoTrim = codigo.trim()
+    if (codigoTrim) {
+      const params = new URLSearchParams()
+      params.set("codigo", codigoTrim)
+      setOpen(false)
+      router.push(`/busca?${params.toString()}`)
+      return
+    }
     const params = new URLSearchParams()
     if (finalidade === "lancamentos") {
       if (locationSel) {
@@ -405,7 +416,7 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
     if (precoMax > 0) params.set("precoMax", precoMax.toString())
     setOpen(false)
     router.push(`/busca?${params.toString()}`)
-  }, [finalidade, locationSel, tiposSel, quartos, precoMin, precoMax, router, bairroSummaries])
+  }, [finalidade, locationSel, tiposSel, quartos, precoMin, precoMax, codigo, router, bairroSummaries])
 
   const clearAll = () => {
     setFinalidade("comprar")
@@ -414,6 +425,7 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
     setQuartos("")
     setPrecoMin(0)
     setPrecoMax(0)
+    setCodigo("")
   }
 
   const selectorBtn = "flex w-full items-center justify-between rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3.5 text-sm text-neutral-800 transition hover:border-neutral-300"
@@ -525,6 +537,33 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
               onMaxChange={setPrecoMax}
               steps={finalidade === "alugar" ? STEPS_ALUGAR : STEPS_COMPRAR}
             />
+          </div>
+
+          {/* Codigo do imovel — ja sabe qual eh, vai direto. Prioridade sobre
+              outros filtros no handleSearch. */}
+          <div>
+            <label
+              htmlFor="qs-codigo"
+              className="mb-2 flex items-center gap-2 text-sm font-semibold text-neutral-900"
+            >
+              <Hash className="size-4 text-brand-primary" />
+              Código do imóvel
+            </label>
+            <input
+              id="qs-codigo"
+              type="text"
+              inputMode="numeric"
+              autoComplete="off"
+              placeholder="Ex: 12345"
+              value={codigo}
+              onChange={(e) => setCodigo(e.target.value.replace(/[^\w-]/g, ""))}
+              className="w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3.5 text-sm text-neutral-800 placeholder:text-neutral-400 transition focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/20"
+            />
+            {codigo.trim() && (
+              <p className="mt-1.5 text-xs text-neutral-500">
+                Busca pelo código ignora os outros filtros.
+              </p>
+            )}
           </div>
         </div>
       </div>
