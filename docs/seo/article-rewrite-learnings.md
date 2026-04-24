@@ -11,7 +11,8 @@
 | 1 | como-financiar-minha-casa-minha-vida | 23/04/2026 | `e98b038` + `553b16c` | — (newsjacking MCMV Faixa 4) | ✅ |
 | 2 | financiamento-caixa-itau-bradesco-comparativo | 23/04/2026 | `af60233` | ALTA (241 imp/0 clicks) | ✅ |
 | 3 | mercado-imobiliario-curitiba-2026 | 23/04/2026 | `dbea2d6` | P0 | ✅ |
-| 4 | itbi-curitiba-valor-como-pagar | 24/04/2026 | TBD | ALTA ⭐ | ✅ |
+| 4 | itbi-curitiba-valor-como-pagar | 24/04/2026 | `94d2255` | ALTA ⭐ | ✅ |
+| 5 | preco-metro-quadrado-curitiba-bairro | 24/04/2026 | TBD | ALTA | ✅ |
 
 ---
 
@@ -156,6 +157,57 @@
 - [ ] OG image custom pro post (Claude Design) — número R$ 12 mil em destaque
 - [ ] Em 7 dias: medir delta CTR/position via GSC
 - [ ] Cross-link dos posts: mercado-imobiliario + financiamento agora citam o ITBI (este post)
+
+---
+
+---
+
+## Post 5 — Preço do m² por Bairro Curitiba (24/04/2026)
+
+**Terceiro pilar data-driven em sequência. Foco: ranking de 30+ bairros + internal linking massivo (gap crítico detectado no audit preliminar).**
+
+### O que funcionou
+
+- **Arquitetura híbrida Cluster + Spine** (do writer brief): tabela-espinha scannable no topo + 4 clusters por faixa + H2 "quebra-ritmo" no meio ("Os 5 que mais valorizaram"). Resolveu o risco de lista longa virar cansativa.
+- **Internal linking executado bem:** 30+ landings `/imoveis/[bairro]` linkadas (vs 4 do post antigo). Blocker "Campina do Siqueira ausente no post" interceptado pelo SEO specialist — corrigido (2º no ranking FipeZap mar/26).
+- **Cross-reference dos 3 posts reescritos:** este post linka pra MCMV (Faixa 4), ITBI (pegadinha), financiamento (5 bancos) e mercado (boom/bolha/filtro). Site passa a ter cluster semântico coeso.
+- **Dados surpresa capturados por especialistas locais:**
+  - Campina do Siqueira virou 3º no ranking (BRT Leste-Oeste)
+  - Prado Velho = campeão aluguel Curitiba (R$ 53,52/m²/mês, perfil PUC)
+  - Cascatinha = zero crimes letais + drenagem nova
+  - CIC +10,2% (valorização acessível)
+  - Bigorrilho em **perda real** (-0,9% vs IPCA) — armadilha concreta
+- **Régua decisória no fechamento:** "valorização acima de IPCA e acima de INCC (se planta)". Substitui "consulte especialista" por critério objetivo (aprendizado do Post 4 aplicado).
+- **Writer brief com PLACEHOLDERS funcionou de novo** — dados vieram do data specialist no final, zero número inventado.
+- **5-agent paralelo completou desta vez** (todos retornaram summary sem rate limit, diferente do Post 4). Padrão se consolida.
+
+### O que NÃO funcionou
+
+- **Slugs de bairros não validados contra o filesystem antes de publicar.** Alguns podem dar 404 nas landings `/imoveis/[slug]` se o mapeamento do Loft for diferente. Follow-up: script que valida slug → arquivo antes de publicar.
+- **Yield por bairro estimado, não calculado ao vivo da API Loft.** Mesmo problema dos posts anteriores (3, 4). Script pendente continua.
+- **Loft Q4/2025 dado de +23% Campo Comprido não usado no post** — é tipologia-específica (3+ quartos), deixei de fora por medo de contaminar o ranking geral. Talvez merecesse nota específica.
+- **Imagens:** post não ganhou imagem nova. OG image ainda aponta pra `/images/blog/preco-m2-curitiba.jpg` — provavelmente desatualizado.
+
+### Aprendizado pro próximo
+
+1. **Rodar validação de slugs ANTES do publish** — `node scripts/validate-bairro-links.mjs <post-file>` que checa cada `/imoveis/[slug]` contra `getAllBairros()` do Loft. Prioridade alta: próximo post que linka bairros vai usar isso.
+2. **O padrão "arquitetura Cluster+Spine" é replicável** — pra qualquer pilar com lista longa (melhores-bairros-curitiba-2026, ranking-cidades, etc). Incorporar ao writer brief master.
+3. **Quando um bairro aparece em 3 especialistas independentemente, vira candidato obrigatório a seção** — Campina do Siqueira apareceu em data + local + SEO. Ahú em data + local + writer. Bigorrilho (armadilha) em data + investment. Padrão pra detectar "temas que merecem destaque".
+4. **A tabela-espinha no topo é a âncora do SEO** — featured snippet candidato. Manter em todo pilar data-driven. Ordem padrão: Ranking | Bairro (link) | Preço | Variação | Cluster.
+
+### Impacto esperado
+
+- **Pilar data-driven** = tráfego composto. SEO pillar + 30+ landings conectadas deve puxar rankings das landings `/imoveis/[bairro]` pelo juice distribuído.
+- Featured snippet candidato em "qual o bairro mais caro de Curitiba em 2026" + "preço médio m² curitiba 2026".
+- Internal linking saltou de 4 pra 30+ links contextuais.
+- Cluster editorial consolidado: 3 posts reescritos agora cross-linkam (mercado + financiamento + ITBI + este + MCMV). Google vê autoridade semântica.
+
+### Follow-ups deste post
+
+- [ ] Script `scripts/validate-bairro-links.mjs` — valida slugs contra `getAllBairros()` antes do publish
+- [ ] Yield real por bairro via API Loft (pendente dos Posts 3 e 4) — viraria tabela AO VIVO
+- [ ] OG image custom pro post (Claude Design) — gráfico do ranking
+- [ ] Em 7 dias: medir delta CTR/position via GSC
 
 ---
 
