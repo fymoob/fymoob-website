@@ -10,7 +10,8 @@
 |---|---|---|---|---|---|
 | 1 | como-financiar-minha-casa-minha-vida | 23/04/2026 | `e98b038` + `553b16c` | — (newsjacking MCMV Faixa 4) | ✅ |
 | 2 | financiamento-caixa-itau-bradesco-comparativo | 23/04/2026 | `af60233` | ALTA (241 imp/0 clicks) | ✅ |
-| 3 | mercado-imobiliario-curitiba-2026 | 23/04/2026 | TBD | P0 | ✅ |
+| 3 | mercado-imobiliario-curitiba-2026 | 23/04/2026 | `dbea2d6` | P0 | ✅ |
+| 4 | itbi-curitiba-valor-como-pagar | 24/04/2026 | TBD | ALTA ⭐ | ✅ |
 
 ---
 
@@ -109,6 +110,52 @@
 - [ ] Script `calculate-yield-by-bairro.mjs` via API Loft (gerar tabela real de yield por bairro)
 - [ ] OG image custom pro post (Claude Design) — título "boom, bolha ou filtro?" + número 17,86%
 - [ ] Em 7 dias: medir delta CTR/position via GSC
+
+---
+
+---
+
+## Post 4 — ITBI Curitiba (24/04/2026)
+
+**Segunda aplicação completa da metodologia. Domínio YMYL fiscal/jurídico. 5 specialists em paralelo adaptados: fiscal-data + legal/STJ + local-Prefeitura + writer-fiscal + SEO/SERP.**
+
+### O que funcionou
+
+- **Correção crítica via cross-check de specialists:** audit preliminar e título do Q2 atribuíam "STF" ao Tema 1113. Legal specialist + Data specialist independentemente sinalizaram que é **STJ** (REsp 1.937.821/SP, Min. Gurgel de Faria, 09/03/2022). Erro jurídico grave que violaria YMYL — interceptado antes do rewrite.
+- **Writer brief com PLACEHOLDERS** (aprendizado do post 3): writer não contaminou a lide com número falso. Todos os valores finais vieram de data/legal/local specialists após validação.
+- **Exemplo do próprio município valida o R$ 12 mil:** LC 137/2022 da Prefeitura CWB usou publicamente imóvel de R$ 473 mil com ITBI R$ 12.771 como caso-exemplo. Número do título está ancorado em fonte municipal oficial.
+- **Descoberta do Programa Curitiba de Volta ao Centro** (LC 150/2025 + Decreto 421/2026) — nenhum competidor do top 10 cobre. Seção inteira diferencial pro SEO.
+- **Caso concreto TJ-PR outubro/2025** (R$ 10.214 de restituição) dá a "prova social" jurídica que a tese funciona na prática — não só teoria.
+- **Régua numérica nos CTAs** (R$ 5 mil, R$ 8 mil, R$ 15 mil) em vez de "consulte um advogado" — voz operacional FYMOOB. Aplicado do writer brief.
+- **Específicos fiscal/jurídico** — tradução da tese STJ em 3 frases de gente, citação como notícia (não como peça processual), link in-line em parênteses.
+
+### O que NÃO funcionou
+
+- **Rate limit Anthropic** cortou os "returns" dos 4 dos 5 agents. Agents escreveram os relatórios (todos os arquivos salvos) mas não retornaram resumo ao main thread. Mitigação: a reading explícita dos files recuperou 100% dos dados. Custo extra: ~5-10 min de reading dos 4 relatórios.
+- **Writer brief ainda não separa completamente "regra geral" de "exemplo específico"** — usei placeholders na lide (correto), mas no brief ainda aparecem exemplos com números aproximados que podem contaminar. Melhorar marcação no próximo.
+- **Gap único FYMOOB (calculadora embed)** identificado pelo SEO specialist não foi implementado — concorrente #1 (MySide) tem calculadora interativa que domina a SERP. Post ficou sem diferencial de ferramenta. Follow-up task: desenvolver calculadora.
+- **Não usei API Loft pra contar quantos imóveis ativos FYMOOB tem em cada faixa de valor** — poderia validar "a gente fecha isso toda semana" com dado real. Mesma observação do post 3.
+
+### Aprendizado pro próximo
+
+1. **Quando rate limit cortar o "return" de um agent, o relatório em arquivo ainda vale** — plano B já funciona. Manter instrução "escrever relatório em arquivo" em todos os prompts.
+2. **Pra YMYL jurídico, adicionar verificação cruzada obrigatória entre data + legal specialists.** Se qualquer dos dois disser "é STJ não STF" (ou similar), trust no que disser. Jurídico é território minado.
+3. **Ferramentas interativas (calculadora) valem investimento técnico antes do próximo pilar fiscal.** ITBI, IR sobre imóvel, IPTU — se FYMOOB não tiver calculadora, cede top 3 pro MySide/Boaconta.
+4. **Título direto + número grande funciona melhor que pergunta tripla** quando a tese é UMA só. Post 3 tinha 3 perguntas ("boom, bolha ou filtro"), este tem 1 tese ("pegadinha de R$ 12 mil"). Diferença: post 3 exige ler pra saber a resposta, post 4 já entrega a denúncia no title.
+5. **Voz "a gente já viu umas 30 vezes" é voz FYMOOB** — usar com moderação (1-2x por post). Mais que isso vira tique. Aplicado bem aqui (1x no meio do post).
+
+### Impacto esperado
+
+- CTR pra query "itbi curitiba": melhoria significativa — título atual ("ITBI Curitiba 2026: Valor, Como Calcular e Como Pagar") é o padrão genérico que MySide + Prefeitura dominam. Novo título ancora em denúncia + número (R$ 12 mil).
+- Featured snippet candidato: seção "Qual é o valor do ITBI em Curitiba em 2026?" no FAQ — responde em 55 palavras com as 3 faixas.
+- Internal links ganhos: post linka pra `/busca` + fonte oficial Prefeitura + STJ + Migalhas + Conjur (link authority sinais pra E-E-A-T).
+
+### Follow-ups deste post
+
+- [ ] Calculadora ITBI embed com base no STJ Tema 1113 (respeita valor de escritura) — diferencial competitivo vs MySide
+- [ ] OG image custom pro post (Claude Design) — número R$ 12 mil em destaque
+- [ ] Em 7 dias: medir delta CTR/position via GSC
+- [ ] Cross-link dos posts: mercado-imobiliario + financiamento agora citam o ITBI (este post)
 
 ---
 
