@@ -1590,7 +1590,7 @@ _Nenhum bug aberto._
 |---|---|---|---|---|
 | 1 | como-financiar-minha-casa-minha-vida | — | ✅ | "MCMV 2026: Faixa 4 ampliada desde 22/04 libera imóveis até R$ 600 mil" (publicado 23/04, commit `e98b038`) |
 | 2 | financiamento-caixa-itau-bradesco-comparativo | — | ✅ | "Melhor banco pra financiar imóvel em 2026: ranking real" (publicado 23/04, commit `af60233`) |
-| 3 | itbi-curitiba-valor-como-pagar | **ALTA ⭐** | 📋 | "Pegadinha do ITBI em Curitiba custa R$ 12 mil" (46) — fact-check sólido via STF RE 1937821/Tema 1113 |
+| 3 | itbi-curitiba-valor-como-pagar | **ALTA ⭐** | ✅ | "Pegadinha do ITBI em Curitiba custa R$ 12 mil" (46) — publicado 24/04 com 5-agent team. Correção crítica: é STJ (não STF) Tema 1113, REsp 1.937.821/SP, Min. Gurgel de Faria, 09/03/2022. Descobriu Programa Curitiba de Volta ao Centro (LC 150/2025) + caso TJ-PR 2025 com restituição R$ 10.214 |
 | 4 | mercado-imobiliario-curitiba-2026 | **P0** | ✅ | "Imóveis em Curitiba em 2026: boom, bolha ou filtro?" (51) — publicado 23/04 com 5-agent team. Ângulo final: Ahú +12,5% (Mercês +9% era falso), Curitiba 2ª capital BR (+17,86%), Lei 16.361/2024 explica Batel |
 | 5 | preco-metro-quadrado-curitiba-bairro | **ALTA** | 📋 | "Batel lidera m² em Curitiba a R$ 15 mil em 2026 — e o 2º surpreende" (54) — pilar data-driven + 20 internal links perdidos |
 | 6 | melhores-bairros-curitiba-2026 | **ALTA** | 📋 | "Juvevê dispara +11,5%: o ranking dos bairros 2026" (51) — post-pilar, 1,5/15 regras |
