@@ -22,7 +22,7 @@
 | 8 | SEO Programatico | 37 | 33 | 4 | CONCLUIDA (4 pos-deploy) |
 | 9 | Painel Blog Admin | 5 | 0 | 5 | PENDENTE |
 | -- | Bugs | 0 | 0 | 0 | — |
-| 10 | SEO Intelligence | 64 | 7 | 57 | EM ANDAMENTO (+Blog Strategy Q2 23/04) |
+| 10 | SEO Intelligence | 64 | 11 | 53 | EM ANDAMENTO (+Blog Strategy Q2 23/04) |
 | 11 | Performance (CWV) | 56 | 46 | 10 | EM ANDAMENTO |
 | 12 | Conteudo SEO Editorial | 29 | 26 | 3 | EM ANDAMENTO |
 | 13 | Funcionalidades e UX | 39 | 39 | 0 | CONCLUIDA |
@@ -33,7 +33,7 @@
 | 16 | Claude Managed Agents | 14 | 0 | 14 | MEDIO PRAZO |
 | 17 | Agentes como Produto SaaS | 14 | 0 | 14 | LONGO PRAZO |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **444** | **288** | **156** | **65%** |
+| | **TOTAL** | **444** | **292** | **152** | **66%** |
 
 **Sessao 2026-04-17:** 25 CRITICAL/HIGH de seguranca/SEO fixados em 5 commits (`0d7b19f`, `50b1f86`, `7bb5f5a`, `19154ec`, `6b13794`). 4 rounds de auditoria convergiram — round 4 retornou 0 CRITICAL. Acoes externas pre-cutover listadas em Fase 7.8. HIGH/MEDIUM remanescentes (hardening pos-cutover, nao blockers) em Fase 7.10.
 
@@ -1512,10 +1512,10 @@ _Nenhum bug aberto._
 - [ ] Obter GA4 Property ID e adicionar ao `.mcp.json`
 
 ### 10.3 — Primeiro Relatorio Baseline
-- [ ] Executar `/project:seo-report` apos configurar OAuth
+- [x] Executar `/project:seo-report` apos configurar OAuth
 - [ ] Executar `/project:seo-audit` completo
-- [ ] Salvar relatorios em `docs/seo-reports/`
-- [ ] Documentar metricas iniciais (baseline) para comparacao futura
+- [x] Salvar relatorios em `docs/seo-reports/`
+- [x] Documentar metricas iniciais (baseline) para comparacao futura — `docs/seo-reports/2026-04-23-baseline.md`
 
 ### 10.4 — Monitoramento Continuo
 - [ ] Configurar agente agendado: relatorio semanal toda segunda-feira
@@ -1577,7 +1577,7 @@ _Nenhum bug aberto._
 #### 10.6.2 — Fase 2: Expansao Inicial (Semana 3-8, 12/mai-22/jun)
 - [ ] Publicar "COPOM maio: o que esperar da Selic pra seu financiamento"
 - [ ] Publicar "ITBI Curitiba: guia + calculadora 2026" (expandido)
-- [ ] Publicar "MCMV 2026: tudo que mudou"
+- [x] Publicar "MCMV 2026: tudo que mudou" — publicado 23/04 como newsjacking: "Faixa 4 ampliada desde 22/04 libera imóveis até R$ 600 mil"
 - [ ] Publicar "Custo de vida Curitiba 2026" (reescrever + expandir, ja trending)
 - [ ] Publicar "Reforma Tributaria e imoveis: 3 impactos"
 - [ ] Publicar "10 bairros mais valorizados de Curitiba" (data-driven)
