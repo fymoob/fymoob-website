@@ -1,6 +1,7 @@
 # Manual Editorial FYMOOB
 
 > **Status:** ATIVO — regra para todo post novo e toda reescrita a partir de 2026-04-23.
+> **Atualizado em 24/04/2026:** adicionada seção "Research Standards" (seção final). Complemento ao [FYMOOB Research Protocol](./fymoob-research-protocol.md) v1.0.
 > **Autor da pesquisa:** research com 15+ artigos de Nubank, InfoMoney, Exame, Seu Dinheiro, MySide, Loft, Metrópoles, TNH1, iDinheiro, Larya.
 > **Uso:** ler antes de escrever qualquer post. Validar antes do commit.
 
@@ -348,6 +349,79 @@ Todo post passa por esse checklist. Um "não" = reescreve o bloco.
 - [MySide — Melhor banco para financiamento](https://myside.com.br/guia-imoveis/melhor-banco-financiamento-imobiliario)
 - [MySide — Taxas de juros atualizadas 2026](https://myside.com.br/guia-imoveis/taxa-juros-financiamento-imobiliario)
 - [Loft — Bancos que financiam imóveis](https://portal.loft.com.br/confira-os-bancos-que-financiam-imoveis/)
+
+---
+
+## Research Standards (adicionado 24/04/2026)
+
+> Seção nova que sobe o rigor editorial de "voz FYMOOB" pra "referência em dados imobiliários".
+> Complementa Manual Editorial + é operacionalizada pelo [FYMOOB Research Protocol](./fymoob-research-protocol.md).
+
+### R-1 — Atribuição: link embed in-line, jamais "clique aqui"
+
+Toda citação de fonte primária (gov.br, BCB, STJ, Prefeitura) vem embed no meio da frase. Nunca nota de rodapé, nunca "clique aqui".
+
+- **DO:** `A Caixa cobra 11,19% em abril/2026 ([Prefeitura CWB](url))`
+- **DON'T:** `A Caixa cobra 11,19%. Para mais informações, clique aqui.`
+
+### R-2 — Fonte primária no 1º parágrafo pra números de title/H1
+
+Se o título promete "R$ 12 mil", o primeiro parágrafo tem link pra fonte primária do número. Sem exceção.
+
+Exemplo: título *"Pegadinha do ITBI em Curitiba custa R$ 12 mil"* → 1º parágrafo cita STJ Tema 1113 com link + exemplo oficial da Prefeitura CWB (LC 137/2022) com link.
+
+### R-3 — Amostra e período explícitos em dado FYMOOB
+
+Dado extraído do CRM FYMOOB sempre vem com amostra e período.
+
+- **DO:** `Yield medido em 12 fechamentos FYMOOB no Portão em abril/2026: 5,6% a.a.`
+- **DON'T:** `Yield no Portão: 5,6% a.a.` (sem amostra = sem replicabilidade)
+
+### R-4 — Sinalizar incerteza, nunca esconder
+
+Dados com n<7 ou defasagem 3-6 meses viram "indicativos". Declare.
+
+- **DO:** `Em Cascatinha (amostra pequena), estimativa 4,3% a.a.`
+- **DON'T:** afirmar número com autoridade quando n baixa
+
+### R-5 — MethodologyBox obrigatório em pilar/ranking
+
+Todo post com ranking de bairros, comparativo de bancos, análise macro → `<MethodologyBox>` no final (antes do CTA).
+
+### R-6 — Changelog transparente
+
+Correção factual pós-publicação → `<Changelog>` visível no topo. Nunca editar silenciosamente.
+
+### R-7 — Data currency visível
+
+Todo número em prosa tem mês/ano: "11,19% em abril/2026", não "11,19%".
+
+### R-8 — Frontmatter expandido pra YMYL
+
+Frontmatter de posts YMYL inclui:
+```yaml
+methodology:
+  period: "Abril/2026"
+  sources: [...]
+nextReview: "2026-07-24"
+reviewedBy: "Verifier Agent v1.0"
+```
+
+### R-9 — Autor com CRECI visível + página
+
+Posts com claim fiscal/jurídico/financeiro devem exibir AuthorCard (CRECI Bruno J 9420 / 24.494) + link pra `/autores/bruno-cesar-almeida`.
+
+### R-10 — Leitura adversarial no pre-publish
+
+Antes de publicar, o Verifier Agent responde: "qual claim derrubaria o post?". Se conseguir derrubar, não publica.
+
+### Anti-padrões banidos em research
+
+- "Segundo especialistas" sem nomear fonte
+- "Dados apontam" sem link
+- "Pesquisas mostram" sem citar pesquisa específica
+- Número solto sem data ("A taxa é de 11,19%" — 11,19% quando?)
+- "Aproximadamente" sem fonte que sustenta a aproximação
 
 **Tier 2 — curiosity gap (aprender, não copiar tom):**
 - [Metrópoles — Financiar imóvel pode ficar R$ 35 mil mais barato](https://www.metropoles.com/distrito-federal/economia-df/com-taxa-menor-financiar-imovel-pode-ficar-r-35-mil-mais-barato)
