@@ -67,9 +67,27 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
       />
 
-      {/* Hero Image with title overlay */}
+      {/* Hero Image — mobile: imagem 100% limpa. Desktop: overlay premium.
+          Motivo: overlay+tags em mobile 21/9 competem com conteudo visual da
+          OG image (desenhada 1.91:1 pra ser vista inteira em shares sociais).
+          Ver discussao em docs/seo/article-rewrite-learnings.md */}
       <div className="relative overflow-hidden bg-neutral-950">
-        <div className="relative mx-auto aspect-[21/9] max-w-7xl sm:aspect-[21/8]">
+        {/* Mobile: imagem pura 16/9, sem overlay */}
+        <div className="relative aspect-[16/9] w-full sm:hidden">
+          <Image
+            src={post.image}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+            // unoptimized: pula /_next/image. OG images pre-dimensionadas
+            // 1200x630 WebP ~30KB. Evita cota Vercel Image Optimization.
+            unoptimized
+          />
+        </div>
+        {/* Desktop: overlay com título */}
+        <div className="relative mx-auto hidden aspect-[21/8] max-w-7xl sm:block">
           <Image
             src={post.image}
             alt={post.title}
@@ -77,10 +95,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             className="object-cover"
             priority
             sizes="(max-width: 1280px) 100vw, 1280px"
-            // unoptimized: pula /_next/image pro hero de blog. OG images ja
-            // vem pre-dimensionadas 1200x630 e otimizadas (WebP ~30KB). Evita
-            // consumir cota Vercel Image Optimization (402 Payment Required
-            // quando estoura no plano Hobby — 1000 imagens/mes).
             unoptimized
           />
           <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-950/30 to-transparent" />
@@ -102,6 +116,23 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Mobile-only: tags + título em bloco limpo abaixo da imagem */}
+      <div className="border-b border-neutral-200 bg-white px-4 py-6 sm:hidden">
+        <div className="flex flex-wrap gap-2">
+          {post.tags.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-700"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+        <h1 className="mt-3 font-display text-2xl font-extrabold leading-[1.1] tracking-tight text-neutral-950">
+          {post.title}
+        </h1>
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
