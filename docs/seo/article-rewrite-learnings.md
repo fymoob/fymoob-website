@@ -17,8 +17,8 @@
 | 7 | batel-vs-agua-verde-curitiba | 24/04/2026 | `61c5265` | ALTA | ✅ |
 | 8 | quanto-custa-morar-batel-curitiba | 24/04/2026 | `1c1fb03` | ALTA | ✅ |
 | 9 | ecoville-vs-bigorrilho-curitiba | 24/04/2026 | `3f71a8f` | ALTA | ✅ |
-| 10 | checklist-compra-imovel | 24/04/2026 | TBD | ALTA | ✅ |
-| 11 | documentos-comprar-imovel-curitiba | 24/04/2026 | TBD | ALTA | ✅ |
+| 10 | checklist-compra-imovel | 24/04/2026 | `a51fd65` | ALTA | ✅ |
+| 11 | documentos-comprar-imovel-curitiba | 24/04/2026 | `32035b8` | ALTA | ✅ |
 
 ---
 
