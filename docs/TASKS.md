@@ -1614,6 +1614,44 @@ _Nenhum bug aberto._
 6. **custo-de-vida-curitiba** — requer pesquisa DIEESE-PR extra pra fechar o valor R$ X
 7. **checklist** + **documentos** + **melhores-bairros-familias** + **planta-vs-pronto** + **apartamento-ou-casa** — evergreen, podem virar sprint dedicado
 
+##### 10.6.1.b — FYMOOB Research Protocol v1.0 (criado 24/04/2026)
+
+> **Implementado em 24/04/2026.** 5 agents especializados desenharam protocolo
+> rigoroso de 8 fases baseado em IFCN + Poynter + Reuters + BBC + Google YMYL.
+> Documento mestre: [`fymoob-research-protocol.md`](seo/fymoob-research-protocol.md).
+>
+> **Objetivo:** FYMOOB virar referência citada por Google AI Overview em queries
+> Curitiba. 100% fatos verificados em melhores fontes. Dado exclusivo FYMOOB
+> (API Loft) vira moat competitivo.
+
+**Infraestrutura implementada (24/04):**
+- [x] Scripts `scripts/research/calculate-yield-by-bairro.mjs` + `extract-stock-by-bairro.mjs` + `snapshot-crm-daily.mjs`
+- [x] GitHub Action cron 03:00 BRT (`.github/workflows/crm-snapshot.yml`) — dia zero do histórico
+- [x] Componentes MDX `<MethodologyBox>` + `<Changelog>` em [`mdx-components.tsx`](src/lib/mdx-components.tsx)
+- [x] Página `/autores/[slug]` com schema Person + bio expandida + CRECI visível
+- [x] Agent specs: FYMOOB Data Research + Verifier/Editor em `docs/seo/agent-specs/`
+- [x] Manual Editorial upgrade com 10 Research Standards (R-1 a R-10)
+- [x] Memória atualizada (`feedback_research_protocol.md`)
+- [x] Allow-list 48 domínios em `settings.local.json` (Curitiba gov + APIs + imprensa econômica)
+- [ ] DataForSEO MCP instalação manual (Vinicius: conta + chave + `.mcp.json`) — USD 30-60/mês
+- [ ] GitHub secret `LOFT_API_KEY` cadastrada no repo (pra rodar GitHub Action)
+
+**Re-aplicação nos 5 posts já reescritos (semana 2 — 28/04-04/05):**
+- [ ] `como-financiar-minha-casa-minha-vida` — adicionar `<MethodologyBox>` + `<Changelog>` inicial + link pro /autores/
+- [ ] `financiamento-caixa-itau-bradesco-comparativo` — idem + dados Loft yield por banco/perfil
+- [ ] `mercado-imobiliario-curitiba-2026` — idem + dados FYMOOB (estoque por bairro real)
+- [ ] `itbi-curitiba-valor-como-pagar` — idem + exemplo com valor venal real de bairros CWB
+- [ ] `preco-metro-quadrado-curitiba-bairro` — idem + yield real por bairro via script
+
+**Posts 6-15 (semana 3-6):**
+Seguem protocolo completo desde o briefing. Time de 7 agents obrigatório. Checklist 30 itens pelo Verifier antes de qualquer publish.
+
+**Critérios de sucesso (30/60/90d):**
+- 30d: todos posts com MethodologyBox, Changelog, fonte primária no 1º parágrafo
+- 60d: 3+ posts citando dado exclusivo FYMOOB ("yield medido em N imóveis")
+- 90d: snapshot histórico completa 90d → cálculo de valorização real por bairro disponível
+- 180d: FYMOOB citada por Google AI Overview em query Curitiba
+
 **Padrões recorrentes detectados (atacar sistêmico, não por post):**
 - Taxas bancárias desatualizadas em múltiplos posts (mesmo bug já fixado no financiamento)
 - H2s como rótulos ("Conclusão", "Pontos fortes") em ~10 posts — violação Regra 5

@@ -25,6 +25,95 @@ function CalloutBox({
   )
 }
 
+function MethodologyBox({
+  period,
+  sample,
+  treatment,
+  sources,
+  lastUpdate,
+  nextReview,
+}: {
+  period: string
+  sample: string
+  treatment: string
+  sources: string[]
+  lastUpdate: string
+  nextReview?: string
+}) {
+  // Research Protocol v1.0 — obrigatório em posts pilar/ranking/YMYL.
+  // Transparência de metodologia (IFCN P4). Permite replicação pelo leitor.
+  return (
+    <aside
+      className="my-8 rounded-xl border border-neutral-200 bg-neutral-50 p-6 text-sm"
+      aria-label="Metodologia da pesquisa"
+    >
+      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-neutral-500">
+        Metodologia
+      </p>
+      <dl className="grid gap-2 text-neutral-700 sm:grid-cols-[max-content_1fr] sm:gap-x-4">
+        <dt className="font-semibold">Período:</dt>
+        <dd>{period}</dd>
+        <dt className="font-semibold">Amostra:</dt>
+        <dd>{sample}</dd>
+        <dt className="font-semibold">Tratamento:</dt>
+        <dd>{treatment}</dd>
+        <dt className="font-semibold">Fontes:</dt>
+        <dd>{sources.join(", ")}</dd>
+        <dt className="font-semibold">Última atualização:</dt>
+        <dd>
+          <time dateTime={lastUpdate}>
+            {new Date(lastUpdate).toLocaleDateString("pt-BR")}
+          </time>
+        </dd>
+        {nextReview && (
+          <>
+            <dt className="font-semibold">Próxima revisão:</dt>
+            <dd>
+              <time dateTime={nextReview}>
+                {new Date(nextReview).toLocaleDateString("pt-BR")}
+              </time>
+            </dd>
+          </>
+        )}
+      </dl>
+    </aside>
+  )
+}
+
+interface ChangelogEntry {
+  date: string
+  change: string
+}
+
+function Changelog({ entries }: { entries: ChangelogEntry[] }) {
+  // Research Protocol v1.0 — correções transparentes (IFCN P5).
+  // Lista o QUE mudou, não só QUANDO. Padrão Reuters + IFCN.
+  if (!entries || entries.length === 0) return null
+  return (
+    <aside
+      className="my-8 rounded-xl border border-amber-200 bg-amber-50/50 p-5 text-sm"
+      aria-label="Histórico de atualizações"
+    >
+      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-amber-900">
+        Histórico de atualizações
+      </p>
+      <ul className="space-y-2 text-neutral-800">
+        {entries.map((e, i) => (
+          <li key={i} className="flex gap-3">
+            <time
+              dateTime={e.date}
+              className="shrink-0 font-mono text-xs font-semibold text-amber-900"
+            >
+              {new Date(e.date).toLocaleDateString("pt-BR")}
+            </time>
+            <span className="leading-relaxed">{e.change}</span>
+          </li>
+        ))}
+      </ul>
+    </aside>
+  )
+}
+
 function CTABox({
   title,
   description,
@@ -126,4 +215,6 @@ export const mdxComponents: MDXComponents = {
   ),
   CTABox,
   CalloutBox,
+  MethodologyBox,
+  Changelog,
 }
