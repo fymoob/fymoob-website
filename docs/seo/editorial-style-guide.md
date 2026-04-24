@@ -423,6 +423,37 @@ Antes de publicar, o Verifier Agent responde: "qual claim derrubaria o post?". S
 - Número solto sem data ("A taxa é de 11,19%" — 11,19% quando?)
 - "Aproximadamente" sem fonte que sustenta a aproximação
 
+### R-11 — Jargão técnico é proibido (tradução obrigatória)
+
+Blog FYMOOB é pra comprador comum de imóvel em Curitiba. Pessoa comum **não sabe** o que é yield, CET, SBPE, FGTS Pró-Cotista, INCC, TR, LC, CTN, PL 108/2024, ABNT NBR 14.653. Cada um desses precisa ser traduzido na **primeira menção** OU substituído por termo popular.
+
+**Tabela de tradução obrigatória:**
+
+| ❌ Jargão | ✅ Tradução popular |
+|---|---|
+| yield | "rentabilidade de aluguel" / "quanto rende" / "retorno de aluguel" |
+| yield bruto | "rentabilidade bruta" (sem descontar custos) |
+| CET | "Custo Efetivo Total (taxa + seguros + tarifas)" na 1ª menção |
+| SBPE | "Sistema Brasileiro de Poupança e Empréstimo (funding dos bancos pra crédito imobiliário)" na 1ª menção |
+| INCC | "INCC (índice que corrige imóvel na planta)" na 1ª menção |
+| TR | "TR (Taxa Referencial, corrige saldo devedor)" na 1ª menção |
+| SFH | "SFH (Sistema Financeiro da Habitação — regras do crédito habitacional)" na 1ª menção |
+| Pró-Cotista | "Pró-Cotista FGTS (linha pra quem contribui há 3+ anos)" na 1ª menção |
+| store of value | "reserva de valor" |
+| outlier | "caso fora da curva" / "exceção" |
+| ticket | "valor" / "faixa de preço" |
+| MIP / DFI | "seguro do financiamento (morte+invalidez / danos no imóvel)" na 1ª menção |
+| LC 108/2017 | "LC 108/2017 (lei municipal do ITBI em Curitiba)" na 1ª menção |
+| CTN | "Código Tributário Nacional" na 1ª menção |
+| STJ Tema 1113 | "decisão do STJ de março de 2022 sobre base do ITBI" na 1ª menção |
+
+**Regra operacional:** se o termo aparece **5+ vezes** no post, define na 1ª menção e depois usa à vontade. Se aparece **1-2 vezes**, substitui pelo termo popular sempre. Nunca deixa jargão nu sem definição no primeiro uso.
+
+**Teste:** leia a frase em voz alta pra alguém de 50 anos que comprou imóvel uma vez na vida. Se a pessoa fizer cara de confusa, reescreve.
+
+- **DO:** `O aluguel rende 4,2% ao ano sobre o valor do imóvel na Cidade Industrial.`
+- **DON'T:** `O yield bruto é 4,2% a.a. na CIC.`
+
 **Tier 2 — curiosity gap (aprender, não copiar tom):**
 - [Metrópoles — Financiar imóvel pode ficar R$ 35 mil mais barato](https://www.metropoles.com/distrito-federal/economia-df/com-taxa-menor-financiar-imovel-pode-ficar-r-35-mil-mais-barato)
 - [Metrópoles — BRB é eleito o melhor banco](https://www.metropoles.com/distrito-federal/brb-e-eleito-o-melhor-banco-de-financiamento-imobiliario-do-brasil)
