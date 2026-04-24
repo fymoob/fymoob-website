@@ -57,7 +57,7 @@ function LocationPicker({
 }) {
   const [query, setQuery] = useState("")
 
-  // Cities with counts filtered by finalidade
+  // Cidades com contagens filtradas por finalidade (mesma logica do desktop)
   const cities = useMemo(() => {
     const map = new Map<string, number>()
     for (const bs of bairroSummaries) {
@@ -71,33 +71,48 @@ function LocationPicker({
       .sort((a, b) => b.count - a.count)
   }, [bairroSummaries, finalidade])
 
-  // All locations flat for searching
-  const allLocations = useMemo(() => {
-    const items: { type: "cidade" | "bairro"; label: string; cidade?: string; count: number }[] = []
-    for (const c of cities) {
-      items.push({ type: "cidade", label: c.label, count: c.count })
-    }
+  // Bairros agrupados por cidade (paridade com desktop GroupedBairroOptions).
+  // Dentro de cada grupo: bairros ordenados por count desc. Grupos ordenados
+  // por cidade com mais imoveis primeiro.
+  const groupedByCity = useMemo(() => {
+    const map = new Map<string, { bairro: string; count: number }[]>()
     for (const bs of bairroSummaries) {
       const count = getCountForFinalidade(bs.porFinalidade, bs.total, finalidade)
       if (count === 0) continue
-      items.push({ type: "bairro", label: bs.bairro, cidade: bs.cidade, count })
+      const c = bs.cidade || "Outros"
+      if (!map.has(c)) map.set(c, [])
+      map.get(c)!.push({ bairro: bs.bairro, count })
     }
-    return items
-  }, [bairroSummaries, cities, finalidade])
+    const cityOrder = cities.map((c) => c.label)
+    return cityOrder
+      .filter((c) => map.has(c))
+      .map((cidade) => ({
+        cidade,
+        bairros: map.get(cidade)!.sort((a, b) => b.count - a.count),
+      }))
+  }, [bairroSummaries, finalidade, cities])
 
   const isSearching = query.trim().length > 0
 
-  const results = useMemo(() => {
-    if (!isSearching) return []
+  // Resultados de busca: cidades + bairros matching, em 2 grupos separados.
+  const searchResults = useMemo(() => {
+    if (!isSearching) return { cidades: [] as typeof cities, grupos: [] as typeof groupedByCity }
     const q = normalize(query.trim())
-    return allLocations
-      .filter((item) => normalize(item.label).includes(q) || (item.cidade && normalize(item.cidade).includes(q)))
-      .sort((a, b) => {
-        if (a.type !== b.type) return a.type === "cidade" ? -1 : 1
-        return b.count - a.count
-      })
-      .slice(0, 15)
-  }, [allLocations, isSearching, query])
+    const matchedCidades = cities.filter((c) => normalize(c.label).includes(q))
+    const matchedGrupos = groupedByCity
+      .map((group) => ({
+        ...group,
+        bairros: group.bairros.filter(
+          (b) =>
+            normalize(b.bairro).includes(q) || normalize(group.cidade).includes(q)
+        ),
+      }))
+      .filter((group) => group.bairros.length > 0)
+    return { cidades: matchedCidades, grupos: matchedGrupos }
+  }, [cities, groupedByCity, isSearching, query])
+
+  const hasSearchResults =
+    searchResults.cidades.length > 0 || searchResults.grupos.length > 0
 
   return (
     <div className="fixed inset-0 z-[10000] flex flex-col bg-white">
@@ -143,53 +158,115 @@ function LocationPicker({
       <div className="flex-1 overflow-y-auto overscroll-contain">
         {!isSearching && (
           <>
-            <p className="px-5 pt-4 pb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
-              Cidades disponíveis
-            </p>
-            {cities.slice(0, 8).map((city) => (
-              <button
-                key={city.label}
-                type="button"
-                onClick={() => { onSelect(city.label); onClose() }}
-                className="flex w-full items-center gap-3 border-b border-neutral-50 px-5 py-4 text-left text-sm text-neutral-700 hover:bg-neutral-50"
-              >
-                <MapPin className="size-4 shrink-0 text-neutral-400" />
-                <span className="flex-1 font-medium text-neutral-900">{city.label}</span>
-                <span className="text-xs text-neutral-400">{city.count} imóveis</span>
-              </button>
+            {/* Cidades disponiveis — permite filtrar cidade inteira */}
+            {cities.length > 0 && (
+              <section>
+                <p className="bg-neutral-50 px-5 py-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
+                  Cidades disponíveis
+                </p>
+                {cities.map((city) => (
+                  <button
+                    key={city.label}
+                    type="button"
+                    onClick={() => {
+                      onSelect(city.label)
+                      onClose()
+                    }}
+                    className="flex w-full items-center gap-3 border-b border-neutral-50 px-5 py-3.5 text-left text-sm text-neutral-700 hover:bg-neutral-50"
+                  >
+                    <MapPin className="size-4 shrink-0 text-brand-primary" />
+                    <span className="flex-1 font-medium text-neutral-900">
+                      {city.label}
+                    </span>
+                    <span className="text-xs text-neutral-400">
+                      {city.count} {city.count === 1 ? "imóvel" : "imóveis"}
+                    </span>
+                  </button>
+                ))}
+              </section>
+            )}
+
+            {/* Bairros agrupados por cidade */}
+            {groupedByCity.map((group) => (
+              <section key={group.cidade}>
+                <p className="bg-neutral-50 px-5 py-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
+                  Bairros em {group.cidade}
+                </p>
+                {group.bairros.map((b) => (
+                  <button
+                    key={`${group.cidade}-${b.bairro}`}
+                    type="button"
+                    onClick={() => {
+                      onSelect(b.bairro)
+                      onClose()
+                    }}
+                    className="flex w-full items-center gap-3 border-b border-neutral-50 px-5 py-3.5 text-left text-sm text-neutral-700 hover:bg-neutral-50"
+                  >
+                    <MapPin className="size-4 shrink-0 text-neutral-400" />
+                    <span className="flex-1 text-neutral-900">{b.bairro}</span>
+                    <span className="text-xs text-neutral-400">{b.count}</span>
+                  </button>
+                ))}
+              </section>
             ))}
           </>
         )}
 
-        {isSearching && results.length > 0 && (
+        {isSearching && hasSearchResults && (
           <>
-            <p className="px-5 pt-4 pb-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-400">
-              Resultados
-            </p>
-            {results.map((item) => (
-              <button
-                key={`${item.type}-${item.label}`}
-                type="button"
-                onClick={() => { onSelect(item.label); onClose() }}
-                className="flex w-full items-center gap-3 border-b border-neutral-50 px-5 py-4 text-left text-sm hover:bg-neutral-50"
-              >
-                <MapPin className="size-4 shrink-0 text-neutral-400" />
-                <div className="min-w-0 flex-1">
-                  <span className="font-medium text-neutral-900">{item.label}</span>
-                  {item.type === "bairro" && item.cidade && (
-                    <span className="ml-1.5 text-xs text-neutral-400">{item.cidade} - PR</span>
-                  )}
-                  {item.type === "cidade" && (
-                    <span className="ml-1.5 text-xs text-neutral-400">Cidade</span>
-                  )}
-                </div>
-                <span className="shrink-0 text-xs text-neutral-400">{item.count}</span>
-              </button>
+            {searchResults.cidades.length > 0 && (
+              <section>
+                <p className="bg-neutral-50 px-5 py-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
+                  Cidades
+                </p>
+                {searchResults.cidades.map((city) => (
+                  <button
+                    key={city.label}
+                    type="button"
+                    onClick={() => {
+                      onSelect(city.label)
+                      onClose()
+                    }}
+                    className="flex w-full items-center gap-3 border-b border-neutral-50 px-5 py-3.5 text-left text-sm hover:bg-neutral-50"
+                  >
+                    <MapPin className="size-4 shrink-0 text-brand-primary" />
+                    <span className="flex-1 font-medium text-neutral-900">
+                      {city.label}
+                    </span>
+                    <span className="text-xs text-neutral-400">
+                      {city.count} {city.count === 1 ? "imóvel" : "imóveis"}
+                    </span>
+                  </button>
+                ))}
+              </section>
+            )}
+
+            {searchResults.grupos.map((group) => (
+              <section key={group.cidade}>
+                <p className="bg-neutral-50 px-5 py-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
+                  Bairros em {group.cidade}
+                </p>
+                {group.bairros.map((b) => (
+                  <button
+                    key={`${group.cidade}-${b.bairro}`}
+                    type="button"
+                    onClick={() => {
+                      onSelect(b.bairro)
+                      onClose()
+                    }}
+                    className="flex w-full items-center gap-3 border-b border-neutral-50 px-5 py-3.5 text-left text-sm hover:bg-neutral-50"
+                  >
+                    <MapPin className="size-4 shrink-0 text-neutral-400" />
+                    <span className="flex-1 text-neutral-900">{b.bairro}</span>
+                    <span className="text-xs text-neutral-400">{b.count}</span>
+                  </button>
+                ))}
+              </section>
             ))}
           </>
         )}
 
-        {isSearching && results.length === 0 && (
+        {isSearching && !hasSearchResults && (
           <div className="px-5 py-10 text-center">
             <p className="text-sm text-neutral-400">Nenhuma localização encontrada</p>
             <p className="mt-1 text-xs text-neutral-300">Tente outro nome</p>
