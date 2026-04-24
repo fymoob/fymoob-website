@@ -50,7 +50,7 @@ export function PropertyHeaderBlock({
         <PropertyBadge variant={pillVariant}>
           {pillText}
         </PropertyBadge>
-        {!isPremium && <PropertyBadge variant="code">Cód: {property.codigo}</PropertyBadge>}
+        <PropertyBadge variant="code">Cód: {property.codigo}</PropertyBadge>
       </div>
 
       {(property.endereco || property.bairro) && (
