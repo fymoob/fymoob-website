@@ -1633,8 +1633,9 @@ _Nenhum bug aberto._
 - [x] Manual Editorial upgrade com 10 Research Standards (R-1 a R-10)
 - [x] Memória atualizada (`feedback_research_protocol.md`)
 - [x] Allow-list 48 domínios em `settings.local.json` (Curitiba gov + APIs + imprensa econômica)
-- [ ] DataForSEO MCP instalação manual (Vinicius: conta + chave + `.mcp.json`) — USD 30-60/mês
-- [ ] GitHub secret `LOFT_API_KEY` cadastrada no repo (pra rodar GitHub Action)
+- [x] **Descartado:** DataForSEO MCP (pago — overkill pra 15 posts). Usar MCP `gsc` (Google Search Console já instalado) + WebSearch + Google Suggest como alternativa gratuita.
+- [x] Primeiro snapshot CRM rodado em 24/04 (dia zero — 242 imóveis, 66 bairros). Arquivo: `docs/research/snapshots/2026-04-24.json`.
+- [ ] GitHub secret `LOFT_API_KEY` cadastrada no repo (pra rodar GitHub Action diariamente) — **ação manual Vinicius: GitHub → Settings → Secrets and variables → Actions → New repository secret**
 
 **Re-aplicação nos 5 posts já reescritos (semana 2 — 28/04-04/05):**
 - [ ] `como-financiar-minha-casa-minha-vida` — adicionar `<MethodologyBox>` + `<Changelog>` inicial + link pro /autores/

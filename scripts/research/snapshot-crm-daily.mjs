@@ -37,7 +37,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 config({ path: path.resolve(__dirname, "../../.env.local") })
 
 const LOFT_API_KEY = process.env.LOFT_API_KEY
-const LOFT_BASE_URL = "https://fymoob.vistahost.com.br"
+const LOFT_BASE_URL = "https://brunoces-rest.vistahost.com.br"
 const SNAPSHOT_DIR = path.resolve(__dirname, "../../docs/research/snapshots")
 
 if (!LOFT_API_KEY) {
@@ -45,60 +45,75 @@ if (!LOFT_API_KEY) {
   process.exit(1)
 }
 
-async function fetchLoftPage(offset = 0, pageSize = 50) {
+const FIELDS = [
+  "Codigo",
+  "Bairro",
+  "Cidade",
+  "UF",
+  "Finalidade",
+  "Categoria",
+  "ValorVenda",
+  "ValorLocacao",
+  "ValorIptu",
+  "ValorCondominio",
+  "AreaPrivativa",
+  "AreaTotal",
+  "AreaTerreno",
+  "Dormitorios",
+  "Suites",
+  "Vagas",
+  "BanheiroSocialQtd",
+  "Status",
+  "ExibirNoSite",
+  "DataCadastro",
+  "DataAtualizacao",
+]
+
+async function fetchLoftPage(pagina = 1, pageSize = 50) {
   const params = new URLSearchParams({
     key: LOFT_API_KEY,
+    showtotal: "1",
     pesquisa: JSON.stringify({
-      fields: [
-        "Codigo",
-        "Bairro",
-        "Cidade",
-        "UF",
-        "Finalidade",
-        "Categoria",
-        "ValorVenda",
-        "ValorLocacao",
-        "ValorIptu",
-        "ValorCondominio",
-        "AreaPrivativa",
-        "AreaTotal",
-        "AreaTerreno",
-        "Dormitorios",
-        "Suites",
-        "Vagas",
-        "BanheiroSocialQtd",
-        "Status",
-        "ExibirNoSite",
-        "DataCadastro",
-        "DataAtualizacao",
-      ],
-      order: { Codigo: "asc" },
-      paginacao: { pagina: Math.floor(offset / pageSize) + 1, quantidade: pageSize },
+      fields: FIELDS,
+      filter: { ExibirNoSite: "Sim" },
+      paginacao: { pagina, quantidade: pageSize },
     }),
   })
   const url = `${LOFT_BASE_URL}/imoveis/listar?${params}`
-  const res = await fetch(url, { signal: AbortSignal.timeout(30000) })
+  const res = await fetch(url, {
+    headers: { Accept: "application/json" },
+    signal: AbortSignal.timeout(30000),
+  })
   if (!res.ok) throw new Error(`Loft API: ${res.status} ${res.statusText}`)
   return res.json()
 }
 
+function extractProperties(data) {
+  const results = []
+  for (const [key, value] of Object.entries(data)) {
+    if (["total", "paginas", "pagina", "quantidade"].includes(key)) continue
+    if (value && typeof value === "object" && "Codigo" in value) {
+      results.push(value)
+    }
+  }
+  return results
+}
+
 async function fetchAllProperties() {
   const all = []
-  let offset = 0
   const pageSize = 50
-  let pages = 0
-  while (true) {
-    const data = await fetchLoftPage(offset, pageSize)
-    const page = Object.entries(data)
-      .filter(([k]) => !isNaN(Number(k)))
-      .map(([, v]) => v)
-    if (page.length === 0) break
-    all.push(...page)
-    pages++
-    process.stdout.write(`\r   página ${pages} — ${all.length} imóveis`)
-    if (page.length < pageSize) break
-    offset += pageSize
-    if (offset > 10000) break
+
+  const first = await fetchLoftPage(1, pageSize)
+  const total = Number(first.total) || 0
+  const totalPages = Math.min(Math.ceil(total / pageSize), 40)
+
+  all.push(...extractProperties(first))
+  process.stdout.write(`\r   página 1/${totalPages} — ${all.length} imóveis (total API: ${total})`)
+
+  for (let p = 2; p <= totalPages; p++) {
+    const data = await fetchLoftPage(p, pageSize)
+    all.push(...extractProperties(data))
+    process.stdout.write(`\r   página ${p}/${totalPages} — ${all.length} imóveis`)
   }
   process.stdout.write("\n")
   return all

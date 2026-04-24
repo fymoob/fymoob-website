@@ -276,12 +276,23 @@ Ver upgrade completo em [`editorial-research-standards.md`](./editorial-research
 
 ## 12. Infraestrutura necessária (dia 1)
 
-- [x] Allow-list 12 domínios (Curitiba gov + APIs) → `settings.local.json`
-- [ ] DataForSEO MCP → instalação manual (Vinicius): conta + chave + `.mcp.json`
+- [x] Allow-list 48 domínios (Curitiba gov + APIs + imprensa econômica) → `settings.local.json`
 - [x] Scripts de research → `scripts/research/`
 - [x] GitHub Action cron 03:00 BRT → `.github/workflows/crm-snapshot.yml`
 - [x] Componentes MDX → `src/lib/mdx-components.tsx`
 - [x] Página `/autores/[slug]` → `src/app/autores/[slug]/page.tsx`
+- [x] Primeiro snapshot CRM (dia zero do histórico) → `docs/research/snapshots/2026-04-24.json` (242 imóveis, 66 bairros)
+
+### Ferramentas SEO — custo zero
+
+Usamos ferramentas gratuitas pra SEO research, sem precisar de DataForSEO pago:
+
+- **Google Search Console (MCP `gsc` já instalado)** — dados REAIS do nosso site (posição, CTR, impressões, queries) — fonte primária autoritativa, Google direto
+- **WebSearch** — ver SERP real em tempo real
+- **Google Suggest + Related Searches** — keyword discovery manual
+- **PAA (People Also Ask)** — consulta direta no Google + WebFetch
+
+DataForSEO (pago) ficaria útil apenas pra SEO programático em escala (milhares de URLs). Pra 15 posts de blog, overkill.
 
 ---
 

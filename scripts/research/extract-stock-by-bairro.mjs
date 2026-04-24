@@ -23,7 +23,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 config({ path: path.resolve(__dirname, "../../.env.local") })
 
 const LOFT_API_KEY = process.env.LOFT_API_KEY
-const LOFT_BASE_URL = "https://fymoob.vistahost.com.br"
+const LOFT_BASE_URL = "https://brunoces-rest.vistahost.com.br"
 
 if (!LOFT_API_KEY) {
   console.error("❌ LOFT_API_KEY não encontrada em .env.local")
@@ -54,33 +54,44 @@ function toNumber(raw) {
   return isFinite(n) && n > 0 ? n : 0
 }
 
-async function fetchLoftPage(offset = 0, pageSize = 50) {
+async function fetchLoftPage(pagina = 1, pageSize = 50) {
   const params = new URLSearchParams({
     key: LOFT_API_KEY,
+    showtotal: "1",
     pesquisa: JSON.stringify({
       fields: ["Codigo", "Bairro", "Cidade", "Finalidade", "Categoria", "ValorVenda", "ValorLocacao", "Status"],
-      paginacao: { pagina: Math.floor(offset / pageSize) + 1, quantidade: pageSize },
+      filter: { ExibirNoSite: "Sim" },
+      paginacao: { pagina, quantidade: pageSize },
     }),
   })
-  const res = await fetch(`${LOFT_BASE_URL}/imoveis/listar?${params}`)
+  const res = await fetch(`${LOFT_BASE_URL}/imoveis/listar?${params}`, {
+    headers: { Accept: "application/json" },
+  })
   if (!res.ok) throw new Error(`Loft API: ${res.status}`)
   return res.json()
 }
 
+function extractProperties(data) {
+  const results = []
+  for (const [key, value] of Object.entries(data)) {
+    if (["total", "paginas", "pagina", "quantidade"].includes(key)) continue
+    if (value && typeof value === "object" && "Codigo" in value) {
+      results.push(value)
+    }
+  }
+  return results
+}
+
 async function fetchAllProperties() {
   const all = []
-  let offset = 0
   const pageSize = 50
-  while (true) {
-    const data = await fetchLoftPage(offset, pageSize)
-    const page = Object.entries(data)
-      .filter(([k]) => !isNaN(Number(k)))
-      .map(([, v]) => v)
-    if (page.length === 0) break
-    all.push(...page)
-    if (page.length < pageSize) break
-    offset += pageSize
-    if (offset > 5000) break
+  const first = await fetchLoftPage(1, pageSize)
+  const total = Number(first.total) || 0
+  const totalPages = Math.min(Math.ceil(total / pageSize), 40)
+  all.push(...extractProperties(first))
+  for (let p = 2; p <= totalPages; p++) {
+    const data = await fetchLoftPage(p, pageSize)
+    all.push(...extractProperties(data))
   }
   return all
 }
