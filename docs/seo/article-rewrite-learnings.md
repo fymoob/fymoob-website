@@ -18,6 +18,7 @@
 | 8 | quanto-custa-morar-batel-curitiba | 24/04/2026 | `1c1fb03` | ALTA | ✅ |
 | 9 | ecoville-vs-bigorrilho-curitiba | 24/04/2026 | `3f71a8f` | ALTA | ✅ |
 | 10 | checklist-compra-imovel | 24/04/2026 | TBD | ALTA | ✅ |
+| 11 | documentos-comprar-imovel-curitiba | 24/04/2026 | TBD | ALTA | ✅ |
 
 ---
 
@@ -260,6 +261,54 @@
 - [ ] Script que atualiza ranking trimestralmente (calendar trigger)
 - [ ] Após snapshot completar 90d, atualizar com valorização real (não só FipeZap)
 - [ ] Criar post derivado: "Bairros pra família com filhos pequenos em Curitiba" (pega top 5 deste + expande em 2000 palavras)
+
+---
+
+## Post 11 — Documentos pra Comprar Imóvel em Curitiba (24/04/2026)
+
+**Primeira aplicação de team-agent adaptado pra post evergreen jurídico/YMYL.** Substituí Lifestyle Researcher + FYMOOB Data Specialist (que faziam sentido em posts de bairro) por **Legal/Jurídico Specialist** + **YMYL Verifier reforçado**. Time final: Legal + Content Structure + Writer + SEO + YMYL Verifier.
+
+### O que funcionou
+
+- **Organização por órgão emissor (5) em vez de "por parte" (comprador/vendedor/imóvel)** — estrutura única no SERP. Concorrentes listam 25 documentos em blocos de "pessoal/imóvel/vendedor"; FYMOOB mostra o fluxo real: Prefeitura → RI → TJ-PR → Receita/banco → Tabelionato. Cada órgão tem prazo, portal e custo próprios — o leitor sabe por onde começar.
+- **Lide com o "documento esquecido"** (Certidão Negativa de Imóveis da Prefeitura) — hook de SERP e de autoridade. 99% dos guias genéricos não mencionam que é distinta do IPTU pago. Voz operacional-de-rua entregou a diferenciação sem jargão notarial.
+- **YMYL Verifier pegou 4 erros factuais críticos em rodada única:**
+  1. "8 zonas de RI" → são **9 Ofícios** (erro clássico na web, corrigido com fonte AMEP)
+  2. "Certidão de Quitação de Tributos Imobiliários" → nome inventado; oficial é "Certidão Negativa de Imóveis" (portal oficial confirma)
+  3. e-Notariado como "obrigatório" → é **opcional** (Provimento CNJ 149/2023 como base)
+  4. "Termo de consentimento LGPD obrigatório pra pedir RG" → base legal é **execução de contrato** (Art. 7º V), não consentimento
+- **Links pra fontes primárias Planalto/CNJ/AMEP/Prefeitura no corpo** — E-E-A-T forte sem poluir o texto (em-line links, não rodapé gigante)
+- **Tabela consolidada dos 9 ofícios com endereço + telefone** — feature de alto valor pro leitor, zero concorrente oferece isso estruturado
+- **FAQ com 5 PAA reais** (Google "People Also Ask") pega featured snippet em queries secundárias
+- **Sinergia com checklist-compra-imovel** (Post 10) — internal link cruzado, reforça cluster temático
+
+### O que NÃO funcionou
+
+- **SEO Specialist e YMYL Verifier entregaram claims divergentes** — SEO afirmava "8 zonas" (baseado em SERP histórica), Verifier confirmou "9 Ofícios". Precedente confirmado: **YMYL sempre vence** em conflito factual. Documentado pro próximo post.
+- **Writer gerou nome oficial inventado** do documento-âncora ("Certidão de Quitação de Tributos Imobiliários") na primeira tentativa — só pegou no Verifier. **Reforço:** writer NUNCA deve inventar nomes oficiais; só usar o que está no portal/lei.
+- **Agent cortado por rate limit 2x durante rodada de team** — mitigado por persistência file-based (cada agent salva report em `docs/research/` antes de terminar), mas interrompe fluxo. Próximo post: usar Sonnet 4.6 pra agents de menor complexidade.
+
+### Aprendizado pro próximo
+
+- **Para posts evergreen jurídico/YMYL:** swap Lifestyle + FYMOOB Data por **Legal** + **YMYL Verifier reforçado**. Mantém os outros 3 (Structure, Writer, SEO).
+- **YMYL Verifier como gatekeeper final ANTES do writer** — não como revisão pós-draft. Valida claims do Legal/SEO cedo, evita retrabalho no draft. (Esse post: executei Verifier antes do Writer, funcionou.)
+- **Sempre citar fonte primária como link em-line em claim factual YMYL** (ex.: Decreto 93.240/86 linkado na primeira menção). Google News/AIO prioriza.
+- **Organização por órgão/processo > organização por parte** pra posts de fluxo burocrático — padrão pra seguir em documentos-venda, inventário, financiamento.
+- **Regra R-12 candidata pro Manual Editorial:** "Nome oficial de documento/órgão = cópia literal do portal oficial, sem 'versão amigável' inventada pelo writer". Discutir com próximo post.
+
+### Impacto esperado
+
+- Query-alvo principal: "documentos pra comprar imóvel curitiba" (baseline: 0 clicks, pos 15+)
+- Diferencial único: tabela 9 Ofícios + hook da certidão municipal esquecida → candidato a featured snippet
+- Cluster temático: forma pair com checklist-compra-imovel (Post 10) — link cruzado aumenta dwell time
+- YMYL strength: MethodologyBox + Changelog + Bruno autor + fontes Tier 1 Planalto/CNJ = sinal máximo
+
+### Follow-ups deste post
+
+- [ ] Criar `<ZonasRICuritiba>` component (buscar por CEP) — diferencial interativo vs concorrentes
+- [ ] Imagem OG custom "9 Ofícios de CWB — mapa" (Claude Design)
+- [ ] Revisar em 2026-07-23 (conforme nextReview) — validar se portal CWB, provimentos CNJ e tabela TJ-PR mudaram
+- [ ] Post derivado: "Certidão Negativa de Imóveis CWB: como emitir em 3 minutos" (focado em query long-tail)
 
 ---
 
