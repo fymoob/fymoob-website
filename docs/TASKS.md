@@ -1567,12 +1567,59 @@ _Nenhum bug aberto._
 > 25% data-driven + 10% comparativos. Mantem moat local, abre funil nacional.
 
 #### 10.6.1 — Fase 1: Quick Wins (Semana 1-2, 28/abr-11/mai)
-- [ ] **PRIORIDADE MAXIMA** — Reescrever titulo + intro do post `financiamento-caixa-itau-bradesco-comparativo` seguindo template TNH1 (241 imp/sem sem cliques)
-- [ ] Reescrever titulos dos outros 4 top posts: custo-de-vida-curitiba, melhores-bairros-curitiba-2026, itbi-curitiba-valor-como-pagar, batel-vs-agua-verde-curitiba
-- [ ] Reescrever os 10 restantes (batch)
+- [x] **PRIORIDADE MAXIMA** — Reescrever titulo + intro do post `financiamento-caixa-itau-bradesco-comparativo` seguindo template TNH1 (241 imp/sem sem cliques) — concluido 23/04, commit `af60233`
 - [ ] Adicionar frontmatter completo (schema FAQ + reading time + autor com CRECI) nos 15 posts existentes
 - [ ] Implementar internal linking cross-bairro → guia nacional nos 15 posts
 - [ ] Publicar 1 post news: "IPTU Curitiba 2026: como pagar menos" (timing com vencimentos maio)
+
+##### 10.6.1.a — Revisão completa dos 15 posts existentes (agent teams 23/04/2026)
+
+> **Status:** 13 agent teams concluídos em 23/04. Relatórios em
+> `docs/research/article-reviews/<slug>.md` com auditoria YMYL +
+> estrutural vs Manual Editorial + títulos validados.
+>
+> **Achado crítico:** **11 dos 13 títulos sugeridos na Estratégia Q2
+> foram REJEITADOS** por clickbait sem prova factual (ex: "Batel perde
+> trono" era falso — Batel firme em R$ 17.924/m²). Só 2 sugeridos
+> passaram: ITBI R$ 12 mil (validado STF Tema 1113) e Checklist
+> R$ 80 mil.
+>
+> **Legenda:** ✅ rewrite concluído | 📋 review OK, rewrite pendente | ⬜ não iniciado
+
+| # | Slug | Prioridade | Status | Título validado (≤55 chars) |
+|---|---|---|---|---|
+| 1 | como-financiar-minha-casa-minha-vida | — | ✅ | "MCMV 2026: Faixa 4 ampliada desde 22/04 libera imóveis até R$ 600 mil" (publicado 23/04, commit `e98b038`) |
+| 2 | financiamento-caixa-itau-bradesco-comparativo | — | ✅ | "Melhor banco pra financiar imóvel em 2026: ranking real" (publicado 23/04, commit `af60233`) |
+| 3 | itbi-curitiba-valor-como-pagar | **ALTA ⭐** | 📋 | "Pegadinha do ITBI em Curitiba custa R$ 12 mil" (46) — fact-check sólido via STF RE 1937821/Tema 1113 |
+| 4 | mercado-imobiliario-curitiba-2026 | **P0** | ✅ | "Imóveis em Curitiba em 2026: boom, bolha ou filtro?" (51) — publicado 23/04 com 5-agent team. Ângulo final: Ahú +12,5% (Mercês +9% era falso), Curitiba 2ª capital BR (+17,86%), Lei 16.361/2024 explica Batel |
+| 5 | preco-metro-quadrado-curitiba-bairro | **ALTA** | 📋 | "Batel lidera m² em Curitiba a R$ 15 mil em 2026 — e o 2º surpreende" (54) — pilar data-driven + 20 internal links perdidos |
+| 6 | melhores-bairros-curitiba-2026 | **ALTA** | 📋 | "Juvevê dispara +11,5%: o ranking dos bairros 2026" (51) — post-pilar, 1,5/15 regras |
+| 7 | batel-vs-agua-verde-curitiba | **ALTA** | 📋 | "Batel ou Água Verde em 2026: R$ 5.700/m² separam os dois" (58) — título Q2 era falso |
+| 8 | quanto-custa-morar-batel-curitiba | **ALTA** | 📋 | "Morar no Batel em 2026: R$ 17.924/m² e 16% de alta no aluguel" (58) — claim "&gt; SP" rejeitado |
+| 9 | ecoville-vs-bigorrilho-curitiba | **ALTA** | 📋 | "Ecoville vs Bigorrilho: o m² bateu R$ 14 mil em Curitiba" (55) — claim de migração sem prova |
+| 10 | custo-de-vida-curitiba | **ALTA** | 📋 | "Morar em Curitiba em 2026 custa R$ X por mês — calculamos tudo" (54, X TBD via DIEESE-PR) — "34% mais caro" era falso (IPCA real 3-6%) |
+| 11 | checklist-compra-imovel | **ALTA** | 📋 | "O item esquecido que faz perder R$ 80 mil no imóvel" (52) — base factual OK, problema 100% editorial |
+| 12 | documentos-comprar-imovel-curitiba | **ALTA** | 📋 | "Este documento trava escritura em Curitiba 2026" (50) — "documento esquecido" = Certidão Quitação Tributos Imobiliários |
+| 13 | melhores-bairros-familias-curitiba | **ALTA** | 📋 | "Os 8 bairros de Curitiba pra família em 2026 (ranking)" (53) — zero dado demográfico, reescrita ampla |
+| 14 | imovel-planta-vs-pronto-curitiba | **ALTA** | 📋 | "Planta vs pronto em 2026: conta real após INCC muda" (49) — endossa construtoras por nome (risco jurídico) |
+| 15 | apartamento-ou-casa-curitiba | **MÉDIA** | 📋 | "Casa ou apartamento em Curitiba? 67% já decidiram em 2026" (58) — dado Inpespar validado |
+
+**Ordem recomendada de execução:**
+
+1. **itbi-curitiba-valor-como-pagar** — fact-check sólido (STF), ângulo único, YMYL fiscal de alto valor
+2. **mercado-imobiliario-curitiba-2026** — P0, mesmo bug que fixamos no financiamento (consistência do site)
+3. **preco-metro-quadrado-curitiba-bairro** — pilar data-driven + destrava 20+ internal links pras landings de bairro
+4. **melhores-bairros-curitiba-2026** — outro pilar, depende do #3 estar atualizado com m² reais
+5. **quanto-custa-morar-batel-curitiba** + **batel-vs-agua-verde** + **ecoville-vs-bigorrilho** — cluster bairros (podem ser em batch, dados FipeZap compartilhados)
+6. **custo-de-vida-curitiba** — requer pesquisa DIEESE-PR extra pra fechar o valor R$ X
+7. **checklist** + **documentos** + **melhores-bairros-familias** + **planta-vs-pronto** + **apartamento-ou-casa** — evergreen, podem virar sprint dedicado
+
+**Padrões recorrentes detectados (atacar sistêmico, não por post):**
+- Taxas bancárias desatualizadas em múltiplos posts (mesmo bug já fixado no financiamento)
+- H2s como rótulos ("Conclusão", "Pontos fortes") em ~10 posts — violação Regra 5
+- Zero fontes linkadas em 11/13 posts — gap YMYL crítico
+- Sem FAQ pra capturar PAA (People Also Ask) — tráfego long-tail perdido
+- Pilares data-driven (`melhores-bairros-*`, `preco-metro-quadrado-*`) NÃO linkam pras landings `/imoveis/[bairro]` — internal linking leak massivo
 
 #### 10.6.2 — Fase 2: Expansao Inicial (Semana 3-8, 12/mai-22/jun)
 - [ ] Publicar "COPOM maio: o que esperar da Selic pra seu financiamento"
