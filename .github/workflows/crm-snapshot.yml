@@ -1,0 +1,63 @@
+name: CRM Snapshot Daily
+
+# Snapshot diário do CRM FYMOOB — Research Protocol v1.0
+# Dia zero do histórico começa quando este workflow for ativado.
+# Usado pra calcular valorização real por bairro (após 60-90 dias) e
+# tempo médio no mercado.
+# Fonte: docs/seo/fymoob-research-protocol.md — Script #3 prioritário.
+
+on:
+  schedule:
+    # 03:00 BRT = 06:00 UTC (Brasil = UTC-3)
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Sobrescrever snapshot do dia (se já existir)"
+        type: boolean
+        default: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install deps
+        run: npm ci --no-audit --no-fund
+
+      - name: Run snapshot
+        env:
+          LOFT_API_KEY: ${{ secrets.LOFT_API_KEY }}
+        run: |
+          if [ "${{ inputs.force }}" = "true" ]; then
+            node scripts/research/snapshot-crm-daily.mjs --force
+          else
+            node scripts/research/snapshot-crm-daily.mjs
+          fi
+
+      - name: Commit snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Só commita se o snapshot do dia foi criado/modificado
+          if [ -n "$(git status --porcelain docs/research/snapshots/)" ]; then
+            DATE=$(date -u '+%Y-%m-%d')
+            git add docs/research/snapshots/
+            git commit -m "chore(research): snapshot CRM $DATE"
+            git push
+          else
+            echo "Nenhuma mudança no snapshot — skipping commit."
+          fi
