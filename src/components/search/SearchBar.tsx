@@ -58,6 +58,14 @@ const LocationFilter = dynamic(
   () => import("@/components/search/filters/LocationFilter").then((m) => ({ default: m.LocationFilter })),
   { ssr: false, loading: skeleton }
 )
+const CityFilter = dynamic(
+  () => import("@/components/search/filters/CityFilter").then((m) => ({ default: m.CityFilter })),
+  { ssr: false, loading: skeleton }
+)
+const BairroFilter = dynamic(
+  () => import("@/components/search/filters/BairroFilter").then((m) => ({ default: m.BairroFilter })),
+  { ssr: false, loading: skeleton }
+)
 const AreaRangeInput = dynamic(
   () => import("@/components/search/filters/AdvancedFields").then((m) => ({ default: m.AreaRangeInput })),
   { ssr: false, loading: () => <div className="h-10 w-full animate-pulse rounded-md bg-neutral-100" /> }
@@ -296,7 +304,7 @@ export function SearchBar({
     maxPrice < effectivePriceBounds.max
 
   const [sheetOpen, setSheetOpen] = useState(false)
-  const [activeChipSheet, setActiveChipSheet] = useState<"location" | "type" | "bedrooms" | "price" | null>(null)
+  const [activeChipSheet, setActiveChipSheet] = useState<"cidade" | "bairro" | "type" | "bedrooms" | "price" | null>(null)
 
   const clearAllFilters = () =>
     setPendingFilters({
@@ -337,8 +345,22 @@ export function SearchBar({
     (minPrice > effectivePriceBounds.min || maxPrice < effectivePriceBounds.max ? 1 : 0) +
     advancedFilterCount
 
-  // Chip definitions for mobile — order: Finalidade → Location → Tipo → Quartos → Preço
-  const chips: { label: string; active: boolean; icon: ComponentType<{ className?: string }>; sheetKey: "location" | "type" | "bedrooms" | "price" | null }[] = [
+  // Chip definitions for mobile — order: Finalidade → Cidade → Bairro → Tipo → Quartos → Preço
+  // Paridade com desktop: 2 chips separados pra Cidade e Bairro em vez de
+  // um unico "Localizacao" combinado. Cada chip abre seu proprio overlay.
+  const cidadeChipLabel =
+    pendingFilters.cidades.length === 0
+      ? "Cidade"
+      : pendingFilters.cidades.length === 1
+        ? pendingFilters.cidades[0]
+        : `${pendingFilters.cidades.length} cidades`
+  const bairroChipLabel =
+    pendingFilters.bairros.length === 0
+      ? "Bairro"
+      : pendingFilters.bairros.length === 1
+        ? pendingFilters.bairros[0]
+        : `${pendingFilters.bairros.length} bairros`
+  const chips: { label: string; active: boolean; icon: ComponentType<{ className?: string }>; sheetKey: "cidade" | "bairro" | "type" | "bedrooms" | "price" | null }[] = [
     ...(pendingFilters.finalidades.includes("locacao")
       ? [
           {
@@ -350,11 +372,16 @@ export function SearchBar({
         ]
       : []),
     {
-      label: pendingFilters.bairros.length > 0 || pendingFilters.cidades.length > 0
-        ? locationLabel : "Localização",
-      active: pendingFilters.bairros.length > 0 || pendingFilters.cidades.length > 0,
+      label: cidadeChipLabel,
+      active: pendingFilters.cidades.length > 0,
       icon: MapPin,
-      sheetKey: "location" as const,
+      sheetKey: "cidade" as const,
+    },
+    {
+      label: bairroChipLabel,
+      active: pendingFilters.bairros.length > 0,
+      icon: MapPin,
+      sheetKey: "bairro" as const,
     },
     {
       label: pendingFilters.tipos.length > 0 ? typeLabel : "Tipo",
@@ -1141,11 +1168,11 @@ export function SearchBar({
       </div>
     </aside>
 
-    {/* Location — full-screen overlay (outside aside for correct fixed positioning) */}
-    {activeChipSheet === "location" && (
+    {/* Cidade — full-screen overlay (paridade com desktop popover "Cidade") */}
+    {activeChipSheet === "cidade" && (
       <div className="fixed inset-0 z-[9999] flex flex-col bg-white md:hidden">
         <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
-          <h2 className="text-lg font-semibold text-neutral-900">Localização</h2>
+          <h2 className="text-lg font-semibold text-neutral-900">Cidade</h2>
           <button type="button" onClick={() => setActiveChipSheet(null)}
             aria-label="Fechar"
             className="flex size-9 items-center justify-center rounded-full hover:bg-neutral-100">
@@ -1153,20 +1180,54 @@ export function SearchBar({
           </button>
         </div>
         <div className="flex-1 overflow-y-auto px-4 py-4">
-          <LocationFilter
-            bairros={bairroOptions}
+          <CityFilter
             cidades={cidadeOptions}
-            groupedBairros={groupedBairroOptions}
-            selectedBairros={pendingFilters.bairros}
             selectedCidades={pendingFilters.cidades}
-            onBairrosChange={(values) => setPendingFilters((c) => ({ ...c, bairros: values }))}
             onCidadesChange={(values) => setPendingFilters((c) => ({ ...c, cidades: values }))}
           />
         </div>
         <div className="sticky bottom-0 border-t border-neutral-100 bg-white px-4 py-3 pb-safe">
           <div className="flex gap-3">
-            {(pendingFilters.bairros.length > 0 || pendingFilters.cidades.length > 0) && (
-              <button type="button" onClick={() => setPendingFilters((c) => ({ ...c, bairros: [], cidades: [] }))}
+            {pendingFilters.cidades.length > 0 && (
+              <button type="button" onClick={() => setPendingFilters((c) => ({ ...c, cidades: [] }))}
+                className="flex-1 rounded-xl border border-neutral-200 py-3 text-sm font-medium text-neutral-600">
+                Limpar
+              </button>
+            )}
+            <button type="button" onClick={() => { applyFilters(); setActiveChipSheet(null) }}
+              className="flex-[2] rounded-xl bg-brand-primary py-3 text-sm font-semibold text-white">
+              Aplicar
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Bairro — full-screen overlay (paridade com desktop popover "Bairro").
+        Bairros sao filtrados pelas cidades selecionadas (se houver). */}
+    {activeChipSheet === "bairro" && (
+      <div className="fixed inset-0 z-[9999] flex flex-col bg-white md:hidden">
+        <div className="flex items-center justify-between border-b border-neutral-100 px-4 py-3">
+          <h2 className="text-lg font-semibold text-neutral-900">Bairro</h2>
+          <button type="button" onClick={() => setActiveChipSheet(null)}
+            aria-label="Fechar"
+            className="flex size-9 items-center justify-center rounded-full hover:bg-neutral-100">
+            <X className="size-5 text-neutral-600" />
+          </button>
+        </div>
+        <div className="flex-1 overflow-y-auto px-4 py-4">
+          <BairroFilter
+            bairros={bairroOptions}
+            groupedBairros={groupedBairroOptions}
+            selectedBairros={pendingFilters.bairros}
+            selectedCidades={pendingFilters.cidades}
+            onBairrosChange={(values) => setPendingFilters((c) => ({ ...c, bairros: values }))}
+          />
+        </div>
+        <div className="sticky bottom-0 border-t border-neutral-100 bg-white px-4 py-3 pb-safe">
+          <div className="flex gap-3">
+            {pendingFilters.bairros.length > 0 && (
+              <button type="button" onClick={() => setPendingFilters((c) => ({ ...c, bairros: [] }))}
                 className="flex-1 rounded-xl border border-neutral-200 py-3 text-sm font-medium text-neutral-600">
                 Limpar
               </button>

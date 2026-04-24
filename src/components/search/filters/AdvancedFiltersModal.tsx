@@ -20,7 +20,8 @@ import type { MultiSelectOption } from "./types"
 import { FilterSection } from "./FilterSection"
 import { EmpreendimentoFilter } from "./EmpreendimentoFilter"
 import { BedroomsFilter } from "./BedroomsFilter"
-import { LocationFilter } from "./LocationFilter"
+import { CityFilter } from "./CityFilter"
+import { BairroFilter } from "./BairroFilter"
 import { PriceFilter } from "./PriceFilter"
 import { TypeFilter } from "./TypeFilter"
 import {
@@ -157,28 +158,44 @@ export function AdvancedFiltersModal({
             </div>
           </FilterSection>
 
-          {/* Localização */}
+          {/* Cidade — dropdown dedicado (paridade com desktop SearchBar popover) */}
           <FilterSection
-            title="Localização"
+            title="Cidade"
             icon={MapPin}
-            activeCount={pendingFilters.bairros.length + pendingFilters.cidades.length}
+            activeCount={pendingFilters.cidades.length}
             selectionSummary={
-              pendingFilters.bairros.length + pendingFilters.cidades.length > 0
-                ? [...pendingFilters.cidades, ...pendingFilters.bairros].slice(0, 3).join(", ")
+              pendingFilters.cidades.length > 0
+                ? pendingFilters.cidades.slice(0, 3).join(", ")
                 : null
             }
           >
-            <LocationFilter
-              bairros={bairroOptions}
+            <CityFilter
               cidades={cidadeOptions}
+              selectedCidades={pendingFilters.cidades}
+              onCidadesChange={(values) =>
+                setPendingFilters((c) => ({ ...c, cidades: values }))
+              }
+            />
+          </FilterSection>
+
+          {/* Bairro — dropdown dedicado, filtrado pelas cidades selecionadas */}
+          <FilterSection
+            title="Bairro"
+            icon={MapPin}
+            activeCount={pendingFilters.bairros.length}
+            selectionSummary={
+              pendingFilters.bairros.length > 0
+                ? pendingFilters.bairros.slice(0, 3).join(", ")
+                : null
+            }
+          >
+            <BairroFilter
+              bairros={bairroOptions}
               groupedBairros={groupedBairroOptions}
               selectedBairros={pendingFilters.bairros}
               selectedCidades={pendingFilters.cidades}
               onBairrosChange={(values) =>
                 setPendingFilters((c) => ({ ...c, bairros: values }))
-              }
-              onCidadesChange={(values) =>
-                setPendingFilters((c) => ({ ...c, cidades: values }))
               }
             />
           </FilterSection>
