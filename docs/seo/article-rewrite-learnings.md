@@ -12,7 +12,8 @@
 | 2 | financiamento-caixa-itau-bradesco-comparativo | 23/04/2026 | `af60233` | ALTA (241 imp/0 clicks) | ✅ |
 | 3 | mercado-imobiliario-curitiba-2026 | 23/04/2026 | `dbea2d6` | P0 | ✅ |
 | 4 | itbi-curitiba-valor-como-pagar | 24/04/2026 | `94d2255` | ALTA ⭐ | ✅ |
-| 5 | preco-metro-quadrado-curitiba-bairro | 24/04/2026 | TBD | ALTA | ✅ |
+| 5 | preco-metro-quadrado-curitiba-bairro | 24/04/2026 | `67b535b` | ALTA | ✅ |
+| 6 | melhores-bairros-curitiba-2026 | 24/04/2026 | TBD | ALTA | ✅ |
 
 ---
 
@@ -208,6 +209,53 @@
 - [ ] Yield real por bairro via API Loft (pendente dos Posts 3 e 4) — viraria tabela AO VIVO
 - [ ] OG image custom pro post (Claude Design) — gráfico do ranking
 - [ ] Em 7 dias: medir delta CTR/position via GSC
+
+---
+
+---
+
+## Post 6 — Melhores Bairros Curitiba 2026 (24/04/2026)
+
+**Quarta aplicação completa da metodologia 5-agent. Primeiro pilar nascido 100% no Research Protocol v1.0 (MethodologyBox + Changelog desde o início). Primeiro post com cautela competitiva aplicada desde o brief.**
+
+### O que funcionou
+
+- **Reuso de pesquisa anterior** — dados FipeZap/Quinto Andar já validados no preco-m² não foram refeitos. Agents buscaram só critérios novos (SESP-PR, INEP, IPPUC). Economia de ~40% no tempo de pesquisa.
+- **Ranking por perfil como diferenciador** — gap mapeado pelo SEO specialist: **100% dos competidores (MySide, Quinto Andar, Loft, Larya) fazem listicle sem segmentar perfil**. FYMOOB entra com 4 rankings separados (família, jovem, aposentado, investidor). Autoridade editorial assumida.
+- **"3 bairros pra repensar" com gentileza** — seção de "melhor negativo" com fato + contexto construtivo. Exemplo: Batel pra família em 2026 (3 anos de obras pela Lei 16.361). Ausente em 100% dos concorrentes. Diferencial editorial máximo.
+- **Sweet spot único validado** — Ahú é o único bairro que bate nos 4 eixos (segurança + educação + infra + preço + valorização). Dado-estrela do lide. Encontrado pelo data specialist cruzando outputs dos outros 4.
+- **Cautela competitiva efetiva** — FYMOOB data specialist entregou **frase-modelo aprovada**: "No Batel e no Bigorrilho, mais da metade do que passa pela FYMOOB são unidades acima de 150m²" — autoridade sem expor volume absoluto. Aprendizado do Post 5 aplicado desde o brief.
+- **MethodologyBox com disclaimers obrigatórios** — SESP-PR não publica homicídios por bairro diretamente (redação agregada). IDEB por bairro é mapeamento escola→CEP, não dado oficial. Crime patrimonial absoluto distorce Centro/Portão (densidade). Transparência IFCN P2.
+- **Título com curiosity gap honesto** — "Ranking por Perfil" sinaliza metodologia. Não é clickbait ("superou Batel" que era falso), mas entrega novidade real (perfil como chave, não listicle genérico).
+
+### O que NÃO funcionou
+
+- **Ainda sem snapshot histórico de valorização** — só 1 dia de snapshot (24/04 = dia zero). Todas as valorizações vêm de FipeZap (anúncios), não de fechamentos FYMOOB. Em 90 dias poderemos ter dado próprio.
+- **Score composto simplificado** — fui com pesos iguais no ranking geral, mas a realidade é que diferentes usuários priorizam diferente. Fiz 4 rankings por perfil pra compensar, mas o ranking geral ainda é "arbitrário por simplicidade". Aceitável no primeiro ciclo.
+- **Bairros-surpresa sem foto/dado visual forte** — Bacacheri, Cascatinha e São Lourenço precisariam de imagem específica pra destacar. Post tá com imagem genérica de blog.
+- **Overlap com preço-m²** — alguns dados se repetem entre os 2 posts. Trade-off: melhor redundância legível que leitor ter que clicar 2 vezes. Internal links cross-post funcionam como alternativa.
+
+### Aprendizado pro próximo
+
+1. **Quando já tem pesquisa em post anterior, agents devem reusar explicitamente.** Diretriz pros briefs: "dados de X já validados em Y, não refazer. Só buscar novos critérios Z."
+2. **Ranking multi-critério é mais defensável que ranking único.** Proxy de transparência. Aplica a qualquer post "melhor X".
+3. **Seção "pra repensar" (melhor negativo) é o maior diferencial editorial.** 100% dos competidores evitam por medo de irritar bairro. FYMOOB ganha autoridade editorial explícita sem atacar ninguém.
+4. **Frase-modelo aprovada do FYMOOB Data Specialist** é ouro — copiar direto evita retrabalho e mantém compliance competitivo.
+5. **Cautela competitiva do usuário (Vinicius/Bruno)** — checar aprovação antes de expor qualquer dado interno novo. Aprendizado do Post 5 virou default.
+
+### Impacto esperado
+
+- CTR projetado: alto (título "Ranking por Perfil" + metodologia aberta = authoritative signal)
+- Featured snippet: candidato em "qual o melhor bairro para morar em Curitiba" (answer-first no lide + bullet perfis)
+- Internal linking: +30 links pras landings `/imoveis/[bairro]` + cross-link com preço-m², ITBI, mercado
+- E-E-A-T: metodologia declarada + autor com CRECI + fontes Tier 1 (SESP, INEP, IPPUC) + Changelog = sinal máximo YMYL
+
+### Follow-ups deste post
+
+- [ ] Imagem OG custom com top 5 e score (Claude Design)
+- [ ] Script que atualiza ranking trimestralmente (calendar trigger)
+- [ ] Após snapshot completar 90d, atualizar com valorização real (não só FipeZap)
+- [ ] Criar post derivado: "Bairros pra família com filhos pequenos em Curitiba" (pega top 5 deste + expande em 2000 palavras)
 
 ---
 
