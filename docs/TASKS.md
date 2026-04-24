@@ -1592,7 +1592,7 @@ _Nenhum bug aberto._
 | 2 | financiamento-caixa-itau-bradesco-comparativo | — | ✅ | "Melhor banco pra financiar imóvel em 2026: ranking real" (publicado 23/04, commit `af60233`) |
 | 3 | itbi-curitiba-valor-como-pagar | **ALTA ⭐** | ✅ | "Pegadinha do ITBI em Curitiba custa R$ 12 mil" (46) — publicado 24/04 com 5-agent team. Correção crítica: é STJ (não STF) Tema 1113, REsp 1.937.821/SP, Min. Gurgel de Faria, 09/03/2022. Descobriu Programa Curitiba de Volta ao Centro (LC 150/2025) + caso TJ-PR 2025 com restituição R$ 10.214 |
 | 4 | mercado-imobiliario-curitiba-2026 | **P0** | ✅ | "Imóveis em Curitiba em 2026: boom, bolha ou filtro?" (51) — publicado 23/04 com 5-agent team. Ângulo final: Ahú +12,5% (Mercês +9% era falso), Curitiba 2ª capital BR (+17,86%), Lei 16.361/2024 explica Batel |
-| 5 | preco-metro-quadrado-curitiba-bairro | **ALTA** | 📋 | "Batel lidera m² em Curitiba a R$ 15 mil em 2026 — e o 2º surpreende" (54) — pilar data-driven + 20 internal links perdidos |
+| 5 | preco-metro-quadrado-curitiba-bairro | **ALTA** | ✅ | "Preço do m² em Curitiba 2026: Batel lidera, Ahú voa" (52) — publicado 24/04 com 5-agent team. Descoberta: Campina do Siqueira = 3º no ranking (BRT Leste-Oeste). Ahú +12,5% valida virada. 30+ landings /imoveis/[bairro] linkadas (vs 4 antes) |
 | 6 | melhores-bairros-curitiba-2026 | **ALTA** | 📋 | "Juvevê dispara +11,5%: o ranking dos bairros 2026" (51) — post-pilar, 1,5/15 regras |
 | 7 | batel-vs-agua-verde-curitiba | **ALTA** | 📋 | "Batel ou Água Verde em 2026: R$ 5.700/m² separam os dois" (58) — título Q2 era falso |
 | 8 | quanto-custa-morar-batel-curitiba | **ALTA** | 📋 | "Morar no Batel em 2026: R$ 17.924/m² e 16% de alta no aluguel" (58) — claim "&gt; SP" rejeitado |
