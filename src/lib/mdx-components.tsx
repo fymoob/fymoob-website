@@ -50,10 +50,13 @@ function MethodologyBox({
       ? sources.split(",").map((s) => s.trim()).filter(Boolean)
       : []
 
+  // Formatacao ESTAVEL (deterministica server/client) pra evitar React
+  // Hydration error #418. toLocaleDateString depende de locale/timezone do
+  // runtime — pode gerar string diferente no SSR vs browser.
   const formatDate = (d?: string) => {
     if (!d) return null
-    const date = new Date(d)
-    return isNaN(date.getTime()) ? d : date.toLocaleDateString("pt-BR")
+    const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(d)
+    return match ? `${match[3]}/${match[2]}/${match[1]}` : d
   }
 
   return (
@@ -120,10 +123,11 @@ function Changelog({ entries }: { entries?: ChangelogEntry[] }) {
   // Lista o QUE mudou, não só QUANDO. Padrão Reuters + IFCN.
   if (!entries || !Array.isArray(entries) || entries.length === 0) return null
 
+  // Formatacao ESTAVEL pra evitar hydration error #418.
   const formatDate = (d?: string) => {
     if (!d) return ""
-    const date = new Date(d)
-    return isNaN(date.getTime()) ? d : date.toLocaleDateString("pt-BR")
+    const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(d)
+    return match ? `${match[3]}/${match[2]}/${match[1]}` : d
   }
 
   return (
