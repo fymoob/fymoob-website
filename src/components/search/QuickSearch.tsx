@@ -42,22 +42,22 @@ const STEPS_COMPRAR = [0, 200000, 300000, 500000, 750000, 1000000, 1500000, 2000
 const STEPS_ALUGAR = [0, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 7500, 10000, 25000]
 
 /* ── Location Picker (full-screen autocomplete) ── */
-function LocationPicker({
+/* ── City Picker (multi-select, full-screen) ── */
+function CidadePicker({
   bairroSummaries,
   selected,
   finalidade,
-  onSelect,
+  onChange,
   onClose,
 }: {
   bairroSummaries: BairroSummary[]
-  selected: string
+  selected: string[]
   finalidade: "comprar" | "alugar" | "lancamentos"
-  onSelect: (bairro: string) => void
+  onChange: (cidades: string[]) => void
   onClose: () => void
 }) {
   const [query, setQuery] = useState("")
 
-  // Cidades com contagens filtradas por finalidade (mesma logica do desktop)
   const cities = useMemo(() => {
     const map = new Map<string, number>()
     for (const bs of bairroSummaries) {
@@ -71,65 +71,42 @@ function LocationPicker({
       .sort((a, b) => b.count - a.count)
   }, [bairroSummaries, finalidade])
 
-  // Bairros agrupados por cidade (paridade com desktop GroupedBairroOptions).
-  // Dentro de cada grupo: bairros ordenados por count desc. Grupos ordenados
-  // por cidade com mais imoveis primeiro.
-  const groupedByCity = useMemo(() => {
-    const map = new Map<string, { bairro: string; count: number }[]>()
-    for (const bs of bairroSummaries) {
-      const count = getCountForFinalidade(bs.porFinalidade, bs.total, finalidade)
-      if (count === 0) continue
-      const c = bs.cidade || "Outros"
-      if (!map.has(c)) map.set(c, [])
-      map.get(c)!.push({ bairro: bs.bairro, count })
-    }
-    const cityOrder = cities.map((c) => c.label)
-    return cityOrder
-      .filter((c) => map.has(c))
-      .map((cidade) => ({
-        cidade,
-        bairros: map.get(cidade)!.sort((a, b) => b.count - a.count),
-      }))
-  }, [bairroSummaries, finalidade, cities])
-
-  const isSearching = query.trim().length > 0
-
-  // Resultados de busca: cidades + bairros matching, em 2 grupos separados.
-  const searchResults = useMemo(() => {
-    if (!isSearching) return { cidades: [] as typeof cities, grupos: [] as typeof groupedByCity }
+  const filtered = useMemo(() => {
     const q = normalize(query.trim())
-    const matchedCidades = cities.filter((c) => normalize(c.label).includes(q))
-    const matchedGrupos = groupedByCity
-      .map((group) => ({
-        ...group,
-        bairros: group.bairros.filter(
-          (b) =>
-            normalize(b.bairro).includes(q) || normalize(group.cidade).includes(q)
-        ),
-      }))
-      .filter((group) => group.bairros.length > 0)
-    return { cidades: matchedCidades, grupos: matchedGrupos }
-  }, [cities, groupedByCity, isSearching, query])
+    if (!q) return cities
+    return cities.filter((c) => normalize(c.label).includes(q))
+  }, [cities, query])
 
-  const hasSearchResults =
-    searchResults.cidades.length > 0 || searchResults.grupos.length > 0
+  const toggle = (label: string) => {
+    if (selected.includes(label)) onChange(selected.filter((s) => s !== label))
+    else onChange([...selected, label])
+  }
 
   return (
     <div className="fixed inset-0 z-[10000] flex flex-col bg-white">
-      {/* Header */}
       <div className="flex shrink-0 items-center justify-between border-b border-neutral-100 px-4 py-4">
-        <button type="button" onClick={onClose} aria-label="Fechar busca" className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-neutral-100">
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Fechar"
+          className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-neutral-100"
+        >
           <X className="size-5 text-neutral-600" />
         </button>
-        <p className="font-display text-base font-bold text-neutral-900">Localização</p>
-        {selected ? (
-          <button type="button" onClick={() => { onSelect(""); onClose() }} className="text-xs font-medium text-brand-primary">Limpar</button>
+        <p className="font-display text-base font-bold text-neutral-900">Cidade</p>
+        {selected.length > 0 ? (
+          <button
+            type="button"
+            onClick={() => onChange([])}
+            className="text-xs font-medium text-brand-primary"
+          >
+            Limpar
+          </button>
         ) : (
           <div className="w-9" />
         )}
       </div>
 
-      {/* Search input */}
       <div className="border-b border-neutral-100 px-4 py-3">
         <div className="relative">
           <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
@@ -137,7 +114,7 @@ function LocationPicker({
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Digite uma cidade ou bairro..."
+            placeholder="Buscar cidade..."
             className="w-full rounded-lg bg-neutral-100 py-3 pl-10 pr-10 text-sm text-neutral-900 outline-none focus:ring-2 focus:ring-brand-primary"
             autoFocus
           />
@@ -154,124 +131,253 @@ function LocationPicker({
         </div>
       </div>
 
-      {/* Results */}
       <div className="flex-1 overflow-y-auto overscroll-contain">
-        {!isSearching && (
-          <>
-            {/* Cidades disponiveis — permite filtrar cidade inteira */}
-            {cities.length > 0 && (
-              <section>
-                <p className="bg-neutral-50 px-5 py-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
-                  Cidades disponíveis
-                </p>
-                {cities.map((city) => (
-                  <button
-                    key={city.label}
-                    type="button"
-                    onClick={() => {
-                      onSelect(city.label)
-                      onClose()
-                    }}
-                    className="flex w-full items-center gap-3 border-b border-neutral-50 px-5 py-3.5 text-left text-sm text-neutral-700 hover:bg-neutral-50"
-                  >
-                    <MapPin className="size-4 shrink-0 text-brand-primary" />
-                    <span className="flex-1 font-medium text-neutral-900">
-                      {city.label}
-                    </span>
-                    <span className="text-xs text-neutral-400">
-                      {city.count} {city.count === 1 ? "imóvel" : "imóveis"}
-                    </span>
-                  </button>
-                ))}
-              </section>
-            )}
-
-            {/* Bairros agrupados por cidade */}
-            {groupedByCity.map((group) => (
-              <section key={group.cidade}>
-                <p className="bg-neutral-50 px-5 py-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
-                  Bairros em {group.cidade}
-                </p>
-                {group.bairros.map((b) => (
-                  <button
-                    key={`${group.cidade}-${b.bairro}`}
-                    type="button"
-                    onClick={() => {
-                      onSelect(b.bairro)
-                      onClose()
-                    }}
-                    className="flex w-full items-center gap-3 border-b border-neutral-50 px-5 py-3.5 text-left text-sm text-neutral-700 hover:bg-neutral-50"
-                  >
-                    <MapPin className="size-4 shrink-0 text-neutral-400" />
-                    <span className="flex-1 text-neutral-900">{b.bairro}</span>
-                    <span className="text-xs text-neutral-400">{b.count}</span>
-                  </button>
-                ))}
-              </section>
-            ))}
-          </>
-        )}
-
-        {isSearching && hasSearchResults && (
-          <>
-            {searchResults.cidades.length > 0 && (
-              <section>
-                <p className="bg-neutral-50 px-5 py-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
-                  Cidades
-                </p>
-                {searchResults.cidades.map((city) => (
-                  <button
-                    key={city.label}
-                    type="button"
-                    onClick={() => {
-                      onSelect(city.label)
-                      onClose()
-                    }}
-                    className="flex w-full items-center gap-3 border-b border-neutral-50 px-5 py-3.5 text-left text-sm hover:bg-neutral-50"
-                  >
-                    <MapPin className="size-4 shrink-0 text-brand-primary" />
-                    <span className="flex-1 font-medium text-neutral-900">
-                      {city.label}
-                    </span>
-                    <span className="text-xs text-neutral-400">
-                      {city.count} {city.count === 1 ? "imóvel" : "imóveis"}
-                    </span>
-                  </button>
-                ))}
-              </section>
-            )}
-
-            {searchResults.grupos.map((group) => (
-              <section key={group.cidade}>
-                <p className="bg-neutral-50 px-5 py-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
-                  Bairros em {group.cidade}
-                </p>
-                {group.bairros.map((b) => (
-                  <button
-                    key={`${group.cidade}-${b.bairro}`}
-                    type="button"
-                    onClick={() => {
-                      onSelect(b.bairro)
-                      onClose()
-                    }}
-                    className="flex w-full items-center gap-3 border-b border-neutral-50 px-5 py-3.5 text-left text-sm hover:bg-neutral-50"
-                  >
-                    <MapPin className="size-4 shrink-0 text-neutral-400" />
-                    <span className="flex-1 text-neutral-900">{b.bairro}</span>
-                    <span className="text-xs text-neutral-400">{b.count}</span>
-                  </button>
-                ))}
-              </section>
-            ))}
-          </>
-        )}
-
-        {isSearching && !hasSearchResults && (
+        {filtered.length === 0 ? (
           <div className="px-5 py-10 text-center">
-            <p className="text-sm text-neutral-400">Nenhuma localização encontrada</p>
-            <p className="mt-1 text-xs text-neutral-300">Tente outro nome</p>
+            <p className="text-sm text-neutral-400">Nenhuma cidade encontrada</p>
           </div>
+        ) : (
+          filtered.map((city) => {
+            const isSelected = selected.includes(city.label)
+            return (
+              <button
+                key={city.label}
+                type="button"
+                onClick={() => toggle(city.label)}
+                className={`flex w-full items-center gap-3 border-b border-neutral-50 px-5 py-4 text-left text-sm transition ${
+                  isSelected
+                    ? "bg-brand-primary/5 font-semibold text-brand-primary"
+                    : "text-neutral-700 hover:bg-neutral-50"
+                }`}
+              >
+                <div
+                  className={`flex size-5 shrink-0 items-center justify-center rounded border-2 transition ${
+                    isSelected ? "border-brand-primary bg-brand-primary" : "border-neutral-300"
+                  }`}
+                >
+                  {isSelected && (
+                    <svg
+                      className="size-3 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={3}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </div>
+                <span className="flex-1">{city.label}</span>
+                <span className="text-xs text-neutral-400">
+                  {city.count} {city.count === 1 ? "imóvel" : "imóveis"}
+                </span>
+              </button>
+            )
+          })
         )}
+      </div>
+
+      <div className="shrink-0 border-t border-neutral-100 bg-white px-5 py-4">
+        <button
+          type="button"
+          onClick={onClose}
+          className="flex w-full items-center justify-center rounded-full bg-brand-primary py-3.5 text-sm font-semibold text-white transition hover:bg-brand-primary-hover"
+        >
+          {selected.length > 0
+            ? `Confirmar (${selected.length} ${selected.length === 1 ? "cidade" : "cidades"})`
+            : "Todas as cidades"}
+        </button>
+      </div>
+    </div>
+  )
+}
+
+/* ── Bairro Picker (multi-select, filtrado pelas cidades selecionadas) ── */
+function BairroPicker({
+  bairroSummaries,
+  selected,
+  cidadesSel,
+  finalidade,
+  onChange,
+  onClose,
+}: {
+  bairroSummaries: BairroSummary[]
+  selected: string[]
+  cidadesSel: string[]
+  finalidade: "comprar" | "alugar" | "lancamentos"
+  onChange: (bairros: string[]) => void
+  onClose: () => void
+}) {
+  const [query, setQuery] = useState("")
+
+  // Bairros agrupados por cidade. Se alguma cidade esta selecionada, mostra
+  // apenas bairros dessas cidades. Caso contrario, mostra todos agrupados.
+  const groupedByCity = useMemo(() => {
+    const map = new Map<string, { bairro: string; count: number }[]>()
+    for (const bs of bairroSummaries) {
+      const count = getCountForFinalidade(bs.porFinalidade, bs.total, finalidade)
+      if (count === 0) continue
+      const c = bs.cidade || "Outros"
+      if (cidadesSel.length > 0 && !cidadesSel.includes(c)) continue
+      if (!map.has(c)) map.set(c, [])
+      map.get(c)!.push({ bairro: bs.bairro, count })
+    }
+    const entries = Array.from(map.entries())
+    // Ordena cidades por volume total, bairros dentro da cidade por count desc
+    return entries
+      .map(([cidade, bairros]) => ({
+        cidade,
+        totalCount: bairros.reduce((acc, b) => acc + b.count, 0),
+        bairros: bairros.sort((a, b) => b.count - a.count),
+      }))
+      .sort((a, b) => b.totalCount - a.totalCount)
+  }, [bairroSummaries, finalidade, cidadesSel])
+
+  const filteredGroups = useMemo(() => {
+    const q = normalize(query.trim())
+    if (!q) return groupedByCity
+    return groupedByCity
+      .map((group) => ({
+        ...group,
+        bairros: group.bairros.filter(
+          (b) =>
+            normalize(b.bairro).includes(q) || normalize(group.cidade).includes(q)
+        ),
+      }))
+      .filter((group) => group.bairros.length > 0)
+  }, [groupedByCity, query])
+
+  const toggle = (label: string) => {
+    if (selected.includes(label)) onChange(selected.filter((s) => s !== label))
+    else onChange([...selected, label])
+  }
+
+  return (
+    <div className="fixed inset-0 z-[10000] flex flex-col bg-white">
+      <div className="flex shrink-0 items-center justify-between border-b border-neutral-100 px-4 py-4">
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Fechar"
+          className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-neutral-100"
+        >
+          <X className="size-5 text-neutral-600" />
+        </button>
+        <p className="font-display text-base font-bold text-neutral-900">Bairro</p>
+        {selected.length > 0 ? (
+          <button
+            type="button"
+            onClick={() => onChange([])}
+            className="text-xs font-medium text-brand-primary"
+          >
+            Limpar
+          </button>
+        ) : (
+          <div className="w-9" />
+        )}
+      </div>
+
+      <div className="border-b border-neutral-100 px-4 py-3">
+        <div className="relative">
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Buscar bairro..."
+            className="w-full rounded-lg bg-neutral-100 py-3 pl-10 pr-10 text-sm text-neutral-900 outline-none focus:ring-2 focus:ring-brand-primary"
+            autoFocus
+          />
+          {query && (
+            <button
+              type="button"
+              onClick={() => setQuery("")}
+              aria-label="Limpar texto"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400"
+            >
+              <X className="size-4" />
+            </button>
+          )}
+        </div>
+        {cidadesSel.length > 0 && (
+          <p className="mt-2 text-xs text-neutral-500">
+            Mostrando bairros de: {cidadesSel.join(", ")}
+          </p>
+        )}
+      </div>
+
+      <div className="flex-1 overflow-y-auto overscroll-contain">
+        {filteredGroups.length === 0 ? (
+          <div className="px-5 py-10 text-center">
+            <p className="text-sm text-neutral-400">Nenhum bairro encontrado</p>
+            {cidadesSel.length > 0 && (
+              <p className="mt-1 text-xs text-neutral-400">
+                Tente remover o filtro de cidade pra ver mais opções.
+              </p>
+            )}
+          </div>
+        ) : (
+          filteredGroups.map((group) => (
+            <section key={group.cidade}>
+              <p className="bg-neutral-50 px-5 py-2 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
+                {group.cidade}
+              </p>
+              {group.bairros.map((b) => {
+                const isSelected = selected.includes(b.bairro)
+                return (
+                  <button
+                    key={`${group.cidade}-${b.bairro}`}
+                    type="button"
+                    onClick={() => toggle(b.bairro)}
+                    className={`flex w-full items-center gap-3 border-b border-neutral-50 px-5 py-4 text-left text-sm transition ${
+                      isSelected
+                        ? "bg-brand-primary/5 font-semibold text-brand-primary"
+                        : "text-neutral-700 hover:bg-neutral-50"
+                    }`}
+                  >
+                    <div
+                      className={`flex size-5 shrink-0 items-center justify-center rounded border-2 transition ${
+                        isSelected
+                          ? "border-brand-primary bg-brand-primary"
+                          : "border-neutral-300"
+                      }`}
+                    >
+                      {isSelected && (
+                        <svg
+                          className="size-3 text-white"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={3}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      )}
+                    </div>
+                    <span className="flex-1">{b.bairro}</span>
+                    <span className="text-xs text-neutral-400">{b.count}</span>
+                  </button>
+                )
+              })}
+            </section>
+          ))
+        )}
+      </div>
+
+      <div className="shrink-0 border-t border-neutral-100 bg-white px-5 py-4">
+        <button
+          type="button"
+          onClick={onClose}
+          className="flex w-full items-center justify-center rounded-full bg-brand-primary py-3.5 text-sm font-semibold text-white transition hover:bg-brand-primary-hover"
+        >
+          {selected.length > 0
+            ? `Confirmar (${selected.length} ${selected.length === 1 ? "bairro" : "bairros"})`
+            : "Todos os bairros"}
+        </button>
       </div>
     </div>
   )
@@ -382,14 +488,19 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [finalidade, setFinalidade] = useState<"comprar" | "alugar" | "lancamentos">("comprar")
-  const [locationSel, setLocationSel] = useState("")   // single select (bairro or cidade name)
+  // Multi-select de cidade e bairro (paridade com desktop). Cada dropdown
+  // e independente. Bairro e filtrado pelas cidades selecionadas quando ha
+  // alguma marcada — se nenhuma cidade esta selecionada, todos os bairros
+  // aparecem agrupados por cidade.
+  const [cidadesSel, setCidadesSel] = useState<string[]>([])
+  const [bairrosSel, setBairrosSel] = useState<string[]>([])
   const [tiposSel, setTiposSel] = useState<string[]>([])
   const [quartos, setQuartos] = useState("")
   const [precoMin, setPrecoMin] = useState(0)
   const [precoMax, setPrecoMax] = useState(0)
   const [codigo, setCodigo] = useState("")
   const [mounted, setMounted] = useState(false)
-  const [picker, setPicker] = useState<"location" | "tipo" | null>(null)
+  const [picker, setPicker] = useState<"cidade" | "bairro" | "tipo" | null>(null)
 
   useEffect(() => { setMounted(true) }, [])
 
@@ -427,12 +538,14 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
       )
     }
 
-    // Filter by location
-    if (locationSel) {
-      const locSlug = slugify(locationSel)
-      const matchingBairros = bairroSummaries.filter((bs) =>
-        slugify(bs.bairro) === locSlug || slugify(bs.cidade) === locSlug
-      )
+    // Filter by location (cidades OR bairros selecionados)
+    const hasLocationFilter = cidadesSel.length > 0 || bairrosSel.length > 0
+    if (hasLocationFilter) {
+      const matchingBairros = bairroSummaries.filter((bs) => {
+        const cidadeMatch = cidadesSel.length > 0 && cidadesSel.includes(bs.cidade)
+        const bairroMatch = bairrosSel.length > 0 && bairrosSel.includes(bs.bairro)
+        return cidadeMatch || bairroMatch
+      })
       if (matchingBairros.length > 0) {
         const validTypes = new Set<string>()
         for (const bs of matchingBairros) {
@@ -449,9 +562,16 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
       }))
       .filter((t) => t.count > 0)
       .sort((a, b) => a.label.localeCompare(b.label, "pt-BR"))
-  }, [tipoSummaries, bairroSummaries, finalidade, locationSel])
+  }, [tipoSummaries, bairroSummaries, finalidade, cidadesSel, bairrosSel])
 
-  const activeFilters = [locationSel ? "1" : "", tiposSel.length > 0 ? "1" : "", quartos, (precoMin > 0 || precoMax > 0) ? "1" : "", codigo ? "1" : ""].filter(Boolean).length
+  const activeFilters = [
+    cidadesSel.length > 0 ? "1" : "",
+    bairrosSel.length > 0 ? "1" : "",
+    tiposSel.length > 0 ? "1" : "",
+    quartos,
+    (precoMin > 0 || precoMax > 0) ? "1" : "",
+    codigo ? "1" : "",
+  ].filter(Boolean).length
 
   const handleSearch = useCallback(() => {
     // Busca por codigo tem prioridade: ignora outros filtros e vai direto
@@ -466,11 +586,8 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
     }
     const params = new URLSearchParams()
     if (finalidade === "lancamentos") {
-      if (locationSel) {
-        const isBairro = bairroSummaries.some((bs) => bs.bairro === locationSel)
-        if (isBairro) params.set("bairro", slugify(locationSel))
-        else params.set("cidade", slugify(locationSel))
-      }
+      if (cidadesSel.length > 0) params.set("cidade", cidadesSel.map(slugify).join(","))
+      if (bairrosSel.length > 0) params.set("bairro", bairrosSel.map(slugify).join(","))
       if (tiposSel.length > 0) params.set("tipo", tiposSel.map(slugify).join(","))
       if (quartos) params.set("quartos", quartos)
       if (precoMin > 0) params.set("precoMin", precoMin.toString())
@@ -482,22 +599,20 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
     }
     if (finalidade === "alugar") params.set("finalidade", "locacao")
     else params.set("finalidade", "venda")
-    if (locationSel) {
-      const isBairro = bairroSummaries.some((bs) => bs.bairro === locationSel)
-      if (isBairro) params.set("bairro", slugify(locationSel))
-      else params.set("cidade", slugify(locationSel))
-    }
+    if (cidadesSel.length > 0) params.set("cidade", cidadesSel.map(slugify).join(","))
+    if (bairrosSel.length > 0) params.set("bairro", bairrosSel.map(slugify).join(","))
     if (tiposSel.length > 0) params.set("tipo", tiposSel.map(slugify).join(","))
     if (quartos) params.set("quartos", quartos)
     if (precoMin > 0) params.set("precoMin", precoMin.toString())
     if (precoMax > 0) params.set("precoMax", precoMax.toString())
     setOpen(false)
     router.push(`/busca?${params.toString()}`)
-  }, [finalidade, locationSel, tiposSel, quartos, precoMin, precoMax, codigo, router, bairroSummaries])
+  }, [finalidade, cidadesSel, bairrosSel, tiposSel, quartos, precoMin, precoMax, codigo, router])
 
   const clearAll = () => {
     setFinalidade("comprar")
-    setLocationSel("")
+    setCidadesSel([])
+    setBairrosSel([])
     setTiposSel([])
     setQuartos("")
     setPrecoMin(0)
@@ -546,17 +661,43 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
             </div>
           </div>
 
-          {/* Localização — tap to open autocomplete */}
+          {/* Cidade — dropdown multi-select (paridade com desktop) */}
           <div>
             <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-neutral-900">
               <MapPin className="size-4 text-brand-primary" />
-              Localização
+              Cidade
             </label>
-            <button type="button" onClick={() => setPicker("location")} className={selectorBtn}>
-              <span className={locationSel ? "text-neutral-900" : "text-neutral-400"}>
-                {locationSel || "Buscar cidade ou bairro"}
+            <button type="button" onClick={() => setPicker("cidade")} className={selectorBtn}>
+              <span className={cidadesSel.length > 0 ? "text-neutral-900" : "text-neutral-400"}>
+                {cidadesSel.length === 0
+                  ? "Todas as cidades"
+                  : cidadesSel.length === 1
+                    ? cidadesSel[0]
+                    : `${cidadesSel.length} cidades`}
               </span>
-              <span className="text-xs text-brand-primary">{locationSel ? "Alterar" : "Buscar"}</span>
+              <span className="text-xs text-brand-primary">
+                {cidadesSel.length > 0 ? "Alterar" : "Escolher"}
+              </span>
+            </button>
+          </div>
+
+          {/* Bairro — dropdown multi-select, filtrado pelas cidades selecionadas */}
+          <div>
+            <label className="mb-2 flex items-center gap-2 text-sm font-semibold text-neutral-900">
+              <MapPin className="size-4 text-brand-primary" />
+              Bairro
+            </label>
+            <button type="button" onClick={() => setPicker("bairro")} className={selectorBtn}>
+              <span className={bairrosSel.length > 0 ? "text-neutral-900" : "text-neutral-400"}>
+                {bairrosSel.length === 0
+                  ? "Todos os bairros"
+                  : bairrosSel.length === 1
+                    ? bairrosSel[0]
+                    : `${bairrosSel.length} bairros`}
+              </span>
+              <span className="text-xs text-brand-primary">
+                {bairrosSel.length > 0 ? "Alterar" : "Escolher"}
+              </span>
             </button>
           </div>
 
@@ -658,12 +799,22 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
       </div>
 
       {/* Sub-pickers */}
-      {picker === "location" && (
-        <LocationPicker
+      {picker === "cidade" && (
+        <CidadePicker
           bairroSummaries={bairroSummaries}
-          selected={locationSel}
+          selected={cidadesSel}
           finalidade={finalidade}
-          onSelect={setLocationSel}
+          onChange={setCidadesSel}
+          onClose={() => setPicker(null)}
+        />
+      )}
+      {picker === "bairro" && (
+        <BairroPicker
+          bairroSummaries={bairroSummaries}
+          selected={bairrosSel}
+          cidadesSel={cidadesSel}
+          finalidade={finalidade}
+          onChange={setBairrosSel}
           onClose={() => setPicker(null)}
         />
       )}
