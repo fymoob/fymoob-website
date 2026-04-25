@@ -22,6 +22,7 @@
 | 12 | custo-de-vida-curitiba | 25/04/2026 | `ebba8fb` | ALTA | ✅ |
 | 13 | melhores-bairros-familias-curitiba | 25/04/2026 | `e8b9319` | ALTA | ✅ |
 | 14 | imovel-planta-vs-pronto-curitiba | 25/04/2026 | `87df1f9` | ALTA | ✅ |
+| 15 | apartamento-ou-casa-curitiba | 25/04/2026 | TBD | MÉDIA | ✅ |
 
 ---
 
@@ -461,6 +462,68 @@
 - [ ] **🚨 URGENTE:** atualizar `scripts/research/snapshot-crm-daily.mjs` linhas 48-70 — incluir `Situacao`, `Lancamento`, `Construtora`, `Empreendimento`, `AnoConstrucao` no array de fields. Próximo post de planta/pronto/lançamento precisará desses dados.
 - [ ] Atualizar Post 4 ITBI com LC 150/2025 + Decreto 421/2026 (R$ 163 mi incentivos, ITBI 1-2%) — Pre-Verifier sinalizou
 - [ ] Tracking trimestral pra revisão jul/2026: INCC-DI nova leitura, spread FYMOOB nova mediana, status Thá Engenharia (saída RJ?), pacificação STJ 3ª vs 4ª Turma, edital subsídio LC 150/2025
+
+---
+
+## Post 15 — Apartamento ou Casa em Curitiba (25/04/2026) — ÚLTIMO POST DA SÉRIE
+
+**Encerramento da série de reescrita dos 15 posts ativos.** 6-agent team (Macro + Local + FYMOOB Data + SEO + Pre-Verifier + Final-Verifier) — pipeline maduro do Post 12 em diante.
+
+### O que funcionou
+
+- **Hook IBGE PNAD 2026** (60% casas / 40% aptos CWB, divulgado 17/04/2026) virou número-âncora do título — diferencial forte vs concorrentes que usam dados antigos
+- **Spread CRM FYMOOB MESMO bairro:**
+  - Portão: casa +42% sobre apto (n=11+5)
+  - Água Verde: casa -23% valor / apto +176% R$/m² (sample diferente — qualifier obrigatório)
+  - Quebra "regra geral" de que casa é mais barata
+- **Custos invisíveis casa em CWB amortizados mensalmente** (R$ 1.000-3.500/mês — pintura externa R$ 5-12k, telhado R$ 15-30k, jardim R$ 200-600/mês, sistema elétrico após 20 anos R$ 5-15k) — diferencial vs concorrentes que só citam condomínio do apto
+- **STJ REsp 1.783.076 sobre pets** (mai/2019, não 2026 como Local doc afirmava) — Pre-Verifier pegou data
+- **Anti-canibalização perfeita:** Post 5 (m²), 6 (melhores), 12 (custo), 13 (família), 14 (planta-vs-pronto) cobrem outros ângulos. Este foca em DECISÃO tipo de imóvel.
+- **Final Verifier APROVOU sem bloqueios** — 13/13 claims numéricos confirmados.
+
+### O que NÃO funcionou
+
+- **Local doc afirmou "STJ pacificou em 2026"** — erro de data. STJ pacificou em **maio/2019**. Pre-Verifier pegou via WebFetch.
+- **Local doc afirmou "Lei do Silêncio 2026 sancionada"** — está em **tramitação**, Lei 10.625/2002 é a base atual. Pre-Verifier pegou.
+- **Local doc afirmou "Lei Lili 16.674/2026 regula condomínios"** — regula **espaços públicos**, não condomínios. Pre-Verifier pegou.
+- **Writer escreveu 3.461 palavras** vs alvo 2.500-3.000. Tabelas + FAQ inflam, mas prosa pura está dentro.
+
+### Aprendizado pro próximo
+
+- **Pre-Verifier deve sempre revalidar DATA de jurisprudência STJ/STF** — é fácil errar (Local errou 3 vezes neste post). Adicionar regra ao prompt do Pre-Verifier: "toda jurisprudência DEVE ter data revalidada via WebFetch STJ.jus.br".
+- **Pre-Verifier deve verificar status legislativo (sancionada vs em tramitação)** — Local achou "Lei do Silêncio 2026" sancionada quando estava em tramitação. Adicionar regra: "todo claim 'Lei X de 2026' DEVE ser verificado em Câmara Municipal/Senado/Planalto".
+- **Lei Lili 16.674/2026** ensina: nome de lei nunca é suficiente — sempre validar **escopo real** da lei.
+
+### Impacto esperado
+
+- Query-alvo: "casa ou apartamento curitiba" — volume 1.000-3.000/mês (mid-funnel)
+- KD ~22 (médio), janela captura 8-16 semanas
+- Diferencial: spread CRM por bairro + custos invisíveis casa + IBGE PNAD 2026 + STJ pets correto
+- AI Overview play: zero concorrente cita Loft condomínio mediano R$ 587 + spread MESMO bairro
+
+### Encerramento da série de 15 posts
+
+**Stats finais da série:**
+- 15/15 posts reescritos (100%) entre 23/04 e 25/04/2026
+- 0 endossos nominais de construtora restantes (audit retroativo + remoção em 3 posts)
+- 90+ docs de research em `docs/research/`
+- 7 scripts de pesquisa em `scripts/research/`
+- Pipeline maduro: 4-7 agents → Pre-Verifier → Writer → Final-Verifier
+- 100% dos posts com fontes Tier 1 ancoradas inline
+- 100% dos posts com Frontmatter YMYL completo (updatedAt + reviewedBy + nextReview)
+- 100% dos posts com Changelog
+- Próxima revisão: 2026-07-25 (trimestral pra YMYL Money) e 2026-10-25 (anual pra MÉDIA)
+
+### Follow-ups deste post + da série
+
+- [ ] Atualizar `scripts/research/snapshot-crm-daily.mjs` pra incluir Situacao/Lancamento/Construtora/Empreendimento/AnoConstrucao (Post 14 sinalizou)
+- [ ] Atualizar Post 4 ITBI com LC 150/2025 + Decreto 421/2026 (Post 14 sinalizou)
+- [ ] Adicionar inbound links de Post 5 (`batel-vs-agua-verde`) e Post 13 (`mercado-imobiliario`) pra Post 15 (Final Verifier sinalizou)
+- [ ] Audit retroativo Post 6 — distância Pequeno Príncipe → Bacacheri "10 min" deveria ser "15-25 min" (Post 13 sinalizou)
+- [ ] Tracking trimestral 2026-07-25: revisitar todos os 15 posts com nextReview marcado
+- [ ] Adicionar regra R-12 ao Manual Editorial: "Endereço/data de instituição/lei = WebFetch site oficial, nunca blog agregador"
+- [ ] Adicionar regra R-13: "Toda jurisprudência STJ/STF DEVE ter data e número de processo revalidados em fonte oficial"
+- [ ] Adicionar regra R-14: "Toda lei citada DEVE ter status (sancionada/em tramitação) verificado em Câmara/Senado/Planalto"
 
 ---
 

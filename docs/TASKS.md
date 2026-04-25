@@ -1574,9 +1574,14 @@ _Nenhum bug aberto._
 
 ##### 10.6.1.a — Revisão completa dos 15 posts existentes (agent teams 23/04/2026)
 
-> **Status:** 13 agent teams concluídos em 23/04. Relatórios em
-> `docs/research/article-reviews/<slug>.md` com auditoria YMYL +
-> estrutural vs Manual Editorial + títulos validados.
+> **Status:** ✅ **CONCLUÍDA 25/04/2026** — 15/15 posts reescritos seguindo
+> FYMOOB Research Protocol v1.0. Todos publicados, validados em build
+> local (589 páginas estáticas), zero endosso nominal de construtora.
+>
+> Pipeline final maduro: 4-7 agents pesquisa em paralelo + Pre-Verifier
+> + Writer + Final YMYL Verifier. Variantes testadas: 5-agent (Posts 3-9),
+> 6-agent com Pre-Verifier (Posts 12-13, 15), 7-agent com Legal Specialist
+> (Post 14 risco jurídico).
 >
 > **Achado crítico:** **11 dos 13 títulos sugeridos na Estratégia Q2
 > foram REJEITADOS** por clickbait sem prova factual (ex: "Batel perde
@@ -1602,7 +1607,7 @@ _Nenhum bug aberto._
 | 12 | documentos-comprar-imovel-curitiba | **ALTA** | ✅ | "Documentos pra Comprar Imóvel em Curitiba: Guia Completo 2026" — publicado 24/04 com 5-agent team adaptado (Legal + Structure + Writer + SEO + YMYL). Organização única por 5 órgãos emissores (vs "por parte" dos concorrentes). Hook: Certidão Negativa de Imóveis da Prefeitura ≠ IPTU pago (trava escritura). 4 erros factuais corrigidos pelo Verifier: 9 Ofícios (não 8), nome oficial do documento-âncora, e-Notariado opcional, base legal LGPD é execução de contrato. Tabela completa dos 9 ofícios com endereço + telefone. |
 | 13 | melhores-bairros-familias-curitiba | **ALTA** | ✅ | "Melhores Bairros de Curitiba para Famílias 2026" (48) — publicado 25/04 com 6-agent team (Education+Safety / Lifestyle / FYMOOB Data / SEO / Pre-Verifier / Final-Verifier). 13 claims numéricos confirmados Tier 1. Hooks únicos: 3.444 fila CMEI (Tatuquara 822, CIC 757), Cajuru top 1 IDEB mas 6º mais perigoso, distância Pequeno Príncipe→Bacacheri 15-25 min (não 10), Lei 16.492/2025 vale-creche R$ 1.000/mês, Lei cadeirinha NÃO se aplica a Uber/táxi. 7 endereços de instituições corrigidos (Pequeno Príncipe=Água Verde, Sion=Batel, Positivo=CIC, MON=Centro Cívico, Bom Jesus DP=Ahú, Marista=São Lourenço, Militar=Tarumã). Anti-canibalização vs Post 6: família-only com 5 critérios + 5 perfis-idade + 4 faixas orçamento. |
 | 14 | imovel-planta-vs-pronto-curitiba | **ALTA** | ✅ | "Planta ou Pronto em Curitiba: Guia de Decisão 2026" (51) — publicado 25/04 com 7-agent team (Macro + Local + FYMOOB Data + SEO + **Legal Specialist** + Pre-Verifier + Final-Verifier). 28/28 claims numéricos confirmados Tier 1. Hooks únicos: INCC-DI 5,86% mar/2026 (FGV), spread INVERTIDO em CWB (Cidade Industrial planta +24,2%, Portão -9,6%), NBR 17170:2022 garantias por subsistema (5/3/1 anos, NÃO "5 genérico"), Lei 13.786/2018 distrato + STJ tensão 3ª vs 4ª Turma não pacificada, LC 150/2025 + Decreto 421/2026 (R$ 163 mi, ITBI 1-2% até 2032). **ZERO endosso nominal de construtora** (Thá em RJ 2019-2026 R$ 350 mi confirmou risco). Substituiu lista nominal por seção "Como verificar construtora em 5 passos". |
-| 15 | apartamento-ou-casa-curitiba | **MÉDIA** | 📋 | "Casa ou apartamento em Curitiba? 67% já decidiram em 2026" (58) — dado Inpespar validado |
+| 15 | apartamento-ou-casa-curitiba | **MÉDIA** | ✅ | "Casa ou Apartamento em Curitiba? 60% Mora em Casa" (50) — publicado 25/04 com 6-agent team (Macro + Local + FYMOOB Data + SEO + Pre-Verifier + Final-Verifier). 13/13 claims numéricos top confirmados Tier 1. Hooks únicos: IBGE PNAD 2026 (60% casas / 40% aptos CWB), aptos +96,79% em 22 anos vs casas +18,02%, FipeZap CWB R$ 11.621/m² +6,52% em 2025, FYMOOB CRM (apto R$ 13.043/m² vs casa avulsa R$ 4.732/m²), spread Portão casa +42% sobre apto, Loft condomínio mediano R$ 587. Pre-Verifier corrigiu 3 erros: STJ é mai/2019 (não 2026), Lei do Silêncio 2026 NÃO sancionada (Lei 10.625/2002 é base), Lei Lili 16.674/2026 regula espaços públicos (não condomínios). |
 
 **Ordem recomendada de execução:**
 
