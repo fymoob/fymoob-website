@@ -21,6 +21,7 @@
 | 11 | documentos-comprar-imovel-curitiba | 24/04/2026 | `32035b8` | ALTA | ✅ |
 | 12 | custo-de-vida-curitiba | 25/04/2026 | `ebba8fb` | ALTA | ✅ |
 | 13 | melhores-bairros-familias-curitiba | 25/04/2026 | `e8b9319` | ALTA | ✅ |
+| 14 | imovel-planta-vs-pronto-curitiba | 25/04/2026 | TBD | ALTA | ✅ |
 
 ---
 
@@ -408,6 +409,58 @@
 - [ ] Criar landing `/imoveis/cascatinha`, `/imoveis/mossungue`, `/imoveis/boa-vista` (verificar se já existem)
 - [ ] Post derivado: "Pequeno Príncipe: distância de cada bairro de Curitiba" (long-tail Q3)
 - [ ] Adicionar regra R-12 ao Manual Editorial: "Endereço de instituição = WebFetch site oficial, nunca blog agregador"
+
+---
+
+## Post 14 — Imóvel na Planta vs Pronto (25/04/2026)
+
+**Primeiro 7-agent team (Macro + Local + FYMOOB Data + SEO + Legal Specialist + Pre-Verifier + Final-Verifier).** Legal Specialist foi diferencial decisivo — pegou que **Thá Engenharia (que o post antigo endossava) esteve em recuperação judicial 2019-2026 com R$ 350 milhões de dívida**. Endosso nominal teria sido risco jurídico real.
+
+### O que funcionou
+
+- **Legal Specialist como 7º agent** — diferencial pra YMYL com risco jurídico ALTO. Pesquisa exclusiva descobriu RJ da Thá. Sem ele, post novo continuaria endossando construtora ainda em RJ.
+- **Substituição de lista nominal por seção operacional "Como verificar construtora em 5 passos":** Procon-PR, CNPJ Receita, RI matrícula afetação, consumidor.gov.br, jurisprudência TJ-PR. Bruno aplica isso em todo atendimento — autoridade real, zero risco editorial.
+- **Hooks únicos descobertos:**
+  - INCC-DI mar/2026 = **5,86% acumulado 12m** ([FGV](https://portalibre.fgv.br)) — saldo devedor cresce ~R$ 100k em 36 meses pra apto R$ 600k
+  - **Spread INVERTIDO em CWB:** Cidade Industrial planta +24,2% mais cara que pronto; Portão -9,6%; Xaxim -14,9%. Claim genérico "15-25% mais barato planta" cai por terra com dados FYMOOB CRM.
+  - **NBR 17170:2022 vigor jul/2023** (substituiu 15575) — garantias por subsistema: 5 anos estrutura, 3 anos hidráulica/elétrica, 1 ano pintura. Top 10 SERP cita "5 anos genérico" errado.
+  - **STJ tensão 3ª Turma (Andrighi set/2025, limita 25%) vs 4ª Turma (Gallotti out/2025, admite até 100% lotes)** — não pacificada abr/2026. Insegurança jurídica real.
+  - **LC 150/2025 + Decreto 421/2026** — R$ 163 mi incentivos, ITBI 1-2% até 2032, IPTU 50% reduzido. Zero concorrente menciona.
+- **Pre-Verifier corrigiu Tema 1098** (Macro doc errou). Tema 1098 é ANPP (direito penal), NÃO distrato. Substituído por Lei 13.786 art. 67-A + REsp 1.582.318/RJ + Súmula 543.
+- **Caso Calbente qualificado corretamente** como Pinhais/PR (região metropolitana CWB, NÃO CWB stricto sensu) — ajuste do Pre-Verifier.
+- **Final Verifier APROVOU sem bloqueios.** 28/28 claims numéricos confirmados Tier 1. ZERO endosso nominal verificado por grep em 16 nomes de construtoras.
+
+### O que NÃO funcionou
+
+- **Macro doc afirmou Tema 1098 STJ é distrato** — erro factual grave. Pre-Verifier pegou via cross-check com Legal doc. **Aprendizado:** Macro Researcher NÃO deve afirmar jurisprudência sem cross-check com Legal Specialist. Adicionar regra ao prompt template do Macro agent.
+- **Word count 4.508 (3.766 prosa pura)** — acima do alvo brief 2.500-3.000. Final Verifier disse "aceitável dado YMYL Money + risco jurídico ALTO exige densidade Tier 1". OK pra esse post, mas próximo post mais leve precisa ficar no alvo.
+- **Snapshot CRM falta campos críticos** (Situacao, Lancamento, Construtora, Empreendimento, AnoConstrucao). FYMOOB Data Specialist precisou fetch live — ineficiente. Follow-up: atualizar `scripts/research/snapshot-crm-daily.mjs`.
+
+### Aprendizado pro próximo
+
+- **Legal Specialist no team é OBRIGATÓRIO** quando post:
+  - Cita pessoa jurídica nominalmente (construtora, banco, escritório)
+  - Discute jurisprudência (STJ, TJ, STF)
+  - Aborda contratos consumeristas
+  - Risco de fact-check de RJ/falência
+- **Macro Researcher NÃO afirma jurisprudência sem Legal cross-check.** Tema 1098 era erro óbvio (basta consultar STJ.jus.br) — Macro pulou. Adicionar ao prompt: "qualquer claim STJ DEVE ser cross-checked pelo Legal Specialist".
+- **Audit retroativo necessário** quando Pre-Verifier descobre RJ de empresa endossada em outros posts. Follow-up obrigatório.
+- **Substituir endosso nominal por processo verificável** (5 passos operacionais) preserva autoridade do corretor sem risco jurídico. Padrão pra todo post YMYL com pessoa jurídica.
+
+### Impacto esperado
+
+- Query-alvo: "comprar planta ou pronto curitiba" — volume médio (estimativa 500-1.500/mês), alta intenção (decisão R$ 500k+)
+- Diferencial: 4 perfis × spread INVERTIDO + INCC ancorado + NBR 17170 detalhada + Lei 13.786 + LC 150/2025 (zero concorrente cobre)
+- AI Overview play: corrigir defasagens comuns em LLMs (INCC ~6% errado, "5 anos garantia" errado, Lei do Distrato sem número)
+- Internal links emitidos: 7 (Posts 11, 10, 4, 12, 13, Ecoville, Batel)
+- Follow-up retroativo: audit todos os posts publicados procurando endosso da Thá Engenharia
+
+### Follow-ups deste post (CRÍTICOS)
+
+- [ ] **🚨 URGENTE:** audit todos os 13 posts publicados procurando "Thá", "Tha Engenharia" e qualquer construtora com RJ ativa. Remover endosso nominal positivo. (Post antigo planta-vs-pronto era o pior caso — corrigido. Outros podem ter menções.)
+- [ ] **🚨 URGENTE:** atualizar `scripts/research/snapshot-crm-daily.mjs` linhas 48-70 — incluir `Situacao`, `Lancamento`, `Construtora`, `Empreendimento`, `AnoConstrucao` no array de fields. Próximo post de planta/pronto/lançamento precisará desses dados.
+- [ ] Atualizar Post 4 ITBI com LC 150/2025 + Decreto 421/2026 (R$ 163 mi incentivos, ITBI 1-2%) — Pre-Verifier sinalizou
+- [ ] Tracking trimestral pra revisão jul/2026: INCC-DI nova leitura, spread FYMOOB nova mediana, status Thá Engenharia (saída RJ?), pacificação STJ 3ª vs 4ª Turma, edital subsídio LC 150/2025
 
 ---
 
