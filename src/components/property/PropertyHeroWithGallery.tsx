@@ -10,23 +10,17 @@ interface PropertyHeroWithGalleryProps {
   alt: string
 }
 
-// Hero carousel gets limited photos for performance (less DOM nodes).
-// Gallery gets ALL photos — only mounts when user clicks "Ver fotos".
-const HERO_MAX_PHOTOS = 5
-
 export function PropertyHeroWithGallery({
   fotos,
   mainImage,
   alt,
 }: PropertyHeroWithGalleryProps) {
   const [galleryOpen, setGalleryOpen] = useState(false)
-  const heroPhotos = fotos.slice(0, HERO_MAX_PHOTOS)
 
   return (
     <>
       <PropertyHero
-        fotos={heroPhotos}
-        totalPhotos={fotos.length}
+        fotos={fotos}
         mainImage={mainImage}
         alt={alt}
         onOpenGallery={() => setGalleryOpen(true)}
