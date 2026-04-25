@@ -12,7 +12,9 @@
     "perf:baseline": "node scripts/perf/lighthouse-median.js",
     "perf:bundle": "node scripts/perf/bundle-snapshot.js",
     "perf:diff": "node scripts/perf/diff-snapshots.js",
-    "smoke": "node scripts/smoke-test.mjs"
+    "smoke": "node scripts/smoke-test.mjs",
+    "validate:blog-links": "node scripts/validate-blog-links.mjs",
+    "prebuild": "node scripts/validate-blog-links.mjs"
   },
   "dependencies": {
     "@auth/upstash-redis-adapter": "^2.11.1",
