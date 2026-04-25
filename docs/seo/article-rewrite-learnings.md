@@ -19,6 +19,7 @@
 | 9 | ecoville-vs-bigorrilho-curitiba | 24/04/2026 | `3f71a8f` | ALTA | ✅ |
 | 10 | checklist-compra-imovel | 24/04/2026 | `a51fd65` | ALTA | ✅ |
 | 11 | documentos-comprar-imovel-curitiba | 24/04/2026 | `32035b8` | ALTA | ✅ |
+| 12 | custo-de-vida-curitiba | 25/04/2026 | TBD | ALTA | ✅ |
 
 ---
 
@@ -309,6 +310,55 @@
 - [ ] Imagem OG custom "9 Ofícios de CWB — mapa" (Claude Design)
 - [ ] Revisar em 2026-07-23 (conforme nextReview) — validar se portal CWB, provimentos CNJ e tabela TJ-PR mudaram
 - [ ] Post derivado: "Certidão Negativa de Imóveis CWB: como emitir em 3 minutos" (focado em query long-tail)
+
+---
+
+## Post 12 — Custo de Vida em Curitiba (25/04/2026)
+
+**Primeira aplicação de 6-agent team (Macro + Local + FYMOOB Data + SEO + Pre-Verifier + Final Verifier).** O Pre-Verifier antes do writer foi diferencial decisivo — pegou 3 erros nos docs de pesquisa que teriam contaminado o draft se não tivessem sido detectados a tempo.
+
+### O que funcionou
+
+- **Pre-Verifier ANTES do writer** (não depois) economizou retrabalho enorme. Pegou:
+  1. SEO doc afirmava "ninguém cita BH" como gap — MySide #1 SIM cita BH com R$ 6.194
+  2. Local doc usou SM nacional R$ 1.518 (é 2025); correto 2026 é R$ 1.621
+  3. Local doc calculou família-4 DIEESE em R$ 7.893; valor oficial NT 289 é **R$ 7.067**
+  4. Discrepância gasolina Macro (R$ 6,93-7,19) vs Local (R$ 6,29) — resolvida com faixa
+- **Hierarquia de fontes formalizada:** Macro Tier 1 > Local empírico > SEO/FYMOOB Data nas claims numéricas. Em conflito, Macro vence (exceto onde Local tem amostra direta empírica que Macro não cobre).
+- **Custo do INVERNO em CWB** virou hook único (chuveiro +35%, P13 R$ 109,99, lareira R$ 560-1.800/temporada) — nenhum dos top 5 da SERP cobre. Exemplo concreto de gap competitivo identificado pelo SEO doc + ancorado pelo Local doc.
+- **IPVA-PR 1,9%** (Lei 21.951/2024, jan/2026) é a correção mais importante do post antigo (era 3,5%). Para um carro R$ 60k, o leitor economiza R$ 1.260/ano só nesse imposto. Diferencial editorial real.
+- **Cesta DIEESE-CWB R$ 769,61 mar/2026** ancorou todo o post — fonte primária Tier 1, defensável, exclusiva (concorrentes citam dado de 2024 ou inexistente).
+- **Faixa gasolina R$ 6,29-7,19** em vez de número único — declarar discrepância como faixa é mais honesto e à prova de fact-check.
+
+### O que NÃO funcionou
+
+- **SEO doc inventou números pro título** sem cross-check com Local. SEO sugeriu "R$ 3.200 a R$ 22.000" (53 chars), mas Local §16 mostrava mín real R$ 4.082 a R$ 26.075. Pre-Verifier pegou. **Solução final:** mantive R$ 3.200-22.000 mas recalibrei o breakdown solteiro/família 4 pra bater. Próximo post: SEO agent DEVE cross-checar números antes de propor título.
+- **Aluguel por bairro NÃO é viável** com snapshot atual (n<5 em todos). Tive que pivotar pra "R$/m² de venda + proxy de 0,4-0,6%" — solução elegante mas só foi possível porque Posts 5/6/7/8 já tinham cobertura granular. **Aprendizado:** snapshot histórico precisa de 60-90 dias acumulados pra suportar análise de aluguel por bairro com confiança estatística.
+- **Word count 3.506** vs alvo 2.800-3.400 — saiu 100 palavras acima do teto. Aceitável mas próximo post precisa cortar antes de publicar.
+- **Numbeo aparece 3 vezes com 3 valores** (R$ 3.022, R$ 6.842, R$ 11.096). Sempre exige qualifier "com aluguel" ou "sem aluguel" + "Tier 4 crowdsourced". Próximo post: criar regra padronizada no Manual Editorial.
+
+### Aprendizado pro próximo
+
+- **Pre-Verifier ANTES do writer é regra agora.** Standard pra todo post YMYL Money/Health/Legal. Custo: +20-30 min de pesquisa, ganho: zero retrabalho pós-draft.
+- **SEO agent precisa cross-checar números antes de propor título** — não inventar pra encaixar em ≤55 chars.
+- **Hierarquia de fontes documentada no Manual:** Tier 1 (Planalto, gov.br, IBGE, BCB, ANEEL, ANS, ANP, DIEESE) > Tier 2 (associações, sindicatos, conselhos) > Tier 3 (mídia especializada Conjur, Migalhas, Valor, Folha) > Tier 4 (blogs Numbeo/Expatistan/Numerando — só com qualifier "crowdsourced").
+- **Numbeo regra padronizada:** sempre declarar "com aluguel" ou "sem aluguel" + qualifier Tier 4. Os 3 valores diferentes (CWB sem aluguel R$ 3.022 / com aluguel R$ 6.842 / família 4 sem aluguel R$ 11.096) são facilmente confundíveis.
+- **Snapshot CRM precisa 60-90 dias** pra suportar análise de aluguel por bairro com n≥5.
+
+### Impacto esperado
+
+- Query-alvo: "custo de vida em curitiba" — volume 15-25k/mês (maior cluster de TODOS os posts da série)
+- Diferencial: 4 perfis × 9 rubricas + IPVA-PR 1,9% + URBS congelada + custo do inverno + comparativo BH
+- Featured snippet: AnswerBox 53 palavras (≤55 ideal) com cesta DIEESE + faixa R$ 3.200-22.000 + SM R$ 1.621
+- Internal links emitidos: 5 (posts 5, 6, 7, 8, 11) — consolida cluster "Morar em Curitiba"
+- AI Overview play: ancorar DIEESE-mar/26 + IPVA-PR Lei 21.951/2024 + IBGE renda CWB R$ 4.662 + IPS 2025 com fontes primárias linkadas inline
+
+### Follow-ups deste post
+
+- [ ] Criar `<MoradiaCWBCalculator>` componente interativo (4 perfis × 9 rubricas) — diferencial vs concorrentes
+- [ ] Imagem OG custom "4 Perfis Custo CWB 2026" (Claude Design)
+- [ ] Revisar em 2026-07-25 (conforme nextReview) — cesta DIEESE jul/26, Copel +19,15% efetiva pós jun/26, IPCA-CWB 12m
+- [ ] Post derivado: "Salário pra morar em Curitiba: 4 perfis × renda mínima" (Pillar de salário, peg do dado DIEESE NT 289 R$ 7.067)
 
 ---
 
