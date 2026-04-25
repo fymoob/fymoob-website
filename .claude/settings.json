@@ -7,7 +7,10 @@
       "Bash(git:*)",
       "Bash(ls:*)",
       "Bash(cat:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "mcp__gsc__get_performance_overview",
+      "mcp__gsc__get_search_analytics",
+      "mcp__gsc__get_sitemaps"
     ]
   }
 }
