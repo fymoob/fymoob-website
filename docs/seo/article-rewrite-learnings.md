@@ -19,7 +19,7 @@
 | 9 | ecoville-vs-bigorrilho-curitiba | 24/04/2026 | `3f71a8f` | ALTA | ✅ |
 | 10 | checklist-compra-imovel | 24/04/2026 | `a51fd65` | ALTA | ✅ |
 | 11 | documentos-comprar-imovel-curitiba | 24/04/2026 | `32035b8` | ALTA | ✅ |
-| 12 | custo-de-vida-curitiba | 25/04/2026 | TBD | ALTA | ✅ |
+| 12 | custo-de-vida-curitiba | 25/04/2026 | `ebba8fb` | ALTA | ✅ |
 
 ---
 
