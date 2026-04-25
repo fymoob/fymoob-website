@@ -21,7 +21,7 @@
 | 11 | documentos-comprar-imovel-curitiba | 24/04/2026 | `32035b8` | ALTA | ✅ |
 | 12 | custo-de-vida-curitiba | 25/04/2026 | `ebba8fb` | ALTA | ✅ |
 | 13 | melhores-bairros-familias-curitiba | 25/04/2026 | `e8b9319` | ALTA | ✅ |
-| 14 | imovel-planta-vs-pronto-curitiba | 25/04/2026 | TBD | ALTA | ✅ |
+| 14 | imovel-planta-vs-pronto-curitiba | 25/04/2026 | `87df1f9` | ALTA | ✅ |
 
 ---
 
