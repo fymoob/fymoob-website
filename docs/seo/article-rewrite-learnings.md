@@ -20,6 +20,7 @@
 | 10 | checklist-compra-imovel | 24/04/2026 | `a51fd65` | ALTA | ✅ |
 | 11 | documentos-comprar-imovel-curitiba | 24/04/2026 | `32035b8` | ALTA | ✅ |
 | 12 | custo-de-vida-curitiba | 25/04/2026 | `ebba8fb` | ALTA | ✅ |
+| 13 | melhores-bairros-familias-curitiba | 25/04/2026 | TBD | ALTA | ✅ |
 
 ---
 
@@ -359,6 +360,54 @@
 - [ ] Imagem OG custom "4 Perfis Custo CWB 2026" (Claude Design)
 - [ ] Revisar em 2026-07-25 (conforme nextReview) — cesta DIEESE jul/26, Copel +19,15% efetiva pós jun/26, IPCA-CWB 12m
 - [ ] Post derivado: "Salário pra morar em Curitiba: 4 perfis × renda mínima" (Pillar de salário, peg do dado DIEESE NT 289 R$ 7.067)
+
+---
+
+## Post 13 — Melhores Bairros pra Famílias (25/04/2026)
+
+**Segunda aplicação do 6-agent team com Pre-Verifier (Post 12 foi a primeira). Confirma o pattern.** Pre-Verifier antes do writer + Final Verifier no draft = pegou erros de endereço de 7 instituições que teriam contaminado o post (e provavelmente afetado outros posts do site).
+
+### O que funcionou
+
+- **Pre-Verifier corrigiu endereços oficiais via WebFetch:** Pequeno Príncipe = Água Verde (não Cristo Rei como Post 6 sugere indiretamente); Sion = Batel (não Cabral); Positivo = CIC (não Ecoville); MON + Bosque do Papa = Centro Cívico (não Juvevê); Bom Jesus Divina Providência = Ahú; Marista Santa Maria = São Lourenço; Colégio Militar = Tarumã. **Sete correções factuais YMYL antes do draft.**
+- **Detectou erro retroativo no Post 6 já publicado:** distância Pequeno Príncipe → Bacacheri foi citada como "10 min" no Post 6 (otimista — real é 15-25 min em h-pico). Sinalizado como follow-up pós-publicação. **Pre-Verifier funcionou como audit cruzado de posts publicados, não só do post atual.**
+- **Hooks únicos descobertos pela pesquisa:** 3.444 crianças na fila CMEI (Tatuquara 822, CIC 757); Cajuru tem escola pública IDEB #1 (Madre Antônia 7,1) mas é 6º bairro mais perigoso (1.700 crimes patrim. H1/2025) — **trade-off explícito vs concorrentes que escondem**; Lei 16.492/2025 vale-creche R$ 1.000/mês até 3 SMs; Lei cadeirinha NÃO se aplica a Uber/táxi/escolar (CONTRAN/Detran-PR).
+- **Snapshot CRM target família** revelou universo limitado (n≥5 só em 8 bairros) — mas FYMOOB Data agent escalou pra fontes externas (FipeZap/MySide) nos bairros canônicos família (Bacacheri/Cabral/Ahú/Cascatinha/Hugo Lange) sem inventar mediana. **Padrão: usar CRM onde tem amostra, fonte externa onde não tem, sempre declarar.**
+- **Anti-canibalização vs Post 6:** Post 13 = família-only com 5 critérios + 5 perfis-idade + 4 faixas orçamento. Post 6 = geral com 4 perfis-vida (família é 1). Internal link bidirecional explícito. ≤20% sobreposição.
+- **Final Verifier APROVOU COM RESSALVAS LEVES** (AnswerBox 58→52 palavras, tabela reordenar pelo score). Aplicado em 5 min.
+
+### O que NÃO funcionou
+
+- **Writer estimou scores de forma narrativa, não rigorosa.** Ordem do writer (Bacacheri-Água Verde-Ahú-Cabral-Cascatinha-Mossunguê-Bigorrilho-Santa Felicidade-Boa Vista-Portão) não batia com ordem por score numérico. Final Verifier pegou.
+  - **Solução aplicada:** reordenei a tabela pelo score real, removi numeração 1-10 dos H3, adicionei nota explicando que perfis seguem "ordem editorial, não estritamente score". Preserva narrativa do writer sem comprometer integridade do score.
+  - **Aprendizado pro próximo:** Writer agent deve receber instrução explícita: "se você define ordem narrativa diferente do score, REMOVA a numeração dos H3 e diga isso na tabela".
+- **Word count saiu 4.917** (vs alvo 2.800-3.400 prosa real ~1.662). Verifier disse "decisão editorial — publicar como está vs expandir". Decidi publicar como está (concisão é virtude pra YMYL Family). MDX/URLs inflam contagem.
+- **Endereço errado no Post 6 já publicado** (distância Pequeno Príncipe → Bacacheri 10 min, deveria ser 15-25 min) — **follow-up obrigatório** pra retroagir.
+
+### Aprendizado pro próximo
+
+- **Pre-Verifier funciona como audit retroativo de posts publicados**, não só pre-flight do atual. Toda vez que o Pre-Verifier corrigir um claim, perguntar: "este claim está errado em algum post já publicado?". Adicionar como follow-up.
+- **Writer agent: regra explícita "score reflete ordem ou removo numeração"**. Adicionar ao Manual Editorial.
+- **Padrão CRM sample:** se n<5 num bairro, usar fonte externa declarada (FipeZap/MySide), nunca inventar mediana FYMOOB. Já era padrão; reforçado.
+- **YMYL Family checkpoint:** não cravar "100% seguro" pra bairro nenhum. Crime existe em todo lugar — sempre ≥1 trade-off explícito por bairro.
+- **Endereços oficiais via WebFetch:** validar SEMPRE no site oficial da instituição (pequenoprincipe.org.br, sion.com.br, etc.) antes de citar bairro. Postos de saúde / blogs agregadores erram bastante.
+
+### Impacto esperado
+
+- Query-alvo: "melhores bairros curitiba família" — volume 200-500/mês (menor que custo-vida mas alta intenção: matrícula janeiro/julho)
+- Diferencial: 5 critérios família-específicos × 5 perfis-idade × 4 faixas orçamento + Lei vale-creche + fila CMEI + endereços corrigidos
+- AI Overview play: zero concorrente cobre IDEB por bairro, ENEM por escola+bairro, distância Pequeno Príncipe, fila CMEI
+- Internal links emitidos: 6 (posts 5, 6, 8, 9, 11, 12) + 8 landings `/imoveis/[bairro]`
+
+### Follow-ups deste post
+
+- [ ] **CRÍTICO:** Corrigir Post 6 (já publicado) — distância Pequeno Príncipe → Bacacheri "10 min" → "15-25 min em h-pico". Pre-Verifier detectou.
+- [ ] Adicionar `<RankingFamilias>` componente interativo (slider de pesos pra recalcular ranking) — diferencial vs concorrentes
+- [ ] Imagem OG custom "Top 10 Bairros Família CWB 2026" (Claude Design)
+- [ ] Revisar em 2026-07-25 — IDEB 2024 pode sair em out/2026 mas SESP atualizada antes
+- [ ] Criar landing `/imoveis/cascatinha`, `/imoveis/mossungue`, `/imoveis/boa-vista` (verificar se já existem)
+- [ ] Post derivado: "Pequeno Príncipe: distância de cada bairro de Curitiba" (long-tail Q3)
+- [ ] Adicionar regra R-12 ao Manual Editorial: "Endereço de instituição = WebFetch site oficial, nunca blog agregador"
 
 ---
 
