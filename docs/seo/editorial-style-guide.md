@@ -454,6 +454,61 @@ Blog FYMOOB é pra comprador comum de imóvel em Curitiba. Pessoa comum **não s
 - **DO:** `O aluguel rende 4,2% ao ano sobre o valor do imóvel na Cidade Industrial.`
 - **DON'T:** `O yield bruto é 4,2% a.a. na CIC.`
 
+### R-12 — Endereço de instituição = WebFetch site oficial
+
+**Regra:** sempre que citar **bairro/endereço de uma instituição** (hospital, escola, universidade, cartório, órgão público), validar via **site oficial da instituição** ou portal governamental — nunca via blog agregador, Google Maps cache ou diretório terceirizado.
+
+**Por quê:** o Pre-Verifier do Post 13 pegou 7 endereços errados nos docs de pesquisa (Hospital Pequeno Príncipe = Água Verde, NÃO Cristo Rei; Sion = Batel, NÃO Cabral; Positivo Internacional = CIC, NÃO Ecoville; MON = Centro Cívico, NÃO Juvevê; Marista Santa Maria = São Lourenço; Bom Jesus DP = Ahú; Colégio Militar = Tarumã). Blogs agregadores e ranking secundário replicam erros.
+
+**Operacional:**
+- Hospital → site `pequenoprincipe.org.br` ou similar
+- Escola → site oficial da rede ou unidade
+- Universidade → portal `.edu.br` oficial
+- Cartório → portal AMEP-PR / TJ-PR / cartório individual
+- Órgão público → portal `gov.br` ou `prefeitura/estado.pr.gov.br`
+
+**Como aplicar:** Pre-Verifier roda WebFetch em TODA menção de endereço/bairro de instituição antes do Writer começar.
+
+### R-13 — Jurisprudência STJ/STF: data + número do processo verificáveis
+
+**Regra:** toda menção a decisão de STJ ou STF deve incluir:
+- **Número do processo** (REsp, AgInt, RE, ARE)
+- **Data exata da decisão** (ano + mês mínimo)
+- **Ministro relator** quando relevante
+- **Tema/Súmula** quando for tese repetitiva
+
+**Por quê:** o Pre-Verifier do Post 14 pegou que "Tema 1098 STJ" foi citado como distrato — Tema 1098 é ANPP (direito penal). O Final Verifier do Post 15 corrigiu data: STJ pacificou pets em condomínio em **maio/2019** (REsp 1.783.076-DF, Min. Cueva), não 2026 como Local doc afirmava.
+
+**Operacional:**
+- WebFetch `stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias/...`
+- Cross-check Conjur, Migalhas, Valor (Tier 3) confirmando data
+- Sempre datar com "mês/ano" mínimo, idealmente "DD/MM/YYYY"
+
+**Exemplo:**
+- ❌ "STJ pacificou em 2026 que convenção não pode proibir pets"
+- ✅ "STJ pacificou em **maio/2019** ([REsp 1.783.076-DF](https://www.stj.jus.br/...), Min. Marco Aurélio Bellizze) que convenção condominial não pode proibir pets de forma genérica"
+
+### R-14 — Status legislativo: sancionada vs em tramitação
+
+**Regra:** toda menção a lei deve declarar **status atual** (sancionada e vigente / sancionada mas não-regulamentada / em tramitação) e o **escopo real** da lei. Status verificável em portal oficial:
+- **Federal:** `planalto.gov.br` (vigentes), `camara.leg.br` ou `senado.leg.br` (em tramitação)
+- **Estadual PR:** `legislacao.pr.gov.br` ou ALEP
+- **Municipal CWB:** `legisla.curitiba.pr.gov.br` ou Câmara Municipal
+
+**Por quê:** o Pre-Verifier do Post 15 pegou 2 erros de status legislativo:
+1. "Lei do Silêncio 2026 multas R$ 500-10k vigentes em CWB" — está em **tramitação**, não sancionada. Lei 10.625/2002 é base atual.
+2. "Lei Lili 16.674/2026 regula condomínios" — sancionada SIM (03/03/2026), mas regula **espaços públicos**, NÃO condomínios. Escopo errado.
+
+**Operacional:**
+- Antes de citar lei, WebFetch portal oficial
+- Validar (a) lei foi sancionada? (b) está em vigor? (c) qual o escopo real do texto?
+- Se em tramitação: dizer explicitamente "projeto de lei em tramitação na [Câmara/Senado/ALEP]"
+- Se sancionada mas escopo restrito: declarar o escopo
+
+**Exemplo:**
+- ❌ "Lei 16.674/2026 obriga condomínios a aceitarem pets"
+- ✅ "Lei municipal 16.674/2026 ('Lei Lili') regula a presença de pets em **espaços públicos** de Curitiba. Para condomínios, a regra vinculante segue sendo o STJ REsp 1.783.076-DF (mai/2019)"
+
 **Tier 2 — curiosity gap (aprender, não copiar tom):**
 - [Metrópoles — Financiar imóvel pode ficar R$ 35 mil mais barato](https://www.metropoles.com/distrito-federal/economia-df/com-taxa-menor-financiar-imovel-pode-ficar-r-35-mil-mais-barato)
 - [Metrópoles — BRB é eleito o melhor banco](https://www.metropoles.com/distrito-federal/brb-e-eleito-o-melhor-banco-de-financiamento-imobiliario-do-brasil)
