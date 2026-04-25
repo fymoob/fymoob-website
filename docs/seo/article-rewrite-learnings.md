@@ -20,7 +20,7 @@
 | 10 | checklist-compra-imovel | 24/04/2026 | `a51fd65` | ALTA | ✅ |
 | 11 | documentos-comprar-imovel-curitiba | 24/04/2026 | `32035b8` | ALTA | ✅ |
 | 12 | custo-de-vida-curitiba | 25/04/2026 | `ebba8fb` | ALTA | ✅ |
-| 13 | melhores-bairros-familias-curitiba | 25/04/2026 | TBD | ALTA | ✅ |
+| 13 | melhores-bairros-familias-curitiba | 25/04/2026 | `e8b9319` | ALTA | ✅ |
 
 ---
 
