@@ -81,6 +81,21 @@ interface LinkMarkValue {
 // Helpers
 // ───────────────────────────────────────────────────────────
 
+/**
+ * Converte sintaxe markdown inline (**bold**, *italic*, [link](url), `code`)
+ * em HTML. Usado em células de tabela onde markdown vem cru do Sanity.
+ */
+function renderInlineMarkdown(text: string): string {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/(?<!\*)\*([^*]+?)\*(?!\*)/g, "<em>$1</em>")
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(
+      /\[([^\]]+)\]\(([^)]+)\)/g,
+      '<a href="$2" class="text-brand-primary underline underline-offset-2">$1</a>'
+    )
+}
+
 function parseMarkdownTable(markdown: string): { headers: string[]; rows: string[][] } {
   const lines = markdown
     .split("\n")
@@ -228,9 +243,10 @@ const components: PortableTextComponents = {
                   <th
                     key={i}
                     className="border-b border-neutral-200 bg-neutral-50 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-neutral-500"
-                  >
-                    {h}
-                  </th>
+                    dangerouslySetInnerHTML={{
+                      __html: renderInlineMarkdown(h),
+                    }}
+                  />
                 ))}
               </tr>
             </thead>
@@ -245,9 +261,7 @@ const components: PortableTextComponents = {
                       key={ci}
                       className="border-b border-neutral-100 px-4 py-3"
                       dangerouslySetInnerHTML={{
-                        __html: cell
-                          .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-                          .replace(/\*(.+?)\*/g, "<em>$1</em>"),
+                        __html: renderInlineMarkdown(cell),
                       }}
                     />
                   ))}

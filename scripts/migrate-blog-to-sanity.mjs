@@ -331,7 +331,7 @@ function markdownToPortableText(markdown, customBlocks) {
   let working = markdown
   customBlocks.forEach(({ placeholder }, idx) => {
     // marker que vira parágrafo isolado no PT (fácil de localizar e substituir)
-    const marker = `__SANITY_CUSTOM_BLOCK_${idx}__`
+    const marker = `XSANITYBLOCKX${idx}XENDX`
     working = working.replace(placeholder, `\n\n${marker}\n\n`)
   })
 
@@ -344,7 +344,7 @@ function markdownToPortableText(markdown, customBlocks) {
       block._type === "block"
         ? (block.children || []).map((c) => c.text).join("")
         : ""
-    const markerMatch = text.match(/^__SANITY_CUSTOM_BLOCK_(\d+)__$/)
+    const markerMatch = text.match(/^XSANITYBLOCKX(\d+)XENDX$/)
     if (markerMatch) {
       const idx = parseInt(markerMatch[1], 10)
       if (customBlocks[idx]) {

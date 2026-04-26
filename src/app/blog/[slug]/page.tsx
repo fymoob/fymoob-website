@@ -93,27 +93,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
       />
 
-      {/* Hero Image — mobile: imagem 100% limpa. Desktop: overlay premium.
-          Motivo: overlay+tags em mobile 21/9 competem com conteudo visual da
-          OG image (desenhada 1.91:1 pra ser vista inteira em shares sociais).
-          Ver discussao em docs/seo/article-rewrite-learnings.md */}
+      {/* Hero Image — limpa em mobile e desktop. Tags + título em bloco
+          abaixo (decisão Vinicius 26/04: padrão unificado, OG image fica
+          íntegra sem overlay competindo). */}
       <div className="relative overflow-hidden bg-neutral-950">
-        {/* Mobile: imagem pura 16/9, sem overlay */}
-        <div className="relative aspect-[16/9] w-full sm:hidden">
-          <Image
-            src={post.image}
-            alt={post.title}
-            fill
-            className="object-cover"
-            priority
-            sizes="100vw"
-            // unoptimized: pula /_next/image. OG images pre-dimensionadas
-            // 1200x630 WebP ~30KB. Evita cota Vercel Image Optimization.
-            unoptimized
-          />
-        </div>
-        {/* Desktop: overlay com título */}
-        <div className="relative mx-auto hidden aspect-[21/8] max-w-7xl sm:block">
+        <div className="relative mx-auto aspect-[16/9] w-full max-w-7xl sm:aspect-[21/9]">
           <Image
             src={post.image}
             alt={post.title}
@@ -121,44 +105,30 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             className="object-cover"
             priority
             sizes="(max-width: 1280px) 100vw, 1280px"
+            // unoptimized: pula /_next/image. OG images pre-dimensionadas
+            // 1200x630 WebP ~30KB. Evita cota Vercel Image Optimization.
             unoptimized
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-950/30 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
-            <div className="mx-auto max-w-7xl">
-              <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full bg-white/15 px-2.5 py-1 text-xs font-medium text-white/90 backdrop-blur-sm"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <h1 className="mt-3 max-w-3xl font-display text-2xl font-extrabold tracking-tight text-white sm:text-3xl lg:text-4xl leading-[1.1]">
-                {post.title}
-              </h1>
-            </div>
-          </div>
         </div>
       </div>
 
-      {/* Mobile-only: tags + título em bloco limpo abaixo da imagem */}
-      <div className="border-b border-neutral-200 bg-white px-4 py-6 sm:hidden">
-        <div className="flex flex-wrap gap-2">
-          {post.tags.map((tag) => (
-            <span
-              key={tag}
-              className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-700"
-            >
-              {tag}
-            </span>
-          ))}
+      {/* Tags + título em bloco limpo abaixo da imagem (mobile + desktop) */}
+      <div className="border-b border-neutral-200 bg-white px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-wrap gap-2">
+            {post.tags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-700"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+          <h1 className="mt-3 max-w-4xl font-display text-2xl font-extrabold leading-[1.1] tracking-tight text-neutral-950 sm:text-3xl lg:text-4xl">
+            {post.title}
+          </h1>
         </div>
-        <h1 className="mt-3 font-display text-2xl font-extrabold leading-[1.1] tracking-tight text-neutral-950">
-          {post.title}
-        </h1>
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
