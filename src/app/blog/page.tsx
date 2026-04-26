@@ -7,13 +7,21 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { BlogCard } from "@/components/blog/BlogCard"
 import { AnimateOnScroll } from "@/components/shared/AnimateOnScroll"
 
-export const metadata: Metadata = {
-  title: "Blog | Dicas sobre Imóveis em Curitiba",
-  description:
-    "Dicas, guias e informações sobre o mercado imobiliário em Curitiba. Saiba tudo sobre financiamento, documentação, bairros e mais. Blog FYMOOB Imobiliária.",
-  alternates: {
-    canonical: "/blog",
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const posts = await getAllPosts()
+  const count = posts.length
+  const title = count > 0
+    ? `Blog FYMOOB: ${count} guias sobre imóveis em Curitiba`
+    : "Blog FYMOOB | Guias sobre imóveis em Curitiba"
+
+  return {
+    title,
+    description:
+      "Guias práticos sobre financiamento, ITBI, bairros, custo de vida e mercado imobiliário de Curitiba. Conteúdo atualizado pela FYMOOB Imobiliária.",
+    alternates: {
+      canonical: "/blog",
+    },
+  }
 }
 
 const POSTS_PER_PAGE = 9

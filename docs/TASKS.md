@@ -161,7 +161,7 @@ Quando o Bruno pedir algo novo que **não está** no contrato nem nesta lista:
 
 #### ✅ Solicitado em 26/04/2026 (5 URLs prioritárias)
 
-- [x] `/blog/financiamento-caixa-itau-bradesco-comparativo` — 427 imp, CTR 0,23% (urgente: title novo aplicado)
+- [x] `/blog/financiamento-caixa-itau-bradesco-comparativo` — 427 imp, CTR 0,23% (urgente: title novo aplicado) — **✅ INDEXED 2026-04-26 21:47** (recrawl confirmado via GSC API, status PASS)
 - [x] `/blog/custo-de-vida-curitiba` — 93 imp, pos 12,5 (subir top 10)
 - [x] `/blog/como-financiar-minha-casa-minha-vida` — 22 imp, pos 9,6
 - [x] `/blog/batel-vs-agua-verde-curitiba` — 14 imp, pos 5,9
@@ -190,10 +190,10 @@ Verificar:
 
 #### Outras ações SEO pendentes do relatório 26/04
 
-- [ ] Investigar warning `sitemap/0.xml` (status "Has warnings", 251 URLs) — provavelmente imóveis Loft removidos do CRM mas ainda no sitemap
-- [ ] Reescrever title de `/casas-curitiba` (pos 3,2 sem clique — adicionar number drop tipo "+50 ofertas")
-- [ ] Reescrever title de `/blog` lista (pos 2,9 sem clique)
-- [ ] Reescrever title de `/blog/mercado-imobiliario-curitiba-2026` (pos 2,5, 0 clicks — title sem promessa)
+- [x] Investigar warning `sitemap/0.xml` (status "Has warnings", 251 URLs) — **DIAGNÓSTICO 2026-04-26:** GSC reporta 1187 warnings mas 100% dos URLs amostrados retornam HTTP 200. Sitemap atual tem estrutura válida (251 URLs com `lastmod`/`changefreq`/`priority`). Warnings são acumulados de submissões anteriores (legacy de URLs já removidas do CRM). **Mitigação possível futura:** usar `DataAtualizacao` real do Loft em `lastmod` (em vez de build timestamp uniforme) — não é blocker.
+- [x] Reescrever title de `/casas-curitiba` (pos 3,2 sem clique) — **APLICADO 2026-04-26:** "{count} Casas em Curitiba à Venda e Aluguel | FYMOOB" (number drop dinâmico via `getProperties().length`)
+- [x] Reescrever title de `/blog` lista (pos 2,9 sem clique) — **APLICADO 2026-04-26:** "Blog FYMOOB: {count} guias sobre imóveis em Curitiba" (number drop dinâmico via `getAllPosts().length`)
+- [x] Reescrever title de `/blog/mercado-imobiliario-curitiba-2026` (pos 2,5, 0 clicks) — **APLICADO 2026-04-26:** "Curitiba 2026: +17,86% e 2ª capital em valorização (boom?)" (data hook + ranking, ressincronizado pro Sanity)
 
 ---
 
