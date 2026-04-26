@@ -447,6 +447,60 @@ Blog FYMOOB é pra comprador comum de imóvel em Curitiba. Pessoa comum **não s
 | CTN | "Código Tributário Nacional" na 1ª menção |
 | STJ Tema 1113 | "decisão do STJ de março de 2022 sobre base do ITBI" na 1ª menção |
 
+**Termos generalistas em inglês — substituir sempre (audit 26/04/2026 detectou 140 ocorrências):**
+
+| ❌ Inglês | ✅ Tradução PT-BR |
+|---|---|
+| long-term | longo prazo |
+| short-term | curta temporada / curto prazo |
+| disclaimer | ressalva / aviso |
+| lifestyle | estilo de vida |
+| tour (do imóvel) | visita |
+| sweet spot | ponto ideal / equilíbrio raro |
+| trade-off / tradeoff | contrapartida / ressalva |
+| score (em ranking) | pontuação / nota (manter "score" só em contexto de crédito) |
+| spread (financeiro genérico) | diferença de preço (manter em CET) |
+| ticket (preço imóvel) | valor / preço |
+| target (perfil) | perfil / alvo |
+| funding | captação |
+| driver | motivo / fator |
+| cluster (de bairros) | faixa / grupo |
+| hub | polo |
+| boom | explosão / disparada (manter caso contexto consagrado) |
+| C-level | alta direção |
+| high-income | alta renda |
+| networking | rede de contatos profissionais |
+| pool (de público) | demanda / público |
+| vibe | clima / atmosfera |
+| gated | fechada / exclusiva |
+| downsizing | trocar por imóvel menor |
+| breakdown | detalhamento / composição |
+| like-for-like | iguais com iguais |
+| cross-check | checagem cruzada |
+| YoY (year-over-year) | ano a ano |
+| MoM / QoQ | mês a mês / trimestre a trimestre |
+| entry (plano) | plano básico |
+| crowdsourced | colaborativo |
+| self-service | autoatendimento |
+| pipeline (de obras) | poucos lançamentos previstos |
+| fetch live | consulta direta na API |
+| snapshot (no corpo) | foto |
+| ratio | razão / proporção |
+| TCO | custo total |
+| craft (gastronomia) | artesanal |
+| wine bar | bar de vinhos (manter se nome próprio) |
+| delivery | entrega |
+| combo | conjunto / combinação |
+| match | combinação certa |
+| jogging | corrida |
+| gap | diferença |
+
+**Manter sem tradução** (consagrados em PT-BR):
+- Nomes próprios: Airbnb, Booking, Uber, iFood, WhatsApp, Smart Fit, Park Shopping, IMAX, etc.
+- Universais: marketing, online, internet, app, blog, link, e-book, podcast, e-mail
+- Siglas brasileiras: FGTS, INCC, IPCA, TR, CET, MIP, DFI, SBPE, SFH, MCMV, ITBI, IPTU, VGV, IDH, IPS, IDEB, ENEM, CRECI, CTPS, IBGE, CONTRAN, ANP, ANEEL, ANS, etc.
+- Mercado imobiliário consagrado: studio, retrofit, premium (com moderação), playground, brunch, top 10, kit-net, cobertura
+
 **Regra operacional:** se o termo aparece **5+ vezes** no post, define na 1ª menção e depois usa à vontade. Se aparece **1-2 vezes**, substitui pelo termo popular sempre. Nunca deixa jargão nu sem definição no primeiro uso.
 
 **Teste:** leia a frase em voz alta pra alguém de 50 anos que comprou imóvel uma vez na vida. Se a pessoa fizer cara de confusa, reescreve.
