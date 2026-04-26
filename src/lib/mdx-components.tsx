@@ -2,7 +2,7 @@ import type { MDXComponents } from "mdx/types"
 import Image from "next/image"
 import Link from "next/link"
 
-function CalloutBox({
+export function CalloutBox({
   variant = "info",
   children,
 }: {
@@ -25,7 +25,7 @@ function CalloutBox({
   )
 }
 
-function MethodologyBox({
+export function MethodologyBox({
   period,
   sample,
   treatment,
@@ -118,7 +118,7 @@ interface ChangelogEntry {
   change: string
 }
 
-function Changelog({ entries }: { entries?: ChangelogEntry[] }) {
+export function Changelog({ entries }: { entries?: ChangelogEntry[] }) {
   // Research Protocol v1.0 — correções transparentes (IFCN P5).
   // Lista o QUE mudou, não só QUANDO. Padrão Reuters + IFCN.
   if (!entries || !Array.isArray(entries) || entries.length === 0) return null
@@ -155,7 +155,7 @@ function Changelog({ entries }: { entries?: ChangelogEntry[] }) {
   )
 }
 
-function CTABox({
+export function CTABox({
   title,
   description,
   href,

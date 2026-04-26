@@ -12,6 +12,32 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { RelatedPosts } from "@/components/blog/RelatedPosts"
 import { TableOfContents } from "@/components/blog/TableOfContents"
 import { AuthorBio } from "@/components/blog/AuthorBio"
+import { PortableTextRenderer } from "@/components/blog/PortableTextRenderer"
+import type { PortableTextBlock } from "@portabletext/types"
+
+/**
+ * Extrai headings (h2/h3/h4) de Portable Text como pseudo-markdown.
+ * O TableOfContents usa regex `^(#{2,4})\s+(.+)$` — gerar string markdown
+ * só com headings é o caminho mais simples sem rewrite do componente.
+ */
+function portableTextHeadingsToMarkdown(blocks: PortableTextBlock[]): string {
+  return blocks
+    .filter((b): b is PortableTextBlock & { style: string } => {
+      const block = b as { _type?: string; style?: string }
+      return (
+        block._type === "block" &&
+        typeof block.style === "string" &&
+        /^h[2-4]$/.test(block.style)
+      )
+    })
+    .map((b) => {
+      const level = parseInt(b.style.slice(1), 10)
+      const children = (b as unknown as { children?: Array<{ text?: string }> }).children
+      const text = (children || []).map((c) => c.text || "").join("")
+      return `${"#".repeat(level)} ${text}`
+    })
+    .join("\n\n")
+}
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -166,13 +192,18 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </div>
             </header>
 
-            {/* MDX Content — editorial typography */}
+            {/* Content — editorial typography. Dual-read: Portable Text
+                (Sanity) ou MDX (legado, content/blog/*.mdx). */}
             <div className="prose-fymoob mx-auto max-w-3xl">
-              <MDXRemote
-                source={post.content}
-                components={mdxComponents}
-                options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
-              />
+              {post.source === "sanity" && post.body ? (
+                <PortableTextRenderer value={post.body} />
+              ) : post.content ? (
+                <MDXRemote
+                  source={post.content}
+                  components={mdxComponents}
+                  options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+                />
+              ) : null}
             </div>
 
             {/* Author Bio */}
@@ -230,8 +261,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             </div>
           </article>
 
-          {/* Table of Contents — desktop sidebar */}
-          <TableOfContents content={post.content} />
+          {/* Table of Contents — desktop sidebar.
+              Pra MDX usa content (markdown raw); pra Sanity converte body
+              em pseudo-markdown só com headings (mesmo regex extrai `## H2`). */}
+          <TableOfContents
+            content={
+              post.source === "sanity" && post.body
+                ? portableTextHeadingsToMarkdown(post.body)
+                : post.content || ""
+            }
+          />
         </div>
 
         {/* Related Posts */}
