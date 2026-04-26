@@ -48,4 +48,8 @@ next-env.d.ts
 .playwright-mcp/
 
 # misc
-*.loglighthouse-*.json
+*.log
+lighthouse-*.json
+
+# claude local overrides
+.claude/settings.local.json
