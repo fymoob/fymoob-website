@@ -151,6 +151,52 @@ Quando o Bruno pedir algo novo que **não está** no contrato nem nesta lista:
 - [ ] **Links externos validos pra autoridade** (gov.br/anpd, COFECI, prefeitura Curitiba) — comentar/citar fontes oficiais nos artigos do blog aumenta E-E-A-T. Faq pode citar COFECI em algumas perguntas.
 - [ ] **Marcar mais imoveis como DestaqueWeb=Sim no CRM** — hoje 7 nao-lancamentos + 6 lancamentos. Para rotacao da home ter efeito visivel, idealmente 20-25 nao-lancamentos + 15 lancamentos. Curadoria do Bruno.
 
+### Request Indexing pós-reescrita 15 posts (relatório 2026-04-26)
+
+> Google ainda não tinha visto as reescritas dos 15 posts do blog (last
+> crawl 18-22/04 vs reescrita 23-25/04). Solicitação manual de indexação
+> via GSC URL Inspection acelera recrawl em 24-72h.
+>
+> Relatório completo: [docs/seo-reports/2026-04-26-pos-reescrita.md](seo-reports/2026-04-26-pos-reescrita.md).
+
+#### ✅ Solicitado em 26/04/2026 (5 URLs prioritárias)
+
+- [x] `/blog/financiamento-caixa-itau-bradesco-comparativo` — 427 imp, CTR 0,23% (urgente: title novo aplicado)
+- [x] `/blog/custo-de-vida-curitiba` — 93 imp, pos 12,5 (subir top 10)
+- [x] `/blog/como-financiar-minha-casa-minha-vida` — 22 imp, pos 9,6
+- [x] `/blog/batel-vs-agua-verde-curitiba` — 14 imp, pos 5,9
+- [x] `/blog/melhores-bairros-familias-curitiba` — sem imp ainda mas YMYL Family alto
+
+#### 🟡 Pendente (10 URLs restantes — limite GSC ~10/dia)
+
+- [ ] `/blog/apartamento-ou-casa-curitiba`
+- [ ] `/blog/checklist-compra-imovel`
+- [ ] `/blog/documentos-comprar-imovel-curitiba`
+- [ ] `/blog/ecoville-vs-bigorrilho-curitiba`
+- [ ] `/blog/imovel-planta-vs-pronto-curitiba`
+- [ ] `/blog/itbi-curitiba-valor-como-pagar`
+- [ ] `/blog/melhores-bairros-curitiba-2026`
+- [ ] `/blog/mercado-imobiliario-curitiba-2026`
+- [ ] `/blog/preco-metro-quadrado-curitiba-bairro`
+- [ ] `/blog/quanto-custa-morar-batel-curitiba`
+
+#### Próxima revisão GSC: 2026-05-10
+
+Verificar:
+- Recrawl dos 5 prioritários (last crawled deve ser >26/04)
+- CTR `/blog/financiamento-...` antes (0,23%) vs depois do title novo — meta 5-8%
+- Posição `/blog/custo-de-vida-curitiba` antes (12,5) vs depois — meta top 10
+- Sitemap `/sitemap/0.xml` warning resolvido?
+
+#### Outras ações SEO pendentes do relatório 26/04
+
+- [ ] Investigar warning `sitemap/0.xml` (status "Has warnings", 251 URLs) — provavelmente imóveis Loft removidos do CRM mas ainda no sitemap
+- [ ] Reescrever title de `/casas-curitiba` (pos 3,2 sem clique — adicionar number drop tipo "+50 ofertas")
+- [ ] Reescrever title de `/blog` lista (pos 2,9 sem clique)
+- [ ] Reescrever title de `/blog/mercado-imobiliario-curitiba-2026` (pos 2,5, 0 clicks — title sem promessa)
+
+---
+
 ### Pendente de padronizacao (Titulos de imovel)
 > Bruno pediu para primeiro mostrar cru, depois alinhar um padrao. Quando ele confirmar o formato desejado, aplicar em `mapRawToProperty` (src/services/loft.ts:310) ou via funcao de sanitizacao dedicada.
 
