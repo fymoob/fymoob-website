@@ -8,9 +8,10 @@ export function WhatsAppFloat() {
   const pathname = usePathname()
   const isPropertyPage = pathname.startsWith("/imovel/")
   const isAdmin = pathname.startsWith("/admin")
+  const isStudio = pathname.startsWith("/studio")
 
-  // Hide on admin panel — internal tool, no public CTAs
-  if (isAdmin) return null
+  // Hide on admin panel and Sanity Studio — internal tools, no public CTAs
+  if (isAdmin || isStudio) return null
 
   const message = "Olá! Gostaria de mais informações sobre os imóveis da FYMOOB."
   const url = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent(message)}`

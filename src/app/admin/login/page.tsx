@@ -22,7 +22,7 @@ export default async function AdminLoginPage({ searchParams }: PageProps) {
       <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-8 shadow-sm sm:p-10">
         <div className="flex items-center gap-2">
           <Image
-            src="/icon-192.png"
+            src="/logo.png"
             alt="FYMOOB"
             width={32}
             height={32}

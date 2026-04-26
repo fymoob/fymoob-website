@@ -14,7 +14,9 @@ import type { ReactNode } from "react"
 export function ChromeGate({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const hidden =
-    pathname.startsWith("/admin") || pathname.startsWith("/empreendimento/")
+    pathname.startsWith("/admin") ||
+    pathname.startsWith("/empreendimento/") ||
+    pathname.startsWith("/studio")
   if (hidden) return null
   return <>{children}</>
 }

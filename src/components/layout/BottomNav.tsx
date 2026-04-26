@@ -20,6 +20,7 @@ export function BottomNav() {
   const isPropertyPage = pathname.startsWith("/imovel/")
   const isAdmin = pathname.startsWith("/admin")
   const isEmpreendimento = pathname.startsWith("/empreendimento/")
+  const isStudio = pathname.startsWith("/studio")
 
   // Auto-hide on scroll down (property pages only)
   const [hidden, setHidden] = useState(false)
@@ -89,7 +90,7 @@ export function BottomNav() {
   }, [])
 
   // Hide on admin panel (own layout) and empreendimento editorial pages (construtora feel)
-  if (isAdmin || isEmpreendimento) return null
+  if (isAdmin || isEmpreendimento || isStudio) return null
 
   return (
     <nav

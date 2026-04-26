@@ -28,6 +28,7 @@ export function HeaderClient() {
   const isHome = pathname === "/" || pathname === "/sobre"
   const isEmpreendimento = pathname.startsWith("/empreendimento/")
   const isAdmin = pathname.startsWith("/admin")
+  const isStudio = pathname.startsWith("/studio")
   const hasDarkHero = isHome
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuPath, setMobileMenuPath] = useState<string | null>(null)
@@ -47,7 +48,7 @@ export function HeaderClient() {
   // Empreendimento pages hide the global header entirely so the landing feels
   // like it belongs to the construtora (requested by Bruno 13/04/2026).
   // Admin panel has its own layout and sidebar — no public header needed.
-  if (isEmpreendimento || isAdmin) return null
+  if (isEmpreendimento || isAdmin || isStudio) return null
 
   const isTransparent = hasDarkHero && !scrolled
   // Header has dark background (transparent over dark hero OR dark brown when scrolled in empreendimento)
