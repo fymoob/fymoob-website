@@ -68,7 +68,8 @@
       "mcp__playwright__browser_network_requests",
       "mcp__playwright__browser_hover",
       "mcp__playwright__browser_wait_for",
-      "mcp__playwright__browser_run_code"
+      "mcp__playwright__browser_run_code",
+      "mcp__gsc__get_sitemap_details"
     ],
     "additionalDirectories": [
       "c:\\Users\\Vine\\.claude\\projects\\c--Users-Vine-demo\\memory"
