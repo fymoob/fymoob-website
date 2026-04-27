@@ -627,9 +627,9 @@ function applyFilters(indexed: IndexedProperty[], filters: PropertyFilters): Pro
     result.push(p)
   }
 
-  // Default: "relevante" (score composto: destaque + qualidade + recência).
-  // Ver src/lib/property-relevance.ts para a fórmula.
-  const effectiveOrder = filters.orderBy ?? "relevante"
+  // Default: "recente" (mais novos primeiro). "relevante" continua disponível
+  // como opção explícita (?orderBy=relevante) — score composto em src/lib/property-relevance.ts.
+  const effectiveOrder = filters.orderBy ?? "recente"
   switch (effectiveOrder) {
     case "preco-asc":
       result.sort((a, b) => (a.precoVenda ?? a.precoAluguel ?? 0) - (b.precoVenda ?? b.precoAluguel ?? 0))

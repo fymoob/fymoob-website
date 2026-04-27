@@ -11,12 +11,12 @@ import {
 } from "@/components/ui/sheet"
 
 const SORT_OPTIONS = [
-  { value: "", label: "Mais relevantes" },
+  { value: "", label: "Mais recentes" },
+  { value: "relevante", label: "Mais relevantes" },
   { value: "preco-asc", label: "Menor preço" },
   { value: "preco-desc", label: "Maior preço" },
   { value: "area-desc", label: "Maior área" },
   { value: "area-asc", label: "Menor área" },
-  { value: "recente", label: "Mais recentes" },
 ]
 
 export function SortDropdown() {
@@ -26,7 +26,7 @@ export function SortDropdown() {
   const [open, setOpen] = useState(false)
 
   const currentLabel =
-    SORT_OPTIONS.find((o) => o.value === current)?.label || "Mais relevantes"
+    SORT_OPTIONS.find((o) => o.value === current)?.label || "Mais recentes"
 
   const handleChange = (value: string) => {
     const params = new URLSearchParams(searchParams.toString())

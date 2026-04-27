@@ -2038,6 +2038,7 @@ Seguem protocolo completo desde o briefing. Time de 7 agents obrigatório. Check
 - [x] Contagem corrigida para usar `total` do backend e exibicao "Mostrando N nesta pagina"
 - [x] `PropertyListingGrid` sem decisao responsiva por JS â€” mobile resolvido por CSS/Tailwind
 - [x] `PropertyCard` no contexto de busca refinado com preco em destaque, CTA "Ver detalhes", "Consultar valor" e layout mais compacto
+- [x] Default de ordenacao da `/busca` trocado de "Mais relevantes" para "Mais recentes" (desktop + mobile) — 27/04/2026, commit de teste pos-transfer Vercel/GitHub
 
 > Validado via Playwright em `/busca` desktop, lista desktop, mobile e estado vazio com filtros ativos.
 
