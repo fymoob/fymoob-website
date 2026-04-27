@@ -2039,6 +2039,7 @@ Seguem protocolo completo desde o briefing. Time de 7 agents obrigatório. Check
 - [x] `PropertyListingGrid` sem decisao responsiva por JS â€” mobile resolvido por CSS/Tailwind
 - [x] `PropertyCard` no contexto de busca refinado com preco em destaque, CTA "Ver detalhes", "Consultar valor" e layout mais compacto
 - [x] Default de ordenacao da `/busca` trocado de "Mais relevantes" para "Mais recentes" (desktop + mobile) — 27/04/2026, commit de teste pos-transfer Vercel/GitHub
+- [x] Fix GSC "Excluida pela tag noindex" (44 URLs) — 27/04/2026: dynamicParams=false em `/imoveis/[bairro]` e `/imoveis/[bairro]/[tipo]` pra forcar 404 real (era 200+noindex via ISR cache do notFound). Bonus: `generateStaticParams` em `[tipo]` filtrado pra so gerar URLs de tipos suportados em TIPO_SLUG_MAP, eliminando typos com S duplo (apartamentoss, sobradoss, sala-comercials)
 
 > Validado via Playwright em `/busca` desktop, lista desktop, mobile e estado vazio com filtros ativos.
 

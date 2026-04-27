@@ -26,6 +26,14 @@ interface BairroPageProps {
   params: Promise<{ bairro: string }>
 }
 
+// Slugs com acento (boqueirão), typos ou bairros inexistentes retornam 404 real
+// no roteamento — sem dynamicParams: false, notFound() em ISR cacheia como 200
+// + noindex meta, e o Google reporta como "Excluída pela tag noindex" (vide
+// incidente GSC 27/04/2026 com 44 URLs). Custo: novos bairros no CRM exigem
+// redeploy pra serem servidos. Aceitável: Bruno adiciona imóveis em bairros
+// existentes, raramente cadastra bairro novo.
+export const dynamicParams = false
+
 export async function generateStaticParams() {
   const bairros = await getAllBairros()
   // Only bairros with >=2 imoveis get a dedicated page — avoid thin content.

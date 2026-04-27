@@ -4,7 +4,7 @@ import { notFound } from "next/navigation"
 import { Suspense } from "react"
 import { getAllBairros, getProperties, getPropertiesByBairro, getAllTypes, getAllCities, getPropertyStats } from "@/services/loft"
 import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
-import { slugify, formatPrice } from "@/lib/utils"
+import { formatPrice } from "@/lib/utils"
 import type { PropertyType, PropertyFinalidade, PropertyFilters } from "@/types/property"
 import {
   generateLandingTitle,
@@ -86,15 +86,31 @@ interface CombinadaPageProps {
   params: Promise<{ bairro: string; tipo: string }>
 }
 
+// Static params apenas — qualquer slug fora da lista (ex: "apartamentoss" com
+// S duplo, "lojas" sem suporte no page handler, "boqueirão" com acento)
+// retorna 404 real, não soft-404. Sem isso, ISR cacheia notFound() como 200
+// + noindex meta — vide incidente GSC 27/04/2026.
+export const dynamicParams = false
+
+// Reverse map: tipo da API (ex: "Apartamento") → slug correto (ex: "apartamentos").
+// Usado pra evitar bug do `${slugify(tipo)}s` cego que gerava URLs com S duplo
+// quando a API retornava tipo já plural (Apartamentos → apartamentoss).
+const TIPO_TO_SLUG: Record<string, string> = Object.fromEntries(
+  Object.entries(TIPO_SLUG_MAP).map(([slug, tipo]) => [tipo, slug])
+)
+
 export async function generateStaticParams() {
   const bairros = await getAllBairros()
   const params: { bairro: string; tipo: string }[] = []
 
   for (const b of bairros) {
     // Type combinations — only where the tipo bucket has >=3 imoveis in the bairro.
+    // Filtra pra tipos suportados pelo page handler (TIPO_SLUG_MAP) — gerar
+    // URL pra "Loja" sem entrada no map causa notFound() em runtime.
     for (const { tipo, count } of b.tipos) {
-      if (count >= 3) {
-        params.push({ bairro: b.slug, tipo: `${slugify(tipo)}s` })
+      const tipoSlug = TIPO_TO_SLUG[tipo]
+      if (count >= 3 && tipoSlug) {
+        params.push({ bairro: b.slug, tipo: tipoSlug })
       }
     }
     // Finalidade combinations — check actual count per finalidade, not total,
@@ -256,7 +272,7 @@ export default async function CombinadaPage({ params }: CombinadaPageProps) {
     })
     // Link to types in this bairro
     for (const s of ALL_TIPO_SLUGS) {
-      const match = bairro.tipos.find((t) => `${slugify(t.tipo)}s` === s && t.count >= 3)
+      const match = bairro.tipos.find((t) => TIPO_TO_SLUG[t.tipo] === s && t.count >= 3)
       if (match) {
         relatedLinks.push({
           href: `/imoveis/${bairroSlug}/${s}`,
@@ -278,7 +294,7 @@ export default async function CombinadaPage({ params }: CombinadaPageProps) {
     // Other types in same bairro
     for (const s of ALL_TIPO_SLUGS) {
       if (s === tipoSlug) continue
-      const match = bairro.tipos.find((t) => `${slugify(t.tipo)}s` === s && t.count >= 3)
+      const match = bairro.tipos.find((t) => TIPO_TO_SLUG[t.tipo] === s && t.count >= 3)
       if (match) {
         relatedLinks.push({
           href: `/imoveis/${bairroSlug}/${s}`,
