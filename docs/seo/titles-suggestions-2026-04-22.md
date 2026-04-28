@@ -32,7 +32,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP00657`
 **Atual:** "Easy Vila Izabel - Lindos apartamentos com dois quartos à venda no bairro Vila Izabel" (85 chars)
-**Sugerido:** "Apto 2 qts 34m² a 500m do IPO Portão | Easy" (45 chars) ✅
+**Sugerido:** "Apartamento 2 quartos 34m² a 500m do IPO Portão | Easy" (54 chars) ✅
 **Justificativa:** CRM=Apartamento 2 dorms (não Studio). Marco Hospital IPO da descrição vira gancho. Bairro real é Portão (título original CRM dizia "Vila Izabel" mas é nome do empreendimento Easy Vila Izabel — o BairroComercial é Portão).
 
 #### `AP00758`
@@ -47,7 +47,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP00822`
 **Atual:** "Le Monde - Apartamento em condomínio clube com 2 quartos à venda no bairro Portão em Curitiba!" (94 chars)
-**Sugerido:** "Apto 2 quartos suíte 56m² lazer completo Portão" (47 chars) ✅
+**Sugerido:** "Apartamento 2 quartos suíte 56m² lazer completo Portão" (54 chars) ✅
 **Justificativa:** Suíte (Tier S) extraída do dado. "30 áreas de lazer" da descrição vira "lazer completo".
 
 #### `AP00824`
@@ -67,7 +67,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP00902`
 **Atual:** "Apartamento com 2 quartos à venda no bairro Portão em Curitiba!" (63 chars)
-**Sugerido:** "Apto 2 quartos suíte 54m² a 1 quadra Palladium" (46 chars) ✅
+**Sugerido:** "Apartamento 2 quartos suíte 54m² a 1 quadra Palladium" (53 chars) ✅
 **Justificativa:** Descrição informa "1 quadra do Shopping Palladium e Supermercado Muffato".
 
 #### `AP00903`
@@ -77,12 +77,12 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `ST00010`
 **Atual:** "One Life - Studios à venda no bairro Água Verde divisa com Portão, em Curitiba!" (79 chars)
-**Sugerido:** "Apto 1 qto 17m² a 200m do Hospital IPO | One Life" (50 chars) ✅
+**Sugerido:** "Apto 1 quarto 17m² a 200m do Hospital IPO | One Life" (52 chars) ✅
 **Justificativa:** CRM=Apartamento 1 dorm (não Studio). Descrição cita "cerca de 200 metros do Hospital IPO" — marco com distância precisa. Empreendimento One Life ao fim.
 
 #### `TE00175`
 **Atual:** "Terreno a Venda no bairro Portão ZR3.ZONA RESIDENCIAL 3 1.Y. próximo Super mercado Ítalo" (88 chars)
-**Sugerido:** "Terreno 470m² ZR3 próx Supermercado Ítalo Portão" (48 chars) ✅
+**Sugerido:** "Terreno 470m² ZR3 próximo Supermercado Ítalo Portão" (51 chars) ✅
 **Justificativa:** Marco "Supermercado Ítalo" preservado da descrição.
 
 #### `TE00181`
@@ -102,7 +102,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69803237`
 **Atual:** "Terracota I - Sobrados em condomínio fechado no bairro Portão" (61 chars)
-**Sugerido:** "Sobrado 3 qts suíte em condomínio fechado Portão" (48 chars) ✅
+**Sugerido:** "Sobrado 3 quartos suíte em condomínio fechado Portão" (52 chars) ✅
 **Justificativa:** Descrição confirma "3 dormitórios, sendo 1 suíte" + "condomínio fechado".
 
 #### `AP01018`
@@ -112,17 +112,17 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP01079`
 **Atual:** "Cravo Casa Nativa - Apartamentos com 2 e 3 quartos com suíte em fase de lançamento no Bairro Portão." (100 chars)
-**Sugerido:** "Apto 2 qts suíte 66m² próx Shopping Palladium Portão" (52 chars) ✅
+**Sugerido:** "Apto 2 qts suíte 66m² próximo Shopping Palladium Portão" (55 chars) ✅
 **Justificativa:** Descrição cita "Shopping Palladium, Super Muffato, Hospital IPO" — marco principal virou gancho.
 
 #### `CA02706`
 **Atual:** "Sobrado Triplex com 3 quartos à venda no Bairro Portão" (54 chars)
-**Sugerido:** "Sobrado triplex 3 qts 151m² com quintal Portão" (46 chars) ✅
+**Sugerido:** "Sobrado triplex 3 quartos 151m² com quintal Portão" (50 chars) ✅
 **Justificativa:** Descrição menciona "quintal espaçoso de 38,94 m² nos fundos".
 
 #### `69804349`
 **Atual:** "Cravo Casa Nativa - Apartamento 3 quartos com suíte em fase de lançamento no Bairro Portão." (91 chars)
-**Sugerido:** "Apto 3 qts suíte 90m² próx Hospital IPO Portão" (46 chars) ✅
+**Sugerido:** "Apartamento 3 qts suíte 90m² próx Hospital IPO Portão" (53 chars) ✅
 **Justificativa:** Descrição cita "Hospital IPO" nas proximidades.
 
 #### `69804395`
@@ -132,17 +132,17 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69804852`
 **Atual:** "Residencial moderno com 182 m², 3 dormitórios e garden com churrasqueira no Portão" (82 chars)
-**Sugerido:** "Sobrado 3 qts 182m² garden e churrasqueira Portão" (49 chars) ✅
+**Sugerido:** "Sobrado 3 quartos 182m² garden e churrasqueira Portão" (53 chars) ✅
 **Justificativa:** "Garden com churrasqueira" da descrição preservado.
 
 #### `69805374`
 **Atual:** "Sobrado de 182 m² no Portão com garden e 3 dormitórios" (54 chars)
-**Sugerido:** "Sobrado 3 qts 182m² garden e suíte master Portão" (48 chars) ✅
+**Sugerido:** "Sobrado 3 quartos 182m² garden e suíte master Portão" (52 chars) ✅
 **Justificativa:** Feature "Suite Master" (Tier S explícito) adicionada.
 
 #### `69805459`
 **Atual:** "Sobrado com terraço à venda no bairro Portão, com 03 dormitórios sendo 01 suíte, imóvel novo podendo ser financiado." (116 chars)
-**Sugerido:** "Sobrado novo 3 qts suíte vista panorâmica Portão" (48 chars) ✅
+**Sugerido:** "Sobrado novo 3 quartos suíte vista panorâmica Portão" (52 chars) ✅
 **Justificativa:** Feature "Vista Panorâmica" (Tier S explícito) extraída.
 
 #### `69805461`
@@ -152,7 +152,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805498`
 **Atual:** "Sobrado com 3 Quartos à Venda no Portão - Curitiba" (50 chars)
-**Sugerido:** "Sobrado novo 3 qts suíte 120m² 1 vaga Portão" (44 chars) ✅
+**Sugerido:** "Sobrado novo 3 quartos suíte 120m² 1 vaga Portão" (48 chars) ✅
 **Justificativa:** CRM=1 vaga (não 2). Dados técnicos: suíte + 120m² + "novo" (entrega 2026).
 
 ### Resumo Portão
@@ -189,7 +189,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP00945`
 **Atual:** "La Défense - Apartamento com 3 suítes à venda no bairro Mossunguê." (66 chars)
-**Sugerido:** "Apto 3 suítes 120m² Mossunguê La Défense" (40 chars) ✅
+**Sugerido:** "Apartamento 3 suítes 120m² Mossunguê La Défense" (47 chars) ✅
 **Justificativa:** Empreendimento no fim, metragem.
 
 #### `AP00946`
@@ -209,17 +209,17 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP01004`
 **Atual:** "Pace - A Vida no seu ritmo." (27 chars)
-**Sugerido:** "Apto 3 suítes 217m² alto padrão Ecoville PACE" (45 chars) ✅
+**Sugerido:** "Apartamento 3 suítes 217m² alto padrão Ecoville PACE" (52 chars) ✅
 **Justificativa:** DescricaoWeb cita "160 metros de altura, 44 andares".
 
 #### `AP01088`
 **Atual:** "Horizon Ecoville - Apartamento à venda com 3 quartos na região do Ecoville, próximo ao Parque Barigui." (102 chars)
-**Sugerido:** "Apto 3 quartos varanda gourmet Ecoville Horizon" (47 chars) ✅
+**Sugerido:** "Apartamento 3 quartos varanda gourmet Ecoville Horizon" (54 chars) ✅
 **Justificativa:** DescricaoWeb destaca "Varanda gourmet com churrasqueira".
 
 #### `AP01143`
 **Atual:** *(vazio)* (0 chars)
-**Sugerido:** "Apto 2 quartos 1 suíte 56m² Ecoville Yes" (40 chars) ✅
+**Sugerido:** "Apartamento 2 quartos 1 suíte 56m² Ecoville Yes" (47 chars) ✅
 **Justificativa:** Criado do zero. DescricaoWeb: "2 quartos sendo uma suíte, 53 a 57 m²".
 
 #### `69803879`
@@ -249,7 +249,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69804172`
 **Atual:** "Bloma Apartamentos 3 quartos e 3 suítes, no ecoville." (55 chars)
-**Sugerido:** "Apto 3 suítes 145m² Roofgarden Ecoville Bloma" (45 chars) ✅
+**Sugerido:** "Apartamento 3 suítes 145m² Roofgarden Ecoville Bloma" (52 chars) ✅
 **Justificativa:** "Roofgarden" (amenidade exclusiva da DescricaoWeb).
 
 #### `69804720`
@@ -259,7 +259,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805549`
 **Atual:** "Cobertura no Bloma: 3 quartos e 3 suítes no Ecoville." (54 chars)
-**Sugerido:** "Apto 3 suítes 184m² Roofgarden Ecoville | Bloma" (47 chars) ✅
+**Sugerido:** "Apartamento 3 suítes 184m² Roofgarden Ecoville | Bloma" (54 chars) ✅
 **Justificativa:** CRM=Apartamento (não Cobertura — apesar do título original do CRM dizer "Cobertura no Bloma"). Roofgarden como assinatura do Bloma.
 
 #### `69805550`
@@ -285,7 +285,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP00916`
 **Atual:** "Meo - Lançamento - Apartamento com 3 quartos em condomínio clube no Neoville em Curitiba!" (89 chars)
-**Sugerido:** "Apto 3 Quartos Suíte Lazer Completo Neoville Meo" (48 chars) ✅
+**Sugerido:** "Apartamento 3 Quartos Suíte Lazer Completo Neoville Meo" (55 chars) ✅
 **Justificativa:** Mesmo condomínio clube.
 
 #### `69803086`
@@ -295,12 +295,12 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69803256`
 **Atual:** "Apto 2 Quartos, Residencial Vittace Bosque - Curitiba, PR" (57 chars)
-**Sugerido:** "Apto 2 Qts FGTS Lazer Completo CIC Vittace Bosque" (49 chars) ✅
+**Sugerido:** "Apto 2 Quartos FGTS Lazer Completo CIC Vittace Bosque" (53 chars) ✅
 **Justificativa:** 17 itens de lazer + aceita financiamento.
 
 #### `69803496`
 **Atual:** "Sobrado 3 Quartos no Vitória Régia em Curitiba." (47 chars)
-**Sugerido:** "Sobrado 3 Qts 88m² Churrasqueira Vitória Régia CIC" (50 chars) ✅
+**Sugerido:** "Sobrado 3 Quartos 88m² Churrasqueira Vitória Régia CIC" (54 chars) ✅
 **Justificativa:** Churrasqueira + área.
 
 #### `69803584`
@@ -310,7 +310,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69804107`
 **Atual:** "Apartamento com 2 quartos à venda no bairro Neoville." (53 chars)
-**Sugerido:** "Apto 2 Qts Sacada Churrasqueira Neoville Vega" (45 chars) ✅
+**Sugerido:** "Apartamento 2 Qts Sacada Churrasqueira Neoville Vega" (52 chars) ✅
 **Justificativa:** "Sacada Com Churrasqueira" + "Vista Panoramica".
 
 #### `69804700`
@@ -320,7 +320,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69804970`
 **Atual:** "Sobrado à venda no Vitória Régia CIC..." (126 chars)
-**Sugerido:** "Sobrado Novo 3 Qts a 240m Supermercado Europa CIC" (49 chars) ✅
+**Sugerido:** "Sobrado Novo 3 Quartos a 240m Supermercado Europa CIC" (53 chars) ✅
 **Justificativa:** Descrição cita "240m do Supermercado Europa".
 
 #### `69805136`
@@ -330,32 +330,32 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805396`
 **Atual:** "Sobrado novo, com Terraço e 3 quartos no Vitória Régia | 80 m²" (62 chars)
-**Sugerido:** "Sobrado Novo 3 Qts Terraço FGTS Vitória Régia CIC" (49 chars) ✅
+**Sugerido:** "Sobrado Novo 3 Quartos Terraço FGTS Vitória Régia CIC" (53 chars) ✅
 **Justificativa:** Terraço + aceita financiamento = FGTS.
 
 #### `69805418`
 **Atual:** "Sobrados novos em fase de obra a venda com 2 e 3 quartos na cidade industrial" (77 chars)
-**Sugerido:** "Casa cond. nova 2 qts FGTS perto Bosch CIC Curitiba" (51 chars) ✅
+**Sugerido:** "Casa cond. nova 2 quartos FGTS perto Bosch CIC Curitiba" (55 chars) ✅
 **Justificativa:** CRM=Casa em Condomínio (não Sobrado). Descrição cita "próximo a Bosch, Mondelez" — marco de trabalho real.
 
 #### `69805443`
 **Atual:** "Sobrado à venda no Vitória Régia - Curitiba com 2 quartos." (58 chars)
-**Sugerido:** "Casa 2 qts 81m² churrasqueira FGTS Vitória Régia" (48 chars) ✅
+**Sugerido:** "Casa 2 quartos 81m² churrasqueira FGTS Vitória Régia" (52 chars) ✅
 **Justificativa:** CRM=Casa térrea (não Sobrado). Churrasqueira + área + FGTS.
 
 #### `69805444`
 **Atual:** "Sobrado à venda no Vitória Régia - Curitiba com 2 quartos." (58 chars)
-**Sugerido:** "Casa 3 qts suíte churrasqueira FGTS Vitória Régia" (49 chars) ✅
+**Sugerido:** "Casa 3 quartos suíte churrasqueira FGTS Vitória Régia" (53 chars) ✅
 **Justificativa:** CRM=Casa térrea (não Sobrado). Payload real: 3 quartos + 1 suíte (título atual errado).
 
 #### `69805494`
 **Atual:** "Sobrado com 3 Dormitórios à Venda na Cidade Industrial - Curitiba/PR" (68 chars)
-**Sugerido:** "Sobrado Novo 3 Qts Churrasqueira Terraço FGTS CIC" (49 chars) ✅
+**Sugerido:** "Sobrado Novo 3 Quartos Churrasqueira Terraço FGTS CIC" (53 chars) ✅
 **Justificativa:** Churrasqueira coberta + terraço + financiamento.
 
 #### `69805536`
 **Atual:** "Sobrado à venda no Vitória Régia, com 03 quartos e espaço nos fundos com churrasqueira..." (123 chars)
-**Sugerido:** "Sobrado 3 Qts Área Gourmet a 350m Vianas FGTS CIC" (49 chars) ✅
+**Sugerido:** "Sobrado 3 Quartos Área Gourmet a 350m Vianas FGTS CIC" (53 chars) ✅
 **Justificativa:** Descrição cita "350m do Supermercado Vianas".
 
 ### Resumo Cidade Industrial
@@ -371,47 +371,47 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP00807`
 **Atual:** "Lunetto - Studios com sacada e churrasqueira à venda no bairro Água Verde..." (87 chars)
-**Sugerido:** "Apto 1 qto sacada churrasq 200m do IPO Água Verde" (49 chars) ✅
+**Sugerido:** "Apto 1 quarto sacada churrasq 200m do IPO Água Verde" (52 chars) ✅
 **Justificativa:** Descrição destaca Hospital IPO + Shopping Água Verde.
 
 #### `AP00828`
 **Atual:** "Le Sense - Apartamento com 3 quartos no bairro Água Verde." (58 chars)
-**Sugerido:** "Apto 3Q 1 Suíte 115m² Varanda Gourmet Água Verde" (48 chars) ✅
+**Sugerido:** "Apartamento 3Q 1 Suíte 115m² Varanda Gourmet Água Verde" (55 chars) ✅
 **Justificativa:** Descrição menciona varanda gourmet + suíte + 115m².
 
 #### `69803421`
 **Atual:** "Apartamento de 129 m² - Água Verde, Curitiba" (44 chars)
-**Sugerido:** "Apto 3Q Suíte Master 129m² 2 Vagas Água Verde" (45 chars) ✅
+**Sugerido:** "Apartamento 3Q Suíte Master 129m² 2 Vagas Água Verde" (52 chars) ✅
 **Justificativa:** Suite Master + churrasqueira.
 
 #### `AP01008`
 **Atual:** "Lemme - Apartamento com 2 quartos à venda no bairro Água Verde em Curitiba." (75 chars)
-**Sugerido:** "Apto 2 Suítes 134m² Alto Padrão Água Verde Lemme" (48 chars) ✅
+**Sugerido:** "Apartamento 2 Suítes 134m² Alto Padrão Água Verde Lemme" (55 chars) ✅
 **Justificativa:** 2 suítes + EMA Arquitetura.
 
 #### `AP01009`
 **Atual:** "Lemme - Apartamento com 3 quartos à venda no bairro Água Verde em Curitiba." (75 chars)
-**Sugerido:** "Apto 3 Suítes 141m² Alto Padrão Água Verde Lemme" (48 chars) ✅
+**Sugerido:** "Apartamento 3 Suítes 141m² Alto Padrão Água Verde Lemme" (55 chars) ✅
 **Justificativa:** 3 suítes + alto padrão.
 
 #### `AP01130`
 **Atual:** "Atlân - Apartamento com 2 quartos à venda na divisa dos bairros Água Verde e Batel..." (94 chars)
-**Sugerido:** "Apto 2 Suítes 106m² 250m Praça Japão Água Verde" (47 chars) ✅
+**Sugerido:** "Apartamento 2 Suítes 106m² 250m Praça Japão Água Verde" (54 chars) ✅
 **Justificativa:** Descrição cita "250m da Praça do Japão".
 
 #### `AP01131`
 **Atual:** "Atlân - Apartamento com 3 quartos à venda na divisa dos bairros Água Verde e Batel..." (94 chars)
-**Sugerido:** "Apto 3Q 1 Suíte 114m² 500m Clube Curitibano AV" (46 chars) ✅
+**Sugerido:** "Apartamento 3Q 1 Suíte 114m² 500m Clube Curitibano AV" (53 chars) ✅
 **Justificativa:** Descrição cita "500m do Clube Curitibano".
 
 #### `69804195`
 **Atual:** "Orfeu, o novo Hit da sua vida!..." (132 chars)
-**Sugerido:** "Apto 3Q 1 Suíte 86m² 2 Vagas Água Verde Orfeu" (45 chars) ✅
+**Sugerido:** "Apartamento 3Q 1 Suíte 86m² 2 Vagas Água Verde Orfeu" (52 chars) ✅
 **Justificativa:** Remove clickbait e preço.
 
 #### `69804752`
 **Atual:** "Apto Mobiliado com 02 Suítes no Água Verde" (42 chars)
-**Sugerido:** "Apto Mobiliado 2 Suítes 96m² 2 Vagas Água Verde" (47 chars) ✅
+**Sugerido:** "Apartamento Mobiliado 2 Suítes 96m² 2 Vagas Água Verde" (54 chars) ✅
 **Justificativa:** "Mobiliado" (Tier S) + m² + 2 vagas.
 
 #### `69805341`
@@ -462,7 +462,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `CA02750`
 **Atual:** "Sobrado com 3 quartos à venda no bairro Sítio Cercado em Curitiba" (65 chars)
-**Sugerido:** "Sobrado 3 Qtos Novo Terreno 5x20 Sítio Cercado" (46 chars) ✅
+**Sugerido:** "Sobrado 3 Quartos Novo Terreno 5x20 Sítio Cercado" (49 chars) ✅
 **Justificativa:** "Terreno 5x20" (raro na região).
 
 #### `69804363`
@@ -472,27 +472,27 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69804527`
 **Atual:** "Casa em condomínio à venda no Sitio Cercado..." (96 chars)
-**Sugerido:** "Casa 3 Qtos Condomínio Fechado Sítio Cercado, Calena" (52 chars) ✅
+**Sugerido:** "Casa 3 Quartos Condomínio Fechado Sítio Cercado, Calena" (55 chars) ✅
 **Justificativa:** Condomínio com 4 unidades + aquecimento a gás.
 
 #### `69804972`
 **Atual:** "Apto 2 quartos no Sítio Cercado, financie pela Caixa" (52 chars)
-**Sugerido:** "Apto 2 Qtos Semi Mobiliado MCMV Sítio Cercado Veneza" (52 chars) ✅
+**Sugerido:** "Apto 2 Quartos Semi Mobiliado MCMV Sítio Cercado Veneza" (55 chars) ✅
 **Justificativa:** Semi Mobiliado + Cozinha Planejada + MCMV.
 
 #### `69805081`
 **Atual:** "Sobrado com 3 quartos à venda no Sítio Cercado" (46 chars)
-**Sugerido:** "Sobrado Alto Padrão 3 Qtos Terraço Sítio Cercado" (48 chars) ✅
+**Sugerido:** "Sobrado Alto Padrão 3 Quartos Terraço Sítio Cercado" (51 chars) ✅
 **Justificativa:** Descrição abre com "alto padrão" + terraço 40m².
 
 #### `69805395`
 **Atual:** "Casa 2 quartos no Sítio Cercado - Curitiba" (42 chars)
-**Sugerido:** "Casa Nova 2 Qtos Aceita Financiamento Sítio Cercado" (51 chars) ✅
+**Sugerido:** "Casa Nova 2 Quartos Aceita Financiamento Sítio Cercado" (54 chars) ✅
 **Justificativa:** Imóvel novo + financiamento.
 
 #### `69805410`
 **Atual:** "Apto 02 quartos no Sítio Cercado" (32 chars)
-**Sugerido:** "Apto 2 Qtos Mobiliado em Frente ao Supermercado Góes" (52 chars) ✅
+**Sugerido:** "Apto 2 Quartos Mobiliado em Frente ao Supermercado Góes" (55 chars) ✅
 **Justificativa:** Mobiliado + "em frente ao Supermercado Góes".
 
 #### `69805506`
@@ -502,7 +502,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805687`
 **Atual:** "Sobrado à venda no Sítio Cercado, com 03 quartos e edícula..." (107 chars)
-**Sugerido:** "Sobrado 3 Qtos Edícula Churrasqueira Sítio Cercado" (50 chars) ✅
+**Sugerido:** "Sobrado 3 Quartos Edícula Churrasqueira Sítio Cercado" (53 chars) ✅
 **Justificativa:** Edícula + Churrasqueira + "500m do Stall".
 
 #### `69805688`
@@ -512,7 +512,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805703` *(novo — cadastrado 2026-04-24, locação)*
 **Atual:** "Sobrado triplex próximo ao Terminal Sítio Cercado" (50 chars)
-**Sugerido:** "Sobrado triplex 3 qts 136m² Terminal Sítio Cercado" (50 chars) ✅
+**Sugerido:** "Sobrado triplex 3 quartos 136m² Terminal Sítio Cercado" (54 chars) ✅
 **Justificativa:** Dados (3 qts/1 suíte/2 vagas/136m²/R$ 2.800 aluguel) + marco preservado. Atual já é razoável — sugestão adiciona m².
 
 #### `69805704` *(novo — cadastrado 2026-04-24, locação loja)*
@@ -548,42 +548,42 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69804218`
 **Atual:** "Sobrado à venda no Campo de Santana, com 03 quartos, vaga de garagem, localizado a apenas 650m do Supermercado Araucária..." (158 chars)
-**Sugerido:** "Sobrado Novo 3 Qtos 650m do Mercado Campo de Santana" (53 chars) ✅
+**Sugerido:** "Sobrado Novo 3 Quartos 650m do Mercado Campo de Santana" (55 chars) ✅
 **Justificativa:** Marco "650m do Supermercado".
 
 #### `69804926`
 **Atual:** "Sobrado 3 Quartos com Sacada no Campo de Santana - Ótima Localização!" (69 chars)
-**Sugerido:** "Sobrado 3 Qtos c/ Churrasqueira Aceita Financiamento" (53 chars) ✅
+**Sugerido:** "Sobrado 3 Quartos c/ Churrasqueira Aceita Financiamento" (55 chars) ✅
 **Justificativa:** Remove Tier C. "Aceita financiamento" + churrasqueira.
 
 #### `69805108`
 **Atual:** *(vazio)* (0 chars)
-**Sugerido:** "Sobrado 3 Qtos Edícula 180m do CMEI Campo de Santana" (53 chars) ✅
+**Sugerido:** "Sobrado 3 Quartos Edícula 180m do CMEI Campo de Santana" (55 chars) ✅
 **Justificativa:** Descrição cita "180m do CMEI" + "edícula com churrasqueira".
 
 #### `69805137`
 **Atual:** "Apartamento 42 m² no Campo de Santana - Condomínio é cidade de Pavia" (68 chars)
-**Sugerido:** "Apto 2 Qtos 42m² Sacada Aceita Financiamento Pavia" (51 chars) ✅
+**Sugerido:** "Apto 2 Quartos 42m² Sacada Aceita Financiamento Pavia" (53 chars) ✅
 **Justificativa:** Corrige nome do condomínio. Sacada + financiamento.
 
 #### `69805169`
 **Atual:** "Sobrado à venda no Campo de Santana..." (131 chars)
-**Sugerido:** "Sobrado 3 Qtos Suíte 350m Mercado Araucária 2 Vagas" (52 chars) ✅
+**Sugerido:** "Sobrado 3 Quartos Suíte 350m Mercado Araucária 2 Vagas" (54 chars) ✅
 **Justificativa:** "350m do Supermercado Araucária" + 2 vagas.
 
 #### `69805416`
 **Atual:** *(vazio)* (0 chars)
-**Sugerido:** "Sobrado Novo 3 Qtos Edícula 300m Rua Marcos Bertoldi" (53 chars) ✅
+**Sugerido:** "Sobrado Novo 3 Quartos Edícula 300m Rua Marcos Bertoldi" (55 chars) ✅
 **Justificativa:** Descrição: "300m da Rua Marcos Bertoldi".
 
 #### `69805611`
 **Atual:** "Sobrado à venda no Campo de Santana..." (120 chars)
-**Sugerido:** "Sobrado Novo 3 Qtos Edícula 170m Sup. Roça Grande" (50 chars) ✅
+**Sugerido:** "Sobrado Novo 3 Quartos Edícula 170m Sup. Roça Grande" (52 chars) ✅
 **Justificativa:** "170m do Supermercado Roça Grande".
 
 #### `69805612`
 **Atual:** *(vazio)* (0 chars)
-**Sugerido:** "Sobrado Novo 2 Qtos 62m² Campo de Santana Financia" (51 chars) ✅
+**Sugerido:** "Sobrado Novo 2 Quartos 62m² Campo de Santana Financia" (53 chars) ✅
 **Justificativa:** Novo 2026 + financia.
 
 ### Resumo Campo de Santana
@@ -660,7 +660,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69803109`
 **Atual:** "Sobrado 3 Quartos no Bairro Xaxim - Oportunidade" (48 chars)
-**Sugerido:** "Sobrado Novo 3 Qtos 1 Suíte Xaxim Park Shopping" (48 chars) ✅
+**Sugerido:** "Sobrado Novo 3 Quartos 1 Suíte Xaxim Park Shopping" (50 chars) ✅
 **Justificativa:** "Novo" + Park Shopping Boulevard.
 
 #### `69804208`
@@ -675,7 +675,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805180`
 **Atual:** "Sobrado com 3 quartos à venda no bairro Xaxim em Curitiba" (57 chars)
-**Sugerido:** "Sobrado triplex 193m² 3 qts suíte Xaxim Condor" (46 chars) ✅
+**Sugerido:** "Sobrado triplex 193m² 3 quartos suíte Xaxim Condor" (50 chars) ✅
 **Justificativa:** "Triplex" + Condor (marco). ⚠️ **Inconsistência CRM:** Categoria atual no CRM é "Apartamento" mas título original diz "Sobrado". Bruno precisa confirmar tipologia correta.
 
 #### `69805181`
@@ -690,12 +690,12 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805539`
 **Atual:** "Sobrado com 3 Quartos no Xaxim 145m²" (36 chars)
-**Sugerido:** "Sobrado 3 Qtos 1 Suíte Cond Fechado Xaxim Santorini" (52 chars) ✅
+**Sugerido:** "Sobrado 3 Quartos 1 Suíte Cond Fechado Xaxim Santorini" (54 chars) ✅
 **Justificativa:** Condomínio fechado (4 sobrados, portão eletrônico).
 
 #### `69805540`
 **Atual:** "Sobrado com 3 Quartos e 1 suite no Xaxim" (40 chars)
-**Sugerido:** "Sobrado Novo 3 Qtos Suíte Cond Fechado Xaxim Mykonos" (52 chars) ✅
+**Sugerido:** "Sobrado Novo 3 Quartos Suíte Cond Fechado Xaxim Mykonos" (55 chars) ✅
 **Justificativa:** "Novo" (entrega 2026) + cond fechado.
 
 ### Resumo Xaxim
@@ -711,7 +711,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP00754`
 **Atual:** "Temple Batel - Studio à venda no bairro Batel em Curitiba." (58 chars)
-**Sugerido:** "Apto 1 qto 35m² na planta Batel | Temple Batel" (47 chars) ✅
+**Sugerido:** "Apartamento 1 qto 35m² na planta Batel | Temple Batel" (53 chars) ✅
 **Justificativa:** CRM=Apartamento 1 dorm (não Studio — apesar do empreendimento se chamar Temple). Metragem + lançamento.
 
 #### `69802979`
@@ -746,7 +746,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805195`
 **Atual:** "Lange" (5 chars)
-**Sugerido:** "Apto 1 qto suíte 26m² na planta Batel | Lange" (47 chars) ✅
+**Sugerido:** "Apartamento 1 quarto suíte 26m² na planta Batel | Lange" (55 chars) ✅
 **Justificativa:** CRM=Apartamento 1 dorm + suíte (não Studio). Criado do zero (TituloSite original era só "Lange").
 
 ### Resumo Batel
@@ -787,7 +787,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805434`
 **Atual:** "Studio para Locação Mobiliado, com água,luz e internet incluso no| Tatuquara - Curitiba" (87 chars)
-**Sugerido:** "Apto 1 qto 35m² mobiliado contas inclusas Tatuquara" (51 chars) ✅
+**Sugerido:** "Apto 1 quarto 35m² mobiliado contas inclusas Tatuquara" (54 chars) ✅
 **Justificativa:** CRM=Apartamento 1 dorm (não Studio). Mobiliado + contas inclusas (água/luz/internet).
 
 #### `69805527`
@@ -802,12 +802,12 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805713` *(novo — cadastrado 2026-04-25, Residencial Vila Mariana)*
 **Atual:** "Apartamento 02 quartos reformado no Tatuquara" (45 chars — já decente)
-**Sugerido:** "Apto 2 qts 43m² reformado MCMV Tatuquara" (40 chars) ✅
+**Sugerido:** "Apartamento 2 quartos 43m² reformado MCMV Tatuquara" (51 chars) ✅
 **Justificativa:** "MCMV" (Minha Casa Minha Vida) é gancho real de busca + reformado preservado + m². Alternativa com marco: "Apto 2 qts reformado próx Parque Aquabosk Tatuquara" (52 chars).
 
 #### `CA00096` *(novo — reativado 2026-04-24)*
 **Atual:** "Casa no Tatuquara pelo Minha Casa Minha Vida" (44 chars)
-**Sugerido:** "Casa 2 qts 40m² MCMV Terminal Tatuquara" (39 chars) ✅
+**Sugerido:** "Casa 2 quartos 40m² MCMV Terminal Tatuquara" (43 chars) ✅
 **Justificativa:** Adiciona dados (2 qts/40m²) + marco "Terminal Tatuquara" da DescricaoWeb. "MCMV" sigla mais econômica.
 
 ### Resumo Tatuquara
@@ -874,12 +874,12 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP01026`
 **Atual:** "Apartamento Studio no bairro Novo Mundo, proximo Shopping Palladium" (67 chars)
-**Sugerido:** "Apto 1 qto suíte 22m² próx Palladium Novo Mundo" (48 chars) ✅
+**Sugerido:** "Apartamento 1 qto suíte 22m² próx Palladium Novo Mundo" (54 chars) ✅
 **Justificativa:** CRM=Apartamento 1 dorm + suíte (não Studio). "700 metros do Shopping Palladium" da descrição.
 
 #### `69804954`
 **Atual:** "Apartamento com 2 quartos à venda no bairro Novo Mundo." (55 chars)
-**Sugerido:** "Apto 2 Qts Varanda Gourmet Lazer Novo Mundo Essence" (51 chars) ✅
+**Sugerido:** "Apto 2 Quartos Varanda Gourmet Lazer Novo Mundo Essence" (55 chars) ✅
 **Justificativa:** "Terraço gourmet, Quiosque com churrasqueira".
 
 #### `69804959`
@@ -920,7 +920,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805496`
 **Atual:** "LIV.IN - Apartamento de 3 Quartos no Campo Comprido..." (96 chars)
-**Sugerido:** "Apto mobiliado 2 qts Campo Comprido | LIV.IN" (44 chars) ✅
+**Sugerido:** "Apartamento mobiliado 2 quartos Campo Comprido | LIV.IN" (55 chars) ✅
 **Justificativa:** Corrige (2 qts, não 3). Mobiliado + suíte master.
 
 #### `69805613`
@@ -941,7 +941,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69804387`
 **Atual:** "Excelente opções de sobrado com terraço à venda no Capão Raso..." (237 chars)
-**Sugerido:** "Sobrado Novo 3 Qts 2 Suítes Terraço 50m² Capão Raso" (52 chars) ✅
+**Sugerido:** "Sobrado Novo 3 Quartos 2 Suítes Terraço 50m² Capão Raso" (55 chars) ✅
 **Justificativa:** 141m² + 50m² de terraço + 2 suítes.
 
 #### `69804388`
@@ -956,7 +956,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69804448`
 **Atual:** "Sobrado à venda no Capão Raso..." (111 chars)
-**Sugerido:** "Sobrado Novo 3 Qts Suíte A 900m Terminal Capão Raso" (51 chars) ✅
+**Sugerido:** "Sobrado Novo 3 Quartos Suíte A 900m Terminal Capão Raso" (55 chars) ✅
 **Justificativa:** "900m do Terminal do Capão Raso".
 
 #### `69805399`
@@ -987,12 +987,12 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805435`
 **Atual:** "Apartamento Garden com 3 Quartos em Araucária - Conforto e Espaço para Sua Família!" (83 chars)
-**Sugerido:** "Apto Garden 3Q com suíte master no Centro" (41 chars) ✅
+**Sugerido:** "Apartamento Garden 3Q com suíte master no Centro" (48 chars) ✅
 **Justificativa:** Corrige bairro (dados oficiais = Centro). "Suíte Master" (Tier S).
 
 #### `69805686`
 **Atual:** "Apartamento 3 quartos e 3 suítes com 2 vagas no Bigorrilho : Aurea 777" (71 chars)
-**Sugerido:** "Apto alto padrão 3 suítes no Centro · Aurea 777" (47 chars) ✅
+**Sugerido:** "Apartamento alto padrão 3 suítes no Centro · Aurea 777" (54 chars) ✅
 **Justificativa:** Corrige bairro (dados = Centro). "Alto Padrão" (oficial).
 
 ### Resumo Centro
@@ -1008,17 +1008,17 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP00671`
 **Atual:** "Signature - Arquitetura imponente, autêntica e exclusiva no prestigiado bairro do Ecoville." (91 chars)
-**Sugerido:** "Apto 3 suítes 4 vagas no Ecoville · Signature" (45 chars) ✅
+**Sugerido:** "Apartamento 3 suítes 4 vagas no Ecoville · Signature" (52 chars) ✅
 **Justificativa:** 227m² + 3 suítes + 4 vagas = ultra alto padrão.
 
 #### `AP00922`
 **Atual:** "Land Haus - Apartamento com 3 suítes à venda no Ecoville em Curitiba! Mais uma construção Plaenge" (97 chars)
-**Sugerido:** "Apto 3 suítes 4 vagas no Ecoville · Land Haus" (45 chars) ✅
+**Sugerido:** "Apartamento 3 suítes 4 vagas no Ecoville · Land Haus" (52 chars) ✅
 **Justificativa:** 193m² + 3 suítes + 4 vagas (Plaenge).
 
 #### `AP00942`
 **Atual:** "Trebbiano Residencial - O seu mais novo apartamento de 2 quartos, compacto de Alto Padrão no Ecoville." (102 chars)
-**Sugerido:** "Apto 2Q alto padrão no Ecoville · Trebbiano" (43 chars) ✅
+**Sugerido:** "Apartamento 2Q alto padrão no Ecoville · Trebbiano" (50 chars) ✅
 **Justificativa:** 74m² compacto de alto padrão.
 
 #### `AP00943`
@@ -1224,7 +1224,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805013`
 **Atual:** "Sobrado Triplex com 4 Quartos (2 Suítes com Closet) no Hauer" (60 chars)
-**Sugerido:** "Sobrado triplex 4 qts 2 suítes semimobiliado Hauer" (50 chars) ✅
+**Sugerido:** "Sobrado triplex 4 quartos 2 suítes semimobiliado Hauer" (54 chars) ✅
 **Nota:** CRM categoriza como "Casa em Condomínio" mas título original do CRM e estrutura (triplex, 127m² priv) confirmam sobrado. Bruno vende como sobrado.
 **Justificativa:** "Reformado" + "Semi Mobiliado" (2 Tier S).
 
@@ -1275,7 +1275,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69802157` *(novo — reativado 2026-04-25)*
 **Atual:** "Sobrado duplex em condomínio no Alto Boqueirão" (47 chars)
-**Sugerido:** "Sobrado 3 qts suíte cond. fechado Alto Boqueirão" (49 chars) ✅
+**Sugerido:** "Sobrado 3 quartos suíte cond. fechado Alto Boqueirão" (52 chars) ✅
 **Justificativa:** Dados (3 qts/1 suíte/60m²/R$ 410k) + "condomínio fechado com apenas sete unidades" da DescricaoWeb. **Alternativa com marco:** "Sobrado 3 qts suíte 60m² próx Shopping & Sports A. Boq." (54 chars).
 
 ### Resumo Alto Boqueirão
@@ -1309,7 +1309,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69804217`
 **Atual:** "Apartamentos Residencial Serra Dourada no Bairro Alto com suíte. Documentação grátis." (87 chars)
-**Sugerido:** "Apto 2 qtos suíte Bairro Alto, vista da Serra do Mar" (52 chars) ✅
+**Sugerido:** "Apto 2 quartos suíte Bairro Alto, vista da Serra do Mar" (55 chars) ✅
 **Justificativa:** "Vista panorâmica da serra do mar" da descrição.
 
 ### Resumo Bairro Alto
@@ -1321,7 +1321,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69804519`
 **Atual:** "Sobrado tríplex em condomínio à venda no Boqueirão..." (122 chars)
-**Sugerido:** "Sobrado novo 3 qtos 1 suíte Boqueirão, financiável" (51 chars) ✅
+**Sugerido:** "Sobrado novo 3 quartos 1 suíte Boqueirão, financiável" (53 chars) ✅
 **Justificativa:** Novo (entrega 2026) + financiável.
 
 #### `69805641`
@@ -1338,12 +1338,12 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP00296`
 **Atual:** "Cabrall Hills - Apartamento à venda com 3 quartos, varanda gourmet e 2 vagas..." (141 chars)
-**Sugerido:** "Apto alto padrão 3 qtos pronto p/ morar Cabral" (46 chars) ✅
+**Sugerido:** "Apartamento alto padrão 3 qtos pronto pra morar Cabral" (54 chars) ✅
 **Justificativa:** "Alto padrão" + "pronto para morar" (descrição).
 
 #### `69802196`
 **Atual:** "Fly Urban Habitat - Excelentes apartamentos à venda no Bairro Cabral..." (116 chars)
-**Sugerido:** "Apto 3 qtos 1 suíte lançamento Cabral — Fly Urban" (50 chars) ✅
+**Sugerido:** "Apto 3 quartos 1 suíte lançamento Cabral — Fly Urban" (52 chars) ✅
 **Justificativa:** "Lançamento" (Tier S).
 
 ### Resumo Cabral
@@ -1355,12 +1355,12 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69803241`
 **Atual:** "Sobrado com piscina à venda em Araucária, imóvel novo de alto padrão..." (93 chars)
-**Sugerido:** "Sobrado novo alto padrão 3 qtos piscina Cachoeira" (50 chars) ✅
+**Sugerido:** "Sobrado novo alto padrão 3 quartos piscina Cachoeira" (52 chars) ✅
 **Justificativa:** Novo (2024) + alto padrão + piscina.
 
 #### `69805503`
 **Atual:** "Apartamento com 39 m², no bairro Cachoeira" (43 chars)
-**Sugerido:** "Apto 1 qto 39m² Cachoeira, aceita financiamento" (48 chars) ✅
+**Sugerido:** "Apartamento 1 qto 39m² Cachoeira, aceita financiamento" (54 chars) ✅
 **Justificativa:** Aceita financiamento.
 
 ### Resumo Cachoeira
@@ -1372,22 +1372,22 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805456`
 **Atual:** "Apartamento com garden, 2 quartos no Capão da Imbuia perto Jardim Botânico" (74 chars)
-**Sugerido:** "Apto 2 qtos suíte garden Cajuru, varanda gourmet" (49 chars) ✅
+**Sugerido:** "Apartamento 2 qtos suíte garden Cajuru, varanda gourmet" (55 chars) ✅
 **Justificativa:** Corrige bairro (Cajuru). Varanda gourmet + garden.
 
 #### `69805458`
 **Atual:** "Aconchegante apartamento, 3 quartos, 1 suíte no Capão da Imbuia" (64 chars)
-**Sugerido:** "Apto 3 qtos 1 suíte Cajuru, varanda gourmet e lazer" (52 chars) ✅
+**Sugerido:** "Apto 3 quartos 1 suíte Cajuru, varanda gourmet e lazer" (54 chars) ✅
 **Justificativa:** Corrige bairro. Varanda gourmet + lazer completo.
 
 #### `69805712` *(novo — cadastrado 2026-04-24, Residencial Santos Dumont)*
 **Atual:** "Sobrado em condomínio à venda no Cajuru, com 03 quartos sendo 01 suíte, imóvel novo podendo ser financiado." (108 chars)
-**Sugerido:** "Sobrado 3 qts suíte 109m² 180m do Condor Cajuru" (47 chars) ✅
+**Sugerido:** "Sobrado 3 quartos suíte 109m² 180m do Condor Cajuru" (51 chars) ✅
 **Justificativa:** Marco específico "180m do Supermercado Condor" da DescricaoWeb. Dados (109m², 3 qts/1 suíte). Empreendimento Santos Dumont ao fim opcional.
 
 #### `CA02804` *(novo — reativado 2026-04-24, Residencial Fontana de Trevi)*
 **Atual:** "Sobrado triplex à venda no bairro Cajuru, unidades com 03 quartos sendo 01 suíte, terraço, imóvel novo podendo ser financiado." (124 chars)
-**Sugerido:** "Sobrado triplex 3 qts suíte 136m² ático Cajuru" (46 chars) ✅
+**Sugerido:** "Sobrado triplex 3 quartos suíte 136m² ático Cajuru" (50 chars) ✅
 **Justificativa:** "Ático com peça coringa" da DescricaoWeb é diferencial específico raro. Dados (136m², triplex) + suíte (Tier S). Versão com empreendimento: "Sobrado triplex 3 qts suíte 136m² Cajuru | Fontana" (50 chars).
 
 ### Resumo Cajuru
@@ -1404,12 +1404,12 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805665`
 **Atual:** "Apartamento 2 Quartos com Planejados e Vaga Fixa em Araucária - Ótimo Custo-Benefício!" (86 chars)
-**Sugerido:** "Apto 2 qtos planejados vaga fixa Capela Velha" (46 chars) ✅
+**Sugerido:** "Apartamento 2 quartos planejados vaga fixa Capela Velha" (55 chars) ✅
 **Justificativa:** Planejados + vaga fixa (Tier S concretos).
 
 #### `69805714` *(novo — cadastrado 2026-04-25, Residencial Canto do Uirapuru)*
 **Atual:** "Apto 2 Quartos Novo na Capela Velha | Araucária" (48 chars — JÁ SEGUE PADRÃO)
-**Sugerido:** "Apto 2 qts novo MCMV próx Parque Passaúna Araucária" (51 chars) ✅
+**Sugerido:** "Apto 2 quartos novo MCMV próx Parque Passaúna Araucária" (55 chars) ✅
 **Justificativa:** Atual já está bom. Sugestão acrescenta "MCMV" (subsídio) e marco "Parque Passaúna" da DescricaoWeb. Aceitar como está se preferir manter conciso.
 
 ### Resumo Capela Velha
@@ -1421,7 +1421,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69804277`
 **Atual:** "Apartamento 1 Quarto Lançamento Exclusivo no Guaíra - Studio Park II" (68 chars)
-**Sugerido:** "Apto 1 qto 28m² rooftop Guaíra | Studio Park II" (47 chars) ✅
+**Sugerido:** "Apartamento 1 qto 28m² rooftop Guaíra | Studio Park II" (54 chars) ✅
 **Justificativa:** CRM=Apartamento 1 dorm (não Studio — apesar do empreendimento se chamar "Studio Park II", a unidade é apto). "Rooftop com vista privilegiada".
 
 #### `69805661`
@@ -1438,12 +1438,12 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP00970`
 **Atual:** "Joy City Habitat - Apartamento com 2 quartos à venda no bairro Tingui em Curitiba." (82 chars)
-**Sugerido:** "Apto 2 qtos 1 suíte lançamento Tingui — Joy City" (49 chars) ✅
+**Sugerido:** "Apartamento 2 qtos 1 suíte lançamento Tingui — Joy City" (55 chars) ✅
 **Justificativa:** Lançamento + suíte.
 
 #### `69805640`
 **Atual:** "Apartamento com 2 quartos à venda no Residencial Village Paraná" (63 chars)
-**Sugerido:** "Apto mobiliado reformado 2 qtos suíte Tingui" (45 chars) ✅
+**Sugerido:** "Apartamento mobiliado reformado 2 quartos suíte Tingui" (54 chars) ✅
 **Justificativa:** Mobiliado + Reformado (2 Tier S).
 
 ### Resumo Tingui
@@ -1489,7 +1489,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP01011` — Alto da Rua XV
 **Atual:** "Manhatan Square - Studio muito bem localizado na divisa dos bairros Alto da XV e Alto da glória!" (96 chars)
-**Sugerido:** "Apto 1 qto 25m² a 500m do Mueller Alto da Rua XV" (49 chars) ✅
+**Sugerido:** "Apartamento 1 qto 25m² a 500m do Mueller Alto da Rua XV" (55 chars) ✅
 **Justificativa:** CRM=Apartamento 1 dorm (não Studio). Shopping Mueller da descrição.
 
 #### `69805069` — Barreirinha
@@ -1579,7 +1579,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69804116` — Rebouças
 **Atual:** "Studios e Apartamentos de 1 quarto no Rebouças Próximo PUC-Aretha" (65 chars)
-**Sugerido:** "Apto 1 Quarto 26m² Rebouças a 4min da PUCPR" (43 chars) ✅
+**Sugerido:** "Apartamento 1 Quarto 26m² Rebouças a 4min da PUCPR" (50 chars) ✅
 **Justificativa:** CRM=Apartamento 1 dorm (não Studio). "4 minutos de carro da PUCPR".
 
 #### `69804221` — Santa Cândida
@@ -1589,7 +1589,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805679` — Santa Felicidade
 **Atual:** "Casa de Alto Padrão com Piscina em Santa Felicidade - Curitiba" (62 chars)
-**Sugerido:** "Casa 4 Qts Suíte Master Piscina Aquecida Sta Felic." (52 chars) ✅
+**Sugerido:** "Casa 4 Quartos Suíte Master Piscina Aquecida Sta Felic." (55 chars) ✅
 **Justificativa:** Suíte Master + Piscina Aquecida.
 
 #### `69805683` — Santa Terezinha
@@ -1609,12 +1609,12 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69804449` — Uberaba
 **Atual:** "Propriedade de Esquina Uberaba - Comercial e Residencial" (56 chars)
-**Sugerido:** "Sobrado Esquina Uberaba 4 Qts + 2 Lojas Renda" (45 chars) ✅
+**Sugerido:** "Sobrado Esquina Uberaba 4 Quartos + 2 Lojas Renda" (49 chars) ✅
 **Justificativa:** Sobrado + 2 lojas = renda.
 
 #### `69805705` — Vila Izabel *(novo — cadastrado 2026-04-24, Sonatta Home Club)*
 **Atual:** "APARTAMENTOS 2 E 3 QUARTOS COM SUÍTE NA VILA IZABEL" (52 chars — CAIXA ALTA = Tier C)
-**Sugerido:** "Apto 3 qts 72m² a 2km do Pátio Batel Vila Izabel" (48 chars) ✅
+**Sugerido:** "Apartamento 3 qts 72m² a 2km do Pátio Batel Vila Izabel" (55 chars) ✅
 **Justificativa:** Marco premium "Pátio Batel" (2,1km) extraído da DescricaoWeb. Caixa normal. *Substitui sugestão V1 do `69804502`, que foi desativado no CRM em 27/04.*
 
 #### `69805507` — Vila Verde
@@ -1790,10 +1790,10 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 | Código | Bairro | Empreend | Sugestão Tier S | Chars |
 |---|---|---|---|---|
 | 69802196 | Cabral | Fly Urban Habitat | Fly Urban Habitat - Apto 3 qts suíte 91m² na planta Cabral | 58 |
-| 69803132 | Tarumã | Air Cabral | Air Cabral - Apto 3 suítes 190m² na planta Tarumã | 49 |
+| 69803132 | Tarumã | Air Cabral | Air Cabral - Apartamento 3 suítes 190m² na planta Tarumã | 56 |
 | 69803208 | Campo Comprido | Casa Nomaa | Casa Nomaa - Apto 3 suítes 268m² na planta Campo Comprido | 58 |
-| 69803591 | Lindóia | Ecoa Residencial | Ecoa Residencial - Apto 2 qts varanda gourmet Lindóia | 54 |
-| 69803861 | Juvevê | Galeria Hype Casa Nativa | Galeria Hype Casa Nativa - Apto 3 qts suíte 70m² Juvevê | 55 |
+| 69803591 | Lindóia | Ecoa Residencial | Ecoa Residencial - Apartamento 2 qts varanda gourmet Lindóia | 60 |
+| 69803861 | Juvevê | Galeria Hype Casa Nativa | Galeria Hype Casa Nativa - Apto 3 quartos suíte 70m² Juvevê | 59 |
 | 69803899 | Centro | Republik Benjamin Constant | Republik B. Constant - Studio 24m² na planta no Centro | 55 |
 | AP00751 | Alto da Glória | Palm 235 (Plaenge) | Palm 235 - Apto 3 suítes 148m² varanda gourmet Alto Glória | 59 |
 | SA00031 | Alto da Glória | Bioos Health (Laguna) | Bioos Health - Sala vista panorâmica Alto da Glória \| Laguna | 60 |
