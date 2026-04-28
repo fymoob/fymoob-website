@@ -40,29 +40,29 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 **Sugerido:** "Apartamento 3 quartos 67m² ao lado Shopping Palladium Portão" (60 chars) ✅
 **Justificativa:** Descrição diz "ao lado do Shopping Palladium" — marco exato vira gancho.
 
-#### `AP00821`
+#### `AP00821`✅
 **Atual:** "Le Monde - Apartamento em condomínio clube de 2 quartos à venda no bairro Portão em Curitiba!" (93 chars)
 **Sugerido:** "Apartamento 2 quartos 51m² lazer completo Portão | Le Monde" (59 chars) ✅
 **Justificativa:** Descrição cita "mais de 30 áreas de lazer" (Piscina, Academia, Cinema, Beach tênis) — condensado como "lazer completo".
 
-#### `AP00822`
+#### `AP00822`✅
 **Atual:** "Le Monde - Apartamento em condomínio clube com 2 quartos à venda no bairro Portão em Curitiba!" (94 chars)
 **Sugerido:** "Apartamento 2 quartos suíte 56m² lazer completo Portão" (54 chars) ✅
 **Justificativa:** Suíte (Tier S) extraída do dado. "30 áreas de lazer" da descrição vira "lazer completo".
 
-#### `AP00824`
+#### `AP00824`✅
 **Atual:** "Le Monde - Apartamento em condomínio clube de 3 quartos à venda no bairro Portão em Curitiba!" (93 chars)
 **Sugerido:** "Apartamento 3 quartos suíte 64m² 2 vagas Portão | Le Monde" (58 chars) ✅
 **Justificativa:** "2 vagas" é diferencial raro em apto de 64m². Suíte incorporada.
 
-#### `AP00825`
+#### `AP00825`✅
 **Atual:** "Le Monde - Apartamento em condomínio clube de 3 quartos à venda no bairro Portão em Curitiba!" (93 chars)
 **Sugerido:** "Apartamento 3 quartos suíte 70m² 2 vagas Portão | Le Monde" (58 chars) ✅
 **Justificativa:** Metragem maior (70m²) diferencia da AP00824.
 
-#### `AP00863`
+#### `AP00863`✅
 **Atual:** "Apartamento com 2 quartos à venda no bairro Portão em Curitiba." (63 chars)
-**Sugerido:** "Apartamento 2 quartos 40m² a 1 quadra do Palladium Portão" (57 chars) ✅
+**Sugerido:** "Apartamento 2 quartos 40m² próximo Shopping Palladium Portão" (60 chars) ✅
 **Justificativa:** Descrição revela "Shoppings Palladium e Ventura" nas proximidades.
 
 #### `AP00902`
@@ -290,8 +290,8 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69803086`
 **Atual:** "Loja de frente para Rua no Vitória Régia" (40 chars)
-**Sugerido:** "Loja 50m² Frente Rua a 200m do Mercado Viana CIC" (48 chars) ✅
-**Justificativa:** Descrição cita "próxima ao Mercado Viana".
+**Sugerido:** "Loja 50m² frente rua próx Mercado Viana CIC" (44 chars) ✅
+**Justificativa:** Descrição cita "próxima ao Mercado Viana" (sem distância específica — corrigido de "200m" inventado).
 
 #### `69803256`
 **Atual:** "Apto 2 Quartos, Residencial Vittace Bosque - Curitiba, PR" (57 chars)
@@ -371,7 +371,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP00807`
 **Atual:** "Lunetto - Studios com sacada e churrasqueira à venda no bairro Água Verde..." (87 chars)
-**Sugerido:** "Apartamento 1 quarto sacada churrasq 200m do IPO Água Verde" (59 chars) ✅
+**Sugerido:** "Apartamento 1 quarto sacada churrasqueira Água Verde" (53 chars) ✅
 **Justificativa:** Descrição destaca Hospital IPO + Shopping Água Verde.
 
 #### `AP00828`
@@ -452,7 +452,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `CA00735`
 **Atual:** "Lindo sobrado à venda, com 2 quartos, no bairro Sitio Cercado..." (134 chars)
-**Sugerido:** "Sobrado 2 Suítes Sítio Cercado a 1 quadra do Agricer" (52 chars) ✅
+**Sugerido:** "Sobrado 2 suítes próx Supermercado Agricer Sítio Cercado" (56 chars) ✅
 **Justificativa:** Descrição cita supermercado Agricer + 2 suítes.
 
 #### `CA02121`
@@ -533,7 +533,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69802113`
 **Atual:** "Kitnet com água e luz incluído no condomínio" (44 chars)
-**Sugerido:** "Kitnet Sem Fiador a 1 quadra do Mercado Araucária" (50 chars) ✅
+**Sugerido:** "Kitnet sem fiador próx Mercado Araucária Campo Santana" (55 chars) ✅
 **Justificativa:** "NÃO PRECISA DE FIADOR" + "a uma quadra do Mercado Araucária".
 
 #### `69802966`
@@ -655,7 +655,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `TE00180`
 **Atual:** "Terreno - ZR2 à venda no bairro Xaxim, próximo ao supermercado BIG" (66 chars)
-**Sugerido:** "Terreno 1.137m² ZR2 Xaxim a 500m do Supermercado BIG" (53 chars) ✅
+**Sugerido:** "Terreno 1.137m² ZR2 próx Supermercado BIG Xaxim" (47 chars) ✅
 **Justificativa:** Marco BIG + metragem.
 
 #### `69803109`
@@ -716,7 +716,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69802979`
 **Atual:** "Casa Batel. Apartamento 3 Suítes no Batel!" (42 chars)
-**Sugerido:** "4 Suites 219m² a 300m do Pátio Batel, Casa Batel" (48 chars) ✅
+**Sugerido:** "Apartamento 4 suítes 219m² próx Pátio Batel | Casa Batel" (57 chars) ✅
 **Justificativa:** "Próximo ao Shopping Pátio Batel" + 4 suítes (não 3).
 
 #### `69803405`
@@ -726,7 +726,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP01034`
 **Atual:** "Trevi Batel - Um projeto de vanguarda inspirado na arquitetura italiana." (72 chars)
-**Sugerido:** "3 Suites 200m² a 1 quadra do Pátio Batel, Trevi" (47 chars) ✅
+**Sugerido:** "Apartamento 3 suítes 200m² próx Pátio Batel | Trevi" (52 chars) ✅
 **Justificativa:** "A apenas uma quadra do renomado Pátio Batel".
 
 #### `69803768`
@@ -1099,7 +1099,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69804095`
 **Atual:** "Sobrado com 3 quartos à venda no bairro Santa Quitéria!" (55 chars)
-**Sugerido:** "Sobrado 3 quartos novo Santa Quitéria a 500m Festval" (54 chars) ✅
+**Sugerido:** "Sobrado 3 quartos novo próx Festval Santa Quitéria" (51 chars) ✅
 **Justificativa:** "4 minutos do Festval" + entrega Ago/2025.
 
 #### `69804096`
@@ -1214,7 +1214,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP01065`
 **Atual:** "MEO Hauer - Apartamento com 2 quartos a venda no bairro Hauer." (62 chars)
-**Sugerido:** "Apartamento 2 quartos suíte Hauer a 500m do Festval financia" (60 chars) ✅
+**Sugerido:** "Apartamento 2 quartos suíte próx Festval Hauer financia" (55 chars) ✅
 **Justificativa:** Festval — marco forte.
 
 #### `AP01066`
@@ -1489,7 +1489,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `AP01011` — Alto da Rua XV
 **Atual:** "Manhatan Square - Studio muito bem localizado na divisa dos bairros Alto da XV e Alto da glória!" (96 chars)
-**Sugerido:** "Apartamento 1 quarto 25m² a 500m do Mueller Alto da Rua XV" (58 chars) ✅
+**Sugerido:** "Apartamento 1 quarto 25m² próx Mueller Alto da Rua XV" (53 chars) ✅
 **Justificativa:** CRM=Apartamento 1 dorm (não Studio). Shopping Mueller da descrição.
 
 #### `69805069` — Barreirinha
@@ -1569,7 +1569,7 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 #### `69805541` — Pilarzinho
 **Atual:** "Sobrado em condomínio com 3 quartos no Pilarzinho" (49 chars)
-**Sugerido:** "Sobrado 3 Quartos Pilarzinho a 500m Parque Tingui" (49 chars) ✅
+**Sugerido:** "Sobrado 3 quartos próx Parque Tingui Pilarzinho" (47 chars) ✅
 **Justificativa:** Parque Tingui (marco).
 
 #### `CH00029` — Povoado do Boa Vista
