@@ -195,6 +195,23 @@ Verificar:
 - [x] Reescrever title de `/blog` lista (pos 2,9 sem clique) — **APLICADO 2026-04-26:** "Blog FYMOOB: {count} guias sobre imóveis em Curitiba" (number drop dinâmico via `getAllPosts().length`)
 - [x] Reescrever title de `/blog/mercado-imobiliario-curitiba-2026` (pos 2,5, 0 clicks) — **APLICADO 2026-04-26:** "Curitiba 2026: +17,86% e 2ª capital em valorização (boom?)" (data hook + ranking, ressincronizado pro Sanity)
 
+#### URLs com erro/status no GSC (auditoria 2026-04-27)
+
+**32 URLs com 404 — solicitada remoção via GSC URL Removal Tool em 27/04:**
+
+- 28× `/guia/[bairro]` pra bairros sem MDX (campo-comprido, pilarzinho, eucaliptos, campina-do-siqueira, sao-braz, seminario, povoado-do-boa-vista, lindoia, alto-da-rua-xv, guaira, cristo-rei, campo-de-santana, capao-da-imbuia, maracana, alto-da-gloria, guatupe, barreirinha, santo-antonio, nacoes, cidade-jardim, campina-das-pedras, vila-verde, ganchinho, guaraituba, reboucas, santa-candida, uberaba, fazendinha) — causa raiz: `RelatedPages` em `/imoveis/[bairro]` linkava `/guia/{slug}` mesmo sem MDX existir. **JÁ CORRIGIDO** em commits `72f2d98` (22/04) e `4fec270` (27/04).
+- 4× URLs absurdas (`/m²`, `/&`, `/mês`, `/$`) — causa raiz inconclusiva (provável Sanity Portable Text mal formatado). Submetida remoção como mitigação. Investigar via GSC "Inspecionar URL" → "Página de referência" caso voltem.
+
+**Pendente após remoção:** verificar em ~3 dias se sumiram do índice. Se as 4 URLs absurdas voltarem, sanitizar regex de `PortableTextRenderer.tsx:94` pra rejeitar href que não comece com `http://`, `https://`, `/`, `#` ou `mailto:`.
+
+**9 URLs como "Página alternativa com tag canônica adequada" — comportamento SAUDÁVEL, sem ação:**
+
+- 7× `/busca?...` com filtros legacy (`DestaqueWeb`, `SuperDestaqueWeb`, `Lancamento`, `order=menor-preco`, `listagem=lista`, `min=10000`) — herança do site antigo. Canonical aponta pra `/busca` ou `/busca?tipo=X` (sem params legacy). Google obedece. De-indexa naturalmente em 4-6 semanas.
+- 2× `/imovel/[slug]` cujos dados Bruno editou no CRM:
+  - `69803208` (Campo Comprido) — área mudou de 211m² → 268.09m², slug atualizado, canonical aponta pra slug novo.
+  - `69804752` — bairro mudou de Seminário → Água Verde, canonical aponta pra slug novo.
+  - Sem ação no código (slug é dinâmico do CRM, canonical já resolve). Trade-off de não fazer redirect 301 do slug antigo: requer histórico de slugs, esforço alto vs ganho marginal.
+
 ---
 
 ### Pendente de padronizacao (Titulos de imovel)
@@ -1556,6 +1573,48 @@ _Nenhum bug aberto._
 - [ ] Adicionar fymoob.com como propriedade no Google Search Console
 - [ ] Autorizar OAuth na primeira execucao (abre browser)
 - [ ] Obter GA4 Property ID e adicionar ao `.mcp.json`
+
+### 10.2.A — GA4 MCP Setup [BLOQUEADO 27/04/2026 — retomar depois]
+
+> **Objetivo:** instalar `googleanalytics/google-analytics-mcp` (oficial) pra extrair dados da landing paga `destaques.fymoob.com/reservabarigui` e turbinar o ranqueamento da pagina organica `/empreendimento/reserva-barigui`.
+
+**Property GA4 alvo:**
+- Account ID: `312780116`
+- Property ID: `439717135` (link: analytics.google.com/analytics/web/#/a312780116p439717135/...)
+- Dono dos dados: Avantti/Bruno (FYMOOB tem acesso de leitura via Bruno)
+
+**Bloqueios encontrados (em ordem de tentativa):**
+
+1. **OAuth via gcloud com scope `analytics.readonly`** — bloqueado com "Este app está bloqueado" pela conta `dev.viniciusdamas@gmail.com`. Causa provavel: politica de seguranca do Google pra contas pessoais Gmail restringindo OAuth de scope sensiveis em apps nao verificados pelo proprio usuario.
+
+2. **Service Account com JSON key** — bloqueado por org policy `iam.disableServiceAccountKeyCreation` aplicada na organizacao do project `project-7275f091-4a92-490a-a31`. Mensagem: "A criacao da chave da conta de servico esta desativada... Uma politica da organizacao que bloqueia a criacao de chaves de conta de servico foi aplicada". Numero rastreamento: c1701437246311677.
+
+**Estado atual:**
+- ✅ pipx 1.11.1 instalado em `c:\Users\Vine\` via `python -m pip install --user pipx`
+- ✅ gcloud CLI 556.0.0 ja presente
+- ✅ Python 3.14 ja presente
+- ❌ Service Account criada mas SEM key gerada (politica bloqueia)
+- ❌ ADC nao configurado
+
+**Caminhos pra desbloquear (escolher um):**
+
+1. **Workload Identity Federation (recomendado pelo Google)** — bypassa keys de SA. Configura federacao entre identidade externa (GitHub Actions, AWS, Azure) e o GCP. Nao serve pra dev local porem. Skip pra esse caso.
+
+2. **Pedir admin GCP desativar `iam.disableServiceAccountKeyCreation` temporariamente** — preciso identificar quem e admin do project (provavelmente nao e o Vinicius). Liga em `gcloud organizations list` + `gcloud organizations get-iam-policy ORG_ID` pra ver. Risco: politica existe por seguranca, desativar deixa org vulneravel.
+
+3. **Criar projeto GCP pessoal sem org policy** — Vinicius cria projeto novo numa conta sem org (ou sob conta pessoal Gmail). Ai cria SA + key sem restricao. Aponta o SA email como Viewer no GA4. Caminho mais autonomo, nao depende de admin externo.
+
+4. **Criar OAuth client custom no GCP (Desktop app)** — mesmo padrao que o GSC MCP usa em `c:\Users\Vine\mcp-gsc\client_secrets.json`. Registra o app no GCP, baixa client_secrets.json, roda `gcloud auth application-default login --client-id-file=...`. Client custom pode bypassar o "app bloqueado" se for verificado pelo proprio Vinicius como dono. Mais rapido se o caminho 3 nao rolar.
+
+5. **Compartilhar dados do GA4 com Bruno fazendo o setup la dele** — Bruno (admin do GA4) cria o SA na conta dele/Avantti, gera key, manda pro Vinicius. Risco: depende do Bruno, e se Avantti tem mesma org policy, mesmo bloqueio.
+
+**Recomendacao quando retomar:** caminho **3 (projeto pessoal)** ou **4 (OAuth client custom)**. Ambos sao 100% autonomos do Vinicius.
+
+**Por enquanto, fallback:** Vinicius manda manualmente prints/CSVs do GA4 pro chat quando precisar dos dados. Funciona, so e mais lento.
+
+**Referencias:**
+- MCP oficial: github.com/googleanalytics/google-analytics-mcp
+- Doc Google: developers.google.com/analytics/devguides/MCP
 
 ### 10.3 — Primeiro Relatorio Baseline
 - [x] Executar `/project:seo-report` apos configurar OAuth

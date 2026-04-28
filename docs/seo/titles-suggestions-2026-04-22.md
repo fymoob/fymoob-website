@@ -1,31 +1,30 @@
-# Sugestões de Títulos SEO — Catálogo FYMOOB (V2 enriquecida)
+# Sugestões de Títulos SEO — Catálogo FYMOOB
 
-> Gerado em 2026-04-22 via team-agents SEO imobiliário (paralelos por bairro).
-> **V2:** inclui DescricaoWeb completa + todas as 81 features de unidade + 77 features de condomínio + keywords SEO atuais do Loft.
-> Base: [docs/seo/titles-audit-2026-04-22.md](titles-audit-2026-04-22.md) — 242 imóveis.
-> Padrão alvo: **55 chars**, estrutura `[Diferencial] + [Tipo/Quartos] + [Bairro] + [Gancho]`.
+> **Última sincronização com CRM: 2026-04-27** (ver `## 📋 Changelog` no fim do doc).
+> Inclui DescricaoWeb completa + todas as 81 features de unidade + 77 features de condomínio + keywords SEO atuais do Loft.
+> Base: [docs/seo/titles-audit-2026-04-22.md](titles-audit-2026-04-22.md) — **251 imóveis** ativos no CRM, **78 deles em lançamento**.
+>
+> **Dois padrões diferentes (não misturar):**
+> - **Imóvel pronto pra morar** → padrão V2 abaixo (limite 55 chars, nome do empreendimento NO FIM, estrutura `[Diferencial] [Tipo/Qts] [Bairro] [Gancho]`).
+> - **Lançamento (78 imóveis)** → ver seção **🚀 Lançamentos — Padrão Tier S Revisado** (limite 60 chars, nome do empreendimento NO COMEÇO, baseado em pesquisa de concorrentes Razzi/OLX/MySide).
+>
 > Referência metodológica: [docs/seo/title-optimization-research.md](title-optimization-research.md).
 
 ---
 
-## Como usar este documento
-
-1. **Bruno revisa** bairro por bairro — marca quais sugestões aprovar, quais ajustar
-2. **Wagner aplica** no CRM Loft → campo `TituloSite` de cada imóvel
-3. Após próximo revalidate (1h), os títulos novos vão pros portais e pro site FYMOOB
-
-**Melhorias V2 sobre V1:**
-- Títulos agora incorporam **marcos específicos** extraídos da descrição (Hospital IPO, Shopping Palladium, Parque Barigui, Praça do Japão, Terminal Capão Raso, PUCPR, Festval, etc)
-- **Amenidades reais em prosa** (Roofgarden, varanda gourmet, piscina aquecida, spa, garden com churrasqueira, quintal 60m², etc) entram no título
-- **Bairros oficiais corrigidos** onde descrição tinha bairro errado
-- Média de chars caiu de **81 pra 48-52 chars** (-40%)
-
 **Convenções:**
-- ✅ = título dentro de 55 chars
-- MANTER = título atual já atende ao padrão e tem diferencial
-- Imóvel sem título na origem = criado do zero baseado em descrição + specs
+- **Limite estrito: 55 chars**
+- **Estrutura:** `[Diferencial forte] [Tipo/Quartos] [Bairro] [Gancho opcional]`
+- **Usar Tier S** (Pronto pra morar, Vista panorâmica, Suíte master, Mobiliado, Lazer completo, Aceita financiamento, etc)
+- **NUNCA usar Tier C** (Ótimo, Imperdível, Aconchegante, Charmoso, Potencial, CAIXA ALTA, emojis, códigos Ref, preço)
+- **Empreendimento só no FIM** (nunca no início — pessoa não busca por nome de empreendimento)
+- **Número concreto** (quartos, m², distância) no meio se possível
+
+Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 
 ---
+
+## Imóveis agrupados por bairro
 
 ## Portão
 
@@ -509,12 +508,22 @@
 **Sugerido:** "Sobrado 3 Qtos 1 Suíte Condomínio Sítio Cercado" (47 chars) ✅
 **Justificativa:** Suíte com sacada (Calena VII).
 
+#### `69805703` *(novo — cadastrado 2026-04-24, locação)*
+**Atual:** "Sobrado triplex próximo ao Terminal Sítio Cercado" (50 chars)
+**Sugerido:** "Sobrado triplex 3 qts 136m² Terminal Sítio Cercado" (50 chars) ✅
+**Justificativa:** Dados (3 qts/1 suíte/2 vagas/136m²/R$ 2.800 aluguel) + marco preservado. Atual já é razoável — sugestão adiciona m².
+
+#### `69805704` *(novo — cadastrado 2026-04-24, locação loja)*
+**Atual:** "Loja bem localizada no Sítio Cercado" (37 chars — Tier C: "bem localizada")
+**Sugerido:** "Loja 54m² frente rua Terminal Sítio Cercado" (43 chars) ✅
+**Justificativa:** Diferencial real ("frente para a rua" da DescricaoWeb) + m² + marco. Remove vago "bem localizada".
+
 ### Resumo Sítio Cercado
 | Métrica | Valor |
 |---|---|
-| Total | 12 | Reescritos | 12 |
-| Marcos da descrição | 3 | Amenidades | 6 |
-| Média chars antes → depois | 83 → 51 |
+| Total | 14 | Reescritos | 14 |
+| Marcos da descrição | 4 | Amenidades | 6 |
+| Média chars antes → depois | 78 → 50 |
 
 ---
 
@@ -789,12 +798,22 @@
 **Sugerido:** "Galpão 135m² Tatuquara Rua Pedro Prosdócimo Comércio" (54 chars) ✅
 **Justificativa:** Rua Pedro Prosdócimo.
 
+#### `69805713` *(novo — cadastrado 2026-04-25, Residencial Vila Mariana)*
+**Atual:** "Apartamento 02 quartos reformado no Tatuquara" (45 chars — já decente)
+**Sugerido:** "Apto 2 qts 43m² reformado MCMV Tatuquara" (40 chars) ✅
+**Justificativa:** "MCMV" (Minha Casa Minha Vida) é gancho real de busca + reformado preservado + m². Alternativa com marco: "Apto 2 qts reformado próx Parque Aquabosk Tatuquara" (52 chars).
+
+#### `CA00096` *(novo — reativado 2026-04-24)*
+**Atual:** "Casa no Tatuquara pelo Minha Casa Minha Vida" (44 chars)
+**Sugerido:** "Casa 2 qts 40m² MCMV Terminal Tatuquara" (39 chars) ✅
+**Justificativa:** Adiciona dados (2 qts/40m²) + marco "Terminal Tatuquara" da DescricaoWeb. "MCMV" sigla mais econômica.
+
 ### Resumo Tatuquara
 | Métrica | Valor |
 |---|---|
-| Total | 8 | Reescritos | 8 |
-| Marcos da descrição | 4 | Amenidades | 7 |
-| Média chars antes → depois | 69 → 52 |
+| Total | 10 | Reescritos | 10 |
+| Marcos da descrição | 5 | Amenidades | 7 |
+| Média chars antes → depois | 65 → 50 |
 
 ---
 
@@ -1251,8 +1270,13 @@
 **Sugerido:** "Sobrado novo 2 suítes Alto Boqueirão, quintal amplo" (52 chars) ✅
 **Justificativa:** Novo + quintal amplo (descrição).
 
+#### `69802157` *(novo — reativado 2026-04-25)*
+**Atual:** "Sobrado duplex em condomínio no Alto Boqueirão" (47 chars)
+**Sugerido:** "Sobrado 3 qts suíte cond. fechado Alto Boqueirão" (49 chars) ✅
+**Justificativa:** Dados (3 qts/1 suíte/60m²/R$ 410k) + "condomínio fechado com apenas sete unidades" da DescricaoWeb. **Alternativa com marco:** "Sobrado 3 qts suíte 60m² próx Shopping & Sports A. Boq." (54 chars).
+
 ### Resumo Alto Boqueirão
-| Total | 2 | Reescritos | 2 | Antes → Depois | 108 → 52 |
+| Total | 3 | Reescritos | 3 | Antes → Depois | 88 → 50 |
 
 ---
 
@@ -1353,8 +1377,18 @@
 **Sugerido:** "Apto 3 qtos 1 suíte Cajuru, varanda gourmet e lazer" (52 chars) ✅
 **Justificativa:** Corrige bairro. Varanda gourmet + lazer completo.
 
+#### `69805712` *(novo — cadastrado 2026-04-24, Residencial Santos Dumont)*
+**Atual:** "Sobrado em condomínio à venda no Cajuru, com 03 quartos sendo 01 suíte, imóvel novo podendo ser financiado." (108 chars)
+**Sugerido:** "Sobrado 3 qts suíte 109m² 180m do Condor Cajuru" (47 chars) ✅
+**Justificativa:** Marco específico "180m do Supermercado Condor" da DescricaoWeb. Dados (109m², 3 qts/1 suíte). Empreendimento Santos Dumont ao fim opcional.
+
+#### `CA02804` *(novo — reativado 2026-04-24, Residencial Fontana de Trevi)*
+**Atual:** "Sobrado triplex à venda no bairro Cajuru, unidades com 03 quartos sendo 01 suíte, terraço, imóvel novo podendo ser financiado." (124 chars)
+**Sugerido:** "Sobrado triplex 3 qts suíte 136m² ático Cajuru" (46 chars) ✅
+**Justificativa:** "Ático com peça coringa" da DescricaoWeb é diferencial específico raro. Dados (136m², triplex) + suíte (Tier S). Versão com empreendimento: "Sobrado triplex 3 qts suíte 136m² Cajuru | Fontana" (50 chars).
+
 ### Resumo Cajuru
-| Total | 2 | Reescritos | 2 | Bairro corrigido | 2 | Antes → Depois | 69 → 51 |
+| Total | 4 | Reescritos | 4 | Bairro corrigido | 2 | Antes → Depois | 91 → 49 |
 
 ---
 
@@ -1370,8 +1404,13 @@
 **Sugerido:** "Apto 2 qtos planejados vaga fixa Capela Velha" (46 chars) ✅
 **Justificativa:** Planejados + vaga fixa (Tier S concretos).
 
+#### `69805714` *(novo — cadastrado 2026-04-25, Residencial Canto do Uirapuru)*
+**Atual:** "Apto 2 Quartos Novo na Capela Velha | Araucária" (48 chars — JÁ SEGUE PADRÃO)
+**Sugerido:** "Apto 2 qts novo MCMV próx Parque Passaúna Araucária" (51 chars) ✅
+**Justificativa:** Atual já está bom. Sugestão acrescenta "MCMV" (subsídio) e marco "Parque Passaúna" da DescricaoWeb. Aceitar como está se preferir manter conciso.
+
 ### Resumo Capela Velha
-| Total | 2 | Reescritos | 2 | Bairro corrigido | 2 | Antes → Depois | 77 → 51 |
+| Total | 3 | Reescritos | 3 | Bairro corrigido | 2 | Antes → Depois | 73 → 49 |
 
 ---
 
@@ -1409,6 +1448,23 @@
 
 ---
 
+## Cristo Rei
+
+#### `AP00798`
+**Atual:** "Apartamento de 03 quartos (01 suíte) no Cristo Rei, ao lado do Jardim Botânico" (78 chars)
+**Sugerido:** "Apê 3 Quartos Suíte Cristo Rei ao lado do Botânico" (51 chars) ✅
+**Justificativa:** "Ladinho do Jardim Botânico" (descrição).
+
+#### `69805702` *(novo — cadastrado 2026-04-24, lançamento Zion JB)*
+**Atual:** "Apartamento de 1 e 2 quartos no Cristo rei" (43 chars — falta caixa em "rei", sem diferencial)
+**Sugerido:** "Studio 25m² lazer completo Cristo Rei | Zion JB" (47 chars) ✅
+**Justificativa:** "Piscina borda infinita + academia + salão festas + coworking + espaço gourmet" da DescricaoWeb condensado em "lazer completo". Empreendimento Zion JB ao fim. **LANÇAMENTO**.
+
+### Resumo Cristo Rei
+| Total | 2 | Reescritos | 2 | Antes → Depois | 61 → 49 |
+
+---
+
 ## Vila David Antônio
 
 #### `69803254`
@@ -1426,7 +1482,7 @@
 
 ---
 
-## Bairros com 1 imóvel cada (29 bairros)
+## Bairros com 1 imóvel cada (28 bairros)
 
 #### `AP01011` — Alto da Rua XV
 **Atual:** "Manhatan Square - Studio muito bem localizado na divisa dos bairros Alto da XV e Alto da glória!" (96 chars)
@@ -1457,11 +1513,6 @@
 **Atual:** "Sobrado à venda em São José dos Pinhais..." (153 chars)
 **Sugerido:** "Sobrado 3 Quartos Suíte Master Cidade Jardim SJP" (48 chars) ✅
 **Justificativa:** Suíte Master + SJP.
-
-#### `AP00798` — Cristo Rei
-**Atual:** "Apartamento de 03 quartos (01 suíte) no Cristo Rei, ao lado do Jardim Botânico" (78 chars)
-**Sugerido:** "Apê 3 Quartos Suíte Cristo Rei ao lado do Botânico" (51 chars) ✅
-**Justificativa:** "Ladinho do Jardim Botânico" (descrição).
 
 #### `69803764` — Eucaliptos
 **Atual:** "Chácara à Venda em Mandirituba - Paraná 6.000m²" (47 chars)
@@ -1558,10 +1609,10 @@
 **Sugerido:** "Sobrado Esquina Uberaba 4 Qts + 2 Lojas Renda" (45 chars) ✅
 **Justificativa:** Sobrado + 2 lojas = renda.
 
-#### `69804502` — Vila Izabel
-**Atual:** "Apto 3 Quartos (1 Suíte) no Vila Izabel" (39 chars)
-**Sugerido:** "Apê 3 Quartos Suíte Reformado Vila Izabel Locação" (50 chars) ✅
-**Justificativa:** Reformado (Tier S).
+#### `69805705` — Vila Izabel *(novo — cadastrado 2026-04-24, Sonatta Home Club)*
+**Atual:** "APARTAMENTOS 2 E 3 QUARTOS COM SUÍTE NA VILA IZABEL" (52 chars — CAIXA ALTA = Tier C)
+**Sugerido:** "Apto 3 qts 72m² a 2km do Pátio Batel Vila Izabel" (48 chars) ✅
+**Justificativa:** Marco premium "Pátio Batel" (2,1km) extraído da DescricaoWeb. Caixa normal. *Substitui sugestão V1 do `69804502`, que foi desativado no CRM em 27/04.*
 
 #### `69805507` — Vila Verde
 **Atual:** "Sobrado à venda na Vila Verde, com 02 dormitórios, imóvel novo podendo ser financiado." (86 chars)
@@ -1573,37 +1624,244 @@
 **Sugerido:** "Sobrado Suíte Master Vista Panorâmica Vista Alegre" (50 chars) ✅
 **Justificativa:** Suíte Master + Vista Panorâmica (ambos Tier S).
 
-### Resumo 29 bairros (1 imóvel cada)
-| Total | 29 | Reescritos | 29 |
+### Resumo 28 bairros (1 imóvel cada)
+| Total | 28 | Reescritos | 28 |
 | Marcos da descrição | 10 | Amenidades | 18 |
 | Bairros corrigidos | 1 (Tarumã ← Juvevê) |
 | Média chars antes → depois | 67 → 47 |
+| Mudanças 27/04 | Cristo Rei promovido p/ seção própria (+1 imóvel); Vila Izabel: `69804502` desativado, substituído por `69805705` |
 
 ---
 
-## 🎯 Sumário Geral da Auditoria V2
+## 🚀 Lançamentos — Padrão Tier S Revisado (2026-04-27)
+
+> **78 imóveis com `Lancamento=Sim` no CRM.** Após pesquisa de mercado nos concorrentes locais (Razzi) e portais nacionais (OLX, MySide, Imovelweb, ZAP, VivaReal), o padrão pra **lançamento é diferente do imóvel pronto:**
+>
+> **Fórmula Tier S:** `[Nome do Empreendimento] - [Tipo + Quartos + Diferencial] [Bairro] [Gancho]`
+>
+> **Diferenças vs V2 padrão (que vale pra prontos pra morar):**
+> - **Nome do empreendimento NO COMEÇO** (V2: no fim) — pra capturar busca de marca
+> - **Limite estendido pra 60 chars** (V2: 55) — cabem nome + bairro + diferencial
+> - **"na planta"** ou **"lançamento"** como filtro de intenção (separa de quem busca pronto)
+> - **Diferencial-marco substitui entrega** quando empreendimento tem múltiplas fases (Reserva, Le Monde, Augen, Casa Jobim)
+> - Construtora citada com ` | Construtora` quando agrega trust (Plaenge, Laguna, GT Building, Avantti, Auten, Pride, Pessoa, ALTMA, Rottas)
+>
+> ⚠️ **Estas sugestões substituem o "Sugerido:" V2 dos lançamentos listados abaixo.** Imóveis prontos pra morar mantêm o padrão V2 original.
+
+### Mossunguê — Reserva Barigui / Reserva Mirante (Avantti, multi-fase)
+
+> Reserva Barigui não tem entrega única — várias torres entregues e em fases. Marco principal: "frente Parque Barigui + Park Shopping Barigui". Esse é o gancho.
+
+| Código | Unidade | Sugestão Tier S | Chars |
+|---|---|---|---|
+| AP00900 | Studio 35m² | Reserva Barigui - Studio 35m² frente Parque Barigui | 52 |
+| AP00762 | Cobertura Loft 1 dorm 62m² | Reserva Barigui - Cobertura Loft 62m² frente Pq Barigui | 54 |
+| 69803879 | Studio 49m² | Reserva Barigui - Studio 49m² frente Parque Barigui | 52 |
+| 69803880 | Apto 2 qts 1 suíte 72m² | Reserva Barigui - Apto 2 qts suíte 72m² Mossunguê | 50 |
+| AP00772 | Duplex 2 suítes 98m² | Reserva Barigui - Duplex 2 suítes 98m² frente Pq Barigui | 57 |
+| 69803881 | Apto 4 qts 2 suítes 232m² | Reserva Barigui - 4 qts 2 suítes 232m² frente Pq Barigui | 57 |
+| 69803882 | Apto 4 qts 2 suítes 257m² | Reserva Barigui - 4 qts 2 suítes 257m² 4 vagas Mossunguê | 56 |
+| AP00773 | 4 qts 2 suítes 185m² | Reserva Colina - 4 qts 2 suítes 185m² frente Pq Barigui | 55 |
+| 69804720 | Duplex revenda 2 suítes 117m² | Reserva Barigui - Duplex 2 suítes 117m² Mossunguê *(revenda)* | 60 |
+| 69802215 | Sala comercial 47m² | Reserva Mirante - Sala 47m² frente Parque Barigui Mossunguê | 60 |
+| 69802216 | Loja 103m² | Reserva Mirante - Loja 103m² frente Parque Barigui | 51 |
+
+### Mossunguê / Ecoville — outros lançamentos
+
+| Código | Empreend | Sugestão Tier S | Chars |
+|---|---|---|---|
+| AP01088 | Horizon Ecoville (Plaenge) | Horizon Ecoville - Apto 3 qts 120m² próx Pq Barigui \| Plaenge | 60 |
+| AP01143 | Yes Ecoville | Yes Ecoville - Apto 2 qts suíte 56m² na planta Mossunguê | 56 |
+| AP01004 | PACE | PACE - Apto 3 suítes 217m² na planta Mossunguê | 47 |
+| AP00945 | La Défense | La Défense - Apto 3 suítes 120m² na planta Mossunguê | 53 |
+| AP00946 | La Défense | La Défense - Cobertura 3 suítes 250m² 4 vagas Mossunguê | 56 |
+| AP00671 | Signature | Signature - Apto 3 suítes 228m² alto padrão Ecoville | 53 |
+| AP00922 | Landhaus (Plaenge) | Land Haus - Apto 3 suítes 193m² Ecoville \| Plaenge | 51 |
+
+### Bigorrilho — alto padrão (Casa Milano, KAÁ, OAS, AMÁZ, Mytá, Varanda)
+
+> Marco recorrente: "próximo ao Parque Barigui" (Champagnat). Construtoras fortes: GT Building, Laguna, ALTMA. Vale citar.
+
+| Código | Empreend | Sugestão Tier S | Chars |
+|---|---|---|---|
+| AP00539 | Casa Milano (GT Building) | Casa Milano - Apto 2 suítes 126m² na planta Bigorrilho \| GT | 60 |
+| AP00650 | Varanda Barigui | Varanda Barigui - Apto 3 suítes 166m² Champagnat Bigorrilho | 60 |
+| AP00941 | OAS Barigui | OAS Barigui - 3 suítes 230m² prédio mais alto de Curitiba | 58 |
+| AP00947 | KAÁ Residências (Laguna) | KAÁ Residências - Apto 2 suítes 181m² próx Pq Barigui | 54 |
+| AP00955 | KAÁ Residências (Laguna) | KAÁ Residências - 3 suítes 315m² próx Parque Barigui | 53 |
+| AP01067 | AMÁZ (GT Building) | AMÁZ - Apto 3 suítes 192m² Bigorrilho/Mercês \| GT Building | 59 |
+| AP01132 | Mytá (ALTMA) | Mytá - Apto 3 suítes 148m² na planta Bigorrilho \| ALTMA | 56 |
+
+### Batel — alto padrão (Casa Batel, Mova.WF, Carmelo, Trevi, Lange, Temple)
+
+| Código | Empreend | Sugestão Tier S | Chars |
+|---|---|---|---|
+| 69802979 | Casa Batel | Casa Batel - Apto 4 suítes 219m² na planta no Batel | 51 |
+| 69803768 | Mova.WF | Mova.WF - Apto 3 suítes 137m² na planta no Batel | 49 |
+| 69803825 | Carmelo 180 (JN) | Carmelo 180 - 3 suítes 225m² na planta alto padrão Batel | 56 |
+| AP00754 | Temple Batel (GT Building) | Temple Batel - Studio 35m² na planta no Batel \| GT | 51 |
+| AP01034 | Trevi Batel | Trevi Batel - Apto 3 suítes 200m² na planta no Batel | 53 |
+| 69805195 | Lange | Lange - Studio 26m² na planta alto padrão no Batel | 51 |
+
+### Água Verde — Lemme, Le Sense, Atlân, Ágon
+
+| Código | Empreend | Sugestão Tier S | Chars |
+|---|---|---|---|
+| 69803421 | Ágon Residence | Ágon Residence - Apto 3 qts suíte 130m² na planta A. Verde | 59 |
+| AP00828 | Le Sense (Swell) | Le Sense - Apto 3 qts suíte 116m² na planta Água Verde | 55 |
+| AP01009 | Lemme | Lemme - Apto 3 suítes 141m² na planta no Água Verde | 53 |
+| AP01130 | Atlân (GT Building) | Atlân - Apto 2 suítes 106m² na planta divisa A. Verde Batel | 60 |
+| AP01131 | Atlân (GT Building) | Atlân - Apto 3 qts suíte 114m² na planta divisa Batel | 54 |
+
+### Cristo Rei — Explore Botânico, Zion JB
+
+| Código | Empreend | Sugestão Tier S | Chars |
+|---|---|---|---|
+| AP00798 | Explore Botânico (GT Building) | Explore Botânico - Apto 3 qts suíte 81m² ao lado Jd Botânico | 60 |
+| 69805702 | Zion JB | Zion JB - Studio 26m² na planta Cristo Rei lazer completo | 57 |
+
+### Boa Vista — Hike (Auten Incorporadora)
+
+| Código | Plantas | Sugestão Tier S | Chars |
+|---|---|---|---|
+| 69803115 | 3 qts suíte 89m² | Hike - Apto 3 qts suíte 89m² na planta Boa Vista \| Auten | 56 |
+| 69803602 | 2 qts suíte 64m² | Hike - Apto 2 qts suíte 64m² na planta Boa Vista \| Auten | 56 |
+| 69803603 | 3 qts suíte 82m² | Hike - Apto 3 qts suíte 82m² na planta Boa Vista \| Auten | 56 |
+
+### Portão — Cravo Casa Nativa, Le Monde, Terracota I, Portão Prime, One Life
+
+| Código | Empreend | Sugestão Tier S | Chars |
+|---|---|---|---|
+| 69804349 | Cravo Casa Nativa | Cravo Casa Nativa - Apto 3 qts suíte 90m² na planta Portão | 60 |
+| AP01079 | Cravo Casa Nativa | Cravo Casa Nativa - Apto 2 qts suíte 66m² na planta Portão | 60 |
+| AP00821 | Le Monde | Le Monde - Apto 2 qts 51m² na planta lazer completo Portão | 58 |
+| 69803237 | Terracota I | Terracota I - Sobrado 3 qts suíte cond. fechado Portão | 53 |
+| 69804852 | Portão Prime Residence | Portão Prime - Sobrado 3 qts 182m² garden churrasq Portão | 57 |
+| ST00010 | One Life (studio) | One Life - Studio 17m² na planta a 200m do Hospital IPO | 56 |
+
+### Cidade Industrial — MEO Neoville, Vega Neoville, Vittace Bosque
+
+| Código | Empreend | Sugestão Tier S | Chars |
+|---|---|---|---|
+| AP00915 | MEO Neoville | MEO Neoville - Apto Garden 2 qts 52m² na planta CIC | 52 |
+| AP00916 | MEO Neoville | MEO Neoville - Apto 3 qts suíte 62m² cond clube CIC | 52 |
+| 69804107 | Vega Neoville | Vega Neoville - Apto 2 qts 46m² na planta cond clube CIC | 57 |
+| 69803256 | Vittace Bosque (Prestes) | Vittace Bosque - Apto 2 qts 44m² na planta CIC \| Prestes | 56 |
+
+### Hauer — MEO Hauer (Rottas)
+
+| Código | Plantas | Sugestão Tier S | Chars |
+|---|---|---|---|
+| AP01065 | 2 qts suíte 52m² | MEO Hauer - Apto 2 qts suíte 52m² na planta Hauer \| Rottas | 59 |
+| AP01066 | 3 qts suíte 64m² | MEO Hauer - Apto 3 qts suíte 64m² na planta Hauer \| Rottas | 59 |
+
+### Campina do Siqueira / Ecoville — Augen (Pride), Casa Jobim
+
+| Código | Empreend | Sugestão Tier S | Chars |
+|---|---|---|---|
+| 69804923 | Augen (Pride) | Augen - Apto 2 qts suíte 67m² na planta Campina Siqueira | 56 |
+| 69804924 | Augen (Pride) | Augen - Apto 3 qts suíte 78m² na planta Ecoville \| Pride | 56 |
+| 69805182 | Casa Jobim | Casa Jobim - Apto 2 suítes 118m² na planta Ecoville | 51 |
+| 69805183 | Casa Jobim | Casa Jobim - Apto 3 suítes 145m² na planta Ecoville | 51 |
+| 69805460 | Casa Jobim | Casa Jobim - Apto 3 suítes 191m² na planta Ecoville | 51 |
+
+### Novo Mundo — Essence, High City Habitat, Ed New England
+
+| Código | Empreend | Sugestão Tier S | Chars |
+|---|---|---|---|
+| 69804954 | Essence | Essence - Apto 2 qts 47m² na planta Novo Mundo | 47 |
+| 69804959 | Essence | Essence - Apto 2 qts suíte 48m² na planta Novo Mundo | 53 |
+| AP00978 | High City Habitat | High City - Apto 2 qts suíte 56m² na planta Novo Mundo | 54 |
+| AP00979 | High City Habitat | High City - Apto 3 qts suíte 66m² na planta Novo Mundo | 54 |
+| AP01026 | Ed New England | New England - Studio 22m² próx Shopping Palladium | 50 |
+
+### Santa Quitéria — Oslo (Construtora Pessoa)
+
+| Código | Plantas | Sugestão Tier S | Chars |
+|---|---|---|---|
+| 69804228 | 2 qts suíte 64m² | Oslo - Apto 2 qts suíte 64m² na planta Sta Quitéria \| Pessoa | 60 |
+| 69804230 | 3 qts 2 suítes 87m² | Oslo - Apto 3 qts 2 suítes 87m² na planta Santa Quitéria | 56 |
+
+### Outros lançamentos (1 imóvel cada)
+
+| Código | Bairro | Empreend | Sugestão Tier S | Chars |
+|---|---|---|---|---|
+| 69802196 | Cabral | Fly Urban Habitat | Fly Urban Habitat - Apto 3 qts suíte 91m² na planta Cabral | 58 |
+| 69803132 | Tarumã | Air Cabral | Air Cabral - Apto 3 suítes 190m² na planta Tarumã | 49 |
+| 69803208 | Campo Comprido | Casa Nomaa | Casa Nomaa - 3 suítes 268m² na planta Campo Comprido | 53 |
+| 69803591 | Lindóia | Ecoa Residencial | Ecoa Residencial - Apto 2 qts varanda gourmet Lindóia | 54 |
+| 69803861 | Juvevê | Galeria Hype Casa Nativa | Galeria Hype Casa Nativa - Apto 3 qts suíte 70m² Juvevê | 55 |
+| 69803899 | Centro | Republik Benjamin Constant | Republik B. Constant - Studio 24m² na planta no Centro | 55 |
+| AP00751 | Alto da Glória | Palm 235 (Plaenge) | Palm 235 - Apto 3 suítes 148m² varanda gourmet Alto Glória | 59 |
+| SA00031 | Alto da Glória | Bioos Health (Laguna) | Bioos Health - Sala vista panorâmica Alto da Glória \| Laguna | 60 |
+| AP00970 | Tingui | Joy City Habitat | Joy City Habitat - Apto 2 qts suíte 62m² na planta Tingui | 58 |
+| AP01011 | Alto da Rua XV | Manhatan Square | Manhatan Square - Studio 25m² a 500m do Mueller divisa XV | 58 |
+
+### Sobrados em lançamento sem empreendimento formal (Xaxim)
+
+| Código | Plantas | Sugestão Tier S | Chars |
+|---|---|---|---|
+| 69803109 | 3 qts suíte 2 vagas | Sobrado 3 qts suíte 2 vagas na planta Xaxim Curitiba | 53 |
+| 69805180 | 3 qts suíte 193m² | Sobrado 3 qts suíte 193m² na planta no Xaxim | 45 |
+| 69805181 | 3 qts suíte 132m² | Sobrado 3 qts suíte 132m² na planta no Xaxim | 45 |
+
+### Resumo Lançamentos — Padrão Tier S Revisado
+
+| Métrica | Valor |
+|---|---|
+| Total de lançamentos no CRM | **78** |
+| Empreendimentos únicos | ~50 |
+| Multi-fase (sem entrega única) | 5 (Reserva Barigui, Le Monde, Augen, Casa Jobim, Hike) |
+| Construtoras citadas | 9 (Avantti, Plaenge, Laguna, GT Building, Auten, Pride, Pessoa, ALTMA, Rottas) |
+| Marco principal recorrente | Parque Barigui (10 imóveis), Shopping Palladium (4), Hospital IPO (2), Pátio Batel (1), Jardim Botânico (1) |
+| Média chars sugeridos | ~55 (vs limite estendido 60) |
+| Mudança chave vs V2 | Nome no início + "na planta" + diferencial-marco substituindo entrega |
+
+---
+
+## 📋 Changelog
+
+### 2026-04-27 — Sincronização com CRM (delta +9 líquido)
+
+Snapshot da API Loft cruzado com os 242 códigos da V1. **Sugestões inseridas diretamente nas seções de bairro correspondentes** (não em seção separada) pra que Wagner aplique tudo num fluxo só.
+
+**Imóveis novos (10) — distribuídos nas seções:**
+- Alto Boqueirão: `69802157`
+- Cajuru: `69805712`, `CA02804`
+- Capela Velha: `69805714`
+- Cristo Rei *(promovido p/ seção própria)*: `69805702`
+- Sítio Cercado: `69805703` (locação), `69805704` (locação loja)
+- Tatuquara: `69805713`, `CA00096`
+- Vila Izabel *(seção 28-bairros)*: `69805705`
+
+**Imóveis desativados (1):**
+- `69804502` (Vila Izabel) — sugestão V1 obsoleta, substituída por `69805705` na mesma posição.
+
+**Verificação dos 241 imóveis comuns:** títulos no CRM permanecem idênticos à coluna "Atual" do doc original (apenas whitespace/pontuação) — Bruno **ainda não aplicou** nenhuma sugestão V2.
+
+**Padrão das novas sugestões:** mesmo da V2 (limite 55 chars, estrutura `[Diferencial] [Tipo/Quartos] [Bairro] [Gancho]`, marcos da DescricaoWeb, sem Tier C). Marcadas com `*(novo — cadastrado YYYY-MM-DD)*` em itálico depois do código pra Wagner localizar.
+
+**Empreendimentos novos:** Zion JB, Sonatta Home Club, Residencial Santos Dumont, Residencial Vila Mariana, Residencial Canto do Uirapuru, Residencial Fontana de Trevi.
+
+**Marcos novos extraídos da DescricaoWeb:** Shopping & Sports (Alto Boqueirão), Parque Aquabosk (Tatuquara), Parque Passaúna (Capela Velha), Condor Cajuru, Terminal Sítio Cercado, Esper Jorge Chueri (Cajuru), Pátio Batel a 2km (Vila Izabel), Jardim Botânico (Cristo Rei — preservado).
+
+---
+
+## Sumário Geral da Auditoria (com sync 27/04)
 
 ### Estatísticas agregadas
 
 | Métrica | Valor |
 |---|---|
-| **Total de imóveis processados** | **242 / 242 (100%)** ✅ |
-| Bairros processados | 64 |
-| Imóveis reescritos | ~238 |
+| **Total de imóveis processados** | **251 / 251 (100%)** ✅ *(242 V2 + 10 novos – 1 desativado)* |
+| Bairros processados | 64 (Cristo Rei promovido p/ seção própria, 28 bairros 1-imóvel) |
+| Imóveis reescritos | ~248 |
 | Criados do zero (sem título na origem) | 7 |
-| **Média de chars ANTES** | ~81 (acima do limite Google) |
-| **Média de chars DEPOIS** | **~50** (sweet spot Zyppy) ✅ |
+| **Média de chars ANTES** | ~80 (acima do limite Google) |
+| **Média de chars DEPOIS** | **~49** (sweet spot Zyppy) ✅ |
 | **Redução média** | **-38%** |
+| Última sincronização com CRM | 2026-04-27 (ver Changelog acima) |
 
-### Ganhos V2 sobre V1
-
-| Métrica | V1 (sem descrição) | V2 (com descrição) |
-|---|---|---|
-| Chars antes/depois (média) | 81 → 51 | 81 → 48-52 |
-| Títulos com marco específico | 0 | **~100** |
-| Títulos com amenidade real da prosa | ~20 | **~150** |
-| Bairros errados detectados | 8 | **11** (mais precisão) |
-| Diferencias únicos capturados | Genéricos | **Específicos** (Roofgarden, Spa, Varanda Gourmet, 5 vagas, Barracão comercial, etc) |
 
 ### Marcos locais extraídos da DescricaoWeb (exemplos)
 
@@ -1650,16 +1908,5 @@ Durante V2 os agentes encontraram **11 bairros errados** (vs 8 em V1 — maior p
 - 69805496 (LIV.IN) — 3 → 2 quartos
 - 69803847 — Terreno → Casa
 
-**7 imóveis sem TituloSite** (agentes criaram do zero):
+**7 imóveis sem TituloSite** (criaram do zero):
 AP01143, AP01115, 69803220, 69802355, 69805108, 69805416, 69805612
-
-### Próximos passos
-
-1. **Bruno revisa** bairro por bairro neste arquivo
-2. **Wagner aplica** no CRM Loft — copia o "Sugerido" no campo `TituloSite`
-3. Após revalidate (1h), novos títulos vão pros portais e pro site
-4. **Separadamente:** corrigir os 11 bugs de bairro errado + 4 bugs de tipo errado listados acima
-5. **30 dias depois:** rodar novamente `scripts/export-titles-audit.mjs` pra verificar:
-   - % dentro de 55 chars (meta: >80%, era 24,8%)
-   - % empreendimento no início (meta: <5%, era 26%)
-   - % títulos >70 chars (meta: <10%, era 49,6%)
