@@ -783,8 +783,9 @@ O PropertyCard atual tem 638 linhas com `"use client"` inteiro. Com 24 cards na 
 - [x] 8.10 Cross-Linking — RelatedPages component hub-and-spoke em todas as landing
 
 **GA4:**
-- [x] Fluxo "Site Principal" criado (G-HPWE3P9DYK)
+- [x] Fluxo "Site Principal" criado (G-HPWE3P9DYK) — **DEPRECIADO 2026-04-29:** stream apontava pra `fymoob.com` (domínio antigo), nunca recebeu dados após cutover.
 - [x] Script gtag.js corrigido (dangerouslySetInnerHTML — fix appendChild error)
+- [x] **2026-04-29 — Nova propriedade GA4 dedicada:** "FYMOOB - Site Principal" criada na conta Fymoob (separada da campanha Reserva Barigui pra não misturar métricas pago vs orgânico). Stream `fymoob.com.br` configurado, fuso GMT-03 (São Paulo), moeda BRL, categoria Imóveis, objetivos: Gerar leads + Entender tráfego Web. Novo Measurement ID: **`G-2Q02YFFZ7E`** (substitui `G-HPWE3P9DYK` em `.env.local` e Vercel). DeferredGA component lê automaticamente do env — código intocado.
 
 **Contrato:**
 - [x] Revisao juridica completa (10 correcoes: aceite, custos, LGPD, suporte, comunicacao)
