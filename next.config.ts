@@ -89,6 +89,30 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      // Torres do Reserva Barigui — slugs herdados do CRM/marketing antigo.
+      // O CRM Loft agrupa Reserva Lago/Colina/Mirante sob um unico
+      // empreendimento ("Reserva Barigui"), entao cada torre nao tem
+      // landing propria. Redirecionamos pros anchors da pagina principal
+      // pra preservar SEO de qualquer link externo/indexado e bookmark.
+      {
+        source: "/empreendimento/reserva-lago",
+        destination: "/empreendimento/reserva-barigui#torre-lago",
+        permanent: true,
+      },
+      {
+        source: "/empreendimento/reserva-colina",
+        destination: "/empreendimento/reserva-barigui#torre-colina",
+        permanent: true,
+      },
+      {
+        source: "/empreendimento/reserva-mirante",
+        destination: "/empreendimento/reserva-barigui#torre-mirante",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withBundleAnalyzer(nextConfig);

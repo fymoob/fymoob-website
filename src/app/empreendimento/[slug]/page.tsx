@@ -518,8 +518,6 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
 
             <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
               {assets.torres.map((torre) => {
-                const hasSlugLink = torre.slug && torre.slug !== slug
-
                 // Auto-fetch plantas from CRM for this torre's empreendimento.
                 // Static fallback (torre.plantas) is torre-specific by design —
                 // each torre in the asset map has its own plantas, never shared.
@@ -535,10 +533,27 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                 )]
                 const torrePlantas = plantasFromCRM.length > 0 ? plantasFromCRM : (torre.plantas || [])
 
+                // Anchor ID derivado do nome (Reserva Lago -> lago, Reserva
+                // Colina -> colina). Permite deep-link via #torre-lago etc.
+                // Slug-as-route foi descontinuado porque o CRM nao tem entrada
+                // separada por torre — todas estao sob "Reserva Barigui".
+                const torreAnchor = "torre-" + torre.nome
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[̀-ͯ]/g, "")
+                  .replace(/^reserva-?/, "")
+                  .replace(/[^a-z0-9]+/g, "-")
+                  .replace(/^-+|-+$/g, "")
+
+                // WhatsApp message specifico pra torre (atribuicao de lead).
+                const torreWhatsMsg = `Olá! Tenho interesse no ${torre.nome} (${emp.nome}) e gostaria de mais informações sobre plantas, valores e disponibilidade. Pode me ajudar?`
+                const torreWhatsUrl = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent(torreWhatsMsg)}`
+
                 return (
                   <div
                     key={torre.nome}
-                    className="group flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white p-5 shadow-md transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl"
+                    id={torreAnchor}
+                    className="group flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white p-5 shadow-md transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl scroll-mt-20"
                   >
                     {torre.render && (
                       <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-neutral-200">
@@ -585,23 +600,16 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                     )}
 
                     <div className="mt-auto pt-6 flex flex-col items-center gap-3">
-                      {hasSlugLink ? (
-                        <Link
-                          href={`/empreendimento/${torre.slug}`}
-                          className="inline-flex items-center gap-2 rounded-full bg-[#c9a876] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
-                        >
-                          Ver empreendimento
-                        </Link>
-                      ) : (
-                        <a
-                          href={whatsUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 rounded-full bg-[#c9a876] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
-                        >
-                          Ver empreendimento
-                        </a>
-                      )}
+                      <a
+                        href={torreWhatsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-track="whatsapp_click"
+                        data-source={`torre_${torreAnchor}`}
+                        className="inline-flex items-center gap-2 rounded-full bg-[#c9a876] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
+                      >
+                        Quero saber mais
+                      </a>
                     </div>
                   </div>
                 )
