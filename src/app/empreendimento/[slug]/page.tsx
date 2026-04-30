@@ -533,10 +533,10 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                 )]
                 const torrePlantas = plantasFromCRM.length > 0 ? plantasFromCRM : (torre.plantas || [])
 
-                // Anchor ID derivado do nome (Reserva Lago -> lago, Reserva
-                // Colina -> colina). Permite deep-link via #torre-lago etc.
-                // Slug-as-route foi descontinuado porque o CRM nao tem entrada
-                // separada por torre — todas estao sob "Reserva Barigui".
+                // Anchor ID derivado do nome (Reserva Lago -> torre-lago).
+                // Quando a torre tem slug, o link leva pra /empreendimento/{slug}
+                // que redireciona via 301 (next.config) pro anchor desta pagina.
+                // Quando nao tem slug, scroll-to-anchor direto.
                 const torreAnchor = "torre-" + torre.nome
                   .toLowerCase()
                   .normalize("NFD")
@@ -544,10 +544,6 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                   .replace(/^reserva-?/, "")
                   .replace(/[^a-z0-9]+/g, "-")
                   .replace(/^-+|-+$/g, "")
-
-                // WhatsApp message specifico pra torre (atribuicao de lead).
-                const torreWhatsMsg = `Olá! Tenho interesse no ${torre.nome} (${emp.nome}) e gostaria de mais informações sobre plantas, valores e disponibilidade. Pode me ajudar?`
-                const torreWhatsUrl = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent(torreWhatsMsg)}`
 
                 return (
                   <div
@@ -600,16 +596,21 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                     )}
 
                     <div className="mt-auto pt-6 flex flex-col items-center gap-3">
-                      <a
-                        href={torreWhatsUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-track="whatsapp_click"
-                        data-source={`torre_${torreAnchor}`}
-                        className="inline-flex items-center gap-2 rounded-full bg-[#c9a876] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
-                      >
-                        Quero saber mais
-                      </a>
+                      {torre.slug ? (
+                        <Link
+                          href={`/empreendimento/${torre.slug}`}
+                          className="inline-flex items-center gap-2 rounded-full bg-[#c9a876] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
+                        >
+                          Saiba mais
+                        </Link>
+                      ) : (
+                        <Link
+                          href={`#${torreAnchor}`}
+                          className="inline-flex items-center gap-2 rounded-full bg-[#c9a876] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
+                        >
+                          Saiba mais
+                        </Link>
+                      )}
                     </div>
                   </div>
                 )
