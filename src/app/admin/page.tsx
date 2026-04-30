@@ -1,6 +1,7 @@
+import Link from "next/link"
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
-import { FileText, Building2 } from "lucide-react"
+import { FileText, Users, Building2, Beaker } from "lucide-react"
 
 export default async function AdminDashboardPage() {
   const session = await auth()
@@ -16,10 +17,24 @@ export default async function AdminDashboardPage() {
       </p>
 
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <DashboardCardDisabled
+        <DashboardCard
+          href="/admin/blog"
           icon={FileText}
-          title="Blog"
-          description="Criar, editar e publicar artigos"
+          title="Artigos"
+          description="Criar, agendar e publicar artigos do blog (com SEO Score)"
+        />
+        <DashboardCard
+          href="/admin/blog/autores"
+          icon={Users}
+          title="Autores"
+          description="Cadastrar Bruno, Wagner ou autores convidados (E-E-A-T)"
+        />
+        <DashboardCard
+          href="/admin/blog/editor-playground"
+          icon={Beaker}
+          title="Editor — Playground"
+          description="Testar o editor BlockNote sem persistir (debug/sandbox)"
+          status="beta"
         />
         <DashboardCardDisabled
           icon={Building2}
@@ -34,16 +49,52 @@ export default async function AdminDashboardPage() {
           <li>Autenticacao via magic link (sem senha)</li>
           <li>Protecao anti-bot (Cloudflare Turnstile)</li>
           <li>Rate limit (5 tentativas/15min por email)</li>
-          <li>Editor de blog — em desenvolvimento</li>
-          <li>Editor de empreendimentos — em desenvolvimento</li>
+          <li>Aba Autores: <strong>pronta</strong> (Fase 18.C)</li>
+          <li>Editor BlockNote: <strong>pronto</strong> (Fase 18.D)</li>
+          <li>Artigos (lista, editor, publish, agendar, histórico): <strong>pronto</strong> (Fase 18.E)</li>
+          <li>Migração dos 15 MDX legados: pendente (Fase 18.G)</li>
         </ul>
       </div>
     </div>
   )
 }
 
-// Não-clicável até os editores serem implementados (Fase 9.2).
-// Evita 404 após login — bad UX pra Bruno/Wagner.
+function DashboardCard({
+  href,
+  icon: Icon,
+  title,
+  description,
+  status,
+}: {
+  href: string
+  icon: React.ComponentType<{ className?: string }>
+  title: string
+  description: string
+  status?: "beta"
+}) {
+  return (
+    <Link
+      href={href}
+      className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-brand-primary"
+    >
+      <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-primary-light text-brand-primary">
+        <Icon className="size-5" />
+      </div>
+      <div className="flex-1">
+        <h3 className="font-display font-semibold text-slate-900 group-hover:text-brand-primary">
+          {title}
+        </h3>
+        <p className="text-sm text-slate-500">{description}</p>
+        {status === "beta" && (
+          <span className="mt-1 inline-block rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-700">
+            Beta — playground
+          </span>
+        )}
+      </div>
+    </Link>
+  )
+}
+
 function DashboardCardDisabled({
   icon: Icon,
   title,

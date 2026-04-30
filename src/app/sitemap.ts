@@ -2,6 +2,11 @@ import type { MetadataRoute } from "next"
 import { getAllBairros, getAllTypes, getAllEmpreendimentos, getAllPropertySitemapData } from "@/services/loft"
 import { getAllSlugs as getAllBlogSlugs } from "@/services/blog"
 import { getAllGuiaSlugs } from "@/services/guias"
+import {
+  getArticleSourceMode,
+  listAuthors,
+  listPublishedArticles,
+} from "@/services/articles"
 import { hasEditorialLayout } from "@/data/empreendimento-assets"
 import type { PropertyType } from "@/types/property"
 
@@ -190,9 +195,17 @@ export default async function sitemap({
     ]
   }
 
-  // Segment 2: blog + guias + pillars
+  // Segment 2: blog + guias + pillars + autores (Fase 18)
   if (shardId === 2) {
-    const [blogSlugs, guiaSlugs] = await Promise.all([getAllBlogSlugs(), getAllGuiaSlugs()])
+    const supabaseMode = getArticleSourceMode() === "supabase"
+
+    const [blogSlugs, guiaSlugs, articles, authors] = await Promise.all([
+      getAllBlogSlugs(),
+      getAllGuiaSlugs(),
+      // Lista completa pra pegar updated_at real (lastmod) — somente em modo Supabase.
+      supabaseMode ? listPublishedArticles() : Promise.resolve([]),
+      supabaseMode ? listAuthors() : Promise.resolve([]),
+    ])
 
     const pillarPages: MetadataRoute.Sitemap = [
       {
@@ -224,12 +237,22 @@ export default async function sitemap({
       },
     ]
 
-    const blogPostPages: MetadataRoute.Sitemap = blogSlugs.map((slug) => ({
-      url: `${SITE_URL}/blog/${slug}`,
-      lastModified: now,
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    }))
+    // Posts do blog: em modo Supabase usamos `updated_at` real por post (Fase
+    // 18 — sinal pro Google ranquear mudancas reais). Em modo legado, fallback
+    // pra `now` uniforme do build.
+    const blogPostPages: MetadataRoute.Sitemap = supabaseMode
+      ? articles.map((a) => ({
+          url: `${SITE_URL}/blog/${a.slug}`,
+          lastModified: a.updated_at ? new Date(a.updated_at) : now,
+          changeFrequency: "monthly" as const,
+          priority: 0.6,
+        }))
+      : blogSlugs.map((slug) => ({
+          url: `${SITE_URL}/blog/${slug}`,
+          lastModified: now,
+          changeFrequency: "monthly" as const,
+          priority: 0.6,
+        }))
 
     const guiaPages: MetadataRoute.Sitemap = guiaSlugs.map((slug) => ({
       url: `${SITE_URL}/guia/${slug}`,
@@ -238,7 +261,21 @@ export default async function sitemap({
       priority: 0.8,
     }))
 
-    return [...pillarPages, ...blogListing, ...blogPostPages, ...guiaPages]
+    // Paginas de autor (E-E-A-T) — somente em modo Supabase
+    const authorPages: MetadataRoute.Sitemap = authors.map((a) => ({
+      url: `${SITE_URL}/autor/${a.slug}`,
+      lastModified: a.updated_at ? new Date(a.updated_at) : now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    }))
+
+    return [
+      ...pillarPages,
+      ...blogListing,
+      ...blogPostPages,
+      ...guiaPages,
+      ...authorPages,
+    ]
   }
 
   // Segment 3: static + institucional + empreendimentos

@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 import type { ReactNode } from "react"
 import Link from "next/link"
-import { FileText, Building2, LogOut, Home } from "lucide-react"
+import { FileText, Building2, LogOut, Home, Users } from "lucide-react"
 import { auth, signOut } from "@/auth"
 
 export const metadata: Metadata = {
@@ -56,12 +56,25 @@ export default async function AdminLayout({ children }: { children: ReactNode })
           <NavLink href="/admin" icon={Home}>
             Início
           </NavLink>
-          <NavLink href="/admin/blog" icon={FileText}>
-            Blog
-          </NavLink>
-          <NavLink href="/admin/empreendimentos" icon={Building2}>
-            Empreendimentos
-          </NavLink>
+          <div className="mt-2">
+            <p className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+              Blog
+            </p>
+            <NavLink href="/admin/blog" icon={FileText}>
+              Artigos
+            </NavLink>
+            <NavLink href="/admin/blog/autores" icon={Users}>
+              Autores
+            </NavLink>
+          </div>
+          <div className="mt-2">
+            <p className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+              Catálogo
+            </p>
+            <NavLink href="/admin/empreendimentos" icon={Building2}>
+              Empreendimentos
+            </NavLink>
+          </div>
         </nav>
 
         <div className="mt-auto border-t border-slate-100 pt-4">

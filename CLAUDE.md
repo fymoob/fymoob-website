@@ -39,8 +39,10 @@ Reconstrução do site da imobiliária FYMOOB (Curitiba/PR) com foco em SEO e ge
 - **Fontes:** Poppins (headings/nav) + Inter (body)
 - **Paleta:** Azul FYMOOB (#29ABE2) + branco — identidade atual da marca
 - **CRM:** Loft/Vista API REST (antigo Vista) — chave da API será configurada via env
-- **Banco:** Nhost (Hasura + PostgreSQL + GraphQL) — sa-east-1
-- **Imagens:** CDN Vistahost (`cdn.vistahost.com.br`) + Nhost Storage
+- **Banco:** Supabase (PostgreSQL + Storage + Auth) — sa-east-1
+- **Blog CMS:** custom admin com BlockNote + Supabase (Fase 18, substitui Sanity removido em 30/04/2026)
+- **Editor blog:** [`@blocknote/react`](src/components/admin/ArticleEditor.tsx) com 6 blocos custom (MethodologyBox, CalloutBox, CTABox, Changelog, FAQ, ImovelDestaque)
+- **Imagens:** CDN Vistahost (`cdn.vistahost.com.br`) + Supabase Storage (3 buckets: articles-covers, articles-inline, authors)
 - **Deploy:** Vercel
 - **Domínio:** fymoob.com
 
@@ -75,8 +77,9 @@ npm run smoke https://preview.xxx.vercel.app   # testar preview URL
 - Todas as páginas de imóvel devem incluir JSON-LD schema markup
 - Imagens sempre via `<Image />` do Next.js com alt descritivo
 - Dados da API Loft via `src/services/loft.ts` — nunca chamar API direto nos componentes
+- Dados de artigos via `src/services/articles.ts` (Supabase, Fase 18). Wrapper de compatibilidade em `src/services/blog.ts` com toggle `BLOG_SOURCE=supabase|<vazio>` (vazio = MDX legado).
 - Sem mock data — API Loft é a única fonte de dados (LOFT_API_KEY obrigatória)
-- Env vars: `LOFT_API_KEY`, `NEXT_PUBLIC_SITE_URL`, `NHOST_SUBDOMAIN`
+- Env vars chaves: `LOFT_API_KEY`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `BLOG_SOURCE`, `CRON_SECRET` — ver `.env.example`
 
 ## Performance — Regras obrigatórias
 > Meta: Lighthouse mobile >80 em todas as páginas. Toda nova feature deve preservar performance.
@@ -220,3 +223,12 @@ Quando compactar, SEMPRE preservar:
 - **Criar página:** rodar `/project:new-page` para seguir padrões SEO
 - **Revisar SEO:** invocar agente `seo-reviewer` para validar páginas
 - **Entre fases:** usar `/clear` para limpar contexto
+
+## Blog Custom Admin (Fase 18 — concluída 30/04/2026)
+Sanity foi removido por completo. Stack atual:
+- **Editor:** BlockNote (Notion-like) em `/admin/blog/[id]` com autosave, preview, SEO Score gate, histórico de revisões
+- **Autores:** CRUD em `/admin/blog/autores` (E-E-A-T: schema Person/RealEstateAgent dinâmico)
+- **Migração 15 MDX:** `node scripts/migrate-mdx-to-supabase.mjs` (idempotente)
+- **Cron Vercel:** `/api/cron/publish-scheduled` roda diário 06:00 UTC (publica `status=scheduled`)
+- **Toggle blog público:** `BLOG_SOURCE=supabase` em prod ativa o read do Supabase. Fallback default = MDX em `content/blog/`
+- Detalhes: `docs/TASKS.md` Fase 18, `supabase/README.md` (migrations + buckets)
