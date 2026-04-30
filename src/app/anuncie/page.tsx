@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { ContactForm } from "@/components/shared/ContactForm"
+import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
+import { generateAnuncieFAQ } from "@/lib/seo"
 import {
   Camera,
   Users,
@@ -237,6 +239,14 @@ export default function AnunciePage() {
             ]}
           />
         </div>
+      </section>
+
+      {/* FAQ — Fase 19.P0.10 (gap pos-audit) */}
+      <section className="mt-12 border-t border-neutral-200 pt-12">
+        <DynamicFAQ
+          questions={generateAnuncieFAQ()}
+          title="Perguntas frequentes sobre anunciar imóvel na FYMOOB"
+        />
       </section>
     </div>
   )

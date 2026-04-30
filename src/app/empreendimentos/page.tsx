@@ -6,6 +6,8 @@ import { formatPrice } from "@/lib/utils"
 import { isVistaImage } from "@/lib/image-optimization"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { Building2, MapPin, Home } from "lucide-react"
+import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
+import { generateEmpreendimentosListingFAQ } from "@/lib/seo"
 
 export const metadata: Metadata = {
   title: { absolute: "Empreendimentos Imobiliários em Curitiba | FYMOOB" },
@@ -99,6 +101,16 @@ export default async function EmpreendimentosPage() {
               </Link>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* FAQ — Fase 19.P0.11 (gap pos-audit) */}
+      <section className="border-t border-neutral-200 bg-neutral-50 py-12 md:py-16">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <DynamicFAQ
+            questions={generateEmpreendimentosListingFAQ(empreendimentos.length)}
+            title="Perguntas frequentes sobre empreendimentos em Curitiba"
+          />
         </div>
       </section>
     </>

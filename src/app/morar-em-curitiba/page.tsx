@@ -30,6 +30,15 @@ export const metadata: Metadata = {
     description: "Tudo sobre morar em Curitiba: custo de vida, bairros, transporte, educação e lazer.",
     type: "article",
     url: "/morar-em-curitiba",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Guia completo: Morar em Curitiba — FYMOOB" }],
+    locale: "pt_BR",
+    siteName: "FYMOOB Imobiliária",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Morar em Curitiba — Guia Completo 2026",
+    description: "Tudo sobre morar em Curitiba: custo de vida, bairros, transporte, educação e lazer.",
+    images: ["/opengraph-image"],
   },
 }
 

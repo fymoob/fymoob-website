@@ -1040,3 +1040,116 @@ export function generateLancamentosFAQ(total: number): { question: string; answe
     },
   ]
 }
+
+/**
+ * FAQ generica pra Home — Fase 19.P0.9 (gap pos-audit).
+ *
+ * Home tem alta autoridade no SERP (priority 1.0 no sitemap, link de mais
+ * outras paginas). Adicionar FAQ aumenta eligibilidade pra rich result
+ * de queries genericas tipo "fymoob curitiba", "imobiliaria curitiba",
+ * "imoveis curitiba".
+ */
+export function generateHomeFAQ(): { question: string; answer: string }[] {
+  return [
+    {
+      question: "O que é a FYMOOB Imobiliária?",
+      answer: `A FYMOOB Imobiliária (CRECI J 9420) é uma imobiliária boutique de Curitiba especializada em apartamentos, casas, sobrados e empreendimentos. Atendemos clientes interessados em comprar, vender ou alugar imóveis na cidade e região metropolitana. Nosso atendimento é personalizado, com curadoria de imóveis, acompanhamento integral do processo (visita, proposta, financiamento, escritura) e assessoria gratuita pra compradores. Bruno César de Almeida (CRECI/PR 24.494) é o sócio-diretor responsável.`,
+    },
+    {
+      question: "Quantos imóveis a FYMOOB tem disponíveis em Curitiba?",
+      answer: `Trabalhamos com mais de 230 imóveis ativos em tempo real, sincronizados automaticamente com o CRM Loft/Vista. O catálogo cobre apartamentos (80% do estoque), casas, sobrados, terrenos, lojas e salas comerciais nos principais bairros de Curitiba. Você encontra desde studios compactos a partir de R$ 190 mil até empreendimentos de alto padrão acima de R$ 5 milhões. Veja em /apartamentos-curitiba, /casas-curitiba, /sobrados-curitiba ou /lancamentos.`,
+    },
+    {
+      question: "Como funciona o atendimento da FYMOOB?",
+      answer: `O atendimento é via WhatsApp **(41) 99978-0517**, e-mail **fymoob@gmail.com**, ou pessoalmente em nosso escritório (Rua Engenheiro Heitor Soares Gomes, 778, Esquina, Curitiba). Funcionamos de segunda a sexta, das 8h30 às 17h. Bruno e Wagner (sócios) atendem pessoalmente os principais clientes. Para visitas agendamos com 24-48h de antecedência conforme disponibilidade do imóvel. Acompanhamos toda a jornada: avaliação imparcial, documentação, financiamento (Caixa/Itaú/Bradesco), escritura e pós-venda.`,
+    },
+    {
+      question: "A FYMOOB cobra alguma taxa do comprador?",
+      answer: `Não. A comissão da imobiliária é paga sempre pelo proprietário/construtora vendedora. O comprador não paga nada à FYMOOB. As únicas despesas do comprador são as cobradas por terceiros: ITBI (3% do valor venal em Curitiba), avaliação bancária (~R$ 3 mil se financiar), tarifas do contrato bancário, escritura no cartório (~1-2%), registro de imóvel (~1.5%). Esses valores são padrão de mercado, não da imobiliária.`,
+    },
+    {
+      question: "Quais bairros de Curitiba a FYMOOB atende?",
+      answer: `Cobrimos os principais bairros de Curitiba e região metropolitana, com foco em: **Batel, Bigorrilho, Ecoville, Mossunguê, Cabral, Champagnat** (alto padrão); **Água Verde, Juvevê, Cristo Rei, Alto da Glória, Boa Vista, Portão** (médio padrão familiar); **Centro Cívico, Hugo Lange, Vila Izabel, Capão Raso** (investimento); e **Santa Felicidade, Mercês, Campo Comprido** (tranquilo). Veja todos os bairros com imóveis em /busca ou nas landings tipadas.`,
+    },
+    {
+      question: "Como saber se um imóvel está realmente disponível na FYMOOB?",
+      answer: `O catálogo do site é sincronizado com o CRM Loft/Vista a cada hora. Quando um imóvel é vendido ou alugado, ele sai do site automaticamente em até 60 minutos. Para garantia adicional, o WhatsApp **(41) 99978-0517** confirma disponibilidade na hora — antes de você fazer uma visita ou proposta, conferimos status atualizado direto com o proprietário/construtora. Não trabalhamos com "imóveis fantasma" usados como isca.`,
+    },
+    {
+      question: "A FYMOOB vende imóveis na planta (lançamentos) em Curitiba?",
+      answer: `Sim. Trabalhamos com lançamentos das principais construtoras de Curitiba: Avantti, Plaenge, Cyrela, Helbor, Dirani, CR2, Diálogo, Castro, EBM, AYA. Veja todos em /lancamentos. Como parceiros oficiais das construtoras, oferecemos preços de tabela direta (sem intermediação extra), agendamento de plantão exclusivo, condições especiais de pagamento e ajuda no financiamento. Tempo médio de entrega de obras em Curitiba: 24-36 meses.`,
+    },
+    {
+      question: "Posso alugar um imóvel da FYMOOB? Como funciona?",
+      answer: `Sim. Trabalhamos com aluguel residencial e comercial em Curitiba. Garantias aceitas: **caução em dinheiro** (3 meses), **fiador** (com imóvel em Curitiba), **seguro-fiança** (Porto Seguro, Tokio Marine), **título de capitalização**. Custo de início: 1º aluguel + caução (3 meses) + taxa de cadastro + vistoria. Análise cadastral em 1-3 dias úteis. Mais detalhes na seção /alugar-curitiba ou WhatsApp (41) 99978-0517.`,
+    },
+  ]
+}
+
+/**
+ * FAQ pra /anuncie (captacao de proprietarios) — Fase 19.P0.10.
+ */
+export function generateAnuncieFAQ(): { question: string; answer: string }[] {
+  return [
+    {
+      question: "Como anunciar meu imóvel na FYMOOB?",
+      answer: `É simples e gratuito. Preencha o formulário em /anuncie com os dados básicos (tipo de imóvel, bairro, área, quartos, valor desejado), envie 5-10 fotos por WhatsApp **(41) 99978-0517**, e Bruno faz uma avaliação inicial em até 48h. Após aceite, agendamos visita técnica no imóvel pra fotos profissionais (incluso, sem custo), redigimos o anúncio com SEO otimizado, publicamos no site fymoob.com.br + portais (Viva Real, ZAP, Imovelweb) e CRM próprio. Início da captação: 5-7 dias.`,
+    },
+    {
+      question: "Qual a comissão da FYMOOB para vendas?",
+      answer: `A comissão padrão de mercado em Curitiba é **6% do valor de venda** (CRECI-PR), pago pelo vendedor na escritura. A FYMOOB segue esse padrão. Para vendas acima de R$ 1 milhão, podemos negociar comissões reduzidas. Importante: a comissão só é paga **após o fechamento** da venda — não há cobrança antecipada por publicação, fotos, ou marketing. Se o imóvel não vender, você não paga nada.`,
+    },
+    {
+      question: "Qual a comissão da FYMOOB para aluguel?",
+      answer: `Para aluguel, a comissão é o **valor do primeiro aluguel** (1 mês), pago pelo proprietário no início da locação. Há também a taxa mensal de administração de **6-10% do aluguel** (negociável conforme valor e tipo de imóvel) que cobre: cobrança, repasse, gestão de inadimplência, vistoria, manutenção. Para aluguel temporário (Airbnb-style) a comissão é diferente — consulte direto.`,
+    },
+    {
+      question: "A FYMOOB faz fotos profissionais do imóvel?",
+      answer: `Sim, **sem custo adicional**. Após captação, agendamos sessão de fotos com fotógrafo profissional (1-2h no imóvel). Tiramos 30-50 fotos (interna, externa, fachada, vistas), tratamos as melhores 15-20, criamos tour virtual em 360° (opcional, +R$ 300), e plantas em 2D quando relevante (a partir de R$ 200 — opcional). Vídeos de drone e tours em vídeo: orçamento sob consulta. Tudo isso é pago pela FYMOOB no caso de venda exclusiva.`,
+    },
+    {
+      question: "Quanto tempo demora pra vender um imóvel em Curitiba?",
+      answer: `Depende muito de **bairro, preço e condição**. Imóveis bem precificados em bairros consolidados (Batel, Bigorrilho, Água Verde) vendem em **2-4 meses**. Bairros médios (Portão, Cabral, Boa Vista): **4-8 meses**. Bairros mais afastados ou imóveis acima do valor de mercado: **8-18 meses ou mais**. Para acelerar: precificação alinhada ao FipeZAP (R$ 11.621/m² médio em mar/2026), fotos profissionais, descrição rica, exclusividade com 1-2 imobiliárias (não pulverizar).`,
+    },
+    {
+      question: "Posso vender meu imóvel pela FYMOOB e por outras imobiliárias ao mesmo tempo?",
+      answer: `Sim, mas tecnicamente desencorajamos por 2 motivos: 1) **Diluição de esforço comercial** — quando uma imobiliária sabe que está exclusiva, investe mais em marketing, SEO, captação de leads; 2) **Confusão pro comprador** — anúncios duplicados em portais com fotos diferentes geram desconfiança. Em Curitiba a prática comum é **exclusividade de 90 dias** com 1 imobiliária, depois renovar ou abrir. Oferecemos esse modelo, com cláusula de saída em caso de não-resultado.`,
+    },
+    {
+      question: "A FYMOOB tira o imóvel do anúncio quando vende?",
+      answer: `Sim, automaticamente. Nosso CRM Loft/Vista atualiza status em tempo real. Quando o contrato de compra/venda é assinado, marcamos o imóvel como "vendido" no sistema, ele sai do site fymoob.com.br em até 60 minutos, e dos portais (Viva Real, ZAP, Imovelweb) em 1-3 dias. Não deixamos imóveis vendidos como isca, nem repostamos imóveis antigos como "novidade". Política de transparência total.`,
+    },
+  ]
+}
+
+/**
+ * FAQ pra /empreendimentos (listing) — Fase 19.P0.11.
+ */
+export function generateEmpreendimentosListingFAQ(total: number): { question: string; answer: string }[] {
+  return [
+    {
+      question: `Quantos empreendimentos a FYMOOB tem disponíveis em Curitiba?`,
+      answer: `Atualmente trabalhamos com ${total} empreendimentos ativos em Curitiba e região metropolitana. Lista atualizada em tempo real conforme novos lançamentos das construtoras parceiras (Avantti, Plaenge, Cyrela, Helbor, Dirani, CR2, Diálogo, Castro, EBM, AYA, e outras). Veja todos com fotos, plantas, preços e prazo de entrega.`,
+    },
+    {
+      question: `Quais construtoras estão lançando em Curitiba em 2026?`,
+      answer: `Lista das principais construtoras com atividade em Curitiba: **Avantti** (Reserva Barigui, Reserva Lago, Reserva Colina, Reserva Mirante), **Plaenge** (Plaenge Artis, Lange Turin), **Cyrela** (alto padrão Batel/Bigorrilho), **Helbor** (My Place Jardim Botânico), **Dirani** (Audace, Insight), **CR2** (Sensia Horizon, K&ra), **Diálogo** (Bioma, Liv.In), **Castro** (Pine Blue), **EBM** (Plus Portão), **AYA** (AYA Residence Amintas). Listamos lançamentos novos toda semana.`,
+    },
+    {
+      question: `Empreendimento na planta vs pronto: qual escolher?`,
+      answer: `**Empreendimento pronto** — vantagens: mudança imediata, vê o acabamento real, sem risco de atraso, fluxo de pagamento conhecido (entrada + financiamento). **Na planta** — vantagens: preço 15-25% abaixo do pronto, escolha de unidade/posição/finishing, valorização durante a obra (5-8% ao ano em Curitiba), uso de FGTS na entrada. **Riscos da planta**: atraso (regulamentado pela Lei 13.786/2018: até 180 dias sem multa, depois 1% ao mês), dependência da construtora (escolha consolidadas).`,
+    },
+    {
+      question: `Como funciona o financiamento de empreendimentos novos em Curitiba?`,
+      answer: `Para empreendimentos prontos: financiamento bancário padrão (Caixa, Itaú, Bradesco) com entrada de 20%, prazo até 35 anos, juros 9-12% ao ano + TR. Pode usar FGTS na entrada. Para na planta: estrutura de pagamento típica = **sinal** (5-10%) + **parcelas mensais durante obra** (15-30%) + **financiamento bancário pós-entrega** (60-80%). Algumas construtoras oferecem **direto sem banco** (juros próprios, parcelas até 200 meses) ou **permuta** (seu imóvel atual como entrada).`,
+    },
+    {
+      question: `Em quais bairros de Curitiba estão os melhores empreendimentos?`,
+      answer: `**Mossunguê e Ecoville** dominam alto padrão (Reserva Barigui, Trebbiano, Vittace Bosque, lançamentos R$ 800k-3 mi). **Batel e Bigorrilho** têm projetos boutique R$ 1-5 mi. **Cabral, Juvevê, Cristo Rei** têm empreendimentos médios R$ 400-800 mil (família, custo-benefício). **Centro Cívico** está em ascensão com retrofit. **Portão** tem volume alto de lançamentos R$ 350-700 mil (Le Monde, Easy, One Life). **Santa Felicidade** e **Campo Comprido** atendem perfil tranquilo R$ 500 mi-1 mi.`,
+    },
+    {
+      question: `A FYMOOB cobra do comprador para mostrar empreendimentos?`,
+      answer: `Não. A comissão é sempre paga pela construtora/incorporadora. Como parceiros oficiais, recebemos por venda fechada. Você pode visitar quantos empreendimentos quiser, fazer comparativos, simular financiamentos — tudo sem custo. O preço que você paga é o **mesmo da tabela direta** da construtora (não há sobrepreço pela FYMOOB). Em alguns casos conseguimos **descontos exclusivos** ou condições especiais de pagamento que a construtora oferece pra nossos clientes.`,
+    },
+  ]
+}

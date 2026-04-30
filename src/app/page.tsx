@@ -17,6 +17,8 @@ import { HeroSection } from "@/components/home/HeroSection"
 import { BlogCard } from "@/components/blog/BlogCard"
 import { AnimateOnScroll } from "@/components/shared/AnimateOnScroll"
 import { GoogleReviews } from "@/components/shared/GoogleReviews"
+import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
+import { generateHomeFAQ } from "@/lib/seo"
 
 // Dynamic imports — client components that return null for most visitors or are below-the-fold
 const RecentlyViewed = dynamic(
@@ -285,6 +287,19 @@ export default async function Home() {
           </div>
         </section>
       )}
+
+      {/* FAQ rica home — Fase 19.P0.9 (gap detectado em audit pos-P0).
+          Home tem priority 1.0 no sitemap e maior numero de backlinks
+          internos, entao FAQ aqui maximiza eligibilidade pra rich result
+          em queries genericas (fymoob, imobiliaria curitiba, imoveis curitiba). */}
+      <section className="border-t border-neutral-200 bg-white py-12 md:py-16">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <DynamicFAQ
+            questions={generateHomeFAQ()}
+            title="Perguntas frequentes sobre a FYMOOB"
+          />
+        </div>
+      </section>
     </>
   )
 }

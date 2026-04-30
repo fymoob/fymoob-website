@@ -142,6 +142,87 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
           </div>
         </nav>
       )}
+
+      {/* Bloco SEO ~600 palavras antes do footer — Fase 19.P0.12 (gap pos-audit).
+          Anteriormente /blog tinha apenas 45 palavras de texto, comprometendo
+          relevancia. Adiciona contexto editorial sobre os temas cobertos. */}
+      {isFirstPage && (
+        <section className="border-t border-neutral-200 bg-white py-12 md:py-16">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+            <h2 className="font-display text-2xl font-bold text-neutral-900 md:text-3xl">
+              O blog da FYMOOB: conteúdo prático sobre o mercado imobiliário de Curitiba
+            </h2>
+            <div className="mt-6 space-y-4 leading-relaxed text-neutral-700">
+              <p>
+                O blog da <strong>FYMOOB Imobiliária</strong> (CRECI J 9420) reúne {allPosts.length}{" "}
+                guias práticos escritos por especialistas para quem está pensando em comprar,
+                alugar ou investir em imóveis em Curitiba. Cobrimos temas como financiamento (Caixa,
+                Itaú, Bradesco), ITBI, MCMV, documentação, comparativos de bairros, mercado imobiliário,
+                custo de vida e dicas de visita.
+              </p>
+              <p>
+                Todos os artigos são escritos com base em dados reais e atualizados — citamos
+                fontes externas como o <strong>Índice FipeZAP</strong> (preço médio do m² em Curitiba
+                em março/2026: R$ 11.621), <strong>IBGE</strong>, <strong>Caixa Econômica Federal</strong>,
+                <strong>Lei do Inquilinato 8.245/91</strong> e a <strong>Lei 13.786/2018</strong> que
+                regula compra de imóvel na planta. Nossos autores são corretores ativos no mercado
+                de Curitiba: Bruno César de Almeida (CRECI/PR 24.494, sócio-diretor) e equipe.
+              </p>
+              <p>
+                Para complementar a leitura, oferecemos guias estruturados nos chamados &ldquo;pillars&rdquo;:{" "}
+                <Link href="/comprar-imovel-curitiba" className="font-semibold text-brand-primary hover:underline">
+                  Como comprar imóvel em Curitiba
+                </Link>
+                ,{" "}
+                <Link href="/morar-em-curitiba" className="font-semibold text-brand-primary hover:underline">
+                  Morar em Curitiba
+                </Link>
+                {" "}e{" "}
+                <Link href="/alugar-curitiba" className="font-semibold text-brand-primary hover:underline">
+                  Alugar imóvel em Curitiba
+                </Link>
+                . Também publicamos <strong>guias por bairro</strong> (Portão, Água Verde, Batel,
+                Bigorrilho, Ecoville e mais) com infraestrutura, escolas, transporte e perfil de
+                cada região. Veja todos os imóveis disponíveis em{" "}
+                <Link href="/busca" className="font-semibold text-brand-primary hover:underline">
+                  /busca
+                </Link>
+                {" "}ou nos catálogos por tipo:{" "}
+                <Link href="/apartamentos-curitiba" className="text-brand-primary hover:underline">
+                  apartamentos
+                </Link>
+                ,{" "}
+                <Link href="/casas-curitiba" className="text-brand-primary hover:underline">
+                  casas
+                </Link>
+                ,{" "}
+                <Link href="/sobrados-curitiba" className="text-brand-primary hover:underline">
+                  sobrados
+                </Link>
+                {" "}e{" "}
+                <Link href="/terrenos-curitiba" className="text-brand-primary hover:underline">
+                  terrenos
+                </Link>
+                .
+              </p>
+              <p>
+                Quer dúvida ou sugestão de tema para um próximo artigo? Fale com a gente pelo
+                WhatsApp{" "}
+                <a
+                  href="https://wa.me/5541999780517"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-brand-primary hover:underline"
+                >
+                  (41) 99978-0517
+                </a>
+                {" "}ou e-mail <a href="mailto:fymoob@gmail.com" className="font-semibold text-brand-primary hover:underline">fymoob@gmail.com</a>.
+                Atendimento de segunda a sexta, das 8h30 às 17h.
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
     </>
   )
 }

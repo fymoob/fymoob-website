@@ -33,9 +33,9 @@
 | 16 | Claude Managed Agents | 14 | 0 | 14 | MEDIO PRAZO |
 | 17 | Agentes como Produto SaaS | 14 | 0 | 14 | LONGO PRAZO |
 | 18 | Custom Blog Admin (Sanity Replacement) | 69 | 60 | 9 | EM ANDAMENTO (Sprints 1-4: 18.A-G done; 18.H-I pendentes) |
-| 19 | **SEO Competitive Action Plan** | 18 | 8 | 10 | **PRIORITARIO — P0 (8/8) ✅ DONE 30/04** |
+| 19 | **SEO Competitive Action Plan** | 23 | 13 | 10 | **PRIORITARIO — P0 (13/13) ✅ DONE 30/04** |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **531** | **360** | **171** | **68%** |
+| | **TOTAL** | **536** | **365** | **171** | **68%** |
 
 **Sessao 2026-04-17:** 25 CRITICAL/HIGH de seguranca/SEO fixados em 5 commits (`0d7b19f`, `50b1f86`, `7bb5f5a`, `19154ec`, `6b13794`). 4 rounds de auditoria convergiram — round 4 retornou 0 CRITICAL. Acoes externas pre-cutover listadas em Fase 7.8. HIGH/MEDIUM remanescentes (hardening pos-cutover, nao blockers) em Fase 7.10.
 
@@ -3607,6 +3607,46 @@ Audit completo de 13 paginas revelou 5 paginas criticas SEM FAQ schema:
 - [x] **19.8** FAQ rica em `/lancamentos`
   - 6 Q&A sobre comprar na planta (Lei 13.786/2018 atrasos, construtoras, financiamento, valorizacao)
   - Funcao `generateLancamentosFAQ(total)` em `src/lib/seo.ts`
+
+#### Gaps adicionais detectados em audit completo (30/04/2026 — pos P0.6/7/8)
+
+Apos rodada P0.6/7/8 fizemos audit COMPLETO de 27 paginas publicas. Achamos
+mais 5 paginas/itens com gaps:
+
+- [x] **19.9** FAQ rica em `/` (home — priority 1.0 sitemap)
+  - 8 Q&A genericas sobre FYMOOB, atendimento, comissao, bairros, lancamentos, aluguel
+  - Funcao `generateHomeFAQ()` em `src/lib/seo.ts`
+  - Maior alavanca pra queries genericas (fymoob, imobiliaria curitiba)
+
+- [x] **19.10** FAQ rica em `/anuncie` (captacao de proprietarios)
+  - 7 Q&A sobre processo, comissao venda 6%, comissao aluguel 1 mes + admin 6-10%, fotos profissionais, prazo, exclusividade
+  - Funcao `generateAnuncieFAQ()` em `src/lib/seo.ts`
+
+- [x] **19.11** FAQ rica em `/empreendimentos` (listing)
+  - 6 Q&A sobre empreendimentos disponiveis, construtoras Curitiba, planta vs pronto, financiamento, bairros premium
+  - Funcao `generateEmpreendimentosListingFAQ(total)` em `src/lib/seo.ts`
+
+- [x] **19.12** og:image + twitter card especificos em 3 pillars
+  - `/comprar-imovel-curitiba`, `/morar-em-curitiba`, `/alugar-curitiba`
+  - Antes faltavam og:image, locale, siteName e twitter:card
+  - Reusa /opengraph-image global ate criar imagens dedicadas
+
+- [x] **19.13** Bloco SEO ~600 palavras em `/blog` (listing) e `/busca`
+  - `/blog` antes tinha 45 palavras (thin content). Adicionado bloco editorial sobre
+    o blog FYMOOB, fontes externas (FipeZAP, IBGE, Caixa, Lei 8.245/91), autores e
+    cross-links pros 3 pillars
+  - `/busca` antes tinha 38 palavras. Adicionado bloco "Como buscar imoveis em
+    Curitiba" com cross-links pra 4 landings tipadas + 5 faixas de preco + 10 bairros principais
+
+#### Backlog 19.P1 (proximos sprints, diferidos)
+
+- [ ] **19.14** FAQ generica em `/blog/[slug]` (15 posts atuais sem FAQ schema)
+  - Funcao `generateBlogPostFAQ(post)` que adapta Q&A por categoria do post
+  - Nao implementado nesse round porque requer analise do conteudo de cada post
+
+- [ ] **19.15** OG images dedicadas pra cada pillar (substituir /opengraph-image global)
+  - Gerar 3 imagens 1200x630 com tema do pillar (comprar/morar/alugar)
+  - Salvar em /public/og/ e referenciar no metadata
   - Hoje: Agua Verde, Batel, Bigorrilho, Centro, Ecoville, Portao
   - Adicionar: Juveve, Cabral, Cristo Rei, Alto da Gloria, Ahu, Mossungue, Cidade Industrial, Sao Braz, Santa Felicidade
   - Implementar em `RelatedPages` ou bloco "Explore por bairro"

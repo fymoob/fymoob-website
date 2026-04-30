@@ -463,6 +463,65 @@ export default async function BuscaPage({ searchParams }: BuscaPageProps) {
           <SearchResults searchParams={params} />
         </Suspense>
       </div>
+
+      {/* Bloco SEO denso — Fase 19.P0.13 (gap pos-audit). /busca tinha
+          apenas 38 palavras, super thin. Adiciona ~400 palavras de
+          conteudo educativo + internal links pra capturar queries
+          genericas e reforcar autoridade da pagina. */}
+      <section className="mt-16 rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 lg:p-10">
+        <h2 className="font-display text-xl font-bold text-neutral-900 md:text-2xl">
+          Como buscar imóveis em Curitiba na FYMOOB
+        </h2>
+        <div className="mt-5 space-y-4 leading-relaxed text-neutral-700">
+          <p>
+            A busca da <strong>FYMOOB Imobiliária</strong> (CRECI J 9420) cobre todo o catálogo
+            ativo de Curitiba e região metropolitana — apartamentos, casas, sobrados, terrenos,
+            lojas e salas comerciais. Os filtros permitem refinar por <strong>cidade, bairro,
+            tipo, finalidade (venda/aluguel), número de quartos, faixa de preço, área privativa
+            </strong> e características específicas (mobiliado, pet, lazer, etc).
+          </p>
+          <p>
+            Os resultados são <strong>atualizados em tempo real</strong> — quando um imóvel é
+            vendido ou alugado, ele sai da listagem em até 60 minutos. Não trabalhamos com
+            anúncios fantasma. Cada imóvel exibe foto principal, valor, área, número de quartos,
+            bairro e botão direto pra WhatsApp da FYMOOB <strong>(41) 99978-0517</strong>.
+          </p>
+          <p>
+            Para uma busca mais focada por intenção, use também as landings dedicadas:{" "}
+            <Link href="/apartamentos-curitiba" className="font-semibold text-brand-primary hover:underline">apartamentos em Curitiba</Link>,{" "}
+            <Link href="/casas-curitiba" className="font-semibold text-brand-primary hover:underline">casas</Link>,{" "}
+            <Link href="/sobrados-curitiba" className="font-semibold text-brand-primary hover:underline">sobrados</Link>,{" "}
+            <Link href="/terrenos-curitiba" className="font-semibold text-brand-primary hover:underline">terrenos</Link>,{" "}
+            <Link href="/lancamentos" className="font-semibold text-brand-primary hover:underline">lançamentos</Link> ou{" "}
+            <Link href="/empreendimentos" className="font-semibold text-brand-primary hover:underline">empreendimentos completos</Link>.
+            Para faixas específicas:{" "}
+            <Link href="/imoveis/preco/ate-300-mil" className="text-brand-primary hover:underline">imóveis até R$ 300 mil</Link>,{" "}
+            <Link href="/imoveis/preco/300-a-500-mil" className="text-brand-primary hover:underline">de R$ 300-500 mil</Link>,{" "}
+            <Link href="/imoveis/preco/500-mil-a-1-milhao" className="text-brand-primary hover:underline">R$ 500 mil-1 mi</Link>,{" "}
+            <Link href="/imoveis/preco/1-a-3-milhoes" className="text-brand-primary hover:underline">1-3 mi</Link>{" "}
+            e <Link href="/imoveis/preco/acima-3-milhoes" className="text-brand-primary hover:underline">acima de R$ 3 mi</Link>.
+          </p>
+          <p>
+            Bairros mais procurados:{" "}
+            <Link href="/imoveis/batel" className="text-brand-primary hover:underline">Batel</Link>,{" "}
+            <Link href="/imoveis/bigorrilho" className="text-brand-primary hover:underline">Bigorrilho</Link>,{" "}
+            <Link href="/imoveis/agua-verde" className="text-brand-primary hover:underline">Água Verde</Link>,{" "}
+            <Link href="/imoveis/ecoville" className="text-brand-primary hover:underline">Ecoville</Link>,{" "}
+            <Link href="/imoveis/mossungue" className="text-brand-primary hover:underline">Mossunguê</Link>,{" "}
+            <Link href="/imoveis/cabral" className="text-brand-primary hover:underline">Cabral</Link>,{" "}
+            <Link href="/imoveis/portao" className="text-brand-primary hover:underline">Portão</Link>,{" "}
+            <Link href="/imoveis/cristo-rei" className="text-brand-primary hover:underline">Cristo Rei</Link>,{" "}
+            <Link href="/imoveis/centro" className="text-brand-primary hover:underline">Centro</Link>,{" "}
+            <Link href="/imoveis/juveve" className="text-brand-primary hover:underline">Juvevê</Link>.
+            Para detalhes sobre cada bairro (escolas, infraestrutura, custo de vida), consulte
+            os{" "}
+            <Link href="/morar-em-curitiba" className="font-semibold text-brand-primary hover:underline">
+              guias de morar em Curitiba
+            </Link>
+            .
+          </p>
+        </div>
+      </section>
     </div>
   )
 }

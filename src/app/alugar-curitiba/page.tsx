@@ -30,6 +30,15 @@ export const metadata: Metadata = {
     description: "Guia completo para alugar imóvel em Curitiba: documentos, garantias, bairros e preços.",
     type: "article",
     url: "/alugar-curitiba",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Guia completo: Alugar imóvel em Curitiba — FYMOOB" }],
+    locale: "pt_BR",
+    siteName: "FYMOOB Imobiliária",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Alugar Apartamento em Curitiba — Guia Completo 2026",
+    description: "Guia completo para alugar imóvel em Curitiba: documentos, garantias, bairros e preços.",
+    images: ["/opengraph-image"],
   },
 }
 
