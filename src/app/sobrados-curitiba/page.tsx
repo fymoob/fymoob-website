@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { safeJsonLd } from "@/lib/seo"
-import Link from "next/link"
 import { Suspense } from "react"
 import { getProperties, getAllBairros, getAllTypes, getAllCities, getPropertyStats } from "@/services/loft"
 import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
@@ -10,11 +9,14 @@ import {
   generateLandingTitle,
   generateLandingDescription,
   generateItemListSchema,
+  generateLandingFAQ,
 } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyListingGrid } from "@/components/search/PropertyListingGrid"
 import { projectForCard } from "@/lib/property-projection"
 import { Pagination } from "@/components/search/Pagination"
+import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
+import { LandingSEOContent } from "@/components/seo/LandingSEOContent"
 
 export async function generateMetadata(): Promise<Metadata> {
   const { properties } = await getProperties({ tipo: "Sobrado", limit: 1000 })
@@ -58,10 +60,8 @@ export default async function SobradosCuritibaPage({ searchParams }: { searchPar
     b.tipos.some((t) => t.tipo === "Sobrado" && t.count >= 3)
   )
 
-  const itemListSchema = generateItemListSchema(
-    properties,
-    "/sobrados-curitiba"
-  )
+  const itemListSchema = generateItemListSchema(properties, "/sobrados-curitiba")
+  const faqQuestions = generateLandingFAQ("Sobrado", total, precoMin, precoMax)
 
   return (
     <>
@@ -73,8 +73,9 @@ export default async function SobradosCuritibaPage({ searchParams }: { searchPar
       <div className="w-full bg-slate-50 px-4 py-8 md:px-12 lg:px-20 2xl:px-32">
         <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Sobrados em Curitiba", url: "/sobrados-curitiba" }]} />
 
+        {/* H1 com numero especifico — Fase 19.P0.3 */}
         <h1 className="mt-2 font-display text-2xl font-bold text-neutral-900 sm:text-3xl">
-          Sobrados à Venda e Aluguel em Curitiba
+          {total} Sobrados à Venda e Aluguel em {bairrosComSobrado.length}+ Bairros de Curitiba
         </h1>
 
         <div className="mt-4 flex flex-wrap gap-4 text-sm text-neutral-600">
@@ -97,6 +98,19 @@ export default async function SobradosCuritibaPage({ searchParams }: { searchPar
         <PropertyListingGrid properties={properties.map(p => projectForCard(p))} total={total} totalLabel="sobrados" cardContext="search" />
         <Pagination currentPage={page} totalPages={Math.max(1, Math.ceil(total / PAGE_SIZE))} basePath="/sobrados-curitiba" />
       </div>
+
+      {/* Bloco SEO 1000 palavras — Fase 19.P0.4 */}
+      <LandingSEOContent tipo="Sobrado" total={total} />
+
+      {/* FAQ + internal links */}
+      <section className="bg-neutral-50 py-12 md:py-16">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <DynamicFAQ
+            questions={faqQuestions}
+            title="Perguntas frequentes sobre sobrados em Curitiba"
+          />
+        </div>
+      </section>
 
       <SeoInternalLinks groups={[buildBairrosGroup(bairrosComSobrado, { tipoSlug: "sobrados", title: "Sobrados por Bairro" })]} />
     </>

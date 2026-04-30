@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import type { MultiSelectOption } from "./types"
 
 const normalize = (s: string) =>
-  s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
+  s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
 
 interface CityFilterProps {
   cidades: MultiSelectOption[]

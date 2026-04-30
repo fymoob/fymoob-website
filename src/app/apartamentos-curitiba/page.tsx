@@ -1,20 +1,22 @@
 import type { Metadata } from "next"
 import { safeJsonLd } from "@/lib/seo"
-import Link from "next/link"
 import { Suspense } from "react"
 import { getProperties, getAllBairros, getAllTypes, getAllCities, getPropertyStats } from "@/services/loft"
 import { SeoInternalLinks, buildBairrosGroup } from "@/components/seo/SeoInternalLinks"
 import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
-import { formatPrice, slugify } from "@/lib/utils"
+import { formatPrice } from "@/lib/utils"
 import {
   generateLandingTitle,
   generateLandingDescription,
   generateItemListSchema,
+  generateLandingFAQ,
 } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyListingGrid } from "@/components/search/PropertyListingGrid"
 import { projectForCard } from "@/lib/property-projection"
 import { Pagination } from "@/components/search/Pagination"
+import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
+import { LandingSEOContent } from "@/components/seo/LandingSEOContent"
 
 export async function generateMetadata(): Promise<Metadata> {
   const { properties } = await getProperties({ tipo: "Apartamento", limit: 1000 })
@@ -56,14 +58,19 @@ export default async function ApartamentosCuritibaPage({ searchParams }: { searc
   const precoMin = precos.length > 0 ? Math.min(...precos) : null
   const precoMax = precos.length > 0 ? Math.max(...precos) : null
 
+  // Bairros com 3+ apartamentos: alvo de internal linking. Antes mostrava ~6,
+  // agora mostra 15+ pra nivelar com MySide (Fase 19.P0.5).
   const bairrosComApto = bairros.filter((b) =>
     b.tipos.some((t) => t.tipo === "Apartamento" && t.count >= 3)
   )
 
-  const itemListSchema = generateItemListSchema(
-    properties,
-    "/apartamentos-curitiba"
-  )
+  // Schema rico — cada item tem @type Apartment com numberOfRooms, floorSize,
+  // address, offers (Fase 19.P0.2). Substitui o ItemList simples anterior.
+  const itemListSchema = generateItemListSchema(properties, "/apartamentos-curitiba")
+
+  // FAQ ricas — 8 Q&A com dados externos (FipeZAP, IBGE, Caixa). Fase 19.P0.1
+  // (gap mais critico vs MySide). DynamicFAQ ja cuida do schema FAQPage.
+  const faqQuestions = generateLandingFAQ("Apartamento", total, precoMin, precoMax)
 
   return (
     <>
@@ -80,8 +87,11 @@ export default async function ApartamentosCuritibaPage({ searchParams }: { searc
           ]}
         />
 
+        {/* H1 com numero especifico — Fase 19.P0.3.
+            Padrao MySide: "Apartamentos a venda em 408 edificios em Curitiba".
+            FYMOOB usa total real do catalogo + #bairros cobertos. */}
         <h1 className="mt-2 font-display text-2xl font-bold text-neutral-900 sm:text-3xl">
-          Apartamentos à Venda e Aluguel em Curitiba
+          {total} Apartamentos à Venda e Aluguel em {bairrosComApto.length}+ Bairros de Curitiba
         </h1>
 
         <div className="mt-4 flex flex-wrap gap-4 text-sm text-neutral-600">
@@ -120,6 +130,20 @@ export default async function ApartamentosCuritibaPage({ searchParams }: { searc
         <PropertyListingGrid properties={properties.map(p => projectForCard(p))} total={total} totalLabel="apartamentos" cardContext="search" />
         <Pagination currentPage={page} totalPages={totalPages} basePath="/apartamentos-curitiba" />
       </div>
+
+      {/* Bloco SEO textual ~1000 palavras — Fase 19.P0.4. Antes da FAQ pra
+          dar contexto crawlavel rico (Google indexa texto, nao cards). */}
+      <LandingSEOContent tipo="Apartamento" total={total} />
+
+      {/* FAQ + Internal Links */}
+      <section className="bg-neutral-50 py-12 md:py-16">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <DynamicFAQ
+            questions={faqQuestions}
+            title="Perguntas frequentes sobre apartamentos em Curitiba"
+          />
+        </div>
+      </section>
 
       <SeoInternalLinks groups={[buildBairrosGroup(bairrosComApto, { tipoSlug: "apartamentos", title: "Apartamentos por Bairro" })]} />
     </>

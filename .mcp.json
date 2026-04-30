@@ -11,6 +11,22 @@
     "playwright": {
       "command": "cmd",
       "args": ["/c", "npx", "@playwright/mcp@latest"]
+    },
+    "brave-search": {
+      "type": "stdio",
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@brave/brave-search-mcp-server"],
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
+      }
+    },
+    "perplexity": {
+      "type": "stdio",
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@perplexity-ai/mcp-server"],
+      "env": {
+        "PERPLEXITY_API_KEY": "${PERPLEXITY_API_KEY}"
+      }
     }
   }
 }

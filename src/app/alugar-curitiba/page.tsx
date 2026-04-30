@@ -9,7 +9,8 @@ import { mdxComponents } from "@/lib/mdx-components"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { AuthorBio } from "@/components/blog/AuthorBio"
 import { RelatedPages } from "@/components/seo/RelatedPages"
-import { generatePillarSchema , safeJsonLd} from "@/lib/seo"
+import { generatePillarSchema , safeJsonLd, generatePillarFAQ} from "@/lib/seo"
+import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 
 function getPillarContent() {
   const filePath = path.join(process.cwd(), "content/pillar/alugar-curitiba.mdx")
@@ -78,6 +79,10 @@ export default function AlugarCuritibaPage() {
           <MDXRemote source={content} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} components={mdxComponents} />
         </div>
         <div className="mt-12 border-t border-neutral-200 pt-8"><AuthorBio /></div>
+        {/* FAQ — Fase 19.P0.6 */}
+        <div className="mt-12 border-t border-neutral-200 pt-8">
+          <DynamicFAQ questions={generatePillarFAQ("alugar")} title="Perguntas frequentes sobre alugar imóvel em Curitiba" />
+        </div>
         <div className="mt-8"><RelatedPages links={relatedLinks} title="Conteúdo relacionado" /></div>
       </article>
     </>

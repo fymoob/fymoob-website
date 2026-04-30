@@ -155,7 +155,7 @@ function analyzeTitle(t, empreendimento) {
 
   if (len > 55) issues.push(`${len} chars (+${len - 55})`)
 
-  const upperCount = (t.match(/[A-ZÀ-Ú]/g) || []).length
+  const upperCount = (t.match(/[A-Z\u00C0-\u00DA]/g) || []).length
   const letterCount = (t.match(/[A-Za-zÀ-ú]/g) || []).length
   if (letterCount > 0 && upperCount / letterCount > 0.5) {
     stats.caixaAlta++

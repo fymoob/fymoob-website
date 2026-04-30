@@ -29,14 +29,14 @@ function isListHeader(line: string): boolean {
 
 function isAllCaps(line: string): boolean {
   // Detect lines written in ALL CAPS by the broker (e.g. "REQUISITOS PARA ALUGAR:")
-  const letters = line.replace(/[^a-zA-ZÀ-ÿ]/g, "")
+  const letters = line.replace(/[^a-zA-Z\u00C0-\u00FF]/g, "")
   if (letters.length < 4) return false
   return letters === letters.toUpperCase()
 }
 
 // Detect lines that START with an ALL CAPS prefix followed by normal text
 // e.g. "INTERESSADOS NA COMPRA: Imóvel pronto e documentado..."
-const CAPS_PREFIX_RE = /^([A-ZÀ-Ú][A-ZÀ-Ú\s]{3,}:)\s*(.*)/
+const CAPS_PREFIX_RE = /^([A-Z\u00C0-\u00DA][A-Z\u00C0-\u00DA\s]{3,}:)\s*(.*)/
 
 function hasCapsPrefix(line: string): boolean {
   return CAPS_PREFIX_RE.test(line)
@@ -52,10 +52,10 @@ function splitCapsPrefix(line: string): { prefix: string; rest: string } | null 
 // e.g. "ALUGUEL LÍQUIDO", "ALUGUEL BRUTO"
 function renderWithInlineCaps(text: string): React.ReactNode {
   // Split on sequences of ALL CAPS words (2+ letters each, possibly multiple words)
-  const parts = text.split(/(\b[A-ZÀ-Ú]{2,}(?:\s+[A-ZÀ-Ú]{2,})*\b)/)
+  const parts = text.split(/(\b[A-Z\u00C0-\u00DA]{2,}(?:\s+[A-Z\u00C0-\u00DA]{2,})*\b)/)
   if (parts.length === 1) return text
   return parts.map((part, i) => {
-    const letters = part.replace(/[^a-zA-ZÀ-ÿ]/g, "")
+    const letters = part.replace(/[^a-zA-Z\u00C0-\u00FF]/g, "")
     if (letters.length >= 2 && letters === letters.toUpperCase()) {
       return <strong key={i} className="font-bold text-slate-900">{part}</strong>
     }

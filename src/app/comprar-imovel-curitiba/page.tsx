@@ -9,7 +9,8 @@ import { mdxComponents } from "@/lib/mdx-components"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { AuthorBio } from "@/components/blog/AuthorBio"
 import { RelatedPages } from "@/components/seo/RelatedPages"
-import { generatePillarSchema , safeJsonLd} from "@/lib/seo"
+import { generatePillarSchema , safeJsonLd, generatePillarFAQ} from "@/lib/seo"
+import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 
 function getPillarContent() {
   const filePath = path.join(process.cwd(), "content/pillar/comprar-imovel-curitiba.mdx")
@@ -108,6 +109,14 @@ export default function ComprarImovelPage() {
 
         <div className="mt-12 border-t border-neutral-200 pt-8">
           <AuthorBio />
+        </div>
+
+        {/* FAQ rica — Fase 19.P0.6 (gap detectado em audit pos-P0 inicial) */}
+        <div className="mt-12 border-t border-neutral-200 pt-8">
+          <DynamicFAQ
+            questions={generatePillarFAQ("comprar")}
+            title="Perguntas frequentes sobre comprar imóvel em Curitiba"
+          />
         </div>
 
         <div className="mt-8">

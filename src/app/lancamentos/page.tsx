@@ -3,7 +3,8 @@ import { Suspense } from "react"
 import { getProperties, getAllBairros, getAllTypes, getAllCities, getPropertyStats } from "@/services/loft"
 import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
 import { formatPrice } from "@/lib/utils"
-import { generateItemListSchema , safeJsonLd} from "@/lib/seo"
+import { generateItemListSchema , safeJsonLd, generateLancamentosFAQ} from "@/lib/seo"
+import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyListingGrid } from "@/components/search/PropertyListingGrid"
 import Link from "next/link"
@@ -126,6 +127,16 @@ export default async function LancamentosPage({ searchParams }: { searchParams: 
           </div>
         )}
       </div>
+
+      {/* FAQ rica sobre lancamentos — Fase 19.P0.8 */}
+      <section className="border-t border-neutral-200 bg-neutral-50 py-12 md:py-16">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <DynamicFAQ
+            questions={generateLancamentosFAQ(total)}
+            title="Perguntas frequentes sobre lançamentos em Curitiba"
+          />
+        </div>
+      </section>
 
       <SeoInternalLinks groups={[buildBairrosGroup(bairrosComLancamento, { title: "Bairros com Lançamentos" })]} />
     </>

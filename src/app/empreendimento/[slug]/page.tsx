@@ -540,7 +540,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                 const torreAnchor = "torre-" + torre.nome
                   .toLowerCase()
                   .normalize("NFD")
-                  .replace(/[̀-ͯ]/g, "")
+                  .replace(/[\u0300-\u036f]/g, "")
                   .replace(/^reserva-?/, "")
                   .replace(/[^a-z0-9]+/g, "-")
                   .replace(/^-+|-+$/g, "")

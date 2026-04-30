@@ -15,7 +15,7 @@ const LOFT_BASE_URL = "https://brunoces-rest.vistahost.com.br"
 function slugify(s) {
   return String(s || "")
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")

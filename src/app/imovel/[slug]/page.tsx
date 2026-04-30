@@ -9,8 +9,10 @@ import {
 import {
   generatePropertySchema,
   generatePropertyDescription,
+  generatePropertyDetailFAQ,
   safeJsonLd,
 } from "@/lib/seo"
+import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { getPropertyPriceDisplay } from "@/lib/property-price"
 import {
   getPropertyPriceBucket,
@@ -283,6 +285,18 @@ export default async function PropertyPage({ params }: PageProps) {
       <div className="mt-2">
         <LazySimilarProperties properties={similarProperties} />
       </div>
+
+      {/* FAQ generica do imovel — Fase 19.P0.7. Schema FAQPage emitido
+          automaticamente via DynamicFAQ. Adapta perguntas conforme finalidade
+          (venda vs aluguel). */}
+      <section className="border-t border-neutral-200 bg-neutral-50 py-12 md:py-16">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <DynamicFAQ
+            questions={generatePropertyDetailFAQ(property)}
+            title={`Perguntas frequentes sobre este ${property.tipo.toLowerCase()}`}
+          />
+        </div>
+      </section>
 
       <MobileContactBar
         propertyTitle={property.titulo}

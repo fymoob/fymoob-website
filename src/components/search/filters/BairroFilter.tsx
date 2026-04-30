@@ -8,7 +8,7 @@ import type { MultiSelectOption } from "./types"
 import type { GroupedBairroOptions } from "../useSearchBarController"
 
 const normalize = (s: string) =>
-  s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
+  s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
 
 interface BairroFilterProps {
   bairros: MultiSelectOption[]
