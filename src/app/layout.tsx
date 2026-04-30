@@ -97,6 +97,18 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://cdn.vistahost.com.br" />
         <link rel="dns-prefetch" href="https://cdn.vistahost.com.br" />
+        {/* Favicons — URLs estaveis (sem hash do Next.js) servidos do /public.
+            Google exige URL estavel; nao usar src/app/icon.png nem
+            src/app/apple-icon.png (Next.js gera URL com hash que muda a
+            cada build — desorienta o favicon crawler do Google). */}
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <meta name="theme-color" content="#29ABE2" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: safeJsonLd(orgSchema) }}
