@@ -167,25 +167,28 @@ Quando o Bruno pedir algo novo que **não está** no contrato nem nesta lista:
 - [x] `/blog/batel-vs-agua-verde-curitiba` — 14 imp, pos 5,9
 - [x] `/blog/melhores-bairros-familias-curitiba` — sem imp ainda mas YMYL Family alto
 
-#### 🟡 Pendente (10 URLs restantes — limite GSC ~10/dia)
+#### ✅ Solicitado em 30/04/2026 (9 de 10 URLs — quota GSC excedida no último)
 
-- [ ] `/blog/apartamento-ou-casa-curitiba`
-- [ ] `/blog/checklist-compra-imovel`
-- [ ] `/blog/documentos-comprar-imovel-curitiba`
-- [ ] `/blog/ecoville-vs-bigorrilho-curitiba`
-- [ ] `/blog/imovel-planta-vs-pronto-curitiba`
-- [ ] `/blog/itbi-curitiba-valor-como-pagar`
-- [ ] `/blog/melhores-bairros-curitiba-2026`
-- [ ] `/blog/mercado-imobiliario-curitiba-2026`
-- [ ] `/blog/preco-metro-quadrado-curitiba-bairro`
-- [ ] `/blog/quanto-custa-morar-batel-curitiba`
+- [x] `/blog/apartamento-ou-casa-curitiba`
+- [x] `/blog/checklist-compra-imovel`
+- [x] `/blog/documentos-comprar-imovel-curitiba`
+- [x] `/blog/ecoville-vs-bigorrilho-curitiba`
+- [x] `/blog/imovel-planta-vs-pronto-curitiba`
+- [x] `/blog/itbi-curitiba-valor-como-pagar`
+- [x] `/blog/melhores-bairros-curitiba-2026`
+- [x] `/blog/mercado-imobiliario-curitiba-2026`
+- [x] `/blog/preco-metro-quadrado-curitiba-bairro`
+- [ ] `/blog/quanto-custa-morar-batel-curitiba` — **quota excedida em 30/04, refazer em 01/05**
+
+**Status:** 9 dos 10 reescritos solicitados em 30/04. O `quanto-custa-morar-batel-curitiba` bateu na quota diária do GSC (limite ~10/dia, contou as 5 de 26/04 + 9 de 30/04 = 14). Resubmeter amanhã (01/05) — quota reseta após 24h. Esperar 24-72h pra Google reprocessar os 14 já enviados.
 
 #### Próxima revisão GSC: 2026-05-10
 
 Verificar:
-- Recrawl dos 5 prioritários (last crawled deve ser >26/04)
+- Recrawl dos **15 posts** (last crawled deve ser >30/04 — incluir os 10 novos)
 - CTR `/blog/financiamento-...` antes (0,23%) vs depois do title novo — meta 5-8%
 - Posição `/blog/custo-de-vida-curitiba` antes (12,5) vs depois — meta top 10
+- Posição dos 10 novos solicitados em 30/04 — sentir impacto inicial
 - Sitemap `/sitemap/0.xml` warning resolvido?
 
 #### Outras ações SEO pendentes do relatório 26/04

@@ -65,97 +65,97 @@ Formato de resposta por imóvel: `[código] novo título sugerido (N chars)`
 **Sugerido:** "Apartamento 2 quartos 40m² próximo Shopping Palladium Portão" (60 chars) ✅
 **Justificativa:** Descrição revela "Shoppings Palladium e Ventura" nas proximidades.
 
-#### `AP00902`
+#### `AP00902`✅
 **Atual:** "Apartamento com 2 quartos à venda no bairro Portão em Curitiba!" (63 chars)
 **Sugerido:** "Apartamento 2 quartos suíte 54m² a 1 quadra Palladium" (53 chars) ✅
 **Justificativa:** Descrição informa "1 quadra do Shopping Palladium e Supermercado Muffato".
 
-#### `AP00903`
+#### `AP00903`✅
 **Atual:** "Apartamento Studio à venda no bairro Portão em Curitiba!" (56 chars)
 **Sugerido:** "Kitnet 26m² a 1 quadra do Palladium Portão" (42 chars) ✅
 **Justificativa:** CRM=Kitnet (não Studio). Marco explícito + metragem.
 
-#### `ST00010`
+#### `ST00010`✅
 **Atual:** "One Life - Studios à venda no bairro Água Verde divisa com Portão, em Curitiba!" (79 chars)
 **Sugerido:** "Apartamento 1 quarto 17m² a 200m do Hospital IPO | One Life" (59 chars) ✅
 **Justificativa:** CRM=Apartamento 1 dorm (não Studio). Descrição cita "cerca de 200 metros do Hospital IPO" — marco com distância precisa. Empreendimento One Life ao fim.
 
-#### `TE00175`
+#### `TE00175`✅
 **Atual:** "Terreno a Venda no bairro Portão ZR3.ZONA RESIDENCIAL 3 1.Y. próximo Super mercado Ítalo" (88 chars)
 **Sugerido:** "Terreno 470m² ZR3 próximo Supermercado Ítalo Portão" (51 chars) ✅
 **Justificativa:** Marco "Supermercado Ítalo" preservado da descrição.
 
-#### `TE00181`
+#### `TE00181`✅
 **Atual:** "Terreno ZR3.1 - à venda no bairro Portão, em uma das principais e comerciais ruas do Bairro!" (92 chars)
 **Sugerido:** "Terreno comercial 360m² na Rua Carlos Dietzsch Portão" (53 chars) ✅
 **Justificativa:** Rua específica "Carlos Dietzsch" citada na descrição vira gancho de localização exata.
 
-#### `TE00182`
+#### `TE00182`✅
 **Atual:** "Terreno ZR3.1 - à venda no bairro Portão, em uma das principais e comerciais ruas do Bairro!" (92 chars)
 **Sugerido:** "Terreno comercial 360m² Rua Carlos Dietzsch Portão" (50 chars) ✅
 **Justificativa:** Lote gêmeo do TE00181.
 
-#### `TE00183`
+#### `TE00183`✅
 **Atual:** "Terreno ZR3.1 - À venda no bairro Portão, em uma rua tranquila próxima as principais vias comerciais do Bairro!" (111 chars)
 **Sugerido:** "Terreno 450m² ZR3.1 rua tranquila Portão Curitiba" (49 chars) ✅
 **Justificativa:** "Rua tranquila" da prosa preservado como diferencial.
 
-#### `69803237`
+#### `69803237`✅
 **Atual:** "Terracota I - Sobrados em condomínio fechado no bairro Portão" (61 chars)
 **Sugerido:** "Sobrado 3 quartos suíte em condomínio fechado Portão" (52 chars) ✅
 **Justificativa:** Descrição confirma "3 dormitórios, sendo 1 suíte" + "condomínio fechado".
 
-#### `AP01018`
+#### `AP01018`✅
 **Atual:** "Apto 01 quarto no bairro do Portão" (34 chars)
 **Sugerido:** "Apartamento 1 qto 28m² mobiliado pra alugar Portão | Cesaréa" (60 chars) ✅
 **Justificativa:** CRM=Apartamento 1 dorm (não Studio). Feature "Semi Mobiliado" vira "mobiliado". "Pra alugar" reforça intent.
 
-#### `AP01079`
+#### `AP01079`✅
 **Atual:** "Cravo Casa Nativa - Apartamentos com 2 e 3 quartos com suíte em fase de lançamento no Bairro Portão." (100 chars)
 **Sugerido:** "Apto 2 quartos suíte 66m² próximo Shopping Palladium Portão" (59 chars) ✅
 **Justificativa:** Descrição cita "Shopping Palladium, Super Muffato, Hospital IPO" — marco principal virou gancho.
 
-#### `CA02706`
+#### `CA02706`✅
 **Atual:** "Sobrado Triplex com 3 quartos à venda no Bairro Portão" (54 chars)
 **Sugerido:** "Sobrado triplex 3 quartos 151m² com quintal Portão" (50 chars) ✅
 **Justificativa:** Descrição menciona "quintal espaçoso de 38,94 m² nos fundos".
 
-#### `69804349`
+#### `69804349`✅
 **Atual:** "Cravo Casa Nativa - Apartamento 3 quartos com suíte em fase de lançamento no Bairro Portão." (91 chars)
 **Sugerido:** "Apartamento 3 quartos suíte 90m² próximo Hospital IPO Portão" (60 chars) ✅
 **Justificativa:** Descrição cita "Hospital IPO" nas proximidades.
 
-#### `69804395`
+#### `69804395`✅
 **Atual:** "Ama 1108 - Studios modernos à venda no bairro Portão!" (53 chars)
 **Sugerido:** "Studio 24m² novo em lançamento no Portão | AMA" (46 chars) ✅
 **Justificativa:** Entrega 04/2027 — novo + lançamento.
 
-#### `69804852`
+#### `69804852`✅
 **Atual:** "Residencial moderno com 182 m², 3 dormitórios e garden com churrasqueira no Portão" (82 chars)
 **Sugerido:** "Sobrado 3 quartos 182m² garden e churrasqueira Portão" (53 chars) ✅
 **Justificativa:** "Garden com churrasqueira" da descrição preservado.
 
-#### `69805374`
+#### `69805374`✅
 **Atual:** "Sobrado de 182 m² no Portão com garden e 3 dormitórios" (54 chars)
 **Sugerido:** "Sobrado 3 quartos 182m² garden e suíte master Portão" (52 chars) ✅
 **Justificativa:** Feature "Suite Master" (Tier S explícito) adicionada.
 
-#### `69805459`
+#### `69805459`✅
 **Atual:** "Sobrado com terraço à venda no bairro Portão, com 03 dormitórios sendo 01 suíte, imóvel novo podendo ser financiado." (116 chars)
 **Sugerido:** "Sobrado novo 3 quartos suíte vista panorâmica Portão" (52 chars) ✅
 **Justificativa:** Feature "Vista Panorâmica" (Tier S explícito) extraída.
 
-#### `69805461`
+#### `69805461`✅
 **Atual:** "Terreno no bairro Portão - Rua João Bettega" (43 chars)
 **Sugerido:** "Terreno comercial 557m² Rua João Bettega Portão" (47 chars) ✅
 **Justificativa:** Descrição enfatiza "grande fluxo de veículos" — "comercial" vira gancho.
 
-#### `69805498`
+#### `69805498`✅
 **Atual:** "Sobrado com 3 Quartos à Venda no Portão - Curitiba" (50 chars)
 **Sugerido:** "Sobrado novo 3 quartos suíte 120m² 1 vaga Portão" (48 chars) ✅
 **Justificativa:** CRM=1 vaga (não 2). Dados técnicos: suíte + 120m² + "novo" (entrega 2026).
 
-### Resumo Portão
+### Resumo Portão✅✅✅
 | Métrica | Valor |
 |---|---|
 | Total | 25 | Reescritos | 25 |

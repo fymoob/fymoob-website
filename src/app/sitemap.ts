@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next"
 import { getAllBairros, getAllTypes, getAllEmpreendimentos, getAllPropertySitemapData } from "@/services/loft"
 import { getAllSlugs as getAllBlogSlugs } from "@/services/blog"
 import { getAllGuiaSlugs } from "@/services/guias"
+import { hasEditorialLayout } from "@/data/empreendimento-assets"
 import type { PropertyType } from "@/types/property"
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
@@ -273,11 +274,15 @@ export default async function sitemap({
       changeFrequency: "monthly" as const,
     }))
 
+    // Empreendimentos com layout editorial (assets curados, plantas estaticas,
+    // descricao marketing) sao landings de mais alto valor — Google Ads roda
+    // em cima delas e o trafego organico fecha lead via WhatsApp. Bump pra 0.9
+    // sinaliza prioridade superior pros 3 demais editoriais que valem (1.0).
     const empreendimentoPages: MetadataRoute.Sitemap = empreendimentos.map((e) => ({
       url: `${SITE_URL}/empreendimento/${e.slug}`,
       lastModified: now,
       changeFrequency: "weekly" as const,
-      priority: 0.8,
+      priority: hasEditorialLayout(e.slug) ? 0.9 : 0.8,
       // images removidas — CDN Loft bloqueia crawlers (ver nota no shard 0)
     }))
 
