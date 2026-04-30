@@ -56,12 +56,17 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bair
         }}
       />
 
-      {/* Content */}
-      <div className="relative z-20 mx-auto w-full max-w-4xl px-4 text-center sm:px-6">
-        <h1 className="font-display text-3xl font-extrabold leading-[1.05] tracking-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)] sm:text-5xl md:text-7xl md:drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">
+      {/* Content \u2014 max-width escala progressivamente: 4xl (896px) ate XL,
+          5xl (1024px) em XL+, 6xl (1152px) em 2K+. Evita que h1 quebre em
+          2 linhas em 2K e mantem proporcao em FullHD. */}
+      <div className="relative z-20 mx-auto w-full max-w-4xl px-4 text-center sm:px-6 xl:max-w-5xl 2xl:max-w-6xl">
+        {/* Fluid typography com clamp(): escala suave do mobile (30px) ate
+            2K (88px) sem breakpoint jumps. Cap em 5.5rem garante que titulo
+            caiba sem quebrar no container max-w-6xl (1152px) em 2K. */}
+        <h1 className="font-display font-extrabold leading-[1.05] tracking-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)] md:drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)] text-[clamp(1.875rem,1rem+3.5vw,5.5rem)]">
           {"Encontre seu im\u00f3vel ideal"}
         </h1>
-        <p className="hero-animate-2 mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-white/95 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)] sm:mt-6 sm:text-lg md:text-[1.35rem] md:font-medium md:leading-relaxed md:text-white md:drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]">
+        <p className="hero-animate-2 mx-auto mt-4 max-w-2xl leading-relaxed text-white/95 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)] sm:mt-6 md:font-medium md:leading-relaxed md:text-white md:drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] xl:max-w-3xl 2xl:max-w-4xl text-[clamp(0.875rem,0.5rem+0.85vw,1.375rem)]">
           {"Im\u00f3veis para comprar ou alugar com o acompanhamento pr\u00f3ximo e seguro que voc\u00ea merece."}
         </p>
 

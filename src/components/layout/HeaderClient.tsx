@@ -87,8 +87,9 @@ export function HeaderClient() {
             />
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden items-center gap-6 md:flex">
+          {/* Desktop Nav — gap escala em telas maiores pra dar respiro
+              minimalista. md=24px, lg=32px, xl=40px. */}
+          <nav className="hidden items-center gap-6 md:flex lg:gap-8 xl:gap-10">
             {navLinks.map((link) => {
               const isActive = pathname === link.href
               return (

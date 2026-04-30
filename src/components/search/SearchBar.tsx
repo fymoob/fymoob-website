@@ -890,7 +890,11 @@ export function SearchBar({
               <div className={cn(
                 "flex flex-col md:items-center md:gap-0",
                 isHome
-                  ? "md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.9fr)_minmax(0,0.8fr)_minmax(0,1fr)_auto]"
+                  // min 110px por coluna garante "Quartos" (7 chars) caber
+                  // sem truncar em FullHD/laptop. Antes era 0.8fr puro =
+                  // ~95px disponivel pra texto -> "Qu...". Agora minmax(110px)
+                  // forca largura minima respeitada antes de redistribuir fr.
+                  ? "md:grid md:grid-cols-[minmax(110px,1fr)_minmax(110px,1fr)_minmax(110px,0.9fr)_minmax(110px,0.9fr)_minmax(110px,1fr)_auto]"
                   : "md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.8fr)_minmax(0,0.7fr)_minmax(0,0.9fr)_minmax(0,0.9fr)_auto]"
               )}>
 
