@@ -1,8 +1,28 @@
-# Decisão de CMS pra Blog — Sanity
+# Decisão de CMS pra Blog — Sanity ⚠️ ARQUIVADO
 
-> **Fonte:** Research consolidado 2026-04-20 (3 agentes paralelos + comparativo CMS market share 2026).
-> **Decisão:** Sanity Headless CMS.
-> **Status:** Pendente implementação.
+> **STATUS: ARQUIVADO em 2026-04-30.** Sanity foi instalado em 25/04 mas removido em 30/04 — substituido por solução 100% custom (BlockNote + Supabase) na **Fase 18** do `docs/TASKS.md`.
+>
+> **Motivos da reversão (cliente decidiu 30/04):**
+> - Lock-in moderado (Portable Text exportável mas custoso pra migrar)
+> - Hard caps no free tier que podem bloquear publish em viralização
+> - UX dev-flavored — Bruno (não-técnico) preferiu integração nativa no painel admin existente
+> - Inviabilizava futuro bloco "Imóvel destaque" com autocomplete da API Loft (precisaria duplicar dados)
+>
+> **Stack final (entregue Sprints 1-5 da Fase 18):**
+> - Editor BlockNote com 6 blocos custom (MethodologyBox, CalloutBox, CTABox, Changelog, FAQ, ImovelDestaque)
+> - Schema Postgres (`articles`, `authors`, `article_revisions`, `media`)
+> - Storage em buckets Supabase (`articles-covers`, `articles-inline`, `authors`)
+> - Auth reusa NextAuth + Resend (Fase 9.1)
+> - Cron Vercel pra publish agendado + IndexNow ping
+> - Migração one-shot dos 15 MDX legados (`scripts/migrate-mdx-to-supabase.mjs`)
+>
+> Ver `docs/TASKS.md` Fase 18 e `supabase/README.md`.
+
+---
+
+> **Fonte original:** Research consolidado 2026-04-20 (3 agentes paralelos + comparativo CMS market share 2026).
+> **Decisão original:** Sanity Headless CMS.
+> **Status original:** Pendente implementação.
 
 ---
 

@@ -56,13 +56,6 @@ const nextConfig: NextConfig = {
         hostname: "*.storage.sa-east-1.nhost.run",
         pathname: "/v1/files/**",
       },
-      // Sanity CDN — imagens de capa do blog (Portable Text body images)
-      // Servidos por cdn.sanity.io com transformações on-the-fly (?w=, ?fit=, etc.)
-      {
-        protocol: "https",
-        hostname: "cdn.sanity.io",
-        pathname: "/images/**",
-      },
       // Supabase Storage (Fase 18 — custom blog admin). Buckets:
       // articles-covers, articles-inline, authors. Allowlist genérica por
       // sufixo `.supabase.co` cobre qualquer projeto sem hardcode do ref.

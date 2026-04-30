@@ -6,38 +6,22 @@ import Link from "next/link"
 import { MDXRemote } from "next-mdx-remote/rsc"
 import remarkGfm from "remark-gfm"
 import { getPostBySlug, getAllSlugs, getRelatedPosts } from "@/services/blog"
-import { generateBlogPostingSchema, safeJsonLd } from "@/lib/seo"
+import {
+  generateBlogPostingSchema,
+  generateArticleSchema,
+  generateFAQPageSchema,
+  safeJsonLd,
+} from "@/lib/seo"
 import { mdxComponents } from "@/lib/mdx-components"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { RelatedPosts } from "@/components/blog/RelatedPosts"
 import { TableOfContents } from "@/components/blog/TableOfContents"
 import { AuthorBio } from "@/components/blog/AuthorBio"
-import { PortableTextRenderer } from "@/components/blog/PortableTextRenderer"
-import type { PortableTextBlock } from "@portabletext/types"
-
-/**
- * Extrai headings (h2/h3/h4) de Portable Text como pseudo-markdown.
- * O TableOfContents usa regex `^(#{2,4})\s+(.+)$` — gerar string markdown
- * só com headings é o caminho mais simples sem rewrite do componente.
- */
-function portableTextHeadingsToMarkdown(blocks: PortableTextBlock[]): string {
-  return blocks
-    .filter((b): b is PortableTextBlock & { style: string } => {
-      const block = b as { _type?: string; style?: string }
-      return (
-        block._type === "block" &&
-        typeof block.style === "string" &&
-        /^h[2-4]$/.test(block.style)
-      )
-    })
-    .map((b) => {
-      const level = parseInt(b.style.slice(1), 10)
-      const children = (b as unknown as { children?: Array<{ text?: string }> }).children
-      const text = (children || []).map((c) => c.text || "").join("")
-      return `${"#".repeat(level)} ${text}`
-    })
-    .join("\n\n")
-}
+import {
+  BlockRenderer,
+  blocksToHeadingsMarkdown,
+  collectFaqItems,
+} from "@/components/blog/BlockRenderer"
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -78,7 +62,21 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   if (!post) notFound()
 
   const related = await getRelatedPosts(post.slug, post.tags)
-  const schema = generateBlogPostingSchema(post)
+
+  // Schema: article custom (Supabase) usa generateArticleSchema com autor
+  // dinamico; legado (Sanity/MDX) mantem generateBlogPostingSchema (Bruno hardcoded).
+  const schema =
+    post.source === "supabase" && post._supabase
+      ? generateArticleSchema(post._supabase)
+      : generateBlogPostingSchema(post)
+
+  // FAQPage schema auto-gerado: extraido de blocos `faqItem` quando ha
+  // pelo menos 2 (sinal valido pro Google Rich Results).
+  const faqItems =
+    post.source === "supabase" && post._supabase
+      ? collectFaqItems(post._supabase.body)
+      : []
+  const faqSchema = faqItems.length >= 2 ? generateFAQPageSchema(faqItems) : null
 
   const formattedDate = new Date(post.date).toLocaleDateString("pt-BR", {
     day: "2-digit",
@@ -92,6 +90,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
       />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(faqSchema) }}
+        />
+      )}
 
       {/* Hero Image — limpa em mobile e desktop. Tags + título em bloco
           abaixo (decisão Vinicius 26/04: padrão unificado, OG image fica
@@ -162,11 +166,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               </div>
             </header>
 
-            {/* Content — editorial typography. Dual-read: Portable Text
-                (Sanity) ou MDX (legado, content/blog/*.mdx). */}
+            {/* Content — editorial typography. Dual-source:
+                - Supabase (Fase 18): BlockNote JSON via BlockRenderer
+                - MDX legado: MDXRemote (content/blog/*.mdx) — fallback */}
             <div className="prose-fymoob mx-auto max-w-3xl">
-              {post.source === "sanity" && post.body ? (
-                <PortableTextRenderer value={post.body} />
+              {post.source === "supabase" && post._supabase ? (
+                <BlockRenderer blocks={post._supabase.body} />
               ) : post.content ? (
                 <MDXRemote
                   source={post.content}
@@ -236,8 +241,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               em pseudo-markdown só com headings (mesmo regex extrai `## H2`). */}
           <TableOfContents
             content={
-              post.source === "sanity" && post.body
-                ? portableTextHeadingsToMarkdown(post.body)
+              post.source === "supabase" && post._supabase
+                ? blocksToHeadingsMarkdown(post._supabase.body)
                 : post.content || ""
             }
           />
