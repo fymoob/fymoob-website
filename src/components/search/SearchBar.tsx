@@ -712,11 +712,15 @@ export function SearchBar({
                       selectionSummary={pendingFilters.codigo || null}
                     >
                       <Input
+                        type="text"
+                        inputMode="text"
+                        autoCapitalize="characters"
+                        autoComplete="off"
                         value={pendingFilters.codigo}
                         onChange={(e) =>
-                          setPendingFilters((c) => ({ ...c, codigo: e.target.value }))
+                          setPendingFilters((c) => ({ ...c, codigo: e.target.value.toUpperCase() }))
                         }
-                        placeholder="Ex: AP00296"
+                        placeholder="Ex: AP00296 ou 69803208"
                         className="h-10 rounded-xl text-sm"
                       />
                     </FilterSection>

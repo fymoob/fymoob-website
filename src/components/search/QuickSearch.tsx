@@ -770,11 +770,12 @@ export function QuickSearch({ bairroSummaries, tipoSummaries }: QuickSearchProps
             <input
               id="qs-codigo"
               type="text"
-              inputMode="numeric"
+              inputMode="text"
               autoComplete="off"
-              placeholder="Ex: 12345"
+              autoCapitalize="characters"
+              placeholder="Ex: AP00296 ou 69803208"
               value={codigo}
-              onChange={(e) => setCodigo(e.target.value.replace(/[^\w-]/g, ""))}
+              onChange={(e) => setCodigo(e.target.value.replace(/[^\w-]/g, "").toUpperCase())}
               className="w-full rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3.5 text-sm text-neutral-800 placeholder:text-neutral-400 transition focus:border-brand-primary focus:outline-none focus:ring-2 focus:ring-brand-primary/20"
             />
             {codigo.trim() && (
