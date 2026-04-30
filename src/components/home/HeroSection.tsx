@@ -47,12 +47,22 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bair
       {/* Mobile full-hero glass layer: readability boost with cleaner composition */}
       <div className="absolute inset-0 z-[1] bg-black/18 md:hidden" />
 
-      {/* Desktop readability gradient: stronger on top/center, transparent toward water */}
+      {/* Desktop readability gradient: vertical leve (transicao topo->agua) +
+          vinheta radial centralizada na coluna de texto pra criar spotlight
+          editorial. Mantem laterais quentes/iluminadas (luxury) e dim soh
+          onde os textos vivem — padrao Sotheby's, Cyrela, Onelife. */}
       <div
         className="absolute inset-0 z-[1] hidden md:block"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(9,14,22,0.52) 0%, rgba(9,14,22,0.36) 34%, rgba(9,14,22,0.18) 58%, rgba(9,14,22,0.04) 78%, rgba(9,14,22,0) 100%)",
+            "linear-gradient(to bottom, rgba(9,14,22,0.30) 0%, rgba(9,14,22,0.18) 34%, rgba(9,14,22,0.08) 58%, rgba(9,14,22,0.02) 78%, rgba(9,14,22,0) 100%)",
+        }}
+      />
+      <div
+        className="absolute inset-0 z-[1] hidden md:block"
+        style={{
+          background:
+            "radial-gradient(ellipse 55% 55% at 50% 38%, rgba(9,14,22,0.50) 0%, rgba(9,14,22,0.32) 35%, rgba(9,14,22,0.10) 70%, transparent 100%)",
         }}
       />
 
@@ -67,11 +77,22 @@ export function HeroSection({ bairroNames, tipoNames, cidades, priceBounds, bair
               que 1920 e 2560 tenham mesmo tamanho.
             - 2xl em diante: clamp(3.75rem, 3.5vw, 5.5rem) escala
               60->88 entre 1714px e 2514px. FullHD (1920) renderiza ~67px,
-              2K (2560) renderiza 88px (cap). */}
-        <h1 className="font-display font-extrabold leading-[1.05] tracking-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)] md:drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)] text-3xl sm:text-4xl md:text-5xl xl:text-6xl 2xl:text-[clamp(3.75rem,3.5vw,5.5rem)]">
+              2K (2560) renderiza 88px (cap).
+
+            text-shadow dupla camada: 1\u00aa (1px,2px) crisp pro contraste
+            imediato em pixels brilhantes, 2\u00aa (4-14px) halo difuso pra
+            separar do fundo busy (folhagem/ceu render). Padrao usado
+            por Apple, Sotheby's editoriais sobre fotos high-key. */}
+        <h1
+          className="font-display font-extrabold leading-[1.05] tracking-tight text-white text-3xl sm:text-4xl md:text-5xl xl:text-6xl 2xl:text-[clamp(3.75rem,3.5vw,5.5rem)]"
+          style={{ textShadow: "0 1px 2px rgba(0,0,0,0.65), 0 4px 18px rgba(0,0,0,0.45)" }}
+        >
           {"Encontre seu im\u00f3vel ideal"}
         </h1>
-        <p className="hero-animate-2 mx-auto mt-4 max-w-2xl leading-relaxed text-white/95 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)] sm:mt-6 md:font-medium md:leading-relaxed md:text-white md:drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)] xl:max-w-3xl 2xl:max-w-4xl text-sm sm:text-base md:text-lg xl:text-xl 2xl:text-[clamp(1.25rem,0.5rem+0.5vw,1.5rem)]">
+        <p
+          className="hero-animate-2 mx-auto mt-4 max-w-2xl leading-relaxed text-white sm:mt-6 md:font-medium md:leading-relaxed xl:max-w-3xl 2xl:max-w-4xl text-sm sm:text-base md:text-lg xl:text-xl 2xl:text-[clamp(1.25rem,0.5rem+0.5vw,1.5rem)]"
+          style={{ textShadow: "0 1px 2px rgba(0,0,0,0.7), 0 3px 12px rgba(0,0,0,0.5)" }}
+        >
           {"Im\u00f3veis para comprar ou alugar com o acompanhamento pr\u00f3ximo e seguro que voc\u00ea merece."}
         </p>
 
