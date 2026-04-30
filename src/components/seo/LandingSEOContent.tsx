@@ -143,6 +143,26 @@ export function LandingSEOContent({ tipo, total }: LandingSEOContentProps) {
           (sócio-diretor, CRECI/PR 24.494) atua há mais de 10 anos no mercado imobiliário de
           Curitiba.
         </p>
+
+        {tipo === "Apartamento" && (
+          <div className="mt-10 rounded-xl border border-brand-primary/20 bg-brand-primary/5 p-6">
+            <h3 className="font-display text-lg font-bold text-neutral-900">
+              Quer ir mais a fundo?
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-neutral-700">
+              Leia nosso guia definitivo:{" "}
+              <Link
+                href="/comprar-apartamento-curitiba"
+                className="font-semibold text-brand-primary hover:underline"
+              >
+                Comprar Apartamento em Curitiba — Guia Completo 2026
+              </Link>
+              {" "}— 30 minutos de leitura cobrindo preço médio do m² (FipeZAP), 20 melhores bairros,
+              financiamento Caixa/Itaú/Bradesco, ITBI Curitiba, planta vs pronto, valorização e
+              armadilhas.
+            </p>
+          </div>
+        )}
       </div>
     </section>
   )

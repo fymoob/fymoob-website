@@ -1123,6 +1123,58 @@ export function generateAnuncieFAQ(): { question: string; answer: string }[] {
 }
 
 /**
+ * FAQ pra pillar `/comprar-apartamento-curitiba` (Fase 19.P1.1).
+ *
+ * Pillar focado especificamente em apartamentos (vs `/comprar-imovel-curitiba`
+ * que e generico). Capturar query "comprar apartamento curitiba" + variantes
+ * de cauda media (10x mais volume que "imovel curitiba").
+ */
+export function generateComprarApartamentoFAQ(): { question: string; answer: string }[] {
+  return [
+    {
+      question: "Qual o preço médio de um apartamento em Curitiba em 2026?",
+      answer: `Segundo o Índice FipeZAP de ${FIPEZAP_DATA}, o m² médio de apartamento em Curitiba é ${FIPEZAP_M2_CURITIBA}, com variação de ${FIPEZAP_VARIACAO_12M} nos últimos 12 meses. Por região: Batel/Bigorrilho **R$ 13-18 mil/m²**, Ecoville/Mossunguê **R$ 11-15 mil/m²**, Cabral/Juvevê **R$ 8-10 mil/m²**, Portão/Boqueirão **R$ 6-8 mil/m²**, bairros mais afastados (Cidade Industrial, Tatuquara) **R$ 4-5 mil/m²**. Apartamentos novos têm prêmio de 15-25% sobre usados.`,
+    },
+    {
+      question: "Quanto custa um apartamento de 2 quartos em Curitiba?",
+      answer: `Apartamentos de 2 quartos em Curitiba (50-70m², 1 vaga) — preço médio: **R$ 350-700 mil** em bairros médios (Portão, Cabral, Boa Vista). Em bairros premium (Batel, Bigorrilho): **R$ 700 mil-1,5 mi**. Em Ecoville/Mossunguê: **R$ 600 mil-1,2 mi**. Em bairros mais afastados (Cidade Industrial, Boqueirão): **R$ 220-400 mil**. Apartamentos novos com lazer completo geralmente custam 15-25% acima da média do bairro.`,
+    },
+    {
+      question: "Quanto custa um apartamento de 3 quartos em Curitiba?",
+      answer: `Apartamentos de 3 quartos (70-110m², 1-2 vagas) em Curitiba: bairros médios (Portão, Cabral, Cristo Rei): **R$ 500 mil-900 mil**. Bairros premium (Batel, Bigorrilho, Ecoville): **R$ 900 mil-2,5 mi**. Mossunguê (alto padrão): **R$ 800 mil-2 mi**. Bairros mais afastados: **R$ 300-550 mil**. Apartamentos com 2 suítes ou 2 vagas custam 15-30% mais. Tickets acima de R$ 2 mi geralmente são apartamentos premium acima de 130m² em condomínios diferenciados.`,
+    },
+    {
+      question: "Qual entrada mínima pra comprar apartamento financiado pela Caixa?",
+      answer: `A Caixa Econômica Federal exige entrada mínima de **20% do valor do imóvel** no SBPE (Sistema Brasileiro de Poupança e Empréstimo). Você pode usar **FGTS** (somando todos os contratos com 3+ anos) pra cobrir parte ou toda a entrada. No MCMV (Minha Casa Minha Vida — imóveis até R$ 350 mil em Curitiba), entrada pode cair pra **5-10%** com subsídio do governo. Em alguns programas especiais (ex: Programa Casa Verde Amarela), entrada pode ser zero pra famílias até 4 SM.`,
+    },
+    {
+      question: "Vale a pena comprar apartamento na planta em Curitiba em 2026?",
+      answer: `Sim, em 3 cenários: **(1)** você não precisa morar imediato (espera 24-36 meses), **(2)** quer travar preço atual antes da valorização, **(3)** tem perfil de investidor (revenda durante a obra). O ticket na planta é **15-25% menor** que pronto. Construtoras consolidadas em Curitiba (Avantti, Plaenge, Cyrela, Helbor, Dirani) têm bom histórico. Risco: atraso (regulamentado pela Lei 13.786/2018: até 180 dias sem multa). FYMOOB faz curadoria das melhores oportunidades.`,
+    },
+    {
+      question: "Quais documentos preciso pra comprar apartamento em Curitiba?",
+      answer: `Do comprador: **RG, CPF, comprovante de residência atual, comprovante de renda** (3 últimos contracheques ou DECORE), **certidão negativa Federal e Estadual**, **certidão conjunta de ações trabalhistas**, **FGTS atualizado** (extrato) se for usar, **certidão de casamento** (se aplicável). Do imóvel: **matrícula atualizada** (cartório de registro do imóvel), **certidão de ônus reais**, **certidão negativa de IPTU**, **declaração de quitação de condomínio**, **convenção de condomínio + ata atualizada**. A FYMOOB checa toda documentação antes da assinatura.`,
+    },
+    {
+      question: "Quanto tempo demora pra fechar a compra de um apartamento em Curitiba?",
+      answer: `Da proposta aceita até as chaves: **60-90 dias** (financiado), **30-45 dias** (à vista). Etapas: 1) Proposta + análise inicial (1-2 semanas); 2) Análise de crédito do banco (15-30 dias); 3) Avaliação do imóvel pela Caixa/Itaú/Bradesco (1-2 semanas); 4) Aprovação final + emissão de contrato (1 semana); 5) Pagamento ITBI 3% (boleto Prefeitura); 6) Escritura no cartório (1-2 dias); 7) Registro de imóvel (~30 dias). Documentação adiantada acelera o processo significativamente.`,
+    },
+    {
+      question: "Quais bairros de Curitiba têm melhor valorização de apartamentos?",
+      answer: `Top valorização nos últimos 5 anos em Curitiba (apartamentos): **Centro Cívico** (+25-30%, Linha Verde + retrofit), **Hugo Lange** (+20-25%, gentrificação classe alta), **Capão Raso** (+15-20%, BRT + comércio), **Mossunguê** (+18-22%, lançamentos alto padrão), **Vila Izabel** (+15-18%, próximo ao Batel), **Jardim Botânico** (+12-15%, área verde + UFPR). Bairros tradicionais (Batel, Bigorrilho, Água Verde) mantêm valorização estável de 5-8% ao ano. Para investimento de aluguel, bairros próximos a hospitais (Cajuru, Champagnat) e universidades têm liquidez alta.`,
+    },
+    {
+      question: "Posso visitar apartamentos com a FYMOOB sem compromisso de compra?",
+      answer: `Sim, totalmente sem compromisso. Atendemos visitas pelo WhatsApp **(41) 99978-0517** com agendamento de 24-48h de antecedência. Você pode visitar quantos apartamentos quiser, em quantos bairros quiser, fazer comparativos, pedir simulação de financiamento — tudo gratuito. Bruno (CRECI/PR 24.494) ou um dos corretores acompanha pessoalmente. Não cobramos taxa de visita, comissão de comprador, nem inscrição. Nossa comissão só vem se a venda for fechada (paga pelo proprietário/construtora).`,
+    },
+    {
+      question: "ITBI Curitiba — quanto custa e como pagar?",
+      answer: `O **ITBI** (Imposto de Transmissão de Bens Imóveis) em Curitiba é de **3% do valor venal** (ou do valor de compra, o que for maior). Exemplo: apartamento de R$ 500 mil → ITBI = R$ 15 mil. Pagamento via **boleto único** da Prefeitura de Curitiba antes da escritura. **Desconto de 50%** para o primeiro imóvel residencial financiado pelo SFH (limites SFH atualizados anualmente). Guia obtida no portal da Receita Municipal de Curitiba (curitiba.pr.gov.br/receita) com matrícula e dados da escritura. Pode-se parcelar em alguns casos via decreto especial.`,
+    },
+  ]
+}
+
+/**
  * FAQ pra /empreendimentos (listing) — Fase 19.P0.11.
  */
 export function generateEmpreendimentosListingFAQ(total: number): { question: string; answer: string }[] {

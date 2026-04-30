@@ -214,6 +214,14 @@ export default async function sitemap({
         changeFrequency: "monthly" as const,
         priority: 0.9,
       },
+      // Pillar especializado em apartamentos (Fase 19.P1.1) — query "comprar
+      // apartamento curitiba" tem 10x volume da query generica.
+      {
+        url: `${SITE_URL}/comprar-apartamento-curitiba`,
+        lastModified: now,
+        changeFrequency: "monthly" as const,
+        priority: 0.9,
+      },
       {
         url: `${SITE_URL}/morar-em-curitiba`,
         lastModified: now,
