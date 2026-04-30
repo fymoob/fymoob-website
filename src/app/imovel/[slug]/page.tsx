@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { notFound } from "next/navigation"
+import { notFound, permanentRedirect } from "next/navigation"
 
 import {
   getPropertyBySlug,
@@ -115,6 +115,15 @@ export default async function PropertyPage({ params }: PageProps) {
 
   if (!property) {
     notFound()
+  }
+
+  // Slug mudou no CRM (ex: area atualizada de 211m2 -> 268m2). Slug recebido
+  // ainda funciona porque getPropertyBySlug extrai o codigo do final, mas a
+  // URL nao bate com a canonical. 301 redirect pra slug atual remove a URL
+  // antiga do indice do Google (em vez de mante-la como "alternate
+  // canonical" no GSC report — caso reportado em 21/04/2026).
+  if (property.slug !== slug) {
+    permanentRedirect(`/imovel/${property.slug}`)
   }
 
   const rawSimilar = await getSimilarProperties(property, 4)

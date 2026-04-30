@@ -63,6 +63,14 @@ const nextConfig: NextConfig = {
         hostname: "cdn.sanity.io",
         pathname: "/images/**",
       },
+      // Supabase Storage (Fase 18 — custom blog admin). Buckets:
+      // articles-covers, articles-inline, authors. Allowlist genérica por
+      // sufixo `.supabase.co` cobre qualquer projeto sem hardcode do ref.
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
     ],
   },
   experimental: {
@@ -109,6 +117,59 @@ const nextConfig: NextConfig = {
       {
         source: "/empreendimento/reserva-mirante",
         destination: "/empreendimento/reserva-barigui#torre-mirante",
+        permanent: true,
+      },
+      // ============================================================
+      // Limpeza de query strings legadas em /busca — herdadas do site
+      // antigo (Atomicat/Loft) e backlinks externos. Google Search
+      // Console reporta como "Pagina alternativa com tag canonica
+      // adequada" (8 paginas afetadas em 21/04/2026). Os canonicals ja
+      // apontam pra URL limpa, mas 301 redirect e mais agressivo —
+      // remove a URL antiga do indice em vez de mante-la como
+      // "alternate". Cada `has` matcha quando o param especifico esta
+      // presente. Destination sem query strippa todos os params.
+      // ============================================================
+
+      // Params da API do Loft/CRM expostos por links externos. Codigo
+      // atual NAO usa esses nomes em URLs publicas.
+      {
+        source: "/busca",
+        has: [{ type: "query", key: "SuperDestaqueWeb" }],
+        destination: "/busca",
+        permanent: true,
+      },
+      {
+        source: "/busca",
+        has: [{ type: "query", key: "DestaqueWeb" }],
+        destination: "/busca",
+        permanent: true,
+      },
+      {
+        source: "/busca",
+        has: [{ type: "query", key: "Lancamento" }],
+        destination: "/busca",
+        permanent: true,
+      },
+      // Param `order` (typo) — codigo atual usa `ordenar`. URL antiga
+      // de Atomicat ainda no indice do Google.
+      {
+        source: "/busca",
+        has: [{ type: "query", key: "order" }],
+        destination: "/busca",
+        permanent: true,
+      },
+      // UI state que nao deveria estar em URL crawlavel
+      {
+        source: "/busca",
+        has: [{ type: "query", key: "listagem" }],
+        destination: "/busca",
+        permanent: true,
+      },
+      // Param `min` antigo — codigo atual usa `precoMin`
+      {
+        source: "/busca",
+        has: [{ type: "query", key: "min" }],
+        destination: "/busca",
         permanent: true,
       },
     ];
