@@ -299,7 +299,8 @@ export function ArticleEditorPage({ article, authors, revisions: initialRevision
   return (
     <div>
       {/* Top bar — margens negativas espelham padding do AdminLayout
-          (px-4 mobile, px-6 sm, px-10 lg, px-12 2xl) pra ocupar largura total. */}
+          (px-4 mobile, px-6 sm, px-10 lg, px-12 2xl) pra ocupar largura total
+          do main, criando barra continua de borda a borda. */}
       <div className="-mx-4 -mt-6 border-b border-slate-200 bg-white px-4 py-4 sm:-mx-6 sm:-mt-8 sm:px-6 lg:-mx-10 lg:-mt-10 lg:px-10 2xl:-mx-12 2xl:px-12">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
@@ -409,12 +410,13 @@ export function ArticleEditorPage({ article, authors, revisions: initialRevision
         </div>
       )}
 
-      {/* Split layout: editor + sidebar.
-          Sidebar fixa em 360px desktop ate 1440px, depois 400px em telas wide
-          pra aproveitar espaco extra. py-6 no wrapper do editor da respiro
-          (primeira linha do BlockNote nao cola no topo do card). */}
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px] 2xl:grid-cols-[1fr_400px]">
-        <div className="rounded-2xl border border-slate-200 bg-white py-6 sm:py-8">
+      {/* Split layout: editor + sidebar — Fase 20.UX.
+          Editor ocupa toda largura disponivel (grid 1fr). Sidebar separada
+          em coluna fixa 380-440px (cresce em wide). Gap maior pra dar
+          impressao visual de blocos independentes (como Notion).
+          Editor card tem padding generoso (top + horizontal) pra respiro. */}
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-8 2xl:grid-cols-[minmax(0,1fr)_440px] 2xl:gap-10">
+        <div className="rounded-2xl border border-slate-200 bg-white py-8 sm:py-10 lg:py-12">
           <ArticleEditor
             initialContent={body as FymoobBlock[]}
             onChange={handleBodyChange}
