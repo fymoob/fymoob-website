@@ -33,9 +33,9 @@
 | 16 | Claude Managed Agents | 14 | 0 | 14 | MEDIO PRAZO |
 | 17 | Agentes como Produto SaaS | 14 | 0 | 14 | LONGO PRAZO |
 | 18 | Custom Blog Admin (Sanity Replacement) | 69 | 60 | 9 | EM ANDAMENTO (Sprints 1-4: 18.A-G done; 18.H-I pendentes) |
-| 19 | **SEO Competitive Action Plan** | 43 | 14 | 29 | **PRIORITARIO — P0 ✅ + P1.1 ✅ + P2 (18 tasks) PENDING + P1.16 BLOQUEADO Bruno** |
+| 19 | **SEO Competitive Action Plan** | 43 | 18 | 25 | **PRIORITARIO — P0 ✅ + P1.1 ✅ + P2 Sessoes A/B/C ✅ + Sessoes D/E PENDING + P1.16 BLOQUEADO Bruno** |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **556** | **366** | **190** | **66%** |
+| | **TOTAL** | **556** | **370** | **186** | **66%** |
 
 **Sessao 2026-04-17:** 25 CRITICAL/HIGH de seguranca/SEO fixados em 5 commits (`0d7b19f`, `50b1f86`, `7bb5f5a`, `19154ec`, `6b13794`). 4 rounds de auditoria convergiram — round 4 retornou 0 CRITICAL. Acoes externas pre-cutover listadas em Fase 7.8. HIGH/MEDIUM remanescentes (hardening pos-cutover, nao blockers) em Fase 7.10.
 
@@ -3648,9 +3648,11 @@ mais 5 paginas/itens com gaps:
   - Internal links de /apartamentos-curitiba (LandingSEOContent card destaque) e /comprar-imovel-curitiba (relatedLinks topo)
   - Estimativa: top 5 query "comprar apartamento curitiba" em 4-8 meses
 
-- [ ] **19.14** FAQ generica em `/blog/[slug]` (15 posts atuais sem FAQ schema)
-  - Funcao `generateBlogPostFAQ(post)` que adapta Q&A por categoria do post
-  - Nao implementado nesse round porque requer analise do conteudo de cada post
+- [x] **19.14** FAQ generica em `/blog/[slug]` (15 posts atuais sem FAQ schema)
+  - **Resolvido em Sessao C (Fase 19.P2.C.3):** abordagem por
+    frontmatter MDX (`faq[]` em `BlogFrontmatter`) renderizada pelo
+    DynamicFAQ + FAQPage schema. 15/15 posts cobertos com Q&A
+    especificas por tema (5-7 cada).
 
 - [ ] **19.15** OG images dedicadas pra cada pillar (substituir /opengraph-image global)
   - Gerar 3 imagens 1200x630 com tema do pillar (comprar/morar/alugar)
@@ -3763,12 +3765,20 @@ mais 5 paginas/itens com gaps:
     ```
   - Eligibilidade pra rich snippet com faixa de preco no SERP
 
-#### Sessao C — Blog posts completos [13-18h, +60-120 cliques/mes]
+#### Sessao C — Blog posts completos [CONCLUIDA 01/05/2026]
 
 > **15 posts** × 3 frentes (title, description, FAQ). Maior ROI desde
 > `/blog/financiamento-...` tem 790 imp/mes com so 1 clique.
+>
+> **Resultado:** todos os 15 posts com FAQ schema (5-7 Q&A cada), 2 titles
+> reescritos (como-financiar, documentos), 7 descriptions ajustadas pra
+> 130-160 chars. `title.absolute` em `[slug]/page.tsx` evita double-brand
+> no template global. DynamicFAQ visual renderiza Q&A em posts com
+> `faq[]` no frontmatter (>=2 perguntas), schema FAQPage emitido junto.
+>
+> Commit: feat(seo): Sessao C — blog posts titles + descriptions + FAQ schema
 
-- [ ] **19.P2.C.1** Reescrever 15 titles pra ≤60 chars
+- [x] **19.P2.C.1** Reescrever 15 titles pra ≤60 chars
   - **Arquivos:** `content/blog/*.mdx` (frontmatter `title`)
   - **Padrao novo (use exemplos como referencia):**
     - Atual: `Financiamento Imobiliário Caixa, Itaú e Bradesco em 2026: Comparativo Completo de Taxas, Prazos | FYMOOB Imobiliária` (121 chars)
@@ -3791,15 +3801,21 @@ mais 5 paginas/itens com gaps:
     13. ecoville-vs-bigorrilho-curitiba (87)
     14. documentos-comprar-imovel-curitiba (96)
     15. como-financiar-minha-casa-minha-vida (121 — CRITICO)
+  - **Aplicado:** 2 titles reescritos (`como-financiar` 86→47 chars,
+    `documentos-comprar-imovel-curitiba` 61→43 chars). Demais 13 ja
+    estavam abaixo de 60 chars apos enriquecimento de Sessao A.
 
-- [ ] **19.P2.C.2** Reescrever 15 descriptions pra 130-160 chars
+- [x] **19.P2.C.2** Reescrever 15 descriptions pra 130-160 chars
   - **Padrao:** `{Hook com numero/dado especifico}. {Detalhe extra}. FYMOOB CRECI J 9420.` ou similar
   - **6 posts hoje com descriptions > 165 chars** (truncadas):
     custo-de-vida-curitiba (190), melhores-bairros-familias-curitiba (193),
     imovel-planta-vs-pronto-curitiba (219), apartamento-ou-casa-curitiba (176),
     documentos-comprar-imovel-curitiba (187), melhores-bairros-curitiba-2026 (168)
+  - **Aplicado:** 7 descriptions reescritas pra 130-160 chars com hook
+    factual + dado especifico (FipeZap, IBGE, INCC, etc). Demais ja
+    estavam dentro do range.
 
-- [ ] **19.P2.C.3** Adicionar FAQ schema a cada blog post (5-7 Q&A por post)
+- [x] **19.P2.C.3** Adicionar FAQ schema a cada blog post (5-7 Q&A por post)
   - **Opcao 1:** funcao `generateBlogPostFAQ(post)` em `src/lib/seo.ts`
     com Q&A hardcoded por slug (mais controle mas maior carga)
   - **Opcao 2:** adicionar `faq` no frontmatter MDX e renderizar via DynamicFAQ
@@ -3808,6 +3824,15 @@ mais 5 paginas/itens com gaps:
   - **Q&A por post:** 5-7 perguntas relevantes ao tema (ex: financiamento →
     `Quanto preciso de entrada?`, `MCMV serve em Curitiba?`, `Itau ou Caixa?`)
   - **Visivel + schema:** componente `DynamicFAQ` ja gera FAQPage schema
+  - **Aplicado:**
+    1. `BlogFrontmatter.faq?` adicionado em `src/types/blog.ts`
+    2. `src/app/blog/[slug]/page.tsx` le `post.faq` (frontmatter MDX) e
+       gera FAQPage schema via `generateFAQPageSchema()`
+    3. `DynamicFAQ` renderiza Q&A visiveis (>=2 perguntas)
+    4. `title.absolute` `${post.title} | FYMOOB` evita double-brand
+    5. `scripts/add-blog-faqs.mjs` (helper batch) atualizou 15/15 posts
+       em 1 comando — Q&A redigidas com base em conteudo + dados externos
+       citados nos posts (FipeZap, IBGE, NBR, STJ, MCMV abril/2026, etc)
 
 #### Sessao D — /aluguel + guias + polish [4-6h, +15-40 cliques/mes]
 

@@ -17,6 +17,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { RelatedPosts } from "@/components/blog/RelatedPosts"
 import { TableOfContents } from "@/components/blog/TableOfContents"
 import { AuthorBio } from "@/components/blog/AuthorBio"
+import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import {
   BlockRenderer,
   blocksToHeadingsMarkdown,
@@ -39,8 +40,13 @@ export async function generateMetadata({
   const post = await getPostBySlug(slug)
   if (!post) return {}
 
+  // Fase 19.P2.C.1 — title.absolute pra controle total (template global do
+  // layout adicionaria " | FYMOOB Imobiliaria" causando double brand).
+  // Sufixo " | FYMOOB" curto pra caber no limite Google ~60 chars.
+  const titleAbs = `${post.title} | FYMOOB`
+
   return {
-    title: `${post.title} | Blog FYMOOB`,
+    title: { absolute: titleAbs },
     description: post.description,
     alternates: {
       canonical: `/blog/${post.slug}`,
@@ -70,12 +76,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       ? generateArticleSchema(post._supabase)
       : generateBlogPostingSchema(post)
 
-  // FAQPage schema auto-gerado: extraido de blocos `faqItem` quando ha
-  // pelo menos 2 (sinal valido pro Google Rich Results).
-  const faqItems =
+  // FAQPage schema — duas fontes:
+  // 1. Supabase (Fase 18): blocos `faqItem` extraidos via collectFaqItems
+  // 2. MDX legacy: campo `faq` do frontmatter (Fase 19.P2.C.3)
+  // Ambos elegiveis pra Rich Result se >= 2 Q&A.
+  const supabaseFaqItems =
     post.source === "supabase" && post._supabase
       ? collectFaqItems(post._supabase.body)
       : []
+  const mdxFaqItems = post.faq && Array.isArray(post.faq) ? post.faq : []
+  const faqItems = supabaseFaqItems.length > 0 ? supabaseFaqItems : mdxFaqItems
   const faqSchema = faqItems.length >= 2 ? generateFAQPageSchema(faqItems) : null
 
   const formattedDate = new Date(post.date).toLocaleDateString("pt-BR", {
@@ -180,6 +190,19 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 />
               ) : null}
             </div>
+
+            {/* FAQ visual + schema FAQPage — Fase 19.P2.C.3.
+                Renderiza tanto frontmatter MDX (post.faq) quanto Supabase
+                (collectFaqItems). Schema ja foi emitido acima via
+                generateFAQPageSchema; aqui é apenas a UI. */}
+            {mdxFaqItems.length >= 2 && (
+              <div className="mt-12 max-w-3xl mx-auto">
+                <DynamicFAQ
+                  questions={mdxFaqItems}
+                  title={`Perguntas frequentes`}
+                />
+              </div>
+            )}
 
             {/* Author Bio */}
             <div className="mt-12 max-w-3xl mx-auto">

@@ -7,6 +7,12 @@ export interface BlogFrontmatter {
   author: string
   image: string
   tags: string[]
+  /**
+   * FAQ Q&A schema — Fase 19.P2.C.3. Adicionado no frontmatter dos posts
+   * MDX legacy pra eligibilidade de rich result FAQPage no Google. Posts
+   * Supabase usam blocos `faqItem` via collectFaqItems.
+   */
+  faq?: Array<{ question: string; answer: string }>
 }
 
 export interface BlogPost extends BlogFrontmatter {
