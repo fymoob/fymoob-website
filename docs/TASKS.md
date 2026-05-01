@@ -33,9 +33,9 @@
 | 16 | Claude Managed Agents | 14 | 0 | 14 | MEDIO PRAZO |
 | 17 | Agentes como Produto SaaS | 14 | 0 | 14 | LONGO PRAZO |
 | 18 | Custom Blog Admin (Sanity Replacement) | 69 | 60 | 9 | EM ANDAMENTO (Sprints 1-4: 18.A-G done; 18.H-I pendentes) |
-| 19 | **SEO Competitive Action Plan** | 25 | 14 | 11 | **PRIORITARIO — P0 (13/13) ✅ + P1.1 ✅ + P1.16 BLOQUEADO Bruno** |
+| 19 | **SEO Competitive Action Plan** | 43 | 14 | 29 | **PRIORITARIO — P0 ✅ + P1.1 ✅ + P2 (18 tasks) PENDING + P1.16 BLOQUEADO Bruno** |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **538** | **366** | **172** | **68%** |
+| | **TOTAL** | **556** | **366** | **190** | **66%** |
 
 **Sessao 2026-04-17:** 25 CRITICAL/HIGH de seguranca/SEO fixados em 5 commits (`0d7b19f`, `50b1f86`, `7bb5f5a`, `19154ec`, `6b13794`). 4 rounds de auditoria convergiram — round 4 retornou 0 CRITICAL. Acoes externas pre-cutover listadas em Fase 7.8. HIGH/MEDIUM remanescentes (hardening pos-cutover, nao blockers) em Fase 7.10.
 
@@ -3655,6 +3655,236 @@ mais 5 paginas/itens com gaps:
 - [ ] **19.15** OG images dedicadas pra cada pillar (substituir /opengraph-image global)
   - Gerar 3 imagens 1200x630 com tema do pillar (comprar/morar/alugar)
   - Salvar em /public/og/ e referenciar no metadata
+
+### Fase 19.P2 — Coverage SEO 588 paginas [PRIORITARIO — 30/04/2026]
+
+> **Origem:** audit completo de 588 paginas reais via
+> `scripts/seo-gaps-audit.py --all` revelou que **95% das paginas tem
+> pelo menos 1 gap critico**. Documentado em
+> [docs/seo-reports/2026-04-30-page-gaps-audit.md](seo-reports/2026-04-30-page-gaps-audit.md)
+> e [docs/seo-reports/2026-04-30-research-strategy.md](seo-reports/2026-04-30-research-strategy.md).
+>
+> **Numeros chave:**
+> - 248 imoveis com title medio de **94 chars** (Google trunca em 65) +
+>   description medio de **100 chars** (curta demais)
+> - 110 empreendimentos com **thin content** (media 288 palavras, Google
+>   penaliza <500)
+> - 109 bairro+tipo combos com **description < 130 chars** (curta demais)
+> - 36 bairros **sem numero no title**
+> - 15 blog posts **sem FAQ schema** + 14 com title > 65 chars
+> - 10 guias com title > 65 chars
+>
+> **Meta:** subir CTR de 2.81% (atual GSC) pra 4.5%+ em 30 dias = +255-625
+> cliques/mes (vs atuais ~270/mes).
+>
+> **Esforco total:** 37-44h dev (Vinicius) + 4-5h Bruno (aplicar titulos CRM).
+
+#### Sessao A — Fixes via funcoes centralizadas [3-4h, +100-240 cliques/mes]
+
+> **Maior ROI por hora.** 1 commit em `src/lib/seo.ts` afeta **~420 paginas**
+> instantaneamente. Risco baixo (funcoes existentes, so reescrever output).
+
+- [ ] **19.P2.A.1** `generateLandingTitle` adicionar contagem de imoveis pra bairros
+  - **Arquivo:** `src/lib/seo.ts:245`
+  - **Atual:** `function generateLandingTitle(tipo?, bairro?)` — pra bairro
+    retorna `Imóveis no {bairro}, Curitiba`
+  - **Novo:** aceitar `count?: number` opcional, retornar
+    `${count} Imóveis no ${bairro} Curitiba 2026: Apartamentos e Casas` se
+    count for fornecido
+  - **Callers a atualizar:**
+    - `src/app/imoveis/[bairro]/page.tsx` — passar `properties.length` ou
+      `bairro.total` como count
+  - **Validacao:** title final 50-65 chars (verificar nos top 5 bairros maiores)
+  - **Impact:** 36 paginas, +15-30 cliques/mes
+
+- [ ] **19.P2.A.2** `generateLandingDescription` expandir pra 140-160 chars (bairro+tipo + faixas preco + tipo_landing/finalidade)
+  - **Arquivo:** `src/lib/seo.ts:266`
+  - **Problema:** funcao retorna ~100 chars pra essas combinacoes (107 paginas
+    bairro+tipo + 5 faixas preco + 12 tipo_landing/finalidade afetadas)
+  - **Padrao novo (140-160 chars):**
+    - Bairro+tipo: `Encontre {N} {tipo} no {bairro}, Curitiba. Preços de R$ X a R$ Y. Filtros por quartos, área, valor. FYMOOB CRECI J 9420.`
+    - Faixa preco: `{N} imóveis em Curitiba até R$ X. Apartamentos, casas e sobrados em todos os bairros. Filtros por tipo, quartos. FYMOOB.`
+    - Tipo+finalidade: `{N} {tipo} para {venda|aluguel} em Curitiba. {bairros count}+ bairros, preços de R$ X a R$ Y. FYMOOB Imobiliária.`
+  - **Validacao:** description 140-160 chars em todos os casos
+  - **Impact:** 126 paginas, +50-100 cliques/mes
+
+- [ ] **19.P2.A.3** `generatePropertyDescription` expandir pra 130-160 chars
+  - **Arquivo:** `src/lib/seo.ts` (procurar funcao)
+  - **Problema:** 248 imoveis com description media 100 chars
+  - **Padrao novo:**
+    `{Tipo} {N} quartos {area}m² em {bairro}, Curitiba. {suites?} {vagas?} A partir de R$ {preco}. FYMOOB CRECI J 9420.`
+  - **Exemplo:**
+    `Apartamento 2 quartos suíte 56m² em Portão, Curitiba. 1 vaga, lazer completo. R$ 380.000. FYMOOB CRECI J 9420.`
+  - **Impact:** 248 paginas, +30-100 cliques/mes
+
+- [ ] **19.P2.A.4** Pillar `/comprar-apartamento-curitiba` description encurtar 198→160 chars
+  - **Arquivo:** `src/app/comprar-apartamento-curitiba/page.tsx:30` (metadata)
+  - **Atual (198 chars):** `Tudo sobre comprar apartamento em Curitiba em 2026: preço médio do m² (FipeZAP), 20 melhores bairros, financiamento Caixa/Itaú/Bradesco, ITBI, documentação, planta vs pronto, valorização e armadilhas. Por especialistas FYMOOB CRECI J 9420.`
+  - **Novo (160 chars):** `Comprar apartamento em Curitiba 2026: m² médio FipeZAP, 20 bairros, financiamento Caixa/Itaú, ITBI, planta vs pronto. Por especialistas FYMOOB CRECI J 9420.`
+
+#### Sessao B — Empreendimentos completos [8-10h, +60-180 cliques/mes]
+
+> **Gap mais alarmante:** 109 de 110 empreendimentos com thin content (media
+> 288 palavras). Apenas Reserva Barigui + 2-3 outros tem editorial layout.
+
+- [ ] **19.P2.B.1** Component `EmpreendimentoStandardSEOContent`
+  - **Novo arquivo:** `src/components/empreendimento/EmpreendimentoStandardSEOContent.tsx`
+  - **Padrao similar ao** `src/components/seo/LandingSEOContent.tsx`
+  - **Estrutura (800-1200 palavras):**
+    - H2 `Sobre o {nome}` (~150 palavras: descricao expandida + bairro + construtora)
+    - H3 `Localização` (~150 palavras: regiao + POIs proximos + linkando `/imoveis/[bairro]`)
+    - H3 `Tipos de unidades disponíveis` (tabela: tipo, area, quartos, vagas, faixa preco)
+    - H3 `Construtora {construtora}` (~150 palavras: historico + outros empreendimentos da construtora)
+    - H3 `Por que comprar com a FYMOOB` (~150 palavras: CRECI, atendimento, processo)
+  - **Inputs:** `empreendimento`, `properties`, `bairro`, `construtora`
+
+- [ ] **19.P2.B.2** Integrar component no Standard layout do empreendimento
+  - **Arquivo:** `src/app/empreendimento/[slug]/page.tsx`
+  - **Onde inserir:** apos lista de unidades, antes de FAQ
+  - **Renderizar SOMENTE quando `!hasEditorial`** (editorial ja tem conteudo proprio)
+
+- [ ] **19.P2.B.3** Title com numero especifico em todos empreendimentos
+  - **Arquivo:** `src/app/empreendimento/[slug]/page.tsx:47` (generateMetadata)
+  - **Atual:** `${emp.nome} ${bairro} | Plantas, Preços e Apartamentos${construtora} | FYMOOB`
+  - **Novo:** `${emp.nome} ${bairro}: ${total} Apartamentos a Partir de ${precoMin} | FYMOOB`
+  - 102 de 110 empreendimentos (93%) sem numero hoje
+
+- [ ] **19.P2.B.4** AggregateOffer schema em empreendimentos
+  - **Arquivo:** `src/app/empreendimento/[slug]/page.tsx` schema generation
+  - **Adicionar:**
+    ```ts
+    offers: {
+      "@type": "AggregateOffer",
+      lowPrice: precoMin,
+      highPrice: precoMax,
+      priceCurrency: "BRL",
+      offerCount: properties.length,
+    }
+    ```
+  - Eligibilidade pra rich snippet com faixa de preco no SERP
+
+#### Sessao C — Blog posts completos [13-18h, +60-120 cliques/mes]
+
+> **15 posts** × 3 frentes (title, description, FAQ). Maior ROI desde
+> `/blog/financiamento-...` tem 790 imp/mes com so 1 clique.
+
+- [ ] **19.P2.C.1** Reescrever 15 titles pra ≤60 chars
+  - **Arquivos:** `content/blog/*.mdx` (frontmatter `title`)
+  - **Padrao novo (use exemplos como referencia):**
+    - Atual: `Financiamento Imobiliário Caixa, Itaú e Bradesco em 2026: Comparativo Completo de Taxas, Prazos | FYMOOB Imobiliária` (121 chars)
+    - Novo: `Caixa vs Itaú vs Bradesco: Taxas Reais 2026 [Tabela]` (51 chars)
+    - Atual: `Custo de Vida em Curitiba 2026: Guia Completo | FYMOOB Imobiliária` (87 chars)
+    - Novo: `Custo de Vida Curitiba 2026: Quanto Custa Morar (R$ Real)` (58 chars)
+  - **15 posts a reescrever (todos do `content/blog/*.mdx`):**
+    1. checklist-compra-imovel (82 chars)
+    2. financiamento-caixa-itau-bradesco-comparativo (91)
+    3. custo-de-vida-curitiba (87)
+    4. melhores-bairros-curitiba-2026 (88)
+    5. itbi-curitiba-valor-como-pagar (80)
+    6. mercado-imobiliario-curitiba-2026 (93)
+    7. quanto-custa-morar-batel-curitiba (81)
+    8. preco-metro-quadrado-curitiba-bairro (63 — borderline OK)
+    9. melhores-bairros-familias-curitiba (82)
+    10. imovel-planta-vs-pronto-curitiba (85)
+    11. apartamento-ou-casa-curitiba (84)
+    12. batel-vs-agua-verde-curitiba (89)
+    13. ecoville-vs-bigorrilho-curitiba (87)
+    14. documentos-comprar-imovel-curitiba (96)
+    15. como-financiar-minha-casa-minha-vida (121 — CRITICO)
+
+- [ ] **19.P2.C.2** Reescrever 15 descriptions pra 130-160 chars
+  - **Padrao:** `{Hook com numero/dado especifico}. {Detalhe extra}. FYMOOB CRECI J 9420.` ou similar
+  - **6 posts hoje com descriptions > 165 chars** (truncadas):
+    custo-de-vida-curitiba (190), melhores-bairros-familias-curitiba (193),
+    imovel-planta-vs-pronto-curitiba (219), apartamento-ou-casa-curitiba (176),
+    documentos-comprar-imovel-curitiba (187), melhores-bairros-curitiba-2026 (168)
+
+- [ ] **19.P2.C.3** Adicionar FAQ schema a cada blog post (5-7 Q&A por post)
+  - **Opcao 1:** funcao `generateBlogPostFAQ(post)` em `src/lib/seo.ts`
+    com Q&A hardcoded por slug (mais controle mas maior carga)
+  - **Opcao 2:** adicionar `faq` no frontmatter MDX e renderizar via DynamicFAQ
+    (mais flexivel, autor edita direto no MDX)
+  - **Recomendado:** Opcao 2
+  - **Q&A por post:** 5-7 perguntas relevantes ao tema (ex: financiamento →
+    `Quanto preciso de entrada?`, `MCMV serve em Curitiba?`, `Itau ou Caixa?`)
+  - **Visivel + schema:** componente `DynamicFAQ` ja gera FAQPage schema
+
+#### Sessao D — /aluguel + guias + polish [4-6h, +15-40 cliques/mes]
+
+- [ ] **19.P2.D.1** Investigar e fixar /apartamentos-curitiba/aluguel + similares
+  - **Diagnostico:** /apartamentos-curitiba/aluguel (487 palavras), /casas-curitiba/aluguel (428), /terrenos-curitiba/aluguel (397) — thin content + descriptions 73-79 chars
+  - **Causa provavel:** `src/components/search/TipoFinalidadePage.tsx` nao
+    renderiza `LandingSEOContent` quando finalidade=aluguel
+  - **Fix:**
+    1. Verificar logica condicional no component
+    2. Adicionar `LandingSEOContent` adaptada pra aluguel (texto sobre garantias,
+       contratos, IPTU inquilino, perfil de busca de aluguel)
+    3. Atualizar `generateLandingDescription` pra finalidade=aluguel produzir
+       140-160 chars
+
+- [ ] **19.P2.D.2** Encurtar 10 guia titles
+  - **Arquivos:** `src/app/guia/[bairro]/page.tsx` ou frontmatter MDX
+  - **Atual:** todos com 66-71 chars
+  - **Reduzir 5-10 chars** mantendo essencia: "Guia Completo: Morar no {Bairro} | FYMOOB" (~50 chars)
+
+- [ ] **19.P2.D.3** Polish /casas-curitiba title (68→64 chars)
+  - **Arquivo:** `src/app/casas-curitiba/page.tsx:23` ou via `generateLandingTitle`
+
+- [ ] **19.P2.D.4** Verificar 29 URLs com erro de fetch no audit
+  - **Lista:** `/imoveis/juveve`, `/imoveis/portao/casas`, +27 outras
+  - Possivel causa: bairros com 1 imovel so, combos sem catalogo
+  - **Acao:** rodar `curl -I` em cada e verificar se gera 404 real ou 5xx temporario
+  - Se 404 real: remover do sitemap (regenerar com filtro de minimo 2 imoveis)
+  - Script: `python scripts/seo-gaps-audit.py --all` em 7 dias pra revalidar
+
+#### Sessao E — Audit + aplicacao de titulos imoveis CRM (Bruno + Vinicius)
+
+- [ ] **19.P2.E.1** Vinicius gera relatorio de imoveis com title > 65 chars
+  - Filtrar do JSON `docs/seo-reports/page-audit-all.json`:
+    `[p for p in data if p['url'].startswith('/imovel/') and p['title_len'] > 65]`
+  - 219 imoveis afetados
+  - Cruzar com planilha existente `docs/seo/titles-suggestions-2026-04-22.md`
+  - Gerar lista priorizada (codigo CRM + title atual + sugestao 22/04)
+
+- [ ] **19.P2.E.2** Bruno aplica titulos no CRM Loft 1 a 1
+  - Esforco estimado: 4-5h (revisao + aplicacao)
+  - Acessar Loft Vista painel > Imoveis > Edit > campo Titulo
+  - Salvar e proximo
+
+- [ ] **19.P2.E.3** Vinicius dispara cache invalidation pos-aplicacao
+  - `curl -X POST .../api/revalidate -d '{"tag":"imoveis"}' -H 'x-revalidate-secret: ...'`
+  - Verificar GSC depois de 7-14 dias pra confirmar que Google reprocessou
+
+### Fase 19.P2 — Estimativa consolidada
+
+| Sessao | Esforco | Paginas afetadas | Cliques/mes esperados | Prioridade |
+|---|---|---|---|---|
+| A — Funcoes centralizadas | 3-4h dev | 420 | +100-240 | 🔴 P0 |
+| B — Empreendimentos | 8-10h dev | 110 | +60-180 | 🔴 P0 |
+| C — Blog posts | 13-18h dev | 15 | +60-120 | 🟡 P1 |
+| D — /aluguel + guias + polish | 4-6h dev | 25 | +15-40 | 🟡 P1 |
+| E — Imoveis title CRM | 4-5h Bruno + 1h Vinicius | 219 | +20-50 | 🟢 P2 |
+| **TOTAL** | **34-44h** | **~600 paginas** | **+255-625 cliques/mes** | — |
+
+### Fase 19.P2 — Como acompanhar
+
+```bash
+# Re-rodar audit (mensal)
+python scripts/seo-gaps-audit.py --all
+
+# Outputs:
+# - docs/seo-reports/page-audit-all.json (raw)
+# - docs/seo-reports/page-audit-stats.json (aggregated)
+# - docs/seo-reports/all-urls-sitemap.txt (URLs)
+```
+
+**Metricas-alvo (audit em 30 dias):**
+- Paginas com title > 65 chars: 404 (72%) → <50 (10%)
+- Paginas com description < 130 chars: 372 (66%) → <80 (15%)
+- Empreendimentos thin content: 109 (99%) → <30 (27%)
+- Imoveis com description rica: 0 → 248 (100%)
+- CTR medio site: 2.81% → 4.5%+
+- Cliques mensais GSC: ~270 → 600-900
 
 - [ ] **19.16** AggregateRating schema integrado com Google Business Profile (GMN)
   > **BLOQUEADO — aguardando Bruno** (acesso Google Cloud + Place ID FYMOOB)

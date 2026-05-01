@@ -1,0 +1,414 @@
+{
+  "imovel": {
+    "count": 248,
+    "title_too_long": 219,
+    "title_too_short": 1,
+    "desc_too_long": 0,
+    "desc_too_short": 248,
+    "no_faq": 0,
+    "no_realestate": 0,
+    "thin_content": 0,
+    "no_h1_number": 0,
+    "title_no_number": 43,
+    "avg_title_len": 23284,
+    "avg_desc_len": 24699,
+    "avg_words": 189028,
+    "avg_faq": 1470,
+    "samples_long_title": [
+      [
+        "/imovel/apartamento-cabral-curitiba-pr-3-quartos-106.2m2-AP00296",
+        79
+      ],
+      [
+        "/imovel/apartamento-bigorrilho-curitiba-pr-2-quartos-126m2-AP00539",
+        132
+      ],
+      [
+        "/imovel/apartamento-bigorrilho-curitiba-pr-3-quartos-165.85m2-AP00650",
+        98
+      ]
+    ],
+    "samples_thin": [],
+    "samples_short_desc": [
+      [
+        "/imovel/apartamento-cabral-curitiba-pr-3-quartos-106.2m2-AP00296",
+        102
+      ],
+      [
+        "/imovel/apartamento-bigorrilho-curitiba-pr-2-quartos-126m2-AP00539",
+        104
+      ],
+      [
+        "/imovel/apartamento-bigorrilho-curitiba-pr-3-quartos-165.85m2-AP00650",
+        107
+      ]
+    ]
+  },
+  "tipo_landing": {
+    "count": 12,
+    "title_too_long": 1,
+    "title_too_short": 0,
+    "desc_too_long": 0,
+    "desc_too_short": 10,
+    "no_faq": 0,
+    "no_realestate": 0,
+    "thin_content": 4,
+    "no_h1_number": 0,
+    "title_no_number": 11,
+    "avg_title_len": 659,
+    "avg_desc_len": 1129,
+    "avg_words": 19497,
+    "avg_faq": 69,
+    "samples_long_title": [
+      [
+        "/casas-curitiba",
+        68
+      ]
+    ],
+    "samples_thin": [
+      [
+        "/apartamentos-curitiba/aluguel",
+        487
+      ],
+      [
+        "/casas-curitiba/aluguel",
+        428
+      ],
+      [
+        "/sobrados-curitiba/aluguel",
+        401
+      ]
+    ],
+    "samples_short_desc": [
+      [
+        "/casas-curitiba",
+        127
+      ],
+      [
+        "/terrenos-curitiba",
+        128
+      ],
+      [
+        "/apartamentos-curitiba/venda",
+        81
+      ]
+    ]
+  },
+  "bairro": {
+    "count": 36,
+    "title_too_long": 33,
+    "title_too_short": 0,
+    "desc_too_long": 0,
+    "desc_too_short": 0,
+    "no_faq": 0,
+    "no_realestate": 0,
+    "thin_content": 0,
+    "no_h1_number": 0,
+    "title_no_number": 36,
+    "avg_title_len": 2520,
+    "avg_desc_len": 5078,
+    "avg_words": 34876,
+    "avg_faq": 174,
+    "samples_long_title": [
+      [
+        "/imoveis/portao",
+        66
+      ],
+      [
+        "/imoveis/mossungue",
+        69
+      ],
+      [
+        "/imoveis/cidade-industrial",
+        77
+      ]
+    ],
+    "samples_thin": [],
+    "samples_short_desc": []
+  },
+  "bairro_tipo": {
+    "count": 109,
+    "title_too_long": 1,
+    "title_too_short": 0,
+    "desc_too_long": 0,
+    "desc_too_short": 107,
+    "no_faq": 0,
+    "no_realestate": 2,
+    "thin_content": 45,
+    "no_h1_number": 0,
+    "title_no_number": 67,
+    "avg_title_len": 5695,
+    "avg_desc_len": 11711,
+    "avg_words": 60516,
+    "avg_faq": 485,
+    "samples_long_title": [
+      [
+        "/imoveis/campina-do-siqueira/apartamentos",
+        66
+      ]
+    ],
+    "samples_thin": [
+      [
+        "/imoveis/portao/terrenos",
+        432
+      ],
+      [
+        "/imoveis/sitio-cercado/casas",
+        493
+      ],
+      [
+        "/imoveis/tatuquara/apartamentos",
+        442
+      ]
+    ],
+    "samples_short_desc": [
+      [
+        "/imoveis/portao/apartamentos",
+        120
+      ],
+      [
+        "/imoveis/portao/terrenos",
+        115
+      ],
+      [
+        "/imoveis/portao/sobrados",
+        117
+      ]
+    ]
+  },
+  "preco": {
+    "count": 5,
+    "title_too_long": 1,
+    "title_too_short": 0,
+    "desc_too_long": 0,
+    "desc_too_short": 5,
+    "no_faq": 0,
+    "no_realestate": 0,
+    "thin_content": 0,
+    "no_h1_number": 0,
+    "title_no_number": 0,
+    "avg_title_len": 305,
+    "avg_desc_len": 537,
+    "avg_words": 10282,
+    "avg_faq": 25,
+    "samples_long_title": [
+      [
+        "/imoveis/preco/500-mil-a-1-milhao",
+        68
+      ]
+    ],
+    "samples_thin": [],
+    "samples_short_desc": [
+      [
+        "/imoveis/preco/ate-300-mil",
+        119
+      ],
+      [
+        "/imoveis/preco/300-a-500-mil",
+        116
+      ],
+      [
+        "/imoveis/preco/500-mil-a-1-milhao",
+        95
+      ]
+    ]
+  },
+  "pillar": {
+    "count": 4,
+    "title_too_long": 0,
+    "title_too_short": 0,
+    "desc_too_long": 1,
+    "desc_too_short": 0,
+    "no_faq": 0,
+    "no_realestate": 4,
+    "thin_content": 0,
+    "no_h1_number": 0,
+    "title_no_number": 0,
+    "avg_title_len": 226,
+    "avg_desc_len": 617,
+    "avg_words": 11005,
+    "avg_faq": 30,
+    "samples_long_title": [],
+    "samples_thin": [],
+    "samples_short_desc": []
+  },
+  "outros": {
+    "count": 8,
+    "title_too_long": 1,
+    "title_too_short": 0,
+    "desc_too_long": 3,
+    "desc_too_short": 0,
+    "no_faq": 5,
+    "no_realestate": 7,
+    "thin_content": 2,
+    "no_h1_number": 0,
+    "title_no_number": 7,
+    "avg_title_len": 370,
+    "avg_desc_len": 1243,
+    "avg_words": 7396,
+    "avg_faq": 34,
+    "samples_long_title": [
+      [
+        "/blog",
+        68
+      ]
+    ],
+    "samples_thin": [
+      [
+        "/contato",
+        302
+      ],
+      [
+        "/politica-editorial",
+        452
+      ]
+    ],
+    "samples_short_desc": []
+  },
+  "blog_post": {
+    "count": 15,
+    "title_too_long": 14,
+    "title_too_short": 0,
+    "desc_too_long": 6,
+    "desc_too_short": 0,
+    "no_faq": 15,
+    "no_realestate": 15,
+    "thin_content": 0,
+    "no_h1_number": 0,
+    "title_no_number": 0,
+    "avg_title_len": 1309,
+    "avg_desc_len": 2498,
+    "avg_words": 50727,
+    "avg_faq": 0,
+    "samples_long_title": [
+      [
+        "/blog/apartamento-ou-casa-curitiba",
+        84
+      ],
+      [
+        "/blog/batel-vs-agua-verde-curitiba",
+        89
+      ],
+      [
+        "/blog/checklist-compra-imovel",
+        82
+      ]
+    ],
+    "samples_thin": [],
+    "samples_short_desc": []
+  },
+  "guia": {
+    "count": 10,
+    "title_too_long": 10,
+    "title_too_short": 0,
+    "desc_too_long": 0,
+    "desc_too_short": 0,
+    "no_faq": 0,
+    "no_realestate": 0,
+    "thin_content": 0,
+    "no_h1_number": 0,
+    "title_no_number": 0,
+    "avg_title_len": 692,
+    "avg_desc_len": 1500,
+    "avg_words": 14844,
+    "avg_faq": 43,
+    "samples_long_title": [
+      [
+        "/guia/agua-verde",
+        71
+      ],
+      [
+        "/guia/batel",
+        66
+      ],
+      [
+        "/guia/bigorrilho",
+        71
+      ]
+    ],
+    "samples_thin": [],
+    "samples_short_desc": []
+  },
+  "listing": {
+    "count": 2,
+    "title_too_long": 1,
+    "title_too_short": 0,
+    "desc_too_long": 0,
+    "desc_too_short": 0,
+    "no_faq": 0,
+    "no_realestate": 1,
+    "thin_content": 0,
+    "no_h1_number": 0,
+    "title_no_number": 2,
+    "avg_title_len": 122,
+    "avg_desc_len": 298,
+    "avg_words": 3848,
+    "avg_faq": 12,
+    "samples_long_title": [
+      [
+        "/lancamentos",
+        73
+      ]
+    ],
+    "samples_thin": [],
+    "samples_short_desc": []
+  },
+  "empreendimento": {
+    "count": 110,
+    "title_too_long": 72,
+    "title_too_short": 0,
+    "desc_too_long": 3,
+    "desc_too_short": 3,
+    "no_faq": 0,
+    "no_realestate": 0,
+    "thin_content": 109,
+    "no_h1_number": 0,
+    "title_no_number": 102,
+    "avg_title_len": 7715,
+    "avg_desc_len": 16006,
+    "avg_words": 31719,
+    "avg_faq": 460,
+    "samples_long_title": [
+      [
+        "/empreendimento/reserva-barigui",
+        75
+      ],
+      [
+        "/empreendimento/chateau-latour",
+        71
+      ],
+      [
+        "/empreendimento/shopping-sports",
+        69
+      ]
+    ],
+    "samples_thin": [
+      [
+        "/empreendimento/le-monde",
+        363
+      ],
+      [
+        "/empreendimento/bloma",
+        375
+      ],
+      [
+        "/empreendimento/chateau-latour",
+        374
+      ]
+    ],
+    "samples_short_desc": [
+      [
+        "/empreendimento/easy",
+        127
+      ],
+      [
+        "/empreendimento/cesarea",
+        128
+      ],
+      [
+        "/empreendimento/lange",
+        127
+      ]
+    ]
+  }
+}
