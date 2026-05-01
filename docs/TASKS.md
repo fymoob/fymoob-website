@@ -34,9 +34,9 @@
 | 17 | Agentes como Produto SaaS | 14 | 0 | 14 | LONGO PRAZO |
 | 18 | Custom Blog Admin (Sanity Replacement) | 69 | 60 | 9 | EM ANDAMENTO (Sprints 1-4: 18.A-G done; 18.H-I pendentes) |
 | 19 | **SEO Competitive Action Plan** | 56 | 18 | 38 | **PRIORITARIO — P0 ✅ + P1.1 ✅ + P2 A/B/C ✅ + Sessao Q (7 tasks queries-alvo) + Re-Index (6) + D/E PENDING + P1.16 BLOQUEADO Bruno** |
-| 20 | **Code Quality & Tech Debt** | 35 | 0 | 35 | **PRIORITARIO — Wave 1 (12 quick wins ~6h) + W2 (7 refactors ~10h) + W3 (7 strategic ~20h) + W4 (8 backlog) — audit 01/05** |
+| 20 | **Code Quality & Tech Debt** | 35 | 23 | 12 | **EM ANDAMENTO — W1 ✅ (10 done, 2 skipped justificados) + W2 ✅ (7 done) + W3.2 ✅ + W3.3 ✅ + W4.7 ✅. Deferidos: W3.1 split seo.ts, W3.4 tests, W3.5/6/7 UI, W4 restantes** |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **604** | **370** | **234** | **61%** |
+| | **TOTAL** | **604** | **393** | **211** | **65%** |
 
 **Sessao 2026-04-17:** 25 CRITICAL/HIGH de seguranca/SEO fixados em 5 commits (`0d7b19f`, `50b1f86`, `7bb5f5a`, `19154ec`, `6b13794`). 4 rounds de auditoria convergiram — round 4 retornou 0 CRITICAL. Acoes externas pre-cutover listadas em Fase 7.8. HIGH/MEDIUM remanescentes (hardening pos-cutover, nao blockers) em Fase 7.10.
 
@@ -4213,103 +4213,103 @@ python scripts/seo-gaps-audit.py --all
 
 ### Fase 20.W1 — Quick wins [~6h dev, alto ROI]
 
-- [ ] **20.W1.1** Extract `SITE_URL` constant (11 arquivos duplicam)
+- [x] **20.W1.1** Extract `SITE_URL` constant (11 arquivos duplicam)
   - Criar `src/lib/constants.ts` com `export const SITE_URL`
   - Substituir em 11 paths
   - Esforco: S (30min)
 
-- [ ] **20.W1.2** Extract `formatCompactCurrency` duplicado
+- [x] **20.W1.2** Extract `formatCompactCurrency` duplicado
   - Consolidar em `src/lib/utils.ts`
   - Paths: `PriceFilter.tsx:23-50`, `useSearchBarController.ts:75-93`
   - Esforco: S (15min)
 
-- [ ] **20.W1.3** Fix `formatPrice` redefinido localmente
+- [x] **20.W1.3** Fix `formatPrice` redefinido localmente
   - Path: `src/app/imoveis/[bairro]/page.tsx:103`
   - Importar de `@/lib/utils`, remover redefinicao
   - Esforco: S (5min)
 
-- [ ] **20.W1.4** Remover `cache: "no-store"` em `/api/search/facets`
+- [x] **20.W1.4** Remover `cache: "no-store"` em `/api/search/facets`
   - Path: `src/components/search/useSearchBarController.ts:247`
   - Impacto: +80-120ms LCP economizado/sessao
   - Esforco: S (5min)
 
-- [ ] **20.W1.5** Parallelizar `generateStaticParams` em faixa preco
+- [x] **20.W1.5** Parallelizar `generateStaticParams` em faixa preco
   - Path: `src/app/imoveis/preco/[faixa]/page.tsx:82-94`
   - Impacto: -2s build time (Promise.all em vez de sequencial)
   - Esforco: S (30min)
 
-- [ ] **20.W1.6** Loft API sandbox toggle via env var
+- [x] **20.W1.6** Loft API sandbox toggle via env var
   - Path: `src/services/loft.ts:20` — endpoint hardcoded
   - Adicionar `LOFT_API_BASE_URL` em `.env.example`
   - Esforco: S (30min)
 
-- [ ] **20.W1.7** `FavoriteButton` localStorage defer
+- [~] **20.W1.7** `FavoriteButton` localStorage defer
   - Path: `src/components/property/card/FavoriteButton.tsx`
   - Wrap leitura em `requestIdleCallback`
   - Impacto: -50-100ms TBT em pages com 24+ cards
   - Esforco: S (30min)
 
-- [ ] **20.W1.8** `PropertyMap` CSS preload
+- [x] **20.W1.8** `PropertyMap` CSS preload
   - Adicionar `<link rel="preload">` no layout `/imovel/[slug]`
   - Impacto: CLS -0.05 quando mapa entra viewport
   - Esforco: S (30min)
 
-- [ ] **20.W1.9** Reduzir `limit: 1000` → `limit: 500` em landings
+- [x] **20.W1.9** Reduzir `limit: 1000` → `limit: 500` em landings
   - Paths: `apartamentos-curitiba`, `casas`, `sobrados`, `terrenos`, `imoveis/[bairro]`
   - Catalogo total ~248 imoveis — 1000 e overfetch
   - Impacto: -100-150ms CPU + -80KB cache size por pagina
   - Esforco: S (1h total)
 
-- [ ] **20.W1.10** Magic numbers: SCORING_WEIGHTS + MAX_META_DESCRIPTION_LENGTH
+- [x] **20.W1.10** Magic numbers: SCORING_WEIGHTS + MAX_META_DESCRIPTION_LENGTH
   - Paths: `property-relevance.ts:21-150` (15 magic numbers), `seo.ts:355,484` (`160`)
   - Extract em `constants.ts` com nomes claros
   - Esforco: S (1h)
 
-- [ ] **20.W1.11** Remove `getAllBairros` redundante na home
+- [~] **20.W1.11** Remove `getAllBairros` redundante na home
   - Path: `src/app/page.tsx:76`
   - Home chama getAllBairros() E getAllBairrosByCidade() — usar so segunda
   - Esforco: S (10min)
 
-- [ ] **20.W1.12** Remove redundant comments (CLAUDE.md violation)
+- [x] **20.W1.12** Remove redundant comments (CLAUDE.md violation)
   - Paths: `src/lib/utils.ts:94-95`, `PriceFilter.tsx:6-8`
   - Comentarios que repetem nome da funcao (proibido)
   - Esforco: S (15min)
 
 ### Fase 20.W2 — Refactors medios [~10h dev]
 
-- [ ] **20.W2.1** Landing pages factory pattern (eliminar copy-paste)
+- [x] **20.W2.1** Landing pages factory pattern (eliminar copy-paste)
   - 4 arquivos com 42 linhas identicas: `apartamentos/[finalidade]`, `casas`, `sobrados`, `terrenos`
   - Criar `src/app/_templates/tipo-finalidade-page.ts` factory
   - Esforco: M (2-3h)
 
-- [ ] **20.W2.2** Services wrapper pra fetch client (eliminar layer leaks)
+- [x] **20.W2.2** Services wrapper pra fetch client (eliminar layer leaks)
   - Paths offenders: `useSearchBarController.ts:233`, `ContactForm.tsx:88`, `ContactSidebar.tsx`
   - Criar `src/services/search-client.ts` com `getFacets()`, `submitLead()`
   - Esforco: M (2-3h)
 
-- [ ] **20.W2.3** `mapRawToProperty`: extract `determineFinalidade`
+- [x] **20.W2.3** `mapRawToProperty`: extract `determineFinalidade`
   - Path: `src/services/loft.ts:311-326` — chain de 6 if/else
   - Extrair em funcao nomeada com switch claro
   - Esforco: M (1h)
 
-- [ ] **20.W2.4** Type safety: `Record<string, unknown>` → tipos reais
+- [x] **20.W2.4** Type safety: `Record<string, unknown>` → tipos reais
   - Path: `src/services/loft.ts:253-263` (8 ocorrencias)
   - Estender `LoftPropertyRaw` com `LoftCharacteristics` type
   - Remover assertions duplas
   - Esforco: M (2h)
 
-- [ ] **20.W2.5** `PropertyType` validation com whitelist
+- [x] **20.W2.5** `PropertyType` validation com whitelist
   - Path: `src/services/loft.ts:354`
   - Criar `parsePropertyType(cat: unknown): PropertyType` com whitelist
   - Esforco: M (1h)
 
-- [ ] **20.W2.6** Revalidate uniformizar 3600s (1h)
+- [x] **20.W2.6** Revalidate uniformizar 3600s (1h)
   - Path: `src/services/loft.ts:26` — `REVALIDATE_SECONDS = 900`
   - Mudar pra 3600 (Bruno nao muda imoveis a cada 15min)
   - Impacto: -2.16K writes ISR/mes (~R$10-20 economia infra)
   - Esforco: S (5min)
 
-- [ ] **20.W2.7** Extract `CARAC_LABELS` pra `/types`
+- [x] **20.W2.7** Extract `CARAC_LABELS` pra `/types`
   - Path: `src/services/loft.ts:10-60`
   - Mover pra `src/types/characteristics.ts`
   - Esforco: S (30min)
@@ -4322,7 +4322,7 @@ python scripts/seo-gaps-audit.py --all
   - Cuidado: ~50+ imports em todo codebase — fazer em 1 PR unico
   - Esforco: L (4-6h)
 
-- [ ] **20.W3.2** [CRITICO] Admin isolation security audit
+- [x] **20.W3.2** [CRITICO] Admin isolation security audit
   - Paths: `src/app/admin/*`, `src/app/api/admin/*`
   - Auditar cada `_actions.ts` — confirmar `await auth()` + redirect/throw
   - Testar manualmente: requisicao sem cookie → deve 403
@@ -4330,7 +4330,7 @@ python scripts/seo-gaps-audit.py --all
   - Risco se ignorado: vazamento de dados (CRUD blog/autor expostos)
   - Esforco: M (2-3h)
 
-- [ ] **20.W3.3** Domain logic mover de `/lib` pra `/services`
+- [x] **20.W3.3** Domain logic mover de `/lib` pra `/services`
   - `lib/property-relevance.ts` → `services/property/relevance.ts`
   - `lib/property-price.ts` → `services/property/price.ts`
   - Logica de FAQ dinamica em seo.ts → `services/seo/faq.ts`
@@ -4370,7 +4370,7 @@ python scripts/seo-gaps-audit.py --all
 - [ ] **20.W4.4** Test coverage geral (Vitest + cobertura critica)
 - [ ] **20.W4.5** `HomeCarousel` server shuffle
 - [ ] **20.W4.6** `DeferredGA` singleton pattern
-- [ ] **20.W4.7** `generatePropertySlug` dead code check
+- [x] **20.W4.7** `generatePropertySlug` dead code check
 - [ ] **20.W4.8** Fix `any` em 4 arquivos (layout, BedroomsFilter, AdvancedFields, PropertyGallery)
 
 ### Fase 20 — Estimativa pos-implementacao
