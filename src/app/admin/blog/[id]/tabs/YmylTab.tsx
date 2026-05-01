@@ -118,7 +118,7 @@ function Field({
         {label}
       </span>
       {children}
-      {hint && <span className="mt-1 block text-[10px] text-slate-400 dark:text-slate-500">{hint}</span>}
+      {hint && <span className="mt-1 block text-xs leading-relaxed text-slate-500 dark:text-slate-400">{hint}</span>}
     </label>
   )
 }

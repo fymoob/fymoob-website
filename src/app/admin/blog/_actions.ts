@@ -354,6 +354,40 @@ export async function restoreAction(id: string): Promise<ActionResult> {
 }
 
 // ───────────────────────────────────────────────────────────────────
+// DELETE — hard delete. Apaga article + dependents (CASCADE no schema).
+// Usado pelo quick action na listagem com modal de confirmacao.
+// ───────────────────────────────────────────────────────────────────
+
+export async function deleteAction(id: string): Promise<ActionResult> {
+  await requireAdmin()
+  if (!id) return { ok: false, message: "ID ausente." }
+  const sb = getSupabaseAdmin()
+
+  // Le o slug antes de deletar pra revalidar o post publico se necessario.
+  const { data: current } = await sb
+    .from("articles")
+    .select("slug, status")
+    .eq("id", id)
+    .maybeSingle()
+
+  const { error } = await sb.from("articles").delete().eq("id", id)
+  if (error) return { ok: false, message: error.message }
+
+  revalidatePath("/admin/blog")
+  revalidateTag("blog", { expire: 0 })
+
+  // Se artigo era publicado, revalida pagina publica pra cair em 404.
+  if (current?.status === "published" && current.slug) {
+    revalidateTag(`blog:${current.slug}`, { expire: 0 })
+    revalidatePath(`/blog/${current.slug}`)
+    revalidatePath("/blog")
+    revalidatePath("/sitemap.xml")
+  }
+
+  return { ok: true, message: "Artigo excluído." }
+}
+
+// ───────────────────────────────────────────────────────────────────
 // DUPLICATE
 // ───────────────────────────────────────────────────────────────────
 

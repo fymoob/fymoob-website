@@ -9,6 +9,7 @@ import { listAuthors } from "@/services/articles"
 import type { ArticleStatus } from "@/lib/schemas/article"
 import { StatusBadge } from "@/components/admin/StatusBadge"
 import { CreateDraftButton } from "./CreateDraftButton"
+import { DeleteArticleButton } from "./DeleteArticleButton"
 
 export const metadata: Metadata = {
   title: "Artigos",
@@ -204,6 +205,7 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
                 <th className="px-4 py-3 text-left font-semibold">Status</th>
                 <th className="px-4 py-3 text-left font-semibold">Atualizado</th>
                 <th className="px-4 py-3 text-right font-semibold">Palavras</th>
+                <th className="px-4 py-3 text-right font-semibold sr-only">Ações</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -255,6 +257,9 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
                   </td>
                   <td className="px-4 py-3 text-right tabular-nums text-xs text-slate-500 dark:text-slate-400">
                     {a.word_count ?? 0}
+                  </td>
+                  <td className="px-2 py-3 text-right">
+                    <DeleteArticleButton articleId={a.id} articleTitle={a.title} />
                   </td>
                 </tr>
               ))}

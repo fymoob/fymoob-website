@@ -30,6 +30,7 @@ import "@blocknote/mantine/style.css"
 import { fymoobSchema, type FymoobBlock } from "./article-editor-schema"
 import { buildSlashMenuItems } from "./article-editor-slash-menu"
 import { uploadInlineImageAction } from "@/app/admin/blog/_editor-actions"
+import { useAdminTheme } from "@/app/admin/AdminThemeProvider"
 
 interface ArticleEditorProps {
   /** Snapshot inicial (BlockNote JSON). Undefined cria editor vazio. */
@@ -106,13 +107,15 @@ export function ArticleEditor({
     [editor]
   )
 
+  const { theme } = useAdminTheme()
+
   return (
     <div className="article-editor">
       <BlockNoteView
         editor={editor}
         editable={editable}
         slashMenu={false}
-        theme="light"
+        theme={theme}
       >
         <SuggestionMenuController {...slashMenuConfig} />
       </BlockNoteView>
