@@ -29,17 +29,19 @@ URLs essa via sozinha levaria 36+ dias. Combinar 4 abordagens:
 
 ---
 
-## Tier 1 — URGENTE (15 blog posts)
+## Tier 1 — URGENTE (17 URLs: 15 blog + 2 landings estratégicas)
 
-> **Maior delta de conteúdo** (FAQ schema novo + title + description).
+> **Maior delta de conteúdo** (FAQ schema novo + title + description +
+> 2 landings principais com Sessão A/Q.bonus).
 > **Ação:** GSC > URL Inspection > Request Indexing — 1 a 1.
 
 ### Progresso
 
-- ✅ **Dia 1 (01/05/2026):** 6 URLs indexadas, cota diaria GSC excedida
-- 🔄 **Dia 2 (02/05/2026):** continuar com 9 URLs restantes
+- ✅ **Dia 1 (01/05/2026):** 10 URLs indexadas
+- 🔄 **Dia 2 (02/05/2026):** continuar com 7 URLs restantes
+- 📊 Status: **10/17 (59%)**
 
-### ✅ Indexadas Dia 1 (01/05/2026)
+### ✅ Indexadas Dia 1 (01/05/2026, 10 URLs)
 
 | # | URL | Imp/3m (GSC) | Mudança |
 |---|---|---|---|
@@ -49,21 +51,27 @@ URLs essa via sozinha levaria 36+ dias. Combinar 4 abordagens:
 | 4 | https://fymoob.com.br/blog/batel-vs-agua-verde-curitiba | 96 | FAQ |
 | 5 | https://fymoob.com.br/blog/como-financiar-minha-casa-minha-vida | 84 | **TITLE 86→47 chars** + FAQ + desc |
 | 6 | https://fymoob.com.br/blog/mercado-imobiliario-curitiba-2026 | 49 | FAQ |
+| 7 | **https://fymoob.com.br/apartamentos-curitiba** | **2 (só brand)** | **TITLE Sessão A + AggregateOffer + RealEstateAgent + tabela bairros** |
+| 8 | **https://fymoob.com.br/comprar-apartamento-curitiba** | **2 (só brand)** | **PILLAR 4400 pal + HowTo schema 12 steps + 19 links inline + RealEstateAgent** |
+| 9 | https://fymoob.com.br/blog/melhores-bairros-familias-curitiba | 18 | FAQ + desc |
+| 10 | https://fymoob.com.br/blog/checklist-compra-imovel | 11 | FAQ |
 
-### 🔄 Pendentes pra Dia 2 (02/05/2026, manhã) — PRIORIDADE MAXIMA
+> ⚠️ **Bug FAQPage duplicado nos 8 blog posts (commit `8780389` corrige):**
+> Os blog posts indexados HOJE (01/05) ainda tinham 2 schemas FAQPage
+> idênticos no HTML antes do fix. GSC mostrou erro "FAQPage duplicado"
+> em `/blog/financiamento-caixa-itau-bradesco-comparativo`. **Fix
+> deployed em `8780389`** — próximo crawl natural do Google (3-7d) já
+> vai pegar HTML corrigido. **Não precisa re-submeter** essas 8 URLs
+> manualmente. Se quiser acelerar: re-submeter pós-deploy gasta cota
+> mas faz Google revalidar em 24-48h.
+>
+> **As 2 landings (#7, #8) NÃO foram afetadas** — bug era específico
+> do template `/blog/[slug]/page.tsx`.
 
-> 🚨 **2 URLs adicionadas ao topo (07-08):** verificacao GSC 01/05 mostrou
-> que `/apartamentos-curitiba` e `/comprar-apartamento-curitiba` tem
-> APENAS 2 impressoes/28d cada, ambas brand search. Landings principais
-> nao estao rankeando — precisam re-crawl pra Google capturar titles
-> Sessao A + pillar 4400 palavras.
+### 🔄 Pendentes pra Dia 2 (02/05/2026, manhã)
 
 | # | URL | Imp/3m (GSC) | Mudança |
 |---|---|---|---|
-| 7 | **https://fymoob.com.br/apartamentos-curitiba** | **2 (só brand)** | **TITLE Sessão A (237 imóveis) + LandingSEOContent** |
-| 8 | **https://fymoob.com.br/comprar-apartamento-curitiba** | **2 (só brand)** | **PILLAR NOVO 4400 palavras + FAQ 10 Q&A** |
-| 9 | https://fymoob.com.br/blog/melhores-bairros-familias-curitiba | 18 | FAQ + desc |
-| 10 | https://fymoob.com.br/blog/checklist-compra-imovel | 11 | FAQ |
 | 11 | https://fymoob.com.br/blog/itbi-curitiba-valor-como-pagar | 7 | FAQ |
 | 12 | https://fymoob.com.br/blog/imovel-planta-vs-pronto-curitiba | 5 | FAQ + desc |
 | 13 | https://fymoob.com.br/blog/documentos-comprar-imovel-curitiba | 5 | **TITLE 61→43 chars** + FAQ + desc |
@@ -72,9 +80,8 @@ URLs essa via sozinha levaria 36+ dias. Combinar 4 abordagens:
 | 16 | https://fymoob.com.br/blog/apartamento-ou-casa-curitiba | 2 | FAQ + desc |
 | 17 | https://fymoob.com.br/blog/melhores-bairros-curitiba-2026 | 0 | FAQ + desc |
 
-> **Cota observada:** ~6 URLs/dia (abaixo do limite teórico 10-15). Pode
-> ser quota compartilhada entre URL Inspection e Request Indexing, ou
-> rate limiting GSC. Continuar amanhã pelos 9 restantes do Tier 1.
+> **Cota observada:** ~10 URLs/dia (alinhado com limite teórico Google
+> 10-15). Os 7 restantes cabem em 1 dia.
 
 ---
 
@@ -292,12 +299,12 @@ python scripts/seo-gaps-audit.py --all
 
 | Tier | URLs | Capacidade | Tempo | Status |
 |---|---|---|---|---|
-| 0 — Sitemaps | 5 | Imediato | 5 min | ✅ feito 01/05 via MCP |
-| 1 — Blog | 15 | ~6/dia | 3 dias | 🔄 6/15 (Dia 1) |
-| 2 — Empreendimentos top | 40 | ~6/dia | ~7 dias | ⏳ aguardando |
-| 3 — Landings top | 10 | ~6/dia | 2 dias | ⏳ aguardando |
+| 0 — Sitemaps | 4 | Imediato | 5 min | ✅ feito 01/05 via MCP |
+| 1 — Blog + 2 landings | 17 | ~10/dia | 2 dias | 🔄 **10/17 (59%)** |
+| 2 — Empreendimentos top | 40 | ~10/dia | ~4 dias | ⏳ aguardando |
+| 3 — Landings top | 10 | ~10/dia | 1 dia | ⏳ aguardando |
 | 4 — IndexNow batch | 545 | Imediato | 5 min setup | ⏳ opcional |
-| **TOTAL ações manuais** | **70 URLs em GSC** | ~6/dia | **~12 dias úteis** | — |
+| **TOTAL ações manuais** | **67 URLs em GSC** | ~10/dia | **~7 dias úteis** | — |
 
 **ROI estimado:** +220-540 cliques/mês orgânicos em 4-8 semanas (precedente
 real estate SEOPressor +220% CTR pós-rewrite, Schema App +18% CTR pós-FAQ).
