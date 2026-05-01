@@ -97,18 +97,6 @@ export function slugify(text: string): string {
     .replace(/^-+|-+$/g, "")
 }
 
-export function generatePropertySlug(property: {
-  tipo: string
-  bairro: string
-  cidade: string
-  estado: string
-  dormitorios?: number | null
-  areaPrivativa?: number | null
-  slug: string
-}): string {
-  return property.slug
-}
-
 // Retorna apenas o numero formatado. Callers adicionam "m²" quando necessario
 // (evita "m² m²" em variantes de PropertyFeatures que concatenam unit).
 export function formatArea(area: number | null): string {
