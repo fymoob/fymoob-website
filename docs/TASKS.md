@@ -33,9 +33,9 @@
 | 16 | Claude Managed Agents | 14 | 0 | 14 | MEDIO PRAZO |
 | 17 | Agentes como Produto SaaS | 14 | 0 | 14 | LONGO PRAZO |
 | 18 | Custom Blog Admin (Sanity Replacement) | 69 | 60 | 9 | EM ANDAMENTO (Sprints 1-4: 18.A-G done; 18.H-I pendentes) |
-| 19 | **SEO Competitive Action Plan** | 49 | 18 | 31 | **PRIORITARIO — P0 ✅ + P1.1 ✅ + P2 Sessoes A/B/C ✅ + Re-Index (6 tasks) + Sessoes D/E PENDING + P1.16 BLOQUEADO Bruno** |
+| 19 | **SEO Competitive Action Plan** | 56 | 18 | 38 | **PRIORITARIO — P0 ✅ + P1.1 ✅ + P2 A/B/C ✅ + Sessao Q (7 tasks queries-alvo) + Re-Index (6) + D/E PENDING + P1.16 BLOQUEADO Bruno** |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **562** | **370** | **192** | **66%** |
+| | **TOTAL** | **569** | **370** | **199** | **65%** |
 
 **Sessao 2026-04-17:** 25 CRITICAL/HIGH de seguranca/SEO fixados em 5 commits (`0d7b19f`, `50b1f86`, `7bb5f5a`, `19154ec`, `6b13794`). 4 rounds de auditoria convergiram — round 4 retornou 0 CRITICAL. Acoes externas pre-cutover listadas em Fase 7.8. HIGH/MEDIUM remanescentes (hardening pos-cutover, nao blockers) em Fase 7.10.
 
@@ -3833,6 +3833,66 @@ mais 5 paginas/itens com gaps:
     5. `scripts/add-blog-faqs.mjs` (helper batch) atualizou 15/15 posts
        em 1 comando — Q&A redigidas com base em conteudo + dados externos
        citados nos posts (FipeZap, IBGE, NBR, STJ, MCMV abril/2026, etc)
+
+#### Sessao Q — Queries-alvo comerciais top [PRIORITARIO 02-15/05/2026]
+
+> Documento mestre: `docs/seo-reports/2026-05-01-queries-alvo-mapping.md`
+> Achado: FYMOOB tem on-page SUPERIOR a concorrentes regionais top 10
+> (Casa Prates 0 palavras, JBA 200) mas perde por DR/backlinks/idade.
+> Plano: criar paginas faltantes + enriquecer thin content + off-page.
+
+- [ ] **19.P2.Q.1** Criar `/imobiliaria-curitiba` (NOVA, P0, 4-6h)
+  - Captura "imobiliaria em curitiba" (2-5k vol/mes). Top 10 SERP DOMINADO
+    por concorrentes regionais (JBA, Casa Prates, Habitec, Kondor, Casa
+    ao Lado, Tantus, Cibraco). Sem marketplace = espaco real pra entrar.
+  - Estrutura: 1500+ palavras, 8 H2 (sobre, why, bairros, tipos, como
+    funciona, diferenciais, depoimentos, contato)
+  - Schema: `RealEstateAgent` + `LocalBusiness` + `FAQPage` 8 Q&A
+  - Cross-link pra todas as landings tipadas + bairros
+
+- [ ] **19.P2.Q.2** Enriquecer paginas de bairro top (P1, 6h total)
+  - Aumentar editorial de 500 → 1500 palavras nos 5 bairros com mais
+    impressoes GSC: Batel, Bigorrilho, Ecoville, Mossungue, Agua Verde
+  - Adicionar tabela "Preço médio por número de quartos" com dados FipeZAP
+  - Schema `Place` com geocoordinates do bairro
+  - Aplicar em batch via componente `BairroSEOContent` reusavel
+
+- [ ] **19.P2.Q.3** Programmatic landings por numero de quartos (P1, 9-12h)
+  - Templates novos: `/apartamentos-2-quartos-curitiba`,
+    `/apartamentos-3-quartos-curitiba`, `/apartamentos-1-quarto-curitiba`
+  - Conteudo dinamico baseado em stats CRM (media preco, areas, bairros
+    mais comuns)
+  - 1500+ palavras + 8 FAQ + schemas
+  - Capturar "apartamento N quartos curitiba" (1-3k vol/mes cada)
+
+- [ ] **19.P2.Q.4** Programmatic landings por estagio (P1, 6h)
+  - `/apartamentos-novos-curitiba` (vs `/lancamentos` que ja existe — slug
+    otimizado)
+  - `/apartamentos-prontos-curitiba`
+  - `/apartamento-na-planta-curitiba`
+  - Distinguir conteudo: novos = lancamentos + revenda <2 anos; prontos
+    = pos-habite-se; planta = pre-habite-se com cronograma
+
+- [ ] **19.P2.Q.5** [BRUNO] Off-page: backlinks de qualidade (P0)
+  - Pedir 1 backlink/mes minimo de:
+    - Cartorios de Curitiba (parceria institucional)
+    - Construtoras parceiras (link em release de empreendimento)
+    - Blogs locais (gazetadopovo.com.br, bemparana.com.br, tribunapr.com.br)
+    - Diretorios setoriais (CRECI-PR, Sinduscon-PR)
+    - UFPR/PUC-PR (listing imobiliarias parceiras)
+  - DR atual fymoob.com.br: ~5-15. Alvo 6m: 25-35
+
+- [ ] **19.P2.Q.6** [BRUNO] Off-page: local citations (P0)
+  - Reclamar GMN (desbloqueia 19.16 + sinais locais) — JA TASK
+  - Bing Places (5 min)
+  - Apple Maps Connect (5 min)
+  - Foursquare, Yelp, Paginas Amarelas digital
+  - NAP (Name+Address+Phone) consistente em TODAS as plataformas
+
+- [ ] **19.P2.Q.7** [BRUNO] Aumentar catalogo CRM (P1)
+  - Hoje: 248 ativos. Concorrentes regionais medios: 500-2000
+  - Cada imovel = 1 URL indexavel + sinal de relevancia
+  - Meta: +50 imoveis/mes ate atingir 500
 
 #### Sessao Re-Index — Acao manual GSC pos Sessoes A/B/C [01-08/05/2026]
 
