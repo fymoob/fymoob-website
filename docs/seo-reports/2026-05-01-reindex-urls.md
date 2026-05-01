@@ -50,19 +50,27 @@ URLs essa via sozinha levaria 36+ dias. Combinar 4 abordagens:
 | 5 | https://fymoob.com.br/blog/como-financiar-minha-casa-minha-vida | 84 | **TITLE 86→47 chars** + FAQ + desc |
 | 6 | https://fymoob.com.br/blog/mercado-imobiliario-curitiba-2026 | 49 | FAQ |
 
-### 🔄 Pendentes pra Dia 2 (02/05/2026, manhã)
+### 🔄 Pendentes pra Dia 2 (02/05/2026, manhã) — PRIORIDADE MAXIMA
+
+> 🚨 **2 URLs adicionadas ao topo (07-08):** verificacao GSC 01/05 mostrou
+> que `/apartamentos-curitiba` e `/comprar-apartamento-curitiba` tem
+> APENAS 2 impressoes/28d cada, ambas brand search. Landings principais
+> nao estao rankeando — precisam re-crawl pra Google capturar titles
+> Sessao A + pillar 4400 palavras.
 
 | # | URL | Imp/3m (GSC) | Mudança |
 |---|---|---|---|
-| 7 | https://fymoob.com.br/blog/melhores-bairros-familias-curitiba | 18 | FAQ + desc |
-| 8 | https://fymoob.com.br/blog/checklist-compra-imovel | 11 | FAQ |
-| 9 | https://fymoob.com.br/blog/itbi-curitiba-valor-como-pagar | 7 | FAQ |
-| 10 | https://fymoob.com.br/blog/imovel-planta-vs-pronto-curitiba | 5 | FAQ + desc |
-| 11 | https://fymoob.com.br/blog/documentos-comprar-imovel-curitiba | 5 | **TITLE 61→43 chars** + FAQ + desc |
-| 12 | https://fymoob.com.br/blog/quanto-custa-morar-batel-curitiba | 4 | FAQ |
-| 13 | https://fymoob.com.br/blog/ecoville-vs-bigorrilho-curitiba | 2 | FAQ |
-| 14 | https://fymoob.com.br/blog/apartamento-ou-casa-curitiba | 2 | FAQ + desc |
-| 15 | https://fymoob.com.br/blog/melhores-bairros-curitiba-2026 | 0 | FAQ + desc |
+| 7 | **https://fymoob.com.br/apartamentos-curitiba** | **2 (só brand)** | **TITLE Sessão A (237 imóveis) + LandingSEOContent** |
+| 8 | **https://fymoob.com.br/comprar-apartamento-curitiba** | **2 (só brand)** | **PILLAR NOVO 4400 palavras + FAQ 10 Q&A** |
+| 9 | https://fymoob.com.br/blog/melhores-bairros-familias-curitiba | 18 | FAQ + desc |
+| 10 | https://fymoob.com.br/blog/checklist-compra-imovel | 11 | FAQ |
+| 11 | https://fymoob.com.br/blog/itbi-curitiba-valor-como-pagar | 7 | FAQ |
+| 12 | https://fymoob.com.br/blog/imovel-planta-vs-pronto-curitiba | 5 | FAQ + desc |
+| 13 | https://fymoob.com.br/blog/documentos-comprar-imovel-curitiba | 5 | **TITLE 61→43 chars** + FAQ + desc |
+| 14 | https://fymoob.com.br/blog/quanto-custa-morar-batel-curitiba | 4 | FAQ |
+| 15 | https://fymoob.com.br/blog/ecoville-vs-bigorrilho-curitiba | 2 | FAQ |
+| 16 | https://fymoob.com.br/blog/apartamento-ou-casa-curitiba | 2 | FAQ + desc |
+| 17 | https://fymoob.com.br/blog/melhores-bairros-curitiba-2026 | 0 | FAQ + desc |
 
 > **Cota observada:** ~6 URLs/dia (abaixo do limite teórico 10-15). Pode
 > ser quota compartilhada entre URL Inspection e Request Indexing, ou
