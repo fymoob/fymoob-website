@@ -19,7 +19,7 @@ export function YmylTab(props: Props) {
 
   return (
     <div className="space-y-4">
-      <p className="rounded-lg border border-amber-200 bg-amber-50/50 px-3 py-2 text-[11px] leading-relaxed text-amber-900">
+      <p className="rounded-lg border border-amber-200 bg-amber-50/50 px-3 py-2 text-[11px] leading-relaxed text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/20 dark:text-amber-200">
         <strong>Conteúdos sensíveis</strong> (financeiro, jurídico, médico,
         questões de família) precisam mostrar quem revisou e como apuramos
         os dados — caso contrário o Google rebaixa o artigo nos resultados
@@ -50,11 +50,11 @@ export function YmylTab(props: Props) {
         />
       </Field>
 
-      <fieldset className="space-y-3 rounded-lg border border-slate-200 p-3">
-        <legend className="px-2 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+      <fieldset className="space-y-3 rounded-lg border border-slate-200 p-3 dark:border-slate-700">
+        <legend className="px-2 text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           Como apuramos este artigo
         </legend>
-        <p className="text-[10px] leading-relaxed text-slate-500">
+        <p className="text-[10px] leading-relaxed text-slate-500 dark:text-slate-400">
           Estes dados aparecem em uma caixa destacada no início do artigo,
           mostrando ao leitor (e ao Google) que o conteúdo é confiável.
         </p>
@@ -101,7 +101,7 @@ export function YmylTab(props: Props) {
 }
 
 const inputClass =
-  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500"
 
 function Field({
   label,
@@ -114,11 +114,11 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+      <span className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
         {label}
       </span>
       {children}
-      {hint && <span className="mt-1 block text-[10px] text-slate-400">{hint}</span>}
+      {hint && <span className="mt-1 block text-[10px] text-slate-400 dark:text-slate-500">{hint}</span>}
     </label>
   )
 }

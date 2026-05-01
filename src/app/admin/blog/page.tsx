@@ -97,15 +97,15 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
     <div>
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
             Blog
           </p>
-          <h1 className="font-display text-3xl font-bold tracking-tight text-slate-900">
+          <h1 className="font-display text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
             Artigos
           </h1>
-          <p className="mt-2 max-w-xl text-sm text-slate-500">
-            Crie, edite, agende e publique artigos. Cada publicação dispara
-            revalidação automática + IndexNow.
+          <p className="mt-2 max-w-xl text-sm text-slate-500 dark:text-slate-400">
+            Crie, edite, agende e publique artigos. Cada publicação atualiza o
+            site automaticamente e avisa o Google.
           </p>
         </div>
         <CreateDraftButton />
@@ -120,7 +120,7 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
       {/* Filtros */}
       <form
         action="/admin/blog"
-        className="mt-6 flex flex-wrap items-end gap-3 rounded-2xl border border-slate-200 bg-white p-4"
+        className="mt-6 flex flex-wrap items-end gap-3 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900"
       >
         <label className="flex-1 min-w-[200px]">
           <span className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-slate-500">
@@ -133,7 +133,7 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
               name="q"
               defaultValue={query}
               placeholder="Título ou slug..."
-              className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-900 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+              className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-900 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
             />
           </div>
         </label>
@@ -144,7 +144,7 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
           <select
             name="status"
             defaultValue={statusFilter}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
           >
             <option value="all">Todos</option>
             <option value="draft">Rascunho</option>
@@ -160,7 +160,7 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
           <select
             name="author"
             defaultValue={authorFilter}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
           >
             <option value="">Todos</option>
             {authors.map((a) => (
@@ -180,14 +180,14 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
 
       {/* Tabela / empty */}
       {articles.length === 0 ? (
-        <div className="mt-10 rounded-2xl border-2 border-dashed border-slate-200 bg-white p-10 text-center">
-          <FileText className="mx-auto size-10 text-slate-300" />
-          <p className="mt-3 font-display text-base font-semibold text-slate-900">
+        <div className="mt-10 rounded-2xl border-2 border-dashed border-slate-200 bg-white p-10 text-center dark:border-slate-700 dark:bg-slate-900">
+          <FileText className="mx-auto size-10 text-slate-300 dark:text-slate-600" />
+          <p className="mt-3 font-display text-base font-semibold text-slate-900 dark:text-slate-100">
             {query || statusFilter !== "all" || authorFilter
               ? "Nenhum artigo encontrado com esses filtros."
               : "Nenhum artigo ainda"}
           </p>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
             Comece criando o primeiro rascunho.
           </p>
           <div className="mt-5 inline-block">
@@ -195,9 +195,9 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
           </div>
         </div>
       ) : (
-        <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+            <thead className="bg-slate-50 text-xs uppercase tracking-wider text-slate-500 dark:bg-slate-800 dark:text-slate-400">
               <tr>
                 <th className="px-4 py-3 text-left font-semibold">Artigo</th>
                 <th className="px-4 py-3 text-left font-semibold">Autor</th>
@@ -206,11 +206,11 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
                 <th className="px-4 py-3 text-right font-semibold">Palavras</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {articles.map((a) => (
                 <tr
                   key={a.id}
-                  className="cursor-pointer transition-colors hover:bg-slate-50"
+                  className="cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
                 >
                   <td className="px-4 py-3">
                     <Link href={`/admin/blog/${a.id}`} className="flex items-center gap-3">
@@ -224,27 +224,27 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
                           unoptimized
                         />
                       ) : (
-                        <div className="flex size-14 items-center justify-center rounded-md bg-slate-100 text-[10px] text-slate-400">
+                        <div className="flex size-14 items-center justify-center rounded-md bg-slate-100 text-[10px] text-slate-400 dark:bg-slate-800 dark:text-slate-500">
                           sem capa
                         </div>
                       )}
                       <div className="min-w-0">
-                        <p className="truncate font-medium text-slate-900 group-hover:text-brand-primary">
+                        <p className="truncate font-medium text-slate-900 group-hover:text-brand-primary dark:text-slate-100">
                           {a.title}
                         </p>
-                        <p className="truncate text-xs text-slate-500">
+                        <p className="truncate text-xs text-slate-500 dark:text-slate-400">
                           /blog/{a.slug}
                         </p>
                       </div>
                     </Link>
                   </td>
-                  <td className="px-4 py-3 text-slate-700">
+                  <td className="px-4 py-3 text-slate-700 dark:text-slate-300">
                     {a.author?.name ?? "—"}
                   </td>
                   <td className="px-4 py-3">
                     <StatusBadge status={a.status} />
                   </td>
-                  <td className="px-4 py-3 text-xs text-slate-500">
+                  <td className="px-4 py-3 text-xs text-slate-500 dark:text-slate-400">
                     {new Date(a.updated_at).toLocaleString("pt-BR", {
                       day: "2-digit",
                       month: "2-digit",
@@ -253,7 +253,7 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
                       minute: "2-digit",
                     })}
                   </td>
-                  <td className="px-4 py-3 text-right tabular-nums text-xs text-slate-500">
+                  <td className="px-4 py-3 text-right tabular-nums text-xs text-slate-500 dark:text-slate-400">
                     {a.word_count ?? 0}
                   </td>
                 </tr>

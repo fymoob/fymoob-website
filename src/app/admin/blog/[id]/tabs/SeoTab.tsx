@@ -38,9 +38,9 @@ export function SeoTab(props: Props) {
   return (
     <div className="space-y-5">
       {/* Painel de pontuação */}
-      <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
+      <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-900">
         <div className="flex items-center justify-between">
-          <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             Pontuação de SEO
           </span>
           <span
@@ -67,7 +67,7 @@ export function SeoTab(props: Props) {
             }`}
           />
         </div>
-        <p className="mt-2 text-[10px] leading-relaxed text-slate-500">
+        <p className="mt-2 text-[10px] leading-relaxed text-slate-500 dark:text-slate-400">
           {hasBlocks
             ? "Há problemas que impedem a publicação. Resolva os itens em vermelho abaixo."
             : score >= 80
@@ -85,10 +85,10 @@ export function SeoTab(props: Props) {
 
       {/* Pré-visualização do Google */}
       <div>
-        <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+        <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           Como aparece no Google
         </span>
-        <div className="rounded-lg border border-slate-200 bg-white p-3 font-sans">
+        <div className="rounded-lg border border-slate-200 bg-white p-3 font-sans dark:border-slate-700 dark:bg-slate-900">
           <p className="text-[11px] text-emerald-700">
             fymoob.com.br › blog › {props.article.slug || "<endereço>"}
           </p>
@@ -141,7 +141,7 @@ export function SeoTab(props: Props) {
         />
       </Field>
 
-      <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-200 bg-white p-3">
+      <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
         <input
           type="checkbox"
           checked={props.seoNoIndex}
@@ -149,10 +149,10 @@ export function SeoTab(props: Props) {
           className="mt-0.5 size-4 rounded border-slate-300 text-brand-primary"
         />
         <span className="block">
-          <span className="text-xs font-semibold text-slate-900">
+          <span className="text-xs font-semibold text-slate-900 dark:text-slate-100">
             Esconder do Google
           </span>
-          <span className="mt-0.5 block text-[10px] leading-relaxed text-slate-500">
+          <span className="mt-0.5 block text-[10px] leading-relaxed text-slate-500 dark:text-slate-400">
             Impede que este artigo apareça nos resultados de busca. Ativado
             automaticamente em rascunhos, agendados e arquivados; desliga
             sozinho ao publicar.
@@ -162,10 +162,10 @@ export function SeoTab(props: Props) {
 
       {/* Pré-visualização do compartilhamento em redes sociais */}
       <div>
-        <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+        <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           Como aparece quando compartilhado (WhatsApp, Facebook, LinkedIn)
         </span>
-        <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
+        <div className="overflow-hidden rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
           {props.coverImageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -229,7 +229,7 @@ const ICON_BY_SEVERITY = {
 }
 
 const inputClass =
-  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500"
 
 function Field({
   label,
@@ -242,11 +242,11 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+      <span className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
         {label}
       </span>
       {children}
-      {hint && <span className="mt-1 block text-[10px] text-slate-400">{hint}</span>}
+      {hint && <span className="mt-1 block text-[10px] text-slate-400 dark:text-slate-500">{hint}</span>}
     </label>
   )
 }

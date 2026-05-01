@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import type { ReactNode } from "react"
 import { auth, signOut } from "@/auth"
 import { AdminSidebar } from "./AdminSidebar"
+import { AdminThemeProvider } from "./AdminThemeProvider"
 
 export const metadata: Metadata = {
   title: {
@@ -37,16 +38,18 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
-      <AdminSidebar userEmail={userEmail} signOutAction={handleSignOut} />
+    <AdminThemeProvider>
+      <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
+        <AdminSidebar userEmail={userEmail} signOutAction={handleSignOut} />
 
-      {/* Content — Fase 20.UX: full width sem max-w pra aproveitar telas
-          wide. Padding lateral progressivo (4 mobile / 6 sm / 10 lg / 12 2xl). */}
-      <main className="flex-1 overflow-y-auto">
-        <div className="w-full px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10 2xl:px-12">
-          {children}
-        </div>
-      </main>
-    </div>
+        {/* Content — Fase 20.UX: full width sem max-w pra aproveitar telas
+            wide. Padding lateral progressivo (4 mobile / 6 sm / 10 lg / 12 2xl). */}
+        <main className="flex-1 overflow-y-auto">
+          <div className="w-full px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10 2xl:px-12">
+            {children}
+          </div>
+        </main>
+      </div>
+    </AdminThemeProvider>
   )
 }
