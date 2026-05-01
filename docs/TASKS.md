@@ -33,9 +33,9 @@
 | 16 | Claude Managed Agents | 14 | 0 | 14 | MEDIO PRAZO |
 | 17 | Agentes como Produto SaaS | 14 | 0 | 14 | LONGO PRAZO |
 | 18 | Custom Blog Admin (Sanity Replacement) | 69 | 60 | 9 | EM ANDAMENTO (Sprints 1-4: 18.A-G done; 18.H-I pendentes) |
-| 19 | **SEO Competitive Action Plan** | 43 | 18 | 25 | **PRIORITARIO — P0 ✅ + P1.1 ✅ + P2 Sessoes A/B/C ✅ + Sessoes D/E PENDING + P1.16 BLOQUEADO Bruno** |
+| 19 | **SEO Competitive Action Plan** | 49 | 18 | 31 | **PRIORITARIO — P0 ✅ + P1.1 ✅ + P2 Sessoes A/B/C ✅ + Re-Index (6 tasks) + Sessoes D/E PENDING + P1.16 BLOQUEADO Bruno** |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **556** | **370** | **186** | **66%** |
+| | **TOTAL** | **562** | **370** | **192** | **66%** |
 
 **Sessao 2026-04-17:** 25 CRITICAL/HIGH de seguranca/SEO fixados em 5 commits (`0d7b19f`, `50b1f86`, `7bb5f5a`, `19154ec`, `6b13794`). 4 rounds de auditoria convergiram — round 4 retornou 0 CRITICAL. Acoes externas pre-cutover listadas em Fase 7.8. HIGH/MEDIUM remanescentes (hardening pos-cutover, nao blockers) em Fase 7.10.
 
@@ -3834,6 +3834,37 @@ mais 5 paginas/itens com gaps:
        em 1 comando — Q&A redigidas com base em conteudo + dados externos
        citados nos posts (FipeZap, IBGE, NBR, STJ, MCMV abril/2026, etc)
 
+#### Sessao Re-Index — Acao manual GSC pos Sessoes A/B/C [01-08/05/2026]
+
+> Detalhes completos em `docs/seo-reports/2026-05-01-reindex-urls.md`.
+
+- [ ] **19.P2.RX.0** Re-submeter 5 sitemaps no GSC (5 min, hoje)
+  - `https://fymoob.com.br/sitemap.xml`, `/sitemap/0.xml` ate `/sitemap/3.xml`
+  - GSC > Sitemaps > Submit
+
+- [ ] **19.P2.RX.1** Request Indexing manual: 15 blog posts (Tier 1, hoje)
+  - GSC > URL Inspection > Request Indexing — 1 a 1
+  - Lista priorizada por impressoes em `docs/seo-reports/2026-05-01-reindex-urls.md` Tier 1
+  - Capacidade: 10-15/dia. Comecar pelos top 3 (financiamento-caixa, custo-de-vida, como-financiar-mcmv)
+
+- [ ] **19.P2.RX.2** Request Indexing manual: 40 empreendimentos top (Tier 2, 4 dias)
+  - 10/dia em Dia 1 (top 10 por impressoes), 11-20 em Dia 2, etc.
+  - Lista priorizada Tier 2 no doc dedicado
+
+- [ ] **19.P2.RX.3** Request Indexing manual: 10 landings top (Tier 3, dia 5)
+  - Bairros + tipo+finalidade com >5 impressoes
+
+- [ ] **19.P2.RX.4** [OPCIONAL] Setup IndexNow + batch 545 URLs (Bing/Yandex)
+  - Gerar key, criar `public/<key>.txt`, criar `scripts/indexnow-resubmit.mjs`
+  - Disparar batch unico com todas as 545 URLs afetadas
+  - Beneficio menor (Google nao participa) mas barato e cobre Bing
+
+- [ ] **19.P2.RX.5** Verificar deltas em 14 dias (15/05/2026)
+  - `mcp__gsc__compare_search_periods` periodo pre vs pos
+  - Re-rodar `python scripts/seo-gaps-audit.py --all`
+  - Comparar com `docs/seo-reports/2026-04-30-page-gaps-audit.md`
+  - Targets: paginas indexadas 122→250+, cliques 580→800-1100/mes, CTR blog 0.13%→1.5%+
+
 #### Sessao D — /aluguel + guias + polish [4-6h, +15-40 cliques/mes]
 
 - [ ] **19.P2.D.1** Investigar e fixar /apartamentos-curitiba/aluguel + similares
@@ -3882,14 +3913,21 @@ mais 5 paginas/itens com gaps:
 
 ### Fase 19.P2 — Estimativa consolidada
 
-| Sessao | Esforco | Paginas afetadas | Cliques/mes esperados | Prioridade |
+| Sessao | Esforco | Paginas afetadas | Cliques/mes esperados | Status |
 |---|---|---|---|---|
-| A — Funcoes centralizadas | 3-4h dev | 420 | +100-240 | 🔴 P0 |
-| B — Empreendimentos | 8-10h dev | 110 | +60-180 | 🔴 P0 |
-| C — Blog posts | 13-18h dev | 15 | +60-120 | 🟡 P1 |
-| D — /aluguel + guias + polish | 4-6h dev | 25 | +15-40 | 🟡 P1 |
-| E — Imoveis title CRM | 4-5h Bruno + 1h Vinicius | 219 | +20-50 | 🟢 P2 |
+| A — Funcoes centralizadas | 3-4h dev | 420 | +100-240 | ✅ 01/05/2026 (`5872aee`) |
+| B — Empreendimentos | 8-10h dev | 110 | +60-180 | ✅ 01/05/2026 (`6c418d8`) |
+| C — Blog posts | 13-18h dev | 15 | +60-120 | ✅ 01/05/2026 (`dd2f322`) |
+| D — /aluguel + guias + polish | 4-6h dev | 25 | +15-40 | 🟡 P1 PENDENTE |
+| E — Imoveis title CRM | 4-5h Bruno + 1h Vinicius | 219 | +20-50 | 🟢 P2 PENDENTE |
+| **CONCLUIDO** | **24-32h** | **545 paginas** | **+220-540 cliques/mes** | — |
 | **TOTAL** | **34-44h** | **~600 paginas** | **+255-625 cliques/mes** | — |
+
+### Fase 19.P2 — Documentos consolidados (01/05/2026)
+
+- **`docs/seo-reports/2026-05-01-fase19-p2-summary.md`** — Sumario consolidado das 3 sessoes (diffs, fontes citadas em cada FAQ, metricas-alvo)
+- **`docs/seo-reports/2026-05-01-reindex-urls.md`** — Plano completo de re-indexacao (4 tiers: sitemap + GSC manual + IndexNow + Indexing API). 70 URLs Tier 1-3 + 545 batch IndexNow.
+- **`scripts/add-blog-faqs.mjs`** — Helper batch idempotente reusavel pra updates em massa SEO em arquivos similares
 
 ### Fase 19.P2 — Como acompanhar
 
