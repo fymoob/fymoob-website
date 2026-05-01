@@ -19,6 +19,7 @@ import { getEmpreendimentoAssets, hasEditorialLayout } from "@/data/empreendimen
 import { PlantasCarousel } from "@/components/empreendimento/PlantasCarousel"
 import { PlantasGallery } from "@/components/empreendimento/PlantasGallery"
 import { WhatsAppTracker } from "@/components/empreendimento/WhatsAppTracker"
+import { EmpreendimentoStandardSEOContent } from "@/components/empreendimento/EmpreendimentoStandardSEOContent"
 import type { Property } from "@/types/property"
 
 interface EmpreendimentoPageProps {
@@ -58,11 +59,14 @@ export async function generateMetadata({ params }: EmpreendimentoPageProps): Pro
   const precoMin = emp.precoMin ? formatPrice(emp.precoMin) : ""
   const precoText = precoMin ? ` a partir de ${precoMin}` : ""
 
-  // Title pattern (Tier S — lançamentos): nome primeiro pra pegar tráfego
-  // de marca; intent keywords (plantas, preços, apartamentos) pra capturar
-  // queries de pesquisa explícita do Wagner (reserva barigui plantas,
-  // apartamento reserva barigui, etc). Construtora sinaliza autoridade.
-  const title = `${emp.nome} ${bairroText} | Plantas, Preços e Apartamentos${construtoraText} | FYMOOB`
+  // Fase 19.P2.B.3 — Title com numero especifico no formato:
+  // "{Nome} {Bairro}: {N} Apartamentos a Partir de R$ {min} | FYMOOB"
+  // Audit revelou que 102 de 110 empreendimentos sem numero — Backlinko
+  // confirma +10-15% CTR com numero no title.
+  const totalText = emp.total > 0 ? `${emp.total} ` : ""
+  const tituloUnidade = emp.total === 1 ? "Apartamento" : "Apartamentos"
+  const partirDe = precoMin ? ` a Partir de ${precoMin}` : " Disponíveis"
+  const title = `${emp.nome} ${bairroText}: ${totalText}${tituloUnidade}${partirDe} | FYMOOB`
 
   // Description: 1ª frase responde "o que é + onde + a partir de quanto",
   // 2ª frase ressalta intenções (plantas, fotos), 3ª prova (FYMOOB +
@@ -177,8 +181,22 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
     description: descricao || `${emp.total} unidades disponíveis no ${emp.nome}`,
     url: `${SITE_URL}/empreendimento/${slug}`,
     ...(absoluteHeroImage && { image: absoluteHeroImage }),
-    offers: precoMin ? { "@type": "AggregateOffer", lowPrice: precoMin, highPrice: precoMax || precoMin, priceCurrency: "BRL", offerCount: properties.length } : undefined,
-    address: { "@type": "PostalAddress", addressLocality: "Curitiba", addressRegion: "PR", addressCountry: "BR" },
+    // Fase 19.P2.B.4 — AggregateOffer enriquecido com availability (rich
+    // snippet com faixa de preco no SERP + indicador de disponibilidade).
+    offers: precoMin
+      ? {
+          "@type": "AggregateOffer",
+          lowPrice: precoMin,
+          highPrice: precoMax || precoMin,
+          priceCurrency: "BRL",
+          offerCount: properties.length,
+          availability:
+            properties.length > 0
+              ? "https://schema.org/InStock"
+              : "https://schema.org/SoldOut",
+        }
+      : undefined,
+    address: { "@type": "PostalAddress", addressLocality: bairros[0] || "Curitiba", addressRegion: "PR", addressCountry: "BR" },
   }
   const combinedSchema = {
     "@context": "https://schema.org",
@@ -226,7 +244,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
             </div>
           </div>
         </section>
-        <StandardContent emp={emp} properties={properties} precoMin={precoMin} precoMax={precoMax} bairros={bairros} unitTypes={unitTypes} infraestrutura={infraestrutura} lat={lat} lng={lng} endereco={endereco} construtora={construtora} slug={slug} empreendimentos={empreendimentos} whatsUrl={whatsUrl} descricao={descricao} plantas={plantasFinal} />
+        <StandardContent emp={emp} properties={properties} precoMin={precoMin} precoMax={precoMax} areaMin={areaMin} areaMax={areaMax} tipos={tipos} bairros={bairros} unitTypes={unitTypes} infraestrutura={infraestrutura} lat={lat} lng={lng} endereco={endereco} construtora={construtora} situacao={situacao} slug={slug} empreendimentos={empreendimentos} whatsUrl={whatsUrl} descricao={descricao} plantas={plantasFinal} />
       </>
     )
   }
@@ -867,10 +885,13 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
 // Standard content (for empreendimentos without assets)
 // ====================================================
 function StandardContent(props: {
-  emp: { nome: string; slug: string }
+  emp: { nome: string; slug: string; bairros: string[]; total: number; precoMin?: number | null; precoMax?: number | null; construtora?: string | null }
   properties: Property[]
   precoMin: number | null
   precoMax: number | null
+  areaMin: number | null
+  areaMax: number | null
+  tipos: string[]
   bairros: string[]
   unitTypes: ReturnType<typeof groupUnitTypes>
   infraestrutura: string[]
@@ -878,13 +899,14 @@ function StandardContent(props: {
   lng: number | null
   endereco: Property | undefined
   construtora: string | null
+  situacao?: string | null
   slug: string
   empreendimentos: Awaited<ReturnType<typeof getAllEmpreendimentos>>
   whatsUrl: string
   descricao: string | null | undefined
   plantas?: string[]
 }) {
-  const { emp, properties, precoMin, precoMax, bairros, unitTypes, infraestrutura, lat, lng, endereco, slug, empreendimentos, whatsUrl, descricao, plantas } = props
+  const { emp, properties, precoMin, precoMax, areaMin, areaMax, tipos, bairros, unitTypes, infraestrutura, lat, lng, endereco, construtora, situacao, slug, empreendimentos, whatsUrl, descricao, plantas } = props
   return (
     <>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -999,6 +1021,31 @@ function StandardContent(props: {
           </a>
         </div>
       </div>
+      {/* Bloco SEO ~1000 palavras pra empreendimentos sem editorial layout
+          (Fase 19.P2.B). Audit revelou 109 de 110 empreendimentos com thin
+          content (media 288 palavras). Component dinamico via dados do CRM
+          + descricoes curadas de bairros/construtoras. */}
+      <EmpreendimentoStandardSEOContent
+        empreendimento={{
+          nome: emp.nome,
+          slug,
+          bairros: emp.bairros,
+          total: emp.total,
+          precoMin: emp.precoMin,
+          precoMax: emp.precoMax,
+          construtora: emp.construtora,
+        }}
+        precoMin={precoMin}
+        precoMax={precoMax}
+        areaMin={areaMin}
+        areaMax={areaMax}
+        tipos={tipos}
+        bairro={bairros[0] || ""}
+        construtora={construtora}
+        situacao={situacao}
+        descricaoCRM={descricao}
+      />
+
       <section className="border-t border-neutral-100 bg-neutral-50 py-12 md:py-16">
         <div className="mx-auto max-w-4xl space-y-12 px-4 sm:px-6 lg:px-8">
           <DynamicFAQ
