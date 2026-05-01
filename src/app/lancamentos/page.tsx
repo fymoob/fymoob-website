@@ -14,7 +14,7 @@ import { projectForCard } from "@/lib/property-projection"
 import { Pagination } from "@/components/search/Pagination"
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { properties } = await getProperties({ lancamento: true, limit: 1000 })
+  const { properties } = await getProperties({ lancamento: true, limit: 500 })
   const precos = properties
     .map((p) => p.precoVenda ?? p.precoAluguel)
     .filter((p): p is number => p !== null && p > 0)

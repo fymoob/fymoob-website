@@ -52,15 +52,17 @@ export function PropertyMap({ latitude, longitude, bairro, titulo, endereco, num
     let cancelled = false
 
     async function initMap() {
-      const maplibregl = (await import("maplibre-gl")).default
-
-      // Inject maplibre CSS dynamically (avoid bundling 271KB on initial load)
+      // Fase 20.W1.8: injetar CSS ANTES do `await import` permite que browser
+      // baixe CSS e JS em paralelo. Antes era sequencial → CSS chegava 200ms
+      // depois do JS → layout shift quando mapa renderizava.
       if (!document.querySelector('link[href*="maplibre-gl"]')) {
         const link = document.createElement("link")
         link.rel = "stylesheet"
         link.href = "https://unpkg.com/maplibre-gl@4/dist/maplibre-gl.css"
         document.head.appendChild(link)
       }
+
+      const maplibregl = (await import("maplibre-gl")).default
 
       if (cancelled || !mapContainerRef.current) return
 

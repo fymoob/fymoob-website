@@ -22,7 +22,7 @@ import { LandingSEOContent } from "@/components/seo/LandingSEOContent"
 import { BairroPriceTable } from "@/components/seo/BairroPriceTable"
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { properties } = await getProperties({ tipo: "Apartamento", limit: 1000 })
+  const { properties } = await getProperties({ tipo: "Apartamento", limit: 500 })
   const precos = properties
     .map((p) => p.precoVenda ?? p.precoAluguel)
     .filter((p): p is number => p !== null && p > 0)

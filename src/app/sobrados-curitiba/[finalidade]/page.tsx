@@ -14,7 +14,7 @@ interface PageProps { params: Promise<{ finalidade: string }> }
 export async function generateStaticParams() {
   const params: { finalidade: string }[] = []
   for (const [slug, { finalidade }] of Object.entries(FINALIDADES)) {
-    const { properties } = await getProperties({ tipo: "Sobrado", finalidade, limit: 1000 })
+    const { properties } = await getProperties({ tipo: "Sobrado", finalidade, limit: 500 })
     if (properties.length >= 2) params.push({ finalidade: slug })
   }
   return params
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { finalidade: slug } = await params
   const fin = FINALIDADES[slug as keyof typeof FINALIDADES]
   if (!fin) return {}
-  const { properties } = await getProperties({ tipo: "Sobrado", finalidade: fin.finalidade, limit: 1000 })
+  const { properties } = await getProperties({ tipo: "Sobrado", finalidade: fin.finalidade, limit: 500 })
   const precos = properties.map((p) => p.precoVenda ?? p.precoAluguel).filter((p): p is number => p !== null && p > 0)
   return {
     title: `Sobrados ${fin.label} em Curitiba`,

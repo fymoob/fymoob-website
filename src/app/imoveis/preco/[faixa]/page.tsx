@@ -81,16 +81,18 @@ interface FaixaPageProps {
 
 export async function generateStaticParams() {
   // Emit only faixas with >=2 imoveis matching (avoid thin content).
-  const params: { faixa: string }[] = []
-  for (const f of FAIXAS) {
-    const { properties } = await getProperties({
-      precoMin: f.min ?? undefined,
-      precoMax: f.max ?? undefined,
-      limit: 1000,
+  // Fase 20.W1.5: paralelo via Promise.all (~5x mais rapido em build).
+  const results = await Promise.all(
+    FAIXAS.map(async (f) => {
+      const { properties } = await getProperties({
+        precoMin: f.min ?? undefined,
+        precoMax: f.max ?? undefined,
+        limit: 500,
+      })
+      return properties.length >= 2 ? { faixa: f.slug } : null
     })
-    if (properties.length >= 2) params.push({ faixa: f.slug })
-  }
-  return params
+  )
+  return results.filter((p): p is { faixa: string } => p !== null)
 }
 
 export async function generateMetadata({ params }: FaixaPageProps): Promise<Metadata> {

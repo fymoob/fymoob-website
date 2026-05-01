@@ -141,7 +141,7 @@ export async function generateMetadata({ params }: CombinadaPageProps): Promise<
   const bairro = bairros.find((b) => b.slug === bairroSlug)
   if (!bairro) return {}
 
-  const filters: PropertyFilters = { bairro: bairro.bairro, limit: 1000 }
+  const filters: PropertyFilters = { bairro: bairro.bairro, limit: 500 }
 
   if (isQuartos(tipoSlug)) {
     const q = parseQuartos(tipoSlug)!
@@ -206,7 +206,7 @@ export default async function CombinadaPage({ params }: CombinadaPageProps) {
   if (!isFin && !isQ && !tipoKey) notFound()
 
   // Fetch properties
-  const filters: PropertyFilters = { bairro: bairro.bairro, limit: 1000 }
+  const filters: PropertyFilters = { bairro: bairro.bairro, limit: 500 }
   if (isQ && quartosNum) {
     filters.dormitoriosMin = quartosNum
   } else if (isFin) {

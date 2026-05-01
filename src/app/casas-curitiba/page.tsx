@@ -19,7 +19,7 @@ import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { LandingSEOContent } from "@/components/seo/LandingSEOContent"
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { properties } = await getProperties({ tipo: "Casa", limit: 1000 })
+  const { properties } = await getProperties({ tipo: "Casa", limit: 500 })
   const precos = properties
     .map((p) => p.precoVenda ?? p.precoAluguel)
     .filter((p): p is number => p !== null && p > 0)

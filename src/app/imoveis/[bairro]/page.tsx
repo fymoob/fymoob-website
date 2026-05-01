@@ -49,7 +49,7 @@ export async function generateMetadata({
   const bairro = bairros.find((b) => b.slug === bairroSlug)
   if (!bairro) return {}
 
-  const { properties } = await getProperties({ bairro: bairro.bairro, limit: 1000 })
+  const { properties } = await getProperties({ bairro: bairro.bairro, limit: 500 })
   const precos = properties
     .map((p) => p.precoVenda ?? p.precoAluguel)
     .filter((p): p is number => p !== null && p > 0)
@@ -142,7 +142,7 @@ export default async function BairroPage({ params }: BairroPageProps) {
 
   const { properties } = await getProperties({
     bairro: bairro.bairro,
-    limit: 1000,
+    limit: 500,
   })
 
   const precos = properties

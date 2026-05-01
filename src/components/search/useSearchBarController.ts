@@ -225,7 +225,9 @@ export function useSearchBarController({
             quartosMax: pendingFilters.quartosMax,
             scope: scope ?? {},
           }),
-          cache: "no-store",
+          // Sem cache: "no-store" — facets revalidam a cada 15min via
+          // unstable_cache. Cache HTTP padrao (publico) economiza
+          // roundtrips em filtros consecutivos com mesma combinacao.
           signal: controller.signal,
         })
 

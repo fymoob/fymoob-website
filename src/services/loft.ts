@@ -17,13 +17,15 @@ import { unstable_cache } from "next/cache"
 // Config
 // ---------------------------------------------------------------------------
 
-const LOFT_BASE_URL = "https://brunoces-rest.vistahost.com.br"
+// Fase 20.W1.6: env var pra alternar prod/sandbox sem editar codigo.
+// Default: produção. Em dev/staging: setar LOFT_API_BASE_URL=https://sandbox-rest.vistahost.com.br
+const LOFT_BASE_URL = process.env.LOFT_API_BASE_URL || "https://brunoces-rest.vistahost.com.br"
 const LOFT_API_KEY = process.env.LOFT_API_KEY || ""
 const PAGE_SIZE = 50 // API max per request
-// 1 hour — aligned with page-level ISR revalidate on /imovel/[slug].
-// Reduces Loft API calls + Next.js ISR writes significantly vs 15min.
-// The CRM data doesn't change fast enough to justify a shorter window.
-const REVALIDATE_SECONDS = 900 // 15 minutes (reduzido de 1h em 22/04/2026 — acelera reflexo de mudancas do CRM no site. Custo: 4x mais requests ao Loft/dia, ainda insignificante; ganho: Bruno/Wagner veem alteracoes no site em <=15min em vez de <=1h)
+// 1 hora — alinhado com /imovel/[slug] (Fase 20.W2.6 unificou de 15min->1h).
+// CRM nao muda dados imobiliarios a cada 15min; reduz writes ISR ~75%.
+// Para refletir mudanca do CRM mais rapido, dispatch revalidateTag('imoveis') manual.
+const REVALIDATE_SECONDS = 3600
 
 // ---------------------------------------------------------------------------
 // Characteristic field names (carac + infra) → human-readable labels
