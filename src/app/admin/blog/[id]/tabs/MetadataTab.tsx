@@ -12,8 +12,8 @@ export function MetadataTab(props: Props) {
   return (
     <div className="space-y-4">
       <Field
-        label="Tempo de leitura (minutos)"
-        hint="Calculado automaticamente do body. Override só se quiser sobrescrever."
+        label="Tempo de leitura (em minutos)"
+        hint="Calculado automaticamente pelo número de palavras do artigo. Preencha apenas se quiser substituir o valor automático."
       >
         <input
           type="number"
@@ -30,7 +30,7 @@ export function MetadataTab(props: Props) {
 
       <Field
         label="Última atualização"
-        hint="Atualiza automaticamente a cada save."
+        hint="Atualizado automaticamente toda vez que você salva o artigo."
       >
         <input
           type="text"
@@ -49,8 +49,8 @@ export function MetadataTab(props: Props) {
       </Field>
 
       <Field
-        label="Open Graph image (override)"
-        hint="Default: imagem de capa. Override pra quando quiser OG diferente do hero."
+        label="Imagem para redes sociais (opcional)"
+        hint="Se vazio, usamos a imagem de capa. Preencha apenas se quiser uma imagem diferente quando o artigo for compartilhado no WhatsApp, Facebook ou LinkedIn."
       >
         <input
           type="url"

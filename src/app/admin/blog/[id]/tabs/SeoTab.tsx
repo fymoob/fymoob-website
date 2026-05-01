@@ -37,11 +37,11 @@ export function SeoTab(props: Props) {
 
   return (
     <div className="space-y-5">
-      {/* Score panel */}
+      {/* Painel de pontuação */}
       <div className="rounded-lg border border-slate-200 bg-slate-50 p-3">
         <div className="flex items-center justify-between">
           <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-            SEO Score
+            Pontuação de SEO
           </span>
           <span
             className={`text-2xl font-bold tabular-nums ${
@@ -67,12 +67,12 @@ export function SeoTab(props: Props) {
             }`}
           />
         </div>
-        <p className="mt-2 text-[10px] text-slate-500">
+        <p className="mt-2 text-[10px] leading-relaxed text-slate-500">
           {hasBlocks
-            ? "Bloqueios impedem publicação. Resolva os items vermelhos abaixo."
+            ? "Há problemas que impedem a publicação. Resolva os itens em vermelho abaixo."
             : score >= 80
-              ? "Pronto pra publicar."
-              : "Funcional, mas dá pra melhorar."}
+              ? "Tudo pronto para publicar."
+              : "Pode publicar, mas dá pra melhorar a pontuação."}
         </p>
       </div>
 
@@ -83,14 +83,14 @@ export function SeoTab(props: Props) {
         ))}
       </ul>
 
-      {/* SERP Preview */}
+      {/* Pré-visualização do Google */}
       <div>
         <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-          Preview Google (SERP)
+          Como aparece no Google
         </span>
         <div className="rounded-lg border border-slate-200 bg-white p-3 font-sans">
           <p className="text-[11px] text-emerald-700">
-            fymoob.com.br › blog › {props.article.slug || "<slug>"}
+            fymoob.com.br › blog › {props.article.slug || "<endereço>"}
           </p>
           <p className="mt-0.5 line-clamp-1 text-base font-medium text-blue-700 hover:underline">
             {effectiveTitle || "Título do artigo"}
@@ -101,10 +101,10 @@ export function SeoTab(props: Props) {
         </div>
       </div>
 
-      {/* Form fields */}
+      {/* Campos de formulário */}
       <Field
-        label="Title custom (override)"
-        hint="Default: usa o título do artigo. Override só se quiser SEO title diferente do H1 visível."
+        label="Título personalizado para o Google (opcional)"
+        hint="Se vazio, usamos o título do artigo. Preencha apenas se quiser que o título no Google seja diferente do título visível na página."
       >
         <input
           type="text"
@@ -116,21 +116,21 @@ export function SeoTab(props: Props) {
       </Field>
 
       <Field
-        label="Description custom (override)"
-        hint="Default: descrição do artigo. Use só se quiser meta diferente."
+        label="Descrição personalizada para o Google (opcional)"
+        hint="Se vazio, usamos a descrição do artigo. Preencha apenas se quiser uma descrição diferente para o Google."
       >
         <textarea
           value={props.seoMetaDescription}
           onChange={(e) => props.onSeoMetaDescriptionChange(e.target.value)}
-          rows={2}
+          rows={3}
           maxLength={170}
-          className={inputClass}
+          className={`${inputClass} resize-y leading-relaxed`}
         />
       </Field>
 
       <Field
-        label="URL canonical"
-        hint="Use só pra apontar pra outro post canônico (ex: post duplicado em outra rota)."
+        label="Link da versão original (canonical)"
+        hint="Deixe vazio. Preencha apenas se este artigo for cópia de outro — coloque o link do original aqui para que o Google saiba qual indexar."
       >
         <input
           type="url"
@@ -149,18 +149,21 @@ export function SeoTab(props: Props) {
           className="mt-0.5 size-4 rounded border-slate-300 text-brand-primary"
         />
         <span className="block">
-          <span className="text-xs font-semibold text-slate-900">noindex</span>
-          <span className="mt-0.5 block text-[10px] text-slate-500">
-            Bloqueia indexação no Google. Auto-ligado em rascunho/agendado/arquivado;
-            auto-desliga ao publicar.
+          <span className="text-xs font-semibold text-slate-900">
+            Esconder do Google
+          </span>
+          <span className="mt-0.5 block text-[10px] leading-relaxed text-slate-500">
+            Impede que este artigo apareça nos resultados de busca. Ativado
+            automaticamente em rascunhos, agendados e arquivados; desliga
+            sozinho ao publicar.
           </span>
         </span>
       </label>
 
-      {/* OG Card preview */}
+      {/* Pré-visualização do compartilhamento em redes sociais */}
       <div>
         <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-          Preview Open Graph (Facebook / WhatsApp)
+          Como aparece quando compartilhado (WhatsApp, Facebook, LinkedIn)
         </span>
         <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
           {props.coverImageUrl ? (
@@ -172,7 +175,7 @@ export function SeoTab(props: Props) {
             />
           ) : (
             <div className="flex aspect-[1.91/1] w-full items-center justify-center bg-slate-100 text-xs text-slate-400">
-              sem capa
+              sem imagem de capa
             </div>
           )}
           <div className="p-3">

@@ -61,9 +61,9 @@ type TabKey = "content" | "meta" | "ymyl" | "seo"
 
 const TABS: { key: TabKey; label: string }[] = [
   { key: "content", label: "Conteúdo" },
-  { key: "meta", label: "Metadados" },
-  { key: "ymyl", label: "YMYL" },
-  { key: "seo", label: "SEO" },
+  { key: "meta", label: "Detalhes" },
+  { key: "ymyl", label: "Confiabilidade" },
+  { key: "seo", label: "Google" },
 ]
 
 export function ArticleEditorPage({ article, authors, revisions: initialRevisions }: Props) {

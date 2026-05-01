@@ -69,7 +69,7 @@ export function ContentTab(props: Props) {
 
   return (
     <div className="space-y-4">
-      <Field label="Título" hint={`${props.title.length}/55 chars ideais`}>
+      <Field label="Título" hint={`${props.title.length}/55 caracteres ideais`}>
         <input
           type="text"
           value={props.title}
@@ -85,11 +85,11 @@ export function ContentTab(props: Props) {
       </Field>
 
       <Field
-        label="Slug (URL)"
+        label="Endereço da página (URL)"
         hint={
           props.isPublished
-            ? "Bloqueado: artigo publicado. Mudar slug quebra SEO."
-            : "kebab-case. Auto do título até primeira edição manual."
+            ? "Bloqueado: artigo já publicado. Mudar o endereço quebra os links que estão circulando."
+            : "Aparece no fim da URL: /blog/{este-texto}. Gerado automaticamente a partir do título — edite só se quiser personalizar."
         }
       >
         <input
@@ -105,13 +105,16 @@ export function ContentTab(props: Props) {
         />
       </Field>
 
-      <Field label="Descrição" hint={`${props.description.length}/160 chars ideais`}>
+      <Field
+        label="Descrição"
+        hint={`${props.description.length}/160 caracteres ideais — aparece no Google embaixo do título`}
+      >
         <textarea
           value={props.description}
           onChange={(e) => props.onDescriptionChange(e.target.value)}
-          rows={3}
+          rows={6}
           maxLength={170}
-          className={inputClass}
+          className={`${inputClass} resize-y leading-relaxed`}
         />
       </Field>
 
@@ -148,7 +151,7 @@ export function ContentTab(props: Props) {
             ) : (
               <Upload size={20} />
             )}
-            {uploading ? "Enviando..." : "Clique pra escolher imagem"}
+            {uploading ? "Enviando..." : "Clique para escolher uma imagem"}
             <input
               type="file"
               accept="image/webp,image/jpeg,image/png,image/avif"
@@ -164,7 +167,10 @@ export function ContentTab(props: Props) {
       </div>
 
       {props.coverUrl && (
-        <Field label="Texto alternativo da capa">
+        <Field
+          label="Descrição da imagem (acessibilidade)"
+          hint="Lido por leitores de tela e usado pelo Google. Descreva o que aparece na foto."
+        >
           <input
             type="text"
             value={props.coverAlt}
@@ -191,7 +197,10 @@ export function ContentTab(props: Props) {
         </select>
       </Field>
 
-      <Field label="Tags" hint={`${props.tags.length}/3-7 ideais. Enter pra adicionar.`}>
+      <Field
+        label="Palavras-chave"
+        hint={`${props.tags.length}/3-7 ideais. Aperte Enter pra adicionar cada uma.`}
+      >
         <div className="space-y-2">
           <input
             type="text"
@@ -229,16 +238,19 @@ export function ContentTab(props: Props) {
         </div>
       </Field>
 
-      <Field label="Schema.org type">
+      <Field
+        label="Tipo do conteúdo"
+        hint="Como o Google entende este artigo. Use 'Post de blog' pra textos comuns, 'Artigo aprofundado' pra reportagens longas, 'Notícia' pra atualizações urgentes, e 'Guia passo a passo' quando ensinar algo em etapas."
+      >
         <select
           value={props.schemaType}
           onChange={(e) => props.onSchemaTypeChange(e.target.value as Article["schema_type"])}
           className={inputClass}
         >
-          <option value="BlogPosting">BlogPosting (default)</option>
-          <option value="Article">Article</option>
-          <option value="NewsArticle">NewsArticle</option>
-          <option value="HowTo">HowTo</option>
+          <option value="BlogPosting">Post de blog (padrão)</option>
+          <option value="Article">Artigo aprofundado</option>
+          <option value="NewsArticle">Notícia</option>
+          <option value="HowTo">Guia passo a passo</option>
         </select>
       </Field>
     </div>

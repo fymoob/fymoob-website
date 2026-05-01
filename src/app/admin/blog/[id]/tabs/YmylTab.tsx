@@ -19,15 +19,16 @@ export function YmylTab(props: Props) {
 
   return (
     <div className="space-y-4">
-      <p className="rounded-lg border border-amber-200 bg-amber-50/50 px-3 py-2 text-[11px] text-amber-900">
-        <strong>YMYL</strong> (Your Money, Your Life): conteúdo financeiro,
-        jurídico, médico, de família. Posts YMYL exigem metodologia explícita
-        + revisão periódica pra ranquear.
+      <p className="rounded-lg border border-amber-200 bg-amber-50/50 px-3 py-2 text-[11px] leading-relaxed text-amber-900">
+        <strong>Conteúdos sensíveis</strong> (financeiro, jurídico, médico,
+        questões de família) precisam mostrar quem revisou e como apuramos
+        os dados — caso contrário o Google rebaixa o artigo nos resultados
+        de busca.
       </p>
 
       <Field
-        label="Revisado por"
-        hint='Ex: "Bruno César", "Research Protocol v1.0"'
+        label="Quem revisou o artigo"
+        hint='Nome do responsável que conferiu os dados. Ex: "Bruno César", "Equipe FYMOOB"'
       >
         <input
           type="text"
@@ -38,8 +39,8 @@ export function YmylTab(props: Props) {
       </Field>
 
       <Field
-        label="Próxima revisão"
-        hint="Data limite pra revisar conteúdo. YMYL Money: trimestral."
+        label="Data da próxima revisão"
+        hint="Quando este artigo deve ser revisado novamente. Conteúdo financeiro: a cada 3 meses. Conteúdo geral: anual."
       >
         <input
           type="date"
@@ -51,31 +52,34 @@ export function YmylTab(props: Props) {
 
       <fieldset className="space-y-3 rounded-lg border border-slate-200 p-3">
         <legend className="px-2 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-          Methodology (objeto top-level)
+          Como apuramos este artigo
         </legend>
-        <p className="text-[10px] text-slate-500">
-          Aparece no schema + como <code>MethodologyBox</code> de página inteira
-          (separado dos blocos inline do editor).
+        <p className="text-[10px] leading-relaxed text-slate-500">
+          Estes dados aparecem em uma caixa destacada no início do artigo,
+          mostrando ao leitor (e ao Google) que o conteúdo é confiável.
         </p>
-        <Field label="Período">
+        <Field label="Período dos dados">
           <input
             type="text"
             value={m.period ?? ""}
             onChange={(e) => update("period", e.target.value)}
-            placeholder="Abril/2026"
+            placeholder="Ex: Abril de 2026"
             className={inputClass}
           />
         </Field>
-        <Field label="Amostra">
+        <Field label="Tamanho da amostra analisada">
           <input
             type="text"
             value={m.sample ?? ""}
             onChange={(e) => update("sample", e.target.value)}
-            placeholder="234 imóveis ativos no CRM FYMOOB"
+            placeholder="Ex: 234 imóveis ativos no nosso CRM"
             className={inputClass}
           />
         </Field>
-        <Field label="Fontes (separadas por vírgula)">
+        <Field
+          label="Fontes consultadas"
+          hint="Separe cada fonte com vírgula. Ex: FipeZap, Caixa Econômica, Prefeitura de Curitiba"
+        >
           <textarea
             value={(m.sources ?? []).join(", ")}
             onChange={(e) =>
