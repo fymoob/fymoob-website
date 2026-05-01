@@ -22,10 +22,13 @@ export interface LeadResponse {
  * Submete lead pra /api/lead. Aceita payload arbitrario pra acomodar
  * formatos diferentes dos formularios (ContactForm, ContactSidebar, etc).
  *
- * Tratamento uniforme de erro:
- * - HTTP 4xx/5xx → `{ ok: false, error: msg }`
+ * Mapeia status HTTP pra `ok` boolean (backend retorna `{success:true,data}`
+ * em sucesso, `{error}` em falha — este wrapper normaliza pra `{ok,error}`).
+ *
+ * Tratamento uniforme:
+ * - HTTP 200 → `{ ok: true }` (sucesso)
+ * - HTTP 4xx/5xx → `{ ok: false, error: msg do backend }`
  * - Network error → `{ ok: false, error: 'Erro de rede' }`
- * - 200 → propaga response do backend
  */
 export async function submitLead(
   payload: Record<string, unknown>
@@ -42,7 +45,9 @@ export async function submitLead(
       return { ok: false, error: data.error || `HTTP ${res.status}` }
     }
 
-    return (await res.json()) as LeadResponse
+    // Backend `/api/lead` retorna `{success:true,data:...}` em 200.
+    // Normalizamos pra `{ok:true}` que e o contrato do client wrapper.
+    return { ok: true }
   } catch (err) {
     const msg = err instanceof Error ? err.message : "Erro de rede"
     return { ok: false, error: msg }

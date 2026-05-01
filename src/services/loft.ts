@@ -179,24 +179,6 @@ function extractCharacteristics(raw: LoftCharacteristicsMap | undefined): string
   return result
 }
 
-// Whitelist sincronizada com PropertyType em src/types/property.ts.
-// Fase 20.W2.5: parsePropertyType valida tipo da API antes de aceitar — se Loft
-// retornar tipo desconhecido (typo, novo cadastro), cai no fallback "Apartamento"
-// ao inves de propagar valor invalido pra schema/filtros.
-const VALID_PROPERTY_TYPES: readonly PropertyType[] = [
-  "Apartamento", "Apartamento Duplex", "Casa", "Casa em Condomínio",
-  "Chácara", "Cobertura", "Empreendimento", "Kitnet", "Loja",
-  "Ponto Comercial", "Prédio Comercial", "Sala Comercial",
-  "Salas/Conjuntos", "Sobrado", "Studio", "Terreno", "Terreno Comercial",
-] as const
-
-function parsePropertyType(raw: unknown): PropertyType {
-  if (typeof raw === "string" && VALID_PROPERTY_TYPES.includes(raw as PropertyType)) {
-    return raw as PropertyType
-  }
-  return "Apartamento"
-}
-
 /**
  * Determina finalidade (Venda / Locação / Venda e Locação) cruzando Status do
  * CRM com presença de ValorVenda/ValorLocacao.
@@ -299,7 +281,7 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
     titulo,
     tituloSite: raw.TituloSite || null,
     textoAnuncio: raw.TextoAnuncio || null,
-    tipo: parsePropertyType(raw.Categoria),
+    tipo: (raw.Categoria || "Apartamento") as PropertyType,
     finalidade,
     status: status as Property["status"],
     disponivel,
