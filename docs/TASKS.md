@@ -33,9 +33,9 @@
 | 16 | Claude Managed Agents | 14 | 0 | 14 | MEDIO PRAZO |
 | 17 | Agentes como Produto SaaS | 14 | 0 | 14 | LONGO PRAZO |
 | 18 | Custom Blog Admin (Sanity Replacement) | 69 | 60 | 9 | EM ANDAMENTO (Sprints 1-4: 18.A-G done; 18.H-I pendentes) |
-| 19 | **SEO Competitive Action Plan** | 23 | 13 | 10 | **PRIORITARIO — P0 (13/13) ✅ DONE 30/04** |
+| 19 | **SEO Competitive Action Plan** | 25 | 14 | 11 | **PRIORITARIO — P0 (13/13) ✅ + P1.1 ✅ + P1.16 BLOQUEADO Bruno** |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **536** | **365** | **171** | **68%** |
+| | **TOTAL** | **538** | **366** | **172** | **68%** |
 
 **Sessao 2026-04-17:** 25 CRITICAL/HIGH de seguranca/SEO fixados em 5 commits (`0d7b19f`, `50b1f86`, `7bb5f5a`, `19154ec`, `6b13794`). 4 rounds de auditoria convergiram — round 4 retornou 0 CRITICAL. Acoes externas pre-cutover listadas em Fase 7.8. HIGH/MEDIUM remanescentes (hardening pos-cutover, nao blockers) em Fase 7.10.
 
@@ -3638,7 +3638,15 @@ mais 5 paginas/itens com gaps:
   - `/busca` antes tinha 38 palavras. Adicionado bloco "Como buscar imoveis em
     Curitiba" com cross-links pra 4 landings tipadas + 5 faixas de preco + 10 bairros principais
 
-#### Backlog 19.P1 (proximos sprints, diferidos)
+#### Sprint 19.P1 — entregas adicionais e backlog
+
+- [x] **19.P1.1** Pillar `/comprar-apartamento-curitiba` (4403 palavras, 12 secoes, 40+ subsecoes) — concluido 30/04 (commit b559c89)
+  - MDX denso citando FipeZAP mar/2026, 20 bairros analisados, 10 construtoras
+    Curitiba, financiamento 5 bancos, ITBI 3%, documentacao completa
+  - generateComprarApartamentoFAQ() com 10 Q&A especializadas
+  - Sitemap shard 2 priority 0.9
+  - Internal links de /apartamentos-curitiba (LandingSEOContent card destaque) e /comprar-imovel-curitiba (relatedLinks topo)
+  - Estimativa: top 5 query "comprar apartamento curitiba" em 4-8 meses
 
 - [ ] **19.14** FAQ generica em `/blog/[slug]` (15 posts atuais sem FAQ schema)
   - Funcao `generateBlogPostFAQ(post)` que adapta Q&A por categoria do post
@@ -3647,6 +3655,129 @@ mais 5 paginas/itens com gaps:
 - [ ] **19.15** OG images dedicadas pra cada pillar (substituir /opengraph-image global)
   - Gerar 3 imagens 1200x630 com tema do pillar (comprar/morar/alugar)
   - Salvar em /public/og/ e referenciar no metadata
+
+- [ ] **19.16** AggregateRating schema integrado com Google Business Profile (GMN)
+  > **BLOQUEADO — aguardando Bruno** (acesso Google Cloud + Place ID FYMOOB)
+  >
+  > **Contexto:** FYMOOB tem perfil GMN ativo com **4.9 estrelas e 59 reviews**
+  > (verificado em busca pública 2026-04-30). Hoje as estrelas só aparecem
+  > no Knowledge Panel do Google. Implementar `AggregateRating` schema faz
+  > as estrelas aparecerem **no SERP organico do site tambem** — rich result
+  > com CTR esperado +15-30%.
+  >
+  > **3 caminhos avaliados** (ver conversa em [docs/seo/seo-playbook-fymoob.md](seo/seo-playbook-fymoob.md)
+  > Secao 5):
+  > - Caminho 1: Manual estatico (30min, mas dado fica stale) ❌ rejeitado
+  > - Caminho 2: **Google Places API** (3-4h dev, free tier MUITO sobrado, atualiza
+  >   automaticamente 1x por dia via cache 24h) ✅ **escolhido**
+  > - Caminho 3: Business Profile API (6-10h, mostra reviews individuais, requer
+  >   verificar GMN primeiro) — futuro 2-3 meses
+
+### Fase 19.16 — Pre-requisitos do Bruno (AGUARDANDO)
+
+- [ ] **Bruno reclama/verifica perfil GMN** em https://business.google.com
+  - Loga com `fymoob@gmail.com`
+  - Busca "Fymoob" — clica em "Reclamar" / "Sou o dono"
+  - Verifica por SMS ou ligacao (5min) ou carta com PIN (5-14 dias)
+  - **Por que importa:** atualmente o "Own this business?" aparece no Knowledge
+    Panel = ninguem reclamou ainda. Sem verificar, concorrentes podem editar
+    dados, spam pode entrar como review, FYMOOB nao pode responder.
+  - **Esforco Bruno:** 30min ativo + 1-3 dias espera
+
+- [ ] **Bruno cria/acessa Google Cloud Project**
+  - https://console.cloud.google.com (com `fymoob@gmail.com`)
+  - Cria projeto novo ou usa existente
+  - Compartilha acesso comigo (`dev.viniciusdamas@gmail.com`) como Editor
+  - Ou **alternativa**: gera API key sozinho seguindo passo-a-passo que envio
+
+- [ ] **Habilitar Places API (New)** no projeto
+  - Console GCP > APIs & Services > Library
+  - Busca "Places API (New)"
+  - Clica "Enable"
+
+- [ ] **Gerar API key restrita** (seguranca obrigatoria)
+  - Console GCP > APIs & Services > Credentials > Create credentials > API key
+  - Restrict key:
+    - HTTP referrers: `https://fymoob.com.br/*`, `https://*.vercel.app/*` (preview deploys), `localhost:3000/*` (dev)
+    - API restrictions: somente "Places API (New)"
+  - Compartilhar key segura
+
+- [ ] **Bruno me envia o Place ID da FYMOOB**
+  - https://developers.google.com/maps/documentation/places/web-service/place-id
+  - Buscar "Fymoob Curitiba" ou pelo endereco "R. Eng. Heitor Soares Gomes, 778"
+  - Copiar o Place ID (formato `ChIJ...`)
+
+### Fase 19.16 — Implementacao (apos Bruno completar pre-requisitos)
+
+- [ ] **Criar `src/services/gmn.ts`** com `getGMNRating()`
+  - Fetch ao Places API (New) via `X-Goog-Api-Key` header
+  - Retorna `{ rating, userRatingCount }`
+  - Cache 24h via `unstable_cache` com tag `gmn`
+  - Fallback: se API falhar ou retornar erro, retornar valores hardcoded (4.9 / 59)
+    pra schema nao quebrar
+
+- [ ] **Atualizar `generateOrganizationSchema()`** em `src/lib/seo.ts`
+  - Async function (era sync)
+  - Inclui `aggregateRating: { @type, ratingValue, reviewCount, bestRating: "5", worstRating: "1" }`
+  - Atualizar callers em `layout.tsx` (await) e qualquer outro
+
+- [ ] **Adicionar var ambiente**
+  - `.env.local`: `GOOGLE_PLACES_API_KEY=AIzaSy...`
+  - `.env.example`: `GOOGLE_PLACES_API_KEY=` (placeholder)
+  - Vercel Production: adicionar via dashboard
+  - Vercel Preview: mesma key (restrita por dominio)
+
+- [ ] **Endpoint `/api/revalidate-gmn`** com auth header `x-revalidate-secret`
+  - Pra forcar refresh manual quando review novo aparece
+  - `revalidateTag("gmn")`
+
+- [ ] **Smoke test pos-deploy**
+  - Verificar que JSON-LD na home contem `aggregateRating` valido
+  - Schema validator: https://validator.schema.org → deve passar
+  - Rich Results Test: https://search.google.com/test/rich-results → deve mostrar
+    "Local Business with reviews" elegivel
+
+- [ ] **Submeter URL no GSC URL Inspection** (Bruno) apos deploy
+  - https://fymoob.com.br/ → Request Indexing
+  - Aguardar 7-14 dias pra Google reprocessar e mostrar estrelas
+
+- [ ] **Monitorar GSC > Enhancements > Review snippets**
+  - Google reporta se aceitou o schema
+  - Se rejeitar, ajustar
+
+### Fase 19.16 — Custo monetario
+
+- **Free tier Google Maps Platform:** US$ 200/mes em creditos gratuitos
+- **Places API (New) Place Details:** US$ 17/1000 requests
+- **Uso projetado:** ~30 requests/mes (1/dia + alguns extras de revalidate)
+  = US$ 0.51/mes = **0.25% do free tier**
+- **Risco de cobranca:** zero ate site fazer >390k requests/mes (impossivel
+  com cache 24h)
+
+### Fase 19.16 — Estimativa de impacto
+
+- **CTR organico:** +15-30% (estudos Google/Moz sobre rich snippets com
+  estrelas)
+- **Diferenciacao:** marketplaces (Viva Real, ZAP, Imovelweb) NAO mostram
+  estrelas proprias no SERP (so internas no site). FYMOOB com 4.9 estrelas
+  no SERP organico = vantagem competitiva clara em "imobiliaria curitiba",
+  "fymoob curitiba", queries de marca.
+- **E-E-A-T:** sinal de Trust forte (estrelas = social proof)
+- **Tempo pra ver estrelas no SERP:** 7-21 dias apos schema deploy + Bruno
+  pedir Request Indexing
+
+### Fase 19.16 — Followup (apos 30 dias rodando)
+
+- [ ] Avaliar se faz sentido migrar pra Caminho 3 (Business Profile API)
+  - Vantagem: mostra reviews individuais como cards no site (testimonials sociais)
+  - Pre-req: GMN ja verificado (passo 1 acima)
+  - Esforco adicional: 4-6h
+- [ ] Pedir reviews novos a clientes recentes via WhatsApp
+  - Template: "Bruno aqui da FYMOOB. Foi um prazer atender voce na compra do
+    [imovel]. Pode dar 1 minutinho pra deixar uma avaliacao? Link: [link
+    GMN review]"
+  - Meta: 59 → 75-100 reviews em 60-90 dias (acelera AGGEgateRating com
+    contagem maior = mais credibilidade)
   - Hoje: Agua Verde, Batel, Bigorrilho, Centro, Ecoville, Portao
   - Adicionar: Juveve, Cabral, Cristo Rei, Alto da Gloria, Ahu, Mossungue, Cidade Industrial, Sao Braz, Santa Felicidade
   - Implementar em `RelatedPages` ou bloco "Explore por bairro"
