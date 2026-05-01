@@ -9,8 +9,7 @@ import {
 } from "@/services/articles"
 import { hasEditorialLayout } from "@/data/empreendimento-assets"
 import type { PropertyType } from "@/types/property"
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
+import { SITE_URL } from "@/lib/constants"
 
 const TIPO_SLUG_MAP: Partial<Record<PropertyType, string>> = {
   Apartamento: "apartamentos",

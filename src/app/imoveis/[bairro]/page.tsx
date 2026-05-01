@@ -21,6 +21,7 @@ import { projectForCard } from "@/lib/property-projection"
 import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { RelatedPages } from "@/components/seo/RelatedPages"
 import { BairroMarketStats } from "@/components/bairro/BairroMarketStats"
+import { SITE_URL } from "@/lib/constants"
 
 interface BairroPageProps {
   params: Promise<{ bairro: string }>
@@ -100,7 +101,6 @@ interface BairroStatsForDescription {
 // Bruno cadastra bairros novos. Inclui keywords de volume + geografia.
 function generateDescriptionFromStats(bairro: string, stats: BairroStatsForDescription): string {
   const { total, cidade, precoMin, precoMax, tiposPredominantes } = stats
-  const formatPrice = (v: number) => v.toLocaleString("pt-BR", { maximumFractionDigits: 0 })
   const tiposText = tiposPredominantes && tiposPredominantes.length > 0
     ? tiposPredominantes.slice(0, 3).join(", ").toLowerCase()
     : "apartamentos, casas e sobrados"
@@ -108,9 +108,9 @@ function generateDescriptionFromStats(bairro: string, stats: BairroStatsForDescr
     ? `1 imóvel disponível`
     : `${total} imóveis disponíveis`
   const precoText = precoMin && precoMax && precoMin !== precoMax
-    ? ` com valores entre R$ ${formatPrice(precoMin)} e R$ ${formatPrice(precoMax)}`
+    ? ` com valores entre ${formatPrice(precoMin)} e ${formatPrice(precoMax)}`
     : precoMin
-      ? ` a partir de R$ ${formatPrice(precoMin)}`
+      ? ` a partir de ${formatPrice(precoMin)}`
       : ""
   return `Explore ${tiposText} no bairro ${bairro}, em ${cidade}. ${volumeText}${precoText}. A FYMOOB ajuda você a encontrar o imóvel ideal com atendimento personalizado e negociações justas.`
 }
@@ -160,7 +160,6 @@ export default async function BairroPage({ params }: BairroPageProps) {
     `/imoveis/${bairroSlug}`
   )
 
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
   const datasetSchema = marketStats && marketStats.precoMedioVenda
     ? {
         "@context": "https://schema.org",

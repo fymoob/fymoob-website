@@ -12,6 +12,7 @@ import {
   generatePropertyDetailFAQ,
   safeJsonLd,
 } from "@/lib/seo"
+import { SITE_URL } from "@/lib/constants"
 import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { getPropertyPriceDisplay } from "@/lib/property-price"
 import {
@@ -74,7 +75,6 @@ export async function generateMetadata({
   }
 
   const description = generatePropertyDescription(property)
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
 
   return {
     title: property.titulo,
@@ -83,7 +83,7 @@ export async function generateMetadata({
       title: property.titulo,
       description,
       type: "website",
-      url: `${siteUrl}/imovel/${property.slug}`,
+      url: `${SITE_URL}/imovel/${property.slug}`,
       images: getPropertyImage(property)
         ? [
             {

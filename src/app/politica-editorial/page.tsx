@@ -3,6 +3,7 @@ import { safeJsonLd } from "@/lib/seo"
 import Link from "next/link"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { Shield, CheckCircle2, Users, BookOpen, RefreshCw, AlertCircle } from "lucide-react"
+import { SITE_URL } from "@/lib/constants"
 
 export const metadata: Metadata = {
   title: { absolute: "Política Editorial | FYMOOB Imobiliária" },
@@ -51,8 +52,6 @@ const principios = [
 ]
 
 export default function PoliticaEditorialPage() {
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
-
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",

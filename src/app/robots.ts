@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next"
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
+import { SITE_URL } from "@/lib/constants"
 
 // Next 16 NAO gera /sitemap.xml index automaticamente com generateSitemaps;
 // so cria shards individuais /sitemap/<id>.xml. Apontamos robots.txt direto

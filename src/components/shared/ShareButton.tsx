@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { Share2, Link2, MessageCircle, Check } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { SITE_URL } from "@/lib/constants"
 
 interface ShareButtonProps {
   title: string
@@ -13,8 +14,7 @@ interface ShareButtonProps {
 export function ShareButton({ title, url, variant = "default" }: ShareButtonProps) {
   const [copied, setCopied] = useState(false)
   const [canNativeShare, setCanNativeShare] = useState(false)
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
-  const fullUrl = url.startsWith("http") ? url : `${siteUrl}${url}`
+  const fullUrl = url.startsWith("http") ? url : `${SITE_URL}${url}`
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${title} — ${fullUrl}`)}`
 
   useEffect(() => {

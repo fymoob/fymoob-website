@@ -8,6 +8,7 @@ import { Suspense } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ChromeGate } from "@/components/layout/ChromeGate";
+import { SITE_URL } from "@/lib/constants";
 import "./globals.css";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
@@ -50,14 +51,12 @@ export const metadata: Metadata = {
   },
   description:
     "Encontre apartamentos, casas e sobrados em Curitiba. Imobiliária FYMOOB — seu imóvel ideal com atendimento personalizado.",
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
-  ),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
     type: "website",
     locale: "pt_BR",
     siteName: "FYMOOB Imobiliária",
-    url: process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br",
+    url: SITE_URL,
     images: [
       {
         url: "/opengraph-image",

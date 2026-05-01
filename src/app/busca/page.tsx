@@ -22,6 +22,7 @@ import {
 } from "@/services/loft"
 import type { PropertyFilters, PropertyFinalidade, PropertyType } from "@/types/property"
 import { projectForCard } from "@/lib/property-projection"
+import { SITE_URL } from "@/lib/constants"
 
 type SearchParamValue = string | string[] | undefined
 type SearchParamsMap = Record<string, SearchParamValue>
@@ -47,7 +48,6 @@ interface ParsedSearchState {
 }
 
 const PAGE_SIZE = 24
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
 
 const TYPE_BY_SLUG: Record<string, PropertyType> = {
   apartamento: "Apartamento",

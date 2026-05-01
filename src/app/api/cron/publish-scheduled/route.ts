@@ -18,8 +18,7 @@ import { NextResponse } from "next/server"
 import { revalidateTag } from "next/cache"
 import { getSupabaseAdmin, isSupabaseConfigured } from "@/lib/supabase-admin"
 import { submitToIndexNow } from "@/lib/indexnow"
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
+import { SITE_URL } from "@/lib/constants"
 
 export async function GET(request: Request) {
   // Auth: Vercel cron envia este header. Em prod, sem ele = 401.

@@ -46,6 +46,25 @@ export function formatPrice(value: number | null): string {
 }
 
 /**
+ * Formato compacto pra valores grandes — "R$ 1,2 mi", "R$ 350 mil".
+ * Usado em sliders/filtros pra economizar espaco visual.
+ * Fase 20.W1.2: consolidacao de duplicacao em PriceFilter + useSearchBarController.
+ */
+export function formatCompactPrice(value: number): string {
+  if (value >= 1_000_000) {
+    return `R$ ${(value / 1_000_000).toLocaleString("pt-BR", {
+      maximumFractionDigits: 1,
+    })} mi`
+  }
+  if (value >= 1_000) {
+    return `R$ ${(value / 1_000).toLocaleString("pt-BR", {
+      maximumFractionDigits: 0,
+    })} mil`
+  }
+  return formatPrice(value)
+}
+
+/**
  * Mascara BR para telefone — celular (9 digitos) ou fixo (8 digitos).
  * Aceita com ou sem DDD, formata incrementalmente enquanto o usuario digita.
  * Exemplos:
@@ -87,7 +106,6 @@ export function generatePropertySlug(property: {
   areaPrivativa?: number | null
   slug: string
 }): string {
-  // Use existing slug as the canonical slug
   return property.slug
 }
 

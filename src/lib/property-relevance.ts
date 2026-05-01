@@ -1,4 +1,5 @@
 import type { Property } from "@/types/property"
+import { SCORING_WEIGHTS as W } from "@/lib/constants"
 
 /**
  * Score composto para ordenação "Mais relevantes" na busca.
@@ -11,40 +12,39 @@ import type { Property } from "@/types/property"
  *
  * Total máximo: ~230 pts. Diferenciais marcados pelo corretor sempre ganham do tempo.
  *
+ * Pesos editáveis em src/lib/constants.ts → SCORING_WEIGHTS.
+ *
  * NÃO personaliza por usuário (site local, dataset pequeno, não justifica ML).
  * Match de busca por keyword fica pra Fase 2 quando houver campo de busca textual.
  */
-export function scoreProperty(p: Property, now: Date = new Date()): number {
+export function scoreProperty(property: Property, now: Date = new Date()): number {
   let score = 0
 
-  // 1. Destaque (sinal mais forte — Bruno marca intencionalmente no CRM)
-  if (p.superDestaqueWeb) score += 150
-  if (p.destaqueWeb) score += 100
+  if (property.superDestaqueWeb) score += W.SUPER_DESTAQUE
+  if (property.destaqueWeb) score += W.DESTAQUE
 
-  // 2. Qualidade do cadastro (máx 50 pts)
-  // 2a. Fotos: até 15 pts (5+ fotos = cheio)
-  const photoCount = Array.isArray(p.fotos) ? p.fotos.length : 0
-  score += Math.min(15, photoCount * 3)
+  const photoCount = Array.isArray(property.fotos) ? property.fotos.length : 0
+  score += Math.min(W.MAX_PHOTO_SCORE, photoCount * W.PHOTO_PER_UNIT)
 
-  // 2b. Descrição rica: +15 se tem mais de 200 chars
-  if (p.descricao && p.descricao.length > 200) score += 15
+  if (property.descricao && property.descricao.length > W.DESCRIPTION_MIN_CHARS) {
+    score += W.RICH_DESCRIPTION
+  }
 
-  // 2c. Geolocalização: +10 (permite mostrar no mapa)
-  if (p.latitude && p.longitude) score += 10
+  if (property.latitude && property.longitude) score += W.HAS_GEO
 
-  // 2d. Campos completos: +10 (área + quartos + banheiros preenchidos)
-  if (p.areaPrivativa && p.dormitorios && p.banheiros) score += 10
+  if (property.areaPrivativa && property.dormitorios && property.banheiros) {
+    score += W.COMPLETE_FIELDS
+  }
 
-  // 3. Recência (máx 30 pts)
-  // Usa dataAtualizacao se disponível, senão dataCadastro
-  const dateStr = p.dataAtualizacao ?? p.dataCadastro
+  // Recência usa dataAtualizacao se disponível, senão dataCadastro.
+  // > 90 dias: 0 pts (não prejudica, só não impulsiona).
+  const dateStr = property.dataAtualizacao ?? property.dataCadastro
   if (dateStr) {
     const date = new Date(dateStr)
     const daysDiff = (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
-    if (daysDiff < 7) score += 30
-    else if (daysDiff < 30) score += 20
-    else if (daysDiff < 90) score += 10
-    // > 90 dias: 0 pts (não prejudica, só não impulsiona)
+    if (daysDiff < 7) score += W.RECENT_7D
+    else if (daysDiff < 30) score += W.RECENT_30D
+    else if (daysDiff < 90) score += W.RECENT_90D
   }
 
   return score
@@ -60,7 +60,6 @@ export function sortByRelevance(properties: Property[]): Property[] {
     const scoreB = scoreProperty(b, now)
     if (scoreB !== scoreA) return scoreB - scoreA
 
-    // Desempate: mais recente primeiro
     const dateA = a.dataAtualizacao ?? a.dataCadastro
     const dateB = b.dataAtualizacao ?? b.dataCadastro
     if (!dateA && !dateB) return 0

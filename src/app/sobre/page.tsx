@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { safeJsonLd } from "@/lib/seo"
+import { SITE_URL } from "@/lib/constants"
 import Image from "next/image"
 import Link from "next/link"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
@@ -93,8 +94,6 @@ export default async function SobrePage() {
     { number: totalEmpreendimentos, suffix: "", label: "Empreendimentos", icon: TrendingUp },
     { number: null, text: "J 9420", label: "CRECI ativo", icon: Award },
   ]
-
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
 
   const jsonLd = {
     "@context": "https://schema.org",

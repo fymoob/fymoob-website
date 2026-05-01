@@ -26,8 +26,7 @@ import { generateAuthorSchema, safeJsonLd } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { BlockRenderer } from "@/components/blog/BlockRenderer"
 import type { BlockNoteBlock } from "@/lib/schemas/article"
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
+import { SITE_URL } from "@/lib/constants"
 
 interface AuthorPageProps {
   params: Promise<{ slug: string }>

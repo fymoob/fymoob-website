@@ -21,6 +21,7 @@ import { PlantasGallery } from "@/components/empreendimento/PlantasGallery"
 import { WhatsAppTracker } from "@/components/empreendimento/WhatsAppTracker"
 import { EmpreendimentoStandardSEOContent } from "@/components/empreendimento/EmpreendimentoStandardSEOContent"
 import type { Property } from "@/types/property"
+import { SITE_URL } from "@/lib/constants"
 
 interface EmpreendimentoPageProps {
   params: Promise<{ slug: string }>
@@ -169,7 +170,6 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
     : (hasEditorialLayout(slug) ? (assets?.plantas || []) : [])
 
   const itemListSchema = generateItemListSchema(properties, `/empreendimento/${slug}`)
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
   const rawHeroImage = assets?.heroImage || emp.imageUrl || undefined
   const absoluteHeroImage = rawHeroImage
     ? rawHeroImage.startsWith("http")

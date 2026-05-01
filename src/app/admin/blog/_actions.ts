@@ -21,8 +21,7 @@ import { blocksWordCount } from "@/components/blog/BlockRenderer"
 import { runSeoChecks, passesPublishGate } from "@/lib/seo-score"
 import { submitToIndexNow } from "@/lib/indexnow"
 import { slugify } from "@/lib/utils"
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
+import { SITE_URL } from "@/lib/constants"
 
 export interface ActionResult {
   ok: boolean

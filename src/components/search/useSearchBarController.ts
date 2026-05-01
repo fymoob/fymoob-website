@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState, type Dispatch, type SetStateAction } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
-import { slugify } from "@/lib/utils"
+import { slugify, formatCompactPrice } from "@/lib/utils"
 import type { MultiSelectOption } from "@/components/search/filters/types"
 import type { BairroSummary, TypeSummary } from "@/types/property"
 import {
@@ -72,25 +72,6 @@ export interface SearchBarController {
 
 const DEFAULT_BEDROOM_OPTIONS = ["1", "2", "3", "4", "5"]
 
-function formatCompactCurrency(value: number): string {
-  if (value >= 1_000_000) {
-    return `R$ ${(value / 1_000_000).toLocaleString("pt-BR", {
-      maximumFractionDigits: 1,
-    })} mi`
-  }
-
-  if (value >= 1_000) {
-    return `R$ ${(value / 1_000).toLocaleString("pt-BR", {
-      maximumFractionDigits: 0,
-    })} mil`
-  }
-
-  return value.toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-    maximumFractionDigits: 0,
-  })
-}
 
 function summarizeSelection(
   selectedValues: string[],
@@ -603,7 +584,7 @@ export function useSearchBarController({
   const [minPrice, maxPrice] = pendingFilters.priceRange
   const priceLabel =
     minPrice > effectivePriceBounds.min || maxPrice < effectivePriceBounds.max
-      ? `${formatCompactCurrency(minPrice)} - ${formatCompactCurrency(maxPrice)}`
+      ? `${formatCompactPrice(minPrice)} - ${formatCompactPrice(maxPrice)}`
       : "Qualquer preco"
 
   const quartosLabel = (() => {

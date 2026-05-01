@@ -3,8 +3,7 @@ import type { BlogPost } from "@/types/blog"
 import type { Author } from "@/lib/schemas/author"
 import type { ArticleFull } from "@/services/articles"
 import { formatPrice, formatArea, getPropertyImage } from "@/lib/utils"
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fymoob.com.br"
+import { SITE_URL, MAX_META_DESCRIPTION_LENGTH } from "@/lib/constants"
 
 export function generateOrganizationSchema() {
   return {
@@ -350,10 +349,9 @@ export function generatePropertyDescription(property: Property): string {
 
   let result = parts.join(" ")
 
-  // Truncate se passar de 160 chars (raro, mas pra garantir nao truncar
-  // visivel no Google que limita ~155-160)
-  if (result.length > 160) {
-    result = result.slice(0, 157).trim() + "..."
+  // Trunca antes do limite Google SERP pra evitar elipses do Google.
+  if (result.length > MAX_META_DESCRIPTION_LENGTH) {
+    result = result.slice(0, MAX_META_DESCRIPTION_LENGTH - 3).trim() + "..."
   }
 
   return result

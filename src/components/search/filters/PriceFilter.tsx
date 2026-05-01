@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic"
 import { PRICE_STEP, type PriceBounds, normalizeRange } from "./search-state"
+import { formatCompactPrice } from "@/lib/utils"
 
 // Slider @base-ui/react e pesado (RAF, pointer events, range normalization).
 // Nao e LCP nem above-the-fold — renderiza so quando o usuario abre o popover
@@ -28,22 +29,6 @@ function formatCurrency(value: number): string {
   })
 }
 
-function formatCompactCurrency(value: number): string {
-  if (value >= 1_000_000) {
-    return `R$ ${(value / 1_000_000).toLocaleString("pt-BR", {
-      maximumFractionDigits: 1,
-    })} mi`
-  }
-
-  if (value >= 1_000) {
-    return `R$ ${(value / 1_000).toLocaleString("pt-BR", {
-      maximumFractionDigits: 0,
-    })} mil`
-  }
-
-  return formatCurrency(value)
-}
-
 export function PriceFilter({ value, bounds, onChange }: PriceFilterProps) {
   return (
     <div className="space-y-4">
@@ -68,8 +53,8 @@ export function PriceFilter({ value, bounds, onChange }: PriceFilterProps) {
       />
 
       <div className="flex items-center justify-between text-xs font-medium text-neutral-500">
-        <span>{formatCompactCurrency(bounds.min)}</span>
-        <span>{formatCompactCurrency(bounds.max)}</span>
+        <span>{formatCompactPrice(bounds.min)}</span>
+        <span>{formatCompactPrice(bounds.max)}</span>
       </div>
     </div>
   )
