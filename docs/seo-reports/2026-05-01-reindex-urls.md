@@ -222,16 +222,20 @@ for (let i = 0; i < urls.length; i += 10000) {
 
 ---
 
-## Sitemaps a re-submeter no GSC (Tier 0 — fazer JÁ)
+## Sitemaps a re-submeter no GSC (Tier 0 — ✅ FEITO 01/05/2026 via MCP)
 
-GSC > Sitemaps > Submit > re-submit cada um:
+> ⚠️ **Next 16 NAO gera `/sitemap.xml` index** automaticamente — apenas
+> shards individuais `/sitemap/<id>.xml` (ver `src/app/robots.ts:5-9`).
+> Submeter `/sitemap.xml` retorna "Não foi possível buscar". Remover
+> manualmente no GSC se aparecer entrada broken.
 
 ```
-https://fymoob.com.br/sitemap.xml
-https://fymoob.com.br/sitemap/0.xml
-https://fymoob.com.br/sitemap/1.xml
-https://fymoob.com.br/sitemap/2.xml
-https://fymoob.com.br/sitemap/3.xml
+https://fymoob.com.br/sitemap/0.xml  → 248 imóveis
+https://fymoob.com.br/sitemap/1.xml  → 188 bairros + combos
+https://fymoob.com.br/sitemap/2.xml  →  30 blog/guias
+https://fymoob.com.br/sitemap/3.xml  → 122 estáticas + empreendimentos
+                                       ─────
+                                       588 URLs total
 ```
 
 Re-submeter força Google a re-processar lastmod das URLs e priorizar crawl.
