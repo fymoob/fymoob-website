@@ -2,6 +2,11 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* Exclui scripts/ do auto-scan do Tailwind v4 — Python e .mjs com strings
+   HTML/regex provocam RangeError "Invalid code point" no markUsedVariable.
+   Bug detectado 01/05/2026 — scripts/extract_*.py quebraram CSS no Vercel. */
+@source not "../../scripts";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

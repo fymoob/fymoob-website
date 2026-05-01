@@ -4,7 +4,12 @@
  * Estrategia:
  * 1. Extrai componentes MDX customizados (`<MethodologyBox>`, `<CalloutBox>`,
  *    `<CTABox>`, `<Changelog>`) com regex, substituindo cada um por placeholder
- *    serial (`__FYMOOB_BLOCK_0__`, `__FYMOOB_BLOCK_1__`, ...).
+ *    serial em formato HTML comment `<!--FYMOOBBLOCK0-->`.
+ *    Comment HTML evita interpretacao do markdown parser (anteriormente usavamos
+ *    `__FYMOOB_BLOCK_N__` mas `__texto__` em markdown vira <strong>, e o detector
+ *    de placeholder so olhava text node — placeholder vazava como bold no output.
+ *    Bug detectado em 01/05/2026 com 15/15 posts afetados, fix retroativo via
+ *    scripts/fix-fymoob-block-placeholders.mjs).
  * 2. Pre-processa MDX → markdown puro (mantem placeholders como paragrafos).
  * 3. Parse markdown com `unified + remark-parse + remark-gfm` (tabelas).
  * 4. Walk MDAST, emite BlockNote blocks.
@@ -54,7 +59,9 @@ function parseJsxAttrs(raw) {
 function extractCustomBlocks(mdxRaw) {
   const blocks = []
   const markdown = mdxRaw.replace(COMPONENT_RE, (_match, tag, attrsRaw, inner) => {
-    const placeholder = `__FYMOOB_BLOCK_${blocks.length}__`
+    // HTML comment pra evitar interpretacao markdown (texto entre `__..__` vira
+    // bold antes do detector de placeholder pegar — bug detectado 01/05/2026).
+    const placeholder = `<!--FYMOOBBLOCK${blocks.length}-->`
     const attrs = parseJsxAttrs(attrsRaw)
     blocks.push({
       tag,
@@ -226,15 +233,16 @@ function nodeToBlocks(node, customBlocks) {
     }
 
     case "paragraph": {
-      // Detecta placeholder de bloco custom — paragrafo com unico text
-      // batendo o regex de placeholder.
+      // Detecta placeholder de bloco custom — paragrafo com unico HTML
+      // comment batendo o regex `<!--FYMOOBBLOCKN-->`. Em remark-parse
+      // HTML comments dentro de paragrafo viram nodes do tipo "html".
       const flat = node.children
       if (
         flat.length === 1 &&
-        flat[0].type === "text" &&
-        /^__FYMOOB_BLOCK_(\d+)__$/.test(flat[0].value.trim())
+        flat[0].type === "html" &&
+        /^<!--FYMOOBBLOCK(\d+)-->$/.test(flat[0].value.trim())
       ) {
-        const m = /^__FYMOOB_BLOCK_(\d+)__$/.exec(flat[0].value.trim())
+        const m = /^<!--FYMOOBBLOCK(\d+)-->$/.exec(flat[0].value.trim())
         const idx = parseInt(m[1], 10)
         const custom = customBlocks[idx]
         if (custom) {
@@ -347,6 +355,18 @@ function nodeToBlocks(node, customBlocks) {
       ]
 
     case "html": {
+      // Detecta placeholder de bloco custom no nivel root (remark pode
+      // emitir HTML comments tanto dentro de paragraph quanto direto).
+      const trimmed = (node.value ?? "").trim()
+      const m = /^<!--FYMOOBBLOCK(\d+)-->$/.exec(trimmed)
+      if (m) {
+        const idx = parseInt(m[1], 10)
+        const custom = customBlocks[idx]
+        if (custom) {
+          const block = customBlockToNote(custom)
+          return block ? [block] : []
+        }
+      }
       // Tags HTML soltas (ex: <details>, <br/>) — ignoramos. Bruno raramente
       // usa, e quando usa, o conteudo geralmente e duplicado em paragraph.
       return []
