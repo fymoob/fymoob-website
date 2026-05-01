@@ -176,7 +176,8 @@ export async function generateMetadata({ params }: CombinadaPageProps): Promise<
   const precos = properties.map((p) => p.precoVenda ?? p.precoAluguel).filter((p): p is number => p !== null && p > 0)
 
   return {
-    title: generateLandingTitle(tipoKey, bairro.bairro),
+    // Fase 19.P2.A.1 — title com count
+    title: generateLandingTitle(tipoKey, bairro.bairro, properties.length),
     description: generateLandingDescription(tipoKey, bairro.bairro, properties.length, {
       min: precos.length > 0 ? Math.min(...precos) : null,
       max: precos.length > 0 ? Math.max(...precos) : null,

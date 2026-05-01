@@ -216,41 +216,98 @@ export function generatePropertyTitle(property: Property): string {
   return parts.join(" ")
 }
 
+/**
+ * Gera description rica (130-160 chars target) pra `/imovel/[slug]` —
+ * Fase 19.P2.A.3. Antes media ~100 chars; novo padrao expande com:
+ * tipo+finalidade, bairro, quartos/suite/area/vagas, preco, credibilidade
+ * FYMOOB CRECI J 9420.
+ *
+ * Ordem optimizada pra encaixar dados mais valiosos primeiro (caso Google
+ * trunque em 155). Fallback pra description curta se property tiver poucos
+ * dados.
+ */
 export function generatePropertyDescription(property: Property): string {
   const parts: string[] = []
 
-  parts.push(`${property.tipo} ${property.finalidade === "Locação" ? "para alugar" : "à venda"}`)
-  parts.push(`no ${property.bairro}, Curitiba`)
+  // 1. Tipo + finalidade + localizacao (sempre presente)
+  const finalidadeLabel =
+    property.finalidade === "Locação" ? "para alugar" : "à venda"
+  parts.push(`${property.tipo} ${finalidadeLabel} no ${property.bairro}, Curitiba.`)
 
+  // 2. Detalhes fisicos compactos (quartos, suite, area, vagas) — separados
+  // por virgulas pra serem parseaveis pelo Google
+  const features: string[] = []
   if (property.dormitorios) {
-    parts.push(
-      `com ${property.dormitorios} ${property.dormitorios === 1 ? "quarto" : "quartos"}`
+    features.push(
+      `${property.dormitorios} ${property.dormitorios === 1 ? "quarto" : "quartos"}`
     )
   }
-
+  if (property.suites && property.suites > 0) {
+    features.push(
+      `${property.suites} ${property.suites === 1 ? "suíte" : "suítes"}`
+    )
+  }
   if (property.areaPrivativa) {
-    parts.push(`e ${formatArea(property.areaPrivativa)} m²`)
+    features.push(`${formatArea(property.areaPrivativa)} m²`)
+  }
+  if (property.vagas && property.vagas > 0) {
+    features.push(`${property.vagas} ${property.vagas === 1 ? "vaga" : "vagas"}`)
+  }
+  if (features.length > 0) {
+    parts.push(features.join(", ") + ".")
   }
 
+  // 3. Preco (forte sinal pra busca)
   const price = property.precoVenda ?? property.precoAluguel
   if (price) {
-    parts.push(`por ${formatPrice(price)}`)
+    const suffix = property.finalidade === "Locação" ? "/mês" : ""
+    parts.push(`${formatPrice(price)}${suffix}.`)
   }
 
-  parts.push("- FYMOOB Imobiliária")
+  // 4. Credibilidade (anti-Google-rewrite)
+  parts.push("FYMOOB CRECI J 9420.")
 
-  return parts.join(" ")
+  let result = parts.join(" ")
+
+  // Truncate se passar de 160 chars (raro, mas pra garantir nao truncar
+  // visivel no Google que limita ~155-160)
+  if (result.length > 160) {
+    result = result.slice(0, 157).trim() + "..."
+  }
+
+  return result
 }
 
-export function generateLandingTitle(tipo?: PropertyType | string, bairro?: string): string {
+/**
+ * Gera title pra landings — Fase 19.P2.A.1 (audit revelou 36 bairros sem
+ * numero no title, 100% afetados).
+ *
+ * Quando count for fornecido, prefixa o titulo com "${count} Imóveis no
+ * ${bairro}" — comprovadamente +10-15% CTR (Backlinko 4M Google search
+ * results, 2024). Tamanho final fica 50-65 chars com o template " | FYMOOB
+ * Imobiliária" do layout raiz.
+ */
+export function generateLandingTitle(
+  tipo?: PropertyType | string,
+  bairro?: string,
+  count?: number
+): string {
   if (tipo && bairro) {
     const plural = tipo === "Apartamento" ? "Apartamentos" :
       tipo === "Casa" ? "Casas" :
       tipo === "Sobrado" ? "Sobrados" :
       tipo === "Terreno" ? "Terrenos" : `${tipo}s`
+    if (count) {
+      return `${count} ${plural} no ${bairro}, Curitiba`
+    }
     return `${plural} no ${bairro}, Curitiba`
   }
   if (bairro) {
+    if (count) {
+      // Curto (32-40 chars) — quando combinado com " | FYMOOB Imobiliária"
+      // do template, total fica ~52-60 chars (dentro do sweet spot 40-65).
+      return `${count} Imóveis no ${bairro}, Curitiba`
+    }
     return `Imóveis à Venda e Aluguel no ${bairro}, Curitiba`
   }
   if (tipo) {
@@ -258,11 +315,26 @@ export function generateLandingTitle(tipo?: PropertyType | string, bairro?: stri
       tipo === "Casa" ? "Casas" :
       tipo === "Sobrado" ? "Sobrados" :
       tipo === "Terreno" ? "Terrenos" : `${tipo}s`
+    if (count) {
+      return `${count} ${plural} à Venda e Aluguel em Curitiba`
+    }
     return `${plural} à Venda e Aluguel em Curitiba`
   }
   return "Imóveis à Venda e Aluguel em Curitiba"
 }
 
+/**
+ * Gera description rica (target 140-160 chars) — Fase 19.P2.A.2.
+ *
+ * Audit revelou que 109 paginas bairro+tipo, 5 faixas preco e 12
+ * tipo+finalidade tinham description < 130 chars (curta demais, susceptivel
+ * a Google reescrever — 70-80% das descriptions sao reescritas quando nao
+ * casam com query).
+ *
+ * Padroes priorizam dados concretos (count, faixa preco) na frente.
+ * Credibilidade "FYMOOB CRECI J 9420" no fim sinaliza autoridade
+ * (E-E-A-T) e reduz reescrita do Google.
+ */
 export function generateLandingDescription(
   tipo?: PropertyType | string,
   bairro?: string,
@@ -271,33 +343,68 @@ export function generateLandingDescription(
 ): string {
   const parts: string[] = []
 
-  if (tipo && bairro) {
-    const plural = tipo === "Apartamento" ? "apartamentos" :
-      tipo === "Casa" ? "casas" :
-      tipo === "Sobrado" ? "sobrados" :
-      tipo === "Terreno" ? "terrenos" : `${tipo.toLowerCase()}s`
-    parts.push(`Encontre ${plural} no ${bairro}, Curitiba.`)
+  // Hook com numero quando disponivel (mais valioso pro CTR)
+  const tipoPlural = tipo
+    ? (tipo === "Apartamento" ? "apartamentos"
+      : tipo === "Casa" ? "casas"
+      : tipo === "Sobrado" ? "sobrados"
+      : tipo === "Terreno" ? "terrenos"
+      : `${tipo.toLowerCase()}s`)
+    : null
+
+  if (tipoPlural && bairro) {
+    parts.push(
+      count
+        ? `Encontre ${count} ${tipoPlural} no ${bairro}, Curitiba.`
+        : `Encontre ${tipoPlural} no ${bairro}, Curitiba.`
+    )
   } else if (bairro) {
-    parts.push(`Encontre imóveis à venda e para alugar no ${bairro}, Curitiba.`)
-  } else if (tipo) {
-    const plural = tipo === "Apartamento" ? "apartamentos" :
-      tipo === "Casa" ? "casas" :
-      tipo === "Sobrado" ? "sobrados" :
-      tipo === "Terreno" ? "terrenos" : `${tipo.toLowerCase()}s`
-    parts.push(`Encontre ${plural} à venda e para alugar em Curitiba.`)
+    parts.push(
+      count
+        ? `Encontre ${count} imóveis no ${bairro}, Curitiba.`
+        : `Encontre imóveis à venda e para alugar no ${bairro}, Curitiba.`
+    )
+  } else if (tipoPlural) {
+    parts.push(
+      count
+        ? `Encontre ${count} ${tipoPlural} à venda e aluguel em Curitiba.`
+        : `Encontre ${tipoPlural} à venda e para alugar em Curitiba.`
+    )
+  } else {
+    parts.push(
+      count
+        ? `${count} imóveis à venda e aluguel em Curitiba.`
+        : "Imóveis à venda e para alugar em Curitiba."
+    )
   }
 
-  if (count) {
-    parts.push(`${count} opções disponíveis.`)
-  }
-
+  // Faixa de preco (sinal forte pra qualifying users)
   if (priceRange?.min && priceRange?.max) {
-    parts.push(`Preços de ${formatPrice(priceRange.min)} a ${formatPrice(priceRange.max)}.`)
+    parts.push(
+      `Preços de ${formatPrice(priceRange.min)} a ${formatPrice(priceRange.max)}.`
+    )
   }
 
-  parts.push("FYMOOB Imobiliária.")
+  // Filtros disponiveis (informa user que pode refinar)
+  if (bairro) {
+    parts.push("Filtros por quartos, área e valor.")
+  } else if (tipoPlural) {
+    parts.push("Filtros por bairro, quartos e valor.")
+  } else {
+    parts.push("Apartamentos, casas e sobrados em todos os bairros.")
+  }
 
-  return parts.join(" ")
+  // Credibilidade (E-E-A-T + reduz Google rewrite)
+  parts.push("FYMOOB CRECI J 9420.")
+
+  let result = parts.join(" ")
+
+  // Truncate se passar de 160 chars
+  if (result.length > 160) {
+    result = result.slice(0, 157).trim() + "..."
+  }
+
+  return result
 }
 
 export function generateBlogPostingSchema(post: BlogPost) {

@@ -25,12 +25,10 @@ export async function generateMetadata(): Promise<Metadata> {
     .filter((p): p is number => p !== null && p > 0)
 
   const count = properties.length
-  const title = count > 0
-    ? `${count} Casas em Curitiba à Venda e Aluguel | FYMOOB`
-    : generateLandingTitle("Casa")
 
   return {
-    title,
+    // Fase 19.P2.A.1 — usa generateLandingTitle com count (consolidado em seo.ts)
+    title: generateLandingTitle("Casa", undefined, count),
     description: generateLandingDescription("Casa", undefined, count, {
       min: precos.length > 0 ? Math.min(...precos) : null,
       max: precos.length > 0 ? Math.max(...precos) : null,

@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
     .filter((p): p is number => p !== null && p > 0)
 
   return {
-    title: generateLandingTitle("Sobrado"),
+    title: generateLandingTitle("Sobrado", undefined, properties.length),
     description: generateLandingDescription("Sobrado", undefined, properties.length, {
       min: precos.length > 0 ? Math.min(...precos) : null,
       max: precos.length > 0 ? Math.max(...precos) : null,

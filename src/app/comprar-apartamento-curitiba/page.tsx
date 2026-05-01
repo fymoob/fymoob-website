@@ -26,8 +26,9 @@ function getPillarContent() {
 
 export const metadata: Metadata = {
   title: { absolute: "Comprar Apartamento em Curitiba — Guia Definitivo 2026 | FYMOOB" },
+  // Fase 19.P2.A.4 — encurtado de 198 → 160 chars (Google trunca em ~155)
   description:
-    "Tudo sobre comprar apartamento em Curitiba: preço médio do m² (FipeZAP), 20 melhores bairros, financiamento, ITBI, documentação, planta vs pronto, valorização. Por especialistas FYMOOB CRECI J 9420.",
+    "Comprar apartamento em Curitiba 2026: m² médio FipeZAP, 20 bairros analisados, financiamento Caixa/Itaú, ITBI, planta vs pronto. FYMOOB CRECI J 9420.",
   alternates: { canonical: "/comprar-apartamento-curitiba" },
   keywords: [
     "comprar apartamento curitiba",

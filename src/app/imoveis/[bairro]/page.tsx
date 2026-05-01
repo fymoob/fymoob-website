@@ -54,7 +54,8 @@ export async function generateMetadata({
     .filter((p): p is number => p !== null && p > 0)
 
   return {
-    title: generateLandingTitle(undefined, bairro.bairro),
+    // Fase 19.P2.A.1 — title com count: "${total} Imóveis no ${bairro}, Curitiba"
+    title: generateLandingTitle(undefined, bairro.bairro, bairro.total),
     description: generateLandingDescription(
       undefined,
       bairro.bairro,
