@@ -77,16 +77,21 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       : generateBlogPostingSchema(post)
 
   // FAQPage schema — duas fontes:
-  // 1. Supabase (Fase 18): blocos `faqItem` extraidos via collectFaqItems
-  // 2. MDX legacy: campo `faq` do frontmatter (Fase 19.P2.C.3)
-  // Ambos elegiveis pra Rich Result se >= 2 Q&A.
+  // 1. Supabase (Fase 18): blocos `faqItem` extraidos via collectFaqItems —
+  //    BlockRenderer renderiza Q&A como <details> mas NAO emite schema,
+  //    por isso emitimos manualmente aqui.
+  // 2. MDX legacy: campo `faq` do frontmatter (Fase 19.P2.C.3) — renderizado
+  //    via <DynamicFAQ> que JA EMITE schema FAQPage proprio. NAO duplicar
+  //    aqui (causa erro "FAQPage duplicado" no GSC, observado 01/05/2026
+  //    em /blog/financiamento-caixa-itau-bradesco-comparativo).
   const supabaseFaqItems =
     post.source === "supabase" && post._supabase
       ? collectFaqItems(post._supabase.body)
       : []
   const mdxFaqItems = post.faq && Array.isArray(post.faq) ? post.faq : []
-  const faqItems = supabaseFaqItems.length > 0 ? supabaseFaqItems : mdxFaqItems
-  const faqSchema = faqItems.length >= 2 ? generateFAQPageSchema(faqItems) : null
+  // Schema emitido SOMENTE pra Supabase. MDX deixa o DynamicFAQ emitir.
+  const faqSchema =
+    supabaseFaqItems.length >= 2 ? generateFAQPageSchema(supabaseFaqItems) : null
 
   const formattedDate = new Date(post.date).toLocaleDateString("pt-BR", {
     day: "2-digit",
