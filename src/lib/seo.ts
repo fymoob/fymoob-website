@@ -115,6 +115,87 @@ export function generateLocalBusinessSchema() {
   }
 }
 
+/**
+ * HowTo schema — Fase 19.P2.Q.bonus.
+ *
+ * Pillar `/comprar-apartamento-curitiba` tem 12 secoes que sao literalmente
+ * passos pra comprar apartamento. HowTo schema vira rich result com steps
+ * numerados no SERP — diferencial vs marketplaces (so tem catalogo, nao
+ * tem guia step-by-step).
+ *
+ * Aceita lista de steps (name + url+anchor) e gera schema. URL absoluta
+ * com fragment pra cada passo.
+ */
+export function generateHowToSchema(args: {
+  name: string
+  description: string
+  totalTimeISO?: string
+  pagePath: string
+  steps: { name: string; text: string; anchor?: string }[]
+}) {
+  const pageUrl = args.pagePath.startsWith("http")
+    ? args.pagePath
+    : `${SITE_URL}${args.pagePath}`
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: args.name,
+    description: args.description,
+    ...(args.totalTimeISO && { totalTime: args.totalTimeISO }),
+    inLanguage: "pt-BR",
+    step: args.steps.map((s, i) => ({
+      "@type": "HowToStep",
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+      ...(s.anchor && { url: `${pageUrl}#${s.anchor}` }),
+    })),
+  }
+}
+
+/**
+ * AggregateOffer schema — Fase 19.P2.Q.bonus.
+ *
+ * Para landings de listagem (apartamentos-curitiba, casas-curitiba etc),
+ * adicionar AggregateOffer no nivel da pagina ativa rich snippet com
+ * faixa de preco no SERP ("R$ 250mil – R$ 5mi · 120 disponiveis").
+ *
+ * Empreendimentos /standard ja usam isso (Sessao B). Agora estendido
+ * pras landings tipadas.
+ */
+export function generateAggregateOfferSchema(args: {
+  pagePath: string
+  name: string
+  lowPrice: number
+  highPrice: number
+  offerCount: number
+  itemType?: "Apartment" | "House" | "Place" | "Accommodation"
+}) {
+  const url = args.pagePath.startsWith("http")
+    ? args.pagePath
+    : `${SITE_URL}${args.pagePath}`
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "AggregateOffer",
+    name: args.name,
+    url,
+    priceCurrency: "BRL",
+    lowPrice: args.lowPrice,
+    highPrice: args.highPrice,
+    offerCount: args.offerCount,
+    availability: args.offerCount > 0 ? "https://schema.org/InStock" : "https://schema.org/SoldOut",
+    seller: { "@id": `${SITE_URL}/#localbusiness` },
+    ...(args.itemType && {
+      itemOffered: {
+        "@type": args.itemType,
+        name: args.name,
+      },
+    }),
+  }
+}
+
 export function generatePropertySchema(property: Property) {
   const price = property.precoVenda ?? property.precoAluguel
   const rawImage = getPropertyImage(property)

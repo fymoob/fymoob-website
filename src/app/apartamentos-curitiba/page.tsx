@@ -10,6 +10,8 @@ import {
   generateLandingDescription,
   generateItemListSchema,
   generateLandingFAQ,
+  generateAggregateOfferSchema,
+  generateLocalBusinessSchema,
 } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyListingGrid } from "@/components/search/PropertyListingGrid"
@@ -17,6 +19,7 @@ import { projectForCard } from "@/lib/property-projection"
 import { Pagination } from "@/components/search/Pagination"
 import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { LandingSEOContent } from "@/components/seo/LandingSEOContent"
+import { BairroPriceTable } from "@/components/seo/BairroPriceTable"
 
 export async function generateMetadata(): Promise<Metadata> {
   const { properties } = await getProperties({ tipo: "Apartamento", limit: 1000 })
@@ -42,8 +45,12 @@ export default async function ApartamentosCuritibaPage({ searchParams }: { searc
   const params = await searchParams
   const page = Math.max(1, parseInt(params.page || "1", 10) || 1)
 
-  const [{ properties, total }, bairros, tipos, cidades, stats] = await Promise.all([
+  // Fetch paralelo: pagina visivel (24) + amostra ampla pra BairroPriceTable.
+  // 500 e suficiente pra agregar 15 top bairros com ~15-30 imoveis cada
+  // sem custo adicional vs todas as queries (cache compartilhado).
+  const [{ properties, total }, allApartmentsForStats, bairros, tipos, cidades, stats] = await Promise.all([
     getProperties({ tipo: "Apartamento", page, limit: PAGE_SIZE }),
+    getProperties({ tipo: "Apartamento", limit: 500 }),
     getAllBairros(),
     getAllTypes(),
     getAllCities(),
@@ -68,6 +75,26 @@ export default async function ApartamentosCuritibaPage({ searchParams }: { searc
   // address, offers (Fase 19.P0.2). Substitui o ItemList simples anterior.
   const itemListSchema = generateItemListSchema(properties, "/apartamentos-curitiba")
 
+  // AggregateOffer — Fase 19.P2.Q.bonus. Rich snippet com faixa de preco
+  // total no SERP ("R$ X – R$ Y · 120 disponiveis"). Empreendimentos /standard
+  // ja usam (Sessao B), agora estendido pra landing tipada.
+  const aggregateOfferSchema =
+    precoMin && precoMax && total > 0
+      ? generateAggregateOfferSchema({
+          pagePath: "/apartamentos-curitiba",
+          name: "Apartamentos a Venda e Aluguel em Curitiba",
+          lowPrice: precoMin,
+          highPrice: precoMax,
+          offerCount: total,
+          itemType: "Apartment",
+        })
+      : null
+
+  // RealEstateAgent — Fase 19.P2.Q.bonus. Reforca entidade FYMOOB na pagina
+  // especifica (alem do schema global no layout). Sinaliza pro Google
+  // "isto e uma imobiliaria real, nao agregador".
+  const agentSchema = generateLocalBusinessSchema()
+
   // FAQ ricas — 8 Q&A com dados externos (FipeZAP, IBGE, Caixa). Fase 19.P0.1
   // (gap mais critico vs MySide). DynamicFAQ ja cuida do schema FAQPage.
   const faqQuestions = generateLandingFAQ("Apartamento", total, precoMin, precoMax)
@@ -77,6 +104,16 @@ export default async function ApartamentosCuritibaPage({ searchParams }: { searc
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: safeJsonLd(itemListSchema) }}
+      />
+      {aggregateOfferSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(aggregateOfferSchema) }}
+        />
+      )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(agentSchema) }}
       />
 
       <div className="w-full bg-slate-50 px-4 py-8 md:px-12 lg:px-20 2xl:px-32">
@@ -134,6 +171,16 @@ export default async function ApartamentosCuritibaPage({ searchParams }: { searc
       {/* Bloco SEO textual ~1000 palavras — Fase 19.P0.4. Antes da FAQ pra
           dar contexto crawlavel rico (Google indexa texto, nao cards). */}
       <LandingSEOContent tipo="Apartamento" total={total} />
+
+      {/* Tabela "Preço por bairro" dinamica — Fase 19.P2.Q.bonus.
+          Conteudo unico baseado em dados ao vivo do CRM. Bairros linkados
+          pra landings combinadas distribuem PageRank. */}
+      <BairroPriceTable
+        properties={allApartmentsForStats.properties}
+        tipoSlug="apartamentos"
+        title="Preço médio de apartamentos por bairro em Curitiba"
+        limit={15}
+      />
 
       {/* FAQ + Internal Links */}
       <section className="bg-neutral-50 py-12 md:py-16">
