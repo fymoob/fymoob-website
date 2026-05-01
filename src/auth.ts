@@ -118,7 +118,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   session: {
     strategy: "jwt",
-    maxAge: 12 * 60 * 60, // 12 hours
+    // 60 dias de sessao com renovacao silenciosa diaria. Magic link toda
+    // hora era inconveniente pro Bruno/Wagner — agora cada um entra uma
+    // unica vez por device e fica autenticado 2 meses (renovado a cada
+    // uso). Acesso via bookmark direto pra /admin/login.
+    //
+    // Trade-off: cookie comprometido vale ate 60 dias. Mitigacoes:
+    // - Cookie HttpOnly + Secure + SameSite (default NextAuth) bloqueia
+    //   XSS/CSRF
+    // - Email whitelist (ALLOWED_ADMIN_EMAILS) — mesmo cookie roubado
+    //   nao adiciona usuario novo
+    // - Sair via /admin (botao "Sair") invalida o JWT no client
+    maxAge: 60 * 60 * 24 * 60, // 60 dias
+    updateAge: 60 * 60 * 24, // renova diariamente em uso (rolling session)
   },
   callbacks: {
     // Reject sign-in attempts from non-whitelisted emails at the auth layer.
