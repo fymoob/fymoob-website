@@ -298,8 +298,9 @@ export function ArticleEditorPage({ article, authors, revisions: initialRevision
 
   return (
     <div>
-      {/* Top bar */}
-      <div className="-mx-6 -mt-8 border-b border-slate-200 bg-white px-6 py-4 md:-mx-10 md:-mt-10 md:px-10">
+      {/* Top bar — margens negativas espelham padding do AdminLayout
+          (px-4 mobile, px-6 sm, px-10 lg, px-12 2xl) pra ocupar largura total. */}
+      <div className="-mx-4 -mt-6 border-b border-slate-200 bg-white px-4 py-4 sm:-mx-6 sm:-mt-8 sm:px-6 lg:-mx-10 lg:-mt-10 lg:px-10 2xl:-mx-12 2xl:px-12">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <Link
@@ -408,9 +409,12 @@ export function ArticleEditorPage({ article, authors, revisions: initialRevision
         </div>
       )}
 
-      {/* Split layout: editor + sidebar */}
-      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px]">
-        <div className="rounded-2xl border border-slate-200 bg-white">
+      {/* Split layout: editor + sidebar.
+          Sidebar fixa em 360px desktop ate 1440px, depois 400px em telas wide
+          pra aproveitar espaco extra. py-6 no wrapper do editor da respiro
+          (primeira linha do BlockNote nao cola no topo do card). */}
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_360px] 2xl:grid-cols-[1fr_400px]">
+        <div className="rounded-2xl border border-slate-200 bg-white py-6 sm:py-8">
           <ArticleEditor
             initialContent={body as FymoobBlock[]}
             onChange={handleBodyChange}

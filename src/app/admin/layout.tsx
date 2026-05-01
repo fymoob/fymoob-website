@@ -99,9 +99,11 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         </div>
       </aside>
 
-      {/* Content */}
+      {/* Content — Fase 20.UX: max-w aumentado de 5xl pra 7xl pra
+          aproveitar telas wide (1440px+). Padding lateral responsivo
+          (4 mobile / 8 tablet / 12 desktop). */}
       <main className="flex-1 overflow-y-auto">
-        <div className="mx-auto w-full max-w-5xl px-6 py-8 md:px-10 md:py-10">
+        <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10 2xl:px-12">
           {children}
         </div>
       </main>
