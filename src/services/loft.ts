@@ -29,10 +29,15 @@ import { unstable_cache } from "next/cache"
 const LOFT_BASE_URL = process.env.LOFT_API_BASE_URL || "https://brunoces-rest.vistahost.com.br"
 const LOFT_API_KEY = process.env.LOFT_API_KEY || ""
 const PAGE_SIZE = 50 // API max per request
-// 1 hora — alinhado com /imovel/[slug] (Fase 20.W2.6 unificou de 15min->1h).
-// CRM nao muda dados imobiliarios a cada 15min; reduz writes ISR ~75%.
-// Para refletir mudanca do CRM mais rapido, dispatch revalidateTag('imoveis') manual.
-const REVALIDATE_SECONDS = 3600
+// 15 minutes (reduzido de 1h em 22/04/2026 — acelera reflexo de mudancas do
+// CRM no site. Custo: 4x mais requests ao Loft/dia, ainda insignificante;
+// ganho: Bruno/Wagner veem alteracoes no site em <=15min em vez de <=1h).
+//
+// IMPORTANTE: Fase 20.W2.6 (01/05/2026) tentou voltar pra 1h argumentando
+// economia de ~R$10-20/mes em writes ISR. REVERTIDO pos-audit: a mudanca
+// piorava UX do Bruno por ganho de infra desprezivel. Decisao original
+// do comentario acima respeitada.
+const REVALIDATE_SECONDS = 900
 
 // ---------------------------------------------------------------------------
 // API fields to request
