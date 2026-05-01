@@ -214,11 +214,20 @@ export interface PropertyStats {
 }
 
 /** Raw response from Loft/Vista API — campos em português */
+/**
+ * Caracteristicas/InfraEstrutura: maps com chaves arbitrarias do CRM e
+ * valor "Sim"/"Não". Campo nao listado = caracteristica ausente.
+ * Tipo isolado em src/types/characteristics.ts pra evitar import cross-layer.
+ */
+import type { LoftCharacteristicsMap } from "@/types/characteristics"
+
 export interface LoftPropertyRaw {
   Codigo: string;
   Referencia?: string;
   Categoria: string;
   Status: string;
+  Caracteristicas?: LoftCharacteristicsMap;
+  InfraEstrutura?: LoftCharacteristicsMap;
   Finalidade?: string;
   Situacao?: string;
   Ocupacao?: string;

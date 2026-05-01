@@ -9,6 +9,13 @@ import type {
   EmpreendimentoSummary,
   LoftPropertyRaw,
 } from "@/types/property"
+import {
+  CARAC_FIELDS,
+  INFRA_FIELDS,
+  CARAC_LABELS,
+  INFRA_LABELS,
+  type LoftCharacteristicsMap,
+} from "@/types/characteristics"
 import { slugify, humanizeCaracLabel } from "@/lib/utils"
 import { sortByRelevance } from "@/lib/property-relevance"
 import { unstable_cache } from "next/cache"
@@ -28,89 +35,8 @@ const PAGE_SIZE = 50 // API max per request
 const REVALIDATE_SECONDS = 3600
 
 // ---------------------------------------------------------------------------
-// Characteristic field names (carac + infra) → human-readable labels
-// ---------------------------------------------------------------------------
-
-const CARAC_FIELDS = [
-  "AceitaPet", "Adega", "AguaQuente", "Alarme", "ArCentral", "ArCondicionado",
-  "AreaServico", "ArmarioEmbutido", "BanheiroSocial", "Bar", "Churrasqueira",
-  "Copa", "CopaCozinha", "Cozinha", "CozinhaAmericana", "CozinhaArmarios",
-  "CozinhaPlanejada", "Deck", "DependenciaDeEmpregada", "Despensa",
-  "DormitorioComArmario", "Edicula", "Escritorio", "EsperaSplit", "EstarIntimo",
-  "FrenteMar", "Gradeado", "Hidromassagem", "HomeTheater", "Horta", "Internet",
-  "JardimInverno", "Lareira", "Lavabo", "Mobiliado", "Piscina", "PisoElevado",
-  "Quintal", "Reformado", "Sacada", "SacadaComChurrasqueira", "SalaArmarios",
-  "SalaEstar", "SalaJantar", "SalaTV", "Sauna", "SemiMobiliado", "Split",
-  "SuiteMaster", "Terraco", "VistaPanoramica", "VistaMar",
-] as const
-
-const INFRA_FIELDS = [
-  "AcessoDeficientes", "AquecedorSolar", "AquecimentoCentral", "Bicicletario",
-  "Brinquedoteca", "ChurrasqueiraCondominio", "CircuitoFechadoTV",
-  "CondominioFechado", "Coworking", "Deposito", "Elevador",
-  "ElevadorServico", "EmpresaDeMonitoramento", "EspacoGourmet", "EspacoZen",
-  "Estacionamento", "EstacionamentoVisitantes", "GasCentral", "Guarita",
-  "Heliponto", "HomeMarket", "HortaColetiva", "Interfone", "Jardim", "Lavanderia",
-  "PainelSolar", "Parque", "PetPlace", "Pilotis", "PiscinaAquecida",
-  "PiscinaColetiva", "PiscinaInfantil", "Playground", "PortaoEletronico",
-  "Portaria", "Portaria24Hrs", "PorteiroEletronico", "QuadraEsportes",
-  "QuadraTenis", "Quiosque", "SalaFitness", "SalaoFestas", "SalaoJogos",
-  "SaunaCondominio", "SegurancaPatrimonial", "Spa", "TerracoColetivo",
-  "Vigilancia24Horas", "Zelador",
-] as const
-
-const CARAC_LABELS: Record<string, string> = {
-  AceitaPet: "Aceita Pet", Adega: "Adega", AguaQuente: "Água Quente",
-  Alarme: "Alarme", ArCentral: "Ar Central", ArCondicionado: "Ar Condicionado",
-  AreaServico: "Área de Serviço", ArmarioEmbutido: "Armários Embutidos",
-  BanheiroSocial: "Banheiro Social", Bar: "Bar", Churrasqueira: "Churrasqueira",
-  Copa: "Copa", CopaCozinha: "Copa Cozinha", Cozinha: "Cozinha",
-  CozinhaAmericana: "Cozinha Americana", CozinhaArmarios: "Cozinha com Armários",
-  CozinhaPlanejada: "Cozinha Planejada", Deck: "Deck",
-  DependenciaDeEmpregada: "Dependência de Empregada", Despensa: "Despensa",
-  DormitorioComArmario: "Dormitório com Armário", Edicula: "Edícula",
-  Escritorio: "Escritório", EsperaSplit: "Espera para Split",
-  EstarIntimo: "Estar Íntimo", FrenteMar: "Frente Mar", Gradeado: "Gradeado",
-  Hidromassagem: "Hidromassagem", HomeTheater: "Home Theater", Horta: "Horta", Internet: "Internet",
-  JardimInverno: "Jardim de Inverno", Lareira: "Lareira", Lavabo: "Lavabo",
-  Mobiliado: "Mobiliado", Piscina: "Piscina", PisoElevado: "Piso Elevado", Quintal: "Quintal",
-  Reformado: "Reformado", Sacada: "Sacada",
-  SacadaComChurrasqueira: "Sacada com Churrasqueira",
-  SalaArmarios: "Sala com Armários", SalaEstar: "Sala de Estar",
-  SalaJantar: "Sala de Jantar", SalaTV: "Sala de TV", Sauna: "Sauna",
-  SemiMobiliado: "Semi Mobiliado", Split: "Split",
-  SuiteMaster: "Suíte Master", Terraco: "Terraço",
-  VistaPanoramica: "Vista Panorâmica", VistaMar: "Vista para o Mar",
-}
-
-const INFRA_LABELS: Record<string, string> = {
-  AcessoDeficientes: "Acesso para Deficientes", AquecedorSolar: "Aquecedor Solar",
-  AquecimentoCentral: "Aquecimento Central", Bicicletario: "Bicicletário",
-  Brinquedoteca: "Brinquedoteca", ChurrasqueiraCondominio: "Churrasqueira Coletiva",
-  CircuitoFechadoTV: "Circuito de TV", CondominioFechado: "Condomínio Fechado",
-  Coworking: "Coworking", Deposito: "Depósito", Elevador: "Elevador",
-  ElevadorServico: "Elevador de Serviço",
-  EmpresaDeMonitoramento: "Monitoramento", EspacoGourmet: "Espaço Gourmet",
-  EspacoZen: "Espaço Zen", Estacionamento: "Estacionamento",
-  EstacionamentoVisitantes: "Estacionamento para Visitantes",
-  GasCentral: "Gás Central", Guarita: "Guarita", Heliponto: "Heliponto", HomeMarket: "Home Market",
-  HortaColetiva: "Horta Coletiva", Interfone: "Interfone", Jardim: "Jardim",
-  Lavanderia: "Lavanderia", PainelSolar: "Painel Solar", Parque: "Parque",
-  PetPlace: "Pet Place", Pilotis: "Pilotis",
-  PiscinaAquecida: "Piscina Aquecida", PiscinaColetiva: "Piscina Coletiva",
-  PiscinaInfantil: "Piscina Infantil", Playground: "Playground",
-  PortaoEletronico: "Portão Eletrônico", Portaria: "Portaria",
-  Portaria24Hrs: "Portaria 24h", PorteiroEletronico: "Porteiro Eletrônico",
-  QuadraEsportes: "Quadra de Esportes", QuadraTenis: "Quadra de Tênis", Quiosque: "Quiosque",
-  SalaFitness: "Sala Fitness", SalaoFestas: "Salão de Festas",
-  SalaoJogos: "Salão de Jogos", SaunaCondominio: "Sauna",
-  SegurancaPatrimonial: "Segurança", Spa: "Spa",
-  TerracoColetivo: "Terraço Coletivo", Vigilancia24Horas: "Vigilância 24h",
-  Zelador: "Zelador",
-}
-
-// ---------------------------------------------------------------------------
 // API fields to request
+// Caracteristicas + InfraEstrutura: tipos em src/types/characteristics.ts
 // ---------------------------------------------------------------------------
 
 // Slim fields for cards/listings.
@@ -241,6 +167,73 @@ function generateSlug(raw: LoftPropertyRaw): string {
   return parts.join("-")
 }
 
+// Extrai array de caracteristicas marcadas como "Sim" do payload Loft.
+// Fase 20.W2.4: substitui Record<string, unknown> assertions duplas por
+// LoftCharacteristicsMap tipado (tipo extraido em /types/characteristics).
+function extractCharacteristics(raw: LoftCharacteristicsMap | undefined): string[] {
+  if (!raw || typeof raw !== "object") return []
+  const result: string[] = []
+  for (const [key, value] of Object.entries(raw)) {
+    if (value === "Sim") result.push(humanizeCaracLabel(key))
+  }
+  return result
+}
+
+// Whitelist sincronizada com PropertyType em src/types/property.ts.
+// Fase 20.W2.5: parsePropertyType valida tipo da API antes de aceitar — se Loft
+// retornar tipo desconhecido (typo, novo cadastro), cai no fallback "Apartamento"
+// ao inves de propagar valor invalido pra schema/filtros.
+const VALID_PROPERTY_TYPES: readonly PropertyType[] = [
+  "Apartamento", "Apartamento Duplex", "Casa", "Casa em Condomínio",
+  "Chácara", "Cobertura", "Empreendimento", "Kitnet", "Loja",
+  "Ponto Comercial", "Prédio Comercial", "Sala Comercial",
+  "Salas/Conjuntos", "Sobrado", "Studio", "Terreno", "Terreno Comercial",
+] as const
+
+function parsePropertyType(raw: unknown): PropertyType {
+  if (typeof raw === "string" && VALID_PROPERTY_TYPES.includes(raw as PropertyType)) {
+    return raw as PropertyType
+  }
+  return "Apartamento"
+}
+
+/**
+ * Determina finalidade (Venda / Locação / Venda e Locação) cruzando Status do
+ * CRM com presença de ValorVenda/ValorLocacao.
+ *
+ * Fase 20.W2.3: extraido do mapRawToProperty pra eliminar chain de 6 if/else
+ * e isolar regra que documenta incidente 22/04/2026.
+ *
+ * Caso especifico (incidente 22/04/2026, imovel 69804147): quando Bruno migra
+ * imovel de dual (venda+locacao) pra venda-only, ele muda Status pra "Venda"
+ * mas esquece de zerar ValorLocacao residual. Pela regra antiga (so precos),
+ * o imovel continuava aparecendo no filtro de Locacao mesmo com Status
+ * explicito "Venda".
+ *
+ * Hierarquia:
+ * 1. Status="Venda" + ValorVenda > 0 → venda-only (ignora ValorLocacao residual)
+ * 2. Status="Venda e Aluguel" + algum valor → dual
+ * 3. Ambos precos > 0 → dual (legado, Bruno historicamente cadastrava
+ *    dual com Status="Aluguel")
+ * 4. Apenas um preco > 0 → respectiva finalidade
+ * 5. Nenhum preco (lancamento, "a combinar") → fallback pelo Status puro
+ */
+function determineFinalidade(
+  status: string,
+  valorVenda: number,
+  valorLoc: number
+): Property["finalidade"] {
+  if (status === "Venda" && valorVenda > 0) return "Venda"
+  if (status === "Venda e Aluguel" && (valorVenda > 0 || valorLoc > 0)) return "Venda e Locação"
+  if (valorVenda > 0 && valorLoc > 0) return "Venda e Locação"
+  if (valorVenda > 0) return "Venda"
+  if (valorLoc > 0) return "Locação"
+  // Sem precos: respeita Status declarado
+  if (status === "Aluguel") return "Locação"
+  if (status === "Venda e Aluguel") return "Venda e Locação"
+  return "Venda"
+}
+
 function mapRawToProperty(raw: LoftPropertyRaw): Property {
   const slug = generateSlug(raw)
   const lat = parseNumber(raw.Latitude) ?? parseNumber(raw.GMapsLatitude)
@@ -248,24 +241,11 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
 
   // Caracteristicas + InfraEstrutura: API Loft expoe objects nested com
   // TODAS as chaves do CRM. Iteramos e incluimos apenas as marcadas como
-  // "Sim" — qualquer campo novo que Bruno cadastre no CRM (ex: "Jacuzzi")
-  // aparece automaticamente sem mudar codigo. humanizeCaracLabel corrige
-  // casos pontuais de formatacao ("Sala T V" → "Sala de TV").
-  const caracteristicas: string[] = []
-  const caracRaw = (raw as Record<string, unknown>).Caracteristicas
-  if (caracRaw && typeof caracRaw === "object") {
-    for (const [key, value] of Object.entries(caracRaw as Record<string, unknown>)) {
-      if (value === "Sim") caracteristicas.push(humanizeCaracLabel(key))
-    }
-  }
-
-  const infraestrutura: string[] = []
-  const infraRaw = (raw as Record<string, unknown>).InfraEstrutura
-  if (infraRaw && typeof infraRaw === "object") {
-    for (const [key, value] of Object.entries(infraRaw as Record<string, unknown>)) {
-      if (value === "Sim") infraestrutura.push(humanizeCaracLabel(key))
-    }
-  }
+  // "Sim" — qualquer campo novo que Bruno cadastre (ex: "Jacuzzi") aparece
+  // automaticamente sem mudar codigo. humanizeCaracLabel corrige formatacao
+  // ("Sala T V" → "Sala de TV").
+  const caracteristicas = extractCharacteristics(raw.Caracteristicas)
+  const infraestrutura = extractCharacteristics(raw.InfraEstrutura)
 
   // Extract photo URLs from nested Foto object.
   // Filter obrigatorio: CRM as vezes retorna string vazia ou URLs relativas que
@@ -288,44 +268,10 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
     }
   }
 
-  // Finalidade: hibrido Status + precos.
-  //
-  // Caso especifico que esta regra resolve (incidente 22/04/2026, imovel
-  // 69804147): quando Bruno migra um imovel de dual (venda+locacao) pra
-  // venda-only, ele muda Status pra "Venda" no Loft mas esquece de zerar
-  // o ValorLocacao residual. Pela regra antiga (derivacao so por precos),
-  // o imovel continuava aparecendo no filtro de Locacao mesmo com Status
-  // explicito "Venda".
-  //
-  // Nova logica:
-  // 1. Status EXPLICITAMENTE "Venda" + ValorVenda > 0 → venda-only
-  //    (ignora ValorLocacao residual — respeita intencao do Bruno)
-  // 2. Status "Venda e Aluguel" → dual
-  // 3. Caso contrario (Status="Aluguel" ou vazio) → deriva pelos precos
-  //    (comportamento legado — preserva imoveis dual cadastrados com
-  //    Status="Aluguel", padrao historico do Bruno no CRM)
-  // 4. Ultimo fallback pelo Status quando nenhum valor esta preenchido
-  //    (lancamentos, "a combinar")
   const status = (raw.Status || "").trim()
   const valorVenda = parseNumber(raw.ValorVenda) ?? 0
   const valorLoc = parseNumber(raw.ValorLocacao) ?? 0
-  let finalidade: Property["finalidade"] = "Venda"
-  if (status === "Venda" && valorVenda > 0) {
-    finalidade = "Venda"
-  } else if (status === "Venda e Aluguel" && (valorVenda > 0 || valorLoc > 0)) {
-    finalidade = "Venda e Locação"
-  } else if (valorVenda > 0 && valorLoc > 0) {
-    finalidade = "Venda e Locação"
-  } else if (valorVenda > 0) {
-    finalidade = "Venda"
-  } else if (valorLoc > 0) {
-    finalidade = "Locação"
-  }
-  // Fallback pelo Status quando nenhum valor esta preenchido (lancamento,
-  // "a combinar", etc) — mantem comportamento legado.
-  else if (status === "Aluguel") finalidade = "Locação"
-  else if (status === "Venda e Aluguel") finalidade = "Venda e Locação"
-  else if (status === "Venda") finalidade = "Venda"
+  const finalidade = determineFinalidade(status, valorVenda, valorLoc)
 
   // Disponibilidade: BLACKLIST conservadora para nao esconder imoveis por engano.
   // Marcamos como indisponivel APENAS quando o status contem um padrao
@@ -353,7 +299,7 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
     titulo,
     tituloSite: raw.TituloSite || null,
     textoAnuncio: raw.TextoAnuncio || null,
-    tipo: (raw.Categoria || "Apartamento") as PropertyType,
+    tipo: parsePropertyType(raw.Categoria),
     finalidade,
     status: status as Property["status"],
     disponivel,
