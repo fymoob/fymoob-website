@@ -29,13 +29,17 @@ URLs essa via sozinha levaria 36+ dias. Combinar 4 abordagens:
 
 ---
 
-## Tier 1 — URGENTE (15 URLs, faça hoje)
+## Tier 1 — URGENTE (15 blog posts)
 
-> 15 blog posts. **Maior delta de conteúdo** (FAQ schema novo + title +
-> description). Já têm impressions altas no GSC, então re-crawl rápido =
-> ganho rápido em CTR.
->
+> **Maior delta de conteúdo** (FAQ schema novo + title + description).
 > **Ação:** GSC > URL Inspection > Request Indexing — 1 a 1.
+
+### Progresso
+
+- ✅ **Dia 1 (01/05/2026):** 6 URLs indexadas, cota diaria GSC excedida
+- 🔄 **Dia 2 (02/05/2026):** continuar com 9 URLs restantes
+
+### ✅ Indexadas Dia 1 (01/05/2026)
 
 | # | URL | Imp/3m (GSC) | Mudança |
 |---|---|---|---|
@@ -45,6 +49,11 @@ URLs essa via sozinha levaria 36+ dias. Combinar 4 abordagens:
 | 4 | https://fymoob.com.br/blog/batel-vs-agua-verde-curitiba | 96 | FAQ |
 | 5 | https://fymoob.com.br/blog/como-financiar-minha-casa-minha-vida | 84 | **TITLE 86→47 chars** + FAQ + desc |
 | 6 | https://fymoob.com.br/blog/mercado-imobiliario-curitiba-2026 | 49 | FAQ |
+
+### 🔄 Pendentes pra Dia 2 (02/05/2026, manhã)
+
+| # | URL | Imp/3m (GSC) | Mudança |
+|---|---|---|---|
 | 7 | https://fymoob.com.br/blog/melhores-bairros-familias-curitiba | 18 | FAQ + desc |
 | 8 | https://fymoob.com.br/blog/checklist-compra-imovel | 11 | FAQ |
 | 9 | https://fymoob.com.br/blog/itbi-curitiba-valor-como-pagar | 7 | FAQ |
@@ -55,9 +64,16 @@ URLs essa via sozinha levaria 36+ dias. Combinar 4 abordagens:
 | 14 | https://fymoob.com.br/blog/apartamento-ou-casa-curitiba | 2 | FAQ + desc |
 | 15 | https://fymoob.com.br/blog/melhores-bairros-curitiba-2026 | 0 | FAQ + desc |
 
+> **Cota observada:** ~6 URLs/dia (abaixo do limite teórico 10-15). Pode
+> ser quota compartilhada entre URL Inspection e Request Indexing, ou
+> rate limiting GSC. Continuar amanhã pelos 9 restantes do Tier 1.
+
 ---
 
-## Tier 2 — Alta prioridade (10 URLs por dia, próximos 4 dias)
+## Tier 2 — Alta prioridade (~6 URLs/dia, ~7 dias)
+
+> ⚠️ **Cota real ~6/dia** (observada no Dia 1). Cronograma original
+> de 10/dia ajustado: Tier 2 leva ~7 dias em vez de 4.
 
 > Top 40 empreendimentos por impressões/posição GSC. Ganhou bloco SEO de
 > 1000 palavras + AggregateOffer schema. Posicionamento médio 5-25 →
@@ -262,14 +278,14 @@ python scripts/seo-gaps-audit.py --all
 
 ## Resumo executivo
 
-| Tier | URLs | Capacidade | Tempo | Quem faz |
+| Tier | URLs | Capacidade | Tempo | Status |
 |---|---|---|---|---|
-| 0 — Sitemaps | 5 | Imediato | 5 min | Vinicius (hoje) |
-| 1 — Blog | 15 | 15/dia | 1 dia | Vinicius (hoje) |
-| 2 — Empreendimentos top | 40 | 10/dia | 4 dias | Vinicius |
-| 3 — Landings top | 10 | 10/dia | 1 dia | Vinicius |
-| 4 — IndexNow batch | 545 | Imediato | 5 min (após setup) | Vinicius |
-| **TOTAL ações manuais** | **70 URLs em GSC** | — | **6 dias úteis** | — |
+| 0 — Sitemaps | 5 | Imediato | 5 min | ✅ feito 01/05 via MCP |
+| 1 — Blog | 15 | ~6/dia | 3 dias | 🔄 6/15 (Dia 1) |
+| 2 — Empreendimentos top | 40 | ~6/dia | ~7 dias | ⏳ aguardando |
+| 3 — Landings top | 10 | ~6/dia | 2 dias | ⏳ aguardando |
+| 4 — IndexNow batch | 545 | Imediato | 5 min setup | ⏳ opcional |
+| **TOTAL ações manuais** | **70 URLs em GSC** | ~6/dia | **~12 dias úteis** | — |
 
 **ROI estimado:** +220-540 cliques/mês orgânicos em 4-8 semanas (precedente
 real estate SEOPressor +220% CTR pós-rewrite, Schema App +18% CTR pós-FAQ).
