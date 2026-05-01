@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState, type Dispatch, type SetState
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 import { slugify, formatCompactPrice } from "@/lib/utils"
+import { getFacets } from "@/services/client-api"
 import type { MultiSelectOption } from "@/components/search/filters/types"
 import type { BairroSummary, TypeSummary } from "@/types/property"
 import {
@@ -211,12 +212,8 @@ export function useSearchBarController({
     const controller = new AbortController()
     const timeout = window.setTimeout(async () => {
       try {
-        const response = await fetch("/api/search/facets", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
+        const raw = await getFacets(
+          {
             finalidades: pendingFilters.finalidades,
             cidades: pendingFilters.cidades,
             bairros: pendingFilters.bairros,
@@ -224,19 +221,11 @@ export function useSearchBarController({
             quartosMin: pendingFilters.quartosMin,
             quartosMax: pendingFilters.quartosMax,
             scope: scope ?? {},
-          }),
-          // Sem cache: "no-store" — facets revalidam a cada 15min via
-          // unstable_cache. Cache HTTP padrao (publico) economiza
-          // roundtrips em filtros consecutivos com mesma combinacao.
-          signal: controller.signal,
-        })
-
-        if (!response.ok) return
-        const raw = (await response.json()) as unknown
+          },
+          controller.signal
+        )
         const normalized = normalizeFacetResponse(raw, priceBounds)
-        if (normalized) {
-          setFacets(normalized)
-        }
+        if (normalized) setFacets(normalized)
       } catch (error) {
         if ((error as Error)?.name === "AbortError") return
       }

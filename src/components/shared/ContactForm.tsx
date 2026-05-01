@@ -5,6 +5,7 @@ import Link from "next/link"
 import Script from "next/script"
 import { Send, Loader2, CheckCircle2, ShieldCheck } from "lucide-react"
 import { formatPhoneBR } from "@/lib/utils"
+import { submitLead } from "@/services/client-api"
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 
@@ -85,31 +86,25 @@ export function ContactForm({ interesseOptions, interesseLabel = "Assunto" }: Co
     setStatus("sending")
 
     try {
-      const res = await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nome: data.get("nome"),
-          email: data.get("email"),
-          fone: data.get("fone"),
-          mensagem: data.get("mensagem"),
-          interesse: data.get("interesse") || "Contato pelo site",
-          consentLGPD: true,
-          turnstileToken: tsToken,
-        }),
+      const result = await submitLead({
+        nome: data.get("nome"),
+        email: data.get("email"),
+        fone: data.get("fone"),
+        mensagem: data.get("mensagem"),
+        interesse: data.get("interesse") || "Contato pelo site",
+        consentLGPD: true,
+        turnstileToken: tsToken,
       })
 
-      if (res.ok) {
+      if (result.ok) {
         setStatus("sent")
         form.reset()
-        // Reset turnstile to allow another submission
         if (widgetId.current && window.turnstile) {
           window.turnstile.reset(widgetId.current)
           setTsToken("")
         }
       } else {
-        const data = await res.json().catch(() => ({ error: "Erro ao enviar mensagem" }))
-        setErrorMsg(data.error || "Erro ao enviar mensagem")
+        setErrorMsg(result.error || "Erro ao enviar mensagem")
         setStatus("error")
       }
     } catch {

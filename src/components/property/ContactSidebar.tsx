@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { pushAnalyticsEvent } from "@/lib/analytics"
 import { cn, formatPhoneBR, formatPrice } from "@/lib/utils"
 import { getPriceDisplayFromFields } from "@/lib/property-price"
+import { submitLead } from "@/services/client-api"
 import type { Property } from "@/types/property"
 
 const WISHLIST_STORAGE_KEY = "fymoob:wishlist"
@@ -195,24 +196,19 @@ export function ContactSidebar({
     }
 
     try {
-      const response = await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nome: formData.get("nome"),
-          email: formData.get("email"),
-          fone: formData.get("fone"),
-          mensagem: formData.get("mensagem"),
-          codigoImovel: propertyCode,
-          interesse,
-          consentLGPD,
-          turnstileToken,
-        }),
+      const result = await submitLead({
+        nome: formData.get("nome"),
+        email: formData.get("email"),
+        fone: formData.get("fone"),
+        mensagem: formData.get("mensagem"),
+        codigoImovel: propertyCode,
+        interesse,
+        consentLGPD,
+        turnstileToken,
       })
 
-      if (!response.ok) {
-        const payload = await response.json().catch(() => ({ error: "Erro ao enviar mensagem" }))
-        throw new Error(payload.error || "Erro ao enviar mensagem")
+      if (!result.ok) {
+        throw new Error(result.error || "Erro ao enviar mensagem")
       }
 
       setSubmitStatus("sent")

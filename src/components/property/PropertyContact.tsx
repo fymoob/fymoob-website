@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Phone, MessageCircle, Loader2, CheckCircle2 } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
+import { submitLead } from "@/services/client-api"
 
 interface PropertyContactProps {
   propertyTitle: string
@@ -39,22 +40,17 @@ export function PropertyContact({
     const formData = new FormData(form)
 
     try {
-      const res = await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nome: formData.get("nome"),
-          email: formData.get("email"),
-          fone: formData.get("fone"),
-          mensagem: formData.get("mensagem"),
-          codigoImovel: propertyCode,
-          interesse: finalidade === "Locação" || finalidade === "Venda e Locação" ? "Aluguel" : "Venda",
-        }),
+      const result = await submitLead({
+        nome: formData.get("nome"),
+        email: formData.get("email"),
+        fone: formData.get("fone"),
+        mensagem: formData.get("mensagem"),
+        codigoImovel: propertyCode,
+        interesse: finalidade === "Locação" || finalidade === "Venda e Locação" ? "Aluguel" : "Venda",
       })
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}))
-        throw new Error(data.error || "Erro ao enviar")
+      if (!result.ok) {
+        throw new Error(result.error || "Erro ao enviar")
       }
 
       setStatus("success")

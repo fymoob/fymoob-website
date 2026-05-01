@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { formatPhoneBR } from "@/lib/utils"
+import { submitLead } from "@/services/client-api"
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 
@@ -95,24 +96,19 @@ export function MobileInlineContactForm({
     }
 
     try {
-      const response = await fetch("/api/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nome: formData.get("nome"),
-          email: formData.get("email"),
-          fone: formData.get("fone"),
-          mensagem: formData.get("mensagem"),
-          codigoImovel: propertyCode,
-          interesse,
-          consentLGPD,
-          turnstileToken,
-        }),
+      const result = await submitLead({
+        nome: formData.get("nome"),
+        email: formData.get("email"),
+        fone: formData.get("fone"),
+        mensagem: formData.get("mensagem"),
+        codigoImovel: propertyCode,
+        interesse,
+        consentLGPD,
+        turnstileToken,
       })
 
-      if (!response.ok) {
-        const payload = await response.json().catch(() => ({ error: "Erro ao enviar mensagem" }))
-        throw new Error(payload.error || "Erro ao enviar mensagem")
+      if (!result.ok) {
+        throw new Error(result.error || "Erro ao enviar mensagem")
       }
 
       setSubmitStatus("sent")
