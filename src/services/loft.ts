@@ -147,6 +147,29 @@ function parseNumber(val: string | undefined | null): number | null {
   return isNaN(n) || n <= 0 ? null : n
 }
 
+/**
+ * Parse de coordenada geografica (latitude ou longitude). Diferente de
+ * parseNumber, aceita negativos — Curitiba esta em lat ~-25, lng ~-49,
+ * ambos negativos. Bug detectado 02/05/2026: parseNumber descartava todas
+ * as coordenadas reais do CRM, fazendo o mapa do site cair sempre no
+ * centroide do bairro (fallback), distante do imovel real.
+ *
+ * Range valido: latitude -90..90, longitude -180..180. Zero e tratado como
+ * sentinela "nao preenchido" (CRMs frequentemente persistem 0,0 quando
+ * coord nao foi setada).
+ */
+function parseCoordinate(
+  val: string | undefined | null,
+  axis: "lat" | "lng"
+): number | null {
+  if (!val) return null
+  const n = parseFloat(val)
+  if (isNaN(n) || n === 0) return null
+  const max = axis === "lat" ? 90 : 180
+  if (n < -max || n > max) return null
+  return n
+}
+
 function parseBool(val: string | undefined): boolean {
   return val === "Sim"
 }
@@ -223,8 +246,15 @@ function determineFinalidade(
 
 function mapRawToProperty(raw: LoftPropertyRaw): Property {
   const slug = generateSlug(raw)
-  const lat = parseNumber(raw.Latitude) ?? parseNumber(raw.GMapsLatitude)
-  const lng = parseNumber(raw.Longitude) ?? parseNumber(raw.GMapsLongitude)
+  // Coordenadas geograficas: usa parseCoordinate (aceita negativos —
+  // Curitiba esta em lat -25, lng -49). parseNumber descartava 100% das
+  // coords reais do CRM (bug detectado por Bruno em 02/05/2026).
+  const lat =
+    parseCoordinate(raw.Latitude, "lat") ??
+    parseCoordinate(raw.GMapsLatitude, "lat")
+  const lng =
+    parseCoordinate(raw.Longitude, "lng") ??
+    parseCoordinate(raw.GMapsLongitude, "lng")
 
   // Caracteristicas + InfraEstrutura: API Loft expoe objects nested com
   // TODAS as chaves do CRM. Iteramos e incluimos apenas as marcadas como
