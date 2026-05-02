@@ -71,16 +71,16 @@
   --color-warning: #F59E0B;
   --color-error: #EF4444;
 
-  /* ── Paleta dark do painel admin (Fase 20.UX, ajustada 02/05/2026) ──
-     Substitui slate-* (cinza neutro) por navy saturado alinhado a marca.
-     Slate puro lia como "cinza escuro" no dark mode; este navy mantem
-     o tom mais bluish coerente com #0B1120 da identidade FYMOOB.
-     Use apenas dentro de /admin/* (componentes do painel). */
-  --color-admin-bg: #0a1626;            /* outermost page bg (sub slate-950) */
-  --color-admin-surface: #0f1f38;       /* cards, sidebars (sub slate-900) */
-  --color-admin-elevated: #15294a;      /* hover bg, tabs ativas (sub slate-800) */
-  --color-admin-border: #1c3258;        /* borda padrao (sub slate-800/700) */
-  --color-admin-border-strong: #28457a; /* borda em hover/focus (sub slate-700) */
+  /* ── Paleta dark do painel admin (Fase 20.UX, ajustada 02/05/2026 v2) ──
+     Iteracao 1: slate-* puro lia como "cinza", trocado por navy saturado.
+     Iteracao 2: navy saturado (#0a1626) lia como "azul" antes de "fundo" —
+     trocado por dark neutro com hint cool (estilo GitHub/Linear). Conforto
+     em sessao longa > personalidade da marca. Use apenas dentro de /admin/*. */
+  --color-admin-bg: #0b0e14;            /* near-black neutro com leve cool */
+  --color-admin-surface: #13171f;       /* cards, sidebar, top bar */
+  --color-admin-elevated: #1c2230;      /* hover bg, tabs ativas */
+  --color-admin-border: #262d3a;        /* borda padrao */
+  --color-admin-border-strong: #363e4f; /* borda em hover/focus */
 
   /* ── Legacy aliases (backward compat) ── */
   --color-fymoob-blue: #29ABE2;
@@ -369,20 +369,20 @@
 .dark .article-editor [data-color-scheme="dark"],
 .dark .article-editor .bn-mantine,
 .dark .article-editor .bn-editor {
-  --bn-colors-editor-background: #0f1f38;
+  --bn-colors-editor-background: #13171f;
   --bn-colors-editor-text: #e2e8f0;
-  --bn-colors-menu-background: #15294a;
+  --bn-colors-menu-background: #1c2230;
   --bn-colors-menu-text: #e2e8f0;
-  --bn-colors-tooltip-background: #15294a;
+  --bn-colors-tooltip-background: #1c2230;
   --bn-colors-tooltip-text: #e2e8f0;
-  --bn-colors-hovered-background: #1c3258;
+  --bn-colors-hovered-background: #262d3a;
   --bn-colors-hovered-text: #f1f5f9;
-  --bn-colors-selected-background: #28457a;
+  --bn-colors-selected-background: #363e4f;
   --bn-colors-selected-text: #f1f5f9;
-  --bn-colors-disabled-background: #0a1626;
+  --bn-colors-disabled-background: #0b0e14;
   --bn-colors-disabled-text: #64748b;
   --bn-colors-shadow: rgba(0, 0, 0, 0.5);
-  --bn-colors-border: #1c3258;
+  --bn-colors-border: #262d3a;
   --bn-colors-side-menu: #94a3b8;
   background-color: transparent;
 }
