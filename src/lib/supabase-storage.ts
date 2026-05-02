@@ -8,6 +8,7 @@
 
 import "server-only"
 import { randomUUID } from "node:crypto"
+import sharp from "sharp"
 import { getSupabaseAdmin } from "@/lib/supabase-admin"
 
 export type StorageBucket = "articles-covers" | "articles-inline" | "authors"
@@ -30,6 +31,33 @@ const EXTENSION_BY_MIME: Record<string, string> = {
   "image/avif": "avif",
 }
 
+const OPTIMIZE_MAX_WIDTH = 1600
+const OPTIMIZE_WEBP_QUALITY = 82
+
+/**
+ * Reprocessa imagem com sharp: rotaciona via EXIF, redimensiona pra 1600px
+ * (sem upscaling), converte pra WebP qualidade 82, strip metadata. AVIF
+ * passa direto — ja eh optimal e o re-encode perde qualidade sem ganho.
+ */
+async function optimizeImage(
+  file: File | Blob,
+  mime: string
+): Promise<{ buffer: Buffer; mime: string } | null> {
+  if (mime === "image/avif") return null
+  try {
+    const input = Buffer.from(await file.arrayBuffer())
+    const buffer = await sharp(input)
+      .rotate()
+      .resize({ width: OPTIMIZE_MAX_WIDTH, withoutEnlargement: true })
+      .webp({ quality: OPTIMIZE_WEBP_QUALITY })
+      .toBuffer()
+    return { buffer, mime: "image/webp" }
+  } catch (err) {
+    console.error("[supabase-storage] sharp optimize failed:", err)
+    return null
+  }
+}
+
 export interface UploadResult {
   url: string
   path: string
@@ -50,13 +78,18 @@ export async function uploadImage(
   file: File | Blob,
   options?: { subfolder?: string; filename?: string }
 ): Promise<UploadResult | UploadError> {
-  const mime = (file as File).type || "application/octet-stream"
-  if (!ALLOWED_MIME.has(mime)) {
-    return { error: `Tipo de arquivo nao suportado: ${mime}. Use webp, jpeg, png ou avif.` }
+  const inputMime = (file as File).type || "application/octet-stream"
+  if (!ALLOWED_MIME.has(inputMime)) {
+    return { error: `Tipo de arquivo nao suportado: ${inputMime}. Use webp, jpeg, png ou avif.` }
   }
   if (file.size > MAX_BYTES) {
     return { error: `Arquivo muito grande (${Math.round(file.size / 1024)} KB). Maximo: 5 MB.` }
   }
+
+  const optimized = await optimizeImage(file, inputMime)
+  const payload: Buffer | File | Blob = optimized?.buffer ?? file
+  const mime = optimized?.mime ?? inputMime
+  const size = optimized?.buffer.byteLength ?? file.size
 
   const ext = EXTENSION_BY_MIME[mime] ?? "bin"
   const safeName = options?.filename
@@ -70,7 +103,7 @@ export async function uploadImage(
   const sb = getSupabaseAdmin()
   const { error: uploadError } = await sb.storage
     .from(bucket)
-    .upload(path, file, {
+    .upload(path, payload, {
       contentType: mime,
       cacheControl: "31536000, immutable",
       upsert: false,
@@ -85,7 +118,7 @@ export async function uploadImage(
   return {
     url: data.publicUrl,
     path,
-    size: file.size,
+    size,
     mime,
   }
 }
