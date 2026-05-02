@@ -83,8 +83,8 @@ export default async function AutoresPage({ searchParams }: PageProps) {
           </h1>
           <p className="mt-2 max-w-xl text-sm text-slate-500 dark:text-slate-400">
             Cadastre os autores que assinam os artigos. Cada autor ganha página
-            pública em <code>/autor/&lt;slug&gt;</code> com schema Person/RealEstateAgent
-            (E-E-A-T).
+            pública própria com biografia, foto e lista de artigos publicados —
+            isso ajuda o Google a confiar mais no conteúdo.
           </p>
         </div>
         <Link
@@ -138,14 +138,17 @@ export default async function AutoresPage({ searchParams }: PageProps) {
                 href={`/admin/blog/autores/${a.id}`}
                 className="flex h-full flex-col"
               >
-                <div className="aspect-[4/3] w-full overflow-hidden bg-slate-100 dark:bg-admin-elevated">
+                {/* aspect-[4/5] portrait + object-[center_top] prioriza rosto.
+                    Fotos de team sao tipicamente headshots verticais; aspect-[4/3]
+                    landscape cortava o pescoco em algumas fotos. */}
+                <div className="aspect-[4/5] w-full overflow-hidden bg-slate-100 dark:bg-admin-elevated">
                   {a.photo_url ? (
                     <Image
                       src={a.photo_url}
                       alt={a.photo_alt ?? a.name}
                       width={400}
-                      height={300}
-                      className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                      height={500}
+                      className="size-full object-cover object-[center_top] transition-transform duration-300 group-hover:scale-[1.02]"
                       unoptimized
                     />
                   ) : (
