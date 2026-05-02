@@ -102,7 +102,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <AnimateOnScroll stagger className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
               {gridPosts.map((post) => (
-                <div key={post.slug}>
+                <div key={post.slug} className="h-full">
                   <BlogCard post={post} />
                 </div>
               ))}

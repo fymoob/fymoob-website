@@ -71,12 +71,16 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
     )
   }
 
+  // Card altura uniforme: flex col + h-full (estica com grid row),
+  // image fixa no topo, content flex-1, footer com mt-auto pra colar embaixo.
+  // Title line-clamp-2 + description line-clamp-2 limitam variacao vertical.
+  // Tags clamp pelo overflow-hidden + max-h-[28px] (1 linha de chip).
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="group block overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-brand-primary-muted hover:shadow-xl"
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-brand-primary-muted hover:shadow-xl"
     >
-      <div className="relative aspect-[16/9] overflow-hidden">
+      <div className="relative aspect-[16/9] shrink-0 overflow-hidden">
         <Image
           src={post.image}
           alt={post.title}
@@ -89,19 +93,21 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
         />
       </div>
 
-      <div className="space-y-3 p-5 md:p-6">
-        <div className="flex flex-wrap gap-2">
+      <div className="flex flex-1 flex-col gap-3 p-5 md:p-6">
+        {/* Tags — max 1 linha visivel pra evitar pulo de altura entre cards
+            com muitas vs poucas tags */}
+        <div className="flex max-h-[28px] flex-wrap gap-2 overflow-hidden">
           {post.tags.slice(0, 3).map((tag) => (
             <span
               key={tag}
-              className="rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600"
+              className="shrink-0 rounded-full bg-neutral-100 px-2.5 py-1 text-xs font-medium text-neutral-600"
             >
               {tag}
             </span>
           ))}
         </div>
 
-        <h3 className="font-display text-lg font-semibold leading-tight text-neutral-950 transition-colors duration-200 group-hover:text-brand-primary">
+        <h3 className="line-clamp-2 font-display text-lg font-semibold leading-tight text-neutral-950 transition-colors duration-200 group-hover:text-brand-primary">
           {post.title}
         </h3>
 
@@ -109,7 +115,9 @@ export function BlogCard({ post, featured = false }: BlogCardProps) {
           {post.description}
         </p>
 
-        <div className="flex items-center gap-4 text-xs font-medium text-neutral-400">
+        {/* Footer fixado embaixo via mt-auto — todos os cards alinham o
+            "data + leitura" mesmo que titulo/descricao variem em comprimento */}
+        <div className="mt-auto flex items-center gap-4 pt-1 text-xs font-medium text-neutral-400">
           <span className="flex items-center gap-1.5">
             <Calendar size={12} />
             {formattedDate}
