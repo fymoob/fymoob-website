@@ -33,12 +33,27 @@ async function listAuthorsWithPostCounts(): Promise<AuthorWithCount[]> {
     .from("authors")
     .select("*")
     .order("name", { ascending: true })
-  if (error || !data) return []
+  if (error || !data) {
+    console.error("[autores/page] listAuthors query failed:", error)
+    return []
+  }
 
   // Conta posts por autor (paralelo). Em base com 5-10 autores, esse fan-out
   // de queries leves e mais simples que aggregation com count(grouped).
+  // Loga rows que falham no parse pra nao sumirem silenciosos da listagem
+  // (incidente 02/05/2026 — usuario achou que autor sumiu, na verdade
+  // schema rejeitou silenciosamente).
   const authors = data
-    .map((row) => authorSchema.safeParse(row))
+    .map((row) => {
+      const parsed = authorSchema.safeParse(row)
+      if (!parsed.success) {
+        console.error(
+          `[autores/page] authorSchema rejeitou row id=${(row as { id?: string }).id} slug=${(row as { slug?: string }).slug}:`,
+          parsed.error.issues
+        )
+      }
+      return parsed
+    })
     .filter((r) => r.success)
     .map((r) => r.data)
 
