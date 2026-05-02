@@ -96,9 +96,10 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         </section>
       )}
 
-      {/* Posts grid */}
+      {/* Posts grid — paginas sem featured (page 2+) precisam de padding-top
+          pra nao colar no hero. Pagina 1 com featured ja tem py do bloco anterior. */}
       {gridPosts.length > 0 && (
-        <section className="pb-10 md:pb-14">
+        <section className={featured ? "pb-10 md:pb-14" : "py-10 md:py-14"}>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <AnimateOnScroll stagger className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
               {gridPosts.map((post) => (
