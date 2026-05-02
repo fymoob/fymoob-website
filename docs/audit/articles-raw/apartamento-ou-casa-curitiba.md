@@ -1,0 +1,267 @@
+---
+slug: apartamento-ou-casa-curitiba
+title: "Casa ou Apartamento em Curitiba? 60% Mora em Casa"
+description: "Comparativo casa vs apartamento em Curitiba 2026 com IBGE PNAD (60% mora em casa), FipeZap, FYMOOB CRM e custos invisíveis ancorados em fonte primária. Por perfil e "
+tags: ["apartamento", "casa", "curitiba 2026", "comparativo", "IBGE PNAD"]
+word_count: 2882
+seo_meta_title: ""
+seo_meta_description: ""
+---
+
+# Casa ou Apartamento em Curitiba? 60% Mora em Casa
+
+> Comparativo casa vs apartamento em Curitiba 2026 com IBGE PNAD (60% mora em casa), FipeZap, FYMOOB CRM e custos invisíveis ancorados em fonte primária. Por perfil e 
+
+Em abril/2026, **59,3% dos curitibanos ainda moram em casa** e 40,5% em apartamento, segundo a [IBGE PNAD Contínua 2026](https://www.bemparana.com.br/noticias/parana/curitiba-tem-mais-casas-ou-apartamentos-e-o-parana-pesquisa-responde/) divulgada em 17/abril/2026 (719 mil domicílios na capital). Mas o sentido do mercado mudou: em 10 anos, casas caíram **6,8%** e apartamentos **subiram 53,7%**. O m² de venda residencial em Curitiba fechou março/2026 em **R$ 11.621**, com alta de **6,52% em 2025** — a 2ª maior em 11 anos, segundo [FipeZap (via MySide)](https://myside.com.br/guia-curitiba/metro-quadrado-curitiba-pr). A pergunta "casa ou apto?" tem resposta diferente por bairro, perfil e prazo.
+
+
+## Resposta direta
+
+
+> **[CALLOUT-INFO]** Em Curitiba, **60% das famílias ainda mora em casa** ([IBGE PNAD 2026](https://www.bemparana.com.br/noticias/parana/curitiba-tem-mais-casas-ou-apartamentos-e-o-parana-pesquisa-responde/)), mas o apto avança rápido. No CRM FYMOOB, em **Portão**, casa custa **+42%** que apto no valor mediano. Em **Água Verde**, sobrado de 260 m² sai **23% mais barato** que apto de 130 m². A escolha depende do bairro.
+
+
+> **[METODOLOGIA]**
+> - Periodo: Abril/2026
+> - Amostra: -
+> - Tratamento: -
+> - Fontes: ["IBGE PNAD Continua 2026 divulgada 17/04/2026 (CWB 59,3% casas / 40,5% aptos)", "IBGE Censo 2022 (aptos +96,79% em 22 anos)", "FipeZap mar/2026 R$ 11.621/m² CWB", "Inpespar/Radar Imobiliario abr/2026 (67% buscas ate 70m²)", "Loft Pesquisa Condominios jan/2026 (R$ 587 mediano CWB)", "ADEMI-PR + Brain Inteligencia 2025 (R$ 7,4 bi VGV)", "STJ REsp 1.783.076-DF 14/05/2019 (pets em condominio)", "FYMOOB CRM snapshot 2026-04-25 (n=214 CWB com valor_venda)"]
+> - Atualizado: 2026-04-25
+
+
+## Curitiba é a 5ª capital mais verticalizada do Brasil
+
+A virada histórica está nos números do [IBGE Censo 2022](https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/39239-censo-2022-cerca-de-oito-a-cada-dez-pessoas-moravam-em-casas-mas-cresce-proporcao-de-moradores-em-apartamentos): em 22 anos (2000–2022), os apartamentos da capital quase dobraram (**+96,79%**, saindo de 117 mil para 230 mil unidades). No mesmo período, as casas cresceram só **18,02%**. O resultado é que Curitiba virou **a 5ª capital mais verticalizada do país** (33,65% em apto, segundo Censo), atrás apenas de São Paulo, Florianópolis, Porto Alegre e Belo Horizonte. No Paraná inteiro, só 13,2% mora em apartamento. A capital é **2,5× mais vertical que o estado**.
+
+A foto mais recente é a [PNAD Contínua 2026](https://www.bemparana.com.br/noticias/parana/curitiba-tem-mais-casas-ou-apartamentos-e-o-parana-pesquisa-responde/), divulgada em 17/abril/2026 com dado-base 2025: a fatia de aptos em CWB já é **40,5%** (292 mil domicílios) e a de casas **59,3%** (426 mil). A diferença entre 33,65% (Censo 2022) e 40,5% (PNAD 2025) não é erro — é metodologia diferente mais 3 anos de verticalização real, com aptos crescendo +27% no estoque.
+
+A geração que está comprando reforça a tendência. Pesquisa nacional de 2025 mostra que **49% dos brasileiros entre 22 e 28 anos** querem comprar imóvel em até 2 anos, e **59% deles preferem apartamento** ([Imobi Press](https://imobipress.com.br/2025/04/29/publico-jovem-lidera-compra-de-imoveis-compactos/)). Em Curitiba, o [Inpespar/Radar Imobiliário (abril/2026)](https://www.cidadesecondominios.com.br/2026/04/apartamentos-de-dois-quartos-lideram.html) registrou que **67% das buscas em portais imobiliários da cidade são por apartamento de até 70 m²** — em 2023, eram 60%. É busca, não fechamento de venda. Mas o sinal é claro: o ponto ideal do mercado é o 2 quartos compacto.
+
+
+## Comparativo direto: a tabela honesta
+
+Sem omissão. Cada linha amarra um número — mediana real do CRM FYMOOB ou referência externa linkada.
+
+
+| Critério | Apartamento | Casa avulsa | Sobrado |
+|---|---|---|---|
+| R$/m² mediano CWB (CRM FYMOOB) | R$ 13.043 | R$ 4.732 | R$ 5.902 |
+| Mediana de venda CWB | R$ 899 mil | R$ 490 mil | R$ 699 mil |
+| Condomínio mensal CWB | R$ 587 mediano ([Loft jan/2026](https://www.bemparana.com.br/noticias/economia/alta-condominio-curitiba-25-porcento-2026/)) | R$ 0 (rua aberta) | R$ 0 a R$ 300 |
+| Manutenção amortizada/mês (cenário FYMOOB) | Quase nula (entra no condomínio) | R$ 1.000 a R$ 3.500 | R$ 600 a R$ 1.800 |
+| Pintura externa | Cuidada pelo condomínio | A cada 5–7 anos (R$ 5–12 mil) | A cada 5–7 anos |
+| Telhado | Não tem (laje) | Limpeza anual + retelhamento aos 15–20 anos | Telhado próprio |
+| Pet | Convenção pode regular, **não pode proibir genericamente** ([STJ 2019](https://processo.stj.jus.br/jurisprudencia/externo/informativo/?livre=@CNOT%3D017066)) | Liberdade total dentro do lote | Liberdade total |
+| Segurança | Portaria 24h embutida no condomínio | R$ 5–15 mil cerca/alarme + R$ 80–200/mês monitoramento | Variável |
+| Reforma | Plano + ART e regras [ABNT 16.280](https://www.sindiconet.com.br/informese/norma-abnt-16280-sobre-obras-em-condominios-manutencao-obras-e-reformas) | Alvará da Prefeitura | Alvará da Prefeitura |
+| Mobilidade | Centro/Batel viável sem carro (BRT R$ 6 + Curitiba+) | Carro indispensável em Santa Felicidade, Tingui, Cascatinha | Misto |
+
+Pra ranking puro de R$/m² por bairro (sem cortar por tipo), [veja o mapa de preço por bairro](/blog/preco-metro-quadrado-curitiba-bairro). Para cruzar bairro com perfil de família, [confira o ranking dos melhores bairros 2026](/blog/melhores-bairros-curitiba-2026).
+
+
+## Diferença de preço por bairro: casa nem sempre é mais barata
+
+Aqui está o ângulo que nenhum guia genérico cobre: a diferença de preço casa-vs-apto **inverte de sinal** dependendo do bairro. Estes são números do snapshot do CRM FYMOOB de 25/abril/2026, com **n** declarado por linha (mínimo 3 imóveis de cada lado para publicar mediana).
+
+
+| Bairro | Apto mediana (n) | Casa-conceito mediana (n) | Diferença em R$ | Comentário |
+|---|---|---|---|---|
+| **Portão** | R$ 698 mil (n=11) | R$ 990 mil (n=5) | **Casa +42% MAIS cara** | Apto Portão é 1–2Q novo; sobrado é 3Q + 2 vagas em terreno consolidado |
+| **Cidade Industrial** | R$ 480 mil (n=6) | R$ 450 mil (n=9) | Empate (casa −6%) | Faixa popular, escolha quase neutra no orçamento |
+| **Água Verde** | R$ 2,09 mi (n=8) | R$ 1,61 mi (n=4) | **Casa −23% MAIS BARATA** | Sobrado de 260 m² entrega 2× a área do apto de 130 m² |
+
+Em Água Verde, o ângulo "casa mais barata" e "apto mais caro por m²" convivem ao mesmo tempo — porque a casa é **2× maior em área**. Quem compara valor absoluto vê casa 23% mais barata. Quem compara R$/m² unitário vê apto **+176% mais caro** que casa-conceito (R$ 17.613 vs R$ 6.378 por m², com n=8 apto e n=3 casa-conceito com area_privativa preenchida). São duas dimensões da mesma realidade, não contradição.
+
+A regra de bolso "casa é sempre mais barata" só vale em parte do mapa. Em **Xaxim** e **Sítio Cercado**, casa custa MAIS que apto (-15% e -17% no R$/m²) porque o estoque vertical desses bairros é compacto e mais barato por unidade. Em **Cidade Industrial**, a diferença é desprezível — escolha pura de tipologia. Bairros como **Bigorrilho, Batel, Centro, Mossunguê (Ecoville), Boa Vista** são **100% apto** no estoque FYMOOB com n ≥ 3 — casa não é opção real ali. Bairros como **Capão Raso, Fazendinha, São Braz** são **100% casa-conceito**.
+
+
+## 4 perfis de comprador
+
+
+### Solteiro ou casal jovem sem filhos
+
+Apartamento compacto vence quase sempre. Em Centro, Batel, Bigorrilho ou Água Verde, **viver sem carro é viável** — BRT em estação-tubo ou trajeto a pé curto, com Curitiba+ ilimitado em **R$ 180/mês** ([detalhes em custo de vida](/blog/custo-de-vida-curitiba)). Trocar carro completo por apto Centro economiza R$ 1.200 a R$ 2.000/mês em combustível, IPVA e manutenção que ninguém soma na conta. ROI bruto de aluguel de apto compacto em CWB roda em torno de 0,4%/mês (5,5–6,0% a.a. — [FipeZap locação dez/2025](https://downloads.fipe.org.br/indices/fipezap/fipezap-202512-residencial-locacao.pdf)).
+
+
+### Família com filhos pequenos (0 a 10 anos)
+
+Depende do bairro mais que do tipo. Apto novo em Bacacheri, Cabral ou Mossunguê com pet place, brinquedoteca e portaria 24h cobre o dia a dia. Casa em Cascatinha, Santa Felicidade ou Pilarzinho entrega quintal e cachorro grande solto — pelo preço, normalmente, do mesmo padrão construtivo. O determinante costuma ser distância de creche, escola e família estendida. Para cruzar bairro com infraestrutura de família, [veja melhores bairros pra família](/blog/melhores-bairros-familias-curitiba).
+
+
+### Família estabelecida (filhos 10 a 18 anos)
+
+Escola próxima pesa mais que tipologia. Sion (Batel), Bom Jesus (Ahú), Internacional (Mossunguê), Positivo (vários) deslocam o eixo da decisão. Casa em rua aberta no Cabral ou em condomínio horizontal no Cascatinha entra. Apto 3Q de 100–130 m² em Água Verde, Bigorrilho ou Juvevê também — com a vantagem de estar no caminho. Pra entender as diferenças entre bairros nobres dessa faixa, [Batel vs Água Verde](/blog/batel-vs-agua-verde-curitiba) abre as contrapartidas.
+
+
+### Investidor (renda + valorização)
+
+Apartamento compacto vence. O estoque de locação residencial CWB é **1,3% do total** ([Inpespar 2024](https://hapenimoveis.com.br/blog/imobiliaria-curitiba/investir-em-imoveis-em-curitiba-em-2025/)) e a esmagadora maioria é apto. Casa pra alugar em CWB é nicho. Aluguel residencial valorizou **+10,98% em 12 meses até dezembro/2025** segundo FipeZap — quase o dobro da venda (+6,52% no fechamento de 2025). Studio/1Q em bairros centrais entrega rentabilidade bruta de aluguel entre **5,5% e 7% a.a.** Outro eixo de decisão paralelo é [planta vs pronto](/blog/imovel-planta-vs-pronto-curitiba), que muda o ROI nos 36 meses iniciais.
+
+
+## Custos invisíveis: o que ninguém te conta
+
+
+### Casa (custo amortizado mensal — cenário FYMOOB)
+
+A "economia do condomínio" some quando se amortiza manutenção em 30 anos. Faixa típica para casa de 200 m² em CWB:
+
+- **Pintura externa:** R$ 5 mil a R$ 12 mil a cada 5–7 anos = **R$ 60 a R$ 200/mês amortizado** ([SOS Reformas 2026](https://sosreformasereparos.com.br/tabela-de-preco-de-pintura-atualizada/))
+
+- **Telhado:** limpeza R$ 200/ano + retelhamento R$ 15 mil a R$ 30 mil a cada 15–20 anos ([Cronoshare 2026](https://www.cronoshare.com.br/quanto-custa/reformar-telhado))
+
+- **Pintura interna:** R$ 3 mil a R$ 6 mil a cada 3–5 anos
+
+- **Jardinagem:** R$ 200 a R$ 600/mês (DIY ou terceirizada)
+
+- **Sistema elétrico** (após 20 anos): R$ 5 mil a R$ 15 mil
+
+- **Encanamento** (25–30 anos): R$ 10 mil a R$ 40 mil
+
+- **Seguro residencial financiado:** R$ 1 mil a R$ 3,5 mil/ano = R$ 85 a R$ 290/mês
+
+- **Cerca elétrica + alarme + monitoramento:** R$ 5 mil a R$ 15 mil inicial + R$ 80 a R$ 200/mês
+
+- **Total amortizado mensal estimado: R$ 1.000 a R$ 3.500/mês**, dependendo do padrão construtivo
+
+Esse é cenário FYMOOB autoral, não fonte primária publicada. A faixa 0,5–1% do valor do imóvel ao ano é heurística internacional de gestão patrimonial.
+
+
+### Apartamento (custo amortizado mensal)
+
+- **Condomínio mensal:** R$ 587 mediano CWB ([Loft jan/2026](https://www.bemparana.com.br/noticias/economia/alta-condominio-curitiba-25-porcento-2026/), 5 mil anúncios analisados — alta de **+25% ano a ano**, a maior entre capitais do Sul)
+
+- **Mossunguê (top 1):** R$ 1.067 (+33% ano a ano)
+
+- **Bigorrilho:** R$ 940
+
+- **Cabral:** R$ 900
+
+- **Popular (Pinheirinho/Sítio Cercado):** R$ 280 a R$ 450
+
+- **Fundo de reserva e taxas extras** (fachada, elevador, obras estruturais): variável, ~10% do condomínio
+
+- **Reformas internas:** plano de reforma + ART de engenheiro exigidos pela [ABNT 16.280](https://www.sindiconet.com.br/informese/norma-abnt-16280-sobre-obras-em-condominios-manutencao-obras-e-reformas) quando mexe além de pintura/azulejo. Custo do plano: R$ 800 a R$ 2.500
+
+- **IPTU:** alíquota residencial CWB de 0,20% a 0,65% sobre valor venal ([Prefeitura](https://www.curitiba.pr.gov.br/conteudo/tabela-do-iptu/368)). Apto compacto até 70 m² com valor venal ≤ R$ 232 mil pode entrar em **isenção** ([Decreto IPTU 2026](https://www.curitiba.pr.gov.br/noticias/decreto-municipal-estabelece-nova-base-de-calculo-do-iptu-80-dos-imoveis-terao-imposto-corrigido-apenas-pela-inflacao-em-2026/81201)) — 80% dos imóveis CWB tiveram correção só pelo IPCA em 2026
+
+
+## Inverno paranaense: como afeta a escolha
+
+Curitiba tem a menor temperatura média entre as capitais do país, com mínimas de -2°C em julho. Em casa, aquecimento de ambiente vira necessidade. Lenha de eucalipto seca para lareira em CWB roda **R$ 560 a R$ 1.800 por temporada**, dependendo do consumo (faixa documentada em [custo de vida 2026](/blog/custo-de-vida-curitiba)). Aquecedor split em modo quente ou aquecedor a gás central somam **R$ 200 a R$ 400/mês** em julho-agosto na conta da casa típica.
+
+No apartamento, o aquecimento elétrico fica concentrado no chuveiro — que sobe pra cerca de **35% da conta de luz no inverno paranaense**, contra ~25% na média nacional. Mas o apartamento ganha calor passivo das paredes vizinhas (efeito caixa: paredes encostadas em outros apartamentos quentes). Apartamentos premium de Mossunguê, Batel e Bigorrilho com **piscina aquecida** entregam vantagem real no inverno — custo está embutido no condomínio.
+
+Casa térrea em Curitiba ainda pega umidade ascendente (água do solo subindo pela parede) e infiltração lateral por chuva fina prolongada. Manutenção anual de impermeabilização e mofo é item da conta — R$ 800 a R$ 2.500/ano, em casas mais antigas.
+
+
+## Pets: o mito do "apto não aceita"
+
+A regra está pacificada desde **maio de 2019**, quando a 3ª Turma do STJ julgou o **REsp 1.783.076-DF** (Rel. Min. Ricardo Villas Bôas Cueva, julgado em 14/05/2019, [Informativo 649 do STJ](https://processo.stj.jus.br/jurisprudencia/externo/informativo/?livre=@CNOT%3D017066)). A tese é direta: **convenção condominial NÃO pode proibir, de forma genérica, animais de qualquer espécie**. Restrição só é válida quando há prejuízo concreto a vizinhos — risco à segurança, higiene, saúde ou sossego.
+
+A maioria dos condomínios em prédios novos em Curitiba aceita pets de pequeno e médio porte sem fricção (estimativa de mercado, abr/2026). Convenções antigas que ainda incluem proibição genérica são tecnicamente nulas — síndico aplica advertência, dono recorre, juiz decide a favor do morador. O conflito real costuma ser com cão grande (golden, labrador, são bernardo) em apto pequeno, onde a contrapartida é prática: elevador, área comum, barulho.
+
+Em casa, a liberdade dentro do lote é total. O limite externo é a [**Lei Municipal 10.625/2002**](https://leismunicipais.com.br/a/pr/c/curitiba/lei-ordinaria/2002/1063/10625/lei-ordinaria-n-10625-2002-dispoe-sobre-rui), a Lei do Silêncio de Curitiba, que define limites de ruído por horário (45 dB de 22h às 7h, 50 dB de 19h às 22h, 55 dB no diurno). Cão latindo após as 22h pode gerar denúncia ambiental e multa. Há projeto de atualização da Lei do Silêncio em tramitação na Câmara Municipal em abril/2026 (autoria da vereadora Indiara Barbosa e do vereador Pier Petruzziello), mas **a base vigente continua sendo a Lei 10.625/2002**.
+
+
+## 5 estratégias pra decidir
+
+1. **Some a manutenção amortizada da casa** (faixa estimada R$ 1.000 a R$ 3.500/mês, depende do padrão) ao orçamento mensal antes de comparar com a parcela do apto + condomínio. Sem amortizar, a conta engana.
+
+1. **Em 5 bairros mistos** — Portão, Boa Vista, Hauer, Hugo Lange, Juvevê — peça orçamento de apto e casa **na mesma faixa de preço, mesma região**. É o único jeito de comparar **iguais com iguais**, sem ruído de bairro.
+
+1. **Verifique a convenção do condomínio antes de assinar** — pets, festas, regras de reforma, regimento de circulação em área comum. Convenção que proíbe pet genericamente é nula desde 2019, mas você prefere lidar com isso no contrato ou no judiciário?
+
+1. **Calcule o trajeto até trabalho, escola e hospital** — apto Centro/Batel poupa R$ 1.200 a R$ 2.000/mês em carro completo (combustível, IPVA, manutenção, estacionamento) que ninguém soma. Em Santa Felicidade ou Tingui, esse mesmo carro é indispensável.
+
+1. **Inverno influencia mais do que parece** — casa em CWB no inverno pesa R$ 200 a R$ 400/mês a mais em conta de gás, lenha ou aquecimento elétrico de ambiente. Em 30 anos, é o valor de um carro 0 km que não entra em planilha de financiamento.
+
+
+## Mercado CWB 2025 (contexto)
+
+A [pesquisa ADEMI-PR / Brain Inteligência Estratégica de março/2026](https://www.bemparana.com.br/noticias/economia/curitiba-movimenta-r-74-bilhoes-em-vendas-de-apartamentos-em-2025/) mediu o mercado de apartamentos novos em 2025: **R$ 7,4 bilhões em VGV**, cerca de 10.200 unidades vendidas e 10 mil lançadas (queda de 19% nos lançamentos). **Quase metade dos lançamentos** foram studios e 1 quarto — o público jovem e o investidor de compacto puxam o ciclo. Os bairros líderes em lançamento de apto são Ecoville, Mercês, Cabral, Cristo Rei e Jardim Botânico.
+
+No outro eixo, lançamentos de casas em condomínio horizontal subiram **+97% no primeiro semestre de 2023 vs primeiro semestre de 2022**, segundo [pesquisa ADEMI-PR](https://www.bemparana.com.br/noticias/oferta-de-imoveis-horizontais-registra-alta-de-97-em-curitiba/). É preciso qualificar: a base é pequena — **apenas 494 unidades** em casas e lotes em condomínios fechados em CWB no semestre. Não é boom absoluto. Os bairros líderes são São Braz, Santa Felicidade, Pilarzinho e Campo Comprido. O que se inverte não é "casa morreu" — é **casa isolada perdendo terreno para casa em condomínio fechado**.
+
+
+## Perguntas frequentes
+
+
+### Casa custa menos que apto em Curitiba?
+
+Depende do bairro. No CRM FYMOOB, em **Portão** casa custa **+42% MAIS** que apto no valor mediano (R$ 990 mil vs R$ 698 mil, n=11+5). Em **Água Verde**, casa custa **23% MENOS** em valor absoluto (R$ 1,61 mi vs R$ 2,09 mi, n=4+8) — mas entrega 2× a área. Em **Cidade Industrial**, é praticamente empate (-6%, n=6+9). Snapshot 2026-04-25.
+
+
+### Apto pode proibir pet em Curitiba?
+
+Não pode, de forma genérica. O STJ pacificou em **maio/2019** (REsp 1.783.076-DF) que convenção condominial não pode proibir animais sem caso concreto de prejuízo à segurança, higiene, saúde ou sossego. Convenção antiga com proibição genérica é nula. Em CWB, prédios novos majoritariamente aceitam pets de pequeno e médio porte (observação de mercado abr/2026).
+
+
+### Quanto custa morar numa casa em Curitiba (manutenção)?
+
+Cenário FYMOOB autoral para casa de 200 m² em CWB: **R$ 1.000 a R$ 3.500/mês de custo amortizado**, somando pintura externa (R$ 60-200/mês), telhado, jardim, seguro residencial, monitoramento e retrofit elétrico/hidráulico. Não é fonte primária publicada — é faixa de mercado baseada em [SOS Reformas](https://sosreformasereparos.com.br/tabela-de-preco-de-pintura-atualizada/), [Cronoshare](https://www.cronoshare.com.br/quanto-custa/reformar-telhado) e heurística 0,5–1% do valor ao ano.
+
+
+### Qual mais valoriza: apto ou casa em Curitiba?
+
+Em Curitiba 2025, FipeZap registrou **+6,52% de alta** no m² médio de venda residencial — a 2ª maior em 11 anos. O índice é puxado por apartamento (a maioria dos anúncios). Apartamentos compactos (1 quarto) cresceram +7,80% em 12 meses no agregado nacional FipeZap; 4 quartos ou mais, só +5,57%. Casas grandes (≥3 quartos) tendem a valorizar menos no agregado. Mas o terreno embutido em casa térrea de Cabral, Juvevê ou Cascatinha não desvaloriza — e bairros que viram tendência podem inverter o jogo.
+
+
+### Curitiba está virando uma cidade de apartamentos?
+
+Em parte. PNAD 2025 mostra **40,5% em apto e 59,3% em casa** — a maioria ainda mora em casa. Em 10 anos, casas caíram 6,8% e aptos cresceram 53,7%. A capital é a 5ª mais verticalizada do país e 2,5× mais vertical que o estado do Paraná. Mas sair de "59% em casa" para "100% apto" levaria décadas no ritmo atual. A escolha continua tendo peso.
+
+
+### Vale a pena casa ou apto pra família com filhos pequenos?
+
+Depende mais do bairro do que do tipo. Apto novo em Bacacheri, Cabral ou Mossunguê com pet place, portaria 24h e brinquedoteca cobre o dia a dia. Casa em Cascatinha, Santa Felicidade ou Pilarzinho entrega quintal, cachorro grande solto e churrasqueira própria. O determinante é distância de creche/escola, vizinhança e família estendida. [Veja bairros indicados pra família](/blog/melhores-bairros-familias-curitiba).
+
+
+### Onde compro casa barata em Curitiba?
+
+No CRM FYMOOB, casa-conceito (Casa avulsa + Sobrado + Casa em Condomínio) abaixo de R$ 400 mil concentra-se em **Tatuquara, Sítio Cercado, Campo de Santana e Cidade Industrial** — todos zona sul/sudoeste. Casa de R$ 220 mil em Tatuquara existe (mesmo piso de apto compacto na cidade). Em bairros nobres acima de R$ 1,5 milhão, casa praticamente some do estoque (apenas 4 imóveis casa-conceito em todo o universo CWB com valor_venda no snapshot).
+
+
+### Apto em Curitiba rende mais que casa em aluguel?
+
+Sim, no agregado. O estoque residencial em locação CWB é **1,3% do total de imóveis** (Inpespar 2024) e a esmagadora maioria é apto. Casa em locação residencial é nicho. Aluguel residencial CWB valorizou **+10,98% em 12 meses até dezembro/2025** ([FipeZap](https://downloads.fipe.org.br/indices/fipezap/fipezap-202512-residencial-locacao.pdf)) — quase o dobro da venda. Studio e 1 quarto em bairros centrais entregam rentabilidade bruta de aluguel entre 5,5% e 7% ao ano.
+
+
+## Fontes consultadas
+
+- [IBGE PNAD Contínua 2026 (divulgação 17/04/2026)](https://www.bemparana.com.br/noticias/parana/curitiba-tem-mais-casas-ou-apartamentos-e-o-parana-pesquisa-responde/) — 59,3% casas / 40,5% aptos em CWB
+
+- [IBGE Censo 2022](https://agenciadenoticias.ibge.gov.br/agencia-noticias/2012-agencia-de-noticias/noticias/39239-censo-2022-cerca-de-oito-a-cada-dez-pessoas-moravam-em-casas-mas-cresce-proporcao-de-moradores-em-apartamentos) — aptos +96,79% em 22 anos, casas +18,02%
+
+- [FipeZap mar/2026 (via MySide)](https://myside.com.br/guia-curitiba/metro-quadrado-curitiba-pr) — m² médio CWB R$ 11.621, 2025 fechado +6,52%
+
+- [Inpespar/Radar Imobiliário abr/2026 (Cidades e Condomínios)](https://www.cidadesecondominios.com.br/2026/04/apartamentos-de-dois-quartos-lideram.html) — 67% das buscas por apto até 70 m²
+
+- [Loft Pesquisa Condomínios jan/2026 (Bem Paraná)](https://www.bemparana.com.br/noticias/economia/alta-condominio-curitiba-25-porcento-2026/) — R$ 587 mediano CWB, +25% ano a ano
+
+- [ADEMI-PR + Brain Inteligência 2025 (Bem Paraná)](https://www.bemparana.com.br/noticias/economia/curitiba-movimenta-r-74-bilhoes-em-vendas-de-apartamentos-em-2025/) — R$ 7,4 bi VGV apto novo
+
+- [ADEMI-PR Pesquisa horizontais H1/2023 (Bem Paraná)](https://www.bemparana.com.br/noticias/oferta-de-imoveis-horizontais-registra-alta-de-97-em-curitiba/) — +97% lançamentos casa em condomínio (base 494 unidades)
+
+- [STJ REsp 1.783.076-DF, Inf. 649 (14/05/2019)](https://processo.stj.jus.br/jurisprudencia/externo/informativo/?livre=@CNOT%3D017066) — pets em condomínio
+
+- [Lei Municipal CWB 10.625/2002](https://leismunicipais.com.br/a/pr/c/curitiba/lei-ordinaria/2002/1063/10625/lei-ordinaria-n-10625-2002-dispoe-sobre-rui) — Lei do Silêncio vigente
+
+- [Prefeitura de Curitiba — Tabela IPTU](https://www.curitiba.pr.gov.br/conteudo/tabela-do-iptu/368) e [Decreto IPTU 2026](https://www.curitiba.pr.gov.br/noticias/decreto-municipal-estabelece-nova-base-de-calculo-do-iptu-80-dos-imoveis-terao-imposto-corrigido-apenas-pela-inflacao-em-2026/81201)
+
+- [ABNT NBR 16.280 (SindicoNet)](https://www.sindiconet.com.br/informese/norma-abnt-16280-sobre-obras-em-condominios-manutencao-obras-e-reformas) — reformas em condomínio
+
+- [FipeZap Locação Dezembro 2025](https://downloads.fipe.org.br/indices/fipezap/fipezap-202512-residencial-locacao.pdf) — aluguel CWB +10,98% 12m
+
+- [SOS Reformas — pintura 2026](https://sosreformasereparos.com.br/tabela-de-preco-de-pintura-atualizada/) e [Cronoshare — telhado 2026](https://www.cronoshare.com.br/quanto-custa/reformar-telhado)
+
+- CRM FYMOOB — snapshot 2026-04-25, n=214 imóveis CWB com valor de venda
+
+
+> **[CTA]** Procurando casa ou apartamento em Curitiba? → Falar com a FYMOOB no WhatsApp (https://wa.me/5541999999999?text=Quero%20comparar%20casa%20vs%20apartamento%20em%20Curitiba)
+> Conversa de 15 minutos com nosso time compara as melhores opções de cada tipo no seu orçamento, no seu bairro-alvo, com a conta total real (parcela + condomínio + manutenção amortizada).
+
+
+> **[CHANGELOG]**
+
+
+

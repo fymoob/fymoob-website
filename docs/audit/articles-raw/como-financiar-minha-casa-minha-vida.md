@@ -1,0 +1,254 @@
+---
+slug: como-financiar-minha-casa-minha-vida
+title: "Minha Casa Minha Vida 2026: Faixa 4 ampliada desde 22/04 libera imóveis até R$ 600 mil"
+description: "As novas regras do MCMV entraram em vigor em 22 de abril de 2026. Faixa 4 agora cobre renda até R$ 13 mil e imóveis até R$ 600 mil. Veja se você entra."
+tags: ["financiamento", "minha casa minha vida", "mcmv 2026", "faixa 4", "curitiba"]
+word_count: 1808
+seo_meta_title: ""
+seo_meta_description: ""
+---
+
+# Minha Casa Minha Vida 2026: Faixa 4 ampliada desde 22/04 libera imóveis até R$ 600 mil
+
+> As novas regras do MCMV entraram em vigor em 22 de abril de 2026. Faixa 4 agora cobre renda até R$ 13 mil e imóveis até R$ 600 mil. Veja se você entra.
+
+As novas regras do **Minha Casa Minha Vida entraram em vigor em 22 de abril de 2026** — ontem. A mudança de maior impacto foi a **ampliação da Faixa 4**, que agora permite financiar imóveis de até **R$ 600 mil** (antes R$ 500 mil) com renda familiar de até **R$ 13 mil** (antes R$ 12 mil). O governo estima **87,5 mil famílias beneficiadas diretamente** pelas novas condições. Se você é uma delas, as regras já valem — e quem simular primeiro, compra primeiro.
+
+
+> **[CALLOUT-ALERT]** **O que muda em 1 frase: **MCMV ampliou todas as 4 faixas — Faixa 4 passou a cobrir renda até R$ 13 mil e imóveis de R$ 600 mil. Caixa e BB começaram a operar nas novas condições em 22/04/2026.
+
+
+## O que mudou desde ontem (22/04): o quadro completo
+
+Novas condições aprovadas pelo Conselho Curador do FGTS em março e regulamentadas pelo Ministério das Cidades. Reajuste de todas as 4 faixas (rendas e tetos) + redução nos juros das Faixas 2 e 3. Começaram a valer na Caixa Econômica Federal e no Banco do Brasil.
+
+
+| Item | Antes (até 21/04) | **Agora (desde 22/04/2026)** |
+|---|---|---|
+| **Faixa 1** — renda | até R$ 2.640 | **até R$ 3.200** |
+| **Faixa 2** — renda | R$ 2.640 a R$ 4.400 | **R$ 3.200 a R$ 5.000** |
+| **Faixa 3** — renda | R$ 4.400 a R$ 8.600 | **R$ 5.000 a R$ 9.600** |
+| **Faixa 4** — renda | R$ 8.600 a R$ 12.000 | **R$ 9.600 a R$ 13.000** |
+| Teto imóvel Faixa 1 e 2 | R$ 264 mil | **R$ 275 mil** |
+| Teto imóvel Faixa 3 | R$ 350 mil | **R$ 400 mil** |
+| Teto imóvel Faixa 4 | **R$ 500 mil** | **R$ 600 mil** |
+| Juros Faixa 1 | 4,00% a 4,25% a.a. | 4,00% a 4,50% a.a. |
+| Juros Faixa 2 | 4,75% a 7,00% a.a. | **4,75% a 5,50% a.a.** (caiu) |
+| Juros Faixa 3 | 7,66% a 8,16% a.a. | **6,50% a 7,66% a.a.** (caiu) |
+| Juros Faixa 4 | ~10,50% a.a. (estimado) | **~10,00% a.a.** |
+
+**Fonte:** Ministério das Cidades (publicação 21/04/2026), Caixa Econômica Federal, Banco do Brasil, Conselho Curador do FGTS.
+
+Existe um detalhe nessa tabela que muda o jogo pra quem ganha entre R$ 5.000 e R$ 9.600 — e ninguém ainda está falando dele. A gente volta nele depois da próxima seção.
+
+
+## Faixa 4 ampliada: o que muda na prática
+
+A Faixa 4 já existia antes de 22/04 — mas atendia até R$ 12 mil de renda e R$ 500 mil de teto. Quem ganhava mais de R$ 12.000 estava fora do MCMV completamente e tinha que buscar financiamento comum pelo SBPE (Sistema Brasileiro de Poupança e Empréstimo), com juros próximos de 11% ao ano.
+
+A ampliação de 22/04 muda isso em dois vetores:
+
+1. **Elevou o teto de renda** de R$ 12 mil pra **R$ 13 mil** — incluindo mais ~30 mil famílias que estavam na fronteira
+
+1. **Elevou o teto do imóvel** de R$ 500 mil pra **R$ 600 mil** — liberando financiamento de unidades em bairros premium que antes não cabiam (Batel, Bigorrilho, Ecoville em Curitiba; Jardins compactos em SP; Moinhos de Vento em POA)
+
+
+> **[CALLOUT-INFO]** **Estimativa oficial do Ministério das Cidades:** 87,5 mil famílias serão beneficiadas diretamente pelas novas condições (somando as 4 faixas). A Faixa 4 especificamente ganha ~8,2 mil famílias adicionais que antes não cabiam pelo teto de renda.
+
+**Quem mais se beneficia com a ampliação:**
+
+- Casais com renda combinada R$ 10-13 mil (bastante comum em CLT médio + CLT médio ou pessoa jurídica iniciante)
+
+- Famílias que queriam imóvel em bairros premium (acima de R$ 500 mil) e eram empurradas pro SBPE caro
+
+- Compradores que já tinham entrada razoável (30%+) mas não conseguiam financiar R$ 500-600 mil fora do MCMV a juros competitivos
+
+**Atenção** — a Faixa 4 **não tem subsídio** (auxílio do governo) como as faixas 1 e 2. O que ela oferece é teto maior e juros intermediários (~10% a.a. vs ~11% do SBPE). Se sua renda dá pra Faixa 3, a Faixa 3 continua sendo mais vantajosa financeiramente.
+
+
+## Faixa 1 expandiu: agora aceita renda até R$ 3.200
+
+A porta de entrada do programa ficou mais larga. Quem ganha entre **R$ 2.641 e R$ 3.200** — faixa que antes era puxada pra Faixa 2 (com juros maiores) — agora entra na **Faixa 1**, onde o subsídio do governo chega a **R$ 55 mil** e os juros ficam entre **4,00% e 4,50% ao ano**.
+
+Na prática, isso significa:
+
+- **Renda de R$ 3.000** — financiamento de R$ 220 mil, subsídio de ~R$ 47 mil, parcela inicial em torno de R$ 900
+
+- **Renda de R$ 3.200** — teto do subsídio ainda é acessível, parcela cabe em ~30% da renda
+
+Quem estava "entre as faixas" antes de 22/04 agora tem acesso direto ao benefício mais vantajoso do programa.
+
+
+## Faixa 2 e 3: o detalhe que ninguém está falando
+
+Aqui está a seção que prometi acima. Olhe de novo os juros da Faixa 3: caíram de **7,66-8,16% para 6,50-7,66%**. Parece pouco — mas numa simulação de R$ 300 mil em 30 anos, a diferença é de cerca de **R$ 45 mil a menos** no total pago ao longo do contrato.
+
+Combine isso com o teto da Faixa 3 subindo de **R$ 350 mil para R$ 400 mil** e você tem uma faixa muito mais competitiva. Famílias com renda R$ 5.000-9.600 que antes não cabiam em imóveis novos em bairros médios de Curitiba agora passam a caber em boa parte deles.
+
+**Simulação prática — Faixa 3, R$ 7.500 de renda:**
+
+- Imóvel de R$ 400 mil (teto novo)
+
+- Entrada 20% (R$ 80 mil) — pode usar FGTS
+
+- Financiamento R$ 320 mil em 30 anos a 7% a.a.
+
+- Parcela inicial: **~R$ 2.180/mês** (dentro dos 30% da renda, regra do banco)
+
+
+## Documentos necessários: o detalhe que 4 em cada 10 candidatos esquecem
+
+A documentação do MCMV **não mudou em 22/04** — mas há um item específico que continua reprovando candidatos que poderiam entrar no programa: **CadÚnico desatualizado**.
+
+
+> **[CALLOUT-WARNING]** **Regra crítica:** pra Faixa 1 (e agora também pra faixas superiores em alguns casos), o CadÚnico precisa estar atualizado nos últimos **2 anos** em CRAS ou online. 4 em cada 10 candidatos à Faixa 1 são reprovados na triagem inicial por causa disso, segundo dados de cartórios de Curitiba.
+
+
+### Documentos obrigatórios (abril/2026)
+
+**Identificação (todos os compradores):**
+
+- RG e CPF atualizados
+
+- Certidão de nascimento ou casamento
+
+- Comprovante de residência recente (último mês)
+
+**Renda e trabalho:**
+
+- CTPS (Carteira de Trabalho) física ou digital
+
+- Últimos 3 holerites (CLT) ou últimos 6 extratos bancários (autônomo/PJ)
+
+- Declaração de Imposto de Renda dos últimos 2 anos
+
+- Extrato do FGTS (caso vá utilizá-lo)
+
+**Específicos do programa:**
+
+- CadÚnico atualizado (obrigatório Faixa 1, recomendado demais faixas)
+
+- Declaração de que não possui outro imóvel residencial
+
+- Declaração de que nunca foi beneficiado por programa habitacional federal
+
+Você pode consultar a lista completa e atualizada em [documentos necessários para comprar imóvel em Curitiba](/blog/documentos-comprar-imovel-curitiba).
+
+
+> **[CTA]** Vai simular o MCMV e não sabe qual faixa é a sua? → Falar com especialista (/contato)
+> Nosso time analisa sua renda e documentação em 10 minutos por WhatsApp e diz exatamente em qual faixa você entra em 2026.
+
+
+## Simulação em Curitiba: quanto você paga em cada faixa
+
+Curitiba tem bairros que se encaixam em todas as 4 faixas do MCMV 2026. A tabela abaixo mostra onde cada renda encontra imóveis reais em abril/2026:
+
+
+| Sua faixa | Renda | Teto MCMV | Bairros com oferta em Curitiba | Parcela estimada |
+|---|---|---|---|---|
+| **Faixa 1** | até R$ 3.200 | R$ 275k | Sítio Cercado, Tatuquara, Ganchinho, Campo de Santana | ~R$ 900-1.100 |
+| **Faixa 2** | R$ 3.200-5.000 | R$ 275k | Portão, Capão Raso, Boqueirão, Pinheirinho | ~R$ 1.200-1.500 |
+| **Faixa 3** | R$ 5.000-9.600 | R$ 400k | Bacacheri, Cabral, Água Verde (compactos), Boa Vista | ~R$ 1.800-2.400 |
+| **Faixa 4** | R$ 9.600-13.000 | R$ 600k | Batel (compactos), Bigorrilho, Ecoville, Champagnat | ~R$ 4.200-5.500 |
+
+Veja [imóveis em Curitiba por faixa de preço](/busca) e filtre pelo teto que cabe na sua faixa MCMV.
+
+
+## Como entrar no MCMV em 2026: passo a passo
+
+
+### 1. Simule na Caixa ou Banco do Brasil
+
+Acesse o site da Caixa (ou do BB) e simule com sua renda atual. A nova plataforma já reflete as regras de 22/04. Você vai precisar:
+
+- Renda mensal bruta familiar (declarada + comprovada)
+
+- Data de nascimento dos compradores
+
+- Valor aproximado do imóvel alvo
+
+- Cidade onde pretende comprar
+
+A simulação mostra: valor financiável, parcela inicial, subsídio (se Faixa 1 ou 2) e prazo possível (até 35 anos).
+
+
+### 2. Peça a carta de crédito
+
+Com a simulação aprovada, o banco emite uma **carta de crédito** (pré-aprovação) válida por **90 dias**. Isso não é empréstimo ainda — é a garantia de que, se você encontrar o imóvel certo, o banco financia nas condições simuladas.
+
+
+### 3. Encontre o imóvel dentro do teto da sua faixa
+
+O imóvel precisa:
+
+- Estar no limite de valor da sua faixa (use a tabela acima)
+
+- Ter **matrícula atualizada** (certidão recente, até 30 dias)
+
+- Estar **averbado corretamente** (área construída bate com a matrícula)
+
+- Ter **habite-se** ou **CVCO** emitido pela prefeitura
+
+A FYMOOB acompanha essa verificação antes mesmo de você fechar a proposta — é comum imóveis parecerem compatíveis com MCMV mas estarem travados por averbação pendente (problema frequente em Curitiba).
+
+
+### 4. Análise de crédito e avaliação do imóvel
+
+Com imóvel escolhido, o banco faz:
+
+- **Análise de crédito** (capacidade de pagamento, comprometimento de renda)
+
+- **Avaliação do imóvel** (engenheiro visita e avalia o valor)
+
+- **Análise jurídica** (matrícula, certidões, vendedor)
+
+Prazo típico: 15-30 dias.
+
+
+### 5. Assinatura do contrato
+
+Com aprovação total, assina-se o contrato de financiamento em cartório. O imóvel fica **alienado ao banco** até quitação (você mora nele, mas o banco é garantia fiduciária). Primeira parcela cai no mês seguinte.
+
+
+## Perguntas frequentes (MCMV 2026)
+
+**Posso usar FGTS pra dar entrada?** Sim. O FGTS pode ser usado como parte ou totalidade da entrada nas Faixas 1, 2 e 3. Na Faixa 4 também é permitido, mas com regras específicas — o valor do FGTS somado à entrada total não pode exceder 40% do imóvel.
+
+**E se minha renda aumentar durante o contrato?** Não há perda do benefício. As condições do financiamento são travadas no momento da contratação. Mesmo que sua renda suba para Faixa 3 ou 4 depois, você mantém os juros e subsídio originais da Faixa 1 ou 2.
+
+**Posso comprar imóvel usado pelo MCMV?** Sim. O programa aceita imóveis novos e usados, desde que dentro do teto da sua faixa e em condições habitáveis. Em Curitiba, cerca de 60% dos imóveis vendidos via MCMV são usados (bairros consolidados têm pouco imóvel novo no teto).
+
+**Qual o prazo máximo de financiamento?** Até 35 anos (420 parcelas). Na prática, pra quem financia acima de 55 anos, o banco reduz o prazo pra que a última parcela caia antes dos 80 anos do comprador.
+
+**Posso trocar de faixa se minha renda mudar antes de assinar?** Sim. A faixa só é definida no momento da assinatura. Se sua renda mudou entre a simulação e a assinatura, o banco recalcula automaticamente.
+
+**Com renda PJ/autônomo dá pra entrar?** Dá, mas a documentação é mais rigorosa. O banco pede extratos bancários dos últimos 6 meses, declaração completa de IR, CNPJ ativo por no mínimo 12 meses, e cálculo da renda baseado na mediana dos últimos 12 meses de movimentação.
+
+**O MCMV cobre imóveis em condomínio fechado?** Sim, contanto que o imóvel esteja dentro do teto da faixa. Em Curitiba, vários condomínios em Santa Felicidade, Campo Comprido e região do Ecoville têm unidades dentro do teto da Faixa 4 (R$ 600 mil).
+
+
+## Próximos passos: qual faixa cabe no seu bolso hoje?
+
+As mudanças que entraram em vigor ontem não significam apenas "regras novas no papel" — significam oportunidade real pra quem estava na fronteira do MCMV até então. Especialmente famílias das Faixas 3 e 4 ampliadas, que ganharam teto maior e juros mais baixos.
+
+Se você ainda não fez uma simulação com as regras novas, os próximos dias são críticos. Bancos costumam ter picos de demanda nas primeiras 2-3 semanas após mudanças grandes como essa — depois a burocracia de análise começa a acumular.
+
+
+> **[CTA]** Quer ver imóveis em Curitiba que entram no MCMV 2026? → Buscar imóveis por faixa (/busca)
+> A FYMOOB tem opções em todas as 4 faixas — do Tatuquara ao Batel compacto. Nossa equipe já acompanhou mais de 200 financiamentos MCMV e sabe quais imóveis passam na análise do banco na primeira tentativa.
+
+**Fontes oficiais consultadas:**
+
+- Ministério das Cidades — Decreto de 21/04/2026 e Portaria de regulamentação do MCMV 2026
+
+- Caixa Econômica Federal — Tabela de taxas SBPE e Pró-Cotista vigente em 22/04/2026
+
+- Banco do Brasil — Condições de financiamento habitacional 2026
+
+- InfoMoney, Valor Econômico, Exame — cobertura da reforma do MCMV (20-22/abril/2026)
+
+- Prefeitura de Curitiba — Consulta de regularidade de imóveis
+
+*Este artigo é informativo e não substitui consultoria jurídica ou simulação oficial do banco. Taxas, tetos e condições podem ser atualizadas pelo Ministério das Cidades a qualquer momento.*
+
+

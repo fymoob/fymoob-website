@@ -1,0 +1,341 @@
+---
+slug: checklist-compra-imovel
+title: "Vai comprar imóvel? Veja o checklist que pode evitar R$ 80 mil em prejuízo"
+description: "Checklist de 25 itens em 5 fases pra comprar imóvel em 2026. Averbação pendente, dívida propter rem de condomínio e 3 erros que somam até R$ 80 mil."
+tags: ["checklist compra imóvel", "averbação", "propter rem", "comprar imóvel 2026", "documentos imóvel"]
+word_count: 2455
+seo_meta_title: "Checklist para comprar imóvel: evite prejuízo antes de assinar"
+seo_meta_description: "Veja os documentos, dívidas e riscos que você precisa conferir antes da escritura para evitar prejuízo na compra do imóvel."
+methodology:
+  period: "Abril/2026"
+  sample: "25 itens em 5 fases da compra, validados contra base jurídica primária + prática de cartório atual"
+  sources: ["IRIB","Anoreg BR","Colégio Notarial do Brasil","STJ (REsp 1.345.331/RS)","TJ-PR Tabela de Emolumentos 2026","Lei 6.015/1973","Código Civil (art. 1.345)","Resolução CMN 4.676/2018"]
+---
+
+# Vai comprar imóvel? Veja o checklist que pode evitar R$ 80 mil em prejuízo
+
+> Checklist de 25 itens em 5 fases pra comprar imóvel em 2026. Averbação pendente, dívida propter rem de condomínio e 3 erros que somam até R$ 80 mil.
+
+Comprar um imóvel com **averbação de construção pendente** custa, em média, **R$ 80 mil** — e a pegadinha não aparece em nenhum anúncio. O problema mora em 3 lugares que quase ninguém olha: na matrícula do imóvel, na dívida de condomínio que você herda do vendedor sem saber, e em 11 certidões negativas que o corretor "esquece" de pedir. Este é o checklist de 25 itens organizado nas **5 fases da compra** — da primeira visita aos 30 dias depois das chaves — com o que cada item vale em reais se você esquecer.
+
+
+## O checklist de 25 itens em 5 fases
+
+
+| Fase | Quando | Itens |
+|---|---|---|
+| **1. Antes de visitar** | Você ainda não viu o imóvel | 4 itens |
+| **2. Durante a visita** | Imóvel na frente, caneta na mão | 10 itens |
+| **3. Due diligence** | Gostou? Agora valida antes da proposta | 6 itens |
+| **4. Fechamento** | Contrato, ITBI, cartório | 3 itens |
+| **5. Pós-compra** | 30 dias depois das chaves | 2 itens |
+
+A ordem importa. Ignorar a Fase 3 (due diligence) é o erro mais caro — é ali que vive o R$ 80 mil.
+
+
+## Os 3 erros que fazem brasileiros perderem mais dinheiro
+
+Em 2026, estes 3 itens somam a maior parte do R$ 80 mil que comprador médio perde por ignorância:
+
+
+### 1. Averbação de construção pendente (R$ 30-200 mil)
+
+Quando alguém constrói ou reforma um imóvel e não averba na matrícula, o imóvel fica "pela planta original". Se a construção é 20% maior que a planta, **o banco não financia** o valor real — só o valor da planta original. Pior: **desvaloriza o imóvel em 20-40%** na revenda.
+
+Num imóvel de R$ 450 mil com construção não averbada, a perda varia de **R$ 90 mil a R$ 180 mil** na revenda. Pra regularizar, custa entre R$ 25 mil e R$ 45 mil em cartório, taxas e reforma-documento. Base legal: [Lei 6.015/1973, art. 167, II, item 4](https://www.planalto.gov.br/ccivil_03/leis/l6015compilada.htm).
+
+*Se esquecer: você herda até R$ 180 mil de perda na revenda + dificuldade de financiamento.*
+
+
+### 2. Dívida de condomínio herdada (R$ 5-40 mil)
+
+Este é o item que 99% dos checklists esquece. O Código Civil, **artigo 1.345**, estabelece que a dívida de condomínio é **propter rem** — passa pro novo dono junto com o imóvel, mesmo sem você saber. O [STJ confirmou no REsp 1.345.331/RS](https://www.jusbrasil.com.br/jurisprudencia/stj/1345331) que **não há limite de tempo** — se o vendedor deve 24 ou 60 meses de condomínio, você herda tudo.
+
+Num imóvel com condomínio de R$ 1.200/mês e 12 meses em aberto, você assume **R$ 14.400 de dívida** sem querer. Em condomínios premium com taxa alta ou dívida de reforma, passa fácil de **R$ 40 mil**.
+
+*Se esquecer: você herda a dívida integral na data da escritura.*
+
+**Como evitar:** pedir **declaração de quitação de cotas** emitida pela administradora do condomínio. Documento sai em 48h e é gratuito. Sem ele, não assine.
+
+
+### 3. ITBI cobrado sobre valor venal inflado (R$ 3-12 mil)
+
+Quando você compra, o município cobra ITBI. Em Curitiba a alíquota é **2,7%** sobre o "valor venal de referência" — tabela interna da Prefeitura. O problema: essa tabela frequentemente está acima do valor real da transação. O [STJ decidiu em 2022 (Tema 1113)](/blog/itbi-curitiba-valor-como-pagar) que a base correta é o valor da escritura, mas a Prefeitura **continua cobrando sobre o venal**.
+
+Num imóvel de R$ 500 mil com venal de referência de R$ 950 mil, o ITBI cobrado é R$ 25.650 — deveria ser R$ 13.500. Diferença: **R$ 12.150**.
+
+*Se esquecer: você paga ITBI a mais e pode pedir restituição em até 5 anos.*
+
+
+> **[CALLOUT-WARNING]** **Soma realista em um imóvel de R$ 450 mil:** averbação parcialmente pendente (R$ 36-54 mil de desvalorização) + 12 meses de dívida de condomínio (R$ 12 mil) + ITBI inflado (R$ 10 mil) + reforma estrutural oculta não detectada na visita (R$ 20-40 mil) = **R$ 66 mil a R$ 116 mil perdidos**. Mediana: R$ 80 mil. Não é alarmismo — é conta realista com fonte jurídica de cada item.
+
+
+## Fase 1 — Antes de visitar o imóvel
+
+**Objetivo:** não se apaixonar por um imóvel que não cabe no orçamento real.
+
+
+### 1. Calcule o orçamento completo (não só o valor do imóvel)
+
+Imóvel R$ 500 mil **não é um custo de R$ 500 mil**. Some: entrada (20% = R$ 100 mil) + custos de fechamento (ITBI 2,7% + registro ~1% + emolumentos + advogado = ~R$ 25-35 mil) + reforma inicial (média 5% = R$ 25 mil) + mudança (R$ 3-5 mil). Total real: **R$ 150-170 mil à vista + financiamento da diferença**.
+
+*Se esquecer: você descobre na reta final que faltam R$ 30 mil e perde a proposta.*
+
+
+### 2. Tire pré-aprovação de financiamento em 2 bancos
+
+Não visite imóvel sem saber quanto o banco aprova no seu perfil. Caixa (SFH até R$ 1,5 milhão), Itaú e Bradesco demoram 24-72h pra pré-aprovar hoje. O número que importa é **o valor máximo da parcela** — não o valor máximo do imóvel.
+
+*Se esquecer: negocia imóvel que o banco não financia.*
+
+
+### 3. Limite a parcela do financiamento a 30% da renda líquida
+
+A [Resolução CMN 4.676/2018](https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20CMN&numero=4676) permite até 30% da renda bruta, mas **o número que importa é a renda líquida** — depois do imposto. Pra renda líquida de R$ 10 mil, parcela máxima sã é R$ 3 mil. Acima disso, aperto em 3 anos vira atraso.
+
+**Importante:** a regra dos 30% é sobre a parcela do financiamento, **não sobre parcela + condomínio + IPTU**. Esses 3 somam outros 15-25% da renda. Conta total confortável: **moradia total ≤ 45% da renda líquida**.
+
+*Se esquecer: acorda apertado todo mês, não poupa nada.*
+
+
+### 4. Mapeie o bairro (segurança, comércio, transporte)
+
+Visite o bairro **antes** de visitar o imóvel. Sábado 10h (fluxo) + quarta 19h (movimento noturno) + domingo 8h (vida real). Abra Google Maps, confira transporte, escola a pé, farmácia 24h, hospital mais próximo.
+
+*Se esquecer: descobre no mês 3 que o trajeto trabalho-casa dobrou.*
+
+
+## Fase 2 — Durante a visita
+
+**Objetivo:** identificar problemas físicos que não aparecem em foto.
+
+
+### 5. Abra todas as torneiras e descargas
+
+Fluxo baixo = encanamento velho. Vazamento na pia = infiltração ativa.
+
+
+### 6. Teste o chuveiro elétrico por 2 minutos
+
+Queima disjuntor? Instalação elétrica subdimensionada.
+
+
+### 7. Verifique infiltração (forro, canto de parede, rodapé)
+
+Mancha escura ou descascamento = problema estrutural de R$ 5-20 mil.
+
+
+### 8. Abra e feche todas as janelas e portas
+
+Porta que arranha = esquadria fora de esquadro = **assentamento estrutural** (problema sério).
+
+
+### 9. Confira vaga de garagem (tamanho REAL)
+
+Meça a vaga. "Vaga de garagem" em planta antiga é 4,5m × 2,3m. Carro atual mede ~4,8m × 1,9m. Faça a conta.
+
+
+### 10. Teste instalações elétricas — não só as tomadas visíveis
+
+Pegue carregador de celular + secador de cabelo. Ligue nos 2 extremos do apartamento. Desarma? Instalação velha.
+
+
+### 11. Verifique ruído do vizinho e da rua
+
+Fique 15 minutos sem falar. Escute. Ônibus passando? Obra? Cachorro latindo? O silêncio só aparece na 2ª visita em horário diferente.
+
+
+### 12. Confira áreas comuns (elevador, piscina, salão)
+
+Elevador antigo = 5-8 anos de manutenção cara na frente. Piscina sem uso = condomínio gastando à toa.
+
+
+### 13. Fotografe tudo (inclusive o que está torto)
+
+Foto valia ouro na hora de negociar — "está com problema X, aceito R$ 30 mil a menos".
+
+
+### 14. Pergunte ao porteiro sobre vizinhança e histórico
+
+Porteiro sabe tudo. Fala do ex-morador, obras recentes, perfil dos vizinhos. 10 minutos com porteiro = 10 visitas de apartamento.
+
+
+## Fase 3 — Due diligence (antes de fechar a proposta)
+
+**Objetivo:** proteger os R$ 80 mil que moram nos detalhes documentais.
+
+
+### 15. Matrícula atualizada em 30 dias
+
+Peça cópia da matrícula do imóvel no Registro de Imóveis do bairro. **Validade: 30 dias**. Custo: R$ 70-120. Matrícula mostra: proprietário atual, dívidas registradas, hipotecas, restrições, inventário pendente.
+
+*Se esquecer: compra imóvel com hipoteca que não viu.*
+
+
+### 16. Averbação de construção + habite-se
+
+Compare a planta da matrícula com o imóvel real. Se o imóvel foi reformado ou construído sem averbar, ele está **irregular**. Habite-se = documento da Prefeitura atestando que a construção segue a planta aprovada.
+
+*Se esquecer: perde até R$ 180 mil na revenda.*
+
+
+### 17. Certidões negativas do vendedor (as 11 necessárias)
+
+Pedir do **vendedor pessoa física**:
+
+- Certidão de débitos federais (Receita Federal, 90 dias)
+
+- Certidão de débitos estaduais
+
+- Certidão de débitos municipais
+
+- Certidão negativa de tributos imobiliários (IPTU)
+
+- Certidão de ações cíveis 1ª instância (TJ-PR, 30 dias)
+
+- Certidão de ações cíveis 2ª instância (TJ-PR, 30 dias)
+
+- Certidão de ações trabalhistas
+
+- Certidão de protesto (cartórios da cidade)
+
+- Certidão de nascimento ou casamento atualizada
+
+- Certidão negativa de interdição e tutela
+
+- Certidão do distribuidor cível
+
+Do **vendedor pessoa jurídica**, também: contrato social + CND INSS + FGTS.
+
+*Se esquecer: imóvel pode ser alvo de execução trabalhista ou fiscal e você perde tudo.*
+
+
+### 18. Débitos do imóvel — IPTU E condomínio (propter rem)
+
+Peça comprovante de IPTU pago dos últimos 5 anos. E peça **declaração de quitação de cotas de condomínio** emitida pela administradora (48h, gratuita). Ambos os débitos são **propter rem** — passam com o imóvel ([art. 1.345 do Código Civil](https://www.planalto.gov.br/ccivil_03/leis/2002/l10406compilada.htm), [STJ REsp 1.345.331/RS](https://www.jusbrasil.com.br/jurisprudencia/stj/1345331)).
+
+*Se esquecer: você herda o que o vendedor deve. Sem limite de meses.*
+
+
+### 19. Regras internas do condomínio
+
+Peça a convenção do condomínio + regimento interno + última ata de assembleia. Descubra: pet é permitido? festa na área comum? obras restritas? carro extra cobra taxa?
+
+*Se esquecer: descobre que seu cachorro de 25kg não pode morar ali, ou que a ata prevê reforma da fachada com contribuição extra de R$ 10 mil.*
+
+
+### 20. Inventário do vendedor + cláusulas restritivas
+
+Se o vendedor herdou o imóvel, o inventário precisa estar concluído. Se há cláusula de impenhorabilidade, usufruto vitalício ou usufruto retido, o imóvel não pode ser livremente vendido.
+
+*Se esquecer: assina contrato inválido, ação judicial pra anular, perde entrada já paga.*
+
+
+## Fase 4 — Fechamento
+
+**Objetivo:** fechar o contrato sem errar a formalização.
+
+
+### 21. Escritura pública (não só contrato particular)
+
+Imóvel acima de R$ 35 mil exige **escritura pública** (Lei 7.433/1985). Contrato particular de compra e venda é pré-contrato — não transfere propriedade. Só a escritura + registro transfere.
+
+*Se esquecer: juridicamente o imóvel não é seu.*
+
+
+### 22. ITBI antes do registro
+
+O município cobra ITBI antes de você registrar. Alíquota em Curitiba: **2,7%** sobre o maior valor (escritura ou venal). Pague, **mas peça a **[**Avaliação Contraditória da Prefeitura**](/blog/itbi-curitiba-valor-como-pagar)** se o venal estiver acima do valor da sua escritura**. O STJ te dá razão em muitos casos (Tema 1113).
+
+*Se esquecer: paga até R$ 12 mil a mais.*
+
+
+### 23. Registro de escritura (~1% do valor)
+
+Em Curitiba, o registro em cartório custa cerca de **1% do valor do imóvel** em 2026 ([TJ-PR Tabela de Emolumentos](https://www.tjpr.jus.br/)). Somando ITBI (2,7%) + registro (1%) + emolumentos + advogado, os "custos de fechamento" são **4,5% a 6% do valor do imóvel**.
+
+*Se esquecer: imóvel registrado só depois do pagamento — sem registro, a propriedade não é sua.*
+
+
+## Fase 5 — Pós-compra (30 dias depois das chaves)
+
+**Objetivo:** evitar cobrança duplicada e conflito com ex-proprietário.
+
+
+### 24. Transfira contas de luz, água, gás e IPTU pro seu nome
+
+Faça em até 30 dias. Se deixar no nome do ex-proprietário, ele pode receber fatura antiga, processar por cobrança indevida, ou o serviço ser cortado.
+
+*Se esquecer: fica sem água no Natal.*
+
+
+### 25. Declare o imóvel no IRPF do ano seguinte
+
+Na declaração de IR do ano de compra, inclua o imóvel em "Bens e Direitos". Informe o custo total (imóvel + ITBI + registro + reforma). Base futura de cálculo de imposto sobre ganho de capital quando vender.
+
+*Se esquecer: paga mais imposto no futuro na revenda.*
+
+
+> **[CTA]** Quer que a gente aplique esse checklist no seu caso específico? → Falar com especialista (https://wa.me/554199978-0517?text=Gostaria de aplicar o checklist completo na compra de um imóvel em Curitiba.)
+> O time FYMOOB acompanha todas as 5 fases — da pré-aprovação do banco à transferência dos contadores. Conferência documental e negociação inclusas no serviço, sem custo extra.
+
+
+## Perguntas frequentes sobre checklist de compra de imóvel
+
+
+### Dívida de condomínio acompanha o imóvel depois da venda?
+
+**Sim.** O Código Civil, artigo 1.345, estabelece que dívida de condomínio é "propter rem" — passa pro novo dono junto com o imóvel. O STJ confirmou no [REsp 1.345.331/RS](https://www.jusbrasil.com.br/jurisprudencia/stj/1345331) que **não existe limite de tempo**: se o vendedor deve 24, 36 ou 60 meses de condomínio, você herda tudo na escritura. Como se proteger: pedir **declaração de quitação de cotas** pela administradora antes de assinar. É gratuita e sai em 48h.
+
+
+### O que é averbação e por que é tão importante?
+
+Averbação é o registro, na matrícula do imóvel, de qualquer mudança física (construção, demolição, reforma que altere área). Sem averbação, o imóvel fica "pela planta original" — mesmo que esteja construído 50% maior. As consequências: **o banco não financia o valor real**, o imóvel **desvaloriza 20-40% na revenda**, e o cartório pode exigir regularização antes de transferir. Regularizar depois custa R$ 25-45 mil em cartório + taxas + engenheiro. Verifique averbação na Fase 3 (due diligence), sempre antes da proposta.
+
+
+### Quais certidões negativas pedir do vendedor?
+
+**11 certidões no total.** Federais: Receita Federal (débitos federais, 90 dias de validade). Estaduais e municipais: débitos fiscais. Cíveis: 1ª e 2ª instâncias do TJ estadual (30 dias). Trabalhistas: Justiça do Trabalho. Protesto: todos os cartórios da cidade de residência do vendedor. Nascimento ou casamento atualizada. Interdição e tutela. Distribuidor cível. Pra PJ, adicione contrato social + CND INSS + FGTS. Custam juntas R$ 300-500 e saem em 3-5 dias úteis.
+
+
+### Comprar imóvel usado é mais arriscado que comprar na planta?
+
+**Cada um tem armadilha diferente.** Usado: averbação pendente, dívida de condomínio, reforma estrutural oculta, vizinhança consolidada (melhor validação). Na planta: atraso de obra, construtora em recuperação judicial, INCC-M corroendo valor durante a obra, incerteza do acabamento. O risco total é **parecido em valor absoluto** (~5-10% do valor do imóvel), mas os itens são diferentes. Para ambos, a due diligence é o item que separa quem perde dinheiro de quem não perde.
+
+
+### Qual o custo total de fechamento da compra de um imóvel?
+
+Em 2026, **4,5% a 6% do valor do imóvel** em Curitiba. Detalhamento: **ITBI** (2,7%) + **Registro** (~1%) + **Escritura pública** (0,5-0,8%) + **Avaliação bancária** (R$ 2.800-4.500) + **Advogado** (opcional, R$ 2.000-5.000) + **Taxa de abertura de crédito** (banco, R$ 500-1.500). Em imóvel de R$ 500 mil, o custo real de fechamento é **R$ 22.500 a R$ 30.000**.
+
+
+## Próximo passo
+
+Este checklist existe pra uma razão: comprar imóvel é **a maior transação financeira da vida de 90% das pessoas**, e o mercado brasileiro normaliza o "na base da confiança". Não é por má-fé do vendedor ou do corretor — é cultural. Mas **o dinheiro é seu**, e o que você não verificou antes da escritura vira prejuízo seu depois.
+
+3 regras práticas antes de fechar:
+
+1. **Nenhum item das Fases 3 e 4 aceita "é só uma formalidade"**. Se alguém te falar isso, insista. Quem tem o que esconder incomoda-se com verificação.
+
+1. **Peça documento em 48h. Se vendedor demora 2 semanas**, o documento não existe ou está com problema.
+
+1. **Se a diferença financeira entre "fazer certo" e "pular etapa" passa de R$ 10 mil, sempre fazer certo**. R$ 10 mil é o teto do que vale pra correr o risco. Acima, nunca.
+
+Com os 25 itens validados nas 5 fases, o R$ 80 mil que pode se perder vira zero.
+
+
+> **[METODOLOGIA]**
+> - Periodo: Abril/2026
+> - Amostra: 25 itens em 5 fases da compra, validados contra base jurídica primária
+> - Tratamento: -
+> - Fontes: ["IRIB (Instituto de Registro Imobiliário do Brasil)", "Anoreg BR", "Colégio Notarial do Brasil", "STJ (jurisprudência propter rem)", "TJ-PR Tabela de Emolumentos 2026", "Lei 6.015/1973 (Registros Públicos)", "Código Civil (art. 1.345 e seguintes)", "Resolução CMN 4.676/2018 (comprometimento de renda)"]
+> - Atualizado: 2026-04-24
+
+
+> **[CHANGELOG]**
+
+
+
+> **[CTA]** Ver imóveis à venda em Curitiba → Ver imóveis disponíveis (/busca)
+> Nosso catálogo tem mais de 200 imóveis com documentação conferida em cada item do checklist. Filtre por bairro, tipo e faixa de preço.
+
+

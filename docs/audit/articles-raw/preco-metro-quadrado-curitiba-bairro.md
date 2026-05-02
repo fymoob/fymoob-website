@@ -1,0 +1,268 @@
+---
+slug: preco-metro-quadrado-curitiba-bairro
+title: "Preço do m² em Curitiba 2026"
+description: "Ranking dos 30 bairros de Curitiba por m² em abril/2026. Batel a R$ 17.924, Campina do Siqueira dispara, Ahú +12,5% em 12m. Com onde você compra, rende e valoriza."
+tags: ["preço m² curitiba", "bairros curitiba", "ranking 2026", "batel", "ahú", "investimento", "valorização"]
+word_count: 2375
+seo_meta_title: "Preço do m² em Curitiba 2026: ranking por bairro"
+seo_meta_description: "Batel lidera, Ahú dispara e Campina do Siqueira surpreende. Veja o preço do m² por bairro e onde ainda há oportunidade. Dados FipeZap."
+methodology:
+  period: "Abril/2026"
+  sample: "36 bairros de Curitiba com m² venda e/ou aluguel medidos"
+  sources: ["FipeZap","Quinto Andar Index","Zap Imóveis","Secovi-PR","FYMOOB CRM (API Loft)"]
+---
+
+# Preço do m² em Curitiba 2026
+
+> Ranking dos 30 bairros de Curitiba por m² em abril/2026. Batel a R$ 17.924, Campina do Siqueira dispara, Ahú +12,5% em 12m. Com onde você compra, rende e valoriza.
+
+A diferença entre o m² mais caro e o mais barato de Curitiba é de **4,5 vezes**. O [Batel](/imoveis/batel) fechou abril de 2026 em R$ 17.924/m² ([FipeZap](https://www.fipe.org.br/pt-br/indices/fipezap/)); o [CIC](/imoveis/cidade-industrial) em R$ 3.998. No meio do caminho tem bairro subindo **+12,5% em 12 meses** (o Ahú passou todos os premium em valorização), enquanto o Batel — líder absoluto em preço — subiu só 6,5%. Este é o mapa completo dos 30 bairros que a FYMOOB vende toda semana, com dados cruzados de FipeZap, Quinto Andar, Secovi-PR e de fechamentos reais que acompanhamos em abril/2026.
+
+
+## Tabela completa — preço do m² por bairro, abril/2026
+
+
+| Ranking | Bairro | m² venda (R$) | Variação 12m | Faixa |
+|---|---|---|---|---|
+| 1 | [Batel](/imoveis/batel) | 17.924 | +6,5% | Premium |
+| 2 | [Bigorrilho](/imoveis/bigorrilho) | 14.117 | +2,9% | Premium |
+| 3 | [Campina do Siqueira](/imoveis/campina-do-siqueira) | 14.062 | +8,2% | Premium |
+| 4 | [Juvevê](/imoveis/juveve) | 13.897 | **+11,5%** | Premium |
+| 5 | Ahú | 13.022 | **+12,5%** | Premium |
+| 6 | [Água Verde](/imoveis/agua-verde) | 12.178 | +4,1% | Premium |
+| 7 | [Alto da Glória](/busca?bairro=Alto+da+Gloria) | 11.850 | +5,8% | Premium |
+| 8 | [Centro](/imoveis/centro) | 10.820 | +7,3% | Alto-Médio |
+| 9 | Bom Retiro | 10.623 | +9,1% | Alto-Médio |
+| 10 | [Mercês](/busca?bairro=Merces) | 10.600 | +3,8% | Alto-Médio |
+| 11 | Centro Cívico | 10.342 | +4,2% | Alto-Médio |
+| 12 | [Cristo Rei](/imoveis/cristo-rei) | 10.200 | +6,0% | Alto-Médio |
+| 13 | [Portão](/imoveis/portao) | 10.028 | +4,8% | Alto-Médio |
+| 14 | [Rebouças](/busca?bairro=Reboucas) | 9.900 | +5,3% | Alto-Médio |
+| 15 | Hugo Lange | 9.760 | +4,9% | Alto-Médio |
+| 16 | [Ecoville](/busca?bairro=Ecoville) | 9.430 | +2,7% | Alto-Médio |
+| 17 | [Cabral](/imoveis/cabral) | 9.200 | +4,4% | Médio |
+| 18 | Cascatinha | 8.940 | +5,5% | Médio |
+| 19 | [Vila Izabel](/imoveis/vila-izabel) | 8.860 | +4,7% | Médio |
+| 20 | [CIC](/imoveis/cidade-industrial) | 8.998 | **+10,2%** | Acessível |
+| 21 | Bacacheri | 8.680 | +5,1% | Médio |
+| 22 | [Mossunguê](/imoveis/mossungue) | 8.430 | +3,9% | Médio |
+| 23 | [Campo Comprido](/imoveis/campo-comprido) | 8.100 | +6,8% | Médio |
+| 24 | Jardim Social | 7.950 | +3,2% | Médio |
+| 25 | [Boa Vista](/imoveis/boa-vista) | 7.640 | +4,0% | Acessível |
+| 26 | [Bairro Alto](/imoveis/bairro-alto) | 6.870 | +4,5% | Acessível |
+| 27 | [Santa Felicidade](/busca?bairro=Santa+Felicidade) | 6.720 | +3,8% | Acessível |
+| 28 | Tarumã | 6.340 | +5,2% | Acessível |
+| 29 | [Capão Raso](/imoveis/capao-raso) | 5.980 | +4,1% | Acessível |
+| 30 | [Boqueirão](/imoveis/boqueirao) | 5.210 | +3,6% | Acessível |
+
+*Preço médio Curitiba capital em abril/2026: ****R$ 11.621/m² (+6,26% em 12m)****. Fonte principal: *[*FipeZap*](https://www.fipe.org.br/pt-br/indices/fipezap/)*. Complementar: Quinto Andar Index, Zap Imóveis Index, Secovi-PR.*
+
+A coluna que conta uma história diferente do preço não é a do m². É a de **variação em 12 meses**. Quem só olha preço compra no topo. Quem lê variação compra no começo da subida.
+
+
+## Bairros Premium — acima de R$ 12.000/m²
+
+O que tem no Batel também tem no Bigorrilho, Campina do Siqueira, Juvevê, Ahú, Água Verde e Alto da Glória — os sete bairros que ultrapassaram R$ 12.000/m² em abril/2026. A diferença entre eles não é o CEP. É **o que aconteceu nos últimos 12 meses**.
+
+
+### Batel (R$ 17.924) — líder em preço, lanterna em valorização
+
+O Batel continua sendo o endereço mais caro de Curitiba. Mas subiu apenas **+6,5% em 12 meses** — mesmo desempenho do índice agregado da cidade. A explicação é operacional: a [Lei Complementar 16.361/2024](https://www.curitiba.pr.leg.br/informacao/atividade-legislativa/tramitacao-de-projetos/projetos-de-lei) liberou edifícios de 10 andares no bairro (antes o gabarito era 6), e 2025-2026 viu cinco lançamentos grandes simultâneos — Porto Batel, Sublime, Grand Lodge, A. Andersen, Emiliano 724. Oferta alta, demanda constante, preço estacionado.
+
+**Quem compra hoje:** paga topo de ciclo + concorre com estoque novo que vai entrar nos próximos 24 meses. É store of value, não crescimento.
+
+
+### Campina do Siqueira (R$ 14.062) — o bairro que ninguém viu chegar ao 3º lugar
+
+É o bairro-surpresa dessa edição. Entre Mercês, Ecoville e Campo Comprido, historicamente foi o "bairro esquecido" da região do Parque Barigui. Em março/2026, saiu edital do **BRT Leste-Oeste** com o Lote 1 passando pela Rua Dep. Heitor Alencar Furtado — a principal divisa do bairro. Mercado começou a reprecificar: subiu de 14º pra 3º em menos de 2 anos. Imprensa local ainda não conectou os pontos.
+
+
+### Ahú (R$ 13.022) — valorização de 12,5% em 12 meses
+
+O Ahú subiu mais que qualquer premium de Curitiba em 12 meses. Preço médio atingiu **R$ 1,6 milhão — 34,83% acima da média do Paraná**. O motivo: proximidade absoluta com Batel/Juvevê sem a saturação de lançamentos e sem a Lei 16.361/2024 aplicada. Comprador do Ahú hoje é quem queria o Batel 5 anos atrás.
+
+
+### Juvevê (R$ 13.897) — o que passou o Cabral em 2026
+
+Juvevê e Ahú são o par vencedor da valorização 2025-2026. Juvevê subiu **+11,5% em 12m**, passou Cabral (que era seu vizinho direto em preço) por 4 posições no ranking. Charme residencial baixo, clima arborizado, distância ideal pro Centro — perfil que compradores de 35-50 anos estão pagando acima da média.
+
+Os outros três premium — Bigorrilho, Água Verde e Alto da Glória — seguem firmes mas com valorização abaixo do agregado de Curitiba. Bigorrilho especificamente está em território de alerta: **+2,9% em 12m contra IPCA de +3,81% no mesmo período**. É **perda real de ~0,9%**. Causa provável: canibalização pela Lei 16.361/2024 aplicada ao Batel.
+
+
+> **[CALLOUT-WARNING]** **O que a variação 12m te diz:** se o bairro está abaixo do IPCA (+3,81% em 12m), você está perdendo poder de compra real. Bigorrilho, Ecoville e Jardim Social estão nessa faixa em 2026. Isso não significa "vender e sair" — significa que o bairro está em platô e vai demorar a recuperar valorização.
+
+
+## Os 5 bairros que mais valorizaram em 12 meses
+
+Antes de descer pro faixa médio, vale quebrar a ordem. O pódio da valorização não é o da tabela. É este:
+
+
+| Ranking | Bairro | Variação 12m | Preço m² | Motivo principal |
+|---|---|---|---|---|
+| 1 | Ahú | **+12,5%** | R$ 13.022 | Escape de quem queria Batel |
+| 2 | [Juvevê](/imoveis/juveve) | +11,5% | R$ 13.897 | Perfil 35-50, vida residencial |
+| 3 | [CIC](/imoveis/cidade-industrial) | +10,2% | R$ 8.998 | BRT Leste-Oeste termina aqui |
+| 4 | Bom Retiro | +9,1% | R$ 10.623 | Infra nova + poucos lançamentos previstos |
+| 5 | [Campina do Siqueira](/imoveis/campina-do-siqueira) | +8,2% | R$ 14.062 | BRT Leste-Oeste passa aqui |
+
+Três dos cinco têm o mesmo motivo: o **BRT Leste-Oeste** começa a sair do papel em 2026. Edital público em março, obras previstas pra começar até o fim do ano. Quem compra em 2026 num bairro no traçado do BRT (CIC, Campina do Siqueira, Campo Comprido) compra antes da reprecificação completa.
+
+A gente viu clientes FYMOOB fecharem imóveis no CIC em janeiro por R$ 8.200/m² e revisarem a avaliação em abril por R$ 9.100. É esse tipo de movimento que a tabela agregada não mostra.
+
+
+## Bairros Alto-Médio — entre R$ 9.000 e R$ 12.000/m²
+
+Oito bairros compõem esse faixa em abril/2026. É onde mora o comprador de classe média consolidada, empresário de pequena escala, profissional liberal estabelecido — e é o faixa que mais contém valorização acima do IPCA em 2026.
+
+[**Centro (R$ 10.820, +7,3%)**](/imoveis/centro) é caso à parte. Subiu mais de 7% em 12 meses puxado pela chegada de empreendimentos de retrofit residencial — conversão de prédios comerciais em residenciais via incentivos municipais. O programa "Curitiba de Volta ao Centro" ([LC 150/2025 + Decreto 421/2026](https://boletim.prolikadvogados.com.br/2026/04/17/programa-curitiba-de-volta-ao-centro-decreto-regulamenta-a-operacionalizacao-dos-incentivos-fiscais/)) reduz ITBI nessas aquisições — detalhe que cobrimos no [guia da pegadinha do ITBI em Curitiba](/blog/itbi-curitiba-valor-como-pagar).
+
+**Bom Retiro (R$ 10.623, +9,1%)** entrega o melhor custo-benefício da faixa. Poucos lançamentos previstos, sem saturação, proximidade com Passeio Público e Parque São Lourenço. Subiu quase um ponto e meio acima do índice de Curitiba.
+
+[**Portão (R$ 10.028, +4,8%)**](/imoveis/portao) é a porta de entrada pro Alto-Médio com o **melhor retorno de aluguel do faixa** — entre 0,40% e 0,48% do valor do imóvel por mês. Studios e 1-quarto aqui continuam sendo o melhor ativo de renda pra quem compra investindo.
+
+
+## Bairros Médio — entre R$ 6.000 e R$ 9.000/m²
+
+Sete bairros. Comprador dominante: família consolidada comprando primeira casa, segundo imóvel ou trocando área pequena no premium por área grande aqui.
+
+**Cascatinha (R$ 8.940, +5,5%)** virou "Santa Felicidade alto padrão" silenciosamente. Nicho casa (não apartamento), R$ 900 mil a R$ 15 milhões. **Zero vítimas em crimes letais nos 9 primeiros meses de 2025** (Secretaria de Estado da Segurança Pública). Drenagem nova do pacote PRO Curitiba R$ 2,9 bi. Ainda debaixo do radar.
+
+[**Campo Comprido (R$ 8.100, +6,8%)**](/imoveis/campo-comprido) está no traçado do BRT. Valorizou **+23% em tipologias de 3+ quartos no Q4/2025** ([Loft, relatório Q4](https://loft.com.br/)). Se o fenômeno continuar, em 2027 sai do faixa Médio.
+
+**Bacacheri (R$ 8.680, +5,1%)** é o clássico do faixa. Bairro familiar por definição, IDEB 6,7 nas escolas públicas, parque linear, aeroclube. Não surpreende — consistente.
+
+
+## Bairros Acessíveis — abaixo de R$ 6.000/m²
+
+Oito bairros fecham o ranking. Historicamente ignorados pela narrativa de investimento curitibana, mas são onde está acontecendo a história de 2026.
+
+[**CIC (R$ 8.998, +10,2%)**](/imoveis/cidade-industrial) é tecnicamente Acessível pela média do m², mas subiu mais que todos os premium com exceção de Ahú e Juvevê. Razão: o **BRT Leste-Oeste termina aqui**. Infra chegando, preço abaixo de R$ 250 mil pra apartamento 2 quartos — é o melhor ponto de entrada em Curitiba com potencial 5 anos.
+
+[**Santa Felicidade (R$ 6.720, +3,8%)**](/busca?bairro=Santa+Felicidade) é o bairro mais turístico de Curitiba. Comprador pra morar gosta da tradição; comprador pra investir olha hotelaria. Retorno de aluguel interessante em imóveis próximos às cantinerias.
+
+[**Boqueirão (R$ 5.210, +3,6%)**](/imoveis/boqueirao) e [**Capão Raso (R$ 5.980, +4,1%)**](/imoveis/capao-raso) formam o faixa de preço baixo com dinâmica MCMV. Para Faixa 3-4 do MCMV ampliada em 22/04/2026 (imóveis até R$ 600 mil, renda até R$ 13 mil), são os bairros onde a matemática do financiamento faz mais sentido. Detalhe do programa está em [Minha Casa Minha Vida 2026: Faixa 4 ampliada](/blog/como-financiar-minha-casa-minha-vida).
+
+
+## Aluguel: quem cobra mais e quem rende melhor
+
+A matemática do m² de venda mente se você compra pra alugar. Quem rende mais em Curitiba não é quem é mais caro.
+
+
+| Bairro | m² aluguel (R$/mês) | m² venda | Rentabilidade/ano | Perfil |
+|---|---|---|---|---|
+| Prado Velho | 53,52 | ~5.500 | ~12% | Studios mobiliados, PUC/Santa Casa |
+| Cascatinha | 35,82 | 8.940 | ~4,8% | Casa alto padrão |
+| [Alto da Rua XV](/busca?bairro=Alto+da+Rua+XV) | 35,44 | 8.200 | ~5,2% | Residencial valorizado |
+| [Centro](/imoveis/centro) | 32,10 | 10.820 | ~3,6% | Studios retrofit |
+| [Batel](/imoveis/batel) | 29,90 | 17.924 | **~2,0%** | Reserva de valor |
+
+*Fonte aluguel: Secovi-PR, relatório jul/2025. Rentabilidade = aluguel anual dividido pelo preço de venda, sem considerar vacância e custos de manutenção.*
+
+**Prado Velho é a surpresa.** Bairro universitário próximo à PUC-PR e à Santa Casa. R$ 53,52/m²/mês coloca o bairro no topo absoluto do Secovi-PR — acima de Cascatinha e Alto da Rua XV. Studios mobiliados rendem até 12% ao ano, quase o dobro do agregado de Curitiba (4,74% FipeZap mar/26). Aluguel por temporada empurra mais ainda: investidores que operam plataformas tipo AirBnB no bairro têm tirado entre 8% e 10% ao ano **líquidos**.
+
+**Batel é o oposto.** Maior preço de venda, segunda menor rentabilidade de aluguel da cidade. É reserva de valor, não renda.
+
+
+> **[CTA]** Quer calcular a rentabilidade real de um imóvel? → Falar com especialista (https://wa.me/554199978-0517?text=Gostaria de calcular a rentabilidade real de um imóvel específico em Curitiba.)
+> O time FYMOOB calcula a rentabilidade com base em aluguel praticado no bairro e preço de venda atual — dado de fechamento real, não média genérica.
+
+
+## Com quanto, você compra onde em Curitiba?
+
+A régua prática, por faixa de preço em abril/2026:
+
+- **Até R$ 250 mil:** [CIC](/imoveis/cidade-industrial) é a melhor escolha. R$ 8.998/m² + valorização de 10,2% em 12m + BRT chegando. [Boqueirão](/imoveis/boqueirao) e [Sítio Cercado](/imoveis/sitio-cercado) cobrem MCMV Faixa 1-2.
+
+- **R$ 250-400 mil:** [Novo Mundo](/imoveis/novo-mundo), [Capão Raso](/imoveis/capao-raso), Tarumã. Primeiro imóvel típico MCMV Faixa 3-4.
+
+- **R$ 400-600 mil:** [Portão](/imoveis/portao) entrega a melhor rentabilidade de aluguel do faixa. [Boa Vista](/imoveis/boa-vista) e [Bairro Alto](/imoveis/bairro-alto) cobrem família consolidada.
+
+- **R$ 600-900 mil:** [Centro](/imoveis/centro) tem lançamento retrofit ativo + ITBI reduzido. [Água Verde](/imoveis/agua-verde) entrega apto padrão 3 quartos.
+
+- **R$ 900 mil-1,5 mi:** Ahú venceu Juvevê e Batel em valorização 12m. [Cabral](/imoveis/cabral) é o tradicional.
+
+- **Acima de R$ 1,5 mi:** [Juvevê](/imoveis/juveve) e [Alto da Glória](/busca?bairro=Alto+da+Gloria). Batel continua sendo opção, mas entrada em platô.
+
+Pra quem quer renda de aluguel: Prado Velho, [Portão](/imoveis/portao) e [Centro](/imoveis/centro). Pra valorização de 3-5 anos: [CIC](/imoveis/cidade-industrial), [Campina do Siqueira](/imoveis/campina-do-siqueira), [Campo Comprido](/imoveis/campo-comprido) — todos no traçado do BRT Leste-Oeste.
+
+
+## Três armadilhas do mercado curitibano em 2026
+
+**Comprar no topo de ciclo e achar que "vai continuar subindo".** Batel e Bigorrilho são o exemplo. Batel subiu só o índice da cidade, Bigorrilho ficou abaixo do IPCA. Quem compra apartamento novo nesses dois em 2026 paga pico de preço e concorre com estoque que ainda vai entrar. Não significa não comprar — significa não esperar mais valorização.
+
+**Imóvel na planta com INCC acima da valorização do bairro.** O INCC-M acumulou +5,81% em 12m (FGV, mar/2026). Se você compra apartamento na planta em Bigorrilho (+2,9%/12m) ou [Ecoville](/busca?bairro=Ecoville) (+2,7%/12m), o reajuste INCC entre o início e a entrega consome a valorização. Compra na planta só faz sentido em bairro valorizando acima do INCC — Ahú, Juvevê, CIC, Campina do Siqueira se encaixam.
+
+**Confundir "aluguel caro" com "rentabilidade alta".** Batel tem aluguel nominal de R$ 29,90/m²/mês — alto. Mas o preço de venda é tão alto que a rentabilidade fica em 2% ao ano — a pior da cidade entre bairros com liquidez. Prado Velho, Portão e Centro rendem mais que qualquer bairro premium. A conta de investimento é aluguel ÷ valor da compra, não aluguel por si só.
+
+
+> **[CALLOUT-INFO]** **Regra prática:** em 2026, compre em bairro com valorização 12m acima do IPCA (+3,81%) E acima do INCC (+5,81%) se for planta. Se o bairro está abaixo de um dos dois, pense bem antes de entrar. A tabela do topo do post mostra onde cada bairro está.
+
+
+## Perguntas frequentes
+
+
+### Qual o bairro mais caro de Curitiba em 2026?
+
+O **Batel**, com preço médio de **R$ 17.924/m²** em abril de 2026 ([FipeZap](https://www.fipe.org.br/pt-br/indices/fipezap/)). É seguido de Bigorrilho (R$ 14.117), Campina do Siqueira (R$ 14.062), Juvevê (R$ 13.897) e Ahú (R$ 13.022).
+
+
+### Qual o preço médio do m² em Curitiba em 2026?
+
+Em abril de 2026, o preço médio do m² em Curitiba está em **R$ 11.621**, com alta de **+6,26% em 12 meses** (FipeZap). Curitiba é a segunda capital brasileira que mais valorizou em 2025 (+17,86%), atrás apenas de Salvador.
+
+
+### Quais os bairros mais baratos de Curitiba?
+
+Entre os bairros com liquidez de mercado relevante, os mais acessíveis são **Boqueirão (R$ 5.210/m²)**, **Capão Raso (R$ 5.980)**, **Tarumã (R$ 6.340)**, **Santa Felicidade (R$ 6.720)** e **Bairro Alto (R$ 6.870)**. O CIC tem preço médio R$ 8.998 mas subiu +10,2% em 12 meses — é o caso de bairro acessível com dinâmica de valorização.
+
+
+### Qual bairro de Curitiba mais valorizou em 12 meses?
+
+O **Ahú**, com **+12,5%** entre abril/2025 e abril/2026 ([FipeZap](https://www.fipe.org.br/pt-br/indices/fipezap/)). Seguido por Juvevê (+11,5%), CIC (+10,2%), Bom Retiro (+9,1%) e Campina do Siqueira (+8,2%). Três desses cinco (CIC, Campina do Siqueira e Campo Comprido) estão no traçado do BRT Leste-Oeste — edital público saiu em março de 2026.
+
+
+### Onde investir em Curitiba em 2026 pra aluguel?
+
+**Prado Velho** (rentabilidade ~12% ao ano em studios mobiliados), **Portão** (0,40% a 0,48% do valor do imóvel por mês em 1-quarto) e **Centro** (retrofit residencial com ITBI reduzido) entregam os melhores retornos de aluguel em Curitiba. Batel, apesar do aluguel nominal alto, rende apenas 2% ao ano sobre o preço de compra — é reserva de valor, não renda.
+
+
+## Quanto cada bairro rende de aluguel
+
+A rentabilidade de aluguel (quanto o aluguel anual representa sobre o valor do imóvel) em Curitiba muda bastante por bairro. Os agregados genéricos ("rende 0,5% a 0,7% ao mês") escondem essa diferença. Abaixo o retorno medido em fechamentos reais acompanhados pela FYMOOB em abril/2026, onde tivemos amostra suficiente (≥3 aluguéis e ≥3 vendas no mesmo bairro no mês):
+
+
+| Bairro | m² venda | m² aluguel | Rende/mês | Rende/ano | Amostra |
+|---|---|---|---|---|---|
+| [Cidade Industrial](/imoveis/cidade-industrial) | R$ 6.477 | R$ 22,67 | 0,35% | **4,2%** | 16 venda + 3 aluguel |
+| [Campo de Santana](/imoveis/campo-de-santana) | R$ 5.197 | R$ 21,53 | 0,41% | **5,0%** | 8 venda + 3 aluguel |
+| [Tatuquara](/imoveis/tatuquara) | R$ 5.252 | R$ 28,85 | 0,55% | **6,6%** | 5 venda + 4 aluguel |
+| [Xaxim](/imoveis/xaxim) | R$ 5.267 | R$ 58,71 | 1,11% | **13,4%** | 5 venda + 3 aluguel |
+
+**Leitura honesta:** Xaxim rendendo 13,4% ao ano é caso fora da curva — amostra pequena, provavelmente puxada por studio mobiliado específico. Use como **indicativo**, não como regra do bairro. Cidade Industrial e Campo de Santana, rendendo 4% a 5% ao ano, são as leituras mais robustas.
+
+Pra bairros de alto preço (Batel, Bigorrilho, Mossunguê, Água Verde), o retorno médio de aluguel em 2026 está entre 0,28% e 0,38% do valor do imóvel por mês (~3,4% a 4,6% ao ano) conforme [Secovi-PR](https://secovi-pr.com.br/) e [FipeZap Locação](https://www.fipe.org.br/pt-br/indices/fipezap/). Bairros premium costumam render menos em aluguel — são reserva de valor, não renda.
+
+
+## Próximo passo
+
+A tabela do topo é só scan. A conta que importa é a de **valorização real** — o quanto o bairro subiu acima da inflação (IPCA +3,81%) e acima do INCC (+5,81%) pra quem compra na planta. Três dos 30 bairros passam nos dois filtros com folga: Ahú, Juvevê e CIC.
+
+Antes de fechar um imóvel em Curitiba em 2026, pegue o m² do bairro candidato, a variação em 12 meses, a rentabilidade de aluguel e o INCC (índice que corrige imóvel na planta). Se a matemática fechar, a compra faz sentido. Se ficar perto, renegocie o preço. Se não fechar, mude de bairro.
+
+
+> **[CTA]** Ver imóveis à venda em Curitiba → Ver imóveis à venda (/busca)
+> Busque por bairro, tipo, faixa de preço ou valorização. Filtros pelos bairros mais quentes de 2026: Ahú, Juvevê, CIC, Campina do Siqueira.
+
+
+> **[METODOLOGIA]**
+> - Periodo: Abril/2026
+> - Amostra: 36 bairros cobertos por FipeZap (mar/2026) + fechamentos reais acompanhados pela FYMOOB no mês
+> - Tratamento: -
+> - Fontes: ["FipeZap (FGV + Fipe + Zap)", "Quinto Andar Index", "Secovi-PR", "FipeZap Locação"]
+> - Atualizado: 2026-04-24
+
+
+> **[CHANGELOG]**
+
+
+

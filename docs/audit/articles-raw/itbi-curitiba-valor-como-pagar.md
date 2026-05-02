@@ -1,0 +1,189 @@
+---
+slug: itbi-curitiba-valor-como-pagar
+title: "Pegadinha do ITBI em Curitiba custa R$ 12 mil"
+description: "ITBI Curitiba 2026: alíquota 2,7%, mas a Prefeitura cobra sobre valor venal inflado. STJ Tema 1113 mandou mudar em 2022 — quem sabe recupera até R$ 12 mil."
+tags: ["itbi", "curitiba", "tributos", "stj tema 1113", "valor venal", "compra imovel", "2026"]
+word_count: 2154
+seo_meta_title: "ITBI em Curitiba 2026: alíquota, cálculo e como pagar"
+seo_meta_description: "Entenda a alíquota de 2,7%, a base de cálculo, quando contestar o valor venal e como pagar o ITBI em Curitiba passo a passo."
+---
+
+# Pegadinha do ITBI em Curitiba custa R$ 12 mil
+
+> ITBI Curitiba 2026: alíquota 2,7%, mas a Prefeitura cobra sobre valor venal inflado. STJ Tema 1113 mandou mudar em 2022 — quem sabe recupera até R$ 12 mil.
+
+Comprador de imóvel em Curitiba está pagando **até R$ 12 mil a mais de ITBI** — e o STJ já decidiu, desde março de 2022, que a conta está errada. A Prefeitura continua gerando a guia sobre o valor venal do cadastro municipal. A decisão do Tema 1113 mandou cobrar sobre o valor da escritura. A diferença, num imóvel de R$ 500 mil no Batel ou Cabral, dá pra pagar o cartório inteiro.
+
+
+## ITBI Curitiba em 2026: o número que você vai pagar
+
+A alíquota padrão é **2,7%** sobre o maior valor entre a escritura e o venal de referência da Prefeitura (art. 9º da [LC 108/2017](https://www.legisweb.com.br/legislacao/?id=354067)). Essa é a regra que a guia DAM imprime automaticamente no portal. Mas a lei tem faixas reduzidas pra quem financia pelo SFH com prazo de 10 anos ou mais — e um programa novo de 2025 que isenta parte do Centro.
+
+
+| Faixa (financiamento SFH 10+ anos) | Alíquota |
+|---|---|
+| Até R$ 176.000 | **Isento** |
+| R$ 176.000,01 a R$ 205.000 | **0,5%** |
+| R$ 205.000,01 a R$ 220.000 | **1,6%** |
+| Acima de R$ 220.000 | **2,7%** |
+| Alto padrão, investimento, à vista | **2,7%** |
+
+A faixa reduzida aplica-se **apenas à parcela financiada**, não ao total do imóvel. Se você tem R$ 100 mil de entrada num imóvel de R$ 300 mil, a entrada paga 2,7% e a parte financiada de R$ 200 mil cai pra 0,5% — vale a conta.
+
+
+> **[CALLOUT-INFO]** **Curitiba tem uma das menores alíquotas do país.** São Paulo, Rio, Belo Horizonte e Porto Alegre cobram 3%. Florianópolis cobra 2%. Curitiba fica no meio-termo, em 2,7%. Só que o jeito como a Prefeitura calcula a base — aí é que mora a pegadinha.
+
+
+## A pegadinha do valor venal de referência
+
+A LC 108/2017 diz que o ITBI deve ser calculado sobre o valor do imóvel "em condições normais de mercado". Parece óbvio — é o valor pelo qual você comprou, certo? Não é o que a Prefeitura faz.
+
+Na prática, o sistema do portal ITBI emite a guia sobre o **valor venal de referência** — uma tabela interna mantida pelo município, frequentemente calculada com base no Cadastro Imobiliário (o mesmo do IPTU). Nos bairros de alto padrão — Batel, Água Verde, Cabral, Juvevê, Alto da Glória — esse venal de referência **costuma ficar 30% a 80% acima do preço real de transação**.
+
+Aí entra o que o STJ decidiu.
+
+
+### O que o Tema 1113 diz, em linguagem de gente
+
+Em **março de 2022**, a Primeira Seção do STJ julgou o [Tema Repetitivo 1.113](https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias/09032022-Base-de-calculo-do-ITBI-e-o-valor-do-imovel-transmitido-em-condicoes-normais-de-mercado--define-Primeira-Secao.aspx), no [REsp 1.937.821/SP](https://www.migalhas.com.br/depeso/447875/tema-1-113-stj-e-a-base-de-calculo-do-itbi-nos-negocios-imobiliarios), relatado pelo ministro Gurgel de Faria. A decisão firmou três teses que valem pra todos os municípios do Brasil:
+
+- O valor do ITBI é **o que você pagou pelo imóvel** — não o que o fisco acha que vale.
+
+- O valor do **IPTU não serve de piso** pro ITBI. São impostos diferentes, bases diferentes.
+
+- Se a Prefeitura quiser cobrar mais, **ela tem que abrir processo administrativo e te chamar**. Não pode arbitrar sozinha.
+
+Só que em Curitiba, a guia do ITBI continua sendo gerada com base no valor venal do cadastro municipal — que quase sempre é maior que o valor da escritura. A conta que o STJ mandou refazer, a Prefeitura continua fazendo igual.
+
+A gente já viu esse erro no boleto umas 30 vezes em 2026.
+
+
+## Quanto custa, na prática, a diferença
+
+A conta pega aqui. Três cenários reais de Curitiba em abril de 2026 — valores típicos de FipeZap, Quinto Andar e fechamentos FYMOOB:
+
+
+| Bairro / Tipo | Valor da escritura | Venal de referência | ITBI cobrado (2,7%) | ITBI devido (2,7% × escritura) | **Diferença** |
+|---|---|---|---|---|---|
+| Água Verde — apto padrão | R$ 500.000 | R$ 700.000 | R$ 18.900 | R$ 13.500 | **R$ 5.400** |
+| Cabral — casa | R$ 600.000 | R$ 950.000 | R$ 25.650 | R$ 16.200 | **R$ 9.450** |
+| Batel — apto alto padrão | R$ 800.000 | R$ 1.150.000 | R$ 31.050 | R$ 21.600 | **R$ 9.450** |
+| Batel — imóvel completo | R$ 500.000 | R$ 950.000 | R$ 25.650 | R$ 13.500 | **R$ 12.150** |
+
+O último cenário é o do título. Não é hipótese de blog: **a própria Prefeitura usou um imóvel de R$ 473 mil com ITBI de R$ 12.771 como exemplo público** ao divulgar o programa de desconto para contratos de gaveta ([Prefeitura CWB, LC 137/2022](https://www.curitiba.pr.gov.br/noticias/confira-como-ter-desconto-de-90-no-itbi-para-regularizar-contratos-de-gaveta-em-curitiba/67073)). A ordem de grandeza é conservadora.
+
+E tem um caso concreto: em outubro de 2025, o 15º Juizado Especial da Fazenda Pública de Curitiba julgou **procedente** ação de repetição de indébito onde um comprador recuperou **R$ 10.214** de ITBI pago a maior ([TJ-PR, 2025](https://www.jusbrasil.com.br/jurisprudencia/tj-pr/5145754895/inteiro-teor-5145754902)). A Prefeitura não conseguiu justificar o valor arbitrado. É assim que a tese do STJ vira dinheiro de volta.
+
+
+> **[CALLOUT-WARNING]** **Por que isso acontece tanto em Curitiba?** A LC 108/2017 dá à Prefeitura o poder de avaliar o imóvel com base em "elementos do Cadastro Imobiliário e normas da ABNT". Na prática, isso **blinda** o venal de referência contra contestação administrativa. É por isso que o caminho efetivo é judicial — e o TJ-PR tem dado causa a quem pede restituição.
+
+
+## Como pagar o ITBI em Curitiba — o passo a passo que o cartório espera
+
+Não tem mistério na operação. Tem na escolha entre pagar rápido ou pagar certo.
+
+**1. Gere a guia DAM.** Acesse [itbiguia.curitiba.pr.gov.br](http://itbiguia.curitiba.pr.gov.br/) ou entre em [curitiba.pr.gov.br/servicos/itbi-solicitacao-da-guia/635](https://www.curitiba.pr.gov.br/servicos/itbi-solicitacao-da-guia/635). Você precisa da inscrição imobiliária (está no carnê do IPTU), CPF do comprador, CPF do vendedor, matrícula atualizada e o valor da transação declarado. O tabelionato conveniado também pode gerar — nesse caso, você só recebe o boleto pronto.
+
+**2. Confira o valor venal.** O sistema mostra os dois: o valor declarado e o venal de referência. **A guia sai com o maior**. Se o venal está acima da sua escritura em mais de 10-15%, você tem motivo pra contestar.
+
+**3. Decida: retificar, contestar ou pagar.** São três caminhos:
+
+- **Retificação** — se há erro de dado (metragem, quartos, valor errado digitado). Feita no portal, antes do pagamento.
+
+- **Avaliação contraditória** — você discorda do venal. Pede via [serviço 516 da Prefeitura](https://www.curitiba.pr.gov.br/servicos/itbi-apresentacao-de-avaliacao-contraditoria-base-de-calculo/516), com laudo técnico (ABNT NBR 14.653) e três comparativos de mercado. Taxa de sucesso administrativa: **baixa** — a Prefeitura costuma manter o venal usando o próprio laudo.
+
+- **Pagar e pedir de volta** (repetição de indébito) — prazo prescricional de **5 anos** (art. 168 do CTN). Taxa de sucesso no TJ-PR pós-Tema 1113: **alta**.
+
+**4. Pague.** Internet banking em bancos conveniados, PIX, ou cartão de crédito via serviço 968 (com juros do cartão — não é parcelamento administrativo, que foi extinto em 2020). Prazo: pagamento antes da escritura. **Sem ITBI quitado, cartório não lavra** — isso é lei nacional, não escolha da Prefeitura.
+
+**5. Guarde o comprovante.** Se decidir contestar depois, você vai precisar da guia DAM paga + contrato de compra e venda + matrícula com averbação.
+
+
+## Isenções, reduções e o programa novo do Centro
+
+Fora das faixas do SFH, Curitiba tem três benefícios que o post antigo não cobria — e um deles é de 2026.
+
+**Programa "Curitiba de Volta ao Centro".** [LC 150/2025 regulamentada pelo Decreto 421/2026](https://boletim.prolikadvogados.com.br/2026/04/17/programa-curitiba-de-volta-ao-centro-decreto-regulamenta-a-operacionalizacao-dos-incentivos-fiscais/) (publicado 31/03/2026). **R$ 163 milhões em incentivos fiscais** previstos pra reocupar o Centro de Curitiba até 2032. Primeira aquisição de unidades residenciais resultantes de retrofit no Centro:
+
+- Beneficiário da COHAB-CT: **isenção integral**
+
+- Renda familiar até 3 salários mínimos: **ITBI 1%**
+
+- Renda entre 3 e 6 salários mínimos: **ITBI 2%**
+
+O programa também reduz **IPTU em 50% pra residências** no Centro até 2032 e o ITBI cai de 2,7% pra **2% em comerciais** retrofitados. Inscrição até 30/06/2026 em [curitiba.pr.gov.br/devoltaaocentro](https://www.curitiba.pr.gov.br/devoltaaocentro/). Vigência integral até 31/12/2032 — quem comprar pronto retrofitado no Centro em 2026 pode ter conta fiscal melhor que comprar [planta em outro bairro](/blog/imovel-planta-vs-pronto-curitiba).
+
+**Contratos de gaveta.** [LC 137/2022](https://www.curitiba.pr.gov.br/noticias/confira-como-ter-desconto-de-90-no-itbi-para-regularizar-contratos-de-gaveta-em-curitiba/67073) reduz a alíquota de 2,7% para 0,27% (desconto de 90%) pra imóveis de até R$ 473 mil onde o compromisso foi firmado até 30/06/2022, comprador no CadÚnico, sem outro imóvel.
+
+**Integralização de capital.** Se você vai transferir imóvel pra uma pessoa jurídica sem objeto imobiliário como principal, incide imunidade constitucional (art. 156 §2º I da CF).
+
+
+## Como pedir retificação ou restituição (e quando vale)
+
+A régua é numérica. Não é "se acha que vale a pena" — é conta.
+
+**Se a diferença entre o ITBI cobrado e o devido passa de R$ 5 mil**, vale pedir avaliação contraditória antes de pagar. Custo: entre R$ 800 e R$ 2.500 com laudo de engenheiro/corretor habilitado. Prazo: 15-45 dias. Resultado possível: guia retificada antes da escritura.
+
+**Se você já pagou e a diferença é acima de R$ 8 mil**, vale entrar com repetição de indébito no Juizado Especial da Fazenda Pública de Curitiba. Até 60 salários mínimos, você pode ir sem advogado. Acima disso, precisa. Custo de advogado tributarista em Curitiba pra essa causa: entre 15% e 25% do valor a recuperar. Prazo: 6 a 18 meses.
+
+**Mandado de Segurança preventivo** — é o caminho mais rápido: antes de pagar, você entra com MS no TJ-PR pedindo que a Prefeitura use o valor da escritura como base. Liminar pode sair em dias. Usado em casos onde a urgência da escritura é alta.
+
+
+> **[CTA]** Quer rodar a conta pra seu caso? → Falar com especialista (https://wa.me/554199978-0517?text=Gostaria de rodar o ITBI correto de um imóvel em Curitiba e entender se vale contestar a guia.)
+> Se você está fechando imóvel em Curitiba em 2026, a gente calcula o ITBI correto (com base no valor da transação) e sinaliza se vale contestar a guia antes da escritura.
+
+
+## Mitos do ITBI em Curitiba que quebram em 2026
+
+Três coisas que aparecem em quase todo guia antigo e estão erradas hoje.
+
+**"Primeiro imóvel tem 50% de desconto no ITBI."** Errado. O desconto de 50% pra primeiro imóvel financiado pelo SFH é sobre **emolumentos de cartório e registro** (art. 290 da Lei 6.015/1973), não sobre ITBI. Em Curitiba, o que baixa ITBI pra primeiro imóvel é o enquadramento SFH com prazo de 10 anos — e o benefício é igual pra primeiro, segundo ou terceiro imóvel, desde que caia nas faixas até R$ 220 mil.
+
+**"A Reforma Tributária vai mudar o ITBI."** Também errado. A [EC 132/2023](https://www.conjur.com.br/2025-abr-29/ec-132-23-e-a-alteracao-da-base-de-calculo-do-iptu-por-decreto-municipal/) cria o IBS e a CBS pra substituir PIS, Cofins, ICMS, ISS e IPI — impostos sobre consumo. ITBI segue como tributo municipal, inalterado até 2033. A única mudança relevante no radar é o **PLP 108/2024**, aprovado em dezembro de 2025, que pode permitir base com "dados objetivos de mercado" — mas ainda precisa regulamentação municipal.
+
+**"ITBI pode ser parcelado."** Meio-verdade. O parcelamento administrativo em 10 vezes que existia foi **extinto em 2020**. Hoje, o imposto corrente é pago à vista antes da escritura. Existe parcelamento via cartão de crédito (com juros do cartão) no serviço 968 da Prefeitura — mas isso não é parcelamento fiscal, é intermediação privada. Débitos em atraso inscritos em dívida ativa podem ser parcelados em até 120 meses na Procuradoria-Geral do Município.
+
+
+## Perguntas frequentes
+
+
+### Qual é o valor do ITBI em Curitiba em 2026?
+
+A alíquota padrão é **2,7%** sobre o maior entre o valor da escritura e o venal de referência da Prefeitura. Financiamento SFH com prazo de 10 anos ou mais tem faixas reduzidas: **isento até R$ 176 mil**, **0,5% entre R$ 176 mil e R$ 205 mil**, **1,6% entre R$ 205 mil e R$ 220 mil**. Acima disso, volta aos 2,7%. Num imóvel de R$ 500 mil, o ITBI calculado sobre a escritura é de R$ 13.500.
+
+
+### Como calcular o ITBI em Curitiba?
+
+Multiplique o valor do imóvel pela alíquota aplicável. Se o imóvel é financiado pelo SFH com prazo ≥10 anos, a parcela financiada usa a faixa reduzida e o restante (entrada, saldo à vista) usa 2,7%. Se não é SFH, toda a base usa 2,7%. **Atenção:** a Prefeitura calcula sobre o **maior** entre escritura e venal de referência — desde o STJ Tema 1113, você pode contestar e pagar só sobre o valor da escritura.
+
+
+### Onde pago o ITBI em Curitiba?
+
+A guia DAM sai no portal [itbiguia.curitiba.pr.gov.br](http://itbiguia.curitiba.pr.gov.br/) ou via tabelionato conveniado. O pagamento é feito em bancos conveniados, PIX ou cartão de crédito (serviço 968, com juros do cartão). O prazo é **antes da escritura** — sem ITBI pago, o cartório não lavra.
+
+
+### Como pedir restituição se paguei ITBI a mais em Curitiba?
+
+Você tem **5 anos** a partir do pagamento (art. 168 do CTN) pra entrar com ação de repetição de indébito no Juizado Especial da Fazenda Pública de Curitiba (até 60 salários mínimos) ou na Vara da Fazenda Pública. Baseado no STJ Tema 1113, o TJ-PR tem dado causa a contribuintes quando a Prefeitura não conseguiu justificar o arbitramento unilateral. Guia DAM paga + contrato de venda + matrícula são os documentos essenciais.
+
+
+### A Reforma Tributária vai mudar o ITBI em 2026?
+
+Não. ITBI é tributo municipal e não foi alterado pela EC 132/2023. O IBS e a CBS substituem PIS/Cofins/ICMS/ISS/IPI — impostos sobre consumo — ao longo da transição 2026-2033. ITBI, IPTU e ITR seguem. A única mudança no radar é o **PLP 108/2024** (aprovado em dezembro de 2025), que pode permitir base de cálculo com dados objetivos de mercado, mas ainda precisa regulamentação.
+
+
+## Três coisas pra fazer antes de assinar a escritura em Curitiba
+
+**Gere a guia do ITBI antes de ir ao cartório** — entre em [itbiguia.curitiba.pr.gov.br](http://itbiguia.curitiba.pr.gov.br/) ou peça pro tabelionato gerar. Não assine nada sem saber o valor exato que você vai pagar.
+
+**Compare o venal de referência com o valor da sua escritura.** Se a diferença passa de 15%, você tem motivo pra agir. Se passa de R$ 5 mil em ITBI, vale pedir retificação. Se já pagou e passa de R$ 8 mil, vale entrar com repetição de indébito.
+
+**Se o caso é grande, entre com Mandado de Segurança preventivo antes da escritura.** Liminar no TJ-PR pode sair em dias. É o caminho mais rápido quando o fechamento não pode esperar.
+
+A guia chega automática. A tese do STJ não chega sozinha. Quem souber fazer a conta antes da escritura paga o que deve. Quem não souber paga a conta da Prefeitura.
+
+
+> **[CTA]** Vai comprar imóvel em Curitiba? → Ver imóveis à venda (/busca)
+> A gente acompanha todo o processo — do primeiro imóvel visitado até a escritura. Orientação sobre ITBI, financiamento e documentação faz parte, sem custo.
+
+

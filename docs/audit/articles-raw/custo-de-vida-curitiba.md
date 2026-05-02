@@ -1,0 +1,328 @@
+---
+slug: custo-de-vida-curitiba
+title: "Custo de Vida em Curitiba 2026: R$ 3.200 a R$ 22.000"
+description: "Quanto custa morar em Curitiba em 2026: 4 perfis (solteiro, casal, família, aposentado) × 9 rubricas, com cesta DIEESE-CWB R$ 769,61 e custo do inverno paranaense an"
+tags: ["custo de vida", "morar em curitiba", "curitiba 2026", "planejamento financeiro", "DIEESE"]
+word_count: 2817
+seo_meta_title: "Quanto custa morar em Curitiba em 2026? Guia completo"
+seo_meta_description: "Solteiro, casal, família e aposentado: custo real em abril/2026 com aluguel, mercado, transporte, saúde, lazer e contas básicas."
+---
+
+# Custo de Vida em Curitiba 2026: R$ 3.200 a R$ 22.000
+
+> Quanto custa morar em Curitiba em 2026: 4 perfis (solteiro, casal, família, aposentado) × 9 rubricas, com cesta DIEESE-CWB R$ 769,61 e custo do inverno paranaense an
+
+Em abril/2026, viver em Curitiba custa de **R$ 3.200/mês** (solteiro econômico em Capão Raso, sem carro) a **R$ 22.000/mês** (família 4 no Bigorrilho, dois carros, escola particular premium). A cesta básica DIEESE-Curitiba de março/2026 fechou em **R$ 769,61** — **12,9% mais barata que São Paulo** (R$ 883,94), segundo a [pesquisa DIEESE/CONAB divulgada via Corecon-PR](https://www.coreconpr.gov.br/noticias/pesquisa-da-cesta-basica-em-curitiba-em-marco-de-2026-em-parceria-com-a-conab/). A pergunta não é se Curitiba é cara. É cara pra quem.
+
+Este post separa o custo em **4 perfis × 9 rubricas** com cada número ancorado em fonte primária. Cinco erros que circulavam em guias antigos saíram daqui: IPVA-PR não é 3,5% (caiu pra 1,9% em janeiro/2026), gasolina não está R$ 5,80 (está R$ 6,29 ANP), plano de saúde não custa "R$ 350-600" sem qualificar idade, e o "Curitiba 15-25% mais barata que SP" não tem fonte oficial — só os -12,9% em alimentação têm.
+
+
+## Resposta direta
+
+
+> **[CALLOUT-INFO]** **Quanto custa morar em Curitiba em 2026?** De ****R$ 3.200/mês** (solteiro econômico) a **R$ 22.000/mês** (família 4 em bairro nobre). Cesta DIEESE-CWB mar/2026: **R$ 769,61** — 12,9% mais barata que SP. SM nacional R$ 1.621 cobre só 47,5% da cesta. Solteiro precisa ganhar **R$ 4.500/mês** pra conforto básico.
+
+
+> **[METODOLOGIA]**
+> - Periodo: Abril/2026
+> - Amostra: -
+> - Tratamento: -
+> - Fontes: ["DIEESE/CONAB-PR pesquisa cesta básica março/2026", "IBGE PNAD Contínua 3T/2025 + Censo 2022", "ANP Levantamento Combustíveis abril/2026", "ANEEL Consulta Pública 005/2026 (Copel)", "Prefeitura de Curitiba / URBS / Decreto 2668/2025", "SEFA-PR Lei 21.951/2024 (IPVA 1,9%)"]
+> - Atualizado: 2026-04-25
+
+
+## 4 perfis: quanto custa morar em Curitiba pra você?
+
+Quase todo guia responde com um número médio só ("R$ 6.842/pessoa") e te entrega no escuro. A realidade é que o mesmo CEP custa R$ 3 mil ou R$ 22 mil por mês dependendo do bairro, do estado civil, do filho na escola e do carro na garagem.
+
+
+| Perfil | Faixa mensal | Cenário |
+|---|---|---|
+| **Solteiro econômico** | R$ 3.200 – R$ 4.000 | 1Q em bairro popular, sem carro, transporte URBS |
+| **Casal sem filhos** | R$ 5.500 – R$ 8.000 | 2Q em bairro mediano, 1 carro, plano saúde |
+| **Família 4 pessoas** | R$ 9.000 – R$ 22.000 | Apartamento 3-4Q, escola particular, depende muito do bairro |
+| **Aposentado sozinho** | R$ 3.500 – R$ 5.500 | 2Q em bairro tranquilo, sem carro, plano saúde sênior |
+
+
+### Solteiro modo econômico (R$ 3.200 – R$ 4.000/mês)
+
+1 dormitório de 40-50m² em Capão Raso, Sítio Cercado, Boqueirão ou Cajuru. Sem carro, URBS via Curitiba+. Plano Hapvida jovem.
+
+- Aluguel + condomínio: R$ 1.500 – R$ 1.900
+
+- Utilities (Copel + Sanepar + gás P13) + internet: R$ 320 – R$ 450
+
+- Cartão Curitiba+ ilimitado: **R$ 180**
+
+- Plano saúde jovem: R$ 200 – R$ 380
+
+- Mercado + restaurante + iFood: R$ 850 – R$ 1.200
+
+- Lazer + academia SmartFit: R$ 150 – R$ 270
+
+Trocando Capão Raso por Centro retrofit e adicionando carro, a conta vira **R$ 5.500-6.500/mês**.
+
+
+### Casal sem filhos (R$ 5.500 – R$ 8.000/mês)
+
+2 dormitórios de 70-80m² em Água Verde, Cristo Rei, Mercês ou Portão. 1 carro (1.000 km/mês), plano idade 30-40.
+
+- Aluguel + condomínio padrão: R$ 2.700 – R$ 4.000
+
+- Utilities + internet + 2 celulares: R$ 650 – R$ 980
+
+- Combustível + IPVA 1/12: R$ 700 – R$ 950
+
+- Plano saúde 2 adultos: R$ 1.000 – R$ 1.800
+
+- Mercado + restaurantes: R$ 1.500 – R$ 2.500
+
+- Academia, lazer, viagens: R$ 600 – R$ 1.200
+
+Em Batel ou Bigorrilho, o cenário casal sobe pra R$ 9-12 mil — [a conta completa de morar no Batel](/blog/quanto-custa-morar-batel-curitiba) abre as 9 rubricas desse bairro.
+
+
+### Família 4 pessoas (R$ 9.000 – R$ 22.000/mês — depende do bairro)
+
+É o perfil que mais sofre com a escolha de bairro. Em Cajuru ou Cidade Industrial com escola pública e 1 carro: **R$ 9.000-11.000/mês**. Em Bigorrilho ou Ecoville com Sion ou Internacional, dois carros e doméstica: **R$ 18.000-22.000/mês**.
+
+- Aluguel/parcela 3-4Q: R$ 3.500 – R$ 12.000
+
+- Condomínio (varia 4x entre prédios) + utilities + internet: R$ 1.900 – R$ 5.300
+
+- 2 carros + IPVA + manutenção: R$ 1.500 – R$ 2.500
+
+- **Escolas 2 filhos**: R$ 0 (pública) a **R$ 11.000** (Sion + Internacional)
+
+- Plano saúde família 4: R$ 1.800 – R$ 4.500
+
+- Mercado + entrega + restaurantes: R$ 2.500 – R$ 4.500
+
+- Doméstica + lazer: R$ 1.500 – R$ 5.000
+
+Mesmo perfil família varia 2,4x na cidade. Quem quer balancear preço e qualidade urbana, ver [ranking de melhores bairros de Curitiba 2026](/blog/melhores-bairros-curitiba-2026) antes de fechar contrato.
+
+
+### Aposentado sozinho (R$ 3.500 – R$ 5.500/mês)
+
+Aposentado de SP, RJ ou interior se mudando pra CWB por IPS alto e clima ameno é cenário cada vez mais comum. 1-2Q em Água Verde, Cabral, Hugo Lange ou Centro retrofit, sem carro.
+
+- Aluguel + condomínio: R$ 2.000 – R$ 2.800
+
+- Utilities + internet + celular: R$ 350 – R$ 580
+
+- **Plano saúde 60+**: **R$ 1.500 – R$ 2.500**
+
+- Mercado + remédio + lazer: R$ 1.000 – R$ 1.700
+
+Quem recebe entre **R$ 4.500 e R$ 6.500** vive bem — transporte público e malha de saúde funcionam sem carro.
+
+
+## 9 rubricas explicadas
+
+
+### 1. Aluguel: o maior peso da conta
+
+Curitiba tem variação de **4x no preço por m²** entre o bairro mais barato e o mais caro do estoque ativo, segundo dados internos da FYMOOB em abril/2026. Campina do Siqueira (R$ 20.574/m²) e Batel (R$ 20.271/m²) abrem o ranking — praticamente empatados, contrariando a narrativa de "Batel é o mais caro". Na ponta inferior, Campo de Santana e Tatuquara ficam em torno de R$ 5.200/m².
+
+Pra quem aceita andar 2 km, o atalho mais óbvio é **Bigorrilho → Portão**: R$ 19.509/m² vira R$ 11.129/m², **43% de desconto no metro quadrado** mantendo a mesma região. O ranking completo dos 22 bairros com amostra estatística está em [preço do m² em Curitiba por bairro](/blog/preco-metro-quadrado-curitiba-bairro).
+
+Como referência prática, aluguel típico em Curitiba fica entre **0,4% e 0,6% do valor de venda** ao mês — apartamento de R$ 800 mil aluga por R$ 3.200-4.800 dependendo do bairro e da idade do prédio. Para comparativo direto entre os bairros nobres, [Batel vs Água Verde](/blog/batel-vs-agua-verde-curitiba) coloca os dois lado a lado.
+
+
+### 2. Alimentação: a cesta DIEESE-CWB
+
+A cesta básica de Curitiba em **março/2026 fechou em R$ 769,61**, alta de 3,23% no mês e 4,30% acumulado no 1º trimestre, segundo o [DIEESE-PR em parceria com a CONAB](https://www.coreconpr.gov.br/noticias/pesquisa-da-cesta-basica-em-curitiba-em-marco-de-2026-em-parceria-com-a-conab/). O salário mínimo nacional de R$ 1.621 cobre **47,5% da cesta** — quem ganha o piso passa metade da renda só em alimentação básica.
+
+Ranking DIEESE de março/2026:
+
+
+| Capital | Cesta R$ | Diferença vs Curitiba |
+|---|---|---|
+| São Paulo | 883,94 | **+14,9%** (SP é mais cara) |
+| Rio de Janeiro | 867,97 | +12,8% |
+| Florianópolis | 824,35 | +7,1% |
+| Porto Alegre | 799,79 | +3,9% |
+| **Curitiba** | **769,61** | **baseline** |
+
+Este é o número defensável de "Curitiba mais barata que SP" — não genérico "15-25%", mas **12,9% em alimentação** com fonte DIEESE/CONAB oficial.
+
+A vantagem paranaense em laticínios é real: PR é o 2º maior produtor de leite do Brasil; marcas locais (Frísia, Castrolanda, Capal) ficam 5-15% abaixo das nacionais. Mercado Municipal e feiras orgânicas regulamentadas pela Prefeitura economizam ainda mais em hortifrúti.
+
+
+### 3. Transporte: a tarifa congelada
+
+A passagem URBS é **R$ 6,00 desde 2023** — Curitiba é a única capital do Sul que **não reajustou em 2026**, segundo [comunicado da Prefeitura](https://www.curitiba.pr.gov.br/noticias/prefeitura-de-curitiba-mantem-tarifa-de-onibus-em-r-6-e-programas-sociais-no-transporte-em-2026/81220). Floripa cobra R$ 6,40, Porto Alegre R$ 5,80, Belo Horizonte R$ 5,75. SP reajustou pra R$ 5,00 em 2026.
+
+A conta avulsa fica em R$ 264/mês (22 dias × 2 viagens). Mas o **cartão Curitiba+ custa R$ 180/mês** com uso ilimitado em horário programado — economia de R$ 84/mês ou R$ 1.008/ano. Aos domingos e feriados, o **Domingão paga Meia derruba a tarifa pra R$ 3,00**. Quem mora na rota do BRT vive sem carro com conforto — algo difícil em BH ou Salvador.
+
+
+### 4. Combustíveis e carro
+
+A gasolina comum em Curitiba ficou na faixa de **R$ 6,29 a R$ 7,19/litro** em abril/2026 — média ponderada CustoCarro/ANP em torno de R$ 6,29, máxima registrada R$ 7,19/L conforme a [Síntese Semanal ANP](https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/sintese-semanal-do-comportamento-dos-precos-dos-combustiveis). Não é mais "R$ 5,80" como circulava em guias antigos. A relação etanol/gasolina (R$ 4,49 / R$ 6,29 = 71,4%) cruzou o limite de vantagem de 70%, então **gasolina compensa mais que etanol** em Curitiba hoje.
+
+A grande virada de 2026 é o **IPVA do Paraná**: passou de 3,5% pra **1,9%** em janeiro, conforme [Lei 21.951/2024 e divulgação SEFA-PR](https://www.fazenda.pr.gov.br/Noticia/Com-aliquota-de-19-e-desconto-vista-Fazenda-divulga-datas-do-IPVA-2026). É o **menor IPVA do Brasil em 2026** — redução de 45,7%. Para um carro de R$ 60.000, o paranaense paga **R$ 1.140/ano** (R$ 1.071,60 com 6% à vista) contra R$ 2.400 do paulista — economia de **R$ 1.260/ano** só nesse imposto.
+
+
+### 5. Energia, água, gás (e o frio)
+
+Tarifa Copel residencial atual: **~R$ 0,64/kWh** (Resolução ANEEL 3.472/2025, vigente até 23/06/2026). Atenção: a [Consulta Pública ANEEL nº 005/2026](https://www.gov.br/aneel/pt-br/assuntos/noticias/2026/aneel-aprova-consulta-publica-para-debater-revisao-tarifaria-da-copel) propõe **aumento médio de 19,2% nas tarifas residenciais** a partir de 24/06/2026 — saltando pra ~R$ 0,76/kWh. Quem se mudar no segundo semestre pega a tarifa reajustada. Sanepar reajustou em maio com IRT de **+2,4993%** (tarifa média R$ 7,00/m³), homologado pela [AGEPAR](https://www.agepar.pr.gov.br/Noticia/Agepar-homologa-3a-RTP-do-servico-de-agua-e-esgoto-prestado-pela-Sanepar) — família de 4 paga R$ 215-270/mês.
+
+**O custo invisível: o inverno paranaense.** Curitiba tem a menor temperatura média entre as capitais brasileiras, com mínimas de -2°C em julho. O chuveiro elétrico no modo "inverno" gasta **35% mais energia** que no "verão" — e o banho pode chegar a 35% da conta de luz no Q3, contra 25% na média nacional. Conta Copel típica de R$ 250 sobe pra R$ 320-350 em junho-agosto. Quem chega do Nordeste descobre o frio na primeira fatura.
+
+Para quem usa botijão, **P13 com entrega em Curitiba está em R$ 109,99** — abaixo da média nacional (R$ 112-118). Onde existe rede Compagás (Centro, Batel, Bigorrilho, Cabral, Boa Vista, Hugo Lange, Mercês, Ahú, Alto da Glória, Juvevê), o gás encanado a R$ 2,2784/m³ sai muito mais barato: família de 4 que consome 12m³ paga **R$ 27/mês** vs ~R$ 110 do P13 mensal.
+
+
+### 6. Saúde
+
+Plano individual em Curitiba **varia de R$ 200 (jovem em Hapvida) a R$ 2.500 (60+ em Unimed nacional)** — não R$ 350-600 sem qualificar idade. A [ANS aprovou teto de 6,06% pro reajuste 2025-2026 em planos individuais](https://www.gov.br/ans/pt-br/assuntos/noticias/beneficiario/ans-define-teto-de-6-06-para-reajuste-de-planos-individuais-e-familiares); coletivos empresariais e por adesão ficam comumente entre 12-18% ao ano.
+
+Faixas Unimed Curitiba individual em abr/2026 (tabela indicativa via Lifebis/Tabela Unimed; varia por modalidade Pleno/Premium/Amigo e pelo aniversário do contrato): 19-23 R$ 380-480; 29-33 R$ 560-650; 44-48 R$ 980-1.200; 54-58 R$ 1.500-1.900; **59+ R$ 2.000-2.500**. CNPJ ativo há 6+ meses garante PME com mesma cobertura **30-40% mais barato** que individual. Medprev e similares reduzem consulta particular em até 70%. SUS de Curitiba tem UPA 24h em todos os bairros.
+
+
+### 7. Educação
+
+Pela Lei 9.870/1999 cada escola particular define mensalidade autonomamente — não existe "média Curitiba" oficial. Faixas observadas em abr/2026 (Querobolsa, Gazeta do Povo, sites das redes):
+
+
+| Colégio | Bairro | Faixa EF II (6-9º ano) |
+|---|---|---|
+| Adventista | múltiplos | R$ 1.000 – 2.000 |
+| Medianeira | Centro/Hugo Lange | R$ 1.800 – 3.200 |
+| Bom Jesus | múltiplos | R$ 2.300 – 3.800 |
+| Marista Santa Maria | São Lourenço | R$ 2.500 – 3.800 |
+| Sion | Centro/Batel | R$ 3.500 – 5.500 |
+| Internacional | Ecoville | R$ 4.500 – 7.500 |
+
+Reajustes 2025→2026 ficaram em 7-9%, acima do IPCA. Faculdade particular: PUCPR Direito R$ 2.800-3.800; UP Direito R$ 2.200-3.000; Tuiuti R$ 1.500-2.300. UFPR e UTFPR são gratuitas e bem ranqueadas.
+
+
+### 8. Internet e celular
+
+Curitiba tem concorrência regional forte (Unifique, Sumicity, Vero) que pressiona Vivo e Claro. **plano de entrada 300MB sai R$ 80-100/mês** com regional, contra R$ 100-130 das grandes. 1Gbps fica entre R$ 180-230. Celular pós-controle 20-40GB: R$ 50-100/linha. Família típica com 600MB + 2 celulares: **R$ 250-380/mês**.
+
+
+### 9. Lazer
+
+Curitiba é provavelmente a capital BR com **mais opção gratuita por habitante**. O argumento real do "vale a pena" mora nesta rubrica.
+
+Gratuito o ano inteiro: 11 parques públicos (Barigui, Tanguá, Botânico, São Lourenço, Tingui, Iguaçu, Bacacheri, Náutico, Italiano, Atuba, Pedreiras), Largo da Ordem aos domingos, MON nas quartas e no último domingo do mês, Memorial de Curitiba, Ópera de Arame.
+
+Custos típicos abr/2026: cinema Cineflix Centro R$ 28-48 inteira; Cinépolis Pátio Batel (reclinável) R$ 50-80; SmartFit R$ 99 plano básico, Plus R$ 169-199, Black R$ 199-249; Teatro Guaíra R$ 40-180 médio; Restaurant Week (set/out) menu R$ 39-99 em casas que normalmente cobram R$ 200+; viagem casal Caiobá 2 noites econômico R$ 826-1.376 incluindo pedágio BR-277 (R$ 46,60 ida-volta) e pousada.
+
+
+## Curitiba vs outras capitais
+
+A comparação ancorada em fonte primária oficial é **só a cesta DIEESE-mar/26** — onde Curitiba é a 6ª capital do Sul/Sudeste mais barata em alimentação. Comparações genéricas tipo "Curitiba é 17% mais barata que SP" vêm de Numbeo e Expatistan (colaborativo, Tier 4) e divergem entre -7% e -17%. Use com cautela.
+
+
+| Item | Curitiba | São Paulo | Belo Horizonte | Porto Alegre | Florianópolis |
+|---|---|---|---|---|---|
+| Cesta DIEESE mar/26 | **R$ 769,61** | R$ 883,94 | (n/d) | R$ 799,79 | R$ 824,35 |
+| Tarifa ônibus 2026 | **R$ 6,00 (congelada)** | R$ 5,00 | R$ 5,75 | R$ 5,80 | R$ 6,40 |
+| IPVA carro R$ 60k | **R$ 1.140 (1,9%)** | R$ 2.400 (4%) | R$ 2.400 (4%) | R$ 2.100 (3,5%) | R$ 1.500 (2,5%) |
+
+**Curitiba × Belo Horizonte** é o comparativo que aparece raso nos guias concorrentes — [MySide cita BH com R$ 6.194 via Numbeo](https://myside.com.br/guia-curitiba/custo-de-vida-curitiba-pr) mas sem cruzar com IPVA, tarifa de transporte ou conta de inverno. Em moradia, BH e CWB têm custos próximos; o paranaense ganha pesado em IPVA (1,9% vs 4%) e perde em tarifa de ônibus (R$ 6,00 vs R$ 5,75).
+
+A renda média do trabalhador paranaense no 3T/2025 ficou **acima de R$ 4.000/mês** segundo a [PNAD Contínua do IBGE](https://www.ibge.gov.br/estatisticas/sociais/trabalho/9173-pesquisa-nacional-por-amostra-de-domicilios-continua-trimestral.html) — 14% acima da média nacional (R$ 3.507). No Censo 2022, Curitiba tinha a **4ª maior renda média entre capitais** (R$ 4.662). Sinal de que "Curitiba paga mais" tem suporte oficial.
+
+
+## Vale a pena morar em Curitiba? IPS 2025
+
+Curitiba foi classificada como a **capital com melhor qualidade de vida do Brasil pelo **[**IPS 2025 — Índice de Progresso Social**](https://www.curitiba.pr.gov.br/noticias/ips-2025-curitiba-e-a-capital-brasileira-com-melhor-qualidade-de-vida/79934). Soma transporte funcional, parques públicos extensos, segurança acima da média e IDH 0,823 (10º entre cidades brasileiras).
+
+Contrapartida honesta: Curitiba aparece em rankings tipo Numbeo como **6ª capital mais cara do Brasil** em custo médio mensal por pessoa. O nordestino que se muda descobre que o inverno pesa real no orçamento (chuveiro +35%, conta Copel subindo no Q3). O paulista descobre que o IPVA, a cesta básica e o lazer público gratuito devolvem boa parte do que se ganha em moradia mais barata. Quem aceita o frio, Curitiba entrega o melhor IPS do país por um preço que fica abaixo de SP/RJ na maioria das contas.
+
+
+## 5 estratégias pra economizar em Curitiba
+
+1. **Cartão Curitiba+** se anda mais de 2x ao dia. R$ 180/mês ilimitado vs R$ 264 avulso = R$ 1.008/ano economizado.
+
+1. **Mercado Municipal + feiras orgânicas regulamentadas.** Hortifrúti 25-45% mais barato que supermercado.
+
+1. **Atacarejo Atacadão/Assaí** pra cesta mensal: R$ 769 cai pra R$ 580-650 — economia de 15-25% vs Condor/Big.
+
+1. **Plano de saúde via PME** se tem CNPJ: mesma cobertura Unimed individual R$ 1.500 vira R$ 1.000 no PME — 30-40% mais barato.
+
+1. **Escolha de bairro estratégico.** Bigorrilho → Portão é -43% no R$/m² andando 2 km. Ranking completo em [preço do m² em Curitiba por bairro](/blog/preco-metro-quadrado-curitiba-bairro).
+
+
+## Quanto preciso ganhar pra morar em Curitiba?
+
+Aplicando a regra dos 30% (aluguel ≤ 30% da renda):
+
+
+| Perfil | Renda mínima recomendada |
+|---|---|
+| Solteiro econômico (bairro popular, sem carro) | R$ 4.500 – 6.000 |
+| Solteiro confortável (bairro nobre, com carro) | R$ 8.000 – 11.000 |
+| Casal sem filhos (1 carro) | R$ 8.000 – 12.000 |
+| Família 4 (escola pública municipal) | R$ 11.000 – 14.000 |
+| Família 4 (escola particular premium) | R$ 22.000 – 35.000 |
+| Aposentado sozinho | R$ 4.500 – 6.500 |
+
+DIEESE calcula que em março/2026 o **salário mínimo necessário pra família 4 no Brasil seria R$ 7.067/mês** — 4,4× o mínimo vigente. Trabalhador no piso PR Grupo IV (técnico nível médio, R$ 2.407,90) gasta 31,9% na cesta — abaixo dos 54,5% que o paulista no mínimo nacional gasta em SP.
+
+Se decidiu comprar em vez de alugar, [a lista de documentos pra comprar imóvel em Curitiba](/blog/documentos-comprar-imovel-curitiba) mapeia o que os 5 órgãos emitem, incluindo a Certidão Negativa de Imóveis específica de CWB que trava escritura.
+
+
+## Perguntas frequentes
+
+
+### É caro morar em Curitiba?
+
+Curitiba é a 6ª capital mais cara do Brasil em custo médio mensal (Numbeo abr/2026), atrás de SP, RJ, Floripa, Brasília e BH. Mas em alimentação é **12,9% mais barata que SP** (cesta DIEESE-mar/26 R$ 769,61 vs R$ 883,94). Cara vs capitais menores; barata vs SP/RJ.
+
+
+### Quanto custa morar sozinho em Curitiba em 2026?
+
+Entre **R$ 3.200/mês** (1Q em Capão Raso, sem carro, plano jovem) e **R$ 6.500/mês** (1Q em Batel, com carro, plano Unimed individual). Pra conforto básico, renda mínima de R$ 4.500/mês.
+
+
+### Curitiba é mais cara que São Paulo?
+
+Não. Em alimentação, DIEESE-mar/26 mostra Curitiba 12,9% mais barata (fonte primária Tier 1). Em moradia, Numbeo aponta -17,7% (dado colaborativo Tier 4, contexto, não ancoragem oficial). Em IPVA, Curitiba é 52,5% mais barata (1,9% PR vs 4% SP). A média do conjunto fica em -10% a -15%.
+
+
+### Quanto preciso ganhar pra morar em Curitiba?
+
+Solteiro confortável: R$ 4.500-6.000 em bairro popular, R$ 8.000-11.000 em bairro nobre. Casal: R$ 8.000-12.000. Família 4 com escola pública: R$ 11.000-14.000. Família 4 com escola particular premium: R$ 22.000-35.000. DIEESE estima salário mínimo necessário família 4 em R$ 7.067/mês (mar/26).
+
+
+### Vale a pena morar em Curitiba?
+
+Sim, se você aceita o inverno e prioriza qualidade urbana. CWB é **1ª capital BR no IPS 2025**, tem IDH 0,823 (10º Brasil), tarifa de ônibus congelada em R$ 6 desde 2023 e o menor IPVA do Brasil. Contrapartida: chuveiro elétrico no inverno gasta 35% mais e o frio pesa pra quem vem do Nordeste.
+
+
+### Curitiba é a 3ª cidade mais cara do Brasil?
+
+Não. O ranking vem de comparativos colaborativo (Numbeo, Expatistan, Tier 4) e na maioria dos cortes Curitiba é 6ª. O dado oficial DIEESE coloca CWB na faixa intermediária do Sul/Sudeste — mais barata que SP, RJ, Floripa e POA.
+
+
+### Quais bairros baratos pra morar em Curitiba?
+
+Em R$/m² do estoque ativo abr/2026: Campo de Santana (R$ 5.244), Tatuquara (R$ 5.279), Boqueirão (R$ 5.673), Fazendinha (R$ 5.779) e Cidade Industrial (R$ 6.052). Pra região central com desconto, Portão custa R$ 11.129/m² — 43% mais barato que Bigorrilho andando 2 km.
+
+
+### Quanto pesa o inverno no orçamento de Curitiba?
+
+Chuveiro elétrico em modo "inverno" gasta 35% mais que no "verão". Em CWB, banho pode chegar a 35% da conta de luz no Q3 (vs 25% nacional). Conta Copel de R$ 250 sobe pra R$ 320-350 em junho-agosto. Quem usa lareira (Santa Felicidade, Tingui, Mercês) gasta R$ 560-1.800 por temporada em lenha.
+
+
+## Fontes consultadas
+
+DIEESE/CONAB-PR ([cesta CWB mar/26](https://www.coreconpr.gov.br/noticias/pesquisa-da-cesta-basica-em-curitiba-em-marco-de-2026-em-parceria-com-a-conab/)); IBGE ([PNAD Contínua](https://www.ibge.gov.br/estatisticas/sociais/trabalho/9173-pesquisa-nacional-por-amostra-de-domicilios-continua-trimestral.html), Censo 2022, IPCA-RM); [ANP combustíveis abr/26](https://www.gov.br/anp/pt-br/assuntos/precos-e-defesa-da-concorrencia/precos/levantamento-de-precos-de-combustiveis-ultimas-semanas-pesquisadas); ANEEL Res. 3.472/2025 e [CP 005/2026 Copel](https://www.gov.br/aneel/pt-br/assuntos/noticias/2026/aneel-aprova-consulta-publica-para-debater-revisao-tarifaria-da-copel); [ANS reajuste 6,06%](https://www.gov.br/ans/pt-br/assuntos/noticias/beneficiario/ans-define-teto-de-6-06-para-reajuste-de-planos-individuais-e-familiares); Prefeitura de Curitiba ([tarifa ônibus](https://www.curitiba.pr.gov.br/noticias/prefeitura-de-curitiba-mantem-tarifa-de-onibus-em-r-6-e-programas-sociais-no-transporte-em-2026/81220), [decreto IPTU 2026](https://www.curitiba.pr.gov.br/noticias/decreto-municipal-estabelece-nova-base-de-calculo-do-iptu-80-dos-imoveis-terao-imposto-corrigido-apenas-pela-inflacao-em-2026/81201)); [AGEPAR Sanepar 3ª RTP](https://www.agepar.pr.gov.br/Noticia/Agepar-homologa-3a-RTP-do-servico-de-agua-e-esgoto-prestado-pela-Sanepar); [SEFA-PR IPVA 1,9%](https://www.fazenda.pr.gov.br/Noticia/Com-aliquota-de-19-e-desconto-vista-Fazenda-divulga-datas-do-IPVA-2026); FYMOOB CRM (snapshot 2026-04-24, 242 imóveis em 66 bairros).
+
+
+> **[CTA]** Procurando imóveis em Curitiba? → Ver imóveis disponíveis (/busca)
+> Veja imóveis ativos em todos os bairros analisados — do econômico em Capão Raso ao alto padrão em Batel e Ecoville.
+
+
+> **[CHANGELOG]**
+
+
+
+> **[CTA]** Planejando se mudar para Curitiba? → Falar com especialista (https://wa.me/554199978-0517?text=Olá!%20Estou%20planejando%20me%20mudar%20para%20Curitiba%20e%20gostaria%20de%20orientação%20sobre%20bairros%20e%20imóveis.)
+> Nossos especialistas conhecem cada bairro da cidade e podem ajudar você a encontrar o imóvel ideal pro seu orçamento e estilo.
+
+

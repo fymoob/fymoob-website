@@ -1,0 +1,400 @@
+---
+slug: documentos-comprar-imovel-curitiba
+title: "Documentos pra Comprar Imóvel em Curitiba: Guia Completo 2026"
+description: "Lista dos documentos pra comprar imóvel em Curitiba em 2026, organizada pelos 5 órgãos emissores. 9 Ofícios de Registro, certidão municipal que trava escritura e pra"
+tags: ["documentação", "compra", "curitiba", "cartório", "escritura"]
+word_count: 2331
+seo_meta_title: ""
+seo_meta_description: ""
+---
+
+# Documentos pra Comprar Imóvel em Curitiba: Guia Completo 2026
+
+> Lista dos documentos pra comprar imóvel em Curitiba em 2026, organizada pelos 5 órgãos emissores. 9 Ofícios de Registro, certidão municipal que trava escritura e pra
+
+Comprar imóvel em Curitiba em 2026 não trava por falta de dinheiro. Trava por **um papel esquecido** — a Certidão Negativa de Imóveis da Prefeitura, documento que **não é o IPTU pago** e sem o qual nenhum tabelião de Curitiba lavra escritura. Este guia mapeia os 18+ documentos que você vai pedir, organizados por **qual órgão emite cada um** — que é como o processo funciona de verdade.
+
+Três pontos que diferenciam Curitiba de guias genéricos nacionais:
+
+1. **São 9 Ofícios de Registro de Imóveis** (não 8) — e a divisão é **por endereço/CEP, não por bairro**. Batel, Centro, Bigorrilho e Água Verde são divididos entre ofícios diferentes.
+
+1. **A Prefeitura emite certidão própria pelo imóvel**, separada do IPTU quitado. Portal: [cnd-cidadao.curitiba.pr.gov.br](https://cnd-cidadao.curitiba.pr.gov.br). Grátis, online, 3 minutos.
+
+1. **Curitiba não tem laudêmio** (cidade interior, sem terreno de marinha) — esqueça essa taxa que aparece em guias nacionais. Exceção rara: imóvel foreiro à União ou Igreja (matrícula menciona "domínio útil").
+
+
+> **[METODOLOGIA]**
+> - Periodo: Abril/2026
+> - Amostra: -
+> - Tratamento: -
+> - Fontes: ["Decreto 93.240/1986", "Lei 7.433/1985", "LGPD (Lei 13.709/2018) art. 7º V", "Provimento CNJ 149/2023", "Portal Certidão Negativa CWB", "AMEP — Mapa RI Curitiba"]
+> - Atualizado: 2026-04-23
+
+
+## O fluxo real: 5 órgãos, não 1 lista única
+
+Guias genéricos jogam 25 documentos numa lista única e você não sabe por onde começar. A realidade é que os documentos saem de **5 órgãos diferentes**, e cada um tem prazo, portal e custo próprios:
+
+
+| Órgão | O que emite | Prazo de emissão |
+|---|---|---|
+| **Prefeitura de Curitiba** | Certidão Negativa de Imóveis + Cadastro Imobiliário + guia ITBI | 1 dia (online) |
+| **Cartório de Registro de Imóveis** (um dos 9 Ofícios) | Matrícula atualizada com ônus reais | 3-7 dias |
+| **TJ-PR + Justiça Federal + TRT-9** | Certidões cíveis, criminais, trabalhistas e fiscais do vendedor | 1-5 dias |
+| **Receita Federal + Banco** (se financiado) | CND Federal + contrato de financiamento + dossiê bancário | 30-60 dias (análise) |
+| **Tabelionato de Notas** | Escritura pública (presencial ou e-Notariado) | 5-10 dias |
+
+Pedir fora de ordem = certidões vencendo antes da escritura. A maioria tem **30 dias de validade** ([Decreto 93.240/1986, art. 1º, §1º](https://www.planalto.gov.br/ccivil_03/decreto/Antigos/D93240.htm)) — se o banco demora 45 dias pra liberar financiamento, você paga as certidões duas vezes.
+
+
+## Órgão 1 — Prefeitura de Curitiba
+
+
+### Certidão Negativa de Imóveis (a que trava escritura)
+
+**Nome oficial:** Certidão Negativa de Imóveis — também chamada no Guia de Serviços da Prefeitura de "Certidão de Débitos Tributários e Dívida Ativa — modalidade Imóvel".
+
+**Onde emitir:** [cnd-cidadao.curitiba.pr.gov.br](https://cnd-cidadao.curitiba.pr.gov.br) (ou certidaonegativa.curitiba.pr.gov.br, portal antigo ainda ativo).
+
+**O que ela cobre** — e por que **não é o mesmo que IPTU pago**:
+
+- **IPTU** (exercício atual + anteriores em dívida ativa)
+
+- **ITBI** em dívida ativa de operação anterior mal registrada
+
+- **Contribuição de Melhoria (CME)** — taxa de obra pública parcelada
+
+- **Taxa de Coleta de Lixo**
+
+- **Multas e parcelamentos** em aberto pelo imóvel
+
+Um boleto de IPTU 2026 pago prova **só 2026**. A Certidão Negativa prova que **a inscrição imobiliária inteira está limpa** — incluindo CME de obra do asfalto de 2018, taxa de lixo atrasada de 2019, parcelamento esquecido da administração anterior. Essas dívidas "seguem o imóvel" (obrigação *propter rem*) — se você comprar sem a certidão, a dívida passa pra você.
+
+**Custo:** Grátis online. ~R$ 100 presencial (raramente necessário).
+
+**Validade:** 30 dias.
+
+**Sem ela, o que acontece:**
+
+1. Tabelião recusa lavrar escritura ([Lei 7.433/1985](https://www.planalto.gov.br/ccivil_03/leis/l7433.htm) + responsabilidade solidária tributária)
+
+1. Cartório de RI recusa registro (não há escritura lavrada)
+
+1. Banco não libera financiamento (Caixa, Itaú, Bradesco, Santander pedem no dossiê)
+
+**Como emitir (3 minutos):**
+
+1. Acessar [cnd-cidadao.curitiba.pr.gov.br](https://cnd-cidadao.curitiba.pr.gov.br)
+
+1. Informar Indicação Fiscal **ou** Número da Inscrição Imobiliária + Sublote (consta no carnê IPTU)
+
+1. Informar CPF/CNPJ do proprietário atual
+
+1. Escolher finalidade "Geral" (cobre escritura, financiamento, hipoteca, inventário)
+
+1. Baixar PDF com código de validação
+
+
+### Outras certidões da Prefeitura (complementares)
+
+- **Certidão de Débitos Tributários do CPF/CNPJ do vendedor** — prova que a pessoa física ou jurídica não tem débitos municipais (ISS, taxas). Mesmo portal. 30 dias. Grátis.
+
+- **Certidão de Cadastro Imobiliário** ([serviço 450](https://www.curitiba.pr.gov.br/servicos/iptu-certidao-de-cadastro-imobiliario/450)) — prova que o imóvel existe no cadastro da Prefeitura com dados de área, uso e proprietário. Importante pra **confrontar com a matrícula** — divergência (ex.: matrícula com 80m², Prefeitura com 65m²) é sinal de irregularidade.
+
+- **Guia de ITBI** — 2,7% sobre o valor venal ou de transação (o maior). Emitida pela Prefeitura pós-contrato, paga antes da escritura.
+
+
+## Órgão 2 — Cartório de Registro de Imóveis (1 dos 9)
+
+
+### A pegadinha das 9 circunscrições
+
+Curitiba tem **9 Serviços de Registro de Imóveis** (1º ao 9º Ofício). A matrícula do seu imóvel fica num deles — **e você não pode pedir no cartório errado**. Errou o ofício = recusa de certidão + retrabalho.
+
+**A divisão é por endereço/CEP, não por bairro.** Bairros como Batel, Centro, Bigorrilho e Água Verde caem em **mais de um Ofício** dependendo da quadra:
+
+- **Batel:** 6º + 7º (partes diferentes)
+
+- **Centro:** 1º, 5º, 6º, 7º (depende da quadra)
+
+- **Bigorrilho:** 6º + parte em outro
+
+- **Água Verde:** 6º + parte em outro
+
+**Como descobrir o RI correto:**
+
+1. **Mapa oficial AMEP** (Agência de Assuntos Metropolitanos do PR): [amep.pr.gov.br — Mapa de circunscrição dos cartórios de RI de Curitiba](https://www.amep.pr.gov.br/Pagina/Mapa-de-circunscricao-dos-cartorios-de-registros-de-imoveis-de-Curitiba). PDF atualizado em outubro/2025.
+
+1. **Portal integrado:** [portalricuritiba.com.br](https://portalricuritiba.com.br/circunscricoes-curitiba/) — busca por CEP.
+
+1. **Ligar para qualquer um dos cartórios** com o CEP do imóvel e pedir indicação.
+
+
+### Os 9 Ofícios (endereços + telefones)
+
+
+| Ofício | Endereço | Telefone |
+|---|---|---|
+| **1º RI** | R. Padre Anchieta, 2050, 5º andar — Bigorrilho | (41) 3022-1117 |
+| **2º RI** | Al. Dr. Carlos de Carvalho, 603, 10º andar — Centro | (41) 3024-0512 |
+| **3º RI** | R. Emiliano Perneta, 297, 11º andar — Centro | (41) 3026-0910 |
+| **4º RI** | R. Marechal Deodoro, 869, 1º andar — Centro | (41) 3387-1898 |
+| **5º RI** | R. Nunes Machado, 695, 4º andar — Rebouças | (41) 3224-3555 |
+| **6º RI** | R. Nunes Machado, 68, sala 401 — Centro | (41) 3434-2383 |
+| **7º RI** | Av. Marechal Floriano Peixoto, 306 — Centro | (41) 3018-0505 |
+| **8º RI** | R. José Loureiro, 133, 17º/18º — Centro | (41) 3233-4107 |
+| **9º RI** | R. Voluntários da Pátria, 475, 5º andar — Centro | (41) 3233-6168 |
+
+Horário padrão: segunda a sexta, 8h30 às 17h.
+
+
+### Matrícula atualizada com negativa de ônus reais
+
+**Este é o documento mais importante do imóvel.** É o "RG" dele — histórico completo de donos, hipotecas, penhoras, bloqueios e averbações desde a abertura.
+
+**O que você está olhando:**
+
+- **R (Registro):** transferências de propriedade (venda, herança, doação)
+
+- **Av (Averbação):** mudanças de fato (casamento do dono, construção, bloqueio judicial)
+
+**O que procurar (red flags):**
+
+1. **Averbação de indisponibilidade** (CNIB 2.0) — bloqueio ordenado por juiz. **Não pode vender.**
+
+1. **Averbação de penhora** (R-[n] com nº de processo) — só vende com autorização do juízo.
+
+1. **Averbação de hipoteca** — tem que quitar ou transferir ao comprador.
+
+1. **Domínio útil / foreiro** — imóvel não é 100% propriedade do vendedor, paga laudêmio à União ou Igreja. Raro em Curitiba, mas existe.
+
+**Consulta gratuita preliminar:** [cnib.org.br](https://cnib.org.br) (Sistema CNIB 2.0 do CNJ) mostra se o imóvel tem bloqueio nacional — você faz **antes** de fazer proposta.
+
+**Validade da matrícula atualizada:** 30 dias ([Decreto 93.240/1986, art. 1º, §1º](https://www.planalto.gov.br/ccivil_03/decreto/Antigos/D93240.htm)). **Esse prazo é lei, não prática.**
+
+**Custo:** R$ ~75-150 conforme nº de folhas (tabela TJ-PR).
+
+
+### Certidão Vintenária — pedir só se cair nos 3 cenários
+
+Vintenária (histórico de 20 anos da matrícula) **não é obrigatória** pra compra comum. Caiu em desuso nos últimos anos porque a matrícula atualizada com ônus reais já cumpre o papel.
+
+**Peça só se:**
+
+1. Financiamento de alto valor (imóvel acima de R$ 1-2 milhões em banco privado)
+
+1. Matrícula recente em área antiga (suspeita de cadeia dominial frágil)
+
+1. Usucapião extrajudicial (aí é obrigatória)
+
+Para compra comum financiada pela Caixa SFH/SBPE, **Caixa não pede vintenária**. Pede matrícula + ônus reais.
+
+
+## Órgão 3 — Tribunal de Justiça do PR + Justiça Federal + TRT-9
+
+Conjunto de certidões do **vendedor** (e do imóvel, quando se trata de execução) que provam que ele não tem ações que possam gerar penhora futura. Emitidas online:
+
+
+| Certidão | Onde emitir | Validade | Custo |
+|---|---|---|---|
+| **Certidão de Feitos Cíveis e Criminais (TJ-PR)** | [tjpr.jus.br/certidoes](https://www.tjpr.jus.br/certidoes) | 30-60 dias | Grátis |
+| **Certidão de Distribuição (TJ-PR)** | [tjpr.jus.br/certidoes](https://www.tjpr.jus.br/certidoes) | 30-60 dias | Grátis |
+| **Certidão de Protesto** (últimos 5 anos) | Central de Protesto [www.protestopr.com.br](https://www.protestopr.com.br) | 30 dias | ~R$ 30 |
+| **Certidão de Feitos Trabalhistas (TRT-9)** | [trt9.jus.br](https://www.trt9.jus.br) | 180 dias | Grátis |
+| **Certidão Negativa de Débitos Trabalhistas (CNDT/TST)** | [cndt-certidao.tst.jus.br](https://cndt-certidao.tst.jus.br) | 180 dias | Grátis |
+| **Certidão da Justiça Federal** | [jfpr.jus.br](https://www.jfpr.jus.br) | 60 dias | Grátis |
+
+**Por que pedir trabalhistas?** Em Curitiba, execução trabalhista é causa comum de indisponibilidade de imóvel — vendedor empresário com ação de ex-funcionário descobre no meio do processo que o imóvel foi bloqueado. CNDT e TRT-9 negativas cobrem esse risco.
+
+
+## Órgão 4 — Receita Federal (+ banco, se financiado)
+
+
+### Certidão Negativa Federal
+
+**Nome oficial:** Certidão Conjunta Negativa de Débitos relativos a Tributos Federais e à Dívida Ativa da União. Cobre Receita Federal + PGFN num único documento (unificada desde 2014).
+
+**Onde emitir:** [servicos.receita.fazenda.gov.br](https://servicos.receita.fazenda.gov.br). Grátis. **Validade 180 dias** — prazo confortável, pede no início do processo e dura até o final.
+
+
+### Dossiê do financiamento (se não for à vista)
+
+Comprador financiado ainda precisa entregar ao banco:
+
+- **3 últimos holerites** (CLT) ou **Declaração de IR + extratos bancários 6 meses** (autônomo/empresário)
+
+- **Declaração de Imposto de Renda** (último exercício, com recibo)
+
+- **Extrato do FGTS** (se vai usar pra entrada)
+
+- **Certidão de casamento** (se casado, até 90 dias)
+
+- **Todos os documentos anteriores** (RG, CPF, comprovante de residência)
+
+Banco faz análise de crédito, avalia o imóvel (R$ 750-3.500 de taxa), e aprova ou não. Prazo médio Caixa SFH em 2026: **30-45 dias** da entrega completa até liberação.
+
+
+## Órgão 5 — Tabelionato de Notas
+
+
+### Escritura presencial vs e-Notariado
+
+Em 2026, **você escolhe** entre lavrar a escritura presencialmente no tabelionato **ou** remotamente via e-Notariado — as duas opções têm **validade jurídica idêntica**. e-Notariado é **opcional, não obrigatório**.
+
+**e-Notariado** — regulado pelos [Provimentos CNJ 100/2020 e 149/2023](https://atos.cnj.jus.br/atos/detalhar/5243):
+
+1. Upload dos documentos em PDF no portal [e-notariado.org.br](https://www.e-notariado.org.br) ou site do tabelionato escolhido
+
+1. Identificação digital via certificado ICP-Brasil (e-CPF) **ou** certificado notarizado grátis emitido pelo próprio tabelionato
+
+1. Videoconferência de lavratura (comprador + vendedor + tabelião em chamada)
+
+1. Assinatura digital → escritura com QR Code de validação enviada por e-mail
+
+1. Envio do título ao RI pra registro
+
+**Quem usa:** comprador de fora de Curitiba (investidor de SP/RS comprando em Batel), vendedor espólio com herdeiros em estados diferentes, quem quer economizar tempo (reduz de 5-10 dias presencial pra 1-3 dias remoto).
+
+**Custo:** igual à escritura presencial (mesma tabela TJ-PR, ~1% a 2% do valor do imóvel).
+
+**Competência:** tabelião do foro do imóvel **ou** do domicílio do comprador. Imóvel em CWB + comprador em CWB = qualquer tabelionato de Curitiba serve.
+
+
+### Escritura pública: o que o tabelião consulta
+
+O tabelião **só lavra** depois de conferir:
+
+- Matrícula atualizada com ônus reais (Órgão 2) — **30 dias de validade**
+
+- Certidão Negativa de Imóveis da Prefeitura (Órgão 1) — **30 dias**
+
+- CND Federal do vendedor (Órgão 4) — **180 dias**
+
+- Certidões do TJ-PR, TRT-9, CNDT (Órgão 3) — **30 a 180 dias**
+
+- Guia de ITBI paga (Órgão 1) — emitida pós-contrato
+
+- Documentos pessoais originais (RG, CPF, certidão de casamento)
+
+**Se uma única certidão estiver vencida, o tabelião consigna ressalva na escritura** ou recusa lavrar. Por isso a ordem cronológica importa — pede as de 180 dias primeiro, as de 30 dias por último.
+
+
+### Registro no RI (o ato final)
+
+Escritura lavrada **não transfere propriedade** — só o **registro** no Cartório de Registro de Imóveis (Órgão 2) faz isso. Sem registro, você tem "direito contratual" mas não é dono pro mundo jurídico.
+
+Prazo do tabelião pra enviar ao RI: 30 dias da lavratura. Custo do registro: ~1% do valor + emolumentos TJ-PR. Depois do registro, a matrícula é atualizada com seu nome como novo proprietário.
+
+
+## O que mudou em 2026
+
+
+> **[CALLOUT-INFO]** **Mudanças recentes que afetam o fluxo:
+**
+**Portal único da Prefeitura** ([cnd-cidadao.curitiba.pr.gov.br](https://cnd-cidadao.curitiba.pr.gov.br)) desde 29/03/2021 — todas as certidões municipais num só lugar, grátis, sem visitar o portal GTM antigo.
+
+**CNIB 2.0** (Sistema de Indisponibilidade do CNJ) implantado em 2023 — bloqueio de matrícula agora é **por imóvel específico**, não mais genérico sobre todo o patrimônio do devedor. Mais fácil identificar e resolver.
+
+**Provimento CNJ 149/2023** consolidou e expandiu o e-Notariado — hoje todos os tabelionatos de notas de CWB oferecem a modalidade.
+
+**CND unificada** Receita Federal + PGFN — 1 certidão só, 180 dias, desde 2014 (prática já consolidada em 2026).
+
+
+## LGPD: o que você precisa saber
+
+A LGPD ([Lei 13.709/2018](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm)) obriga imobiliárias a terem **política de privacidade visível** e a informar quais dados coletam e com quem compartilham.
+
+**O que NÃO precisa:** termo de consentimento separado só pra entregar RG e comprovante de renda no negócio. A base legal é **execução de contrato** ([Art. 7º, V, LGPD](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm)) — dispensa consentimento específico.
+
+**O que precisa:** consentimento destacado pra usos acessórios — envio de newsletter depois da compra, compartilhamento com parceiros não essenciais ao negócio, marketing futuro.
+
+**Na prática:** exija ver a política de privacidade da imobiliária antes de entregar documentos. Pergunte quanto tempo guardam os dados pós-transação. Primeira sentença LGPD no Brasil foi contra uma imobiliária (2020, vazamento de dados de locatário) — o risco real é vazamento pós-compra, não a coleta inicial.
+
+
+## Custos além do valor do imóvel
+
+Em Curitiba, reserve 5% a 7% do valor da compra pros custos cartoriais e fiscais:
+
+
+| Custo | Valor aproximado |
+|---|---|
+| **ITBI** (Imposto de Transmissão, Prefeitura CWB) | 2,7% do valor venal ou de transação |
+| **Escritura pública** (tabelionato) | 1% a 2% do valor |
+| **Registro no RI** | 0,5% a 1% do valor + emolumentos TJ-PR |
+| **Certidões do RI** (matrícula + ônus reais) | R$ 75 a R$ 150 |
+| **Avaliação bancária** (só se financiado) | R$ 750 a R$ 3.500 |
+
+*Valores referenciais de abril/2026. Tabela completa de emolumentos TJ-PR: *[*extrajudicial.tjpr.jus.br/emolumentos*](https://extrajudicial.tjpr.jus.br/emolumentos)*.*
+
+Financiamento MCMV pode incluir parte desses custos no saldo financiado. CEF tem descontos específicos pra registro em MCMV.
+
+
+> **[CTA]** Procurando imóveis em Curitiba? → Ver imóveis disponíveis (/busca)
+> Catálogo com imóveis de todos os 9 ofícios, à venda e pra alugar.
+
+
+## Ordem cronológica recomendada
+
+**Semana 1 — certidões de prazo longo (180 dias):**
+
+1. CND Federal (vendedor e comprador)
+
+1. CNDT + TRT-9 (vendedor)
+
+**Semana 2 — due diligence do imóvel:**
+
+1. Matrícula atualizada no RI correto (consultar CEP na AMEP)
+
+1. Certidão Negativa de Imóveis (Prefeitura)
+
+1. Certidão de Débitos Tributários do CPF/CNPJ do vendedor
+
+1. Certidões TJ-PR (feitos cíveis, criminais, distribuição)
+
+1. Certidão de Protesto
+
+**Semana 3 — banco + cartório:**
+
+1. Matrícula em mãos → envia ao banco (financiado) ou direto ao tabelionato
+
+1. Se e-Notariado: agenda videoconferência
+
+1. Emite guia ITBI → paga → tabelião lavra escritura
+
+**Semana 4 — registro:**
+
+1. Leva escritura + ITBI pago ao RI da circunscrição
+
+1. Matrícula atualizada em seu nome → emite nova certidão pra arquivo
+
+**Prazo total médio em CWB 2026:** 30-45 dias à vista. 45-70 dias com financiamento Caixa.
+
+
+## Perguntas frequentes
+
+Não. O boleto de IPTU pago prova só o exercício atual. A Certidão Negativa de Imóveis cobre **todos os exercícios anteriores em dívida ativa + taxa de lixo + contribuição de melhoria + multas**. Pode haver CME de 2018 parcelada que não aparece no IPTU de 2026.
+
+Depende da escolha: e-Notariado (videoconferência) dispensa ida presencial. Escritura presencial exige comparecimento no tabelionato de notas. Certidões da Prefeitura, TJ-PR, TRT-9 e Receita Federal são **100% online**. Matrícula do RI pode ser pedida online via [portalricuritiba.com.br](https://portalricuritiba.com.br) ou presencialmente.
+
+1 a 3 dias úteis da entrega dos documentos até a lavratura, contra 5-10 dias da escritura presencial (pelo agendamento). Validade jurídica é **idêntica** à escritura em papel.
+
+Não, em 99% dos casos. Laudêmio (5% sobre avaliação SPU) só existe em **terreno de marinha** (33m da linha de preamar) ou terreno foreiro à União/Igreja. Curitiba é interior. Exceção rara: se a matrícula mencionar "domínio útil" ou "foreiro", é caso raro de imóvel foreiro à União — aí sim paga.
+
+Não é obrigatória pra compra comum. A matrícula atualizada com negativa de ônus reais (30 dias) já atende. Bancos privados podem pedir em imóveis acima de R$ 1-2 milhões. Usucapião extrajudicial exige.
+
+
+## Resumo — o documento que você provavelmente não conhecia
+
+Se você levar uma coisa deste guia: **a Certidão Negativa de Imóveis da Prefeitura de Curitiba é o documento que mais trava escritura em 2026**. Não porque é difícil de obter — é grátis, online, em 3 minutos no [cnd-cidadao.curitiba.pr.gov.br](https://cnd-cidadao.curitiba.pr.gov.br). Mas porque a maioria dos compradores acha que IPTU pago resolve. Não resolve.
+
+Os outros 17 documentos você vai pedir um a um pelos 5 órgãos — com prazo total de 30 a 45 dias, seguindo a ordem cronológica das validades.
+
+
+> **[CHANGELOG]**
+
+
+
+> **[CTA]** Compre seu imóvel com segurança → Falar com um consultor (/contato)
+> Nossa equipe cuida de toda a documentação pra que sua compra seja tranquila.
+
+
