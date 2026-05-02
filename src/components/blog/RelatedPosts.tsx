@@ -9,7 +9,7 @@ export function RelatedPosts({ posts }: RelatedPostsProps) {
   if (posts.length === 0) return null
 
   return (
-    <section className="mt-16 border-t border-neutral-200 pt-12">
+    <section className="mt-16 border-t border-neutral-200 pb-16 pt-12 lg:pb-20">
       <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-950">
         Artigos relacionados
       </h2>
