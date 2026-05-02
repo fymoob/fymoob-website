@@ -224,6 +224,74 @@ Quando compactar, SEMPRE preservar:
 - **Revisar SEO:** invocar agente `seo-reviewer` para validar páginas
 - **Entre fases:** usar `/clear` para limpar contexto
 
+## Conteúdo SEO — Fontes confiáveis e princípios editoriais
+
+> Regras pra escrever ou revisar qualquer artigo do blog. **Validado 02/05/2026**
+> após revisão dos artigos de financiamento-bancos e melhores-bairros-familias.
+
+### Princípios obrigatórios
+
+1. **CRM FYMOOB ≠ fonte estatística primária.** Pode citar como observação
+   complementar de mercado ("Como observação complementar, o estoque
+   acompanhado pela FYMOOB em abril/2026..."), nunca como autoridade
+   estatística com `n=X` e mediana exata. Amostra interna é sempre pequena.
+
+2. **FipeZap não tem tabela pública bairro-a-bairro.** O índice oficial Fipe é
+   agregado por capital. Quando o post usa preço por bairro "do FipeZap", o
+   dado vem de **fontes intermediárias** (MySide, BemBrasil, Portas, Loft).
+   Wording correto: "referência baseada em FipeZap/MySide" ou "levantamento
+   FipeZap publicado por [intermediária]".
+
+3. **Datas explícitas em todo dado dinâmico.** "FipeZap mar/2026", não "FipeZap".
+
+4. **Title sem números específicos** (regra do GSC). Number-driven hook só na
+   description. Title matcha intent de busca, não preview do conteúdo.
+
+5. **Claims absolutos exigem caveat.** "Zero homicídios", "único banco", "top
+   1", "100%" — usar linguagem blindada citando a limitação da fonte.
+
+6. **Comparativos descrevem a comparação**, não atribuem posição absoluta.
+   "Nas taxas que comparamos em abril/2026, BRB aparece como 2ª menor" >
+   "BRB virou #2 do ranking nacional".
+
+7. **Tabelas por perfil de leitor logo no início.** Decisão prática > listagem
+   técnica. Pra `melhores-bairros-familias`: tabela "perfil família × melhor
+   bairro × alternativas" antes do ranking detalhado.
+
+8. **Tom profissional > tom "internet".** "Pontos de atenção" > "pegadinhas";
+   "nem sempre aparece" > "todo banco esconde"; "orientação objetiva" >
+   "sem enrolação".
+
+### Hierarquia de fontes
+
+**Tier 1 — Oficiais (sempre preferir):**
+Banco Central, IBGE, STJ/STF/TJ-PR, ANEEL, ANP, ANS, SESA-PR, SESP-PR, INEP,
+IPPUC, IPARDES, Prefeitura de Curitiba, Câmara Municipal CWB, SEFA-PR, URBS.
+
+**Tier 2 — Setor confiável:**
+Caixa/Itaú/BB/BRB sites oficiais, Abrainc, Abecip, ADEMI-PR, Sinduscon-PR,
+Secovi-PR, FGV/IBRE (INCC-DI), DIEESE, IPEA, Portal Loft, Quinto Andar Index.
+
+**Tier 3 — Mídia editorial sólida:**
+Gazeta do Povo, Tribuna do Paraná, Bem Paraná, Conjur, Migalhas, JusBrasil,
+Portas, BemBrasil Imóveis (compiladores Loft).
+
+**Tier 4 — Compiladores leves:**
+MySide, Larya, SpImóvel, Apto.vc, iLove Curitiba, Senior Index.
+
+**Tier 5 — Colaborativo (só cor, nunca ancorar):**
+Numbeo, Expatistan, ImovelWeb (busca).
+
+### Quando uma frase merece revisão antes de publicar
+
+Frase passa por revisão se atender qualquer critério:
+1. Tem número específico (R$ X, X%, `n=X`) → exige fonte Tier 1-3.
+2. Tem claim absoluto (top 1, único, zero, 100%) → exige fonte direta + caveat.
+3. Cita FYMOOB CRM como autoridade → reformular como "observação complementar".
+4. Compara marcas/players sem qualifier → descrever a comparação.
+
+Detalhamento completo em [docs/seo/article-revision-plan-2026-05-02.md](docs/seo/article-revision-plan-2026-05-02.md).
+
 ## Blog Custom Admin (Fase 18 — concluída 30/04/2026)
 Sanity foi removido por completo. Stack atual:
 - **Editor:** BlockNote (Notion-like) em `/admin/blog/[id]` com autosave, preview, SEO Score gate, histórico de revisões
