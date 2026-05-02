@@ -405,12 +405,53 @@ function renderBlock(block: BlockNoteBlock, key: string): React.ReactNode {
 }
 
 // ───────────────────────────────────────────────────────────────────
-// Tabela (BlockNote: { content: { type: 'tableContent', rows: [{cells: [...]}] } })
+// Tabela — BlockNote tem 2 shapes:
+//   Legado: rows[i].cells = InlineContent[][]            (cell = array direto)
+//   Atual:  rows[i].cells[j] = { type:"tableCell", props:{textAlignment,...},
+//                                content: InlineContent[] }
+// Detectado 02/05/2026: tabelas vinham vazias no /blog porque o renderer so
+// suportava o legado. Suporta ambos pra resilencia.
 // ───────────────────────────────────────────────────────────────────
+
+interface TableCellWrapped {
+  type: "tableCell"
+  props?: {
+    colspan?: number
+    rowspan?: number
+    textAlignment?: "left" | "center" | "right"
+  }
+  content: InlineContent[]
+}
+
+type TableCell = InlineContent[] | TableCellWrapped
 
 interface TableContent {
   type: "tableContent"
-  rows: Array<{ cells: InlineContent[][] }>
+  rows: Array<{ cells: TableCell[] }>
+}
+
+function isCellWrapped(cell: unknown): cell is TableCellWrapped {
+  return Boolean(
+    cell &&
+      typeof cell === "object" &&
+      !Array.isArray(cell) &&
+      (cell as { type?: string }).type === "tableCell" &&
+      Array.isArray((cell as { content?: unknown }).content)
+  )
+}
+
+function getCellInline(cell: TableCell): InlineContent[] {
+  if (Array.isArray(cell)) return cell
+  if (isCellWrapped(cell)) return cell.content
+  return []
+}
+
+function getCellAlignClass(cell: TableCell): string {
+  if (!isCellWrapped(cell)) return ""
+  const a = cell.props?.textAlignment
+  if (a === "center") return "text-center"
+  if (a === "right") return "text-right"
+  return ""
 }
 
 function renderTable(block: BlockNoteBlock, key: string) {
@@ -425,14 +466,17 @@ function renderTable(block: BlockNoteBlock, key: string) {
       <table className="w-full border-collapse text-sm text-neutral-700">
         <thead>
           <tr>
-            {headerRow.cells.map((cell, ci) => (
-              <th
-                key={`${key}-th-${ci}`}
-                className="border-b border-neutral-200 bg-neutral-50 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-neutral-500"
-              >
-                {renderInline(cell, `${key}-th-${ci}`)}
-              </th>
-            ))}
+            {headerRow.cells.map((cell, ci) => {
+              const align = getCellAlignClass(cell)
+              return (
+                <th
+                  key={`${key}-th-${ci}`}
+                  className={`border-b border-neutral-200 bg-neutral-50 px-4 py-3 text-xs font-semibold uppercase tracking-wider text-neutral-500 ${align || "text-left"}`}
+                >
+                  {renderInline(getCellInline(cell), `${key}-th-${ci}`)}
+                </th>
+              )
+            })}
           </tr>
         </thead>
         <tbody>
@@ -441,14 +485,17 @@ function renderTable(block: BlockNoteBlock, key: string) {
               key={`${key}-tr-${ri}`}
               className="transition-colors hover:bg-neutral-50/50"
             >
-              {row.cells.map((cell, ci) => (
-                <td
-                  key={`${key}-td-${ri}-${ci}`}
-                  className="border-b border-neutral-100 px-4 py-3"
-                >
-                  {renderInline(cell, `${key}-td-${ri}-${ci}`)}
-                </td>
-              ))}
+              {row.cells.map((cell, ci) => {
+                const align = getCellAlignClass(cell)
+                return (
+                  <td
+                    key={`${key}-td-${ri}-${ci}`}
+                    className={`border-b border-neutral-100 px-4 py-3 ${align}`}
+                  >
+                    {renderInline(getCellInline(cell), `${key}-td-${ri}-${ci}`)}
+                  </td>
+                )
+              })}
             </tr>
           ))}
         </tbody>
