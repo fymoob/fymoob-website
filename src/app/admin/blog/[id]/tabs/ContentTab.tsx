@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { Upload, X, Loader2 } from "lucide-react"
 import { slugify } from "@/lib/utils"
@@ -38,16 +38,40 @@ interface Props {
 export function ContentTab(props: Props) {
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
+  const [uploadElapsed, setUploadElapsed] = useState(0)
+  const [originalSize, setOriginalSize] = useState<number | null>(null)
+  const uploadStartRef = useRef<number | null>(null)
+  const elapsedTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const [tagInput, setTagInput] = useState("")
   const [slugTouched, setSlugTouched] = useState(true)
+
+  // Limpa timer no unmount pra evitar leak
+  useEffect(() => {
+    return () => {
+      if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
+    }
+  }, [])
 
   const handleCoverUpload = async (file: File) => {
     setUploading(true)
     setUploadError(null)
+    setOriginalSize(file.size)
+    setUploadElapsed(0)
+    uploadStartRef.current = Date.now()
+    elapsedTimerRef.current = setInterval(() => {
+      if (uploadStartRef.current) {
+        setUploadElapsed(Math.floor((Date.now() - uploadStartRef.current) / 1000))
+      }
+    }, 250)
+
     const result = await uploadCoverImageAction(file)
+
+    if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
+    elapsedTimerRef.current = null
     setUploading(false)
     if ("error" in result) {
       setUploadError(result.error)
+      setOriginalSize(null)
       return
     }
     props.onCoverUrlChange(result.url)
@@ -145,16 +169,40 @@ export function ContentTab(props: Props) {
             </button>
           </div>
         ) : (
-          <label className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-xs text-slate-500 hover:border-brand-primary hover:text-brand-primary dark:border-admin-border-strong dark:bg-admin-surface/50 dark:text-slate-400">
+          <label
+            className={`flex flex-col items-center gap-2 rounded-lg border-2 border-dashed bg-slate-50 px-4 py-6 text-xs dark:bg-admin-surface/50 ${
+              uploading
+                ? "cursor-wait border-brand-primary/60 text-brand-primary"
+                : "cursor-pointer border-slate-200 text-slate-500 hover:border-brand-primary hover:text-brand-primary dark:border-admin-border-strong dark:text-slate-400"
+            }`}
+          >
             {uploading ? (
               <Loader2 size={20} className="animate-spin" />
             ) : (
               <Upload size={20} />
             )}
-            {uploading ? "Enviando..." : "Clique para escolher uma imagem"}
+            {uploading ? (
+              <span className="text-center">
+                <span className="block font-medium">
+                  {uploadElapsed < 2
+                    ? "Otimizando imagem..."
+                    : uploadElapsed < 6
+                      ? "Convertendo para WebP..."
+                      : "Enviando para o servidor..."}
+                </span>
+                <span className="mt-0.5 block text-[10px] tabular-nums text-slate-500 dark:text-slate-400">
+                  {originalSize
+                    ? `${formatBytes(originalSize)} • ${uploadElapsed}s`
+                    : `${uploadElapsed}s`}
+                </span>
+              </span>
+            ) : (
+              "Clique para escolher uma imagem"
+            )}
             <input
               type="file"
               accept="image/webp,image/jpeg,image/png,image/avif"
+              disabled={uploading}
               className="hidden"
               onChange={(e) => {
                 const f = e.target.files?.[0]
@@ -255,6 +303,12 @@ export function ContentTab(props: Props) {
       </Field>
     </div>
   )
+}
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`
+  return `${(bytes / 1024 / 1024).toFixed(1)} MB`
 }
 
 const inputClass =

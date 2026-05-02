@@ -82,6 +82,12 @@ const nextConfig: NextConfig = {
   // H-20260417-003: memoizacao automatica compile-time. Meta report
   // 20-40% menos re-renders + LCP +12%. Custo: +30-50% build time.
   reactCompiler: true,
+  // sharp tem binario nativo (libvips). Em Next 15 webpack tenta bundlar
+  // por default e quebra na Vercel (".node" nao serializa). Listar como
+  // external faz ele ser carregado via require em runtime — preserva o
+  // binding nativo. Imprescindivel pro upload de imagem otimizada (server
+  // action `uploadCoverImageAction` em src/app/admin/blog/_cover-action.ts).
+  serverExternalPackages: ["sharp"],
   async headers() {
     return [
       {

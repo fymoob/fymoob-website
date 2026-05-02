@@ -21,6 +21,12 @@ export const metadata: Metadata = {
   title: "Editar artigo",
 }
 
+// Force dinamico — admin nao deve ter cache de RSC payload. Sem isso, o
+// CDN da Vercel pode servir o body antigo na hidratacao inicial e o
+// BlockNote estoura "Unreachable case" antes de re-renderizar com o
+// estado fresco (incidente 02/05/2026 apos fix de table content shape).
+export const dynamic = "force-dynamic"
+
 interface PageProps {
   params: Promise<{ id: string }>
 }

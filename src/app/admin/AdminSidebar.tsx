@@ -5,7 +5,6 @@ import Image from "next/image"
 import Link from "next/link"
 import {
   FileText,
-  Building2,
   LogOut,
   Home,
   Users,
@@ -105,11 +104,8 @@ export function AdminSidebar({ userEmail, signOutAction }: AdminSidebarProps) {
           </NavLink>
         </NavGroup>
 
-        <NavGroup label="Catálogo" expanded={expanded}>
-          <NavLink href="/admin/empreendimentos" icon={Building2} expanded={expanded}>
-            Empreendimentos
-          </NavLink>
-        </NavGroup>
+        {/* Catalogo desabilitado — rota /admin/empreendimentos ainda nao existe.
+            Mantido o import de Building2 pra reativar quando criar a pagina. */}
       </nav>
 
       <div className="mt-auto border-t border-slate-100 pt-4 dark:border-admin-border">
