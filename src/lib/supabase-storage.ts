@@ -21,7 +21,7 @@ const ALLOWED_MIME = new Set([
   "image/avif",
 ])
 
-const MAX_BYTES = 5 * 1024 * 1024 // 5 MB
+const MAX_BYTES = 10 * 1024 * 1024 // 10 MB (foto de celular sem otimizar)
 
 const EXTENSION_BY_MIME: Record<string, string> = {
   "image/webp": "webp",

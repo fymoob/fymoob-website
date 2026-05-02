@@ -76,6 +76,13 @@ const nextConfig: NextConfig = {
     staleTimes: {
       dynamic: 30,
     },
+    // Server Actions default body limit = 1MB. Upload de capa de artigo
+    // pode passar 1MB (foto de celular sem otimizar chega em 3-5 MB).
+    // Sharp comprime no servidor pra WebP < 500 KB, mas o limite mede o
+    // INPUT. Sem este aumento o request retorna 400 antes da action rodar.
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
     // H-20260417-004 REVERTIDO: inlineCss fez HTML crescer +326KB (predicted
     // era +20-30KB), LCP +238ms, TBT +237ms. Kill triggered em 4 de 5.
   },

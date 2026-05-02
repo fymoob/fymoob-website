@@ -64,17 +64,29 @@ export function ContentTab(props: Props) {
       }
     }, 250)
 
-    const result = await uploadCoverImageAction(file)
-
-    if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
-    elapsedTimerRef.current = null
-    setUploading(false)
-    if ("error" in result) {
-      setUploadError(result.error)
+    try {
+      const result = await uploadCoverImageAction(file)
+      if ("error" in result) {
+        setUploadError(result.error)
+        setOriginalSize(null)
+      } else {
+        props.onCoverUrlChange(result.url)
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Falha no upload"
+      // Next 15 server action que excede bodySizeLimit lanca erro generico
+      // "An unexpected response was received from the server" — mensagem mais
+      // util pro user.
+      const friendly = msg.includes("unexpected response")
+        ? "Imagem muito grande ou conexão instável. Tente uma imagem menor."
+        : msg
+      setUploadError(friendly)
       setOriginalSize(null)
-      return
+    } finally {
+      if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current)
+      elapsedTimerRef.current = null
+      setUploading(false)
     }
-    props.onCoverUrlChange(result.url)
   }
 
   const addTag = () => {
