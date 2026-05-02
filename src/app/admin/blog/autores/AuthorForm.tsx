@@ -29,8 +29,13 @@ interface AuthorFormProps {
 
 const INITIAL_RESULT: ActionResult = { ok: false }
 
+// Sincronizado com authorRoleEnum em src/lib/schemas/author.ts.
+// Adicionar/remover aqui exige update do enum tambem (e vice-versa)
+// — sem essa simetria, role salvo pelo form pode ser rejeitado na leitura.
 const ROLE_OPTIONS = [
   "Corretor de Imóveis",
+  "Sócio",
+  "Sócio e Responsável Técnico",
   "Diretor",
   "Editor",
   "Convidado",

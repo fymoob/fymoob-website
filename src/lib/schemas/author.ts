@@ -9,8 +9,15 @@ import { z } from "zod"
 
 const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
+// Cargos aceitos. Mantenha sincronizado com ROLE_OPTIONS em
+// src/app/admin/blog/autores/AuthorForm.tsx (select do form).
+// "Sócio*" adicionados em 02/05/2026 — Bruno e Wagner sao socios da FYMOOB,
+// nao corretores comuns; antes o update quebrava o listAuthors silencioso
+// (schema rejeitava role fora do enum).
 export const authorRoleEnum = z.enum([
   "Corretor de Imóveis",
+  "Sócio",
+  "Sócio e Responsável Técnico",
   "Diretor",
   "Editor",
   "Convidado",
