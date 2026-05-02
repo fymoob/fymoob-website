@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, type ReactNode } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import {
   FileText,
@@ -56,14 +57,23 @@ export function AdminSidebar({ userEmail, signOutAction }: AdminSidebarProps) {
         expanded ? "w-64 px-5" : "w-16 px-2"
       }`}
     >
-      {/* Header com logo + toggle */}
+      {/* Header com logo da marca — mesmo /logo.png do front publico.
+          Filter `brightness-0 invert` em dark mode pra logo virar branca,
+          igual padrao do HeaderClient.tsx em paginas com hero escuro. */}
       <div className={`flex items-center gap-2 ${expanded ? "px-2 py-2" : "justify-center py-2"}`}>
-        <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand-primary text-sm font-bold text-white">
-          FY
-        </div>
+        <Link href="/admin" className="shrink-0">
+          <Image
+            src="/logo.png"
+            alt="FYMOOB"
+            width={130}
+            height={80}
+            priority
+            className="h-7 w-auto dark:brightness-0 dark:invert"
+          />
+        </Link>
         {expanded && (
-          <span className="flex-1 truncate text-sm font-bold tracking-tight text-slate-900 dark:text-slate-100">
-            Painel FYMOOB
+          <span className="flex-1 truncate text-xs font-medium tracking-wider text-slate-500 dark:text-slate-500">
+            Painel
           </span>
         )}
       </div>
