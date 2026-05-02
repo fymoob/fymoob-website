@@ -28,10 +28,10 @@ export const ctaBlock = createReactBlockSpec(
 
       return (
         <div
-          className="my-3 rounded-xl border border-brand-primary-muted bg-brand-primary-light/40 p-4"
+          className="my-3 rounded-xl border border-brand-primary-muted bg-brand-primary-light/40 p-4 dark:border-brand-primary/30 dark:bg-brand-primary/10"
           contentEditable={false}
         >
-          <p className="mb-3 text-[10px] font-bold uppercase tracking-wider text-brand-primary">
+          <p className="mb-3 text-[10px] font-bold uppercase tracking-wider text-brand-primary dark:text-brand-primary">
             Bloco — CTA (Call to Action)
           </p>
           <div className="grid grid-cols-1 gap-2">
@@ -64,7 +64,7 @@ export const ctaBlock = createReactBlockSpec(
           </div>
 
           {ready && (
-            <div className="mt-4 border-t border-brand-primary-muted/40 pt-3">
+            <div className="mt-4 border-t border-brand-primary-muted/40 pt-3 dark:border-brand-primary/20">
               <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-brand-primary">
                 Preview
               </p>
@@ -95,7 +95,7 @@ function BlockField({
 }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-[10px] font-medium uppercase tracking-wider text-brand-primary/80">
+      <span className="mb-1 block text-[10px] font-medium uppercase tracking-wider text-brand-primary/80 dark:text-brand-primary">
         {label}
       </span>
       <input
@@ -103,7 +103,7 @@ function BlockField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-brand-primary-muted bg-white px-2.5 py-1.5 text-sm text-slate-900 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+        className="w-full rounded-lg border border-brand-primary-muted bg-white px-2.5 py-1.5 text-sm text-slate-900 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 dark:border-brand-primary/30 dark:bg-admin-elevated dark:text-slate-100 dark:placeholder:text-slate-500"
       />
     </label>
   )

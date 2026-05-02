@@ -11,10 +11,11 @@ export function CalloutBox({
 }) {
   // Callout pra destacar numero-chave, aviso ou noticia importante em posts.
   // TNH1/UOL pattern: quebra o texto com bloco visualmente distinto.
+  // Dark variants ativam apenas no painel admin (preview); site publico fica light.
   const styles = {
-    alert: "border-red-200 bg-red-50 text-red-900",
-    info: "border-brand-primary-muted bg-brand-primary-light text-neutral-800",
-    warning: "border-amber-200 bg-amber-50 text-amber-900",
+    alert: "border-red-200 bg-red-50 text-red-900 dark:border-red-700/40 dark:bg-red-950/30 dark:text-red-100",
+    info: "border-brand-primary-muted bg-brand-primary-light text-neutral-800 dark:border-brand-primary/30 dark:bg-brand-primary/10 dark:text-slate-100",
+    warning: "border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-700/40 dark:bg-amber-950/30 dark:text-amber-100",
   }
   return (
     <div
@@ -61,13 +62,13 @@ export function MethodologyBox({
 
   return (
     <aside
-      className="my-8 rounded-xl border border-neutral-200 bg-neutral-50 p-6 text-sm"
+      className="my-8 rounded-xl border border-neutral-200 bg-neutral-50 p-6 text-sm dark:border-admin-border dark:bg-admin-elevated"
       aria-label="Metodologia da pesquisa"
     >
-      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-neutral-500">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-slate-400">
         Metodologia
       </p>
-      <dl className="grid gap-2 text-neutral-700 sm:grid-cols-[max-content_1fr] sm:gap-x-4">
+      <dl className="grid gap-2 text-neutral-700 sm:grid-cols-[max-content_1fr] sm:gap-x-4 dark:text-slate-200">
         {period && (
           <>
             <dt className="font-semibold">Período:</dt>
@@ -132,18 +133,18 @@ export function Changelog({ entries }: { entries?: ChangelogEntry[] }) {
 
   return (
     <aside
-      className="my-8 rounded-xl border border-amber-200 bg-amber-50/50 p-5 text-sm"
+      className="my-8 rounded-xl border border-amber-200 bg-amber-50/50 p-5 text-sm dark:border-amber-700/40 dark:bg-amber-950/30"
       aria-label="Histórico de atualizações"
     >
-      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-amber-900">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-amber-900 dark:text-amber-200">
         Histórico de atualizações
       </p>
-      <ul className="space-y-2 text-neutral-800">
+      <ul className="space-y-2 text-neutral-800 dark:text-slate-200">
         {entries.map((e, i) => (
           <li key={i} className="flex gap-3">
             <time
               dateTime={e.date}
-              className="shrink-0 font-mono text-xs font-semibold text-amber-900"
+              className="shrink-0 font-mono text-xs font-semibold text-amber-900 dark:text-amber-200"
             >
               {formatDate(e.date)}
             </time>
@@ -167,9 +168,9 @@ export function CTABox({
   label: string
 }) {
   return (
-    <div className="my-8 rounded-2xl border border-brand-primary-muted bg-brand-primary-light p-6">
-      <p className="font-display text-lg font-bold text-neutral-950">{title}</p>
-      <p className="mt-2 text-sm leading-relaxed text-neutral-600">{description}</p>
+    <div className="my-8 rounded-2xl border border-brand-primary-muted bg-brand-primary-light p-6 dark:border-brand-primary/30 dark:bg-brand-primary/10">
+      <p className="font-display text-lg font-bold text-neutral-950 dark:text-slate-100">{title}</p>
+      <p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-slate-300">{description}</p>
       <Link
         href={href}
         className="mt-4 inline-flex items-center gap-2 rounded-xl bg-brand-primary px-5 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:bg-brand-primary-hover hover:shadow-lg active:scale-[0.98]"

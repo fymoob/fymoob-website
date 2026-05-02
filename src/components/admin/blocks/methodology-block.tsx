@@ -37,11 +37,11 @@ export const methodologyBlock = createReactBlockSpec(
       }
       return (
         <div
-          className="my-3 rounded-xl border border-amber-200 bg-amber-50/40 p-4"
+          className="my-3 rounded-xl border border-amber-200 bg-amber-50/40 p-4 dark:border-amber-700/40 dark:bg-amber-950/30"
           contentEditable={false}
         >
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-amber-900">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-amber-900 dark:text-amber-200">
               Bloco — Metodologia
             </span>
           </div>
@@ -86,8 +86,8 @@ export const methodologyBlock = createReactBlockSpec(
           </div>
 
           {/* Preview do que aparece no site publico */}
-          <div className="mt-4 border-t border-amber-200 pt-3">
-            <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-amber-900">
+          <div className="mt-4 border-t border-amber-200 pt-3 dark:border-amber-700/40">
+            <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-amber-900 dark:text-amber-200">
               Preview
             </p>
             <MethodologyBoxView
@@ -120,7 +120,7 @@ function BlockField({
 }) {
   return (
     <label className={`block ${className}`}>
-      <span className="mb-1 block text-[10px] font-medium uppercase tracking-wider text-amber-900/80">
+      <span className="mb-1 block text-[10px] font-medium uppercase tracking-wider text-amber-900/80 dark:text-amber-200/80">
         {label}
       </span>
       <input
@@ -128,7 +128,7 @@ function BlockField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-amber-200 bg-white px-2.5 py-1.5 text-sm text-slate-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-300/40"
+        className="w-full rounded-lg border border-amber-200 bg-white px-2.5 py-1.5 text-sm text-slate-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-300/40 dark:border-amber-800/50 dark:bg-admin-elevated dark:text-slate-100 dark:placeholder:text-slate-500"
       />
     </label>
   )

@@ -359,3 +359,30 @@
 .lightbox-open [aria-label="Fale conosco pelo WhatsApp"] {
   display: none !important;
 }
+
+/* ── BlockNote dark theme override — alinha com admin-surface ──
+   BlockNote (Mantine) tem CSS vars proprios pra dark mode (--bn-colors-*)
+   que renderizam um dark off-blue diferente do admin-surface. Override
+   pra que o editor se misture com o card que o envolve.
+   Detectado 02/05/2026 — bg do BlockNote nao casava com admin-surface (#0f1f38).
+   Aplicado apenas em .dark .article-editor (escopo isolado). */
+.dark .article-editor [data-color-scheme="dark"],
+.dark .article-editor .bn-mantine,
+.dark .article-editor .bn-editor {
+  --bn-colors-editor-background: #0f1f38;
+  --bn-colors-editor-text: #e2e8f0;
+  --bn-colors-menu-background: #15294a;
+  --bn-colors-menu-text: #e2e8f0;
+  --bn-colors-tooltip-background: #15294a;
+  --bn-colors-tooltip-text: #e2e8f0;
+  --bn-colors-hovered-background: #1c3258;
+  --bn-colors-hovered-text: #f1f5f9;
+  --bn-colors-selected-background: #28457a;
+  --bn-colors-selected-text: #f1f5f9;
+  --bn-colors-disabled-background: #0a1626;
+  --bn-colors-disabled-text: #64748b;
+  --bn-colors-shadow: rgba(0, 0, 0, 0.5);
+  --bn-colors-border: #1c3258;
+  --bn-colors-side-menu: #94a3b8;
+  background-color: transparent;
+}

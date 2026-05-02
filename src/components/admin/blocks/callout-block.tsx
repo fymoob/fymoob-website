@@ -9,9 +9,9 @@
 import { createReactBlockSpec } from "@blocknote/react"
 
 const VARIANT_CLASS: Record<string, string> = {
-  info: "border-brand-primary-muted bg-brand-primary-light text-neutral-800",
-  warning: "border-amber-200 bg-amber-50 text-amber-900",
-  alert: "border-red-200 bg-red-50 text-red-900",
+  info: "border-brand-primary-muted bg-brand-primary-light text-neutral-800 dark:border-brand-primary/30 dark:bg-brand-primary/10 dark:text-slate-100",
+  warning: "border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-700/40 dark:bg-amber-950/30 dark:text-amber-100",
+  alert: "border-red-200 bg-red-50 text-red-900 dark:border-red-700/40 dark:bg-red-950/30 dark:text-red-100",
 }
 
 export const calloutBlock = createReactBlockSpec(
@@ -49,7 +49,7 @@ export const calloutBlock = createReactBlockSpec(
             <select
               value={variant}
               onChange={(e) => setVariant(e.target.value)}
-              className="rounded-md border border-current/20 bg-white/60 px-1.5 py-0.5 text-[11px] font-medium"
+              className="rounded-md border border-current/20 bg-white/60 px-1.5 py-0.5 text-[11px] font-medium dark:bg-admin-elevated dark:text-slate-100"
             >
               <option value="info">Info</option>
               <option value="warning">Aviso</option>
