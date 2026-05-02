@@ -43,17 +43,24 @@ export async function generateMetadata({
   // Fase 19.P2.C.1 — title.absolute pra controle total (template global do
   // layout adicionaria " | FYMOOB Imobiliaria" causando double brand).
   // Sufixo " | FYMOOB" curto pra caber no limite Google ~60 chars.
-  const titleAbs = `${post.title} | FYMOOB`
+  //
+  // Fase 19.P2 hotfix (02/05/2026): se o post Supabase tem seo_meta_title /
+  // seo_meta_description preenchidos no admin, usa eles. Antes os campos
+  // eram salvos mas ignorados — campo do public site sempre puxava do
+  // post.title (conteudo bruto). Detectado durante Sprint 1 de SEO.
+  const seoTitle = post._supabase?.seo_meta_title || post.title
+  const seoDescription = post._supabase?.seo_meta_description || post.description
+  const titleAbs = `${seoTitle} | FYMOOB`
 
   return {
     title: { absolute: titleAbs },
-    description: post.description,
+    description: seoDescription,
     alternates: {
       canonical: `/blog/${post.slug}`,
     },
     openGraph: {
-      title: post.title,
-      description: post.description,
+      title: seoTitle,
+      description: seoDescription,
       type: "article",
       publishedTime: post.date,
       url: `/blog/${post.slug}`,
