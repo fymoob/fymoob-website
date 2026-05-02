@@ -71,6 +71,17 @@
   --color-warning: #F59E0B;
   --color-error: #EF4444;
 
+  /* ── Paleta dark do painel admin (Fase 20.UX, ajustada 02/05/2026) ──
+     Substitui slate-* (cinza neutro) por navy saturado alinhado a marca.
+     Slate puro lia como "cinza escuro" no dark mode; este navy mantem
+     o tom mais bluish coerente com #0B1120 da identidade FYMOOB.
+     Use apenas dentro de /admin/* (componentes do painel). */
+  --color-admin-bg: #0a1626;            /* outermost page bg (sub slate-950) */
+  --color-admin-surface: #0f1f38;       /* cards, sidebars (sub slate-900) */
+  --color-admin-elevated: #15294a;      /* hover bg, tabs ativas (sub slate-800) */
+  --color-admin-border: #1c3258;        /* borda padrao (sub slate-800/700) */
+  --color-admin-border-strong: #28457a; /* borda em hover/focus (sub slate-700) */
+
   /* ── Legacy aliases (backward compat) ── */
   --color-fymoob-blue: #29ABE2;
   --color-fymoob-blue-dark: #1E95C9;

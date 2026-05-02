@@ -75,13 +75,13 @@ export default async function AutoresPage({ searchParams }: PageProps) {
     <div>
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
             Blog
           </p>
-          <h1 className="font-display text-3xl font-bold tracking-tight text-slate-900">
+          <h1 className="font-display text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
             Autores
           </h1>
-          <p className="mt-2 max-w-xl text-sm text-slate-500">
+          <p className="mt-2 max-w-xl text-sm text-slate-500 dark:text-slate-400">
             Cadastre os autores que assinam os artigos. Cada autor ganha página
             pública em <code>/autor/&lt;slug&gt;</code> com schema Person/RealEstateAgent
             (E-E-A-T).
@@ -111,12 +111,12 @@ export default async function AutoresPage({ searchParams }: PageProps) {
       )}
 
       {authors.length === 0 ? (
-        <div className="mt-10 rounded-2xl border-2 border-dashed border-slate-200 bg-white p-10 text-center">
-          <FileText className="mx-auto size-10 text-slate-300" />
-          <p className="mt-3 font-display text-base font-semibold text-slate-900">
+        <div className="mt-10 rounded-2xl border-2 border-dashed border-slate-200 bg-white p-10 text-center dark:border-admin-border dark:bg-admin-surface">
+          <FileText className="mx-auto size-10 text-slate-300 dark:text-slate-600" />
+          <p className="mt-3 font-display text-base font-semibold text-slate-900 dark:text-slate-100">
             Nenhum autor cadastrado
           </p>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
             Crie o primeiro autor pra começar a publicar artigos.
           </p>
           <Link
@@ -132,13 +132,13 @@ export default async function AutoresPage({ searchParams }: PageProps) {
           {authors.map((a) => (
             <li
               key={a.id}
-              className="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition-colors hover:border-brand-primary"
+              className="group overflow-hidden rounded-2xl border border-slate-200 bg-white transition-colors hover:border-brand-primary dark:border-admin-border dark:bg-admin-surface dark:hover:border-brand-primary"
             >
               <Link
                 href={`/admin/blog/autores/${a.id}`}
                 className="flex h-full flex-col"
               >
-                <div className="aspect-[4/3] w-full overflow-hidden bg-slate-100">
+                <div className="aspect-[4/3] w-full overflow-hidden bg-slate-100 dark:bg-admin-elevated">
                   {a.photo_url ? (
                     <Image
                       src={a.photo_url}
@@ -149,7 +149,7 @@ export default async function AutoresPage({ searchParams }: PageProps) {
                       unoptimized
                     />
                   ) : (
-                    <div className="flex size-full items-center justify-center text-xs text-slate-400">
+                    <div className="flex size-full items-center justify-center text-xs text-slate-400 dark:text-slate-500">
                       Sem foto
                     </div>
                   )}
@@ -158,13 +158,13 @@ export default async function AutoresPage({ searchParams }: PageProps) {
                   <p className="text-xs font-semibold uppercase tracking-wider text-brand-primary">
                     {a.role}
                   </p>
-                  <h2 className="mt-0.5 font-display text-base font-semibold text-slate-900 transition-colors group-hover:text-brand-primary">
+                  <h2 className="mt-0.5 font-display text-base font-semibold text-slate-900 transition-colors group-hover:text-brand-primary dark:text-slate-100">
                     {a.name}
                   </h2>
-                  <p className="mt-1 truncate text-xs text-slate-500">
+                  <p className="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">
                     /autor/{a.slug}
                   </p>
-                  <div className="mt-auto pt-3 text-xs text-slate-500">
+                  <div className="mt-auto pt-3 text-xs text-slate-500 dark:text-slate-400">
                     {a.postCount} artigo{a.postCount === 1 ? "" : "s"}
                   </div>
                 </div>

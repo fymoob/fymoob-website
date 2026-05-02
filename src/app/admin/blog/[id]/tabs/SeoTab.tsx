@@ -38,7 +38,7 @@ export function SeoTab(props: Props) {
   return (
     <div className="space-y-5">
       {/* Painel de pontuação */}
-      <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-900">
+      <div className="rounded-lg border border-slate-200 bg-slate-50 p-3 dark:border-admin-border-strong dark:bg-admin-surface">
         <div className="flex items-center justify-between">
           <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             Pontuação de SEO
@@ -88,7 +88,7 @@ export function SeoTab(props: Props) {
         <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           Como aparece no Google
         </span>
-        <div className="rounded-lg border border-slate-200 bg-white p-3 font-sans dark:border-slate-700 dark:bg-slate-900">
+        <div className="rounded-lg border border-slate-200 bg-white p-3 font-sans dark:border-admin-border-strong dark:bg-admin-surface">
           <p className="text-[11px] text-emerald-700">
             fymoob.com.br › blog › {props.article.slug || "<endereço>"}
           </p>
@@ -141,7 +141,7 @@ export function SeoTab(props: Props) {
         />
       </Field>
 
-      <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
+      <label className="flex cursor-pointer items-start gap-2 rounded-lg border border-slate-200 bg-white p-3 dark:border-admin-border-strong dark:bg-admin-surface">
         <input
           type="checkbox"
           checked={props.seoNoIndex}
@@ -165,7 +165,7 @@ export function SeoTab(props: Props) {
         <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           Como aparece quando compartilhado (WhatsApp, Facebook, LinkedIn)
         </span>
-        <div className="overflow-hidden rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
+        <div className="overflow-hidden rounded-lg border border-slate-200 bg-white dark:border-admin-border-strong dark:bg-admin-surface">
           {props.coverImageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -229,7 +229,7 @@ const ICON_BY_SEVERITY = {
 }
 
 const inputClass =
-  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500"
+  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 dark:border-admin-border-strong dark:bg-admin-surface dark:text-slate-100 dark:placeholder:text-slate-500"
 
 function Field({
   label,

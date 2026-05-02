@@ -72,7 +72,7 @@ export function DeleteArticleButton({ articleId, articleTitle }: DeleteArticleBu
             role="dialog"
             aria-modal="true"
             aria-labelledby="delete-modal-title"
-            className="relative w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900"
+            className="relative w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-admin-border dark:bg-admin-surface"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -80,7 +80,7 @@ export function DeleteArticleButton({ articleId, articleTitle }: DeleteArticleBu
               onClick={handleClose}
               disabled={pending}
               aria-label="Fechar"
-              className="absolute right-3 top-3 rounded-lg p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+              className="absolute right-3 top-3 rounded-lg p-1 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-admin-elevated dark:hover:text-slate-200"
             >
               <X className="size-4" />
             </button>
@@ -112,7 +112,7 @@ export function DeleteArticleButton({ articleId, articleTitle }: DeleteArticleBu
               placeholder="EXCLUIR"
               autoFocus
               disabled={pending}
-              className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium uppercase tracking-wider text-slate-900 outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+              className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium uppercase tracking-wider text-slate-900 outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/20 dark:border-admin-border-strong dark:bg-admin-bg dark:text-slate-100"
             />
 
             {error && (
@@ -126,7 +126,7 @@ export function DeleteArticleButton({ articleId, articleTitle }: DeleteArticleBu
                 type="button"
                 onClick={handleClose}
                 disabled={pending}
-                className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+                className="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 disabled:opacity-50 dark:border-admin-border-strong dark:bg-admin-surface dark:text-slate-200 dark:hover:bg-admin-elevated"
               >
                 Cancelar
               </button>

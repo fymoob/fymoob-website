@@ -109,7 +109,7 @@ function StatCard({
     violet: "text-violet-600 dark:text-violet-400",
   }[accent]
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900">
+    <div className="rounded-2xl border border-slate-200 bg-white p-4 dark:border-admin-border dark:bg-admin-surface">
       <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
         {label}
       </p>
@@ -136,7 +136,7 @@ function DashboardCard({
   return (
     <Link
       href={href}
-      className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-brand-primary dark:border-slate-800 dark:bg-slate-900 dark:hover:border-brand-primary"
+      className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-brand-primary dark:border-admin-border dark:bg-admin-surface dark:hover:border-brand-primary"
     >
       <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-primary-light text-brand-primary dark:bg-brand-primary/15">
         <Icon className="size-5" />
@@ -169,9 +169,9 @@ function DashboardCardDisabled({
   return (
     <div
       aria-disabled="true"
-      className="flex cursor-not-allowed items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-5 opacity-70 dark:border-slate-800 dark:bg-slate-900/50"
+      className="flex cursor-not-allowed items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-5 opacity-70 dark:border-admin-border dark:bg-admin-surface/50"
     >
-      <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500">
+      <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-400 dark:bg-admin-elevated dark:text-slate-500">
         <Icon className="size-5" />
       </div>
       <div className="flex-1">

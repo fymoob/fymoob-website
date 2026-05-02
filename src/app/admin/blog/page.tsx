@@ -121,7 +121,7 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
       {/* Filtros */}
       <form
         action="/admin/blog"
-        className="mt-6 flex flex-wrap items-end gap-3 rounded-2xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900"
+        className="mt-6 flex flex-wrap items-end gap-3 rounded-2xl border border-slate-200 bg-white p-4 dark:border-admin-border dark:bg-admin-surface"
       >
         <label className="flex-1 min-w-[200px]">
           <span className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-slate-500">
@@ -134,7 +134,7 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
               name="q"
               defaultValue={query}
               placeholder="Título ou slug..."
-              className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-900 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+              className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm text-slate-900 outline-none dark:border-admin-border-strong dark:bg-admin-bg dark:text-slate-100 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
             />
           </div>
         </label>
@@ -145,7 +145,7 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
           <select
             name="status"
             defaultValue={statusFilter}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none dark:border-admin-border-strong dark:bg-admin-bg dark:text-slate-100 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
           >
             <option value="all">Todos</option>
             <option value="draft">Rascunho</option>
@@ -161,7 +161,7 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
           <select
             name="author"
             defaultValue={authorFilter}
-            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
+            className="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none dark:border-admin-border-strong dark:bg-admin-bg dark:text-slate-100 focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20"
           >
             <option value="">Todos</option>
             {authors.map((a) => (
@@ -181,7 +181,7 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
 
       {/* Tabela / empty */}
       {articles.length === 0 ? (
-        <div className="mt-10 rounded-2xl border-2 border-dashed border-slate-200 bg-white p-10 text-center dark:border-slate-700 dark:bg-slate-900">
+        <div className="mt-10 rounded-2xl border-2 border-dashed border-slate-200 bg-white p-10 text-center dark:border-admin-border-strong dark:bg-admin-surface">
           <FileText className="mx-auto size-10 text-slate-300 dark:text-slate-600" />
           <p className="mt-3 font-display text-base font-semibold text-slate-900 dark:text-slate-100">
             {query || statusFilter !== "all" || authorFilter
@@ -196,9 +196,9 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
           </div>
         </div>
       ) : (
-        <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+        <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-admin-border dark:bg-admin-surface">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-xs uppercase tracking-wider text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+            <thead className="bg-slate-50 text-xs uppercase tracking-wider text-slate-500 dark:bg-admin-elevated dark:text-slate-400">
               <tr>
                 <th className="px-4 py-3 text-left font-semibold">Artigo</th>
                 <th className="px-4 py-3 text-left font-semibold">Autor</th>
@@ -212,7 +212,7 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
               {articles.map((a) => (
                 <tr
                   key={a.id}
-                  className="cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                  className="cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-admin-elevated/50"
                 >
                   <td className="px-4 py-3">
                     <Link href={`/admin/blog/${a.id}`} className="flex items-center gap-3">
@@ -226,7 +226,7 @@ export default async function ArticlesListPage({ searchParams }: PageProps) {
                           unoptimized
                         />
                       ) : (
-                        <div className="flex size-14 items-center justify-center rounded-md bg-slate-100 text-[10px] text-slate-400 dark:bg-slate-800 dark:text-slate-500">
+                        <div className="flex size-14 items-center justify-center rounded-md bg-slate-100 text-[10px] text-slate-400 dark:bg-admin-elevated dark:text-slate-500">
                           sem capa
                         </div>
                       )}

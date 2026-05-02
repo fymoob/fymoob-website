@@ -39,7 +39,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
   return (
     <AdminThemeProvider>
-      <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
+      <div className="flex min-h-screen bg-slate-50 dark:bg-admin-bg">
         <AdminSidebar userEmail={userEmail} signOutAction={handleSignOut} />
 
         {/* Content — Fase 20.UX: full width sem max-w pra aproveitar telas

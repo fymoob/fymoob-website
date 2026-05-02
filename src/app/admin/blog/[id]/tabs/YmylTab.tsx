@@ -50,7 +50,7 @@ export function YmylTab(props: Props) {
         />
       </Field>
 
-      <fieldset className="space-y-3 rounded-lg border border-slate-200 p-3 dark:border-slate-700">
+      <fieldset className="space-y-3 rounded-lg border border-slate-200 p-3 dark:border-admin-border-strong">
         <legend className="px-2 text-[10px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           Como apuramos este artigo
         </legend>
@@ -101,7 +101,7 @@ export function YmylTab(props: Props) {
 }
 
 const inputClass =
-  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500"
+  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 dark:border-admin-border-strong dark:bg-admin-surface dark:text-slate-100 dark:placeholder:text-slate-500"
 
 function Field({
   label,

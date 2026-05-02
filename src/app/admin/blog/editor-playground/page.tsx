@@ -25,20 +25,20 @@ export default async function EditorPlaygroundPage() {
   return (
     <div>
       <header>
-        <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+        <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
           Sprint 2 · Fase 18.D
         </p>
-        <h1 className="font-display text-3xl font-bold tracking-tight text-slate-900">
+        <h1 className="font-display text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
           Editor — Playground
         </h1>
-        <p className="mt-2 max-w-2xl text-sm text-slate-500">
+        <p className="mt-2 max-w-2xl text-sm text-slate-500 dark:text-slate-400">
           Espaço pra testar o editor BlockNote antes da rota oficial de artigos
           (Sprint 3). Use <code>/</code> pra abrir o slash menu — inclui blocos
           FYMOOB (Callout, Metodologia, FAQ, CTA, Histórico, Imóvel destaque).
         </p>
       </header>
 
-      <div className="mt-6 rounded-2xl border border-slate-200 bg-white">
+      <div className="mt-6 rounded-2xl border border-slate-200 bg-white dark:border-admin-border dark:bg-admin-surface">
         <EditorPlaygroundClient />
       </div>
     </div>

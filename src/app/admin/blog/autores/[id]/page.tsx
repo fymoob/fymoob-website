@@ -53,10 +53,10 @@ export default async function EditarAutorPage({
       </Link>
       <header className="mt-3 flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="font-display text-3xl font-bold tracking-tight text-slate-900">
+          <h1 className="font-display text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
             Editar autor
           </h1>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
             Alterações aplicam imediato em todos os posts e na página pública.
           </p>
         </div>
@@ -64,7 +64,7 @@ export default async function EditarAutorPage({
           href={`/autor/${author.slug}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:border-brand-primary hover:text-brand-primary"
+          className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-medium text-slate-700 transition-colors hover:border-brand-primary hover:text-brand-primary dark:border-admin-border dark:bg-admin-surface dark:text-slate-200 dark:hover:border-brand-primary"
         >
           <ExternalLink size={12} />
           Ver pagina publica
@@ -72,11 +72,14 @@ export default async function EditarAutorPage({
       </header>
 
       {ok && (
-        <div className="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+        <div className="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-900/40 dark:bg-emerald-950/30 dark:text-emerald-200">
           Autor criado.
         </div>
       )}
 
+      {/* Card de form mantido bg-white em ambos os modos — labels/inputs
+          internos sao text-slate-700/900 sem dark variant. Card "ilha branca"
+          em fundo navy e padrao aceitavel pra forms longos. */}
       <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-6">
         <AuthorForm
           initial={author}

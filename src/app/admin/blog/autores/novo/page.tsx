@@ -24,15 +24,18 @@ export default async function NovoAutorPage() {
         Voltar para autores
       </Link>
       <header className="mt-3">
-        <h1 className="font-display text-3xl font-bold tracking-tight text-slate-900">
+        <h1 className="font-display text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
           Novo autor
         </h1>
-        <p className="mt-2 text-sm text-slate-500">
+        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
           Cada autor cadastrado vira uma página pública em <code>/autor/&lt;slug&gt;</code>{" "}
           + schema Person/RealEstateAgent linkando todos os posts assinados.
         </p>
       </header>
 
+      {/* Card de form mantido bg-white em ambos os modos — labels/inputs
+          internos sao text-slate-700/900 sem dark variant. Card "ilha branca"
+          em fundo navy e padrao aceitavel pra forms longos. */}
       <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-6">
         <AuthorForm action={createAuthor} />
       </div>

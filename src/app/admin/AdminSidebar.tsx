@@ -52,7 +52,7 @@ export function AdminSidebar({ userEmail, signOutAction }: AdminSidebarProps) {
 
   return (
     <aside
-      className={`hidden shrink-0 flex-col border-r border-slate-200 bg-white py-5 transition-[width] duration-200 dark:border-slate-800 dark:bg-slate-900 md:flex ${
+      className={`hidden shrink-0 flex-col border-r border-slate-200 bg-white py-5 transition-[width] duration-200 dark:border-admin-border dark:bg-admin-surface md:flex ${
         expanded ? "w-64 px-5" : "w-16 px-2"
       }`}
     >
@@ -73,7 +73,7 @@ export function AdminSidebar({ userEmail, signOutAction }: AdminSidebarProps) {
         type="button"
         onClick={toggle}
         aria-label={expanded ? "Recolher menu" : "Expandir menu"}
-        className={`mt-3 flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-slate-400 transition-colors hover:bg-slate-50 hover:text-slate-700 dark:text-slate-500 dark:hover:bg-slate-800 dark:hover:text-slate-200 ${
+        className={`mt-3 flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-slate-400 transition-colors hover:bg-slate-50 hover:text-slate-700 dark:text-slate-500 dark:hover:bg-admin-elevated dark:hover:text-slate-200 ${
           expanded ? "" : "justify-center"
         }`}
       >
@@ -102,7 +102,7 @@ export function AdminSidebar({ userEmail, signOutAction }: AdminSidebarProps) {
         </NavGroup>
       </nav>
 
-      <div className="mt-auto border-t border-slate-100 pt-4 dark:border-slate-800">
+      <div className="mt-auto border-t border-slate-100 pt-4 dark:border-admin-border">
         {/* Toggle tema */}
         <button
           type="button"
@@ -115,7 +115,7 @@ export function AdminSidebar({ userEmail, signOutAction }: AdminSidebarProps) {
               ? "Tema claro"
               : "Tema escuro"
           }
-          className={`mb-1 flex w-full items-center gap-2.5 rounded-xl py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100 ${
+          className={`mb-1 flex w-full items-center gap-2.5 rounded-xl py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-admin-elevated dark:hover:text-slate-100 ${
             expanded ? "px-3" : "justify-center px-0"
           }`}
         >
@@ -144,7 +144,7 @@ export function AdminSidebar({ userEmail, signOutAction }: AdminSidebarProps) {
             type="submit"
             aria-label="Sair"
             title={expanded ? undefined : `Sair (${userEmail})`}
-            className={`flex w-full items-center gap-2 rounded-xl py-2 text-sm font-medium text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100 ${
+            className={`flex w-full items-center gap-2 rounded-xl py-2 text-sm font-medium text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-admin-elevated dark:hover:text-slate-100 ${
               expanded ? "px-3" : "justify-center px-0"
             }`}
           >
@@ -193,7 +193,7 @@ function NavLink({
     <Link
       href={href}
       title={expanded ? undefined : String(children)}
-      className={`flex items-center gap-2.5 rounded-xl py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100 ${
+      className={`flex items-center gap-2.5 rounded-xl py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-admin-elevated dark:hover:text-slate-100 ${
         expanded ? "px-3" : "justify-center px-0"
       }`}
     >

@@ -145,7 +145,7 @@ export function ContentTab(props: Props) {
             </button>
           </div>
         ) : (
-          <label className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-xs text-slate-500 hover:border-brand-primary hover:text-brand-primary dark:border-slate-700 dark:bg-slate-900/50 dark:text-slate-400">
+          <label className="flex cursor-pointer flex-col items-center gap-2 rounded-lg border-2 border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-xs text-slate-500 hover:border-brand-primary hover:text-brand-primary dark:border-admin-border-strong dark:bg-admin-surface/50 dark:text-slate-400">
             {uploading ? (
               <Loader2 size={20} className="animate-spin" />
             ) : (
@@ -220,7 +220,7 @@ export function ContentTab(props: Props) {
               {props.tags.map((t) => (
                 <span
                   key={t}
-                  className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                  className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-700 dark:bg-admin-elevated dark:text-slate-200"
                 >
                   {t}
                   <button
@@ -258,7 +258,7 @@ export function ContentTab(props: Props) {
 }
 
 const inputClass =
-  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500"
+  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 dark:border-admin-border-strong dark:bg-admin-surface dark:text-slate-100 dark:placeholder:text-slate-500"
 
 function Field({
   label,

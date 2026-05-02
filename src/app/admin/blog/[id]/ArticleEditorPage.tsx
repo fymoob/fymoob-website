@@ -301,7 +301,7 @@ export function ArticleEditorPage({ article, authors, revisions: initialRevision
       {/* Top bar — margens negativas espelham padding do AdminLayout
           (px-4 mobile, px-6 sm, px-10 lg, px-12 2xl) pra ocupar largura total
           do main, criando barra continua de borda a borda. */}
-      <div className="-mx-4 -mt-6 border-b border-slate-200 bg-white px-4 py-4 sm:-mx-6 sm:-mt-8 sm:px-6 lg:-mx-10 lg:-mt-10 lg:px-10 2xl:-mx-12 2xl:px-12 dark:border-slate-800 dark:bg-slate-900">
+      <div className="-mx-4 -mt-6 border-b border-slate-200 bg-white px-4 py-4 sm:-mx-6 sm:-mt-8 sm:px-6 lg:-mx-10 lg:-mt-10 lg:px-10 2xl:-mx-12 2xl:px-12 dark:border-admin-border dark:bg-admin-surface">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <Link
@@ -329,7 +329,7 @@ export function ArticleEditorPage({ article, authors, revisions: initialRevision
             <button
               type="button"
               onClick={() => setShowRevisions(true)}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:border-brand-primary hover:text-brand-primary dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-brand-primary"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:border-brand-primary hover:text-brand-primary dark:border-admin-border-strong dark:bg-admin-surface dark:text-slate-200 dark:hover:border-brand-primary"
             >
               <History size={12} />
               Histórico ({revisions.length})
@@ -338,7 +338,7 @@ export function ArticleEditorPage({ article, authors, revisions: initialRevision
               href={`/admin/blog/preview/${article.id}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:border-brand-primary hover:text-brand-primary dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-brand-primary"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:border-brand-primary hover:text-brand-primary dark:border-admin-border-strong dark:bg-admin-surface dark:text-slate-200 dark:hover:border-brand-primary"
             >
               <Eye size={12} />
               Preview
@@ -347,7 +347,7 @@ export function ArticleEditorPage({ article, authors, revisions: initialRevision
               type="button"
               onClick={() => doSave()}
               disabled={pending || autosaving}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:border-brand-primary hover:text-brand-primary dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-brand-primary disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:border-brand-primary hover:text-brand-primary dark:border-admin-border-strong dark:bg-admin-surface dark:text-slate-200 dark:hover:border-brand-primary disabled:opacity-50"
             >
               <Save size={12} />
               Salvar agora
@@ -358,7 +358,7 @@ export function ArticleEditorPage({ article, authors, revisions: initialRevision
                   type="button"
                   onClick={handleSchedule}
                   disabled={pending}
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:border-brand-primary hover:text-brand-primary dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-brand-primary disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:border-brand-primary hover:text-brand-primary dark:border-admin-border-strong dark:bg-admin-surface dark:text-slate-200 dark:hover:border-brand-primary disabled:opacity-50"
                 >
                   <Calendar size={12} />
                   Agendar
@@ -416,7 +416,7 @@ export function ArticleEditorPage({ article, authors, revisions: initialRevision
           impressao visual de blocos independentes (como Notion).
           Editor card tem padding generoso (top + horizontal) pra respiro. */}
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_380px] lg:gap-8 2xl:grid-cols-[minmax(0,1fr)_440px] 2xl:gap-10">
-        <div className="rounded-2xl border border-slate-200 bg-white py-8 sm:py-10 lg:py-12 dark:border-slate-800 dark:bg-slate-900">
+        <div className="rounded-2xl border border-slate-200 bg-white py-8 sm:py-10 lg:py-12 dark:border-admin-border dark:bg-admin-surface">
           <ArticleEditor
             initialContent={body as FymoobBlock[]}
             onChange={handleBodyChange}
@@ -425,8 +425,8 @@ export function ArticleEditorPage({ article, authors, revisions: initialRevision
         </div>
 
         <aside className="lg:sticky lg:top-6 lg:self-start lg:h-fit">
-          <div className="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-            <div className="flex border-b border-slate-100 dark:border-slate-800">
+          <div className="rounded-2xl border border-slate-200 bg-white dark:border-admin-border dark:bg-admin-surface">
+            <div className="flex border-b border-slate-100 dark:border-admin-border">
               {TABS.map((t) => (
                 <button
                   key={t.key}
