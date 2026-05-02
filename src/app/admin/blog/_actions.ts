@@ -126,6 +126,16 @@ export async function saveDraftAction(
   }
 
   const sb = getSupabaseAdmin()
+
+  // Le status + slug atuais antes do update pra decidir se revalida o site
+  // publico. Auto-save de artigo `status=published` PRECISA revalidar — caso
+  // contrario o site mostra versao stale (bug detectado 02/05/2026).
+  const { data: pre } = await sb
+    .from("articles")
+    .select("status, slug")
+    .eq("id", id)
+    .maybeSingle()
+
   const { error } = await sb
     .from("articles")
     .update({ ...rest, ...computed })
@@ -136,6 +146,16 @@ export async function saveDraftAction(
       return { ok: false, message: "Slug já em uso por outro artigo." }
     }
     return { ok: false, message: error.message }
+  }
+
+  // Revalida cache do site publico se artigo ja estava publicado.
+  // Auto-save em rascunho/agendado/arquivado nao precisa (nao impacta site).
+  const finalSlug = rest.slug ?? pre?.slug
+  if (pre?.status === "published" && finalSlug) {
+    revalidateTag("blog", { expire: 0 })
+    revalidateTag(`blog:${finalSlug}`, { expire: 0 })
+    revalidatePath("/blog")
+    revalidatePath(`/blog/${finalSlug}`)
   }
 
   return { ok: true, id }

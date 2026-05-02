@@ -23,10 +23,16 @@ function safeEqual(a: string | undefined | null, b: string | undefined | null): 
 //
 // Tags disponiveis:
 // - "imoveis" (src/services/loft.ts:398) — invalida catalogo inteiro
+// - "blog" — invalida lista do blog + post(s) afetados
+// - "blog:<slug>" — invalida apenas um post especifico (ex: "blog:meu-post")
 //
 // Secret protege contra abuso anonimo. Pattern igual ao /api/indexnow.
 
-const VALID_TAGS = new Set(["imoveis"])
+const STATIC_VALID_TAGS = new Set(["imoveis", "blog"])
+
+function isValidTag(tag: string): boolean {
+  return STATIC_VALID_TAGS.has(tag) || /^blog:[a-z0-9-]+$/.test(tag)
+}
 
 export async function POST(req: Request) {
   const secret = req.headers.get("x-revalidate-secret")
@@ -44,14 +50,20 @@ export async function POST(req: Request) {
   const tag = body.tag
   if (!tag || typeof tag !== "string") {
     return NextResponse.json(
-      { error: "missing tag", validTags: Array.from(VALID_TAGS) },
+      {
+        error: "missing tag",
+        validTags: [...Array.from(STATIC_VALID_TAGS), "blog:<slug>"],
+      },
       { status: 400 }
     )
   }
 
-  if (!VALID_TAGS.has(tag)) {
+  if (!isValidTag(tag)) {
     return NextResponse.json(
-      { error: "invalid tag", validTags: Array.from(VALID_TAGS) },
+      {
+        error: "invalid tag",
+        validTags: [...Array.from(STATIC_VALID_TAGS), "blog:<slug>"],
+      },
       { status: 400 }
     )
   }
