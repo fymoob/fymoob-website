@@ -185,6 +185,42 @@ Quando o Bruno pedir algo novo que **não está** no contrato nem nesta lista:
 
 **Status:** 9 dos 10 reescritos solicitados em 30/04. O `quanto-custa-morar-batel-curitiba` bateu na quota diária do GSC (limite ~10/dia, contou as 5 de 26/04 + 9 de 30/04 = 14). Resubmeter amanhã (01/05) — quota reseta após 24h. Esperar 24-72h pra Google reprocessar os 14 já enviados.
 
+#### ✅ Solicitado em 03/05/2026 (11 URLs pós-2ª rodada de revisão de português)
+
+> Após 2ª rodada de revisão de português/fluidez aplicada nos 15 artigos do
+> blog (commits `29dfcc2` a `b617900`, ~370 correções editoriais). 8 artigos
+> tiveram mudança de title/description; 7 tiveram mudança grande de conteúdo
+> (FAQ inserida, tabelas reescritas, harmonização de cluster). Reindex
+> manual via GSC URL Inspection.
+
+- [x] `/blog/checklist-compra-imovel` — title novo
+- [x] `/blog/como-financiar-minha-casa-minha-vida` — title novo
+- [x] `/blog/documentos-comprar-imovel-curitiba` — title novo
+- [x] `/blog/imovel-planta-vs-pronto-curitiba` — title novo
+- [x] `/blog/itbi-curitiba-valor-como-pagar` — title novo + Tema 1113 reescrito
+- [x] `/blog/quanto-custa-morar-batel-curitiba` — title novo
+- [x] `/blog/apartamento-ou-casa-curitiba` — description nova
+- [x] `/blog/mercado-imobiliario-curitiba-2026` — Selic 14,75% → 14,50%
+- [x] `/blog/melhores-bairros-familias-curitiba` — bloco de blocos reescritos
+- [x] `/blog/financiamento-caixa-itau-bradesco-comparativo` — CET real → estimado
+- [x] `/blog/preco-metro-quadrado-curitiba-bairro` — heading "abaixo de R$ 6.000" corrigido
+
+**Status:** 11 URLs aceitas em 03/05/2026. Quota excedida na 12ª.
+
+#### ⏳ Pendente — refazer em 04/05/2026 (4 URLs restantes da 2ª rodada)
+
+> Quota GSC bateu após 11 URLs em 03/05. Resubmeter as 4 abaixo no dia
+> seguinte (quota reseta a cada 24h).
+
+- [ ] `/blog/melhores-bairros-curitiba-2026` — Ahú rentabilidade harmonizada, caveats SESP-PR
+- [ ] `/blog/batel-vs-agua-verde-curitiba` — correção factual saúde (Pilar não no Água Verde), pergunta FAQ corrigida
+- [ ] `/blog/custo-de-vida-curitiba` — IPS markdown corrigido, "única capital" suavizado, UPA 24h corrigida
+- [ ] `/blog/ecoville-vs-bigorrilho-curitiba` — Everest #5 ENEM corrigido, HNSG sem números fabricados
+
+**Após reindex:** acompanhar GSC > Performance > comparar 7 dias antes vs
+7 dias depois (impressões, CTR, posição) por URL — meta é confirmar
+zero degradação e idealmente bump em CTR pelos titles novos.
+
 #### Próxima revisão GSC: 2026-05-10
 
 Verificar:
@@ -1636,7 +1672,7 @@ _Nenhum bug aberto._
 - [ ] Configurar agente agendado: auditoria completa todo dia 1 do mes
 - [ ] Configurar alertas: notificar se metrica cair >20%
 
-### 10.5 — Proxy de Imagens pra Google Images [DESCOBERTO 23/04/2026]
+### 10.5 — Proxy de Imagens pra Google Images [DESCOBERTO 23/04/2026, RECALIBRADO 03/05/2026]
 > CDN da Loft/Vista (cdn.vistahost.com.br) bloqueia TODOS os crawlers via
 > robots.txt "Disallow: /". Resultado: 0 imagens dos imoveis indexadas no
 > Google Images. Canal de descoberta visual fechado.
@@ -1645,20 +1681,93 @@ _Nenhum bug aberto._
 > do sitemap — limpa 1187 warnings do GSC. Nao resolve indexacao, so limpa
 > ruido. Zero perda porque imagens ja nao indexavam.
 >
-> **Fix completo (essa task):** implementar proxy no nosso dominio.
+> **Audit + research em 03/05/2026** confirmou que sem proxy a indexacao
+> de imagens e matematicamente impossivel. Mas o ROI tambem foi
+> recalibrado pra baixo: lift realista de 5-15% em trafego em 6 meses,
+> com lift de leads bem menor (2-5%) por causa do gap browsing → WhatsApp.
+> Concorrentes locais (Razzi, Apolar) tambem nao fazem isso — pode ser
+> vantagem competitiva ou pode ser que nao compensa pra ninguem.
+>
+> **Plano original (Vercel `/api/img`) foi superado.** Nova proposta usa
+> Cloudflare Worker em subdomain `img.fymoob.com.br` por 3 motivos:
+> (1) custo zero de banda Vercel (Worker free tier 100k req/dia, sobra),
+> (2) cache + robots.txt independentes do app Next, (3) reversivel em
+> minutos se houver problema.
+>
+> **Prioridade:** MEDIA (Fase 19.P3). Primeiro vem cobertura de CRM e
+> landings programaticas — leverage maior. Esta task entra em 4-6
+> semanas a partir de 03/05/2026.
 
-- [ ] Criar rota `/api/img` que aceita `?src=<cdn-url>`
-- [ ] Validar que src comeca com `https://cdn.vistahost.com.br/` (prevenir open proxy)
-- [ ] Fetch da imagem do CDN server-side
-- [ ] Cachear via `Cache-Control: public, max-age=2592000` (30 dias) + Vercel CDN
-- [ ] Retornar com Content-Type correto (image/jpeg|png|webp)
-- [ ] Atualizar `sitemap.ts` pra usar URLs `/api/img?src=...` em vez de CDN direto
-- [ ] Garantir que `robots.ts` permite `/api/img` (hoje bloqueia `/api/*` — adicionar Allow explicito)
-- [ ] Testar: Google Search Console → imagens submetidas indexam em 2-4 semanas
-- [ ] Opcional: converter pra WebP on-the-fly via sharp pra reduzir tamanho
+#### Sequencia recomendada (audit 03/05/2026)
 
-**Esforco:** 2-3h
-**Impacto esperado:** recupera canal Google Images — pode gerar 5-15% tráfego adicional em sites imobiliários (imagens de imoveis sao altamente clicadas em pesquisa visual).
+- [ ] **Passo 1 — Definir baseline mensuravel ANTES de qualquer mudanca.**
+      Tirar screenshot/export do GSC > "Image search appearance"
+      (provavelmente esta em ~zero). Sem isso, nao tem como medir lift
+      depois (cai no MEASURE-BEFORE-CLAIM).
+
+- [ ] **Passo 2 — Migrar `image: "string"` → `image: [array]` no JSON-LD
+      sem proxy** (URLs Vistahost mesmo). Esforco ~1h. Google nao indexa
+      a imagem (CDN bloqueia), mas valida que o formato do schema esta
+      correto. Diff de payload < 1.5KB. Smoke: Rich Results Test em 3
+      paginas, sem novos warnings.
+  - Mexer em `generatePropertySchema` (`src/lib/seo.ts:198-263`).
+  - Usar `[fotoDestaque, ...filterPropertyPhotos(property.fotos)].slice(0, 5)`.
+  - Cap de 5 fotos (sweet spot — rich card aceita, sem inflar payload).
+  - **NAO** mexer em `generateItemListSchema` (cards de listagem com
+    50 itens × 5 fotos inflam +32KB por pagina; manter singular).
+
+- [ ] **Passo 3 — Medir 30 dias.** Validar zero degradacao em GSC (sem
+      novos warnings de schema). Se houver regressao, reverter.
+
+- [ ] **Passo 4 — Implementar Cloudflare Worker proxy** em
+      `img.fymoob.com.br`. Esforco 2-3h.
+  - Worker recebe `?src=<cdn-vistahost-url>`, valida whitelist (so
+    `cdn.vistahost.com.br`), fetcha imagem, devolve com cache.
+  - Headers: `Cache-Control: public, max-age=2678400, immutable` (31
+    dias, recomendacao oficial Google) + ETag.
+  - Tamanho maximo: 4MB (limite pratico de Worker free tier).
+  - Robots.txt em `img.fymoob.com.br` permite Googlebot-Image
+    explicitamente.
+  - Atualizar `generatePropertySchema` pra reescrever URLs Vistahost
+    em URLs do proxy.
+
+- [ ] **Passo 5 — Reabilitar `<image:image>` no sitemap shard 0** com
+      URLs do proxy. Codigo de fonte ja existe
+      (`getAllPropertySitemapData` em `src/services/loft.ts:1009-1018`,
+      ja retorna `fotos.slice(0, 5)`). Esforco ~15min.
+
+- [ ] **Passo 6 — Medir 90 dias.** Meta: pelo menos **200 impressoes/mes
+      em GSC > Image search appearance** pra considerar sucesso. Se nao
+      atingir, reavaliar (talvez nicho imobiliario CWB nao recompensa).
+
+#### Contexto do audit
+
+- **Audit completo em 03/05/2026** (subagent Plan + Perplexity research)
+  confirmou que toda a UI usa `getPropertyImage()` direto sobre Property
+  e nenhum consumer le `propertySchema.image`. Mexer no schema NAO
+  quebra cards, hero, comparador ou OG image.
+- **Risco zero de quebrar exibicao existente.** Schema e write-only via
+  `safeJsonLd` em `src/app/imovel/[slug]/page.tsx:137-160`.
+- **Custo controlado.** Cloudflare Worker 100k req/dia gratis. Vercel
+  banda nao impactada.
+- **Performance neutra.** ISR cache 1h ja amortiza payload do schema.
+  LCP nao muda (priority image segue isolada do JSON-LD).
+- **Nao mexer em BlogPosting/Article antes de Property.** Property e o
+  caso de negocio prioritario (Reserva Barigui style cards). Blog
+  schema com array de imagens inline demanda extracao do BlockNote —
+  refator paralelo, baixa prioridade.
+
+**Esforco total revisado:** ~4-5h (1h schema array + 2-3h Cloudflare
+Worker + 30min sitemap + smoke tests).
+
+**Impacto esperado revisado (mais conservador):** lift 5-15% em
+trafego organico em 6 meses, lift 2-5% em leads. Real estate brasileiro
+em queda de CTR (-3.98pp em Q2/2025 por causa de AI Overviews). Imagens
+ajudam a roubar atencao mas nao revertem a tendencia macro.
+
+**Decisao final do audit:** fazer, mas em sequencia ordenada e com
+metricas mensuraveis. Nao priorizar acima de cobertura de CRM ou
+landings programaticas restantes.
 
 ### 10.6 — Blog Strategy Q2 2026 [PLANEJADO 23/04/2026]
 > Baseado em analise do baseline GSC pos-cutover. Plano completo em
