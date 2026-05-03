@@ -118,3 +118,39 @@ export function hasEditorialLayout(slug: string): boolean {
   const assets = assetsMap[slug]
   return !!(assets && assets.torres && assets.torres.length > 0)
 }
+
+/**
+ * Sprint B.V (03/05/2026) — Slug curto da torre dentro do hub.
+ * "Reserva Lago" -> "lago", "Reserva Colina" -> "colina", "Reserva Mirante" -> "mirante".
+ * Usado pra:
+ * - Anchor IDs (#torre-lago, #torre-colina) — ja existia inline em [slug]/page.tsx
+ * - URL da sub-rota /empreendimento/[slug]/[torre] (Sprint B.7)
+ * - Schema containsPlace.url (Sprint B.V)
+ *
+ * Centralizado aqui pra evitar drift entre os 3 consumers.
+ */
+export function getTorreShortSlug(torreNome: string): string {
+  return torreNome
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/^reserva-?/, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+}
+
+/**
+ * Sprint B.7 (03/05/2026) — Resolve uma torre pelo seu short slug dentro do hub.
+ * Ex: getTorreFromShortSlug("reserva-barigui", "lago") devolve a torre Reserva Lago.
+ * Devolve null quando o slug do hub nao tem editorial ou a torre nao existe.
+ */
+export function getTorreFromShortSlug(
+  hubSlug: string,
+  torreSlug: string,
+): { hub: EmpreendimentoAssets; torre: NonNullable<EmpreendimentoAssets["torres"]>[number] } | null {
+  const hub = assetsMap[hubSlug]
+  if (!hub?.torres) return null
+  const torre = hub.torres.find((t) => getTorreShortSlug(t.nome) === torreSlug)
+  if (!torre) return null
+  return { hub, torre }
+}

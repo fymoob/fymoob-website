@@ -15,7 +15,7 @@ import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { RelatedPages } from "@/components/seo/RelatedPages"
 import { PropertyMap } from "@/components/property/PropertyMap"
 import { getPropertyFeatureIcon } from "@/components/property/propertyFeatureIcons"
-import { getEmpreendimentoAssets, hasEditorialLayout } from "@/data/empreendimento-assets"
+import { getEmpreendimentoAssets, getTorreShortSlug, hasEditorialLayout } from "@/data/empreendimento-assets"
 import { PlantasCarousel } from "@/components/empreendimento/PlantasCarousel"
 import { PlantasGallery } from "@/components/empreendimento/PlantasGallery"
 import { WhatsAppTracker } from "@/components/empreendimento/WhatsAppTracker"
@@ -47,12 +47,24 @@ export async function generateStaticParams() {
 // Slugs validos (anti-ISR-amplification)
 const VALID_EMP_SLUG = /^[a-z0-9][a-z0-9-]{1,100}$/
 
+// Sprint B.X (03/05/2026) — Mapa de typos conhecidos no CRM Loft que geram
+// slugs canibalizando ranking. O imovel orfao continua acessivel na URL
+// errada (canonical aponta pra correta, sem 301 destrutivo) ate Wagner
+// renomear no CRM. Quando renomear, remover entry daqui.
+const SLUG_TYPO_CANONICAL: Record<string, string> = {
+  "reserva-bairgui": "reserva-barigui",
+}
+
 export async function generateMetadata({ params }: EmpreendimentoPageProps): Promise<Metadata> {
   const { slug } = await params
   if (!VALID_EMP_SLUG.test(slug)) return {}
   const empreendimentos = await getAllEmpreendimentos()
   const emp = empreendimentos.find((e) => e.slug === slug)
   if (!emp) return {}
+
+  // Sprint B.X — quando a pagina e variante typo, canonical aponta pro slug
+  // correto pra Google consolidar autoridade na URL boa.
+  const canonicalSlug = SLUG_TYPO_CANONICAL[slug] || slug
 
   const bairroText = emp.bairros.length > 0 ? emp.bairros[0] : "Curitiba"
   const assets = getEmpreendimentoAssets(slug)
@@ -86,7 +98,7 @@ export async function generateMetadata({ params }: EmpreendimentoPageProps): Pro
   return {
     title: { absolute: title },
     description,
-    alternates: { canonical: `/empreendimento/${slug}` },
+    alternates: { canonical: `/empreendimento/${canonicalSlug}` },
     keywords: [
       emp.nome,
       `${emp.nome} ${bairroText}`,
@@ -99,7 +111,7 @@ export async function generateMetadata({ params }: EmpreendimentoPageProps): Pro
     openGraph: {
       title,
       description,
-      url: `/empreendimento/${slug}`,
+      url: `/empreendimento/${canonicalSlug}`,
       type: "website",
       siteName: "FYMOOB",
       locale: "pt_BR",
@@ -217,11 +229,30 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
     ...(endereco?.cep && { postalCode: endereco.cep }),
   }
 
+  // Sprint B.V (03/05/2026) — containsPlace sinaliza pro Google que o hub
+  // agrupa N entidades distintas (cada torre vira um Place separado). Cada
+  // torre tem URL propria via /empreendimento/[hub]/[torre] (Sprint B.7),
+  // entao o schema tambem aponta esse link — Google segue como entity
+  // distinta no Knowledge Graph.
+  const towerPlaces =
+    assets?.torres && assets.torres.length > 0
+      ? assets.torres.map((t) => {
+          const torreSlug = getTorreShortSlug(t.nome)
+          return {
+            "@type": "Place" as const,
+            name: t.nome,
+            ...(t.descricao && { description: t.descricao }),
+            url: `${SITE_URL}/empreendimento/${slug}/${torreSlug}`,
+          }
+        })
+      : []
+
   const realEstateSchema = {
     "@type": "RealEstateListing", name: emp.nome,
     description: descricao || `${emp.total} unidades disponíveis no ${emp.nome}`,
     url: `${SITE_URL}/empreendimento/${slug}`,
     ...(schemaImages.length > 0 && { image: schemaImages }),
+    ...(towerPlaces.length > 0 && { containsPlace: towerPlaces }),
     // Sprint A.2 — brand: incorporadora como entidade Organization. Ajuda
     // Google a conectar empreendimento → construtora no Knowledge Graph e
     // captura queries "{construtora} {empreendimento}" (ex: "avantti reserva
@@ -605,17 +636,12 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                 )]
                 const torrePlantas = plantasFromCRM.length > 0 ? plantasFromCRM : (torre.plantas || [])
 
-                // Anchor ID derivado do nome (Reserva Lago -> torre-lago).
-                // Quando a torre tem slug, o link leva pra /empreendimento/{slug}
-                // que redireciona via 301 (next.config) pro anchor desta pagina.
-                // Quando nao tem slug, scroll-to-anchor direto.
-                const torreAnchor = "torre-" + torre.nome
-                  .toLowerCase()
-                  .normalize("NFD")
-                  .replace(/[\u0300-\u036f]/g, "")
-                  .replace(/^reserva-?/, "")
-                  .replace(/[^a-z0-9]+/g, "-")
-                  .replace(/^-+|-+$/g, "")
+                // Sprint B.4 \u2014 torreShortSlug centralizado em
+                // empreendimento-assets.ts. Mesmo helper alimenta sub-rota
+                // /empreendimento/[hub]/[torre], anchor ID e schema
+                // containsPlace.
+                const torreShortSlug = getTorreShortSlug(torre.nome)
+                const torreAnchor = `torre-${torreShortSlug}`
 
                 return (
                   <div
@@ -668,22 +694,18 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                       />
                     )}
 
+                    {/* Sprint B.4 — anchor text descritivo (era "Saiba mais"
+                        generico, agora carrega keyword da torre). Link aponta
+                        pra sub-rota /empreendimento/[hub]/[torreShortSlug]
+                        (Sprint B.7) — Google ve cada torre como entidade
+                        propria via title/H1/description focados na torre. */}
                     <div className="mt-auto pt-6 flex flex-col items-center gap-3">
-                      {torre.slug ? (
-                        <Link
-                          href={`/empreendimento/${torre.slug}`}
-                          className="inline-flex items-center gap-2 rounded-full bg-[#c9a876] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
-                        >
-                          Saiba mais
-                        </Link>
-                      ) : (
-                        <Link
-                          href={`#${torreAnchor}`}
-                          className="inline-flex items-center gap-2 rounded-full bg-[#c9a876] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
-                        >
-                          Saiba mais
-                        </Link>
-                      )}
+                      <Link
+                        href={`/empreendimento/${slug}/${torreShortSlug}`}
+                        className="inline-flex items-center gap-2 rounded-full bg-[#c9a876] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
+                      >
+                        Conheça a {torre.nome}
+                      </Link>
                     </div>
                   </div>
                 )
@@ -935,6 +957,74 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
             })()}
             title={`Perguntas frequentes sobre o ${emp.nome}`}
           />
+
+          {/* Sprint B.5 (03/05/2026) — Cluster tematico de cross-link.
+              Substitui o "Explore tambem" generico por 3 grupos especificos:
+              (1) Outros lancamentos da mesma construtora — captura usuario
+                  fa de marca (ex: quem busca "Avantti" e nao matchou esse
+                  empreendimento).
+              (2) Empreendimentos em bairros vizinhos — captura usuario
+                  pesquisando "regiao do Parque Barigui" sem nome especifico.
+              (3) Imoveis no bairro do empreendimento (manual fallback) —
+                  baseline ja existia.
+              Sem dependencia de CRM novo: tudo vem de getAllEmpreendimentos. */}
+          {(() => {
+            const sameConstrutora =
+              construtora && emp.construtora
+                ? empreendimentos
+                    .filter(
+                      (e) =>
+                        e.slug !== slug &&
+                        e.construtora?.toLowerCase() === emp.construtora?.toLowerCase(),
+                    )
+                    .slice(0, 6)
+                : []
+            return sameConstrutora.length > 0 ? (
+              <RelatedPages
+                title={`Outros lançamentos da ${construtora}`}
+                links={sameConstrutora.map((e) => ({
+                  href: `/empreendimento/${e.slug}`,
+                  label: `${e.nome}${e.bairros[0] ? ` — ${e.bairros[0]}` : ""}`,
+                }))}
+              />
+            ) : null
+          })()}
+
+          {(() => {
+            // Bairros vizinhos pra cluster local — mapa enxuto so dos bairros
+            // premium relevantes hoje. Se nao matcha, bloco nao renderiza.
+            const BAIRROS_VIZINHOS: Record<string, string[]> = {
+              "Mossunguê": ["Campina do Siqueira", "Cascatinha", "Bigorrilho", "Ecoville", "Santo Inácio"],
+              "Bigorrilho": ["Mossunguê", "Champagnat", "Batel", "Cascatinha"],
+              "Batel": ["Bigorrilho", "Centro", "Água Verde", "Champagnat"],
+              "Água Verde": ["Batel", "Vila Izabel", "Portão", "Rebouças"],
+              "Cabral": ["Bom Retiro", "Juvevê", "Centro Cívico", "Hugo Lange"],
+              "Ecoville": ["Mossunguê", "Cidade Industrial", "Campo Comprido"],
+            }
+            const bairroAtual = bairros[0]
+            const vizinhos = bairroAtual ? BAIRROS_VIZINHOS[bairroAtual] || [] : []
+            if (vizinhos.length === 0) return null
+            const empsVizinhos = empreendimentos
+              .filter(
+                (e) =>
+                  e.slug !== slug &&
+                  e.bairros.some((b) => vizinhos.includes(b)),
+              )
+              .slice(0, 8)
+            if (empsVizinhos.length === 0) return null
+            const tituloRegiao =
+              bairroAtual === "Mossunguê" ? "Empreendimentos próximos ao Parque Barigui" : `Empreendimentos próximos ao ${bairroAtual}`
+            return (
+              <RelatedPages
+                title={tituloRegiao}
+                links={empsVizinhos.map((e) => ({
+                  href: `/empreendimento/${e.slug}`,
+                  label: `${e.nome}${e.bairros[0] ? ` — ${e.bairros[0]}` : ""}`,
+                }))}
+              />
+            )
+          })()}
+
           <RelatedPages title="Explore também" links={[...bairros.map((bairro) => ({ href: `/imoveis/${slugify(bairro)}`, label: `Imóveis no ${bairro}` })), ...empreendimentos.filter((e) => e.slug !== slug && e.total >= 3).slice(0, 6).map((e) => ({ href: `/empreendimento/${e.slug}`, label: e.nome }))]} />
         </div>
       </section>

@@ -2,8 +2,9 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
-import { getAllBairros, getProperties, getAllTypes, getAllCities, getPropertyStats, getBairroMarketStats } from "@/services/loft"
+import { getAllBairros, getProperties, getAllTypes, getAllCities, getPropertyStats, getBairroMarketStats, getAllEmpreendimentos } from "@/services/loft"
 import { getAllGuiaSlugs } from "@/services/guias"
+import { hasEditorialLayout } from "@/data/empreendimento-assets"
 import { SeoInternalLinks } from "@/components/seo/SeoInternalLinks"
 import { SearchPageSearchBar } from "@/components/search/SearchPageSearchBar"
 import { slugify, formatPrice } from "@/lib/utils"
@@ -127,18 +128,32 @@ function getBairroDescription(
 
 export default async function BairroPage({ params }: BairroPageProps) {
   const { bairro: bairroSlug } = await params
-  const [bairros, tipos, cidades, stats, marketStats, guiaSlugs] = await Promise.all([
+  const [bairros, tipos, cidades, stats, marketStats, guiaSlugs, empreendimentos] = await Promise.all([
     getAllBairros(),
     getAllTypes(),
     getAllCities(),
     getPropertyStats(),
     getBairroMarketStats(bairroSlug),
     getAllGuiaSlugs(),
+    getAllEmpreendimentos(),
   ])
   const hasGuia = guiaSlugs.includes(bairroSlug)
   const bairro = bairros.find((b) => b.slug === bairroSlug)
 
   if (!bairro) notFound()
+
+  // Sprint B.T (03/05/2026) — Empreendimentos no bairro pra cross-linking.
+  // Captura usuario que chegou via "/imoveis/{bairro}" generico mas ja
+  // procura empreendimento especifico (Reserva Barigui, AMA, etc).
+  // Hubs editoriais primeiro pra dar destaque ao top.
+  const empreendimentosNoBairro = empreendimentos
+    .filter((e) => e.bairros.some((b) => b === bairro.bairro))
+    .sort((a, b) => {
+      const ae = hasEditorialLayout(a.slug) ? 1 : 0
+      const be = hasEditorialLayout(b.slug) ? 1 : 0
+      if (ae !== be) return be - ae
+      return b.total - a.total
+    })
 
   const { properties } = await getProperties({
     bairro: bairro.bairro,
@@ -276,6 +291,48 @@ export default async function BairroPage({ params }: BairroPageProps) {
             )}
             title={`Perguntas frequentes sobre imóveis no ${bairro.bairro}`}
           />
+
+          {/* Sprint B.T (03/05/2026) — Empreendimentos no bairro como bloco
+              dedicado. Diferente do RelatedPages generico de baixo: cards
+              maiores com construtora + contagem, sinalizando que o bairro
+              tem opcoes de lancamento. Backlink direto pros hubs (boost
+              autoridade pras paginas /empreendimento/[slug]). */}
+          {empreendimentosNoBairro.length > 0 && (
+            <div>
+              <h2 className="font-display text-2xl font-bold tracking-tight text-neutral-950">
+                Empreendimentos no {bairro.bairro}
+              </h2>
+              <p className="mt-2 text-sm text-neutral-600">
+                {empreendimentosNoBairro.length}{" "}
+                {empreendimentosNoBairro.length === 1
+                  ? "empreendimento ativo"
+                  : "empreendimentos ativos"}{" "}
+                no bairro — clique para ver plantas, preços e disponibilidade.
+              </p>
+              <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {empreendimentosNoBairro.slice(0, 6).map((e) => (
+                  <Link
+                    key={e.slug}
+                    href={`/empreendimento/${e.slug}`}
+                    className="group flex items-center gap-4 rounded-xl border border-neutral-200 bg-white p-4 transition hover:border-brand-primary/40 hover:shadow-sm"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-semibold text-neutral-900 group-hover:text-brand-primary">
+                        {e.nome}
+                      </p>
+                      <p className="mt-1 text-xs text-neutral-500">
+                        {e.construtora ? `${e.construtora} · ` : ""}
+                        {e.total} {e.total === 1 ? "unidade" : "unidades"}
+                        {e.precoMin
+                          ? ` · a partir de ${formatPrice(e.precoMin)}`
+                          : ""}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Cross-linking — inclui pillar pages (comprar/morar/alugar) no topo
               pra reforcar internal linking e sinalizar autoridade ao Google */}

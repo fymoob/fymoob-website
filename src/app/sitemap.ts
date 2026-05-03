@@ -7,7 +7,7 @@ import {
   listAuthors,
   listPublishedArticles,
 } from "@/services/articles"
-import { hasEditorialLayout } from "@/data/empreendimento-assets"
+import { getEmpreendimentoAssets, getTorreShortSlug, hasEditorialLayout } from "@/data/empreendimento-assets"
 import type { PropertyType } from "@/types/property"
 import { SITE_URL } from "@/lib/constants"
 
@@ -330,7 +330,23 @@ export default async function sitemap({
       // images removidas — CDN Loft bloqueia crawlers (ver nota no shard 0)
     }))
 
-    return [...staticPages, ...institutionalPages, ...empreendimentoPages]
+    // Sprint B.7 (03/05/2026) — sub-rotas das torres em hubs editoriais:
+    // /empreendimento/reserva-barigui/lago, /colina, /mirante. Cada uma e
+    // entidade buscavel propria pra capturar queries por torre. Canonical
+    // delas aponta pro hub, mas Google indexa pra match de query.
+    // Priority 0.85 (logo abaixo do hub a 0.9).
+    const torreSubRoutes: MetadataRoute.Sitemap = empreendimentos.flatMap((e) => {
+      const assets = getEmpreendimentoAssets(e.slug)
+      if (!assets?.torres) return []
+      return assets.torres.map((t) => ({
+        url: `${SITE_URL}/empreendimento/${e.slug}/${getTorreShortSlug(t.nome)}`,
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: 0.85,
+      }))
+    })
+
+    return [...staticPages, ...institutionalPages, ...empreendimentoPages, ...torreSubRoutes]
   }
 
   return []

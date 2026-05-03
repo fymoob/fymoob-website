@@ -33,10 +33,10 @@
 | 16 | Claude Managed Agents | 14 | 0 | 14 | MEDIO PRAZO |
 | 17 | Agentes como Produto SaaS | 14 | 0 | 14 | LONGO PRAZO |
 | 18 | Custom Blog Admin (Sanity Replacement) | 69 | 60 | 9 | EM ANDAMENTO (Sprints 1-4: 18.A-G done; 18.H-I pendentes) |
-| 19 | **SEO Competitive Action Plan** | 64 | 23 | 41 | **PRIORITARIO — P0 ✅ + P1.1 ✅ + P2 A/B/C ✅ + Sessao Q (7 tasks queries-alvo) + Re-Index (6) + Reserva Barigui Sprint A ✅ (5/8) + D/E PENDING + P1.16 BLOQUEADO Bruno** |
+| 19 | **SEO Competitive Action Plan** | 73 | 30 | 43 | **PRIORITARIO — P0 ✅ + P1.1 ✅ + P2 A/B/C ✅ + Sessao Q (7 tasks queries-alvo) + Re-Index (6) + Reserva Barigui Sprint A ✅ (5/8) + Sprint B ✅ (7/9) + D/E PENDING + P1.16 BLOQUEADO Bruno** |
 | 20 | **Code Quality & Tech Debt** | 35 | 23 | 12 | **EM ANDAMENTO — W1 ✅ (10 done, 2 skipped justificados) + W2 ✅ (7 done) + W3.2 ✅ + W3.3 ✅ + W4.7 ✅. Deferidos: W3.1 split seo.ts, W3.4 tests, W3.5/6/7 UI, W4 restantes** |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **612** | **398** | **214** | **65%** |
+| | **TOTAL** | **621** | **405** | **216** | **65%** |
 
 **Sessao 2026-04-17:** 25 CRITICAL/HIGH de seguranca/SEO fixados em 5 commits (`0d7b19f`, `50b1f86`, `7bb5f5a`, `19154ec`, `6b13794`). 4 rounds de auditoria convergiram — round 4 retornou 0 CRITICAL. Acoes externas pre-cutover listadas em Fase 7.8. HIGH/MEDIUM remanescentes (hardening pos-cutover, nao blockers) em Fase 7.10.
 
@@ -4089,8 +4089,76 @@ mais 5 paginas/itens com gaps:
 
 - [ ] **19.RB.A.8** [DECISAO] Sprint B (paginas dedicadas das torres) — Avaliar apos 14 dias do Sprint A
   - Se "reserva barigui" entrou no top 20 mas variantes "reserva lago/colina/mirante" continuam zeradas → executar Sprint B
-  - Sprint B: reverter 301s em `next.config.ts:114-125` + cadastrar 3 empreendimentos no CRM Loft (acao Bruno) + criar entries editoriais em `empreendimento-assets.ts`
+  - Sprint B caminho 2 (CRM-segmentado): reverter 301s em `next.config.ts:114-125` + cadastrar 3 empreendimentos no CRM Loft (acao Bruno) + criar entries editoriais em `empreendimento-assets.ts`
   - Esforco: ~6h dev + acao Bruno
+  - **Status 03/05/2026:** caminho 1 (Sprint B abaixo) ja entregue — captura queries por torre via sub-rotas sem precisar do CRM. Caminho 2 fica como follow-up condicional.
+
+#### Sessao Reserva Barigui — Sprint B [03/05/2026, ~5h dev, sem dependencia de CRM]
+
+> **Origem:** apos diagnostico do Sprint A descobriu-se (1) typo "reserva-bairgui"
+> no CRM canibalizando ranking, (2) zero imoveis classificados por torre no
+> CRM (todos sob "Reserva Barigui"). Sprint B caminho 1 ataca os gaps que
+> dao pra resolver dev-only.
+
+- [x] **19.RB.B.X** Canonical do typo `reserva-bairgui` → `reserva-barigui` — `src/app/empreendimento/[slug]/page.tsx:50-69`
+  - Mapa `SLUG_TYPO_CANONICAL` resolve no `generateMetadata` + openGraph URL
+  - Imovel orfao continua acessivel na URL errada (sem 301 destrutivo)
+  - Google consolida ranking na URL correta. Tirar entry quando Wagner renomear no CRM.
+
+- [x] **19.RB.B.V** Schema `RealEstateListing.containsPlace[]` com as 3 torres — `src/app/empreendimento/[slug]/page.tsx:209-222`
+  - Helper `getTorreShortSlug()` centralizado em `src/data/empreendimento-assets.ts`
+  - Cada torre vira `Place` com `name`, `description`, `url` apontando pra sub-rota /lago | /colina | /mirante
+  - Sinaliza pro Google que o hub agrupa 3 entidades distintas (Knowledge Graph)
+
+- [x] **19.RB.B.7** Sub-rotas `/empreendimento/[slug]/[torre]` — `src/app/empreendimento/[slug]/[torre]/page.tsx`
+  - Re-renderiza o hub (re-import do default) com title/description/H1 focados na torre
+  - Captura queries top Google Ads sem depender de segmentacao no CRM:
+    - "reserva lago" / "reserva barigui lago" → /empreendimento/reserva-barigui/lago
+    - "reserva colina" / "reserva barigui colina" → /colina
+    - "reserva mirante" → /mirante
+  - Canonical aponta pro hub (consolida autoridade). Google escolhe URL canonica + usa title/description da sub pra match de query
+  - `<ScrollToTorre>` client component scrolla na secao da torre no mount
+  - Sitemap (shard 3) lista as 3 sub-rotas com priority 0.85
+
+- [x] **19.RB.B.4** Anchor text descritivo nas torres — `src/app/empreendimento/[slug]/page.tsx:643-647 + 702-714`
+  - Era "Saiba mais" generico → vira "Conheça a Reserva Lago" / "Reserva Colina" / "Reserva Mirante"
+  - Link aponta pra sub-rota (Sprint B.7) em vez de redirect 301 anchor
+  - Centraliza calculo de torre slug via `getTorreShortSlug()` (DRY)
+
+- [x] **19.RB.B.5** Cluster tematico "Outros lancamentos Avantti" + "Empreendimentos proximos ao Parque Barigui" — `src/app/empreendimento/[slug]/page.tsx:949-1000`
+  - Bloco 1: empreendimentos da mesma construtora (top 6) — captura usuario fa de marca
+  - Bloco 2: empreendimentos em bairros vizinhos via mapa `BAIRROS_VIZINHOS` (Mossunguê → Campina, Cascatinha, Bigorrilho, Ecoville, Santo Inácio) — captura "regiao do Parque Barigui"
+  - Bloco 3: "Explore tambem" antigo (mantido)
+  - Cross-link interno fortalece autoridade do hub + cluster
+
+- [x] **19.RB.B.T** Backlinks internos de `/imoveis/mossungue` (e demais bairros) pros hubs — `src/app/imoveis/[bairro]/page.tsx:128-152 + 271-313`
+  - Novo bloco "Empreendimentos no {bairro}" com cards (nome + construtora + N unidades + preco)
+  - Hubs editoriais ranqueiam primeiro (`hasEditorialLayout`)
+  - Aplica em TODOS os bairros (nao so Mossunguê) — feature transversal
+
+- [x] **19.RB.B.W** Script IndexNow pra notificar Bing/Yandex das URLs novas — `scripts/indexnow-reserva-barigui.mjs`
+  - 6 URLs: hub + 3 sub-rotas + typo + /imoveis/mossungue
+  - Roda manual: `node scripts/indexnow-reserva-barigui.mjs`
+  - Dry-run via `INDEXNOW_DRY=1 node scripts/...`
+  - Disparar **apos** Vercel deploy de produção
+
+- [ ] **19.RB.B.smoke** [VALIDACAO] Pos-deploy
+  - `npm run smoke` (CI roda automatico via .github/workflows/smoke-test.yml)
+  - Conferir manualmente:
+    - https://fymoob.com.br/empreendimento/reserva-barigui/lago renderiza com title "Reserva Lago Avantti — Reserva Barigui em Mossunguê, Curitiba | FYMOOB"
+    - Idem /colina e /mirante
+    - View source do hub: schema com `containsPlace[]` apontando pras 3 sub-rotas
+    - View source do typo `/reserva-bairgui`: canonical apontando pra `/reserva-barigui`
+    - `/imoveis/mossungue`: bloco "Empreendimentos no Mossunguê" com card do Reserva Barigui
+  - Rodar `node scripts/indexnow-reserva-barigui.mjs` (Bing recebe ping)
+
+- [ ] **19.RB.B.gsc** [MANUAL] Request Indexing das 5 URLs novas/alteradas no GSC
+  - `/empreendimento/reserva-barigui` (refresh — Sprint A + B mudaram schema/conteudo)
+  - `/empreendimento/reserva-barigui/lago` (URL nova)
+  - `/empreendimento/reserva-barigui/colina` (URL nova)
+  - `/empreendimento/reserva-barigui/mirante` (URL nova)
+  - `/imoveis/mossungue` (Sprint B.T — bloco novo)
+  - Aguardar quota GSC resetar (24h apos limite atingido em 03/05)
 
 #### Sessao D — /aluguel + guias + polish [4-6h, +15-40 cliques/mes]
 
