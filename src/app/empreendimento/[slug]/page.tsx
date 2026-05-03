@@ -60,21 +60,28 @@ export async function generateMetadata({ params }: EmpreendimentoPageProps): Pro
   const precoMin = emp.precoMin ? formatPrice(emp.precoMin) : ""
   const precoText = precoMin ? ` a partir de ${precoMin}` : ""
 
-  // Fase 19.P2.B.3 — Title com numero especifico no formato:
-  // "{Nome} {Bairro}: {N} Apartamentos a Partir de R$ {min} | FYMOOB"
-  // Audit revelou que 102 de 110 empreendimentos sem numero — Backlinko
-  // confirma +10-15% CTR com numero no title.
+  // Title structure varies by signal density (Sprint A — 2026-05-03):
+  // - Sem construtora: nome + bairro + N + preco (Fase 19.P2.B.3, +10-15% CTR
+  //   via numero, validado Backlinko)
+  // - Com construtora: nome + construtora + bairro + N (captura query do
+  //   tipo "{nome} {construtora}" — top Google Ads pra Reserva Barigui).
+  //   Preco fica na description; title sem numero respeita o feedback de
+  //   GSC (number-driven hook so na description quando ja temos signal de
+  //   marca forte).
   const totalText = emp.total > 0 ? `${emp.total} ` : ""
   const tituloUnidade = emp.total === 1 ? "Apartamento" : "Apartamentos"
-  const partirDe = precoMin ? ` a Partir de ${precoMin}` : " Disponíveis"
-  const title = `${emp.nome} ${bairroText}: ${totalText}${tituloUnidade}${partirDe} | FYMOOB`
+  const title = emp.construtora
+    ? `${emp.nome} ${emp.construtora} ${bairroText}: ${totalText}${tituloUnidade} | FYMOOB`
+    : `${emp.nome} ${bairroText}: ${totalText}${tituloUnidade}${precoMin ? ` a Partir de ${precoMin}` : " Disponíveis"} | FYMOOB`
 
-  // Description: 1ª frase responde "o que é + onde + a partir de quanto",
-  // 2ª frase ressalta intenções (plantas, fotos), 3ª prova (FYMOOB +
-  // construtora). Limite ~160 chars depois do encurtamento natural do
-  // Google. Otimizada pra queries: "reserva barigui", "reserva lago",
-  // "apartamento reserva barigui", "avantti reserva barigui".
-  const description = `${emp.nome} em ${bairroText}, Curitiba${precoText}. ${emp.total} apartamentos disponíveis — veja plantas, preços e fotos. Atendimento FYMOOB${construtoraText ? ` ·${construtoraText}` : ""}.`.trim()
+  // Description: 1ª frase responde "o que é + construtora + onde + preco",
+  // 2ª frase ressalta intenções (plantas, fotos), 3ª prova (FYMOOB).
+  // Limite ~160 chars depois do encurtamento natural do Google. Otimizada
+  // pra queries: "reserva barigui", "reserva lago", "apartamento reserva
+  // barigui", "avantti reserva barigui".
+  const description = emp.construtora
+    ? `${emp.nome} ${emp.construtora} em ${bairroText}, Curitiba${precoText}. ${emp.total} apartamentos disponíveis — veja plantas, preços e fotos. Atendimento FYMOOB.`.trim()
+    : `${emp.nome} em ${bairroText}, Curitiba${precoText}. ${emp.total} apartamentos disponíveis — veja plantas, preços e fotos. Atendimento FYMOOB${construtoraText ? ` ·${construtoraText}` : ""}.`.trim()
 
   return {
     title: { absolute: title },
@@ -176,11 +183,58 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
       ? rawHeroImage
       : `${SITE_URL}${rawHeroImage}`
     : undefined
+
+  // Sprint A.2 — image array enriquecido. Schema com 1 imagem só limita rich
+  // result; com 4-6 abre carousel + image preview no SERP. Ordem: hero
+  // (asset local, indexavel) → parallax editorial (asset local, indexavel)
+  // → fotos do CRM (CDN Vista, hoje bloqueada por robots.txt mas Google ainda
+  // entende como entidade visual — quando Task 10.5 ativar o proxy, todas
+  // viram indexaveis sem mexer aqui).
+  const schemaImages: string[] = []
+  if (absoluteHeroImage) schemaImages.push(absoluteHeroImage)
+  if (assets?.parallaxImages) {
+    for (const img of assets.parallaxImages) {
+      const abs = img.startsWith("http") ? img : `${SITE_URL}${img}`
+      if (!schemaImages.includes(abs)) schemaImages.push(abs)
+    }
+  }
+  for (const photo of heroPhotos.slice(0, 4)) {
+    if (photo && !schemaImages.includes(photo)) schemaImages.push(photo)
+  }
+
+  // Sprint A.2 — endereco com streetAddress + cep quando CRM popula.
+  // Sem isso o schema vira generico e Google nao consegue desambiguar entre
+  // empreendimentos do mesmo bairro.
+  const streetAddressFull = endereco?.endereco
+    ? [endereco.endereco, endereco.numero].filter(Boolean).join(", ")
+    : undefined
+  const addressNode = {
+    "@type": "PostalAddress" as const,
+    ...(streetAddressFull && { streetAddress: streetAddressFull }),
+    addressLocality: bairros[0] || "Curitiba",
+    addressRegion: "PR",
+    addressCountry: "BR",
+    ...(endereco?.cep && { postalCode: endereco.cep }),
+  }
+
   const realEstateSchema = {
     "@type": "RealEstateListing", name: emp.nome,
     description: descricao || `${emp.total} unidades disponíveis no ${emp.nome}`,
     url: `${SITE_URL}/empreendimento/${slug}`,
-    ...(absoluteHeroImage && { image: absoluteHeroImage }),
+    ...(schemaImages.length > 0 && { image: schemaImages }),
+    // Sprint A.2 — brand: incorporadora como entidade Organization. Ajuda
+    // Google a conectar empreendimento → construtora no Knowledge Graph e
+    // captura queries "{construtora} {empreendimento}" (ex: "avantti reserva
+    // barigui" — top Google Ads click #9).
+    ...(construtora && {
+      brand: { "@type": "Organization", name: construtora },
+    }),
+    // Sprint A.2 — geo coords reais (lat/lng do CRM via primeiro imovel
+    // com coordenada). Habilita rich snippet com mapa + ranking em queries
+    // locais ("reserva barigui localizacao", "reserva barigui mapa").
+    ...(lat && lng && {
+      geo: { "@type": "GeoCoordinates", latitude: lat, longitude: lng },
+    }),
     // Fase 19.P2.B.4 — AggregateOffer enriquecido com availability (rich
     // snippet com faixa de preco no SERP + indicador de disponibilidade).
     offers: precoMin
@@ -196,7 +250,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
               : "https://schema.org/SoldOut",
         }
       : undefined,
-    address: { "@type": "PostalAddress", addressLocality: bairros[0] || "Curitiba", addressRegion: "PR", addressCountry: "BR" },
+    address: addressNode,
   }
   const combinedSchema = {
     "@context": "https://schema.org",
@@ -573,7 +627,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                       <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-neutral-200">
                         <Image
                           src={torre.render}
-                          alt={`${torre.nome} — render da torre do ${emp.nome}${bairros[0] ? ` em ${bairros[0]}, Curitiba` : ""}`}
+                          alt={`${torre.nome} — render da torre do ${emp.nome}${construtora ? ` (${construtora})` : ""}${bairros[0] ? ` em ${bairros[0]}, Curitiba` : ""}`}
                           fill
                           className="object-cover transition duration-700 group-hover:scale-105"
                           sizes="(max-width: 768px) 100vw, 33vw"
@@ -610,6 +664,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                         torreNome={torre.nome}
                         empreendimentoNome={emp.nome}
                         bairro={bairros[0]}
+                        construtora={construtora || undefined}
                       />
                     )}
 
@@ -763,15 +818,56 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
               </p>
             )}
 
+            {/* Sprint A.6 — cronograma de entrega extraido das descricoes
+                editoriais (assets.torres[].descricao tem padrao "Entrega
+                prevista para {Mes/Ano}"). Renderiza so se pelo menos uma
+                torre tem cronograma — empreendimentos sem editorial layout
+                nao tem assets.torres entao bloco nao aparece. */}
+            {(() => {
+              if (!assets?.torres) return null
+              const cronograma = assets.torres
+                .map((t) => {
+                  const match = t.descricao?.match(/entrega prevista para ([^.]+)/i)
+                  return match ? { nome: t.nome, prazo: match[1].trim() } : null
+                })
+                .filter((x): x is { nome: string; prazo: string } => x !== null)
+              if (cronograma.length === 0) return null
+              return (
+                <p>
+                  Cronograma de entrega previsto:{" "}
+                  {cronograma.map((c, i) => (
+                    <span key={c.nome}>
+                      <strong>{c.nome}</strong> com entrega em {c.prazo}
+                      {i < cronograma.length - 2 ? ", " : i === cronograma.length - 2 ? " e " : ""}
+                    </span>
+                  ))}
+                  . Datas conforme tabela do empreendimento — confirme pelo
+                  WhatsApp antes de fechar negócio.
+                </p>
+              )
+            })()}
+
             {bairros[0] && (
               <p>
                 Morar {bairros[0] === "Mossunguê" ? "no Mossunguê" : `no bairro ${bairros[0]}`} é estar próximo
                 {bairros[0] === "Mossunguê"
-                  ? " ao Parque Barigui (um dos maiores parques urbanos de Curitiba) e ao ParkShoppingBarigui, com acesso rápido à BR-277, Avenida Cândido Hartmann e ao Centro da cidade."
+                  ? " ao Parque Barigui (um dos maiores parques urbanos de Curitiba, com 1,4 milhão de m²) e ao ParkShoppingBarigui, com acesso rápido à BR-277, Avenida Cândido Hartmann e ao Centro da cidade."
                   : ` em uma das regiões mais valorizadas de Curitiba, com infraestrutura completa de comércio, serviços e mobilidade.`}
                 {" "}A localização privilegiada do {emp.nome} combina o verde do parque
                 com a praticidade urbana — um diferencial que se traduz em qualidade
                 de vida e potencial de valorização do imóvel.
+              </p>
+            )}
+
+            {/* Sprint A.6 — endereco completo + CEP quando o CRM popula.
+                Reforca sinal local pra Google e ajuda usuario a localizar
+                rapidamente. */}
+            {endereco?.endereco && (
+              <p>
+                <strong>Endereço:</strong>{" "}
+                {[endereco.endereco, endereco.numero].filter(Boolean).join(", ")}
+                {bairros[0] ? `, ${bairros[0]}` : ""}, Curitiba/PR
+                {endereco.cep ? ` · CEP ${endereco.cep}` : ""}.
               </p>
             )}
 

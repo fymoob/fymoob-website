@@ -33,10 +33,10 @@
 | 16 | Claude Managed Agents | 14 | 0 | 14 | MEDIO PRAZO |
 | 17 | Agentes como Produto SaaS | 14 | 0 | 14 | LONGO PRAZO |
 | 18 | Custom Blog Admin (Sanity Replacement) | 69 | 60 | 9 | EM ANDAMENTO (Sprints 1-4: 18.A-G done; 18.H-I pendentes) |
-| 19 | **SEO Competitive Action Plan** | 56 | 18 | 38 | **PRIORITARIO — P0 ✅ + P1.1 ✅ + P2 A/B/C ✅ + Sessao Q (7 tasks queries-alvo) + Re-Index (6) + D/E PENDING + P1.16 BLOQUEADO Bruno** |
+| 19 | **SEO Competitive Action Plan** | 64 | 23 | 41 | **PRIORITARIO — P0 ✅ + P1.1 ✅ + P2 A/B/C ✅ + Sessao Q (7 tasks queries-alvo) + Re-Index (6) + Reserva Barigui Sprint A ✅ (5/8) + D/E PENDING + P1.16 BLOQUEADO Bruno** |
 | 20 | **Code Quality & Tech Debt** | 35 | 23 | 12 | **EM ANDAMENTO — W1 ✅ (10 done, 2 skipped justificados) + W2 ✅ (7 done) + W3.2 ✅ + W3.3 ✅ + W4.7 ✅. Deferidos: W3.1 split seo.ts, W3.4 tests, W3.5/6/7 UI, W4 restantes** |
 | -- | Nice-to-Have | 4 | 0 | 4 | FUTURO |
-| | **TOTAL** | **604** | **393** | **211** | **65%** |
+| | **TOTAL** | **612** | **398** | **214** | **65%** |
 
 **Sessao 2026-04-17:** 25 CRITICAL/HIGH de seguranca/SEO fixados em 5 commits (`0d7b19f`, `50b1f86`, `7bb5f5a`, `19154ec`, `6b13794`). 4 rounds de auditoria convergiram — round 4 retornou 0 CRITICAL. Acoes externas pre-cutover listadas em Fase 7.8. HIGH/MEDIUM remanescentes (hardening pos-cutover, nao blockers) em Fase 7.10.
 
@@ -4034,6 +4034,63 @@ mais 5 paginas/itens com gaps:
   - Re-rodar `python scripts/seo-gaps-audit.py --all`
   - Comparar com `docs/seo-reports/2026-04-30-page-gaps-audit.md`
   - Targets: paginas indexadas 122→250+, cliques 580→800-1100/mes, CTR blog 0.13%→1.5%+
+
+#### Sessao Reserva Barigui — Sprint A [03/05/2026, ~2h, prioridade query "reserva barigui" → top 10]
+
+> **Origem:** Bruno priorizou query "reserva barigui" pra entrar no top 10 do
+> Google (hoje pagina indexada mas zero impressoes em 90 dias no GSC). SERP
+> real (DDG/Bing): FYMOOB ja em #3 pra "reserva barigui curitiba" e #1 pra
+> "reserva barigui apartamento mossungue", mas fora do top 15 pra "reserva
+> barigui avantti". Plano completo de diagnostico no chat — Sprint A foca em
+> signals fracos (brand, schema, conteudo) sem mexer em URL/redirect.
+>
+> **Janela de avaliacao:** 14 dias (15-17/05/2026) via GSC `inspect_url_enhanced`
+> + `compare_search_periods`. Targets: 50+ impressoes/mes na URL, posicao top
+> 20 pra "reserva barigui" puro.
+
+- [x] **19.RB.A.1** Title condicional com construtora — `src/app/empreendimento/[slug]/page.tsx:50-89`
+  - Sem construtora: mantem template Fase 19.P2.B.3 (numero + preco)
+  - Com construtora: `{Nome} {Construtora} {Bairro}: {N} Apartamentos | FYMOOB`
+  - Captura query "{nome} {construtora}" (ex: "reserva barigui avantti", top Google Ads click #9)
+  - Description tambem tem variant com construtora antes do bairro
+
+- [x] **19.RB.A.2** Schema RealEstateListing enriquecido — `src/app/empreendimento/[slug]/page.tsx:172-238`
+  - `image[]` array (hero + parallax + 4 fotos CRM) em vez de string unica → carousel rich result
+  - `brand: { @type: Organization }` apontando pra construtora → entity link Knowledge Graph
+  - `geo: { latitude, longitude }` quando CRM popula → rich snippet com mapa
+  - `address.streetAddress` + `postalCode` (CEP) quando CRM tem dado completo
+
+- [x] **19.RB.A.4** Sitemap priority 0.9 pra editorial empreendimentos — JA EXISTIA em `src/app/sitemap.ts:329` (Fase 19.P2.B). Sem mudanca.
+
+- [x] **19.RB.A.5** Alt-text rico nas plantas — `src/components/empreendimento/PlantasCarousel.tsx:48-60` + render torre alt em `[slug]/page.tsx:584`
+  - Pattern: `Planta {N} — {torre}, {empreendimento} ({construtora}), {bairro}, Curitiba`
+  - Captura "imagens reserva barigui colina" (top Google Ads click #12)
+  - **So funciona pra assets locais** (plantas/renders/fachadas em /public). Fotos CRM (CDN Vista) seguem bloqueadas ate Task 10.5 ativar Cloudflare proxy.
+
+- [x] **19.RB.A.6** Bloco textual SEO ampliado — `src/app/empreendimento/[slug]/page.tsx:765-825`
+  - Cronograma de entrega por torre (extraido de `assets.torres[].descricao`): "Reserva Lago com entrega em Agosto/26, Reserva Colina com entrega em Julho/27, Reserva Mirante com entrega em Setembro/27"
+  - Endereco completo (`R. Clara Vendramin, 445, Mossunguê, Curitiba/PR · CEP 81200-170`) renderiza quando CRM popula
+  - Parque Barigui com m² explicito (1,4 milhao de m²) — sinal de profundidade vs competidores
+  - Aplica em TODOS empreendimentos editoriais (nao so Reserva Barigui), mas torres/cronograma so renderiza quando assets tem mais de 1 torre
+
+- [ ] **19.RB.A.3** [MANUAL] Request Indexing via GSC pra `/empreendimento/reserva-barigui` (5 min)
+  - GSC > URL Inspection > paste `https://fymoob.com.br/empreendimento/reserva-barigui` > Request Indexing
+  - Last Crawled atual: 2026-04-17 → forca recrawl com schema novo
+  - Tambem solicitar pra `/imoveis/mossungue` (boost de internal link)
+  - **Bloqueio:** quota GSC ja foi excedida em 03/05 (11 URLs aceitas, 12a recusada). Aguardar reset 24h ou priorizar essas 2 URLs
+
+- [ ] **19.RB.A.7** [VALIDACAO] Smoke test em prod apos deploy
+  - Rodar `npm run smoke` (25 rotas, inclui 1 empreendimento real)
+  - Conferir manualmente https://fymoob.com.br/empreendimento/reserva-barigui:
+    - View source: title contem "Reserva Barigui Avantti Mossunguê: 10 Apartamentos | FYMOOB"
+    - View source: JSON-LD `RealEstateListing` tem `brand`, `geo`, `image[]` array
+    - Plantas com alt rico (inspect element nos `<img>` do carousel)
+    - Bloco SEO renderiza cronograma "Reserva Lago com entrega em Agosto/26..."
+
+- [ ] **19.RB.A.8** [DECISAO] Sprint B (paginas dedicadas das torres) — Avaliar apos 14 dias do Sprint A
+  - Se "reserva barigui" entrou no top 20 mas variantes "reserva lago/colina/mirante" continuam zeradas → executar Sprint B
+  - Sprint B: reverter 301s em `next.config.ts:114-125` + cadastrar 3 empreendimentos no CRM Loft (acao Bruno) + criar entries editoriais em `empreendimento-assets.ts`
+  - Esforco: ~6h dev + acao Bruno
 
 #### Sessao D — /aluguel + guias + polish [4-6h, +15-40 cliques/mes]
 

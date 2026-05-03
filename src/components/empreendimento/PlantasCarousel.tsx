@@ -12,6 +12,7 @@ interface PlantasCarouselProps {
   torreNome: string
   empreendimentoNome?: string
   bairro?: string
+  construtora?: string
 }
 
 export function PlantasCarousel({
@@ -19,6 +20,7 @@ export function PlantasCarousel({
   torreNome,
   empreendimentoNome,
   bairro,
+  construtora,
 }: PlantasCarouselProps) {
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
@@ -45,8 +47,18 @@ export function PlantasCarousel({
 
   if (!plantas || plantas.length === 0) return null
 
-  const altText = (i: number) =>
-    `Planta ${i + 1} do ${torreNome}${empreendimentoNome ? ` — ${empreendimentoNome}` : ""}${bairro ? `, ${bairro} Curitiba` : ""}`
+  // Alt-text otimizado pra Google Images (Sprint A.5 — 2026-05-03).
+  // Pattern: "Planta {N} — {torre}, {empreendimento} ({construtora}), {bairro}, Curitiba"
+  // Captura queries: "planta reserva lago", "planta reserva barigui",
+  // "planta avantti curitiba", "imagens reserva barigui colina" (top Google
+  // Ads). Plantas sao asset local em /public, robots.txt do site permite
+  // crawl direto — diferente das fotos do CRM (CDN Vista bloqueada).
+  const altText = (i: number) => {
+    const local = bairro ? `, ${bairro}, Curitiba` : ""
+    const incorporadora = construtora ? ` (${construtora})` : ""
+    const empContext = empreendimentoNome ? `, ${empreendimentoNome}${incorporadora}` : ""
+    return `Planta ${i + 1} — ${torreNome}${empContext}${local}`
+  }
 
   return (
     <div className="mt-6">
