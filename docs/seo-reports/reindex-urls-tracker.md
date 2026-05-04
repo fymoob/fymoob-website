@@ -51,31 +51,19 @@ dispara em batches de 500. Roda em ~30s.
 
 ## Pendentes (em ordem de prioridade)
 
-### 🔴 P0 — Reserva Barigui (URLs novas + redesign massivo) [6 URLs]
+### ✅ P0 — Reserva Barigui (URLs novas + redesign massivo) [6 URLs] — CONCLUIDO 04/05/2026
 
 URLs criadas/transformadas pelos commits `73ae50e` → `7ca498c` (Sprint A/B/B'
-+ redesign premium). Maior risco: 3 URLs novas que o Google ainda não viu.
++ redesign premium). Submetidos 04/05 — ver historico abaixo.
 
-| # | URL | Status | Mudança |
-|---|---|---|---|
-| 1 | `/empreendimento/reserva-barigui` | refresh | Sprint A (title+schema+plantas) + Sprint B (cluster+containsPlace) + redesign premium completo (5 commits design) |
-| 2 | `/empreendimento/reserva-barigui/lago` | **URL nova** | Landing dedicada B' — 6 unidades filtradas (studios+1-2q+duplex) |
-| 3 | `/empreendimento/reserva-barigui/colina` | **URL nova** | Landing dedicada B' — 3 unidades (4q grandes, inclui órfão do typo) |
-| 4 | `/empreendimento/reserva-barigui/mirante` | **URL nova** | Landing dedicada B' — 2 unidades comerciais |
-| 5 | `/empreendimento/reserva-bairgui` | typo canonical | Google precisa ler `<link rel="canonical">` apontando ao slug correto |
-| 6 | `/imoveis/mossungue` | refresh | Bloco novo "Empreendimentos no Mossunguê" (Sprint B.T) |
+> Sitemap shards 1.xml e 3.xml re-submetidos via MCP em 04/05 19:40 pra
+> forcar Google a refazer o fetch (ultimo era 01/05, antes das URLs novas
+> existirem no sitemap).
 
-### 🟠 P1 — Blogs revisados (2ª rodada português) [4 URLs]
+### ✅ P1 — Blogs revisados (2ª rodada português) [4 URLs] — CONCLUIDO 04/05/2026
 
-Da 2ª rodada (commits `29dfcc2` → `b617900`). Ficaram fora do batch de 03/05
-quando bateu cota.
-
-| # | URL | Imp/3m GSC | Mudança |
-|---|---|---|---|
-| 7 | `/blog/melhores-bairros-curitiba-2026` | 0 | Ahú rentabilidade harmonizada + caveats SESP-PR |
-| 8 | `/blog/batel-vs-agua-verde-curitiba` | 96 | correção factual saúde (Pilar fora Água Verde) + FAQ corrigida |
-| 9 | `/blog/custo-de-vida-curitiba` | 421 | IPS markdown corrigido + "única capital" suavizado + UPA 24h |
-| 10 | `/blog/ecoville-vs-bigorrilho-curitiba` | 2 | Everest #5 ENEM corrigido + HNSG sem números fabricados |
+Da 2ª rodada (commits `29dfcc2` → `b617900`). Submetidos 04/05 apos
+quota resetar. Ver historico abaixo.
 
 ### 🟡 P2 — Empreendimentos top (Tier 2 original) [40 URLs]
 
@@ -214,6 +202,29 @@ Pós 2ª rodada de revisão de português dos 15 blogs:
 `/blog/financiamento-caixa-itau-bradesco-comparativo` ·
 `/blog/preco-metro-quadrado-curitiba-bairro`
 
+### ✅ 04/05/2026 — 10 URLs (P0 completo + P1 4 blogs)
+
+**P0 Reserva Barigui (6 URLs):**
+`/empreendimento/reserva-barigui` (refresh — Sprint A+B+B' + redesign premium 5 commits) ·
+`/empreendimento/reserva-barigui/lago` (URL nova — landing dedicada 6 unidades) ·
+`/empreendimento/reserva-barigui/colina` (URL nova — landing dedicada 3 unidades) ·
+`/empreendimento/reserva-barigui/mirante` (URL nova — landing dedicada 2 unidades comerciais) ·
+`/empreendimento/reserva-bairgui` (typo canonical → slug correto) ·
+`/imoveis/mossungue` (refresh — bloco "Empreendimentos no Mossunguê")
+
+**P1 Blogs 2ª rodada português (4 URLs):**
+`/blog/melhores-bairros-curitiba-2026` ·
+`/blog/batel-vs-agua-verde-curitiba` (96 imp/3m) ·
+`/blog/custo-de-vida-curitiba` (421 imp/3m) ·
+`/blog/ecoville-vs-bigorrilho-curitiba`
+
+**Sitemaps re-submetidos via MCP:**
+`/sitemap/3.xml` (sub-rotas + empreendimentos) ·
+`/sitemap/1.xml` (bairros + combos)
+
+**IndexNow batch (Bing/Yandex/DuckDuckGo):**
+588 URLs aceitas, 0 falhas via `node scripts/indexnow-batch.mjs`.
+
 ---
 
 ## Como validar progresso
@@ -254,13 +265,13 @@ python scripts/seo-gaps-audit.py --all
 
 | Tier | URLs | Status |
 |---|---|---|
-| Sitemaps | 4 | ✅ feito 01/05 via MCP |
-| P0 — Reserva Barigui (URLs novas + redesign) | 6 | ⏳ enviar primeiro |
-| P1 — Blogs 2ª rodada | 4 | ⏳ enviar |
-| P2 — Empreendimentos top | 40 (-1 já em P0) | ⏳ enviar |
+| Sitemaps | 4 | ✅ feito 01/05 + re-submit 04/05 (shards 1+3) |
+| P0 — Reserva Barigui (URLs novas + redesign) | 6 | ✅ 6/6 (04/05) |
+| P1 — Blogs 2ª rodada | 4 | ✅ 4/4 (04/05) |
+| P2 — Empreendimentos top | 39 | ⏳ enviar |
 | P3 — Landings top | 9 (-1 já em P0) | ⏳ enviar |
-| P4 — IndexNow batch | ~600 | ⏳ rodar `node scripts/indexnow-batch.mjs` |
-| **TOTAL pendente** | **59 URLs no GSC + IndexNow** | — |
+| P4 — IndexNow batch | 588 | ✅ 588/588 aceitas, 0 falhas (04/05) |
+| **TOTAL pendente** | **48 URLs no GSC** | — |
 
 **ROI estimado** (precedente real estate): +220-540 cliques/mês orgânicos em
 4-8 semanas após reindex completo (SEOPressor +220% CTR pós-rewrite, Schema
