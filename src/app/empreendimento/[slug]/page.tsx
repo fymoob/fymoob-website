@@ -421,20 +421,26 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
             priority
             quality={92}
           />
-          {/* Overlay bottom-anchored revisado (04/05/2026 v2 GPT):
-              - Topo: gradient leve do escuro pra dar peso editorial
-              - Meio: transparente (vista limpa do parque/skyline)
-              - Bottom: gradient -10% mais leve (era 85%, agora 70%) pra
-                deixar a piscina aparecer mais como ativo visual, nao apenas
-                fundo escuro. Textos compensam com drop-shadow forte. */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent via-50% to-black/70 to-100%" />
+          {/* Overlay bottom-anchored revisado (04/05/2026 v6):
+              - Topo (0-15%): leve escurecimento pra peso editorial do caption
+              - Meio (15-50%): praticamente transparente — vista limpa do
+                parque/skyline (protagonista)
+              - Bottom (50-100%): gradient mais forte (90% no fim) pra dar
+                suporte ao bloco de tagline/subfrase/CTAs. Antes era 70%
+                mas com a reorganizacao (mais texto no bottom) precisa
+                de mais contraste. */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent via-45% to-black/90 to-100%" />
           {/* Vinheta lateral discreta — afasta foco das bordas, joga
               olhar pro centro/horizonte do skyline */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(0,0,0,0.4)_100%)]" />
         </div>
 
-        {/* Caption editorial pequena no TOPO — discreta, sobre a area
-            mais escura do gradient superior */}
+        {/* TOPO — caption + H1 SEO sutil (revisao v6 04/05/2026):
+            - Caption "LANCAMENTO · MOSSUNGUE · CURITIBA" como eyebrow
+            - H1 "Reserva Barigui · Mossungue, Curitiba" abaixo, eyebrow
+              maior pra criar simetria com o bloco bottom (CTA + tagline).
+            Padrao luxury editorial: topo institucional + centro brand +
+            bottom comercial. */}
         <div className="relative z-10 pt-[5.5rem] sm:pt-[6rem]">
           <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
             <p data-reveal className="text-[10px] tracking-[0.4em] text-white/85 drop-shadow-[0_1px_8px_rgba(0,0,0,0.7)] sm:text-[11px]">
@@ -442,6 +448,13 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                 ? `${assets.subtitulo.toUpperCase()} · ${(bairros[0] || "Curitiba").toUpperCase()} · CURITIBA`
                 : `${(bairros[0] || "Curitiba").toUpperCase()} · CURITIBA`}
             </p>
+            {/* H1 SEO movido pro topo (v6) — mantem keyword pro Google
+                + cria simetria editorial. drop-shadow porque area de ceu
+                claro precisa de contraste. */}
+            <h1 data-reveal className="mt-6 font-light text-[11px] tracking-[0.3em] uppercase text-white/70 drop-shadow-[0_1px_6px_rgba(0,0,0,0.55)] sm:text-xs">
+              {emp.nome}
+              {bairros[0] && <span className="text-white/50"> · {bairros[0]}, Curitiba</span>}
+            </h1>
           </div>
         </div>
 
@@ -470,13 +483,10 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                     priority
                   />
                 </div>
-                {/* Linha tecnica — tracking reduzido pra parecer leitura, nao
-                    eyebrow. GPT v5: "letter-spacing forte so em menu/eyebrow/
-                    botao/BARIGUI; pra frases comerciais, normal ou leve negativo". */}
-                <h1 data-reveal className="mt-10 font-serif text-sm font-light tracking-[0.12em] text-white/80 drop-shadow-[0_1px_6px_rgba(0,0,0,0.6)] sm:text-base">
-                  {emp.nome}
-                  {bairros[0] && <span className="text-white/55"> · {bairros[0]}, Curitiba</span>}
-                </h1>
+                {/* H1 movido pro topo (revisao v6 04/05/2026) pra criar
+                    simetria editorial: caption + H1 no topo, logo no meio,
+                    tagline + subfrase + CTAs no bottom. Aqui o linha-tecnica
+                    foi removida — o H1 SEO vive no topo do hero agora. */}
                 {/* Tagline aspiracional — agora segundo ponto focal apos a logo.
                     clamp(24px, 2vw, 38px) com tracking negativo + leading apertada
                     pra ar premium editorial. Override via assets.taglineHero. */}
@@ -490,7 +500,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                         : null)
                   if (!tagline) return null
                   return (
-                    <p data-reveal className="mt-6 text-[clamp(22px,2.2vw,38px)] font-light leading-[1.15] tracking-[-0.035em] text-white/95 drop-shadow-[0_2px_12px_rgba(0,0,0,0.55)]">
+                    <p data-reveal className="mt-10 text-[clamp(22px,2.2vw,38px)] font-light leading-[1.15] tracking-[-0.035em] text-white/95 drop-shadow-[0_2px_12px_rgba(0,0,0,0.55)]">
                       {tagline}
                     </p>
                   )

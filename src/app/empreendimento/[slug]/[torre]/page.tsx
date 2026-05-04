@@ -334,16 +334,24 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
             priority
             quality={90}
           />
-          {/* Overlay revisado v2 (04/05/2026 GPT) — bottom mais leve */}
+          {/* Overlay revisado v6 (04/05/2026) — bottom mais escuro pra
+              suportar o bloco tagline+CTAs reorganizado */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.10)_0%,rgba(255,255,255,0.04)_28%,transparent_55%)]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/25 to-black/70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/25 to-black/85" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_38%,rgba(0,0,0,0.4)_100%)]" />
         </div>
 
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
+          {/* TOPO: caption + H1 SEO (revisao v6 04/05/2026) — reorganizacao
+              luxury editorial. Caption institucional + H1 sutil agrupados
+              no topo, logo no centro, tagline + CTAs bottom. */}
           <p data-reveal className="text-[10px] tracking-[0.4em] text-white/65 sm:text-[11px]">
-            {emp.nome.toUpperCase()} · {bairro.toUpperCase()} · CURITIBA
+            LANÇAMENTO · {bairro.toUpperCase()} · CURITIBA
           </p>
+          <h1 data-reveal className="mt-6 font-light text-[11px] tracking-[0.3em] uppercase text-white/70 drop-shadow-[0_1px_6px_rgba(0,0,0,0.55)] sm:text-xs">
+            {t.nome}
+            <span className="text-white/50"> · {emp.nome}</span>
+          </h1>
           {t.logo ? (
             <div data-reveal className="mt-10 flex justify-center sm:mt-12">
               <Image
@@ -356,12 +364,6 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
               />
             </div>
           ) : null}
-          {/* H1 SEO sutil (eyebrow style) — keyword + bairro pra Google,
-              baixa opacity pra nao competir com a tagline. */}
-          <h1 data-reveal className="mt-10 font-light text-[11px] tracking-[0.3em] uppercase text-white/65 drop-shadow-[0_1px_6px_rgba(0,0,0,0.6)] sm:text-xs">
-            {t.nome}
-            <span className="text-white/45"> · {emp.nome}</span>
-          </h1>
           {/* Tagline aspiracional — segundo ponto focal, clamp(22-38px)
               + tracking negativo pra ar editorial premium. */}
           {allTorreProps.length > 1 && (
