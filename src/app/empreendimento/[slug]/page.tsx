@@ -449,11 +449,14 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         <div className="flex-1" aria-hidden="true" />
 
         {/* Branding bottom-anchored (logo + H1 + tagline + linha tecnica + CTAs)
-            Revisao GPT v2 (04/05/2026): pb maior pra subir o branding e dar
-            respiro entre logo e linha da piscina (era pb-16/20/24, agora
-            pb-24/32/40). Tagline reduzida em peso e tamanho pra nao competir
-            com a logo. */}
-        <div className="relative z-10 px-4 pb-24 sm:px-6 sm:pb-32 lg:pb-40">
+            Revisao GPT v5 (04/05/2026):
+            - pb maior pra subir o bloco 20-40px (pb-32/40/52 vs era 24/32/40)
+            - Tagline AGORA e o segundo ponto focal (clamp 24-38px font-light
+              tracking negativo) — era text-base/lg/xl, ficava perdida
+            - Subtitle com peso normal e leading 1.6 pra leitura confortavel
+            - H1 (linha tecnica) com tracking reduzido (0.12em vs 0.25em)
+            - Mais respiro vertical entre logo e textos (mt-10 vs mt-8) */}
+        <div className="relative z-10 px-4 pb-32 sm:px-6 sm:pb-40 lg:pb-52">
           <div className="mx-auto max-w-4xl text-center">
             {assets.logo ? (
               <>
@@ -467,14 +470,16 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                     priority
                   />
                 </div>
-                <h1 data-reveal className="mt-8 font-serif text-sm font-light tracking-[0.25em] text-white/80 drop-shadow-[0_1px_6px_rgba(0,0,0,0.6)] sm:text-base">
+                {/* Linha tecnica — tracking reduzido pra parecer leitura, nao
+                    eyebrow. GPT v5: "letter-spacing forte so em menu/eyebrow/
+                    botao/BARIGUI; pra frases comerciais, normal ou leve negativo". */}
+                <h1 data-reveal className="mt-10 font-serif text-sm font-light tracking-[0.12em] text-white/80 drop-shadow-[0_1px_6px_rgba(0,0,0,0.6)] sm:text-base">
                   {emp.nome}
                   {bairros[0] && <span className="text-white/55"> · {bairros[0]}, Curitiba</span>}
                 </h1>
-                {/* Tagline aspiracional — peso reduzido (vs era text-3xl
-                    com peso forte). Agora text-base/lg/xl com tracking
-                    tight. Override via assets.taglineHero quando definido,
-                    senao template "Residencial com N unidades". */}
+                {/* Tagline aspiracional — agora segundo ponto focal apos a logo.
+                    clamp(24px, 2vw, 38px) com tracking negativo + leading apertada
+                    pra ar premium editorial. Override via assets.taglineHero. */}
                 {(() => {
                   const tagline =
                     assets.taglineHero ||
@@ -485,13 +490,13 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                         : null)
                   if (!tagline) return null
                   return (
-                    <p data-reveal className="mt-5 text-base font-light tracking-tight text-white/90 drop-shadow-[0_1px_8px_rgba(0,0,0,0.55)] sm:text-lg lg:text-xl">
+                    <p data-reveal className="mt-6 text-[clamp(22px,2.2vw,38px)] font-light leading-[1.15] tracking-[-0.035em] text-white/95 drop-shadow-[0_2px_12px_rgba(0,0,0,0.55)]">
                       {tagline}
                     </p>
                   )
                 })()}
                 {tipos.length > 0 && (
-                  <p data-reveal className="mt-3 text-sm font-light text-white/70 drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)] sm:text-[15px]">
+                  <p data-reveal className="mt-5 text-[14px] font-normal leading-[1.6] text-white/[0.72] drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)]">
                     {(() => {
                       const pluralize = (t: string) => {
                         const lower = t.toLowerCase()
@@ -509,9 +514,11 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                           : visiveis.length === 2
                             ? visiveis.join(" e ")
                             : `${visiveis.slice(0, -1).join(", ")} e ${visiveis[visiveis.length - 1]}`
+                      // "em frente ao Parque Barigui" vende mais que "proximos
+                      // ao". Restrito ao Mossungue (vizinho direto do parque).
                       const proximidade =
                         bairros[0] === "Mossunguê"
-                          ? "próximos ao Parque Barigui"
+                          ? "em frente ao Parque Barigui"
                           : bairros[0]
                             ? `no ${bairros[0]}`
                             : "em Curitiba"
@@ -520,20 +527,24 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                   </p>
                 )}
 
-                <div data-reveal className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+                {/* CTAs — h-11 fixo + tracking 0.14em + font-semibold no
+                    primario (vs era 0.2em font-medium). Secundario com
+                    border/bg mais sutis (32%/4%) e text-white/85 pra
+                    parecer arquitetonico, nao "pilula SaaS". */}
+                <div data-reveal className="mt-9 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
                   <a
                     href={whatsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     data-track="whatsapp_click"
                     data-source="hero_primary"
-                    className="inline-flex items-center gap-2.5 rounded-full bg-[#246B4E] px-7 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white shadow-xl transition hover:bg-[#2B7D5A] sm:px-9 sm:py-4 sm:text-xs"
+                    className="inline-flex h-11 items-center gap-2.5 rounded-full bg-[#246B4E] px-[34px] text-[11px] font-semibold uppercase tracking-[0.14em] text-white shadow-xl transition hover:bg-[#2B7D5A] sm:h-12 sm:px-9"
                   >
                     Agendar visita privativa
                   </a>
                   <Link
                     href="#plantas"
-                    className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/[0.06] px-7 py-3.5 text-[11px] font-light uppercase tracking-[0.2em] text-white shadow-md backdrop-blur-md transition hover:border-white/70 hover:bg-white/20 sm:px-9 sm:py-4 sm:text-xs"
+                    className="inline-flex h-11 items-center gap-2 rounded-full border border-white/[0.32] bg-white/[0.04] px-[30px] text-[11px] font-medium uppercase tracking-[0.14em] text-white/85 shadow-md backdrop-blur-md transition hover:border-white/60 hover:bg-white/15 sm:h-12 sm:px-8"
                   >
                     Ver plantas
                   </Link>

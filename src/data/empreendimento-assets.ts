@@ -34,7 +34,7 @@ export interface EmpreendimentoAssets {
    * Quando definida, substitui o template "Residencial boutique com N
    * unidades". Usar quando o empreendimento tem narrativa propria mais
    * marcante que o template generico (ex: Reserva Barigui usa
-   * "Exclusividade, natureza e vista para o Barigui").
+   * "Um endereço raro diante do Parque Barigui").
    */
   taglineHero?: string
 }
@@ -63,7 +63,7 @@ const assetsMap: Record<string, EmpreendimentoAssets> = {
     lifestyleImage: "/images/empreendimentos/reserva-barigui/lifestyle.jpg",
     tagline: "CURITIBA | REGIÃO DO BARIGUI",
     subtitulo: "LANÇAMENTO",
-    taglineHero: "Exclusividade, natureza e vista para o Barigui",
+    taglineHero: "Um endereço raro diante do Parque Barigui",
     torres: [
       {
         nome: "Reserva Lago",

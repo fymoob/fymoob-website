@@ -356,21 +356,26 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
               />
             </div>
           ) : null}
-          <h1 data-reveal className="mt-10 font-serif text-3xl font-light italic tracking-wider text-white sm:text-4xl lg:text-5xl">
+          {/* H1 SEO sutil (eyebrow style) — keyword + bairro pra Google,
+              baixa opacity pra nao competir com a tagline. */}
+          <h1 data-reveal className="mt-10 font-light text-[11px] tracking-[0.3em] uppercase text-white/65 drop-shadow-[0_1px_6px_rgba(0,0,0,0.6)] sm:text-xs">
             {t.nome}
+            <span className="text-white/45"> · {emp.nome}</span>
           </h1>
+          {/* Tagline aspiracional — segundo ponto focal, clamp(22-38px)
+              + tracking negativo pra ar editorial premium. */}
           {allTorreProps.length > 1 && (
-            <p data-reveal className="mt-5 text-base font-light tracking-tight text-white/90 sm:text-lg lg:text-xl">
+            <p data-reveal className="mt-6 text-[clamp(22px,2.2vw,38px)] font-light leading-[1.15] tracking-[-0.035em] text-white/95 drop-shadow-[0_2px_12px_rgba(0,0,0,0.55)]">
               {allTorreProps.length} unidades exclusivas no complexo {emp.nome}
             </p>
           )}
           {allTorreProps.length === 1 && (
-            <p data-reveal className="mt-5 text-base font-light tracking-tight text-white/90 sm:text-lg lg:text-xl">
+            <p data-reveal className="mt-6 text-[clamp(22px,2.2vw,38px)] font-light leading-[1.15] tracking-[-0.035em] text-white/95 drop-shadow-[0_2px_12px_rgba(0,0,0,0.55)]">
               Unidade exclusiva no complexo {emp.nome}
             </p>
           )}
           {tipos.length > 0 && (
-            <p data-reveal className="mt-3 text-sm font-light text-white/65 sm:text-base">
+            <p data-reveal className="mt-5 text-[14px] font-normal leading-[1.6] text-white/[0.72] drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)]">
               {(() => {
                 const pluralize = (tt: string) => {
                   const lower = tt.toLowerCase()
@@ -388,26 +393,29 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
                     : visiveis.length === 2
                       ? visiveis.join(" e ")
                       : `${visiveis.slice(0, -1).join(", ")} e ${visiveis[visiveis.length - 1]}`
-                const local = bairro === "Mossunguê" ? "no Mossunguê" : `em ${bairro || "Curitiba"}`
-                return `${lista.charAt(0).toUpperCase()}${lista.slice(1)} ${local}, dentro do complexo ${emp.nome}`
+                const local =
+                  bairro === "Mossunguê" ? "em frente ao Parque Barigui" : `em ${bairro || "Curitiba"}`
+                return `${lista.charAt(0).toUpperCase()}${lista.slice(1)} ${local}`
               })()}
             </p>
           )}
 
-          <div data-reveal className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+          {/* CTAs — h-11 fixo + tracking 0.14em + font-semibold no
+              primario. Linguagem unificada com hub. */}
+          <div data-reveal className="mt-9 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
             <a
               href={whatsUrl}
               target="_blank"
               rel="noopener noreferrer"
               data-track="whatsapp_click"
               data-source="hero_primary_torre"
-              className="inline-flex items-center gap-2.5 rounded-full bg-[#246B4E] px-7 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white shadow-lg transition hover:bg-[#2B7D5A] sm:px-9 sm:py-4 sm:text-xs"
+              className="inline-flex h-11 items-center gap-2.5 rounded-full bg-[#246B4E] px-[34px] text-[11px] font-semibold uppercase tracking-[0.14em] text-white shadow-xl transition hover:bg-[#2B7D5A] sm:h-12 sm:px-9"
             >
               Agendar visita privativa
             </a>
             <Link
               href="#plantas"
-              className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/[0.06] px-7 py-3.5 text-[11px] font-light uppercase tracking-[0.2em] text-white shadow-md backdrop-blur-md transition hover:border-white/70 hover:bg-white/20 sm:px-9 sm:py-4 sm:text-xs"
+              className="inline-flex h-11 items-center gap-2 rounded-full border border-white/[0.32] bg-white/[0.04] px-[30px] text-[11px] font-medium uppercase tracking-[0.14em] text-white/85 shadow-md backdrop-blur-md transition hover:border-white/60 hover:bg-white/15 sm:h-12 sm:px-8"
             >
               Ver plantas
             </Link>
