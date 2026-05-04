@@ -19,7 +19,6 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { RelatedPages } from "@/components/seo/RelatedPages"
 import { PlantasCarousel } from "@/components/empreendimento/PlantasCarousel"
-import { WhatsAppTracker } from "@/components/empreendimento/WhatsAppTracker"
 import {
   getEmpreendimentoAssets,
   getTorreFromShortSlug,
@@ -287,7 +286,6 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(combinedSchema) }} />
-      <WhatsAppTracker empreendimentoNome={`${t.nome} - ${emp.nome}`} bairro={bairro} slug={`${slug}/${torre}`} />
 
       {/* Wrapper escuro envolvendo nav + hero (revisao v6.1 04/05/2026):
           Body global tem `bg-background` (branco). Nav sticky e transparente

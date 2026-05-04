@@ -133,6 +133,8 @@ export function LandingSEOContent({ tipo, total }: LandingSEOContentProps) {
             href="https://wa.me/5541999780517?text=Ol%C3%A1!%20Tenho%20interesse%20em%20saber%20mais%20sobre%20os%20im%C3%B3veis%20da%20FYMOOB."
             target="_blank"
             rel="noopener noreferrer"
+            data-track="whatsapp_click"
+            data-source="landing_seo"
             className="font-semibold text-brand-primary hover:underline"
           >
             (41) 99978-0517

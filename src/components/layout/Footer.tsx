@@ -256,6 +256,8 @@ export function Footer() {
                 href="https://wa.me/5541999780517"
                 target="_blank"
                 rel="noopener noreferrer"
+                data-track="whatsapp_click"
+                data-source="footer"
                 className="text-xs text-neutral-500 transition-colors hover:text-[#25D366]"
               >
                 WhatsApp

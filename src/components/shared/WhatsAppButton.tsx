@@ -7,6 +7,11 @@ interface WhatsAppButtonProps {
   className?: string
   children?: React.ReactNode
   size?: "sm" | "md" | "lg"
+  /**
+   * Origem do CTA (capturada pelo `WhatsAppClickTracker` global como
+   * `data-source` no evento `whatsapp_click` GA4). Default: "shared_button".
+   */
+  source?: string
 }
 
 const FYMOOB_PHONE = "554199978-0517".replace(/\D/g, "")
@@ -17,6 +22,7 @@ export function WhatsAppButton({
   className,
   children,
   size = "md",
+  source = "shared_button",
 }: WhatsAppButtonProps) {
   const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
 
@@ -31,6 +37,8 @@ export function WhatsAppButton({
       href={url}
       target="_blank"
       rel="noopener noreferrer"
+      data-track="whatsapp_click"
+      data-source={source}
       className={cn(
         "inline-flex items-center justify-center gap-2 rounded-lg bg-[#25D366] font-medium text-white transition-colors hover:bg-[#20bd5a]",
         sizeClasses[size],

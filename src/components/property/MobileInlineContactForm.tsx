@@ -8,6 +8,7 @@ import { CheckCircle2, Loader2, ShieldCheck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
+import { pushAnalyticsEvent } from "@/lib/analytics"
 import { formatPhoneBR } from "@/lib/utils"
 import { submitLead } from "@/services/client-api"
 
@@ -112,6 +113,12 @@ export function MobileInlineContactForm({
       }
 
       setSubmitStatus("sent")
+      pushAnalyticsEvent("generate_lead", {
+        form_id: "mobile_inline",
+        property_code: propertyCode,
+        interesse,
+        page_path: typeof window !== "undefined" ? window.location.pathname : null,
+      })
       formRef.current?.reset()
       if (widgetId.current && window.turnstile) {
         window.turnstile.reset(widgetId.current)

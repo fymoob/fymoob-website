@@ -21,6 +21,8 @@ export function WhatsAppFloat() {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
+      data-track="whatsapp_click"
+      data-source="float"
       aria-label="Fale conosco pelo WhatsApp"
       className={`fixed bottom-20 right-4 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-all duration-300 hover:scale-110 md:bottom-6 md:right-6 md:h-14 md:w-14 ${isPropertyPage ? "hidden md:flex" : ""}`}
     >

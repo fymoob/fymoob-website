@@ -6,6 +6,7 @@ import Script from "next/script"
 import { Send, Loader2, CheckCircle2, ShieldCheck } from "lucide-react"
 import { formatPhoneBR } from "@/lib/utils"
 import { submitLead } from "@/services/client-api"
+import { pushAnalyticsEvent } from "@/lib/analytics"
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY
 
@@ -98,6 +99,11 @@ export function ContactForm({ interesseOptions, interesseLabel = "Assunto" }: Co
 
       if (result.ok) {
         setStatus("sent")
+        pushAnalyticsEvent("generate_lead", {
+          form_id: "contact_form",
+          interesse: String(data.get("interesse") || "Contato pelo site"),
+          page_path: typeof window !== "undefined" ? window.location.pathname : null,
+        })
         form.reset()
         if (widgetId.current && window.turnstile) {
           window.turnstile.reset(widgetId.current)

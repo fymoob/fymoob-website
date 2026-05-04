@@ -19,7 +19,6 @@ import { getEmpreendimentoAssets, getTorreShortSlug, hasEditorialLayout } from "
 import { PlantasCarousel } from "@/components/empreendimento/PlantasCarousel"
 import { PlantasGallery } from "@/components/empreendimento/PlantasGallery"
 import { VideoLazyEmbed } from "@/components/empreendimento/VideoLazyEmbed"
-import { WhatsAppTracker } from "@/components/empreendimento/WhatsAppTracker"
 import { EmpreendimentoStandardSEOContent } from "@/components/empreendimento/EmpreendimentoStandardSEOContent"
 import type { Property } from "@/types/property"
 import { SITE_URL } from "@/lib/constants"
@@ -341,7 +340,6 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(combinedSchema) }} />
-      <WhatsAppTracker empreendimentoNome={emp.nome} bairro={bairros[0]} slug={slug} />
 
       {/* Wrapper escuro envolvendo nav + hero (revisao v6.1 04/05/2026):
           Body global tem `bg-background` (branco em light mode). O nav

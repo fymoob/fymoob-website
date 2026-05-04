@@ -212,6 +212,14 @@ export function ContactSidebar({
       }
 
       setSubmitStatus("sent")
+      pushAnalyticsEvent("generate_lead", {
+        form_id: "contact_sidebar",
+        property_code: propertyCode,
+        page_variant: variant,
+        interesse,
+        is_consult_price: shouldShowConsultPrice,
+        page_path: typeof window !== "undefined" ? window.location.pathname : null,
+      })
       formRef.current?.reset()
       if (widgetId.current && window.turnstile) {
         window.turnstile.reset(widgetId.current)

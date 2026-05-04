@@ -4,6 +4,7 @@ import * as React from "react"
 import { Phone, MessageCircle, Loader2, CheckCircle2 } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
 import { submitLead } from "@/services/client-api"
+import { pushAnalyticsEvent } from "@/lib/analytics"
 
 interface PropertyContactProps {
   propertyTitle: string
@@ -54,6 +55,12 @@ export function PropertyContact({
       }
 
       setStatus("success")
+      pushAnalyticsEvent("generate_lead", {
+        form_id: "property_contact",
+        property_code: propertyCode,
+        interesse: finalidade === "Locação" || finalidade === "Venda e Locação" ? "Aluguel" : "Venda",
+        page_path: typeof window !== "undefined" ? window.location.pathname : null,
+      })
       formRef.current?.reset()
     } catch (err) {
       setStatus("error")
@@ -79,6 +86,9 @@ export function PropertyContact({
           href={whatsUrl}
           target="_blank"
           rel="noopener noreferrer"
+          data-track="whatsapp_click"
+          data-source="property_contact_card"
+          data-property={propertyCode}
           className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#25D366] py-3 text-sm font-semibold text-white transition hover:bg-[#1da851]"
         >
           <MessageCircle className="h-4 w-4" />

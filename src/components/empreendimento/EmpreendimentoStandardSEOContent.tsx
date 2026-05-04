@@ -218,6 +218,10 @@ export function EmpreendimentoStandardSEOContent({
                   href="https://wa.me/5541999780517"
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-track="whatsapp_click"
+                  data-source="emp_seo_units"
+                  data-empreendimento={emp.nome}
+                  data-bairro={bairro}
                   className="font-semibold text-brand-primary hover:underline"
                 >
                   (41) 99978-0517
@@ -277,6 +281,10 @@ export function EmpreendimentoStandardSEOContent({
               )}`}
               target="_blank"
               rel="noopener noreferrer"
+              data-track="whatsapp_click"
+              data-source="emp_seo_fymoob"
+              data-empreendimento={emp.nome}
+              data-bairro={bairro}
               className="font-semibold text-brand-primary hover:underline"
             >
               (41) 99978-0517

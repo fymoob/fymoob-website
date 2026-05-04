@@ -30,6 +30,10 @@ const DeferredGA = dynamic(
   () => import("@/components/analytics/DeferredGA").then((m) => ({ default: m.DeferredGA })),
   { ssr: true }
 );
+const WhatsAppClickTracker = dynamic(
+  () => import("@/components/analytics/WhatsAppClickTracker").then((m) => ({ default: m.WhatsAppClickTracker })),
+  { ssr: true }
+);
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
 
 const satoshi = localFont({
@@ -132,6 +136,9 @@ export default function RootLayout({
         <WhatsAppFloat />
         <BottomNav />
         {GA_ID && <DeferredGA gaId={GA_ID} />}
+        {/* Listener global pra cliques em [data-track="whatsapp_click"]
+            — captura Float, Footer, LandingSEOContent, EmpSEOContent etc. */}
+        {GA_ID && <WhatsAppClickTracker />}
         {/* RUM field data (p75 LCP/INP/CLS de usuarios reais) — precondicao
             para validar empiricamente otimizacoes Tier 1+ do roadmap perf.
             Dashboard: Vercel > Project > Speed Insights. */}
