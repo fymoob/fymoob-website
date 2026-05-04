@@ -46,9 +46,14 @@ import { SITE_URL } from "@/lib/constants"
  * - FAQ + cronograma de entrega especifico
  * - CTA WhatsApp com mensagem por torre
  *
- * Compensa duplicate-content soft via canonical → hub. Google indexa as
- * 3 sub-rotas como entidades ricas pra capturar query especifica e usa o
- * hub como autoridade primaria do complexo.
+ * Canonical self-referencing — cada sub-rota e canonical de si mesma.
+ * Antes (B' inicial) o canonical apontava pro hub na intencao de "consolidar
+ * autoridade", mas Google obedeceu literalmente e nao indexou /colina e
+ * /mirante (GSC reportou "Crawled - currently not indexed" em 04/05/2026).
+ * Conteudo do Sprint B' ja e diferenciado o suficiente pra indexar separado:
+ * hero proprio, plantas filtradas, unidades filtradas, FAQ especifica.
+ * Schema RealEstateListing.isPartOf aponta pro hub e mantem sinal de
+ * relacionamento sem dar hint de "nao indexe".
  */
 
 interface TorreSubRouteProps {
@@ -145,7 +150,7 @@ export async function generateMetadata({ params }: TorreSubRouteProps): Promise<
   return {
     title: { absolute: title },
     description,
-    alternates: { canonical: `/empreendimento/${slug}` },
+    alternates: { canonical: `/empreendimento/${slug}/${torre}` },
     keywords: [
       t.nome,
       `${t.nome} ${bairroText}`,
