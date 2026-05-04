@@ -53,3 +53,7 @@ lighthouse-*.json
 
 # claude local overrides
 .claude/settings.local.json
+
+# Analytics Intelligence — JSONs de evidencia gerados pelo skill weekly-report.
+# Audit trail temporario, mantido localmente. Markdown final commitado em docs/seo/reports/.
+tmp/intel/
