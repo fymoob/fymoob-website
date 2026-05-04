@@ -34,10 +34,17 @@ export interface EmpreendimentoAssets {
 const assetsMap: Record<string, EmpreendimentoAssets> = {
   "reserva-barigui": {
     logo: "/images/empreendimentos/reserva-barigui/logo-reserva-barigui.png",
-    heroImage: "/images/empreendimentos/reserva-barigui/folhas-bg.jpg",
+    // Hero & parallax recriados em alta qualidade (03/05/2026). PNGs source
+    // (~2MB cada) convertidos pra WebP q85 (-95% bytes, qualidade visual
+    // intacta). PNGs originais ficam no repo pra possivel re-export futuro.
+    // - folhas.webp 217KB (1672x941): hero background, servido via <Image>
+    //   do Next que ainda pode converter pra AVIF via Accept header em prod.
+    // - pool.webp 98KB (1536x1024): parallax CSS background — nao passa pelo
+    //   Next Image Optimizer, por isso WebP direto e essencial.
+    heroImage: "/images/empreendimentos/reserva-barigui/folhas.webp",
     heroOverlayImage: "/images/empreendimentos/reserva-barigui/folhas-hero.png",
     parallaxImages: [
-      "/images/empreendimentos/reserva-barigui/piscina.jpg",
+      "/images/empreendimentos/reserva-barigui/pool.webp",
       "/images/empreendimentos/reserva-barigui/panoramica.jpg",
       "/images/empreendimentos/reserva-barigui/localizacao.jpg",
     ],

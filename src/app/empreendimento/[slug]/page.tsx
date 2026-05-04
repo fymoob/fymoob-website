@@ -569,25 +569,25 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         </div>
       </section>
 
-      {/* ===== PARALLAX 1 — Piscina/lake (com tratamento editorial pra
-            mascarar imagem em qualidade baixa enquanto nao recriam) ===== */}
+      {/* ===== PARALLAX 1 — Piscina/lake (imagem HD recriada 03/05/2026)
+            Imagem agora em qualidade premium (pool.webp 98KB), entao tiramos
+            a vinheta radial que mascarava baixa resolucao. So gradient
+            sutil bottom pra legibilidade da frase editorial. */}
       {assets.parallaxImages[0] && (
-        <div className="relative h-[55vh] overflow-hidden md:h-[75vh]">
+        <div className="relative h-[60vh] overflow-hidden md:h-[80vh]">
           <div
             className="absolute inset-0 bg-fixed bg-center bg-cover"
             style={{ backgroundImage: `url(${assets.parallaxImages[0]})` }}
           />
-          {/* Tratamento editorial: gradient escuro nas bordas + sutil
-              vinheta + frase sobreposta. Disfarcar baixa qualidade ate
-              imagem ser recriada. */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/30 to-black/65" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,rgba(0,0,0,0.4)_100%)]" />
-          <div className="absolute inset-0 flex items-center justify-center px-6">
-            <div className="max-w-2xl text-center">
-              <p data-reveal className="text-[10px] tracking-[0.4em] text-white/65 sm:text-[11px]">
+          {/* Gradient suave so na metade inferior pra legibilidade do texto
+              sem comprometer a foto. */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/15 to-black/65" />
+          <div className="absolute inset-x-0 bottom-0 px-6 pb-12 sm:pb-16 md:pb-20">
+            <div className="mx-auto max-w-3xl text-center">
+              <p data-reveal className="text-[10px] tracking-[0.4em] text-white/75 sm:text-[11px]">
                 VISTA INFINITA · PARQUE BARIGUI
               </p>
-              <p data-reveal className="emp-pull-quote mt-6 text-2xl text-white sm:text-4xl lg:text-5xl">
+              <p data-reveal className="emp-pull-quote mt-5 text-2xl text-white sm:text-4xl lg:text-5xl drop-shadow-[0_2px_16px_rgba(0,0,0,0.5)]">
                 A natureza vira parte
                 <br className="hidden sm:block" /> da sua casa.
               </p>
