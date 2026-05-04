@@ -410,7 +410,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
           - Gradient bottom mais sofisticado pra fundir com proxima section
           - data-reveal nas peças textuais
           ======================================================== */}
-      <section className="relative -mt-[3rem] flex h-[92vh] min-h-[640px] items-center justify-center overflow-hidden bg-neutral-950 sm:-mt-[3.25rem]">
+      <section className="relative -mt-[3rem] flex h-[94vh] min-h-[680px] flex-col overflow-hidden bg-neutral-950 sm:-mt-[3.25rem]">
         <div className="absolute inset-0">
           <Image
             src={assets.heroImage}
@@ -419,136 +419,142 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
             className="emp-kenburns object-cover"
             sizes="100vw"
             priority
-            quality={90}
+            quality={92}
           />
-          {/* Overlay multi-camada (revisao GPT 04/05/2026 v2):
-              - Glow radial mais controlado atras do logo (10% no centro,
-                4% no meio, transparente em 55%) — janela de luz arquitetonica
-              - Vinheta linear vertical: clareou meio + escureceu base
-              - Vinheta radial: laterais ainda escuras, miolo respira mais
-              Resultado: sensacao de "luz pousada no meio", nao de selva
-              fechada. Fundo vira ambiente, logo ganha destaque. */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.10)_0%,rgba(255,255,255,0.04)_28%,transparent_55%)]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/25 to-black/85" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_38%,rgba(0,0,0,0.5)_100%)]" />
+          {/* Overlay bottom-anchored (caminho A — 04/05/2026):
+              Imagem da piscina infinity tem 3 zonas: ceu claro (topo, claro
+              de mais pra branco), parque/skyline (meio, contraste medio) e
+              piscina (bottom, agua escura). Logo branca + textos vao sobre
+              a piscina onde tem max contraste; ceu fica limpo pra mostrar
+              a vista premium.
+              - Topo: gradient leve do escuro descendo (so pra dar peso
+                editorial sem cobrir o sunset)
+              - Meio: praticamente transparente
+              - Bottom: gradient mais forte pra dar suporte aos textos
+                + vinheta inferior pra logo branca brilhar */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent via-50% to-black/85 to-100%" />
+          {/* Vinheta lateral discreta — afasta foco das bordas, joga
+              olhar pro centro/horizonte do skyline */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(0,0,0,0.45)_100%)]" />
         </div>
 
-        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
-          {/* Caption editorial — formato compactado e mais especifico */}
-          <p data-reveal className="text-[10px] tracking-[0.4em] text-white/65 sm:text-[11px]">
-            {assets.subtitulo
-              ? `${assets.subtitulo.toUpperCase()} · ${(bairros[0] || "Curitiba").toUpperCase()} · CURITIBA`
-              : `${(bairros[0] || "Curitiba").toUpperCase()} · CURITIBA`}
-          </p>
-
-          {assets.logo ? (
-            <>
-              <div data-reveal className="mt-10 flex justify-center sm:mt-12">
-                <Image
-                  src={assets.logo}
-                  alt={`${emp.nome} — logo do empreendimento em ${bairros[0] || "Curitiba"}`}
-                  width={500}
-                  height={240}
-                  className="h-auto max-h-[200px] w-auto max-w-[82vw] object-contain drop-shadow-[0_4px_28px_rgba(0,0,0,0.5)] sm:max-h-[260px] sm:max-w-[500px]"
-                  priority
-                />
-              </div>
-              {/* H1 SEO + tagline aspiracional + linha tecnica
-                  (GPT 04/05/2026 v2):
-                  - H1 mantem keyword exata pra Google ("Reserva Barigui ·
-                    Mossunguê, Curitiba")
-                  - Tagline forte sem italico, peso normal, off-white —
-                    "Residencial boutique com apenas N unidades" comunica
-                    exclusividade sem ser promocional
-                  - Linha tecnica abaixo: "Studios, apartamentos e duplex
-                    proximos ao Parque Barigui" — descreve produto + lugar
-                    sem repetir o que o H1 ja disse */}
-              <h1 data-reveal className="mt-10 font-serif text-sm font-light tracking-[0.25em] text-white/80 sm:text-base">
-                {emp.nome}
-                {bairros[0] && <span className="text-white/50"> · {bairros[0]}, Curitiba</span>}
-              </h1>
-              {properties.length > 1 && (
-                <p data-reveal className="mt-6 text-xl font-light text-white/95 sm:text-2xl lg:text-3xl">
-                  Residencial boutique com apenas {properties.length} unidades
-                </p>
-              )}
-              {properties.length === 1 && (
-                <p data-reveal className="mt-6 text-xl font-light text-white/95 sm:text-2xl lg:text-3xl">
-                  Residencial boutique com unidade exclusiva
-                </p>
-              )}
-              {tipos.length > 0 && (
-                <p data-reveal className="mt-4 text-sm font-light text-white/70 sm:text-base">
-                  {(() => {
-                    const pluralize = (t: string) => {
-                      const lower = t.toLowerCase()
-                      if (lower === "studio") return "studios"
-                      if (lower === "apartamento") return "apartamentos"
-                      if (lower === "apartamento duplex") return "duplex"
-                      if (lower === "sala comercial") return "salas comerciais"
-                      if (lower === "loja") return "lojas"
-                      return lower.endsWith("s") ? lower : `${lower}s`
-                    }
-                    const visiveis = tipos.slice(0, 3).map(pluralize)
-                    const lista =
-                      visiveis.length === 1
-                        ? visiveis[0]
-                        : visiveis.length === 2
-                          ? visiveis.join(" e ")
-                          : `${visiveis.slice(0, -1).join(", ")} e ${visiveis[visiveis.length - 1]}`
-                    const proximidade =
-                      bairros[0] === "Mossunguê"
-                        ? "próximos ao Parque Barigui"
-                        : bairros[0]
-                          ? `no ${bairros[0]}`
-                          : "em Curitiba"
-                    return `${lista.charAt(0).toUpperCase()}${lista.slice(1)} ${proximidade}`
-                  })()}
-                </p>
-              )}
-
-              {/* CTAs centrais — primario verde dessaturado (#246B4E
-                  menos "WhatsApp"), secundario outline mais visivel
-                  (border 28%, bg 3%, hover 10%). */}
-              <div data-reveal className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-                <a
-                  href={whatsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-track="whatsapp_click"
-                  data-source="hero_primary"
-                  className="inline-flex items-center gap-2.5 rounded-full bg-[#246B4E] px-7 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white shadow-lg transition hover:bg-[#2B7D5A] sm:px-9 sm:py-4 sm:text-xs"
-                >
-                  Agendar visita privativa
-                </a>
-                <Link
-                  href="#plantas"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/[0.28] bg-white/[0.03] px-7 py-3.5 text-[11px] font-light uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm transition hover:border-white/55 hover:bg-white/10 sm:px-9 sm:py-4 sm:text-xs"
-                >
-                  Ver plantas
-                </Link>
-              </div>
-            </>
-          ) : (
-            <>
-              <h1 data-reveal className="mt-6 font-serif text-5xl font-light italic tracking-widest text-white sm:text-6xl lg:text-7xl">
-                {emp.nome}
-              </h1>
-              {bairros[0] && (
-                <p data-reveal className="mt-4 text-xs tracking-[0.3em] text-white/70 sm:text-sm">
-                  {bairros[0].toUpperCase()} · CURITIBA
-                </p>
-              )}
-            </>
-          )}
+        {/* Caption editorial pequena no TOPO — discreta, sobre a area
+            mais escura do gradient superior */}
+        <div className="relative z-10 pt-[5.5rem] sm:pt-[6rem]">
+          <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
+            <p data-reveal className="text-[10px] tracking-[0.4em] text-white/85 drop-shadow-[0_1px_8px_rgba(0,0,0,0.7)] sm:text-[11px]">
+              {assets.subtitulo
+                ? `${assets.subtitulo.toUpperCase()} · ${(bairros[0] || "Curitiba").toUpperCase()} · CURITIBA`
+                : `${(bairros[0] || "Curitiba").toUpperCase()} · CURITIBA`}
+            </p>
+          </div>
         </div>
 
-        {/* Indicador minimal — linha vertical fina + chevron, sem texto.
-            Sutilmente animado pra sugerir scroll sem competir com hierarquia. */}
-        <div className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2">
-          <div className="flex flex-col items-center gap-2">
-            <span className="block h-8 w-px bg-gradient-to-b from-transparent via-white/40 to-white/60" />
-            <ChevronDown className="h-3.5 w-3.5 animate-bounce text-white/55" />
+        {/* Spacer flexivel — empurra o branding pro bottom */}
+        <div className="flex-1" aria-hidden="true" />
+
+        {/* Branding bottom-anchored (logo + H1 + tagline + linha tecnica + CTAs)
+            Posicionado sobre a piscina escura onde a logo branca tem max
+            contraste. drop-shadow forte pra robustez em qualquer renderizacao. */}
+        <div className="relative z-10 px-4 pb-16 sm:px-6 sm:pb-20 lg:pb-24">
+          <div className="mx-auto max-w-4xl text-center">
+            {assets.logo ? (
+              <>
+                <div data-reveal className="flex justify-center">
+                  <Image
+                    src={assets.logo}
+                    alt={`${emp.nome} — logo do empreendimento em ${bairros[0] || "Curitiba"}`}
+                    width={500}
+                    height={240}
+                    className="h-auto max-h-[180px] w-auto max-w-[78vw] object-contain drop-shadow-[0_6px_32px_rgba(0,0,0,0.6)] sm:max-h-[220px] sm:max-w-[460px]"
+                    priority
+                  />
+                </div>
+                <h1 data-reveal className="mt-8 font-serif text-sm font-light tracking-[0.25em] text-white/80 drop-shadow-[0_1px_6px_rgba(0,0,0,0.6)] sm:text-base">
+                  {emp.nome}
+                  {bairros[0] && <span className="text-white/55"> · {bairros[0]}, Curitiba</span>}
+                </h1>
+                {properties.length > 1 && (
+                  <p data-reveal className="mt-5 text-xl font-light text-white/95 drop-shadow-[0_1px_8px_rgba(0,0,0,0.55)] sm:text-2xl lg:text-3xl">
+                    Residencial boutique com apenas {properties.length} unidades
+                  </p>
+                )}
+                {properties.length === 1 && (
+                  <p data-reveal className="mt-5 text-xl font-light text-white/95 drop-shadow-[0_1px_8px_rgba(0,0,0,0.55)] sm:text-2xl lg:text-3xl">
+                    Residencial boutique com unidade exclusiva
+                  </p>
+                )}
+                {tipos.length > 0 && (
+                  <p data-reveal className="mt-3 text-sm font-light text-white/70 drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)] sm:text-base">
+                    {(() => {
+                      const pluralize = (t: string) => {
+                        const lower = t.toLowerCase()
+                        if (lower === "studio") return "studios"
+                        if (lower === "apartamento") return "apartamentos"
+                        if (lower === "apartamento duplex") return "duplex"
+                        if (lower === "sala comercial") return "salas comerciais"
+                        if (lower === "loja") return "lojas"
+                        return lower.endsWith("s") ? lower : `${lower}s`
+                      }
+                      const visiveis = tipos.slice(0, 3).map(pluralize)
+                      const lista =
+                        visiveis.length === 1
+                          ? visiveis[0]
+                          : visiveis.length === 2
+                            ? visiveis.join(" e ")
+                            : `${visiveis.slice(0, -1).join(", ")} e ${visiveis[visiveis.length - 1]}`
+                      const proximidade =
+                        bairros[0] === "Mossunguê"
+                          ? "próximos ao Parque Barigui"
+                          : bairros[0]
+                            ? `no ${bairros[0]}`
+                            : "em Curitiba"
+                      return `${lista.charAt(0).toUpperCase()}${lista.slice(1)} ${proximidade}`
+                    })()}
+                  </p>
+                )}
+
+                <div data-reveal className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+                  <a
+                    href={whatsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-track="whatsapp_click"
+                    data-source="hero_primary"
+                    className="inline-flex items-center gap-2.5 rounded-full bg-[#246B4E] px-7 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white shadow-xl transition hover:bg-[#2B7D5A] sm:px-9 sm:py-4 sm:text-xs"
+                  >
+                    Agendar visita privativa
+                  </a>
+                  <Link
+                    href="#plantas"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/[0.32] bg-white/[0.05] px-7 py-3.5 text-[11px] font-light uppercase tracking-[0.2em] text-white/95 backdrop-blur-sm transition hover:border-white/60 hover:bg-white/15 sm:px-9 sm:py-4 sm:text-xs"
+                  >
+                    Ver plantas
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <h1 data-reveal className="font-serif text-5xl font-light italic tracking-widest text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.7)] sm:text-6xl lg:text-7xl">
+                  {emp.nome}
+                </h1>
+                {bairros[0] && (
+                  <p data-reveal className="mt-4 text-xs tracking-[0.3em] text-white/80 sm:text-sm">
+                    {bairros[0].toUpperCase()} · CURITIBA
+                  </p>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Indicador minimal — linha + chevron no canto bottom direito
+            (caminho A: branding fica no centro-bottom, scroll hint mais
+            sutil pra nao competir). */}
+        <div className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 sm:bottom-8">
+          <div className="flex flex-col items-center gap-1.5">
+            <span className="block h-6 w-px bg-gradient-to-b from-transparent to-white/55" />
+            <ChevronDown className="h-3 w-3 animate-bounce text-white/50" />
           </div>
         </div>
       </section>
