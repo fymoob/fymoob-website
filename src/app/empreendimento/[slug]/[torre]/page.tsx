@@ -284,24 +284,57 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(combinedSchema) }} />
       <WhatsAppTracker empreendimentoNome={`${t.nome} - ${emp.nome}`} bairro={bairro} slug={`${slug}/${torre}`} />
 
-      {/* ===== HERO ===== */}
-      <section className="relative flex h-[60vh] min-h-[480px] items-center justify-center overflow-hidden bg-neutral-900">
+      {/* ===== Smart Nav (Pacote 1) — sticky transparente sobre hero,
+            vira glass-dark conforme passa ===== */}
+      <nav
+        aria-label="Navegação rápida"
+        className="emp-smart-nav sticky top-0 z-40 border-b border-transparent text-[11px] font-medium tracking-[0.15em] sm:text-xs"
+      >
+        <div className="mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 py-3 sm:gap-2 sm:px-6 sm:py-3.5 lg:px-8">
+          <Link href={`/empreendimento/${slug}`} className="shrink-0 rounded-full px-2.5 py-1 uppercase opacity-90 transition hover:opacity-100">
+            ← {emp.nome}
+          </Link>
+          <span className="shrink-0 px-1 opacity-30">·</span>
+          <Link href="#sobre" className="shrink-0 rounded-full px-3 py-1.5 uppercase opacity-80 transition hover:bg-white/10 hover:opacity-100">
+            Sobre
+          </Link>
+          <Link href="#plantas" className="shrink-0 rounded-full px-3 py-1.5 uppercase opacity-80 transition hover:bg-white/10 hover:opacity-100">
+            Plantas
+          </Link>
+          <Link href="#unidades" className="shrink-0 rounded-full px-3 py-1.5 uppercase opacity-80 transition hover:bg-white/10 hover:opacity-100">
+            Unidades
+          </Link>
+          <a
+            href={whatsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track="whatsapp_click"
+            data-source="navbar_torre"
+            className="ml-auto shrink-0 rounded-full bg-[#25D366] px-4 py-1.5 uppercase text-white shadow-sm transition hover:bg-[#1da851]"
+          >
+            WhatsApp
+          </a>
+        </div>
+      </nav>
+
+      {/* ===== HERO premium (Pacote 3+5) — ken burns + hierarquia limpa ===== */}
+      <section className="relative -mt-[3rem] flex h-[78vh] min-h-[560px] items-center justify-center overflow-hidden bg-neutral-950 sm:-mt-[3.25rem]">
         <div className="absolute inset-0">
           <Image
             src={heroImage}
             alt={`${t.nome} — render da torre do ${emp.nome}${construtora ? ` (${construtora})` : ""} em ${bairro}, Curitiba`}
             fill
-            className="object-cover"
+            className="emp-kenburns object-cover"
             sizes="100vw"
             priority
             quality={90}
           />
-          <div className="absolute inset-0 bg-black/55" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/55 to-black/85" />
         </div>
 
-        <div className="absolute top-6 left-0 right-0 z-10 sm:top-8">
+        <div className="absolute top-[3.75rem] left-0 right-0 z-10 sm:top-[4rem]">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="[&_nav]:text-white/70 [&_a]:text-white/70 [&_a:hover]:text-white [&_span]:text-white/90">
+            <div className="[&_nav]:text-white/55 [&_a]:text-white/55 [&_a:hover]:text-white/90 [&_span]:text-white/85">
               <Breadcrumbs
                 items={[
                   { name: "Home", url: "/" },
@@ -315,74 +348,62 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
         </div>
 
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <p className="text-[10px] tracking-[0.35em] text-white/80 sm:text-xs">
+          <p data-reveal className="text-[10px] tracking-[0.4em] text-white/55 sm:text-[11px]">
             {emp.nome.toUpperCase()} · {bairro.toUpperCase()}
           </p>
           {t.logo ? (
-            <div className="mt-6 flex justify-center">
+            <div data-reveal className="mt-8 flex justify-center sm:mt-10">
               <Image
                 src={t.logo}
                 alt={`Logo ${t.nome} — ${emp.nome}${construtora ? ` (${construtora})` : ""}`}
                 width={500}
                 height={200}
-                className="h-auto max-h-[140px] w-auto max-w-[70vw] object-contain sm:max-h-[180px] sm:max-w-[380px]"
+                className="h-auto max-h-[160px] w-auto max-w-[78vw] object-contain drop-shadow-[0_4px_24px_rgba(0,0,0,0.4)] sm:max-h-[200px] sm:max-w-[420px]"
                 priority
               />
             </div>
           ) : null}
-          <h1 className="mt-6 font-serif text-3xl font-light italic tracking-wider text-white sm:text-4xl lg:text-5xl">
+          <h1 data-reveal className="mt-10 font-serif text-3xl font-light italic tracking-wider text-white sm:text-4xl lg:text-5xl">
             {t.nome}
           </h1>
-          <p className="mt-3 text-xs tracking-[0.25em] text-white/75 sm:text-sm">
-            {emp.nome} · {bairro}, Curitiba
-          </p>
           {tipos.length > 0 && (
-            <p className="mt-4 text-[11px] tracking-[0.3em] text-white/70 sm:text-xs">
-              {tipos.join(" · ").toUpperCase()}
-              {allTorreProps.length > 0 && ` · ${allTorreProps.length} ${allTorreProps.length === 1 ? "UNIDADE" : "UNIDADES"}`}
-            </p>
+            <div data-reveal className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[10px] tracking-[0.3em] text-white/65 sm:text-[11px]">
+              {tipos.slice(0, 3).map((tt, i) => (
+                <span key={tt}>
+                  {i > 0 && <span className="mx-1.5 text-white/30">·</span>}
+                  <span className="rounded-full border border-white/15 bg-white/[0.04] px-2.5 py-1 uppercase backdrop-blur-sm">
+                    {tt}
+                  </span>
+                </span>
+              ))}
+              {allTorreProps.length > 0 && (
+                <span>
+                  <span className="mx-1.5 text-white/30">·</span>
+                  <span className="rounded-full border border-[#c9a876]/30 bg-[#c9a876]/10 px-2.5 py-1 uppercase tracking-[0.3em] text-[#d4b888] backdrop-blur-sm">
+                    {allTorreProps.length} {allTorreProps.length === 1 ? "Unidade" : "Unidades"}
+                  </span>
+                </span>
+              )}
+            </div>
           )}
         </div>
       </section>
 
-      {/* ===== Sticky nav ===== */}
-      <nav
-        aria-label="Navegação rápida"
-        className="sticky top-0 z-30 border-b border-neutral-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85"
-      >
-        <div className="mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 py-2.5 text-[11px] font-medium tracking-[0.15em] text-neutral-600 sm:gap-2 sm:px-6 sm:text-xs lg:px-8">
-          <Link href="#sobre" className="shrink-0 rounded-full px-3 py-1.5 uppercase transition hover:bg-neutral-100 hover:text-neutral-900">Sobre</Link>
-          <Link href="#plantas" className="shrink-0 rounded-full px-3 py-1.5 uppercase transition hover:bg-neutral-100 hover:text-neutral-900">Plantas</Link>
-          <Link href="#unidades" className="shrink-0 rounded-full px-3 py-1.5 uppercase transition hover:bg-neutral-100 hover:text-neutral-900">Unidades</Link>
-          <Link href={`/empreendimento/${slug}`} className="shrink-0 rounded-full px-3 py-1.5 uppercase transition hover:bg-neutral-100 hover:text-neutral-900">Voltar ao {emp.nome}</Link>
-          <a
-            href={whatsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-track="whatsapp_click"
-            data-source="navbar_torre"
-            className="ml-auto shrink-0 rounded-full bg-[#25D366] px-4 py-1.5 uppercase text-white transition hover:bg-[#1da851]"
-          >
-            WhatsApp
-          </a>
-        </div>
-      </nav>
-
       {/* ===== SECTION — Sobre a torre ===== */}
       <section id="sobre" className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <p className="font-serif text-[11px] uppercase tracking-[0.3em] text-[#c9a876]">
+          <p data-reveal className="font-serif text-[11px] uppercase tracking-[0.3em] text-[#c9a876]">
             Conheça a torre
           </p>
-          <h2 className="mt-3 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl">
+          <h2 data-reveal className="mt-3 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl">
             {t.nome}
           </h2>
           {t.descricao && (
-            <p className="mt-6 text-lg leading-relaxed text-neutral-700">
+            <p data-reveal className="mt-6 text-lg leading-relaxed text-neutral-700">
               {t.descricao}
             </p>
           )}
-          <div className="mt-10 grid grid-cols-2 gap-6 border-t border-neutral-200 pt-8 sm:grid-cols-4">
+          <div className="mt-10 grid grid-cols-2 gap-6 border-t border-neutral-200 pt-8 sm:grid-cols-4" data-reveal-stagger>
             <div>
               <p className="font-serif text-2xl font-light text-neutral-900">{allTorreProps.length}</p>
               <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-neutral-500">{allTorreProps.length === 1 ? "Unidade" : "Unidades"}</p>
@@ -432,20 +453,20 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
 
       {/* ===== SECTION — Plantas ===== */}
       {plantasFinal.length > 0 && (
-        <section id="plantas" className="bg-neutral-50 py-20 md:py-28">
+        <section id="plantas" className="bg-gradient-to-b from-neutral-50 to-neutral-100 py-20 md:py-28">
           <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
             <div className="text-center">
-              <p className="font-serif text-[11px] uppercase tracking-[0.3em] text-[#c9a876]">
+              <p data-reveal className="font-serif text-[11px] uppercase tracking-[0.3em] text-[#c9a876]">
                 {t.nome}
               </p>
-              <h2 className="mt-3 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl">
+              <h2 data-reveal className="mt-3 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
                 Plantas disponíveis
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-sm text-neutral-600">
+              <p data-reveal className="mx-auto mt-4 max-w-2xl text-sm text-neutral-600">
                 {plantasFinal.length} {plantasFinal.length === 1 ? "opção" : "opções"} de planta — clique para ampliar
               </p>
             </div>
-            <div className="mt-12">
+            <div data-reveal className="mt-12">
               <PlantasCarousel
                 plantas={plantasFinal}
                 torreNome={t.nome}
@@ -462,10 +483,13 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
       <section id="unidades" className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl">
-              Unidades disponíveis no {t.nome}
+            <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876] sm:text-[11px]">
+              CATÁLOGO {t.nome.toUpperCase()}
+            </p>
+            <h2 data-reveal className="mt-4 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
+              Unidades disponíveis
             </h2>
-            <p className="mt-3 text-sm text-neutral-500">
+            <p data-reveal className="mt-3 text-sm text-neutral-500">
               {allTorreProps.length} {allTorreProps.length === 1 ? "unidade" : "unidades"}{precoMin ? ` · a partir de ${formatPrice(precoMin)}` : ""}
             </p>
           </div>
@@ -487,7 +511,7 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
               </a>
             </div>
           ) : (
-            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
               {allTorreProps.map((p) => (
                 <Link
                   key={p.codigo}
@@ -537,52 +561,66 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
         </div>
       </section>
 
-      {/* ===== SECTION — Outras torres do hub ===== */}
+      {/* ===== SECTION — Outras torres do hub (premium card style igual hub) ===== */}
       {outrasTorres.length > 0 && (
-        <section className="bg-neutral-50 py-20 md:py-28">
+        <section className="bg-gradient-to-b from-neutral-50 to-neutral-100 py-20 md:py-28">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center">
-              <p className="font-serif text-[11px] uppercase tracking-[0.3em] text-[#c9a876]">
+              <p data-reveal className="font-serif text-[11px] uppercase tracking-[0.3em] text-[#c9a876]">
                 Outras torres do {emp.nome}
               </p>
-              <h2 className="mt-3 font-serif text-2xl font-light italic tracking-tight text-neutral-900 sm:text-3xl">
+              <h2 data-reveal className="mt-3 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl">
                 Conheça também
               </h2>
             </div>
-            <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2" data-reveal-stagger>
               {outrasTorres.map((other) => {
                 const otherSlug = getTorreShortSlug(other.nome)
                 return (
                   <Link
                     key={other.nome}
                     href={`/empreendimento/${slug}/${otherSlug}`}
-                    className="group flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                    className="group relative flex aspect-[5/4] overflow-hidden rounded-3xl bg-neutral-900 shadow-xl transition-all duration-500 hover:shadow-2xl hover:shadow-[#c9a876]/20"
                   >
                     {other.render && (
-                      <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-neutral-200">
+                      <Image
+                        src={other.render}
+                        alt={`${other.nome} — render da torre do ${emp.nome}${construtora ? ` (${construtora})` : ""} em ${bairro}, Curitiba`}
+                        fill
+                        className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        loading="lazy"
+                      />
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-black/45" />
+                    {other.logo && (
+                      <div className="absolute top-6 left-1/2 -translate-x-1/2 sm:top-8">
                         <Image
-                          src={other.render}
-                          alt={`${other.nome} — render da torre do ${emp.nome}${construtora ? ` (${construtora})` : ""} em ${bairro}, Curitiba`}
-                          fill
-                          className="object-cover transition duration-700 group-hover:scale-105"
-                          sizes="(max-width: 768px) 100vw, 50vw"
-                          loading="lazy"
+                          src={other.logo}
+                          alt={`Logo ${other.nome} · ${emp.nome}`}
+                          width={220}
+                          height={88}
+                          className="h-auto max-h-[64px] w-auto max-w-[180px] object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] sm:max-h-[80px] sm:max-w-[220px]"
                         />
                       </div>
                     )}
-                    <div className="mt-5">
-                      <p className="font-serif text-xl font-light italic tracking-wider text-neutral-900">
-                        {other.nome}
-                      </p>
+                    <div className="relative z-10 mt-auto flex w-full flex-col p-6 sm:p-8">
+                      {!other.logo && (
+                        <h3 className="mb-4 font-serif text-2xl font-light italic tracking-wider text-white">
+                          {other.nome}
+                        </h3>
+                      )}
                       {other.descricao && (
-                        <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-neutral-600">
+                        <p className="mb-5 line-clamp-2 text-sm leading-relaxed text-white/90">
                           {other.descricao}
                         </p>
                       )}
-                      <p className="mt-4 text-xs font-medium uppercase tracking-[0.15em] text-[#c9a876]">
-                        Conheça a {other.nome} →
-                      </p>
+                      <span className="ml-auto inline-flex items-center gap-2 rounded-full bg-[#c9a876] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition group-hover:bg-[#b8966a]">
+                        Conhecer
+                        <span className="transition-transform group-hover:translate-x-1">→</span>
+                      </span>
                     </div>
+                    <div className="pointer-events-none absolute inset-0 rounded-3xl ring-0 ring-[#c9a876]/0 transition-all duration-500 group-hover:ring-2 group-hover:ring-[#c9a876]/50" />
                   </Link>
                 )
               })}
@@ -592,12 +630,15 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
       )}
 
       {/* ===== SECTION — Final CTA ===== */}
-      <section id="contato" className="relative overflow-hidden bg-[#1a1a1a] py-20 md:py-28">
+      <section id="contato" className="relative overflow-hidden bg-gradient-to-b from-[#0d0d0d] via-[#1a1a1a] to-[#0d0d0d] py-20 md:py-28">
         <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
-          <h2 className="font-serif text-3xl font-light italic tracking-[0.15em] text-white sm:text-4xl">
+          <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876] sm:text-[11px]">
+            FALE COM A FYMOOB
+          </p>
+          <h2 data-reveal className="mt-4 font-serif text-3xl font-light italic tracking-tight text-white sm:text-4xl lg:text-5xl">
             Agende sua visita
           </h2>
-          <p className="mt-4 text-sm text-white/60">
+          <p data-reveal className="mt-4 text-sm text-white/60">
             Especialista FYMOOB pronto pra apresentar o {t.nome} ({emp.nome})
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-4">

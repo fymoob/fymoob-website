@@ -342,104 +342,33 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(combinedSchema) }} />
       <WhatsAppTracker empreendimentoNome={emp.nome} bairro={bairros[0]} slug={slug} />
 
-      {/* ===== EDITORIAL HERO — 65vh with logo centered ===== */}
-      <section className="relative flex h-[65vh] min-h-[500px] items-center justify-center overflow-hidden bg-neutral-900">
-        <div className="absolute inset-0">
-          <Image
-            src={assets.heroImage}
-            alt={`${emp.nome} — fachada do empreendimento ${bairros[0] ? `em ${bairros[0]}, ` : ""}Curitiba${construtora ? ` (${construtora})` : ""}`}
-            fill
-            className="object-cover"
-            sizes="100vw"
-            priority
-            quality={90}
-          />
-          <div className="absolute inset-0 bg-black/50" />
-        </div>
-
-        <div className="absolute top-6 left-0 right-0 z-10 sm:top-8">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="[&_nav]:text-white/70 [&_a]:text-white/70 [&_a:hover]:text-white [&_span]:text-white/90">
-              <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Empreendimentos", url: "/empreendimentos" }, { name: emp.nome, url: `/empreendimento/${slug}` }]} />
-            </div>
-          </div>
-        </div>
-
-        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
-          {assets.tagline && (
-            <p className="text-[10px] tracking-[0.35em] text-white/80 sm:text-xs">
-              {assets.tagline}
-            </p>
-          )}
-
-          {assets.subtitulo && (
-            <p className="mt-6 text-[10px] tracking-[0.4em] text-white/60">
-              {assets.subtitulo}
-            </p>
-          )}
-
-          {assets.logo ? (
-            <>
-              <div className="mt-4 flex justify-center">
-                <Image
-                  src={assets.logo}
-                  alt={`${emp.nome} — logo do empreendimento em ${bairros[0] || "Curitiba"}`}
-                  width={500}
-                  height={240}
-                  className="h-auto max-h-[160px] w-auto max-w-[70vw] object-contain sm:max-h-[220px] sm:max-w-[420px]"
-                  priority
-                />
-              </div>
-              {/* H1 visivel pra SEO — Google parseia headings visiveis com peso
-                  diferente. Logo continua como brand visual; H1 carrega palavra-chave
-                  primaria + bairro pra capturar queries: "reserva barigui mossungue",
-                  "apartamento reserva barigui", etc. */}
-              <h1 className="mt-6 font-serif text-base font-light tracking-[0.2em] text-white/90 sm:text-lg">
-                {emp.nome}
-                {bairros[0] && <span className="text-white/60"> · {bairros[0]}, Curitiba</span>}
-              </h1>
-              {tipos.length > 0 && (
-                <p className="mt-3 text-[11px] tracking-[0.3em] text-white/70 sm:text-xs">
-                  {tipos.join(" · ").toUpperCase()}
-                  {properties.length > 0 && ` · ${properties.length} ${properties.length === 1 ? "UNIDADE" : "UNIDADES"}`}
-                </p>
-              )}
-            </>
-          ) : (
-            <>
-              <h1 className="mt-6 font-serif text-5xl font-light italic tracking-widest text-white sm:text-6xl lg:text-7xl">
-                {emp.nome}
-              </h1>
-              {bairros[0] && (
-                <p className="mt-3 text-xs tracking-[0.3em] text-white/70 sm:text-sm">
-                  {bairros[0].toUpperCase()} · CURITIBA
-                </p>
-              )}
-            </>
-          )}
-        </div>
-
-        <div className="absolute bottom-6 left-0 right-0 z-10 flex justify-center">
-          <ChevronDown className="h-5 w-5 animate-bounce text-white/60" />
-        </div>
-      </section>
-
-      {/* ===== Sticky anchor nav — SEO + UX (3 CTAs distribuidos pela jornada) ===== */}
+      {/* ========================================================
+          SMART NAV — Sprint design (03/05/2026)
+          Sticky desde o topo. CSS scroll-driven (animation-timeline:
+          scroll()) muda de transparente -> glass-dark conforme passa
+          do hero. Nao quebra layout do hero (sticky + transparent =
+          esta sobre o hero, nao tira altura). Fallback automatico
+          para browsers sem support: dark glass desde o inicio.
+          ======================================================== */}
       <nav
         aria-label="Navegação rápida"
-        className="sticky top-0 z-30 border-b border-neutral-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85"
+        className="emp-smart-nav sticky top-0 z-40 border-b border-transparent text-[11px] font-medium tracking-[0.15em] sm:text-xs"
       >
-        <div className="mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 py-2.5 text-[11px] font-medium tracking-[0.15em] text-neutral-600 sm:gap-2 sm:px-6 sm:text-xs lg:px-8">
-          <Link href="#plantas" className="shrink-0 rounded-full px-3 py-1.5 uppercase transition hover:bg-neutral-100 hover:text-neutral-900">
+        <div className="mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 py-3 sm:gap-2 sm:px-6 sm:py-3.5 lg:px-8">
+          <Link href={`/empreendimento/${slug}`} className="shrink-0 rounded-full px-2.5 py-1 uppercase opacity-90 transition hover:opacity-100">
+            {emp.nome}
+          </Link>
+          <span className="shrink-0 px-1 opacity-30">·</span>
+          <Link href="#plantas" className="shrink-0 rounded-full px-3 py-1.5 uppercase opacity-80 transition hover:bg-white/10 hover:opacity-100">
             Plantas
           </Link>
-          <Link href="#precos" className="shrink-0 rounded-full px-3 py-1.5 uppercase transition hover:bg-neutral-100 hover:text-neutral-900">
+          <Link href="#precos" className="shrink-0 rounded-full px-3 py-1.5 uppercase opacity-80 transition hover:bg-white/10 hover:opacity-100">
             Preços
           </Link>
-          <Link href="#infraestrutura" className="shrink-0 rounded-full px-3 py-1.5 uppercase transition hover:bg-neutral-100 hover:text-neutral-900">
+          <Link href="#infraestrutura" className="shrink-0 rounded-full px-3 py-1.5 uppercase opacity-80 transition hover:bg-white/10 hover:opacity-100">
             Lazer
           </Link>
-          <Link href="#localizacao" className="shrink-0 rounded-full px-3 py-1.5 uppercase transition hover:bg-neutral-100 hover:text-neutral-900">
+          <Link href="#localizacao" className="shrink-0 rounded-full px-3 py-1.5 uppercase opacity-80 transition hover:bg-white/10 hover:opacity-100">
             Localização
           </Link>
           <a
@@ -448,36 +377,160 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
             rel="noopener noreferrer"
             data-track="whatsapp_click"
             data-source="navbar"
-            className="ml-auto shrink-0 rounded-full bg-[#25D366] px-4 py-1.5 uppercase text-white transition hover:bg-[#1da851]"
+            className="ml-auto shrink-0 rounded-full bg-[#25D366] px-4 py-1.5 uppercase text-white shadow-sm transition hover:bg-[#1da851]"
           >
             WhatsApp
           </a>
         </div>
       </nav>
 
+      {/* ========================================================
+          EDITORIAL HERO — Premium redesign (03/05/2026)
+          Mudancas vs versao anterior:
+          - Ken Burns lento (.emp-kenburns) na imagem de fundo
+          - -mt-[var(--nav-h)] negativo zerado (nav e sticky-transparent,
+            nao tira altura entao hero ja comeca do topo)
+          - Hierarquia simplificada: 1 caption + logo + 1 H1 + 1 stats
+          - Gradient bottom mais sofisticado pra fundir com proxima section
+          - data-reveal nas peças textuais
+          ======================================================== */}
+      <section className="relative -mt-[3rem] flex h-[88vh] min-h-[600px] items-center justify-center overflow-hidden bg-neutral-950 sm:-mt-[3.25rem]">
+        <div className="absolute inset-0">
+          <Image
+            src={assets.heroImage}
+            alt={`${emp.nome} — fachada do empreendimento ${bairros[0] ? `em ${bairros[0]}, ` : ""}Curitiba${construtora ? ` (${construtora})` : ""}`}
+            fill
+            className="emp-kenburns object-cover"
+            sizes="100vw"
+            priority
+            quality={90}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/55 to-black/85" />
+        </div>
+
+        <div className="absolute top-[3.75rem] left-0 right-0 z-10 sm:top-[4rem]">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="[&_nav]:text-white/55 [&_a]:text-white/55 [&_a:hover]:text-white/90 [&_span]:text-white/85">
+              <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Empreendimentos", url: "/empreendimentos" }, { name: emp.nome, url: `/empreendimento/${slug}` }]} />
+            </div>
+          </div>
+        </div>
+
+        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
+          {/* Caption: tagline + bairro/cidade combinados em 1 linha sutil */}
+          <p data-reveal className="text-[10px] tracking-[0.4em] text-white/55 sm:text-[11px]">
+            {assets.tagline || `${(bairros[0] || "Curitiba").toUpperCase()} · CURITIBA`}
+            {assets.subtitulo && <span className="ml-3 text-[#c9a876]/80">· {assets.subtitulo}</span>}
+          </p>
+
+          {assets.logo ? (
+            <>
+              <div data-reveal className="mt-8 flex justify-center sm:mt-10">
+                <Image
+                  src={assets.logo}
+                  alt={`${emp.nome} — logo do empreendimento em ${bairros[0] || "Curitiba"}`}
+                  width={500}
+                  height={240}
+                  className="h-auto max-h-[180px] w-auto max-w-[78vw] object-contain drop-shadow-[0_4px_24px_rgba(0,0,0,0.4)] sm:max-h-[240px] sm:max-w-[460px]"
+                  priority
+                />
+              </div>
+              {/* H1 visivel pra SEO — Google parseia headings visiveis com peso
+                  diferente. Logo continua como brand visual; H1 carrega palavra-chave
+                  primaria + bairro pra capturar queries: "reserva barigui mossungue",
+                  "apartamento reserva barigui", etc. */}
+              <h1 data-reveal className="mt-10 font-serif text-sm font-light tracking-[0.25em] text-white/95 sm:text-base">
+                {emp.nome}
+                {bairros[0] && <span className="text-white/60"> · {bairros[0]}, Curitiba</span>}
+              </h1>
+              {tipos.length > 0 && (
+                <div data-reveal className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[10px] tracking-[0.3em] text-white/65 sm:text-[11px]">
+                  {tipos.slice(0, 3).map((t, i) => (
+                    <span key={t}>
+                      {i > 0 && <span className="mx-1.5 text-white/30">·</span>}
+                      <span className="rounded-full border border-white/15 bg-white/[0.04] px-2.5 py-1 uppercase backdrop-blur-sm">
+                        {t}
+                      </span>
+                    </span>
+                  ))}
+                  {properties.length > 0 && (
+                    <span>
+                      <span className="mx-1.5 text-white/30">·</span>
+                      <span className="rounded-full border border-[#c9a876]/30 bg-[#c9a876]/10 px-2.5 py-1 uppercase tracking-[0.3em] text-[#d4b888] backdrop-blur-sm">
+                        {properties.length} {properties.length === 1 ? "Unidade" : "Unidades"}
+                      </span>
+                    </span>
+                  )}
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              <h1 data-reveal className="mt-6 font-serif text-5xl font-light italic tracking-widest text-white sm:text-6xl lg:text-7xl">
+                {emp.nome}
+              </h1>
+              {bairros[0] && (
+                <p data-reveal className="mt-4 text-xs tracking-[0.3em] text-white/70 sm:text-sm">
+                  {bairros[0].toUpperCase()} · CURITIBA
+                </p>
+              )}
+            </>
+          )}
+        </div>
+
+        <div className="absolute bottom-8 left-0 right-0 z-10 flex flex-col items-center gap-2">
+          <span className="text-[9px] tracking-[0.35em] text-white/50 uppercase">Role para descobrir</span>
+          <ChevronDown className="h-4 w-4 animate-bounce text-white/50" />
+        </div>
+      </section>
+
+      {/* ========================================================
+          PULL QUOTE — gradient bridge entre hero (escuro com folhas)
+          e a section "Saiba mais" (escura solida). Cria respiro
+          editorial e quebra a transicao abrupta.
+          ======================================================== */}
+      <section className="relative bg-gradient-to-b from-neutral-950 via-[#0d0d0d] to-[#1a1a1a] py-20 md:py-28">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
+          {assets.tagline && (
+            <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876]/70 sm:text-xs">
+              {assets.tagline}
+            </p>
+          )}
+          <p data-reveal className="emp-pull-quote mt-8 text-3xl text-white/95 sm:text-5xl lg:text-6xl">
+            Onde o Parque Barigui
+            <br className="hidden sm:block" /> encontra a sofisticação urbana.
+          </p>
+          {construtora && (
+            <p data-reveal className="mt-10 text-[10px] tracking-[0.4em] text-white/50 sm:text-[11px]">
+              UM EMPREENDIMENTO {construtora.toUpperCase()}
+            </p>
+          )}
+        </div>
+      </section>
+
       {/* ===== SECTION 1 — Intro with video ===== */}
       <section className="relative bg-[#1a1a1a] py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
-              <p className="font-serif text-3xl font-light italic leading-tight tracking-tight text-[#c9a876] sm:text-4xl lg:text-5xl">Na frente, o parque.</p>
-              <p className="mt-2 font-serif text-3xl font-light italic leading-tight tracking-tight text-[#c9a876] sm:text-4xl lg:text-5xl">Ao lado, o shopping.</p>
-              <p className="mt-2 font-serif text-3xl font-light italic leading-tight tracking-tight text-[#c9a876] sm:text-4xl lg:text-5xl">E no centro, você.</p>
+              <p data-reveal className="font-serif text-3xl font-light italic leading-tight tracking-tight text-[#c9a876] sm:text-4xl lg:text-5xl">Na frente, o parque.</p>
+              <p data-reveal className="mt-2 font-serif text-3xl font-light italic leading-tight tracking-tight text-[#c9a876] sm:text-4xl lg:text-5xl">Ao lado, o shopping.</p>
+              <p data-reveal className="mt-2 font-serif text-3xl font-light italic leading-tight tracking-tight text-[#c9a876] sm:text-4xl lg:text-5xl">E no centro, você.</p>
 
               {descricao && (
-                <div className="mt-10 whitespace-pre-line text-[15px] leading-relaxed text-neutral-300">
+                <div data-reveal className="mt-10 whitespace-pre-line text-[15px] leading-relaxed text-neutral-300">
                   {descricao}
                 </div>
               )}
 
               {precoMin && (
-                <div className="mt-10 flex items-baseline gap-3">
+                <div data-reveal className="mt-10 flex items-baseline gap-3">
                   <p className="text-xs uppercase tracking-[0.25em] text-neutral-400">A partir de</p>
                   <p className="font-serif text-3xl font-light text-white">{formatPrice(precoMin)}</p>
                 </div>
               )}
 
-              <div className="mt-8 flex flex-wrap gap-3">
+              <div data-reveal className="mt-8 flex flex-wrap gap-3">
                 <a
                   href={whatsUrl}
                   target="_blank"
@@ -499,7 +552,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
             </div>
 
             {videoUrl && (
-              <div className="overflow-hidden rounded-lg">
+              <div data-reveal className="overflow-hidden rounded-lg">
                 <div className="relative aspect-video">
                   <iframe
                     src={videoUrl}
@@ -516,13 +569,30 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         </div>
       </section>
 
-      {/* ===== PARALLAX 1 — Piscina/lake ===== */}
+      {/* ===== PARALLAX 1 — Piscina/lake (com tratamento editorial pra
+            mascarar imagem em qualidade baixa enquanto nao recriam) ===== */}
       {assets.parallaxImages[0] && (
-        <div className="relative h-[50vh] overflow-hidden md:h-[70vh]">
+        <div className="relative h-[55vh] overflow-hidden md:h-[75vh]">
           <div
             className="absolute inset-0 bg-fixed bg-center bg-cover"
             style={{ backgroundImage: `url(${assets.parallaxImages[0]})` }}
           />
+          {/* Tratamento editorial: gradient escuro nas bordas + sutil
+              vinheta + frase sobreposta. Disfarcar baixa qualidade ate
+              imagem ser recriada. */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/30 to-black/65" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,rgba(0,0,0,0.4)_100%)]" />
+          <div className="absolute inset-0 flex items-center justify-center px-6">
+            <div className="max-w-2xl text-center">
+              <p data-reveal className="text-[10px] tracking-[0.4em] text-white/65 sm:text-[11px]">
+                VISTA INFINITA · PARQUE BARIGUI
+              </p>
+              <p data-reveal className="emp-pull-quote mt-6 text-2xl text-white sm:text-4xl lg:text-5xl">
+                A natureza vira parte
+                <br className="hidden sm:block" /> da sua casa.
+              </p>
+            </div>
+          </div>
         </div>
       )}
 
@@ -558,7 +628,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         {assets.implantacaoImage && (
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-20 lg:px-8">
             <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16">
-              <div className="relative aspect-square overflow-hidden">
+              <div data-reveal className="relative aspect-square overflow-hidden">
                 <Image
                   src={assets.implantacaoImage}
                   alt={`Implantação do ${emp.nome}${bairros[0] ? ` em ${bairros[0]}, Curitiba` : ""} — vista aérea com torres e áreas de lazer`}
@@ -570,7 +640,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
               </div>
 
               <div>
-                <h3 className="font-serif text-3xl font-light tracking-[0.15em] text-neutral-900 sm:text-4xl">
+                <h3 data-reveal className="font-serif text-3xl font-light tracking-[0.15em] text-neutral-900 sm:text-4xl">
                   Um complexo
                   <br />
                   <span className="italic">imobiliário único.</span>
@@ -604,22 +674,81 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         )}
       </section>
 
-      {/* ===== SECTION 3 — Torres + Plantas ===== */}
+      {/* ========================================================
+          STATS SOLO — Bloco editorial com 3 numeros grandes em
+          isolamento. Cria respiro entre "Saiba mais" e "Torres",
+          reforca escala do complexo com data points memoraveis.
+          ======================================================== */}
       {assets.torres && assets.torres.length > 0 && (
-        <section id="plantas" className="bg-neutral-50 py-20 md:py-28">
+        <section className="relative overflow-hidden bg-white py-20 md:py-28">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-8" data-reveal-stagger>
+              <div className="text-center">
+                <p className="font-serif text-5xl font-extralight tracking-tight text-neutral-900 sm:text-6xl lg:text-7xl">
+                  {assets.torres.length}
+                </p>
+                <div className="mx-auto mt-3 h-px w-12 bg-[#c9a876]" />
+                <p className="mt-4 text-[10px] tracking-[0.3em] text-neutral-500 sm:text-[11px]">
+                  TORRES INDEPENDENTES
+                </p>
+                <p className="mt-2 text-xs text-neutral-400 sm:text-sm">
+                  {assets.torres.map((t) => t.nome.replace(/^Reserva /, "")).join(" · ")}
+                </p>
+              </div>
+              <div className="text-center md:border-x md:border-neutral-200">
+                <p className="font-serif text-5xl font-extralight tracking-tight text-neutral-900 sm:text-6xl lg:text-7xl">
+                  8.000<span className="text-2xl text-neutral-500 sm:text-3xl"> m²</span>
+                </p>
+                <div className="mx-auto mt-3 h-px w-12 bg-[#c9a876]" />
+                <p className="mt-4 text-[10px] tracking-[0.3em] text-neutral-500 sm:text-[11px]">
+                  BOSQUE PRESERVADO
+                </p>
+                <p className="mt-2 text-xs text-neutral-400 sm:text-sm">
+                  mata nativa dentro do condomínio
+                </p>
+              </div>
+              <div className="text-center">
+                <p className="font-serif text-5xl font-extralight tracking-tight text-neutral-900 sm:text-6xl lg:text-7xl">
+                  1,4<span className="text-2xl text-neutral-500 sm:text-3xl"> mi m²</span>
+                </p>
+                <div className="mx-auto mt-3 h-px w-12 bg-[#c9a876]" />
+                <p className="mt-4 text-[10px] tracking-[0.3em] text-neutral-500 sm:text-[11px]">
+                  PARQUE BARIGUI
+                </p>
+                <p className="mt-2 text-xs text-neutral-400 sm:text-sm">
+                  em frente ao empreendimento
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ===== SECTION 3 — Torres + Plantas (Pacote 4 redesign) =====
+          Cards refeitos: render full-bleed aspect 4:5, logo overlay top,
+          descricao bottom com gradient, hover zoom + sombra dourada,
+          CTA prominente. Plantas movidas pra grid separado abaixo. */}
+      {assets.torres && assets.torres.length > 0 && (
+        <section
+          id="plantas"
+          className="relative overflow-hidden bg-gradient-to-b from-white via-neutral-50 to-neutral-100 py-20 md:py-28"
+        >
           {/* anchor secundario pra deep-links de empreendimentos especificos */}
           <span id="empreendimentos" className="block -translate-y-20" aria-hidden="true" />
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center">
-              <h2 className="font-serif text-2xl font-light italic tracking-[0.15em] text-neutral-900 sm:text-3xl">
+              <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876] sm:text-[11px]">
+                CONHEÇA AS TORRES
+              </p>
+              <h2 data-reveal className="mt-4 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
                 Três empreendimentos independentes
               </h2>
-              <p className="mt-2 font-serif text-lg font-light italic text-neutral-600 sm:text-xl">
+              <p data-reveal className="mt-3 font-serif text-lg font-light italic text-neutral-500 sm:text-xl">
                 para você morar, trabalhar ou ambos
               </p>
             </div>
 
-            <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
+            <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3" data-reveal-stagger>
               {assets.torres.map((torre) => {
                 // Auto-fetch plantas from CRM for this torre's empreendimento.
                 // Static fallback (torre.plantas) is torre-specific by design —
@@ -644,73 +773,131 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                 const torreAnchor = `torre-${torreShortSlug}`
 
                 return (
-                  <div
+                  <Link
                     key={torre.nome}
                     id={torreAnchor}
-                    className="group flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white p-5 shadow-md transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl scroll-mt-20"
+                    href={`/empreendimento/${slug}/${torreShortSlug}`}
+                    className="group relative flex aspect-[4/5] overflow-hidden rounded-3xl bg-neutral-900 shadow-xl scroll-mt-24 transition-all duration-500 hover:shadow-2xl hover:shadow-[#c9a876]/20"
                   >
-                    {torre.render && (
-                      <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-neutral-200">
+                    {torre.render ? (
+                      <Image
+                        src={torre.render}
+                        alt={`${torre.nome} — render da torre do ${emp.nome}${construtora ? ` (${construtora})` : ""}${bairros[0] ? ` em ${bairros[0]}, Curitiba` : ""}`}
+                        fill
+                        className="object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-110"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        loading="lazy"
+                      />
+                    ) : null}
+
+                    {/* Gradient overlay — bottom para texto, top para logo */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/35 to-black/55" />
+
+                    {/* Logo da torre — overlay top-center */}
+                    {torre.logo && (
+                      <div className="absolute top-6 left-1/2 -translate-x-1/2 sm:top-8">
                         <Image
-                          src={torre.render}
-                          alt={`${torre.nome} — render da torre do ${emp.nome}${construtora ? ` (${construtora})` : ""}${bairros[0] ? ` em ${bairros[0]}, Curitiba` : ""}`}
-                          fill
-                          className="object-cover transition duration-700 group-hover:scale-105"
-                          sizes="(max-width: 768px) 100vw, 33vw"
-                          loading="lazy"
+                          src={torre.logo}
+                          alt={`Logo ${torre.nome} · ${emp.nome}`}
+                          width={220}
+                          height={88}
+                          className="h-auto max-h-[64px] w-auto max-w-[180px] object-contain drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)] sm:max-h-[80px] sm:max-w-[220px]"
                         />
                       </div>
                     )}
 
-                    <div className="mt-6 text-center">
-                      {torre.logo ? (
-                        <Image
-                          src={torre.logo}
-                          alt={`Logo ${torre.nome} · ${emp.nome}`}
-                          width={200}
-                          height={70}
-                          className="mx-auto h-14 w-auto object-contain"
-                        />
-                      ) : (
-                        <h3 className="font-serif text-2xl font-light italic tracking-wider text-neutral-900">
+                    {/* Conteudo bottom — descricao + CTA */}
+                    <div className="relative z-10 mt-auto flex w-full flex-col p-6 sm:p-8">
+                      {!torre.logo && (
+                        <h3 className="mb-4 font-serif text-2xl font-light italic tracking-wider text-white">
                           {torre.nome}
                         </h3>
                       )}
-
                       {torre.descricao && (
-                        <p className="mt-4 text-sm leading-relaxed text-neutral-600">
+                        <p className="mb-5 line-clamp-3 text-sm leading-relaxed text-white/90">
                           {torre.descricao}
                         </p>
                       )}
+                      <div className="flex items-center justify-between gap-3">
+                        {torrePlantas.length > 0 && (
+                          <span className="text-[10px] tracking-[0.25em] uppercase text-white/55">
+                            {torrePlantas.length} {torrePlantas.length === 1 ? "planta" : "plantas"}
+                          </span>
+                        )}
+                        <span className="ml-auto inline-flex items-center gap-2 rounded-full bg-[#c9a876] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition group-hover:bg-[#b8966a]">
+                          Conhecer
+                          <span className="transition-transform group-hover:translate-x-1">→</span>
+                        </span>
+                      </div>
                     </div>
 
-                    {torrePlantas.length > 0 && (
-                      <PlantasCarousel
-                        plantas={torrePlantas}
-                        torreNome={torre.nome}
-                        empreendimentoNome={emp.nome}
-                        bairro={bairros[0]}
-                        construtora={construtora || undefined}
-                      />
-                    )}
-
-                    {/* Sprint B.4 — anchor text descritivo (era "Saiba mais"
-                        generico, agora carrega keyword da torre). Link aponta
-                        pra sub-rota /empreendimento/[hub]/[torreShortSlug]
-                        (Sprint B.7) — Google ve cada torre como entidade
-                        propria via title/H1/description focados na torre. */}
-                    <div className="mt-auto pt-6 flex flex-col items-center gap-3">
-                      <Link
-                        href={`/empreendimento/${slug}/${torreShortSlug}`}
-                        className="inline-flex items-center gap-2 rounded-full bg-[#c9a876] px-5 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
-                      >
-                        Conheça a {torre.nome}
-                      </Link>
-                    </div>
-                  </div>
+                    {/* Hover: borda dourada sutil */}
+                    <div className="pointer-events-none absolute inset-0 rounded-3xl ring-0 ring-[#c9a876]/0 transition-all duration-500 group-hover:ring-2 group-hover:ring-[#c9a876]/50" />
+                  </Link>
                 )
               })}
             </div>
+
+            {/* Carrousels de plantas em painel separado abaixo do grid de
+                torres (limpa visual dos cards e cria secao dedicada de
+                plantas por torre). */}
+            {assets.torres.some((torre) => {
+              const torreProperties = properties.filter((p) =>
+                p.empreendimento?.toLowerCase() === torre.nome.toLowerCase(),
+              )
+              const plantasFromCRM = [
+                ...new Set(
+                  torreProperties.flatMap((p) =>
+                    (p.fotosPorTipo || [])
+                      .filter((f) => f.tipo.toLowerCase() === "planta")
+                      .map((f) => f.foto),
+                  ),
+                ),
+              ]
+              const torrePlantas = plantasFromCRM.length > 0 ? plantasFromCRM : torre.plantas || []
+              return torrePlantas.length > 0
+            }) && (
+              <div className="mt-20" data-reveal>
+                <p className="text-center text-[10px] tracking-[0.4em] text-[#c9a876] sm:text-[11px]">
+                  PLANTAS POR TORRE
+                </p>
+                <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-3" data-reveal-stagger>
+                  {assets.torres.map((torre) => {
+                    const torreProperties = properties.filter((p) =>
+                      p.empreendimento?.toLowerCase() === torre.nome.toLowerCase(),
+                    )
+                    const plantasFromCRM = [
+                      ...new Set(
+                        torreProperties.flatMap((p) =>
+                          (p.fotosPorTipo || [])
+                            .filter((f) => f.tipo.toLowerCase() === "planta")
+                            .map((f) => f.foto),
+                        ),
+                      ),
+                    ]
+                    const torrePlantas = plantasFromCRM.length > 0 ? plantasFromCRM : torre.plantas || []
+                    if (torrePlantas.length === 0) return <div key={`empty-${torre.nome}`} />
+                    return (
+                      <div
+                        key={`plantas-${torre.nome}`}
+                        className="rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm"
+                      >
+                        <p className="text-center text-[10px] font-medium uppercase tracking-[0.25em] text-neutral-500">
+                          {torre.nome}
+                        </p>
+                        <PlantasCarousel
+                          plantas={torrePlantas}
+                          torreNome={torre.nome}
+                          empreendimentoNome={emp.nome}
+                          bairro={bairros[0]}
+                          construtora={construtora || undefined}
+                        />
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -720,13 +907,18 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         <span id="unidades" className="block -translate-y-20" aria-hidden="true" />
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="font-serif text-2xl font-light italic tracking-[0.15em] text-neutral-900 sm:text-3xl">
+            <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876] sm:text-[11px]">
+              CATÁLOGO COMPLETO
+            </p>
+            <h2 data-reveal className="mt-4 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
               Unidades disponíveis
             </h2>
-            <p className="mt-3 text-sm text-neutral-500">{properties.length} {properties.length === 1 ? "unidade" : "unidades"} para morar ou investir</p>
+            <p data-reveal className="mt-3 text-sm text-neutral-500">
+              {properties.length} {properties.length === 1 ? "unidade" : "unidades"} para morar ou investir
+            </p>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
             {properties.map((p) => (
               <Link key={p.codigo} href={`/imovel/${p.slug}`} className="group overflow-hidden rounded-sm border border-neutral-200 bg-white transition hover:border-[#c9a876] hover:shadow-lg">
                 <div className="relative aspect-[4/3] overflow-hidden">
@@ -756,11 +948,17 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         <section id="infraestrutura" className="bg-neutral-50 py-20 md:py-28">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center">
-              <h2 className="font-serif text-2xl font-light italic tracking-[0.15em] text-neutral-900 sm:text-3xl">
+              <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876] sm:text-[11px]">
+                LAZER COMPLETO
+              </p>
+              <h2 data-reveal className="mt-4 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
                 Infraestrutura do condomínio
               </h2>
+              <p data-reveal className="mt-3 text-sm text-neutral-500">
+                {infraestrutura.length} itens de lazer e conveniência
+              </p>
             </div>
-            <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3">
+            <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3" data-reveal-stagger>
               {infraestrutura.map((item) => {
                 const Icon = getPropertyFeatureIcon(item)
                 return (
@@ -779,17 +977,20 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
       <section id="localizacao" className="bg-white py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="font-serif text-2xl font-light italic tracking-[0.15em] text-neutral-900 sm:text-3xl">
+            <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876] sm:text-[11px]">
+              ENDEREÇO PRIVILEGIADO
+            </p>
+            <h2 data-reveal className="mt-4 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
               Localização
             </h2>
             {endereco && (
-              <p className="mt-3 flex items-center justify-center gap-1.5 text-sm text-neutral-500">
+              <p data-reveal className="mt-4 flex items-center justify-center gap-1.5 text-sm text-neutral-500">
                 <MapPin className="h-3.5 w-3.5" /> {[endereco.endereco, endereco.numero, bairros[0]].filter(Boolean).join(", ")}, Curitiba - PR
               </p>
             )}
           </div>
 
-          <div className="mt-12 overflow-hidden border border-neutral-200">
+          <div data-reveal className="mt-12 overflow-hidden rounded-2xl border border-neutral-200 shadow-sm">
             {assets.mapEmbedUrl ? (
               <iframe src={assets.mapEmbedUrl} title="Localização" className="h-[400px] w-full md:h-[500px]" loading="lazy" allowFullScreen />
             ) : lat && lng ? (
@@ -806,10 +1007,10 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
           contexto antes do call-to-action. */}
       <section className="bg-neutral-50 py-16 md:py-20">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <h2 className="font-serif text-2xl font-light italic tracking-tight text-neutral-900 sm:text-3xl">
+          <h2 data-reveal className="font-serif text-2xl font-light italic tracking-tight text-neutral-900 sm:text-3xl">
             Sobre o {emp.nome}
           </h2>
-          <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-neutral-700">
+          <div data-reveal className="mt-6 space-y-4 text-[15px] leading-relaxed text-neutral-700">
             <p>
               O <strong>{emp.nome}</strong> é um empreendimento {situacao ? `em ${situacao.toLowerCase()} ` : ""}
               localizado {bairros[0] ? `no bairro ${bairros[0]}, ` : ""}em Curitiba/PR
@@ -913,12 +1114,15 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
       </section>
 
       {/* ===== SECTION 7 — Final CTA ===== */}
-      <section id="contato" className="relative overflow-hidden bg-[#1a1a1a] py-20 md:py-28">
+      <section id="contato" className="relative overflow-hidden bg-gradient-to-b from-[#0d0d0d] via-[#1a1a1a] to-[#0d0d0d] py-20 md:py-28">
         <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
-          <h2 className="font-serif text-3xl font-light italic tracking-[0.15em] text-white sm:text-4xl">
+          <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876] sm:text-[11px]">
+            FALE COM A FYMOOB
+          </p>
+          <h2 data-reveal className="mt-4 font-serif text-3xl font-light italic tracking-tight text-white sm:text-4xl lg:text-5xl">
             Agende sua visita
           </h2>
-          <p className="mt-4 text-sm text-white/60">
+          <p data-reveal className="mt-4 text-sm text-white/60">
             Nossos especialistas do {emp.nome} estão prontos para atender você
           </p>
 
