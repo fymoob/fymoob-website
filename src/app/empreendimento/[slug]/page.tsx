@@ -371,16 +371,16 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
           <span className="hidden md:block flex-1" aria-hidden="true" />
 
           {/* Links de navegacao — opacity 60% baseline, dourado on hover */}
-          <Link href="#plantas" className="shrink-0 px-1 uppercase opacity-60 transition hover:text-[#c9a876] hover:opacity-100">
+          <Link href="#plantas" className="shrink-0 px-1 uppercase opacity-75 transition hover:text-[#c9a876] hover:opacity-100">
             Plantas
           </Link>
-          <Link href="#precos" className="shrink-0 px-1 uppercase opacity-60 transition hover:text-[#c9a876] hover:opacity-100">
+          <Link href="#precos" className="shrink-0 px-1 uppercase opacity-75 transition hover:text-[#c9a876] hover:opacity-100">
             Preços
           </Link>
-          <Link href="#infraestrutura" className="shrink-0 px-1 uppercase opacity-60 transition hover:text-[#c9a876] hover:opacity-100">
+          <Link href="#infraestrutura" className="shrink-0 px-1 uppercase opacity-75 transition hover:text-[#c9a876] hover:opacity-100">
             Lazer
           </Link>
-          <Link href="#localizacao" className="shrink-0 px-1 uppercase opacity-60 transition hover:text-[#c9a876] hover:opacity-100">
+          <Link href="#localizacao" className="shrink-0 px-1 uppercase opacity-75 transition hover:text-[#c9a876] hover:opacity-100">
             Localização
           </Link>
 
@@ -421,21 +421,16 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
             priority
             quality={92}
           />
-          {/* Overlay bottom-anchored (caminho A — 04/05/2026):
-              Imagem da piscina infinity tem 3 zonas: ceu claro (topo, claro
-              de mais pra branco), parque/skyline (meio, contraste medio) e
-              piscina (bottom, agua escura). Logo branca + textos vao sobre
-              a piscina onde tem max contraste; ceu fica limpo pra mostrar
-              a vista premium.
-              - Topo: gradient leve do escuro descendo (so pra dar peso
-                editorial sem cobrir o sunset)
-              - Meio: praticamente transparente
-              - Bottom: gradient mais forte pra dar suporte aos textos
-                + vinheta inferior pra logo branca brilhar */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent via-50% to-black/85 to-100%" />
+          {/* Overlay bottom-anchored revisado (04/05/2026 v2 GPT):
+              - Topo: gradient leve do escuro pra dar peso editorial
+              - Meio: transparente (vista limpa do parque/skyline)
+              - Bottom: gradient -10% mais leve (era 85%, agora 70%) pra
+                deixar a piscina aparecer mais como ativo visual, nao apenas
+                fundo escuro. Textos compensam com drop-shadow forte. */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-transparent via-50% to-black/70 to-100%" />
           {/* Vinheta lateral discreta — afasta foco das bordas, joga
               olhar pro centro/horizonte do skyline */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(0,0,0,0.45)_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(0,0,0,0.4)_100%)]" />
         </div>
 
         {/* Caption editorial pequena no TOPO — discreta, sobre a area
@@ -454,9 +449,11 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         <div className="flex-1" aria-hidden="true" />
 
         {/* Branding bottom-anchored (logo + H1 + tagline + linha tecnica + CTAs)
-            Posicionado sobre a piscina escura onde a logo branca tem max
-            contraste. drop-shadow forte pra robustez em qualquer renderizacao. */}
-        <div className="relative z-10 px-4 pb-16 sm:px-6 sm:pb-20 lg:pb-24">
+            Revisao GPT v2 (04/05/2026): pb maior pra subir o branding e dar
+            respiro entre logo e linha da piscina (era pb-16/20/24, agora
+            pb-24/32/40). Tagline reduzida em peso e tamanho pra nao competir
+            com a logo. */}
+        <div className="relative z-10 px-4 pb-24 sm:px-6 sm:pb-32 lg:pb-40">
           <div className="mx-auto max-w-4xl text-center">
             {assets.logo ? (
               <>
@@ -474,18 +471,27 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                   {emp.nome}
                   {bairros[0] && <span className="text-white/55"> · {bairros[0]}, Curitiba</span>}
                 </h1>
-                {properties.length > 1 && (
-                  <p data-reveal className="mt-5 text-xl font-light text-white/95 drop-shadow-[0_1px_8px_rgba(0,0,0,0.55)] sm:text-2xl lg:text-3xl">
-                    Residencial boutique com apenas {properties.length} unidades
-                  </p>
-                )}
-                {properties.length === 1 && (
-                  <p data-reveal className="mt-5 text-xl font-light text-white/95 drop-shadow-[0_1px_8px_rgba(0,0,0,0.55)] sm:text-2xl lg:text-3xl">
-                    Residencial boutique com unidade exclusiva
-                  </p>
-                )}
+                {/* Tagline aspiracional — peso reduzido (vs era text-3xl
+                    com peso forte). Agora text-base/lg/xl com tracking
+                    tight. Override via assets.taglineHero quando definido,
+                    senao template "Residencial com N unidades". */}
+                {(() => {
+                  const tagline =
+                    assets.taglineHero ||
+                    (properties.length > 1
+                      ? `Residencial com apenas ${properties.length} unidades`
+                      : properties.length === 1
+                        ? "Residencial com unidade exclusiva"
+                        : null)
+                  if (!tagline) return null
+                  return (
+                    <p data-reveal className="mt-5 text-base font-light tracking-tight text-white/90 drop-shadow-[0_1px_8px_rgba(0,0,0,0.55)] sm:text-lg lg:text-xl">
+                      {tagline}
+                    </p>
+                  )
+                })()}
                 {tipos.length > 0 && (
-                  <p data-reveal className="mt-3 text-sm font-light text-white/70 drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)] sm:text-base">
+                  <p data-reveal className="mt-3 text-sm font-light text-white/70 drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)] sm:text-[15px]">
                     {(() => {
                       const pluralize = (t: string) => {
                         const lower = t.toLowerCase()
@@ -527,7 +533,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                   </a>
                   <Link
                     href="#plantas"
-                    className="inline-flex items-center gap-2 rounded-full border border-white/[0.32] bg-white/[0.05] px-7 py-3.5 text-[11px] font-light uppercase tracking-[0.2em] text-white/95 backdrop-blur-sm transition hover:border-white/60 hover:bg-white/15 sm:px-9 sm:py-4 sm:text-xs"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/[0.06] px-7 py-3.5 text-[11px] font-light uppercase tracking-[0.2em] text-white shadow-md backdrop-blur-md transition hover:border-white/70 hover:bg-white/20 sm:px-9 sm:py-4 sm:text-xs"
                   >
                     Ver plantas
                   </Link>

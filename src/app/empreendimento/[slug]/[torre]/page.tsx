@@ -300,13 +300,13 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
             ← {emp.nome}
           </Link>
           <span className="hidden md:block flex-1" aria-hidden="true" />
-          <Link href="#sobre" className="shrink-0 px-1 uppercase opacity-60 transition hover:text-[#c9a876] hover:opacity-100">
+          <Link href="#sobre" className="shrink-0 px-1 uppercase opacity-75 transition hover:text-[#c9a876] hover:opacity-100">
             Sobre
           </Link>
-          <Link href="#plantas" className="shrink-0 px-1 uppercase opacity-60 transition hover:text-[#c9a876] hover:opacity-100">
+          <Link href="#plantas" className="shrink-0 px-1 uppercase opacity-75 transition hover:text-[#c9a876] hover:opacity-100">
             Plantas
           </Link>
-          <Link href="#unidades" className="shrink-0 px-1 uppercase opacity-60 transition hover:text-[#c9a876] hover:opacity-100">
+          <Link href="#unidades" className="shrink-0 px-1 uppercase opacity-75 transition hover:text-[#c9a876] hover:opacity-100">
             Unidades
           </Link>
           <a
@@ -334,10 +334,10 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
             priority
             quality={90}
           />
-          {/* Overlay multi-camada (revisao GPT 04/05/2026 v2 — glow mais forte) */}
+          {/* Overlay revisado v2 (04/05/2026 GPT) — bottom mais leve */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.10)_0%,rgba(255,255,255,0.04)_28%,transparent_55%)]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/25 to-black/85" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_38%,rgba(0,0,0,0.5)_100%)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/25 to-black/70" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_38%,rgba(0,0,0,0.4)_100%)]" />
         </div>
 
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
@@ -360,13 +360,13 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
             {t.nome}
           </h1>
           {allTorreProps.length > 1 && (
-            <p data-reveal className="mt-6 text-lg font-light text-white/95 sm:text-xl lg:text-2xl">
-              Torre boutique com {allTorreProps.length} unidades exclusivas
+            <p data-reveal className="mt-5 text-base font-light tracking-tight text-white/90 sm:text-lg lg:text-xl">
+              {allTorreProps.length} unidades exclusivas no complexo {emp.nome}
             </p>
           )}
           {allTorreProps.length === 1 && (
-            <p data-reveal className="mt-6 text-lg font-light text-white/95 sm:text-xl lg:text-2xl">
-              Torre boutique com unidade exclusiva
+            <p data-reveal className="mt-5 text-base font-light tracking-tight text-white/90 sm:text-lg lg:text-xl">
+              Unidade exclusiva no complexo {emp.nome}
             </p>
           )}
           {tipos.length > 0 && (
@@ -407,7 +407,7 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
             </a>
             <Link
               href="#plantas"
-              className="inline-flex items-center gap-2 rounded-full border border-white/[0.28] bg-white/[0.03] px-7 py-3.5 text-[11px] font-light uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm transition hover:border-white/55 hover:bg-white/10 sm:px-9 sm:py-4 sm:text-xs"
+              className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/[0.06] px-7 py-3.5 text-[11px] font-light uppercase tracking-[0.2em] text-white shadow-md backdrop-blur-md transition hover:border-white/70 hover:bg-white/20 sm:px-9 sm:py-4 sm:text-xs"
             >
               Ver plantas
             </Link>

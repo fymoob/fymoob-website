@@ -29,6 +29,14 @@ export interface EmpreendimentoAssets {
   descricaoMarketing?: string
   tagline?: string
   subtitulo?: string
+  /**
+   * Override pra tagline aspiracional do hero (linha grande abaixo do H1).
+   * Quando definida, substitui o template "Residencial boutique com N
+   * unidades". Usar quando o empreendimento tem narrativa propria mais
+   * marcante que o template generico (ex: Reserva Barigui usa
+   * "Exclusividade, natureza e vista para o Barigui").
+   */
+  taglineHero?: string
 }
 
 const assetsMap: Record<string, EmpreendimentoAssets> = {
@@ -55,6 +63,7 @@ const assetsMap: Record<string, EmpreendimentoAssets> = {
     lifestyleImage: "/images/empreendimentos/reserva-barigui/lifestyle.jpg",
     tagline: "CURITIBA | REGIÃO DO BARIGUI",
     subtitulo: "LANÇAMENTO",
+    taglineHero: "Exclusividade, natureza e vista para o Barigui",
     torres: [
       {
         nome: "Reserva Lago",
