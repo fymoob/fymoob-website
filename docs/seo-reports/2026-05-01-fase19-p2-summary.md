@@ -110,7 +110,7 @@ empreendimentos** que ainda não tinham bloco SEO custom (3 já tinham).
 - `addressLocality` populado a partir do primeiro bairro
 
 ### URLs afetadas
-**110 empreendimentos** standard. Lista em `docs/seo-reports/2026-05-01-reindex-urls.md`.
+**110 empreendimentos** standard. Lista em [`docs/seo-reports/reindex-urls-tracker.md`](reindex-urls-tracker.md).
 
 ---
 
@@ -183,7 +183,7 @@ Demais 13 já estavam abaixo de 60 chars após Sessão A.
 | `preco-metro-quadrado-curitiba-bairro` | excedia | 154 |
 
 ### URLs afetadas
-**15 blog posts.** Lista priorizada em `docs/seo-reports/2026-05-01-reindex-urls.md`.
+**15 blog posts.** Lista priorizada em [`docs/seo-reports/reindex-urls-tracker.md`](reindex-urls-tracker.md).
 
 ---
 
