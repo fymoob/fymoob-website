@@ -295,7 +295,7 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
         <div className="mx-auto flex max-w-7xl items-center gap-3 overflow-x-auto px-4 py-2.5 sm:gap-5 sm:px-6 sm:py-3 lg:px-8">
           <Link
             href={`/empreendimento/${slug}`}
-            className="shrink-0 font-serif text-[12px] italic tracking-[0.15em] opacity-95 transition hover:text-[#c9a876] sm:text-[13px]"
+            className="shrink-0 font-serif text-[13px] italic tracking-[0.15em] opacity-90 transition hover:text-[#c9a876] hover:opacity-100 sm:text-[14px]"
           >
             ← {emp.nome}
           </Link>
@@ -315,7 +315,7 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
             rel="noopener noreferrer"
             data-track="whatsapp_click"
             data-source="navbar_torre"
-            className="ml-auto shrink-0 rounded-full bg-[#1F7A4D] px-4 py-1.5 uppercase text-[10px] font-medium tracking-[0.2em] text-white shadow-sm transition hover:bg-[#175E3B] sm:px-5 sm:text-[11px]"
+            className="ml-auto shrink-0 rounded-full bg-[#246B4E] px-4 py-1.5 uppercase text-[10px] font-medium tracking-[0.2em] text-white shadow-sm transition hover:bg-[#2B7D5A] sm:px-5 sm:text-[11px]"
           >
             Agendar visita
           </a>
@@ -334,10 +334,10 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
             priority
             quality={90}
           />
-          {/* Overlay multi-camada (revisao GPT 04/05/2026) */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.06)_0%,transparent_35%)]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/85" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.55)_100%)]" />
+          {/* Overlay multi-camada (revisao GPT 04/05/2026 v2 — glow mais forte) */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.10)_0%,rgba(255,255,255,0.04)_28%,transparent_55%)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/25 to-black/85" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_38%,rgba(0,0,0,0.5)_100%)]" />
         </div>
 
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
@@ -359,17 +359,38 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
           <h1 data-reveal className="mt-10 font-serif text-3xl font-light italic tracking-wider text-white sm:text-4xl lg:text-5xl">
             {t.nome}
           </h1>
-          {allTorreProps.length > 0 && (
-            <p data-reveal className="emp-pull-quote mt-5 text-base italic text-white/85 sm:text-lg lg:text-xl">
-              {allTorreProps.length === 1
-                ? "Uma unidade exclusiva"
-                : `${allTorreProps.length} unidades exclusivas`}{" "}
-              no complexo {emp.nome}
+          {allTorreProps.length > 1 && (
+            <p data-reveal className="mt-6 text-lg font-light text-white/95 sm:text-xl lg:text-2xl">
+              Torre boutique com {allTorreProps.length} unidades exclusivas
+            </p>
+          )}
+          {allTorreProps.length === 1 && (
+            <p data-reveal className="mt-6 text-lg font-light text-white/95 sm:text-xl lg:text-2xl">
+              Torre boutique com unidade exclusiva
             </p>
           )}
           {tipos.length > 0 && (
-            <p data-reveal className="mt-6 text-[10px] tracking-[0.35em] text-white/55 sm:text-[11px]">
-              {tipos.slice(0, 3).map((tt) => tt.toUpperCase()).join(" · ")}
+            <p data-reveal className="mt-3 text-sm font-light text-white/65 sm:text-base">
+              {(() => {
+                const pluralize = (tt: string) => {
+                  const lower = tt.toLowerCase()
+                  if (lower === "studio") return "studios"
+                  if (lower === "apartamento") return "apartamentos"
+                  if (lower === "apartamento duplex") return "duplex"
+                  if (lower === "sala comercial") return "salas comerciais"
+                  if (lower === "loja") return "lojas"
+                  return lower.endsWith("s") ? lower : `${lower}s`
+                }
+                const visiveis = tipos.slice(0, 3).map(pluralize)
+                const lista =
+                  visiveis.length === 1
+                    ? visiveis[0]
+                    : visiveis.length === 2
+                      ? visiveis.join(" e ")
+                      : `${visiveis.slice(0, -1).join(", ")} e ${visiveis[visiveis.length - 1]}`
+                const local = bairro === "Mossunguê" ? "no Mossunguê" : `em ${bairro || "Curitiba"}`
+                return `${lista.charAt(0).toUpperCase()}${lista.slice(1)} ${local}, dentro do complexo ${emp.nome}`
+              })()}
             </p>
           )}
 
@@ -380,13 +401,13 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
               rel="noopener noreferrer"
               data-track="whatsapp_click"
               data-source="hero_primary_torre"
-              className="inline-flex items-center gap-2.5 rounded-full bg-[#1F7A4D] px-7 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white shadow-lg transition hover:bg-[#175E3B] sm:px-9 sm:py-4 sm:text-xs"
+              className="inline-flex items-center gap-2.5 rounded-full bg-[#246B4E] px-7 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white shadow-lg transition hover:bg-[#2B7D5A] sm:px-9 sm:py-4 sm:text-xs"
             >
               Agendar visita privativa
             </a>
             <Link
               href="#plantas"
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/[0.04] px-7 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm transition hover:border-white/55 hover:bg-white/10 sm:px-9 sm:py-4 sm:text-xs"
+              className="inline-flex items-center gap-2 rounded-full border border-white/[0.28] bg-white/[0.03] px-7 py-3.5 text-[11px] font-light uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm transition hover:border-white/55 hover:bg-white/10 sm:px-9 sm:py-4 sm:text-xs"
             >
               Ver plantas
             </Link>
@@ -401,8 +422,8 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
         </div>
       </section>
 
-      {/* Breadcrumb editorial — fora do hero, faixa fina compacta */}
-      <div className="bg-[#0a0d0c] py-3 sm:py-4">
+      {/* Breadcrumb editorial utilitario — padding maior pra dar respiro */}
+      <div className="bg-[#0a0d0c] py-5 sm:py-6">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-[10px] [&_nav]:text-white/35 [&_a]:text-white/35 [&_a:hover]:text-[#c9a876] [&_span]:text-white/55 sm:text-[11px]">
             <Breadcrumbs

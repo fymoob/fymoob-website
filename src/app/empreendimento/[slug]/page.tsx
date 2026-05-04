@@ -356,10 +356,12 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
       >
         <div className="mx-auto flex max-w-7xl items-center gap-3 overflow-x-auto px-4 py-2.5 sm:gap-5 sm:px-6 sm:py-3 lg:px-8">
           {/* Logo-text editorial alinhado a esquerda — institucional pra
-              empreendimentos premium. Hover dourado. */}
+              empreendimentos premium. Hover dourado. Revisao GPT 04/05/2026:
+              tamanho aumentado e opacity reforcada pra ganhar legibilidade
+              sem perder ar editorial. */}
           <Link
             href={`/empreendimento/${slug}`}
-            className="shrink-0 font-serif text-[12px] italic tracking-[0.15em] opacity-95 transition hover:text-[#c9a876] sm:text-[13px]"
+            className="shrink-0 font-serif text-[13px] italic tracking-[0.15em] opacity-90 transition hover:text-[#c9a876] hover:opacity-100 sm:text-[14px]"
           >
             {emp.nome}
           </Link>
@@ -390,7 +392,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
             rel="noopener noreferrer"
             data-track="whatsapp_click"
             data-source="navbar"
-            className="ml-auto shrink-0 rounded-full bg-[#1F7A4D] px-4 py-1.5 uppercase text-[10px] font-medium tracking-[0.2em] text-white shadow-sm transition hover:bg-[#175E3B] sm:px-5 sm:text-[11px]"
+            className="ml-auto shrink-0 rounded-full bg-[#246B4E] px-4 py-1.5 uppercase text-[10px] font-medium tracking-[0.2em] text-white shadow-sm transition hover:bg-[#2B7D5A] sm:px-5 sm:text-[11px]"
           >
             Agendar visita
           </a>
@@ -418,15 +420,16 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
             priority
             quality={90}
           />
-          {/* Overlay multi-camada (revisao GPT 04/05/2026):
-              - Vinheta linear vertical: clareou centro (mid 30%) + escureceu base
-              - Vinheta radial: laterais mais escuras, miolo respira
-              - Janela de luz suave atras do logo: radial branco translucido
-              Resultado: menos "selva escura", mais "botanical luxury" — fundo
-              vira ambiente de marca, nao protagonista. */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.06)_0%,transparent_35%)]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/85" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.55)_100%)]" />
+          {/* Overlay multi-camada (revisao GPT 04/05/2026 v2):
+              - Glow radial mais controlado atras do logo (10% no centro,
+                4% no meio, transparente em 55%) — janela de luz arquitetonica
+              - Vinheta linear vertical: clareou meio + escureceu base
+              - Vinheta radial: laterais ainda escuras, miolo respira mais
+              Resultado: sensacao de "luz pousada no meio", nao de selva
+              fechada. Fundo vira ambiente, logo ganha destaque. */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.10)_0%,rgba(255,255,255,0.04)_28%,transparent_55%)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/25 to-black/85" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_38%,rgba(0,0,0,0.5)_100%)]" />
         </div>
 
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
@@ -449,29 +452,63 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                   priority
                 />
               </div>
-              {/* H1 visivel pra SEO + tagline aspiracional (GPT 04/05/2026):
-                  H1 mantem keyword exata pra Google ("Reserva Barigui · Mossunguê,
-                  Curitiba"). Linha aspiracional logo abaixo vende exclusividade
-                  ("Apenas N unidades..."). Combinado da forca SEO sem perder
-                  feel premium. */}
-              <h1 data-reveal className="mt-10 font-serif text-sm font-light tracking-[0.25em] text-white/85 sm:text-base">
+              {/* H1 SEO + tagline aspiracional + linha tecnica
+                  (GPT 04/05/2026 v2):
+                  - H1 mantem keyword exata pra Google ("Reserva Barigui ·
+                    Mossunguê, Curitiba")
+                  - Tagline forte sem italico, peso normal, off-white —
+                    "Residencial boutique com apenas N unidades" comunica
+                    exclusividade sem ser promocional
+                  - Linha tecnica abaixo: "Studios, apartamentos e duplex
+                    proximos ao Parque Barigui" — descreve produto + lugar
+                    sem repetir o que o H1 ja disse */}
+              <h1 data-reveal className="mt-10 font-serif text-sm font-light tracking-[0.25em] text-white/80 sm:text-base">
                 {emp.nome}
-                {bairros[0] && <span className="text-white/55"> · {bairros[0]}, Curitiba</span>}
+                {bairros[0] && <span className="text-white/50"> · {bairros[0]}, Curitiba</span>}
               </h1>
-              {properties.length > 0 && (
-                <p data-reveal className="emp-pull-quote mt-5 text-lg italic text-white/95 sm:text-xl lg:text-2xl">
-                  Apenas {properties.length} {properties.length === 1 ? "unidade" : "unidades"} próximas ao Parque Barigui
+              {properties.length > 1 && (
+                <p data-reveal className="mt-6 text-xl font-light text-white/95 sm:text-2xl lg:text-3xl">
+                  Residencial boutique com apenas {properties.length} unidades
+                </p>
+              )}
+              {properties.length === 1 && (
+                <p data-reveal className="mt-6 text-xl font-light text-white/95 sm:text-2xl lg:text-3xl">
+                  Residencial boutique com unidade exclusiva
                 </p>
               )}
               {tipos.length > 0 && (
-                <p data-reveal className="mt-7 text-[10px] tracking-[0.35em] text-white/60 sm:text-[11px]">
-                  {tipos.slice(0, 3).map((t) => t.toUpperCase()).join(" · ")}
+                <p data-reveal className="mt-4 text-sm font-light text-white/70 sm:text-base">
+                  {(() => {
+                    const pluralize = (t: string) => {
+                      const lower = t.toLowerCase()
+                      if (lower === "studio") return "studios"
+                      if (lower === "apartamento") return "apartamentos"
+                      if (lower === "apartamento duplex") return "duplex"
+                      if (lower === "sala comercial") return "salas comerciais"
+                      if (lower === "loja") return "lojas"
+                      return lower.endsWith("s") ? lower : `${lower}s`
+                    }
+                    const visiveis = tipos.slice(0, 3).map(pluralize)
+                    const lista =
+                      visiveis.length === 1
+                        ? visiveis[0]
+                        : visiveis.length === 2
+                          ? visiveis.join(" e ")
+                          : `${visiveis.slice(0, -1).join(", ")} e ${visiveis[visiveis.length - 1]}`
+                    const proximidade =
+                      bairros[0] === "Mossunguê"
+                        ? "próximos ao Parque Barigui"
+                        : bairros[0]
+                          ? `no ${bairros[0]}`
+                          : "em Curitiba"
+                    return `${lista.charAt(0).toUpperCase()}${lista.slice(1)} ${proximidade}`
+                  })()}
                 </p>
               )}
 
-              {/* CTAs centrais — primario (Agendar visita privativa) com cor
-                  verde profundo, secundario (Ver plantas) outline branco.
-                  Substitui o WhatsApp neon do nav como acao prominente do hero. */}
+              {/* CTAs centrais — primario verde dessaturado (#246B4E
+                  menos "WhatsApp"), secundario outline mais visivel
+                  (border 28%, bg 3%, hover 10%). */}
               <div data-reveal className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
                 <a
                   href={whatsUrl}
@@ -479,13 +516,13 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
                   rel="noopener noreferrer"
                   data-track="whatsapp_click"
                   data-source="hero_primary"
-                  className="inline-flex items-center gap-2.5 rounded-full bg-[#1F7A4D] px-7 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white shadow-lg transition hover:bg-[#175E3B] sm:px-9 sm:py-4 sm:text-xs"
+                  className="inline-flex items-center gap-2.5 rounded-full bg-[#246B4E] px-7 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white shadow-lg transition hover:bg-[#2B7D5A] sm:px-9 sm:py-4 sm:text-xs"
                 >
                   Agendar visita privativa
                 </a>
                 <Link
                   href="#plantas"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/[0.04] px-7 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm transition hover:border-white/55 hover:bg-white/10 sm:px-9 sm:py-4 sm:text-xs"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/[0.28] bg-white/[0.03] px-7 py-3.5 text-[11px] font-light uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm transition hover:border-white/55 hover:bg-white/10 sm:px-9 sm:py-4 sm:text-xs"
                 >
                   Ver plantas
                 </Link>
@@ -515,10 +552,11 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         </div>
       </section>
 
-      {/* Breadcrumb editorial — discreto, fora do hero (revisao GPT
-          04/05/2026: hero limpo, sem ruido tecnico). Breadcrumb continua
-          existindo pro Schema BreadcrumbList + UX, so muda posicao. */}
-      <div className="bg-[#0a0d0c] py-3 sm:py-4">
+      {/* Breadcrumb editorial utilitario — fora do hero, faixa fina compacta
+          (Revisao GPT 04/05/2026 v2: padding mais generoso pra dar respiro
+          e nao ficar "solto" na borda superior. Breadcrumb fica como elemento
+          tecnico secundario, dando lugar pro pull quote forte logo abaixo.) */}
+      <div className="bg-[#0a0d0c] py-5 sm:py-6">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-[10px] [&_nav]:text-white/35 [&_a]:text-white/35 [&_a:hover]:text-[#c9a876] [&_span]:text-white/55 sm:text-[11px]">
             <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Empreendimentos", url: "/empreendimentos" }, { name: emp.nome, url: `/empreendimento/${slug}` }]} />
