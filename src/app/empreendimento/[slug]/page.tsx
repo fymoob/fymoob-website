@@ -18,6 +18,7 @@ import { getPropertyFeatureIcon } from "@/components/property/propertyFeatureIco
 import { getEmpreendimentoAssets, getTorreShortSlug, hasEditorialLayout } from "@/data/empreendimento-assets"
 import { PlantasCarousel } from "@/components/empreendimento/PlantasCarousel"
 import { PlantasGallery } from "@/components/empreendimento/PlantasGallery"
+import { VideoLazyEmbed } from "@/components/empreendimento/VideoLazyEmbed"
 import { WhatsAppTracker } from "@/components/empreendimento/WhatsAppTracker"
 import { EmpreendimentoStandardSEOContent } from "@/components/empreendimento/EmpreendimentoStandardSEOContent"
 import type { Property } from "@/types/property"
@@ -565,86 +566,107 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
       </div>
 
       {/* ========================================================
-          PULL QUOTE — gradient bridge entre hero (escuro com folhas)
-          e a section "Saiba mais" (escura solida). Cria respiro
-          editorial e quebra a transicao abrupta.
-          Revisao GPT 04/05/2026: gradient warm (#0a0d0c) em vez de
-          neutral-950 puro pra evitar "azulado" e manter dark warm.
+          PULL QUOTE — gradient bridge entre hero e a intro section.
+          Revisao GPT 04/05/2026 v3:
+          - Altura reduzida ~30% (py 20/28 -> 14/20)
+          - Sem italico no titulo (era "emp-pull-quote" italic + outro
+            italic na proxima section: excesso de italico). Aqui titulo
+            firme; "Na frente o parque" mantem italic dourado abaixo.
+          - Linha dourada separadora apos titulo pra dar acabamento.
           ======================================================== */}
-      <section className="relative bg-gradient-to-b from-[#0a0d0c] via-[#0b1110] to-[#101411] py-20 md:py-28">
+      <section className="relative bg-gradient-to-b from-[#0a0d0c] via-[#0b1110] to-[#101411] py-14 md:py-20">
         <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
           {assets.tagline && (
             <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876]/70 sm:text-xs">
               {assets.tagline}
             </p>
           )}
-          <p data-reveal className="emp-pull-quote mt-8 text-3xl text-white/95 sm:text-5xl lg:text-6xl">
+          <p data-reveal className="mt-6 font-serif text-3xl font-extralight tracking-tight text-white/95 sm:text-5xl lg:text-[3.5rem]">
             Onde o Parque Barigui
             <br className="hidden sm:block" /> encontra a sofisticação urbana.
           </p>
+          <div data-reveal className="mx-auto mt-8 h-px w-16 bg-gradient-to-r from-transparent via-[#c9a876] to-transparent" />
           {construtora && (
-            <p data-reveal className="mt-10 text-[10px] tracking-[0.4em] text-white/50 sm:text-[11px]">
+            <p data-reveal className="mt-6 text-[10px] tracking-[0.4em] text-white/50 sm:text-[11px]">
               UM EMPREENDIMENTO {construtora.toUpperCase()}
             </p>
           )}
         </div>
       </section>
 
-      {/* ===== SECTION 1 — Intro with video ===== */}
-      <section className="relative bg-[#1a1a1a] py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
+      {/* ===== SECTION 1 — Intro com video premium (revisao GPT v3 04/05/2026)
+            Mudancas:
+            - Background com radial dourado sutil + warm dark (#151716)
+              em vez de #1a1a1a chapado — adiciona profundidade
+            - Grid 1.1fr/1fr (texto menor que video) com gap maior
+            - Alinhamento pelo topo (items-start) em vez do centro
+            - Caption "VIDEO DO EMPREENDIMENTO" pequena uppercase acima
+            - VideoLazyEmbed substitui iframe direto do YouTube
+              (sem botao vermelho gritante)
+            - Texto reduzido (descricao do asset.ts encurtada de 3 para 2
+              paragrafos)
+            - Preco destacado (era apagado): "A PARTIR DE" pequeno cinza,
+              valor grande font-serif font-extralight off-white
+            - CTAs alinhados com hero: "Agendar visita privativa" verde
+              dessat + "Ver plantas" outline branco
+            ===== */}
+      <section
+        className="relative py-20 md:py-28"
+        style={{
+          background:
+            "radial-gradient(circle at 30% 45%, rgba(195,168,107,0.06), transparent 35%), #151716",
+        }}
+      >
+        <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16 xl:gap-20">
             <div>
               <p data-reveal className="font-serif text-3xl font-light italic leading-tight tracking-tight text-[#c9a876] sm:text-4xl lg:text-5xl">Na frente, o parque.</p>
               <p data-reveal className="mt-2 font-serif text-3xl font-light italic leading-tight tracking-tight text-[#c9a876] sm:text-4xl lg:text-5xl">Ao lado, o shopping.</p>
               <p data-reveal className="mt-2 font-serif text-3xl font-light italic leading-tight tracking-tight text-[#c9a876] sm:text-4xl lg:text-5xl">E no centro, você.</p>
 
               {descricao && (
-                <div data-reveal className="mt-10 whitespace-pre-line text-[15px] leading-relaxed text-neutral-300">
+                <div data-reveal className="mt-10 max-w-xl space-y-4 whitespace-pre-line text-[15px] leading-relaxed text-neutral-300">
                   {descricao}
                 </div>
               )}
 
               {precoMin && (
-                <div data-reveal className="mt-10 flex items-baseline gap-3">
-                  <p className="text-xs uppercase tracking-[0.25em] text-neutral-400">A partir de</p>
-                  <p className="font-serif text-3xl font-light text-white">{formatPrice(precoMin)}</p>
+                <div data-reveal className="mt-10 border-t border-white/10 pt-8">
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-white/45 sm:text-[11px]">
+                    A partir de
+                  </p>
+                  <p className="mt-2 font-serif text-4xl font-extralight tracking-tight text-white sm:text-5xl">
+                    {formatPrice(precoMin)}
+                  </p>
                 </div>
               )}
 
-              <div data-reveal className="mt-8 flex flex-wrap gap-3">
+              <div data-reveal className="mt-10 flex flex-wrap items-center gap-3 sm:gap-4">
                 <a
                   href={whatsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   data-track="whatsapp_click"
                   data-source="intro"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#1da851]"
+                  className="inline-flex items-center gap-2.5 rounded-full bg-[#246B4E] px-7 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white shadow-lg transition hover:bg-[#2B7D5A] sm:px-9 sm:text-xs"
                 >
-                  <svg viewBox="0 0 24 24" className="size-4 fill-white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" /><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a7.96 7.96 0 0 1-4.11-1.14l-.29-.174-3.01.79.8-2.93-.19-.3A7.96 7.96 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z" /></svg>
-                  Falar pelo WhatsApp
+                  Agendar visita privativa
                 </a>
                 <Link
-                  href="#empreendimentos"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white/90 transition hover:border-white/40 hover:bg-white/5"
+                  href="#plantas"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/[0.28] bg-white/[0.03] px-7 py-3.5 text-[11px] font-light uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm transition hover:border-white/55 hover:bg-white/10 sm:px-9 sm:text-xs"
                 >
-                  Ver empreendimentos
+                  Ver plantas
                 </Link>
               </div>
             </div>
 
             {videoUrl && (
-              <div data-reveal className="overflow-hidden rounded-lg">
-                <div className="relative aspect-video">
-                  <iframe
-                    src={videoUrl}
-                    title={`Vídeo ${emp.nome}`}
-                    className="absolute inset-0 h-full w-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    loading="lazy"
-                  />
-                </div>
+              <div data-reveal className="lg:pt-2">
+                <p className="mb-4 text-[10px] tracking-[0.4em] text-white/45 sm:text-[11px]">
+                  VÍDEO DO EMPREENDIMENTO
+                </p>
+                <VideoLazyEmbed videoUrl={videoUrl} title={`Vídeo do ${emp.nome}`} />
               </div>
             )}
           </div>
