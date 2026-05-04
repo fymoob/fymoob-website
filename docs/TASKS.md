@@ -4111,14 +4111,18 @@ mais 5 paginas/itens com gaps:
   - Sinaliza pro Google que o hub agrupa 3 entidades distintas (Knowledge Graph)
 
 - [x] **19.RB.B.7** Sub-rotas `/empreendimento/[slug]/[torre]` — `src/app/empreendimento/[slug]/[torre]/page.tsx`
-  - Re-renderiza o hub (re-import do default) com title/description/H1 focados na torre
+  - **Refatorado em B' (03/05/2026)**: era re-render do hub com title diferente. Agora e LANDING DEDICADA por torre — hero proprio (render da torre), descricao focada, plantas so dela, unidades filtradas por classifyTorreFor.
   - Captura queries top Google Ads sem depender de segmentacao no CRM:
-    - "reserva lago" / "reserva barigui lago" → /empreendimento/reserva-barigui/lago
-    - "reserva colina" / "reserva barigui colina" → /colina
-    - "reserva mirante" → /mirante
-  - Canonical aponta pro hub (consolida autoridade). Google escolhe URL canonica + usa title/description da sub pra match de query
-  - `<ScrollToTorre>` client component scrolla na secao da torre no mount
+    - "reserva lago" / "reserva barigui lago" → /empreendimento/reserva-barigui/lago (6 unidades)
+    - "reserva colina" / "reserva barigui colina" → /colina (3 unidades incluindo o imovel orfao do typo)
+    - "reserva mirante" → /mirante (2 unidades comerciais)
+  - Canonical aponta pro hub (consolida autoridade). Schema RealEstateListing agora especifico da torre com `isPartOf` apontando pro hub.
   - Sitemap (shard 3) lista as 3 sub-rotas com priority 0.85
+  - **classifyTorreFor()** em `src/data/empreendimento-assets.ts` aplica regra heuristica enquanto Wagner nao segmenta no CRM:
+    - Comercial (sala/loja) → Mirante
+    - 3+ quartos → Colina
+    - resto residencial → Lago
+  - **Combina dados do typo "Reserva Bairgui"** automaticamente — 1 imovel orfao classificado como Colina (4q 232m² R$4M).
 
 - [x] **19.RB.B.4** Anchor text descritivo nas torres — `src/app/empreendimento/[slug]/page.tsx:643-647 + 702-714`
   - Era "Saiba mais" generico → vira "Conheça a Reserva Lago" / "Reserva Colina" / "Reserva Mirante"

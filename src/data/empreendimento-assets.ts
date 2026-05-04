@@ -5,6 +5,8 @@
  * for a richer, more immersive experience.
  */
 
+import type { Property } from "@/types/property"
+
 export interface EmpreendimentoAssets {
   logo?: string
   heroImage: string
@@ -153,4 +155,44 @@ export function getTorreFromShortSlug(
   const torre = hub.torres.find((t) => getTorreShortSlug(t.nome) === torreSlug)
   if (!torre) return null
   return { hub, torre }
+}
+
+/**
+ * Sprint B' (03/05/2026) — Classificacao automatica de imovel pra torre.
+ *
+ * Caso Reserva Barigui: o CRM nao segmenta unidades por torre — todos os 10
+ * imoveis estao sob `Empreendimento: "Reserva Barigui"` (+ 1 typo "Reserva
+ * Bairgui"). Pra cada sub-rota mostrar so as unidades da sua torre, este
+ * mapeamento aplica regra heuristica baseada nas descricoes editoriais
+ * curadas:
+ *   - Reserva Lago: 1-2 quartos, formato studio/loft/garden/duplex
+ *   - Reserva Colina: 3-4 suites, garden/laje/coberturas duplex
+ *   - Reserva Mirante: salas comerciais, lojas, lajes corporativas
+ *
+ * Quando Wagner reclassificar imoveis no CRM (Sprint B caminho 2), trocar
+ * pra match exato `p.empreendimento === "Reserva Lago"` etc.
+ *
+ * Cada hub editorial pode ter sua propria classifier — registrada aqui.
+ * Hubs sem classifier nao tem sub-rotas com filtro de unidades (sub-rota
+ * mostraria todas as unidades do hub mesmo).
+ */
+type TorreClassifier = (p: Property) => string
+
+const HUB_CLASSIFIERS: Record<string, TorreClassifier> = {
+  "reserva-barigui": (p: Property) => {
+    const tipo = (p.tipo || "").toLowerCase()
+    const COMERCIAL = ["sala comercial", "loja", "ponto comercial", "salas/conjuntos", "sala/conjuntos", "sala/conjunto"]
+    if (COMERCIAL.some((c) => tipo.includes(c))) return "mirante"
+    if ((p.dormitorios ?? 0) >= 3) return "colina"
+    return "lago"
+  },
+}
+
+/**
+ * Classifica imovel em torre dentro do hub. Retorna torre short slug ("lago",
+ * "colina", "mirante") ou null se hub nao tem classifier registrado.
+ */
+export function classifyTorreFor(hubSlug: string, p: Property): string | null {
+  const fn = HUB_CLASSIFIERS[hubSlug]
+  return fn ? fn(p) : null
 }

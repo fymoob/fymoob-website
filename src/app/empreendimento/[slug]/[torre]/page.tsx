@@ -1,39 +1,54 @@
 import type { Metadata } from "next"
+import Image from "next/image"
+import Link from "next/link"
 import { notFound } from "next/navigation"
-import { getAllEmpreendimentos } from "@/services/loft"
-import { formatPrice } from "@/lib/utils"
+import { Phone, MapPin } from "lucide-react"
+import {
+  getAllEmpreendimentos,
+  getPropertiesByEmpreendimento,
+} from "@/services/loft"
+import { isVistaImage } from "@/lib/image-optimization"
+import { formatPrice, formatArea } from "@/lib/utils"
+import {
+  generateItemListSchema,
+  generateLandingStats,
+  generateDynamicFAQ,
+  safeJsonLd,
+} from "@/lib/seo"
+import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
+import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
+import { RelatedPages } from "@/components/seo/RelatedPages"
+import { PlantasCarousel } from "@/components/empreendimento/PlantasCarousel"
+import { WhatsAppTracker } from "@/components/empreendimento/WhatsAppTracker"
 import {
   getEmpreendimentoAssets,
   getTorreFromShortSlug,
   getTorreShortSlug,
+  classifyTorreFor,
 } from "@/data/empreendimento-assets"
-import { ScrollToTorre } from "@/components/empreendimento/ScrollToTorre"
-import EmpreendimentoHubPage from "../page"
 import { SITE_URL } from "@/lib/constants"
 
 /**
- * Sprint B.7 (03/05/2026) — Sub-rota de torre.
+ * Sprint B' (03/05/2026) — Sub-rota de torre como pagina dedicada.
  *
  * URL: /empreendimento/[slug]/[torre]
- *   Ex: /empreendimento/reserva-barigui/lago
- *       /empreendimento/reserva-barigui/colina
- *       /empreendimento/reserva-barigui/mirante
+ *   Ex: /empreendimento/reserva-barigui/lago    (6 unidades)
+ *       /empreendimento/reserva-barigui/colina  (3 unidades)
+ *       /empreendimento/reserva-barigui/mirante (2 unidades)
  *
- * Por que existe:
- * - Hoje 10 imoveis estao todos sob "Reserva Barigui" no CRM (Wagner ainda
- *   nao segmentou por torre). O hub atual mostra todos em um lugar so e a
- *   query "reserva lago" / "reserva colina" / "reserva mirante" — top
- *   Google Ads — nao tem URL especifica pra rankear.
- * - Esta sub-rota cria uma URL distinta por torre que renderiza o MESMO HTML
- *   do hub (re-import do default), mas com title/description/H1 focados na
- *   torre. Captura signal de query sem precisar do CRM segmentar.
- * - Canonical aponta pro hub (consolida autoridade no original e evita
- *   duplicate content punitivo). Google pode mostrar variantes em SERP
- *   quando query bate exato (padrao conhecido em e-commerce com filtros).
+ * Diferente do Sprint B.7 inicial (re-render do hub com title diferente),
+ * aqui cada torre vira landing real:
+ * - Hero proprio (render da torre)
+ * - Descricao focada na torre
+ * - Plantas so dessa torre
+ * - Unidades disponiveis filtradas por classifyTorreFor() — heuristica
+ *   automatica enquanto Wagner nao segmenta unidades por torre no CRM
+ * - FAQ + cronograma de entrega especifico
+ * - CTA WhatsApp com mensagem por torre
  *
- * Quando Sprint B caminho 2 (Wagner segmentar CRM) acontecer, esta sub-rota
- * pode ou ser mantida como atalho pro hub, ou substituida por landings
- * dedicadas com dados proprios de cada torre. Decisao pos-validacao 14d.
+ * Compensa duplicate-content soft via canonical → hub. Google indexa as
+ * 3 sub-rotas como entidades ricas pra capturar query especifica e usa o
+ * hub como autoridade primaria do complexo.
  */
 
 interface TorreSubRouteProps {
@@ -42,15 +57,12 @@ interface TorreSubRouteProps {
 
 const VALID_HUB_SLUG = /^[a-z0-9][a-z0-9-]{1,100}$/
 const VALID_TORRE_SLUG = /^[a-z0-9][a-z0-9-]{0,40}$/
+const FYMOOB_PHONE = "5541999780517"
 
 export const revalidate = 7200
 export const dynamicParams = true
 
 export async function generateStaticParams() {
-  // Pre-renderiza apenas hubs com layout editorial e suas torres conhecidas.
-  // Empreendimentos sem assets editoriais nao tem torres, entao nao geram
-  // sub-rotas. Wagner cadastrar torres novas no CRM nao adiciona sub-rota
-  // — assets-map e curado, intencionalmente.
   const empreendimentos = await getAllEmpreendimentos()
   const params: { slug: string; torre: string }[] = []
   for (const emp of empreendimentos) {
@@ -61,6 +73,35 @@ export async function generateStaticParams() {
     }
   }
   return params
+}
+
+/**
+ * Sprint B' — coleta unidades da torre. Para hubs com classifier (Reserva
+ * Barigui), filtra todas as unidades do hub + variantes typo conhecidas
+ * pelo nome do empreendimento, e classifica. Para hubs sem classifier,
+ * mostra todas as unidades do hub (fallback).
+ */
+async function getTorreProperties(hubSlug: string, hubName: string, torreShortSlug: string) {
+  // Hub principal sempre busca
+  const main = await getPropertiesByEmpreendimento(hubName)
+
+  // Variante typo conhecida para Reserva Barigui (1 imovel orfao em "Reserva
+  // Bairgui"). Tirar quando Wagner renomear no CRM (Sprint B.X canonical
+  // ja consolida ranking enquanto isso).
+  const TYPO_VARIANTS: Record<string, string[]> = {
+    "reserva-barigui": ["Reserva Bairgui"],
+  }
+  const variants = TYPO_VARIANTS[hubSlug] || []
+  const variantProps = await Promise.all(variants.map((v) => getPropertiesByEmpreendimento(v)))
+  const all = [...main, ...variantProps.flat()]
+
+  // Probe: se classifier devolve null, o hub nao tem regra registrada ->
+  // fallback mostra todas as unidades (mesmo comportamento do hub).
+  if (all.length === 0 || classifyTorreFor(hubSlug, all[0]) === null) {
+    return all
+  }
+
+  return all.filter((p) => classifyTorreFor(hubSlug, p) === torreShortSlug)
 }
 
 export async function generateMetadata({ params }: TorreSubRouteProps): Promise<Metadata> {
@@ -77,28 +118,30 @@ export async function generateMetadata({ params }: TorreSubRouteProps): Promise<
   const { torre: t } = resolved
   const bairroText = emp.bairros.length > 0 ? emp.bairros[0] : "Curitiba"
   const construtoraSuffix = emp.construtora ? ` ${emp.construtora}` : ""
-  const precoMin = emp.precoMin ? formatPrice(emp.precoMin) : ""
-  const precoText = precoMin ? ` a partir de ${precoMin}` : ""
 
-  // Title focado na torre. Captura queries top Google Ads:
-  //   "reserva lago", "reserva colina", "reserva mirante",
-  //   "reserva barigui lago", "reserva barigui colina"
-  // Pattern: "{Torre} {Construtora} — {Hub} em {Bairro}, Curitiba | FYMOOB"
+  // Tenta enriquecer description com count + faixa de preco real da torre
+  // (so na hora do render — generateMetadata roda separado, sem custo
+  // adicional ja que getPropertiesByEmpreendimento e cached).
+  const torreProps = await getTorreProperties(slug, emp.nome, torre)
+  const torrePrecos = torreProps
+    .map((p) => p.precoVenda ?? p.precoAluguel)
+    .filter((v): v is number => v !== null && v > 0)
+  const torrePrecoMin = torrePrecos.length > 0 ? Math.min(...torrePrecos) : null
+  const torreCount = torreProps.length
+
   const title = `${t.nome}${construtoraSuffix} — ${emp.nome} em ${bairroText}, Curitiba | FYMOOB`
 
-  // Description usa a propria descricao curada da torre quando existe
-  // (ex: "Apartamentos com 1 a 2 quartos, em formato de studio, loft..."),
-  // caindo num default contextual que ainda menciona o hub. Strip de
-  // pontuacao final pra evitar ".." quando concatena com sufixo.
   const torreDescDecurta = (t.descricao
-    ? t.descricao.replace(/\s+/g, " ").trim().slice(0, 120)
+    ? t.descricao.replace(/\s+/g, " ").trim().slice(0, 110)
     : `Conheça a torre ${t.nome} dentro do complexo ${emp.nome}`
   ).replace(/[.,;:\s]+$/, "")
-  const description = `${t.nome} no ${emp.nome}${construtoraSuffix} — ${bairroText}, Curitiba${precoText}. ${torreDescDecurta}. Plantas, preços e atendimento FYMOOB.`.trim()
 
-  // Canonical aponta pro HUB. Sub-rota nao deve ser indexada como autoridade
-  // primaria — Google consolida ranking no hub e usa este title/H1 quando
-  // query bate especificamente na torre.
+  const countText = torreCount > 0
+    ? `${torreCount} ${torreCount === 1 ? "unidade" : "unidades"} disponíveis`
+    : ""
+  const precoText = torrePrecoMin ? ` a partir de ${formatPrice(torrePrecoMin)}` : ""
+  const description = `${t.nome} no ${emp.nome}${construtoraSuffix} — ${bairroText}, Curitiba${precoText}. ${torreDescDecurta}.${countText ? ` ${countText}.` : ""} Plantas, preços e atendimento FYMOOB.`.trim()
+
   return {
     title: { absolute: title },
     description,
@@ -138,16 +181,519 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
   const resolved = getTorreFromShortSlug(slug, torre)
   if (!resolved) notFound()
 
-  // Re-renderiza o hub com seu HTML completo (hero, parallax, torres, plantas,
-  // unidades, infra, mapa, FAQ). Visualmente igual ao hub — diferenca esta no
-  // metadata + scroll automatico.
+  const { hub, torre: t } = resolved
+  const empreendimentos = await getAllEmpreendimentos()
+  const emp = empreendimentos.find((e) => e.slug === slug)
+  if (!emp) notFound()
+
+  const allTorreProps = await getTorreProperties(slug, emp.nome, torre)
+
+  const bairros = [...new Set(allTorreProps.map((p) => p.bairro).filter(Boolean))]
+  const bairro = bairros[0] || emp.bairros[0] || "Curitiba"
+  const construtora = emp.construtora || allTorreProps.find((p) => p.construtora)?.construtora || null
+  const tipos = [...new Set(allTorreProps.map((p) => p.tipo))]
+
+  const precos = allTorreProps
+    .map((p) => p.precoVenda ?? p.precoAluguel)
+    .filter((v): v is number => v !== null && v > 0)
+  const precoMin = precos.length > 0 ? Math.min(...precos) : null
+  const precoMax = precos.length > 0 ? Math.max(...precos) : null
+  const areas = allTorreProps.map((p) => p.areaPrivativa).filter((a): a is number => a !== null && a > 0)
+  const areaMin = areas.length > 0 ? Math.min(...areas) : null
+  const areaMax = areas.length > 0 ? Math.max(...areas) : null
+
+  // Plantas — prioriza CRM (fotosPorTipo tipo "Planta") da propria torre,
+  // fallback pro asset estatico curado (Sprint B' → torre tem plantas curadas
+  // em assets-map mesmo quando CRM nao tem).
+  const plantasFromCRM = [
+    ...new Set(
+      allTorreProps.flatMap((p) =>
+        (p.fotosPorTipo || []).filter((f) => f.tipo.toLowerCase() === "planta").map((f) => f.foto),
+      ),
+    ),
+  ]
+  const plantasFinal = plantasFromCRM.length > 0 ? plantasFromCRM : t.plantas || []
+
+  // Cronograma da torre extraido da descricao curada
+  const cronogramaMatch = t.descricao?.match(/entrega prevista para ([^.]+)/i)
+  const cronograma = cronogramaMatch?.[1].trim() || null
+
+  // Schema RealEstateListing focado na torre — count + faixa de preco apenas
+  // dessa torre. Canonical aponta pro hub mas o JSON-LD descreve a torre.
+  const torreSchemaImages: string[] = []
+  if (t.render) {
+    const abs = t.render.startsWith("http") ? t.render : `${SITE_URL}${t.render}`
+    torreSchemaImages.push(abs)
+  }
+  if (t.logo) {
+    const abs = t.logo.startsWith("http") ? t.logo : `${SITE_URL}${t.logo}`
+    if (!torreSchemaImages.includes(abs)) torreSchemaImages.push(abs)
+  }
+
+  const torreRealEstateSchema = {
+    "@type": "RealEstateListing",
+    name: `${t.nome} — ${emp.nome}`,
+    description: t.descricao || `Torre ${t.nome} dentro do complexo ${emp.nome}`,
+    url: `${SITE_URL}/empreendimento/${slug}/${torre}`,
+    ...(torreSchemaImages.length > 0 && { image: torreSchemaImages }),
+    ...(construtora && {
+      brand: { "@type": "Organization", name: construtora },
+    }),
+    ...(precoMin && {
+      offers: {
+        "@type": "AggregateOffer",
+        lowPrice: precoMin,
+        highPrice: precoMax || precoMin,
+        priceCurrency: "BRL",
+        offerCount: allTorreProps.length,
+        availability:
+          allTorreProps.length > 0
+            ? "https://schema.org/InStock"
+            : "https://schema.org/SoldOut",
+      },
+    }),
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: bairro,
+      addressRegion: "PR",
+      addressCountry: "BR",
+    },
+    isPartOf: {
+      "@type": "Place",
+      name: emp.nome,
+      url: `${SITE_URL}/empreendimento/${slug}`,
+    },
+  }
+  const itemListSchema = generateItemListSchema(allTorreProps, `/empreendimento/${slug}/${torre}`)
+  const combinedSchema = {
+    "@context": "https://schema.org",
+    "@graph": [torreRealEstateSchema, itemListSchema],
+  }
+
+  const whatsMessage = `Olá! Tenho interesse no ${t.nome} (${emp.nome}). Pode me passar mais informações?`
+  const whatsUrl = `https://wa.me/${FYMOOB_PHONE}?text=${encodeURIComponent(whatsMessage)}`
+
+  // Outras torres do mesmo hub pra cross-link
+  const outrasTorres = (hub.torres || []).filter((other) => other.nome !== t.nome)
+
+  // Render hero image: prioriza render da torre; fallback pro hero do hub
+  const heroImage = t.render || hub.heroImage
+
   return (
     <>
-      <ScrollToTorre anchor={`torre-${torre}`} />
-      {/* @ts-expect-error Async server component reusado direto: o tipo de
-          params no hub e Promise<{ slug: string }>, exatamente o que
-          passamos. TS as vezes reclama de async server component em JSX. */}
-      <EmpreendimentoHubPage params={Promise.resolve({ slug })} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(combinedSchema) }} />
+      <WhatsAppTracker empreendimentoNome={`${t.nome} - ${emp.nome}`} bairro={bairro} slug={`${slug}/${torre}`} />
+
+      {/* ===== HERO ===== */}
+      <section className="relative flex h-[60vh] min-h-[480px] items-center justify-center overflow-hidden bg-neutral-900">
+        <div className="absolute inset-0">
+          <Image
+            src={heroImage}
+            alt={`${t.nome} — render da torre do ${emp.nome}${construtora ? ` (${construtora})` : ""} em ${bairro}, Curitiba`}
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority
+            quality={90}
+          />
+          <div className="absolute inset-0 bg-black/55" />
+        </div>
+
+        <div className="absolute top-6 left-0 right-0 z-10 sm:top-8">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="[&_nav]:text-white/70 [&_a]:text-white/70 [&_a:hover]:text-white [&_span]:text-white/90">
+              <Breadcrumbs
+                items={[
+                  { name: "Home", url: "/" },
+                  { name: "Empreendimentos", url: "/empreendimentos" },
+                  { name: emp.nome, url: `/empreendimento/${slug}` },
+                  { name: t.nome, url: `/empreendimento/${slug}/${torre}` },
+                ]}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
+          <p className="text-[10px] tracking-[0.35em] text-white/80 sm:text-xs">
+            {emp.nome.toUpperCase()} · {bairro.toUpperCase()}
+          </p>
+          {t.logo ? (
+            <div className="mt-6 flex justify-center">
+              <Image
+                src={t.logo}
+                alt={`Logo ${t.nome} — ${emp.nome}${construtora ? ` (${construtora})` : ""}`}
+                width={500}
+                height={200}
+                className="h-auto max-h-[140px] w-auto max-w-[70vw] object-contain sm:max-h-[180px] sm:max-w-[380px]"
+                priority
+              />
+            </div>
+          ) : null}
+          <h1 className="mt-6 font-serif text-3xl font-light italic tracking-wider text-white sm:text-4xl lg:text-5xl">
+            {t.nome}
+          </h1>
+          <p className="mt-3 text-xs tracking-[0.25em] text-white/75 sm:text-sm">
+            {emp.nome} · {bairro}, Curitiba
+          </p>
+          {tipos.length > 0 && (
+            <p className="mt-4 text-[11px] tracking-[0.3em] text-white/70 sm:text-xs">
+              {tipos.join(" · ").toUpperCase()}
+              {allTorreProps.length > 0 && ` · ${allTorreProps.length} ${allTorreProps.length === 1 ? "UNIDADE" : "UNIDADES"}`}
+            </p>
+          )}
+        </div>
+      </section>
+
+      {/* ===== Sticky nav ===== */}
+      <nav
+        aria-label="Navegação rápida"
+        className="sticky top-0 z-30 border-b border-neutral-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85"
+      >
+        <div className="mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 py-2.5 text-[11px] font-medium tracking-[0.15em] text-neutral-600 sm:gap-2 sm:px-6 sm:text-xs lg:px-8">
+          <Link href="#sobre" className="shrink-0 rounded-full px-3 py-1.5 uppercase transition hover:bg-neutral-100 hover:text-neutral-900">Sobre</Link>
+          <Link href="#plantas" className="shrink-0 rounded-full px-3 py-1.5 uppercase transition hover:bg-neutral-100 hover:text-neutral-900">Plantas</Link>
+          <Link href="#unidades" className="shrink-0 rounded-full px-3 py-1.5 uppercase transition hover:bg-neutral-100 hover:text-neutral-900">Unidades</Link>
+          <Link href={`/empreendimento/${slug}`} className="shrink-0 rounded-full px-3 py-1.5 uppercase transition hover:bg-neutral-100 hover:text-neutral-900">Voltar ao {emp.nome}</Link>
+          <a
+            href={whatsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track="whatsapp_click"
+            data-source="navbar_torre"
+            className="ml-auto shrink-0 rounded-full bg-[#25D366] px-4 py-1.5 uppercase text-white transition hover:bg-[#1da851]"
+          >
+            WhatsApp
+          </a>
+        </div>
+      </nav>
+
+      {/* ===== SECTION — Sobre a torre ===== */}
+      <section id="sobre" className="bg-white py-20 md:py-28">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <p className="font-serif text-[11px] uppercase tracking-[0.3em] text-[#c9a876]">
+            Conheça a torre
+          </p>
+          <h2 className="mt-3 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl">
+            {t.nome}
+          </h2>
+          {t.descricao && (
+            <p className="mt-6 text-lg leading-relaxed text-neutral-700">
+              {t.descricao}
+            </p>
+          )}
+          <div className="mt-10 grid grid-cols-2 gap-6 border-t border-neutral-200 pt-8 sm:grid-cols-4">
+            <div>
+              <p className="font-serif text-2xl font-light text-neutral-900">{allTorreProps.length}</p>
+              <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-neutral-500">{allTorreProps.length === 1 ? "Unidade" : "Unidades"}</p>
+            </div>
+            {precoMin && (
+              <div>
+                <p className="font-serif text-lg font-light text-neutral-900">{formatPrice(precoMin)}</p>
+                <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-neutral-500">A partir de</p>
+              </div>
+            )}
+            {areaMin && areaMax && (
+              <div>
+                <p className="font-serif text-lg font-light text-neutral-900">
+                  {areaMin === areaMax ? `${formatArea(areaMin)} m²` : `${formatArea(areaMin)}–${formatArea(areaMax)} m²`}
+                </p>
+                <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-neutral-500">Área privativa</p>
+              </div>
+            )}
+            {cronograma && (
+              <div>
+                <p className="font-serif text-base font-light text-neutral-900">{cronograma}</p>
+                <p className="mt-1 text-[10px] uppercase tracking-[0.2em] text-neutral-500">Entrega prevista</p>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-10 flex flex-wrap gap-3">
+            <a
+              href={whatsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-track="whatsapp_click"
+              data-source="sobre_torre"
+              className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#1da851]"
+            >
+              Falar pelo WhatsApp sobre {t.nome}
+            </a>
+            <Link
+              href={`/empreendimento/${slug}`}
+              className="inline-flex items-center gap-2 rounded-full border border-neutral-300 px-6 py-3 text-sm font-medium text-neutral-700 transition hover:border-neutral-500 hover:bg-neutral-50"
+            >
+              Ver complexo {emp.nome} completo
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SECTION — Plantas ===== */}
+      {plantasFinal.length > 0 && (
+        <section id="plantas" className="bg-neutral-50 py-20 md:py-28">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <p className="font-serif text-[11px] uppercase tracking-[0.3em] text-[#c9a876]">
+                {t.nome}
+              </p>
+              <h2 className="mt-3 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl">
+                Plantas disponíveis
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-sm text-neutral-600">
+                {plantasFinal.length} {plantasFinal.length === 1 ? "opção" : "opções"} de planta — clique para ampliar
+              </p>
+            </div>
+            <div className="mt-12">
+              <PlantasCarousel
+                plantas={plantasFinal}
+                torreNome={t.nome}
+                empreendimentoNome={emp.nome}
+                bairro={bairro}
+                construtora={construtora || undefined}
+              />
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ===== SECTION — Unidades disponiveis (filtradas pela torre) ===== */}
+      <section id="unidades" className="bg-white py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl">
+              Unidades disponíveis no {t.nome}
+            </h2>
+            <p className="mt-3 text-sm text-neutral-500">
+              {allTorreProps.length} {allTorreProps.length === 1 ? "unidade" : "unidades"}{precoMin ? ` · a partir de ${formatPrice(precoMin)}` : ""}
+            </p>
+          </div>
+
+          {allTorreProps.length === 0 ? (
+            <div className="mx-auto mt-12 max-w-xl rounded-2xl border border-neutral-200 bg-neutral-50 p-8 text-center">
+              <p className="text-sm text-neutral-600">
+                Nenhuma unidade do {t.nome} disponível no momento. Fale com a equipe FYMOOB pelo WhatsApp pra ser avisado quando novas unidades entrarem.
+              </p>
+              <a
+                href={whatsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track="whatsapp_click"
+                data-source="unidades_vazio"
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#1da851]"
+              >
+                Avisar quando houver unidades
+              </a>
+            </div>
+          ) : (
+            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {allTorreProps.map((p) => (
+                <Link
+                  key={p.codigo}
+                  href={`/imovel/${p.slug}`}
+                  className="group overflow-hidden rounded-sm border border-neutral-200 bg-white transition hover:border-[#c9a876] hover:shadow-lg"
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <Image
+                      src={p.fotoDestaque || "/placeholder-property.jpg"}
+                      alt={p.titulo}
+                      fill
+                      className="object-cover transition duration-700 group-hover:scale-105"
+                      sizes="(max-width: 640px) 100vw, 33vw"
+                      loading="lazy"
+                      unoptimized={isVistaImage(p.fotoDestaque)}
+                    />
+                    {p.lancamento && (
+                      <span className="absolute top-3 left-3 rounded-full bg-[#c9a876] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                        Lançamento
+                      </span>
+                    )}
+                  </div>
+                  <div className="p-5">
+                    <p className="text-[11px] font-medium uppercase tracking-wider text-neutral-400">
+                      {p.tipo} · {p.bairro}
+                    </p>
+                    <p className="mt-2 line-clamp-1 font-serif text-base font-medium text-neutral-900">
+                      {p.titulo}
+                    </p>
+                    <div className="mt-3 flex items-center gap-4 text-xs text-neutral-500">
+                      {p.areaPrivativa && <span>{formatArea(p.areaPrivativa)} m²</span>}
+                      {p.dormitorios ? (
+                        <span>{p.dormitorios} {p.dormitorios === 1 ? "quarto" : "quartos"}</span>
+                      ) : null}
+                      {p.vagas ? <span>{p.vagas} {p.vagas === 1 ? "vaga" : "vagas"}</span> : null}
+                    </div>
+                    {(p.precoVenda || p.precoAluguel) && (
+                      <p className="mt-4 font-serif text-xl font-light text-neutral-900">
+                        {formatPrice(p.precoVenda || p.precoAluguel)}
+                      </p>
+                    )}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ===== SECTION — Outras torres do hub ===== */}
+      {outrasTorres.length > 0 && (
+        <section className="bg-neutral-50 py-20 md:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <p className="font-serif text-[11px] uppercase tracking-[0.3em] text-[#c9a876]">
+                Outras torres do {emp.nome}
+              </p>
+              <h2 className="mt-3 font-serif text-2xl font-light italic tracking-tight text-neutral-900 sm:text-3xl">
+                Conheça também
+              </h2>
+            </div>
+            <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+              {outrasTorres.map((other) => {
+                const otherSlug = getTorreShortSlug(other.nome)
+                return (
+                  <Link
+                    key={other.nome}
+                    href={`/empreendimento/${slug}/${otherSlug}`}
+                    className="group flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                  >
+                    {other.render && (
+                      <div className="relative aspect-[16/10] overflow-hidden rounded-lg bg-neutral-200">
+                        <Image
+                          src={other.render}
+                          alt={`${other.nome} — render da torre do ${emp.nome}${construtora ? ` (${construtora})` : ""} em ${bairro}, Curitiba`}
+                          fill
+                          className="object-cover transition duration-700 group-hover:scale-105"
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
+                    <div className="mt-5">
+                      <p className="font-serif text-xl font-light italic tracking-wider text-neutral-900">
+                        {other.nome}
+                      </p>
+                      {other.descricao && (
+                        <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-neutral-600">
+                          {other.descricao}
+                        </p>
+                      )}
+                      <p className="mt-4 text-xs font-medium uppercase tracking-[0.15em] text-[#c9a876]">
+                        Conheça a {other.nome} →
+                      </p>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ===== SECTION — Final CTA ===== */}
+      <section id="contato" className="relative overflow-hidden bg-[#1a1a1a] py-20 md:py-28">
+        <div className="relative mx-auto max-w-3xl px-4 text-center sm:px-6">
+          <h2 className="font-serif text-3xl font-light italic tracking-[0.15em] text-white sm:text-4xl">
+            Agende sua visita
+          </h2>
+          <p className="mt-4 text-sm text-white/60">
+            Especialista FYMOOB pronto pra apresentar o {t.nome} ({emp.nome})
+          </p>
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <a
+              href={whatsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-track="whatsapp_click"
+              data-source="final_cta_torre"
+              className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-8 py-4 text-sm font-medium text-white transition hover:bg-[#1da851]"
+            >
+              WhatsApp
+            </a>
+            <a
+              href="tel:+5541999780517"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 px-8 py-4 text-sm font-medium text-white/90 transition hover:border-white/40 hover:bg-white/5"
+            >
+              <Phone className="size-5" /> (41) 99978-0517
+            </a>
+          </div>
+          <p className="mt-8 text-[11px] uppercase tracking-[0.25em] text-white/40">
+            CRECI J 9420 · Seg-sex 8h30-17h
+          </p>
+        </div>
+      </section>
+
+      {/* ===== FAQ + Related ===== */}
+      <section className="border-t border-neutral-100 bg-neutral-50 py-12 md:py-16">
+        <div className="mx-auto max-w-4xl space-y-12 px-4 sm:px-6 lg:px-8">
+          <DynamicFAQ
+            questions={(() => {
+              const stats = generateLandingStats(allTorreProps)
+              const baseFaq = generateDynamicFAQ(stats, bairro)
+              return [
+                {
+                  question: `Quantas unidades estão disponíveis no ${t.nome}?`,
+                  answer: `O ${t.nome}, dentro do complexo ${emp.nome}, possui ${allTorreProps.length} ${allTorreProps.length === 1 ? "unidade disponível" : "unidades disponíveis"} no site da FYMOOB.${precoMin ? ` Preços a partir de ${formatPrice(precoMin)}.` : ""}${cronograma ? ` Entrega prevista para ${cronograma}.` : ""}`,
+                },
+                {
+                  question: `Qual a diferença entre o ${t.nome} e o ${emp.nome}?`,
+                  answer: `${emp.nome} é o complexo (condomínio com ${(hub.torres || []).length} torres independentes${construtora ? ` da ${construtora}` : ""}). O ${t.nome} é uma das torres do complexo, com proposta arquitetônica e tipologia próprias${t.descricao ? `: ${t.descricao}` : ""}`,
+                },
+                ...baseFaq.slice(0, 4),
+              ]
+            })()}
+            title={`Perguntas frequentes sobre o ${t.nome}`}
+          />
+
+          <RelatedPages
+            title={`Continue explorando o ${emp.nome}`}
+            links={[
+              { href: `/empreendimento/${slug}`, label: `Complexo ${emp.nome} (visão geral)` },
+              ...outrasTorres.map((other) => ({
+                href: `/empreendimento/${slug}/${getTorreShortSlug(other.nome)}`,
+                label: `${other.nome} — ${emp.nome}`,
+              })),
+              ...(bairros[0]
+                ? [{ href: `/imoveis/${bairros[0].toLowerCase().replace(/\s+/g, "-")}`, label: `Imóveis no ${bairros[0]}` }]
+                : []),
+            ]}
+          />
+        </div>
+      </section>
+
+      {/* Float WhatsApp mobile */}
+      <div className="fixed bottom-14 left-0 z-[100] w-full border-t border-neutral-200 bg-white/95 px-4 py-3 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] backdrop-blur lg:hidden">
+        <div className="mx-auto flex max-w-lg items-center gap-3">
+          <div className="min-w-0 flex-1">
+            {precoMin ? (
+              <>
+                <p className="text-base font-extrabold text-slate-900">{formatPrice(precoMin)}</p>
+                <p className="text-[11px] text-neutral-500">
+                  {t.nome} · {allTorreProps.length} {allTorreProps.length === 1 ? "unidade" : "unidades"}
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="text-sm font-semibold text-slate-900">{t.nome}</p>
+                <p className="text-[11px] text-neutral-500">
+                  {allTorreProps.length} {allTorreProps.length === 1 ? "unidade" : "unidades"}
+                </p>
+              </>
+            )}
+          </div>
+          <a
+            href={whatsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-track="whatsapp_click"
+            data-source="float_mobile_torre"
+            className="flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:bg-[#1da851]"
+          >
+            Tenho interesse
+          </a>
+        </div>
+      </div>
     </>
   )
 }
