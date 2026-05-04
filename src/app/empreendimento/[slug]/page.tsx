@@ -352,34 +352,47 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
           ======================================================== */}
       <nav
         aria-label="Navegação rápida"
-        className="emp-smart-nav sticky top-0 z-40 border-b border-transparent text-[11px] font-medium tracking-[0.15em] sm:text-xs"
+        className="emp-smart-nav sticky top-0 z-40 border-b border-transparent text-[10px] font-light tracking-[0.2em] sm:text-[11px]"
       >
-        <div className="mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto px-4 py-3 sm:gap-2 sm:px-6 sm:py-3.5 lg:px-8">
-          <Link href={`/empreendimento/${slug}`} className="shrink-0 rounded-full px-2.5 py-1 uppercase opacity-90 transition hover:opacity-100">
+        <div className="mx-auto flex max-w-7xl items-center gap-3 overflow-x-auto px-4 py-2.5 sm:gap-5 sm:px-6 sm:py-3 lg:px-8">
+          {/* Logo-text editorial alinhado a esquerda — institucional pra
+              empreendimentos premium. Hover dourado. */}
+          <Link
+            href={`/empreendimento/${slug}`}
+            className="shrink-0 font-serif text-[12px] italic tracking-[0.15em] opacity-95 transition hover:text-[#c9a876] sm:text-[13px]"
+          >
             {emp.nome}
           </Link>
-          <span className="shrink-0 px-1 opacity-30">·</span>
-          <Link href="#plantas" className="shrink-0 rounded-full px-3 py-1.5 uppercase opacity-80 transition hover:bg-white/10 hover:opacity-100">
+
+          {/* Spacer flex pra empurrar links pro centro/direita */}
+          <span className="hidden md:block flex-1" aria-hidden="true" />
+
+          {/* Links de navegacao — opacity 60% baseline, dourado on hover */}
+          <Link href="#plantas" className="shrink-0 px-1 uppercase opacity-60 transition hover:text-[#c9a876] hover:opacity-100">
             Plantas
           </Link>
-          <Link href="#precos" className="shrink-0 rounded-full px-3 py-1.5 uppercase opacity-80 transition hover:bg-white/10 hover:opacity-100">
+          <Link href="#precos" className="shrink-0 px-1 uppercase opacity-60 transition hover:text-[#c9a876] hover:opacity-100">
             Preços
           </Link>
-          <Link href="#infraestrutura" className="shrink-0 rounded-full px-3 py-1.5 uppercase opacity-80 transition hover:bg-white/10 hover:opacity-100">
+          <Link href="#infraestrutura" className="shrink-0 px-1 uppercase opacity-60 transition hover:text-[#c9a876] hover:opacity-100">
             Lazer
           </Link>
-          <Link href="#localizacao" className="shrink-0 rounded-full px-3 py-1.5 uppercase opacity-80 transition hover:bg-white/10 hover:opacity-100">
+          <Link href="#localizacao" className="shrink-0 px-1 uppercase opacity-60 transition hover:text-[#c9a876] hover:opacity-100">
             Localização
           </Link>
+
+          {/* CTA — verde profundo (era #25D366 neon WhatsApp). "AGENDAR
+              VISITA" comunica luxo melhor que "WhatsApp" generico. Mantem
+              link wa.me — apenas estilo e copy mudam. */}
           <a
             href={whatsUrl}
             target="_blank"
             rel="noopener noreferrer"
             data-track="whatsapp_click"
             data-source="navbar"
-            className="ml-auto shrink-0 rounded-full bg-[#25D366] px-4 py-1.5 uppercase text-white shadow-sm transition hover:bg-[#1da851]"
+            className="ml-auto shrink-0 rounded-full bg-[#1F7A4D] px-4 py-1.5 uppercase text-[10px] font-medium tracking-[0.2em] text-white shadow-sm transition hover:bg-[#175E3B] sm:px-5 sm:text-[11px]"
           >
-            WhatsApp
+            Agendar visita
           </a>
         </div>
       </nav>
@@ -394,7 +407,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
           - Gradient bottom mais sofisticado pra fundir com proxima section
           - data-reveal nas peças textuais
           ======================================================== */}
-      <section className="relative -mt-[3rem] flex h-[88vh] min-h-[600px] items-center justify-center overflow-hidden bg-neutral-950 sm:-mt-[3.25rem]">
+      <section className="relative -mt-[3rem] flex h-[92vh] min-h-[640px] items-center justify-center overflow-hidden bg-neutral-950 sm:-mt-[3.25rem]">
         <div className="absolute inset-0">
           <Image
             src={assets.heroImage}
@@ -405,64 +418,78 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
             priority
             quality={90}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/55 to-black/85" />
-        </div>
-
-        <div className="absolute top-[3.75rem] left-0 right-0 z-10 sm:top-[4rem]">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="[&_nav]:text-white/55 [&_a]:text-white/55 [&_a:hover]:text-white/90 [&_span]:text-white/85">
-              <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Empreendimentos", url: "/empreendimentos" }, { name: emp.nome, url: `/empreendimento/${slug}` }]} />
-            </div>
-          </div>
+          {/* Overlay multi-camada (revisao GPT 04/05/2026):
+              - Vinheta linear vertical: clareou centro (mid 30%) + escureceu base
+              - Vinheta radial: laterais mais escuras, miolo respira
+              - Janela de luz suave atras do logo: radial branco translucido
+              Resultado: menos "selva escura", mais "botanical luxury" — fundo
+              vira ambiente de marca, nao protagonista. */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.06)_0%,transparent_35%)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/30 to-black/85" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(0,0,0,0.55)_100%)]" />
         </div>
 
         <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
-          {/* Caption: tagline + bairro/cidade combinados em 1 linha sutil */}
-          <p data-reveal className="text-[10px] tracking-[0.4em] text-white/55 sm:text-[11px]">
-            {assets.tagline || `${(bairros[0] || "Curitiba").toUpperCase()} · CURITIBA`}
-            {assets.subtitulo && <span className="ml-3 text-[#c9a876]/80">· {assets.subtitulo}</span>}
+          {/* Caption editorial — formato compactado e mais especifico */}
+          <p data-reveal className="text-[10px] tracking-[0.4em] text-white/65 sm:text-[11px]">
+            {assets.subtitulo
+              ? `${assets.subtitulo.toUpperCase()} · ${(bairros[0] || "Curitiba").toUpperCase()} · CURITIBA`
+              : `${(bairros[0] || "Curitiba").toUpperCase()} · CURITIBA`}
           </p>
 
           {assets.logo ? (
             <>
-              <div data-reveal className="mt-8 flex justify-center sm:mt-10">
+              <div data-reveal className="mt-10 flex justify-center sm:mt-12">
                 <Image
                   src={assets.logo}
                   alt={`${emp.nome} — logo do empreendimento em ${bairros[0] || "Curitiba"}`}
                   width={500}
                   height={240}
-                  className="h-auto max-h-[180px] w-auto max-w-[78vw] object-contain drop-shadow-[0_4px_24px_rgba(0,0,0,0.4)] sm:max-h-[240px] sm:max-w-[460px]"
+                  className="h-auto max-h-[200px] w-auto max-w-[82vw] object-contain drop-shadow-[0_4px_28px_rgba(0,0,0,0.5)] sm:max-h-[260px] sm:max-w-[500px]"
                   priority
                 />
               </div>
-              {/* H1 visivel pra SEO — Google parseia headings visiveis com peso
-                  diferente. Logo continua como brand visual; H1 carrega palavra-chave
-                  primaria + bairro pra capturar queries: "reserva barigui mossungue",
-                  "apartamento reserva barigui", etc. */}
-              <h1 data-reveal className="mt-10 font-serif text-sm font-light tracking-[0.25em] text-white/95 sm:text-base">
+              {/* H1 visivel pra SEO + tagline aspiracional (GPT 04/05/2026):
+                  H1 mantem keyword exata pra Google ("Reserva Barigui · Mossunguê,
+                  Curitiba"). Linha aspiracional logo abaixo vende exclusividade
+                  ("Apenas N unidades..."). Combinado da forca SEO sem perder
+                  feel premium. */}
+              <h1 data-reveal className="mt-10 font-serif text-sm font-light tracking-[0.25em] text-white/85 sm:text-base">
                 {emp.nome}
-                {bairros[0] && <span className="text-white/60"> · {bairros[0]}, Curitiba</span>}
+                {bairros[0] && <span className="text-white/55"> · {bairros[0]}, Curitiba</span>}
               </h1>
-              {tipos.length > 0 && (
-                <div data-reveal className="mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[10px] tracking-[0.3em] text-white/65 sm:text-[11px]">
-                  {tipos.slice(0, 3).map((t, i) => (
-                    <span key={t}>
-                      {i > 0 && <span className="mx-1.5 text-white/30">·</span>}
-                      <span className="rounded-full border border-white/15 bg-white/[0.04] px-2.5 py-1 uppercase backdrop-blur-sm">
-                        {t}
-                      </span>
-                    </span>
-                  ))}
-                  {properties.length > 0 && (
-                    <span>
-                      <span className="mx-1.5 text-white/30">·</span>
-                      <span className="rounded-full border border-[#c9a876]/30 bg-[#c9a876]/10 px-2.5 py-1 uppercase tracking-[0.3em] text-[#d4b888] backdrop-blur-sm">
-                        {properties.length} {properties.length === 1 ? "Unidade" : "Unidades"}
-                      </span>
-                    </span>
-                  )}
-                </div>
+              {properties.length > 0 && (
+                <p data-reveal className="emp-pull-quote mt-5 text-lg italic text-white/95 sm:text-xl lg:text-2xl">
+                  Apenas {properties.length} {properties.length === 1 ? "unidade" : "unidades"} próximas ao Parque Barigui
+                </p>
               )}
+              {tipos.length > 0 && (
+                <p data-reveal className="mt-7 text-[10px] tracking-[0.35em] text-white/60 sm:text-[11px]">
+                  {tipos.slice(0, 3).map((t) => t.toUpperCase()).join(" · ")}
+                </p>
+              )}
+
+              {/* CTAs centrais — primario (Agendar visita privativa) com cor
+                  verde profundo, secundario (Ver plantas) outline branco.
+                  Substitui o WhatsApp neon do nav como acao prominente do hero. */}
+              <div data-reveal className="mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+                <a
+                  href={whatsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-track="whatsapp_click"
+                  data-source="hero_primary"
+                  className="inline-flex items-center gap-2.5 rounded-full bg-[#1F7A4D] px-7 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white shadow-lg transition hover:bg-[#175E3B] sm:px-9 sm:py-4 sm:text-xs"
+                >
+                  Agendar visita privativa
+                </a>
+                <Link
+                  href="#plantas"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/[0.04] px-7 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white/90 backdrop-blur-sm transition hover:border-white/55 hover:bg-white/10 sm:px-9 sm:py-4 sm:text-xs"
+                >
+                  Ver plantas
+                </Link>
+              </div>
             </>
           ) : (
             <>
@@ -478,18 +505,35 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
           )}
         </div>
 
-        <div className="absolute bottom-8 left-0 right-0 z-10 flex flex-col items-center gap-2">
-          <span className="text-[9px] tracking-[0.35em] text-white/50 uppercase">Role para descobrir</span>
-          <ChevronDown className="h-4 w-4 animate-bounce text-white/50" />
+        {/* Indicador minimal — linha vertical fina + chevron, sem texto.
+            Sutilmente animado pra sugerir scroll sem competir com hierarquia. */}
+        <div className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2">
+          <div className="flex flex-col items-center gap-2">
+            <span className="block h-8 w-px bg-gradient-to-b from-transparent via-white/40 to-white/60" />
+            <ChevronDown className="h-3.5 w-3.5 animate-bounce text-white/55" />
+          </div>
         </div>
       </section>
+
+      {/* Breadcrumb editorial — discreto, fora do hero (revisao GPT
+          04/05/2026: hero limpo, sem ruido tecnico). Breadcrumb continua
+          existindo pro Schema BreadcrumbList + UX, so muda posicao. */}
+      <div className="bg-[#0a0d0c] py-3 sm:py-4">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-[10px] [&_nav]:text-white/35 [&_a]:text-white/35 [&_a:hover]:text-[#c9a876] [&_span]:text-white/55 sm:text-[11px]">
+            <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Empreendimentos", url: "/empreendimentos" }, { name: emp.nome, url: `/empreendimento/${slug}` }]} />
+          </div>
+        </div>
+      </div>
 
       {/* ========================================================
           PULL QUOTE — gradient bridge entre hero (escuro com folhas)
           e a section "Saiba mais" (escura solida). Cria respiro
           editorial e quebra a transicao abrupta.
+          Revisao GPT 04/05/2026: gradient warm (#0a0d0c) em vez de
+          neutral-950 puro pra evitar "azulado" e manter dark warm.
           ======================================================== */}
-      <section className="relative bg-gradient-to-b from-neutral-950 via-[#0d0d0d] to-[#1a1a1a] py-20 md:py-28">
+      <section className="relative bg-gradient-to-b from-[#0a0d0c] via-[#0b1110] to-[#101411] py-20 md:py-28">
         <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
           {assets.tagline && (
             <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876]/70 sm:text-xs">
