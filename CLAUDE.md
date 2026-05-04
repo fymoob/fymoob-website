@@ -194,19 +194,19 @@ Pergunte: *"estou afirmando um número de KB/ms neste PR?"* Se sim, protocolo. S
 - **Buscar provas, não presumir.** Grep no código existente, log temporário, exemplo de resposta real — sempre antes de regras novas.
 
 ## Task Management — REGRA OBRIGATÓRIA
-- **Tasks consolidadas em `docs/TASKS.md`** — fonte única de verdade
-- **APÓS CADA IMPLEMENTAÇÃO:** atualizar `docs/TASKS.md` imediatamente:
-  1. Marcar tasks concluídas com `[x]`
-  2. Atualizar contadores na tabela Status Geral (concluídas, pendentes, %)
-  3. Adicionar novas tasks descobertas na fase apropriada
-  4. Se fase completa, mudar status para CONCLUIDA
-- **NUNCA** fazer commit sem ter atualizado o TASKS.md primeiro
-- Ao descobrir nova task, adicionar na fase apropriada
-- Status atual: verificar tabela no topo de `docs/TASKS.md`
+- **Fonte única conceitual:** [`docs/TASKS.md`](docs/TASKS.md) é o **índice mestre** (~140 linhas: tabela Status Geral + foco da semana + ponteiros). Detalhe de cada fase em [`docs/tasks/<fase>.md`](docs/tasks/). Sessões antigas e fases concluídas em [`docs/tasks/archive/`](docs/tasks/archive/).
+- **Ao começar uma sessão:** ler o índice + apenas o(s) arquivo(s) da(s) fase(s) em foco (não toda a árvore).
+- **APÓS CADA IMPLEMENTAÇÃO:**
+  1. Marcar `[x]` no arquivo da fase ativa (`docs/tasks/<fase>.md`)
+  2. Atualizar contadores na tabela Status Geral em `docs/TASKS.md`
+  3. Tasks novas vão no arquivo da fase apropriada (nunca no índice)
+  4. Se fase completa: mover inteira para `docs/tasks/archive/fases-concluidas.md` + atualizar status no índice
+- **NUNCA** fazer commit sem atualizar a fase ativa + contador no índice.
+- **Sessões fechadas:** mover blocos `<details>` da fase ativa para `docs/tasks/archive/sessoes-YYYY-MM.md` no primeiro commit do mês seguinte.
 
 ## Contexto de negócio
 - Ver `docs/project-context.md` para dados completos do cliente
-- Ver `docs/TASKS.md` para todas as tasks do projeto (fonte única)
+- Ver `docs/TASKS.md` (índice mestre) + `docs/tasks/<fase>.md` para detalhe
 - Ver `docs/sprint-plan.md` para referência histórica das fases originais
 - Ver `docs/seo-strategy.md` para estratégia técnica detalhada de SEO
 
@@ -224,73 +224,16 @@ Quando compactar, SEMPRE preservar:
 - **Revisar SEO:** invocar agente `seo-reviewer` para validar páginas
 - **Entre fases:** usar `/clear` para limpar contexto
 
-## Conteúdo SEO — Fontes confiáveis e princípios editoriais
+## Conteúdo SEO — Fontes, princípios editoriais e hardening jurídico
 
-> Regras pra escrever ou revisar qualquer artigo do blog. **Validado 02/05/2026**
-> após revisão dos artigos de financiamento-bancos e melhores-bairros-familias.
+**Antes de escrever ou revisar qualquer artigo do blog**, ler [`docs/seo/article-writing-rules.md`](docs/seo/article-writing-rules.md). Cobre:
 
-### Princípios obrigatórios
-
-1. **CRM FYMOOB ≠ fonte estatística primária.** Pode citar como observação
-   complementar de mercado ("Como observação complementar, o estoque
-   acompanhado pela FYMOOB em abril/2026..."), nunca como autoridade
-   estatística com `n=X` e mediana exata. Amostra interna é sempre pequena.
-
-2. **FipeZap não tem tabela pública bairro-a-bairro.** O índice oficial Fipe é
-   agregado por capital. Quando o post usa preço por bairro "do FipeZap", o
-   dado vem de **fontes intermediárias** (MySide, BemBrasil, Portas, Loft).
-   Wording correto: "referência baseada em FipeZap/MySide" ou "levantamento
-   FipeZap publicado por [intermediária]".
-
-3. **Datas explícitas em todo dado dinâmico.** "FipeZap mar/2026", não "FipeZap".
-
-4. **Title sem números específicos** (regra do GSC). Number-driven hook só na
-   description. Title matcha intent de busca, não preview do conteúdo.
-
-5. **Claims absolutos exigem caveat.** "Zero homicídios", "único banco", "top
-   1", "100%" — usar linguagem blindada citando a limitação da fonte.
-
-6. **Comparativos descrevem a comparação**, não atribuem posição absoluta.
-   "Nas taxas que comparamos em abril/2026, BRB aparece como 2ª menor" >
-   "BRB virou #2 do ranking nacional".
-
-7. **Tabelas por perfil de leitor logo no início.** Decisão prática > listagem
-   técnica. Pra `melhores-bairros-familias`: tabela "perfil família × melhor
-   bairro × alternativas" antes do ranking detalhado.
-
-8. **Tom profissional > tom "internet".** "Pontos de atenção" > "pegadinhas";
-   "nem sempre aparece" > "todo banco esconde"; "orientação objetiva" >
-   "sem enrolação".
-
-### Hierarquia de fontes
-
-**Tier 1 — Oficiais (sempre preferir):**
-Banco Central, IBGE, STJ/STF/TJ-PR, ANEEL, ANP, ANS, SESA-PR, SESP-PR, INEP,
-IPPUC, IPARDES, Prefeitura de Curitiba, Câmara Municipal CWB, SEFA-PR, URBS.
-
-**Tier 2 — Setor confiável:**
-Caixa/Itaú/BB/BRB sites oficiais, Abrainc, Abecip, ADEMI-PR, Sinduscon-PR,
-Secovi-PR, FGV/IBRE (INCC-DI), DIEESE, IPEA, Portal Loft, Quinto Andar Index.
-
-**Tier 3 — Mídia editorial sólida:**
-Gazeta do Povo, Tribuna do Paraná, Bem Paraná, Conjur, Migalhas, JusBrasil,
-Portas, BemBrasil Imóveis (compiladores Loft).
-
-**Tier 4 — Compiladores leves:**
-MySide, Larya, SpImóvel, Apto.vc, iLove Curitiba, Senior Index.
-
-**Tier 5 — Colaborativo (só cor, nunca ancorar):**
-Numbeo, Expatistan, ImovelWeb (busca).
-
-### Quando uma frase merece revisão antes de publicar
-
-Frase passa por revisão se atender qualquer critério:
-1. Tem número específico (R$ X, X%, `n=X`) → exige fonte Tier 1-3.
-2. Tem claim absoluto (top 1, único, zero, 100%) → exige fonte direta + caveat.
-3. Cita FYMOOB CRM como autoridade → reformular como "observação complementar".
-4. Compara marcas/players sem qualifier → descrever a comparação.
-
-Detalhamento completo em [docs/seo/article-revision-plan-2026-05-02.md](docs/seo/article-revision-plan-2026-05-02.md).
+- Princípios obrigatórios (CRM ≠ fonte estatística, FipeZap, datas explícitas, claims absolutos com caveat)
+- Hierarquia de fontes (5 tiers: oficiais → setor → mídia → compiladores → colaborativo)
+- Critérios pra revisão pré-publicação
+- Vocabulário padronizado do cluster (substituições obrigatórias em texto corrido)
+- Hardening jurídico (Tema 1113/STJ, Lei 13.786/2018, propter rem, art. 108 CC, SESP-PR, INCC-DI vs M)
+- Workflow de revisão idempotente (validado em 15 artigos)
 
 ## Blog Custom Admin (Fase 18 — concluída 30/04/2026)
 Sanity foi removido por completo. Stack atual:
@@ -299,4 +242,4 @@ Sanity foi removido por completo. Stack atual:
 - **Migração 15 MDX:** `node scripts/migrate-mdx-to-supabase.mjs` (idempotente)
 - **Cron Vercel:** `/api/cron/publish-scheduled` roda diário 06:00 UTC (publica `status=scheduled`)
 - **Toggle blog público:** `BLOG_SOURCE=supabase` em prod ativa o read do Supabase. Fallback default = MDX em `content/blog/`
-- Detalhes: `docs/TASKS.md` Fase 18, `supabase/README.md` (migrations + buckets)
+- Detalhes: [`docs/tasks/fase-18-blog-admin.md`](docs/tasks/fase-18-blog-admin.md), `supabase/README.md` (migrations + buckets)
