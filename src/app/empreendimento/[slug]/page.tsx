@@ -343,6 +343,13 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(combinedSchema) }} />
       <WhatsAppTracker empreendimentoNome={emp.nome} bairro={bairros[0]} slug={slug} />
 
+      {/* Wrapper escuro envolvendo nav + hero (revisao v6.1 04/05/2026):
+          Body global tem `bg-background` (branco em light mode). O nav
+          sticky e transparente nos primeiros 60vh — sem wrapper escuro,
+          o branco do body vazava como faixa atras do nav. Wrapper aqui
+          garante que mesmo com nav transparente, o fundo e dark continuo. */}
+      <div className="bg-neutral-950">
+
       {/* ========================================================
           SMART NAV — Sprint design (03/05/2026)
           Sticky desde o topo. CSS scroll-driven (animation-timeline:
@@ -410,7 +417,7 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
           - Gradient bottom mais sofisticado pra fundir com proxima section
           - data-reveal nas peças textuais
           ======================================================== */}
-      <section className="relative -mt-[3rem] flex h-[94vh] min-h-[680px] flex-col overflow-hidden bg-neutral-950 sm:-mt-[3.25rem]">
+      <section className="relative flex h-[88vh] min-h-[680px] flex-col overflow-hidden bg-neutral-950">
         <div className="absolute inset-0">
           <Image
             src={assets.heroImage}
@@ -435,25 +442,23 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(0,0,0,0.4)_100%)]" />
         </div>
 
-        {/* TOPO — caption + H1 SEO sutil (revisao v6 04/05/2026):
-            - Caption "LANCAMENTO · MOSSUNGUE · CURITIBA" como eyebrow
-            - H1 "Reserva Barigui · Mossungue, Curitiba" abaixo, eyebrow
-              maior pra criar simetria com o bloco bottom (CTA + tagline).
-            Padrao luxury editorial: topo institucional + centro brand +
-            bottom comercial. */}
+        {/* TOPO — caption + H1 SEO (revisao v6.1 04/05/2026):
+            Eliminada redundancia: caption foca em CATEGORIA (LANCAMENTO),
+            H1 entrega NOME + GEO (keyword SEO). Antes ambos repetiam
+            MOSSUNGUE + CURITIBA. */}
         <div className="relative z-10 pt-[5.5rem] sm:pt-[6rem]">
           <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
-            <p data-reveal className="text-[10px] tracking-[0.4em] text-white/85 drop-shadow-[0_1px_8px_rgba(0,0,0,0.7)] sm:text-[11px]">
-              {assets.subtitulo
-                ? `${assets.subtitulo.toUpperCase()} · ${(bairros[0] || "Curitiba").toUpperCase()} · CURITIBA`
-                : `${(bairros[0] || "Curitiba").toUpperCase()} · CURITIBA`}
-            </p>
-            {/* H1 SEO movido pro topo (v6) — mantem keyword pro Google
-                + cria simetria editorial. drop-shadow porque area de ceu
-                claro precisa de contraste. */}
-            <h1 data-reveal className="mt-6 font-light text-[11px] tracking-[0.3em] uppercase text-white/70 drop-shadow-[0_1px_6px_rgba(0,0,0,0.55)] sm:text-xs">
+            {assets.subtitulo && (
+              <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876]/85 drop-shadow-[0_1px_8px_rgba(0,0,0,0.7)] sm:text-[11px]">
+                {assets.subtitulo.toUpperCase()}
+              </p>
+            )}
+            {/* H1 SEO completo (nome + bairro + cidade) — keyword Google
+                + sinal institucional. Tamanho ligeiramente maior que
+                caption (12-13px) pra hierarquia clara. */}
+            <h1 data-reveal className="mt-4 font-light text-[12px] tracking-[0.3em] uppercase text-white/85 drop-shadow-[0_1px_8px_rgba(0,0,0,0.6)] sm:text-[13px]">
               {emp.nome}
-              {bairros[0] && <span className="text-white/50"> · {bairros[0]}, Curitiba</span>}
+              {bairros[0] && <span className="text-white/55"> · {bairros[0]}, Curitiba</span>}
             </h1>
           </div>
         </div>
@@ -585,6 +590,8 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
           </div>
         </div>
       </section>
+
+      </div>{/* /wrapper bg-neutral-950 */}
 
       {/* Breadcrumb editorial utilitario — fora do hero, faixa fina compacta
           (Revisao GPT 04/05/2026 v2: padding mais generoso pra dar respiro

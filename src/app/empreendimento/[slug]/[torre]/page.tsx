@@ -284,6 +284,12 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(combinedSchema) }} />
       <WhatsAppTracker empreendimentoNome={`${t.nome} - ${emp.nome}`} bairro={bairro} slug={`${slug}/${torre}`} />
 
+      {/* Wrapper escuro envolvendo nav + hero (revisao v6.1 04/05/2026):
+          Body global tem `bg-background` (branco). Nav sticky e transparente
+          inicialmente — wrapper escuro evita que o branco do body apareça
+          atras do nav. */}
+      <div className="bg-neutral-950">
+
       {/* Smart Nav editorial premium — revisao GPT 04/05/2026:
             - logo-text na esquerda
             - links centro/direita opacity 60%, hover dourado
@@ -323,7 +329,7 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
       </nav>
 
       {/* HERO da torre — overlay multi-camada + hierarquia premium */}
-      <section className="relative -mt-[3rem] flex h-[82vh] min-h-[600px] items-center justify-center overflow-hidden bg-neutral-950 sm:-mt-[3.25rem]">
+      <section className="relative flex h-[78vh] min-h-[600px] items-center justify-center overflow-hidden bg-neutral-950">
         <div className="absolute inset-0">
           <Image
             src={heroImage}
@@ -431,6 +437,8 @@ export default async function TorreSubRoute({ params }: TorreSubRouteProps) {
           </div>
         </div>
       </section>
+
+      </div>{/* /wrapper bg-neutral-950 */}
 
       {/* Breadcrumb editorial utilitario — padding maior pra dar respiro */}
       <div className="bg-[#0a0d0c] py-5 sm:py-6">
