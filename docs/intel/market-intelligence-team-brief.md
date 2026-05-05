@@ -208,6 +208,9 @@ Findings escritos em `docs/intel/working/{role}-findings-{week}.md` durante cole
 5. **Citation freshness** — `fetched_at` < 30 dias pra dados de mercado
 6. **Avantti note:** existe **construtora Avantti** em Curitiba (do Reserva Barigui). NÃO confundir com `avantti.com.br` que pode ser software de salão de beleza. Validar CNPJ via Receita Federal antes de tratar como construtora.
 7. **VivaReal/ZAP/OLX:** robots.txt bloqueia bots IA. **Não tentar scrape**. Usar FipeZap como proxy de preços.
+8. **Tier 3 confidence cap = 70/100** (validado W19): mídia editorial (Gazeta do Povo, Tribuna, Bem Paraná) é citável pra **contexto/sinal**, mas finding com source primária Tier 3 NÃO pode passar de 70/100. Pra superar 70, precisa cross-check com Tier 0-1 (CNPJ Receita, gov.br, etc).
+9. **CNPJ validation obrigatório**: toda construtora citada como oportunidade tem CNPJ confirmado via consulta unitária Receita (BrasilAPI/OpenCNPJ ou consulta manual antes de Bruno agir).
+10. **Telefone validation**: número de contato em `next_action` é validado contra site oficial OU Google Maps OU release recente (≤90 dias). Telefone em release antigo não vale como current.
 
 ---
 
@@ -325,7 +328,7 @@ Se algum critério falhar, Lead **não consolida** — pede teammate específico
 
 ---
 
-## 11. Anti-padrões (do Anthropic Troubleshooting)
+## 11. Anti-padrões (Anthropic Troubleshooting + lições W19)
 
 | ❌ Erro | ✅ Como evitar |
 |---|---|
@@ -336,6 +339,11 @@ Se algum critério falhar, Lead **não consolida** — pede teammate específico
 | Scrape de VivaReal/ZAP/OLX | Skip — robots.txt bloqueia bots IA. FipeZap é proxy oficial |
 | Tasks muito grandes (1 teammate trava 30min sem feedback) | Cada task self-contained, ≤6 tasks/teammate, granularity §8 |
 | Tasks muito pequenas (overhead > resultado) | Não criar task pra "fetch 1 URL". Cada task entrega ≥1 finding |
+| **Monitor permission popup trava teammate (W19)** | **NUNCA usar `Monitor` em Agent Teams in-process Windows.** Permission popup não renderiza no IDE → teammate fica zumbi processando inbox. Sempre `Bash run_in_background` pra polling/watch. |
+| **JS-rendered pagination concorrentes (W19)** | Site dos 4 concorrentes regionais (Razzi/JBA/Apolar/Gonzaga) usa SPA com pagination via JS. `curl` + parse HTML pega só a primeira página (12-14 listings, não-representativo). **Skip scraping HTML completo**. Usar FipeZap como proxy de preço-por-bairro. Scraper full requer Playwright integration (sprint separado). |
+| **Lag editorial alvarás Curitiba (W19)** | Base de Alvarás é publicada com **delay de 3-6 meses**. Em 04/05/2026, último mês disponível = ~Q4/2024. NÃO afirmar "construtora ativa AGORA" baseado nos CSVs. Wording correto: "construtora com alvarás emitidos até [última data publicada]". |
+| **TeamDelete trava com teammate zumbi (W19)** | Antes de TeamDelete, mandar `shutdown_request` pra cada teammate. Se algum não responde em 60s: edit manual `~/.claude/teams/{nome}/config.json` removendo o member zumbi do array → retry TeamDelete. Documentar zombi rate (esperado: <10% dos runs). |
+| **ROI estimado sem base explícita** | `next_action` com valor monetário (ex: "ROI 12m R$ 137k") DEVE incluir `evidence` com cálculo (ticket médio × volume × % comissão típica). Sem cálculo explícito, omitir valor. |
 
 ---
 
