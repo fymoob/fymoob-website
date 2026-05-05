@@ -77,6 +77,10 @@ const DETAIL_FIELDS = [
   "Empreendimento", "CodigoEmpreendimento", "Construtora", "DescricaoEmpreendimento",
   "DescricaoWeb", "TituloSite", "TextoAnuncio", "KeywordsWeb",
   "FotoDestaque", "FotoDestaquePequena", "URLVideo", "TemTourVirtual",
+  // Video[] resource nested — exposto so em /imoveis/detalhes (igual `Foto`).
+  // Wagner cadastra videos no CRM Loft via "Galeria de Videos" (Tipo=youtube|vimeo|mp4)
+  // e o site lia apenas URLVideo (URL unica externa) — bug fixado 05/05/2026.
+  { Video: ["Video", "VideoCodigo", "Tipo", "Descricao", "DescricaoWeb", "Destaque", "ExibirNoSite", "ExibirSite"] },
   "ExibirNoSite", "DestaqueWeb", "SuperDestaqueWeb", "Lancamento",
   "AceitaFinanciamento", "AceitaPermuta",
   "Face", "GaragemTipo", "Topografia", "AnoConstrucao",
@@ -244,6 +248,39 @@ function determineFinalidade(
   return "Venda"
 }
 
+// Extrai e normaliza videos do recurso `Video[]` da API Vista.
+// Estrutura recebida: { "1": { Video, VideoCodigo, Tipo, Descricao, ... }, "2": {...} }
+// Filtros aplicados:
+//  - ExibirNoSite === "Sim" (Wagner pode ocultar video especifico no CRM)
+//  - Video field nao-vazio (descarta entradas corrompidas)
+// Ordenacao: destaque primeiro, depois pela ordem natural retornada pela API
+// (que ja vem ordenada por VideoCodigo).
+function parseVideos(raw: LoftPropertyRaw["Video"]): import("@/types/property").PropertyVideo[] {
+  if (!raw || typeof raw !== "object") return []
+  const items = Array.isArray(raw) ? raw : Object.values(raw)
+  const videos = items
+    .filter((v): v is NonNullable<typeof v> & { Video: string } =>
+      Boolean(
+        v &&
+          typeof v === "object" &&
+          typeof v.Video === "string" &&
+          v.Video.trim() !== "" &&
+          // ExibirNoSite default "Sim" se ausente — comportamento Vista
+          (v.ExibirNoSite === undefined || v.ExibirNoSite === "Sim")
+      )
+    )
+    .map((v) => ({
+      videoId: v.Video.trim(),
+      tipo: ((v.Tipo || "youtube").toLowerCase()) as import("@/types/property").PropertyVideo["tipo"],
+      descricao: (v.Descricao || "").trim(),
+      descricaoWeb: (v.DescricaoWeb || "").trim(),
+      destaque: v.Destaque === "Sim",
+    }))
+  // Destaque primeiro, ordem natural depois (stable sort).
+  videos.sort((a, b) => Number(b.destaque) - Number(a.destaque))
+  return videos
+}
+
 function mapRawToProperty(raw: LoftPropertyRaw): Property {
   const slug = generateSlug(raw)
   // Coordenadas geograficas: usa parseCoordinate (aceita negativos —
@@ -362,6 +399,7 @@ function mapRawToProperty(raw: LoftPropertyRaw): Property {
     fotos,
     fotosPorTipo,
     urlVideo: raw.URLVideo || null,
+    videos: parseVideos(raw.Video),
     temTourVirtual: parseBool(raw.TemTourVirtual),
     exibirNoSite: parseBool(raw.ExibirNoSite),
     destaqueWeb: parseBool(raw.DestaqueWeb),

@@ -35,6 +35,22 @@ export type PropertyStatus =
 export type PropertyPageVariant = "standard" | "premium";
 export type PropertyPageVariantOverride = "auto" | "standard" | "premium";
 
+/**
+ * Video do imovel exposto pelo recurso `Video[]` da API Vista (paralelo a `Foto[]`).
+ * Wagner cadastra videos no CRM Loft escolhendo Tipo (youtube, vimeo, mp4, etc) —
+ * o campo `videoId` traz o identificador no formato do tipo correspondente:
+ *  - youtube/vimeo: ID curto (ex: "j3m3xMGze1g")
+ *  - mp4 ou outros: pode vir URL completa ou path
+ * `descricao` e `descricaoWeb` vem populados pelo Wagner pra title/SEO do video.
+ */
+export interface PropertyVideo {
+  videoId: string;
+  tipo: "youtube" | "vimeo" | "mp4" | string;
+  descricao: string;
+  descricaoWeb: string;
+  destaque: boolean;
+}
+
 export interface Property {
   // Identificação
   codigo: string;
@@ -103,6 +119,7 @@ export interface Property {
   fotos: string[];
   fotosPorTipo: { foto: string; tipo: string; descricao: string }[];
   urlVideo: string | null;
+  videos: PropertyVideo[];
   temTourVirtual: boolean;
 
   // Controle de exibição
@@ -287,6 +304,19 @@ export interface LoftPropertyRaw {
   URLVideo?: string;
   TemTourVirtual?: string;
   Foto?: Record<string, { Foto: string; FotoPequena?: string; FotoOriginal?: string; Ordem?: string; Destaque?: string; Descricao?: string; Tipo?: string }>;
+  // Video[] resource — exposto so em /imoveis/detalhes com nested fields.
+  // Estrutura: { "1": { Video, VideoCodigo, Tipo, Descricao, ... }, "2": {...} }
+  Video?: Record<string, {
+    Video?: string;
+    VideoCodigo?: string;
+    Tipo?: string;
+    Descricao?: string;
+    DescricaoWeb?: string;
+    Destaque?: string;
+    ExibirNoSite?: string;
+    ExibirSite?: string;
+    Data?: string;
+  }>;
 
   // Controle de exibição ("Sim"/"Nao")
   ExibirNoSite?: string;

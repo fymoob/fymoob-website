@@ -29,6 +29,7 @@ import { PropertyPageAnalytics } from "@/components/analytics/PropertyPageAnalyt
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { PropertyHeaderBlock } from "@/components/property/PropertyHeaderBlock"
 import { PropertyHeroWithGallery } from "@/components/property/PropertyHeroWithGallery"
+import { PropertyVideos } from "@/components/property/PropertyVideos"
 import { PropertyDescription } from "@/components/property/PropertyDescription"
 import { LazyContactSidebar } from "@/components/property/LazyContactSidebar"
 import { PropertyCharacteristics } from "@/components/property/PropertyCharacteristics"
@@ -227,6 +228,15 @@ export default async function PropertyPage({ params }: PageProps) {
             <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-8 border-t border-slate-200 pt-8"}>
               <PropertyDescription descricao={property.descricao} />
             </div>
+
+            {property.videos.length > 0 && (
+              <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-8 border-t border-slate-200 pt-8"}>
+                <PropertyVideos
+                  videos={property.videos}
+                  propertyTitle={property.titulo}
+                />
+              </div>
+            )}
 
             {property.caracteristicas.length > 0 && (
               <div className={variant === "premium" ? "mt-14 border-t border-slate-200 pt-12" : "mt-8 border-t border-slate-200 pt-8"}>
