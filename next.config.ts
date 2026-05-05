@@ -126,6 +126,30 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       // ============================================================
+      // Slugs herdados do site Atomicat antigo (fymoob.com -> .br).
+      // Google ainda indexa formatos do site antigo; o redirect 308
+      // do dominio raiz preserva path, entao slugs renomeados caem em
+      // 404. Mapeamento 301 abaixo cobre os 2 padroes detectados via
+      // GSC sc-domain:fymoob.com em 04/05/2026.
+      // ============================================================
+      // /politica-privacidade (Atomicat) -> /politica-de-privacidade (Next).
+      // GSC: 63 impressoes/mes, indice ainda mostra a URL no SERP.
+      {
+        source: "/politica-privacidade",
+        destination: "/politica-de-privacidade",
+        permanent: true,
+      },
+      // /imovel/{CODE}/{slug-info}/{venda|aluguel} (Atomicat) -> busca filtrada.
+      // CODE = letras maiusculas + digitos (AP00945, CA02611, ST00010).
+      // Site novo usa /imovel/{slug-completo}-{CODE} sem barras intermediarias,
+      // entao nao ha conflito. Destination = /busca?codigo=:code mostra o
+      // imovel se ainda ativo, ou empty state coerente se removido do CRM.
+      {
+        source: "/imovel/:code([A-Z]+\\d+)/:slug*/:finalidade(venda|aluguel)",
+        destination: "/busca?codigo=:code",
+        permanent: true,
+      },
+      // ============================================================
       // Limpeza de query strings legadas em /busca — herdadas do site
       // antigo (Atomicat/Loft) e backlinks externos. Google Search
       // Console reporta como "Pagina alternativa com tag canonica
