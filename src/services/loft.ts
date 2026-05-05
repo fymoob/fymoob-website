@@ -248,6 +248,15 @@ function determineFinalidade(
   return "Venda"
 }
 
+// Remove "?" e � (Unicode replacement char) repetidos no inicio do texto,
+// junto com whitespace adjacente. Cobre o caso de emojis que o CRM Loft
+// converte em "?" quando o encoding nao bate. Nao toca o miolo — perguntas
+// legitimas "...vale a pena?" preservadas.
+function cleanLeadingReplacementChars(value: unknown): string {
+  if (typeof value !== "string") return ""
+  return value.replace(/^[\s?�]+/, "").trim()
+}
+
 // Extrai e normaliza videos do recurso `Video[]` da API Vista.
 // Estrutura recebida: { "1": { Video, VideoCodigo, Tipo, Descricao, ... }, "2": {...} }
 // Filtros aplicados:
@@ -272,8 +281,13 @@ function parseVideos(raw: LoftPropertyRaw["Video"]): import("@/types/property").
     .map((v) => ({
       videoId: v.Video.trim(),
       tipo: ((v.Tipo || "youtube").toLowerCase()) as import("@/types/property").PropertyVideo["tipo"],
-      descricao: (v.Descricao || "").trim(),
-      descricaoWeb: (v.DescricaoWeb || "").trim(),
+      // Limpa "?" + whitespace iniciais — emojis (🌳📐🏡) que o CRM Loft converte
+      // em "?" por encoding errado quando Wagner cola texto com emojis. Caso
+      // reportado 05/05/2026 no imovel 69805524: "? CHACARA URBANA..." vira
+      // "CHACARA URBANA...". Conservador: so toca o inicio, "?" no meio (ex:
+      // pergunta legitima "...vale a pena?") fica preservado.
+      descricao: cleanLeadingReplacementChars(v.Descricao),
+      descricaoWeb: cleanLeadingReplacementChars(v.DescricaoWeb),
       destaque: v.Destaque === "Sim",
     }))
   // Destaque primeiro, ordem natural depois (stable sort).

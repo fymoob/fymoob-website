@@ -35,8 +35,11 @@ export function PropertyVideos({ videos, propertyTitle }: PropertyVideosProps) {
 
   const heading = videos.length === 1 ? "Vídeo do imóvel" : `Vídeos do imóvel (${videos.length})`
 
+  // Wrapper externo (page.tsx) ja aplica `mt-8 pt-8` (ou `mt-14 pt-12` no
+  // premium). Aqui evitamos margens duplicadas: nada de mt-* na section, e
+  // gaps internos enxutos pra o mobile nao virar pagina interminavel.
   return (
-    <section aria-labelledby="property-videos-heading" className="mt-8 md:mt-10">
+    <section aria-labelledby="property-videos-heading">
       <h2
         id="property-videos-heading"
         className="font-display text-2xl font-bold tracking-tight text-neutral-950"
@@ -45,17 +48,17 @@ export function PropertyVideos({ videos, propertyTitle }: PropertyVideosProps) {
       </h2>
 
       {videos.length === 1 ? (
-        <div className="mt-6">
+        <div className="mt-4">
           <VideoLazyEmbed
             videoUrl={buildEmbedUrl(videos[0])}
             title={videos[0].descricao || propertyTitle}
           />
           {videos[0].descricao && (
-            <p className="mt-3 text-sm text-neutral-600">{videos[0].descricao}</p>
+            <p className="mt-2 text-sm text-neutral-600">{videos[0].descricao}</p>
           )}
         </div>
       ) : (
-        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-8">
+        <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6">
           {videos.map((v, idx) => (
             <figure key={`${v.videoId}-${idx}`} className="flex flex-col">
               <VideoLazyEmbed
@@ -63,7 +66,7 @@ export function PropertyVideos({ videos, propertyTitle }: PropertyVideosProps) {
                 title={v.descricao || `${propertyTitle} — vídeo ${idx + 1}`}
               />
               {v.descricao && (
-                <figcaption className="mt-3 text-sm text-neutral-600">
+                <figcaption className="mt-2 text-sm text-neutral-600">
                   {v.descricao}
                 </figcaption>
               )}
