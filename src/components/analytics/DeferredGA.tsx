@@ -5,6 +5,7 @@ import { useEffect } from "react"
 declare global {
   interface Window {
     dataLayer: unknown[]
+    gtag: (...args: unknown[]) => void
   }
 }
 
@@ -16,28 +17,36 @@ export function DeferredGA({ gaId }: { gaId: string }) {
       if (loaded) return
       loaded = true
 
-      // Inject gtag.js
-      const script = document.createElement("script")
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`
-      script.async = true
-      document.head.appendChild(script)
-
-      // Init dataLayer and gtag
+      // Init dataLayer + gtag GLOBAL antes do script (mesmo pattern do snippet
+      // oficial do Google em GA4 Admin -> Tag Instructions). gtag local + push
+      // de array spread (...args) NAO inicializa o gtag.js corretamente —
+      // gtag.js procura window.gtag e o objeto `arguments` exato pra processar
+      // comandos js/config/event.
       window.dataLayer = window.dataLayer || []
-      function gtag(...args: unknown[]) {
-        window.dataLayer.push(args)
+      window.gtag = function gtag() {
+        // eslint-disable-next-line prefer-rest-params
+        window.dataLayer.push(arguments as unknown as IArguments)
       }
+
       // Cookie self-ID pra filtro de trafego interno (Bruno + Wagner +
       // corretores). Dispositivos com cookie "fymoob_internal=1" marcam
       // eventos com traffic_type=internal — GA4 Data Filter descarta.
       // Ver docs/seo/internal-traffic-filtering.md + /internal-optout.
       const isInternal = document.cookie.includes("fymoob_internal=1")
 
-      gtag("js", new Date())
-      gtag("config", gaId, {
+      window.gtag("js", new Date())
+      window.gtag("config", gaId, {
         page_path: window.location.pathname,
         ...(isInternal ? { traffic_type: "internal" } : {}),
       })
+
+      // Inject gtag.js DEPOIS dos pushes iniciais — quando o script carregar,
+      // ele encontra window.gtag e o dataLayer ja populado, processa os
+      // comandos e dispara o pageview real pro endpoint /g/collect.
+      const script = document.createElement("script")
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`
+      script.async = true
+      document.head.appendChild(script)
 
       // Cleanup listeners
       events.forEach((e) => window.removeEventListener(e, load))
