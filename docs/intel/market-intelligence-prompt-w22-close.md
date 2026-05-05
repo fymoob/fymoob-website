@@ -101,11 +101,24 @@ ETAPA 1 do prompt e rodar `node scripts/intel/scrape-competitors.mjs`".
 | #6 | Comissão típica real (Conecta Imobi/ENIC release) | gap-closer via WebSearch |
 | #7 | Wayback Stenzo + New Place + Meo Neoville | gap-closer via Wayback Machine API |
 
-## SPAWN — 2 SUBAGENTS EM PARALELO (Task tool)
+## SPAWN — 2 SUBAGENTS EM PARALELO (Task tool, AMBOS Opus 4.7)
 
-Use o tool Agent (não TeamCreate) com 2 invocações em UMA mensagem:
+Use o tool Agent (não TeamCreate) com 2 invocações em UMA mensagem.
+**Ambas com `model: "opus"` explícito** — decisão Vinicius pra ter
+raciocínio máximo na sessão de fechamento. Custo estimado revisado:
+~$10-20 (5× Sonnet, mas escopo narrow → bound).
 
-### a) cross-validator (general-purpose, ~$1)
+### a) cross-validator (general-purpose, model: "opus", ~$4-7)
+
+Spawn:
+```
+Agent({
+  description: "cross-validator W22",
+  subagent_type: "general-purpose",
+  model: "opus",
+  prompt: <abaixo>
+})
+```
 
 Prompt resumido:
 "Você é cross-validator W22 da Market Intelligence FYMOOB. Sua missão:
@@ -147,7 +160,17 @@ NUNCA Monitor. NUNCA edit do scraper. Só Read + Bash 'cat'/grep/wc + Write.
 
 Reporte ao Lead em <300 palavras quando terminar."
 
-### b) gap-closer (general-purpose, ~$1.50)
+### b) gap-closer (general-purpose, model: "opus", ~$6-13)
+
+Spawn:
+```
+Agent({
+  description: "gap-closer W22",
+  subagent_type: "general-purpose",
+  model: "opus",
+  prompt: <abaixo>
+})
+```
 
 Prompt resumido:
 "Você é gap-closer W22 da Market Intelligence FYMOOB. Sua missão: fechar
@@ -288,11 +311,12 @@ Quando ambos subagents retornarem (mensagem única com 2 Task results):
 
 ## SUCCESS CRITERIA
 
-✅ Custo ≤ $4
+✅ Custo ≤ $25 (Opus em ambos subagents — escopo narrow bound em ~$10-20 esperado)
 ✅ Tempo ≤ 45 min
 ✅ Report W22-FINAL.md gerado e salvo
 ✅ Confidence dos top 3 atualizada com cross-val + gap-closure
 ✅ Recomendação 1 ligação imediata pra Bruno (Bliss anchor)
+✅ Tier 0/1 source pra cada finding numérico (Opus tem que justificar uso vs Sonnet)
 
 EXECUTAR. Confirme apenas no fim com report curto.
 ```
@@ -314,10 +338,19 @@ EXECUTAR. Confirme apenas no fim com report curto.
 - [ ] Pré-execução ETAPA 1 rodada (9 JSONs em `tmp/intel/scrape/`)
 - [ ] Validação: `ls tmp/intel/scrape/ | wc -l` retorna 9
 
-**Custo + tempo esperado:**
-- $2-4/run total (vs $8-10 W21)
+**Custo + tempo esperado (com Opus em ambos subagents):**
+- **$10-20/run total** (5× Sonnet — decisão Vinicius pra raciocínio máximo)
 - 25-45 min wall-clock (vs 85 min W21)
 - Pre-execução scraping: ~10 min adicional manual
+
+**Nota sobre Opus 4.7 vs Sonnet 4.6:**
+Opus brilha em raciocínio sutil/multi-fonte (gap-closer com refuse-to-answer
+faz sentido). Cross-validator é mais mecânico (regex match em JSONs) e
+poderia rodar Sonnet sem perda real. Decisão Vinicius: ambos Opus pra
+fechar com qualidade máxima — trade-off de ~5× custo aceito.
+
+Pra W23+ recomendo: cross-validator → Sonnet (mecânico), gap-closer →
+Opus (raciocínio crítico). Mix corta custo ~50% mantendo qualidade.
 
 **Output esperado:**
 - `docs/intel/reports/market-deepdive-2026-W22-FINAL.md` (~300-500 linhas)
