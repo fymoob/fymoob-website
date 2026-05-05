@@ -72,64 +72,72 @@ const CACHE_DIR = "tmp/intel/scrape-cache"
 
 const SITES = {
   razzi: {
+    // Site integrado ao CRM Vista/RocketImob (WordPress + custom theme)
     baseUrl: "https://razziimoveis.com.br",
-    listingsPath: "/imoveis/venda",
-    searchPath: (q) => `/imoveis/?busca=${encodeURIComponent(q)}`,
+    listingsPath: "/venda/residencial",
+    searchPath: (q) => `/busca/?busca=${encodeURIComponent(q)}`,
     selectors: {
-      list: "article.property-card, .imovel-card, [class*='property']",
-      title: "h2, h3, .title, [class*='title']",
-      price: "[class*='price'], [class*='valor']",
-      bairro: "[class*='bairro'], [class*='location']",
-      area: "[class*='area'], [class*='metro']",
-      rooms: "[class*='quartos'], [class*='dormit']",
-      url: "a[href*='/imovel/'], a[href*='/venda/']",
+      list: ".imovel-box-single",
+      title: ".titulo-grid",
+      price: ".thumb-price",
+      bairro: "[itemprop='streetAddress']",
+      area: ".property-amenities .fa-compress-arrows-alt + span",
+      rooms: ".property-amenities .fa-bed + span",
+      url: ".titulo-anuncio a, a.button-info-panel",
     },
-    nextPageSelector: "a[rel='next'], .pagination .next a, [class*='proxima']",
+    nextPageSelector: "a[rel='next'], .pagination a.next, .pagination li.next a",
   },
   jba: {
+    // Tambem CRM Vista/RocketImob (mesma estrutura HTML do Razzi)
     baseUrl: "https://jbaimoveis.com.br",
-    listingsPath: "/imoveis",
-    searchPath: (q) => `/buscar?termo=${encodeURIComponent(q)}`,
+    listingsPath: "/venda/",
+    searchPath: (q) => `/busca/?busca=${encodeURIComponent(q)}`,
     selectors: {
-      list: ".card-imovel, .property, article[class*='imovel']",
-      title: "h2, h3, .titulo",
-      price: ".valor, .preco, [class*='price']",
-      bairro: ".bairro, [class*='localizacao']",
-      area: "[class*='area'], [class*='metragem']",
-      rooms: "[class*='quartos'], [class*='dormit']",
-      url: "a[href*='/imovel'], a[href*='/detalhe']",
+      list: ".imovel-box-single",
+      title: ".titulo-grid",
+      price: ".thumb-price",
+      bairro: "[itemprop='streetAddress']",
+      area: ".property-amenities .fa-compress-arrows-alt + span",
+      rooms: ".property-amenities .fa-bed + span",
+      url: ".titulo-anuncio a, a.button-info-panel",
     },
-    nextPageSelector: ".paginacao a.proxima, [aria-label*='Proxima']",
+    nextPageSelector: "a[rel='next'], .pagination a.next, .pagination li.next a",
   },
   apolar: {
+    // SPA Vue/Nuxt — DOM popula via JS apos hydration
+    // .property-component eh uma DIV com atributo href (Vue link wrapper, nao <a>)
     baseUrl: "https://www.apolar.com.br",
-    listingsPath: "/imoveis-a-venda",
-    searchPath: (q) => `/busca?q=${encodeURIComponent(q)}`,
+    listingsPath: "/comprar",
+    searchPath: (q) => `/comprar?q=${encodeURIComponent(q)}`,
+    waitForSelector: ".property-component",
     selectors: {
-      list: "[class*='card-imovel'], [class*='property-card'], article",
-      title: "h2, h3, [class*='titulo']",
-      price: "[class*='valor'], [class*='preco']",
-      bairro: "[class*='bairro']",
-      area: "[class*='area']",
-      rooms: "[class*='quartos'], [class*='dorm']",
-      url: "a[href*='/imovel/']",
+      list: ".property-component",
+      title: ".property-type",
+      price: ".property-current-price",
+      bairro: ".property-street",
+      area: ".feature.ruler",
+      rooms: ".feature.bed",
+      url: "self-href", // sentinel: usa el.getAttribute('href') do proprio card
     },
-    nextPageSelector: "[class*='next'], a[rel='next']",
+    nextPageSelector: ".pagination li:last-child a, [class*='next-page']",
   },
   gonzaga: {
+    // Nuxt.js SSR (Vue) — listings inline no HTML
+    // Area/rooms estao em divs irmaos sem classe distintiva. Selectors abaixo
+    // capturam o primeiro valor (area) e o segundo (dormitorios) via :nth-of-type.
     baseUrl: "https://www.gonzagaimoveis.com.br",
     listingsPath: "/imoveis",
-    searchPath: (q) => `/busca?busca=${encodeURIComponent(q)}`,
+    searchPath: (q) => `/imoveis?busca=${encodeURIComponent(q)}`,
     selectors: {
-      list: "[class*='imovel'], article",
-      title: "h2, h3",
-      price: "[class*='valor'], [class*='preco']",
-      bairro: "[class*='bairro']",
-      area: "[class*='area']",
-      rooms: "[class*='quartos']",
+      list: ".card-real-estate",
+      title: "h3.ui-title",
+      price: ".cl-primary-80",
+      bairro: "h2.ui-title--w-d",
+      area: ".v-flex.--w-d.py-4 > .v-flex:nth-child(1) .ui-text--md.ui-text--weight-600",
+      rooms: ".v-flex.--w-d.py-4 > .v-flex:nth-child(2) .ui-text--md.ui-text--weight-600",
       url: "a[href*='/imovel/']",
     },
-    nextPageSelector: "a[rel='next']",
+    nextPageSelector: "a[rel='next'], [class*='pagination'] a",
   },
 }
 
@@ -212,8 +220,13 @@ async function extractListings(page, config) {
         return node ? node.textContent.trim() : null
       }
       const findHref = (el, selector) => {
+        if (selector === "self-href") {
+          // Card eh uma div com atributo href direto (Vue/Nuxt link wrapper)
+          return el.getAttribute("href") || null
+        }
         const node = el.querySelector(selector)
-        return node ? node.href : null
+        if (!node) return null
+        return node.href || node.getAttribute("href") || null
       }
       return cards.map((card) => ({
         rawTitle: findText(card, sel.title),
@@ -278,6 +291,12 @@ async function scrapeSite(site, opts = {}) {
 
       await page.goto(url, { waitUntil: "domcontentloaded" })
       await page.waitForTimeout(1500) // espera JS render
+      // Site SPA: aguarda selector chave aparecer (Apolar etc)
+      if (config.waitForSelector) {
+        await page.waitForSelector(config.waitForSelector, { timeout: 15000 }).catch(() => {
+          console.error(`    ⚠ waitForSelector timeout pra "${config.waitForSelector}" (segue mesmo assim)`)
+        })
+      }
 
       // Captcha check
       const html = await page.content()
