@@ -57,3 +57,9 @@ lighthouse-*.json
 # Analytics Intelligence — JSONs de evidencia gerados pelo skill weekly-report.
 # Audit trail temporario, mantido localmente. Markdown final commitado em docs/seo/reports/.
 tmp/intel/
+tmp/alvaras/
+tmp/cnpj/
+
+# Market Intelligence — working files dos teammates (audit trail efemero).
+# Apenas reports finais em docs/intel/reports/ entram no git.
+docs/intel/working/
