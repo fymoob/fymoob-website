@@ -382,3 +382,106 @@ Em sessão Claude Code limpa (sem state poluído):
 
 Antes disso: rodar 4-6 vezes manualmente, refinar prompts conforme drift,
 medir custo real, ajustar tier rules conforme o tipo de finding mais comum.
+
+---
+
+## 15. Fit-score FYMOOB (W21+ deep-dive)
+
+> Score absoluto (0-100) responde "esta oportunidade existe?". **Fit-score**
+> responde "FYMOOB consegue ganhar essa parceria?". Os dois são independentes.
+
+Fit-score por empreendimento (max 100):
+
+| Dimensão | Pontos | Critério |
+|---|---|---|
+| **Bairro match** | 0-30 | Bairros de expertise FYMOOB (Mossunguê, Ecoville, Batel, Bigorrilho, Cabral, Água Verde, Champagnat) = 30. Bairros adjacentes/médios (Portão, Centro, Boqueirão) = 15. Bairros sem cobertura editorial (CIC, Pinheirinho periférico, MCMV) = 5. |
+| **Tier de cliente** | 0-25 | Alto padrão (R$ 1M+) = 25 (FYMOOB tem expertise). Médio padrão (R$ 400-1M) = 20. Standard (R$ 250-400) = 10. MCMV/Econômico = 5 (fora do diferencial FYMOOB). |
+| **SEO opportunity** | 0-25 | Empreendimento sem landing dedicada por concorrente nas top 10 SERPs = 25. Concorrente já dominando = 5. Brand name fácil de ranquear (poucas palavras, único) = uplift +5. |
+| **Velocity** | 0-20 | Empreendimento parado >12m no mercado = 20 (construtora desesperada por canal). 6-12m = 12. <6m (recém-lançado) = 8 (compete com marketing oficial). |
+
+**Recomendação por fit-score:**
+- 80-100: foco prioritário, criar landing dedicada (template Reserva Barigui)
+- 60-79: incluir no portfolio, sem investimento dedicado
+- 40-59: passar adiante, não vale tempo
+- <40: skip
+
+Fit-score sempre cita Tier 0-1 source pra cada componente. Sem evidência clara, capa em 60 e flag `confidence: hypothesis`.
+
+## 16. Velocity proxies (sem acesso interno aos dados de venda)
+
+| Sinal | Como medir | Tier |
+|---|---|---|
+| **Primeira menção pública** | Wayback Machine snapshot inicial do produto no site oficial OU release Gazeta/Tribuna mais antiga | 0-3 |
+| **Última atualização Instagram** | Último post mencionando o empreendimento (proxy de "ainda em campanha") | 3-4 |
+| **Tempo no portfolio** | Compare data atual vs data primeira menção | 0 (calculado) |
+| **Imobiliárias listando** | Google `"<nome empreendimento>" imobiliaria` — quantos domínios distintos retornam | 1-2 |
+
+**Formula proxy de velocity (mais alto = mais parado = mais oportunidade):**
+```
+months_in_market = (today - first_mention_date) / 30
+velocity_score = clamp(months_in_market * 2, 0, 20)
+```
+
+Empreendimento >18 meses = score 20 max (lead quente).
+
+## 17. Discovery channel mapping (como construtora gera demanda)
+
+| Canal | Como detectar |
+|---|---|
+| **Google Ads** | Buscar exact-match brand name; se aparece resultado patrocinado = ads ativos. Estimar budget via SEMrush proxy (se disponível) ou Google Ads Transparency Center |
+| **SEO orgânico** | Posição da construtora pra `<nome empreendimento>` SERP. Top 3 = SEO forte. >10 = gap de descoberta |
+| **Social orgânico** | Followers Instagram + engajamento (comments/likes em posts produto). >5K followers + 3%+ engagement = canal forte |
+| **Imobiliárias parceiras** | Quantas listam (T16 do scraper) — se 0 = leverage alto pra FYMOOB |
+| **Outdoor / mídia tradicional** | Difícil sem field research; ignorar nesta sessão |
+
+**Output:** "matriz canal × construtora" pra cada uma das top 8. Canais fracos = onde FYMOOB pode amplificar.
+
+## 18. Landing SEO opportunity (template FYMOOB Reserva Barigui)
+
+Pra cada empreendimento com fit-score ≥80, output sugestão de landing:
+
+```yaml
+empreendimento: "Seventy Upper Mansion"
+construtora: "Andrade Ribeiro"
+proposed_url: "/empreendimento/seventy-upper-mansion"
+target_keywords:
+  primary: "seventy upper mansion ecoville"
+  secondary:
+    - "andrade ribeiro ecoville"
+    - "mansão suspensa ecoville curitiba"
+    - "alto padrão ecoville lançamento"
+schema_priority:
+  - RealEstateListing (offer + price + location)
+  - Place.isPartOf (Andrade Ribeiro umbrella)
+  - FAQPage (5-7 Q sobre o produto)
+content_blocks:
+  - hero: render + tagline editorial
+  - 1000-word SEO body (estilo /comprar-apartamento-curitiba)
+  - plantas + valores
+  - localização (mapa, distâncias key landmarks)
+  - sobre construtora (com link credibilidade Receita)
+  - FAQ específica
+  - CTA WhatsApp + form contato
+estimate_dev: "8-12h (template Reserva Barigui ja existe)"
+projected_organic_traffic_6m: "30-80 visits/mes (estimativa baseada em busca brand-name volume)"
+```
+
+Output em block YAML por empreendimento estratégico. Bruno usa pra priorizar dev backlog.
+
+## 19. Risk/reward analysis (parceria não-exclusiva)
+
+| Métrica | Como calcular | Interpretação |
+|---|---|---|
+| **Concorrência na parceria** | Google `"<nome empreendimento>" imobiliária` retorna N domínios distintos | <5 = lead quente, >20 = commodity |
+| **CAC esperado** | Hipótese: se 3 imobiliárias disputam, FYMOOB ganha ~33%; com 30, ~3%. Multiplicar pelo VSO esperado | Custo de aquisição vs comissão |
+| **Comissão típica** | Pesquisar via ADEMI release, Sinduscon, ou releases construtora. Padrão Brasil residencial: 5-6% venda; 8-10% locação. Alto padrão CWB: 5% típico | Revenue per sale |
+| **Exclusividade temporária** | Construtora oferece "corretor exclusivo" por imóvel/cliente N dias? | Negociável no contrato |
+| **Multa rescisão** | Cláusula contratual; se >3 salários mínimos = restritiva | Risco saída |
+
+**Output por oportunidade:**
+- Estimated CAC (R$)
+- Estimated revenue per sale (R$)
+- Break-even sales/year
+- Risk flags
+
+Sem evidência factual de cláusula contratual = `confidence: hypothesis` + nota "Bruno valida ao receber proposta de parceria".
