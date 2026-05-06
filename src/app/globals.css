@@ -430,59 +430,167 @@
     transform: scale(1.02);
   }
   [data-reveal],
-  [data-reveal-stagger] > * {
+  [data-reveal-stagger] > *,
+  [data-reveal-rows] > *,
+  [data-reveal-slide-left],
+  [data-reveal-slide-right],
+  [data-image-zoom],
+  [data-image-parallax] {
     opacity: 1 !important;
     transform: none !important;
     animation: none !important;
   }
 }
 
-/* Smart Nav — sticky nav com background scroll-driven. No topo (hero
-   atras): transparente, texto branco. Apos passar do hero (~80vh):
-   glass-dark com blur. Animation-timeline: scroll() segue scroll do
-   documento, sincroniza com o ponto onde o usuario passa do hero. */
-@supports (animation-timeline: scroll()) {
-  .emp-smart-nav {
-    animation: emp-smart-nav-bg linear both;
-    animation-timeline: scroll();
-    animation-range: 60vh 80vh;
+/* ──────────────────────────────────────────────────────────────────────
+   Sprint design 06/05/2026 — D4: animações editoriais sofisticadas
+   ──────────────────────────────────────────────────────────────────────
+   Padrão dominante 2025-2026 em sites luxury: CSS scroll-driven nativo
+   (`animation-timeline: view()`), zero JS, performante. Easings
+   `cubic-bezier(0.22, 1, 0.36, 1)` (in-out luxury — mais natural que
+   ease-out chapado). Fallback gracioso pra Firefox via `@supports`.
+   ────────────────────────────────────────────────────────────────────── */
+
+/* D4.1 — Image scale-in on enter
+   Imagem começa em 1.06 e relaxa pra 1.0 conforme entra na viewport.
+   Efeito "zoom-out sutil de 1.5s na entrada" usado em magazine sites.
+   Aplicar em cards editoriais (UnitFeaturedCard, AmenitiesShowcase). */
+@supports (animation-timeline: view()) {
+  [data-image-zoom] {
+    animation: emp-image-zoom-in linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+    transform-origin: center center;
+    will-change: transform;
   }
 }
 
-@keyframes emp-smart-nav-bg {
-  from {
-    background-color: rgba(0, 0, 0, 0);
-    color: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
-    border-bottom-color: rgba(255, 255, 255, 0);
-    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
-  }
-  to {
-    background-color: rgba(15, 15, 15, 0.85);
-    color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(14px) saturate(180%);
-    -webkit-backdrop-filter: blur(14px) saturate(180%);
-    border-bottom-color: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+@keyframes emp-image-zoom-in {
+  from { transform: scale(1.06); }
+  to { transform: scale(1); }
+}
+
+/* D4.4 — Parallax sutil interno
+   Imagem dentro do card move ~8% mais lento que o conteúdo durante o
+   scroll inteiro. Cria sensação de profundidade sem quebrar UX. Usar
+   em imagens grandes que ficam visíveis por bastante tempo. */
+@supports (animation-timeline: view()) {
+  [data-image-parallax] {
+    animation: emp-image-parallax linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+    will-change: transform;
   }
 }
 
-/* Fallback: nav sem scroll-driven anim — fica em dark-glass o tempo todo
-   (browsers sem support nao ficam com nav transparente sobre conteudo). */
-@supports not (animation-timeline: scroll()) {
-  .emp-smart-nav {
-    background-color: rgba(15, 15, 15, 0.85);
-    color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(14px) saturate(180%);
-    -webkit-backdrop-filter: blur(14px) saturate(180%);
-    border-bottom-color: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+@keyframes emp-image-parallax {
+  from { transform: translate3d(0, -4%, 0) scale(1.08); }
+  to   { transform: translate3d(0, 4%, 0) scale(1.08); }
+}
+
+/* Parallax full-section — substitui `background-attachment: fixed` que e
+   conhecido por travar scroll absurdamente (forca repaint a cada frame).
+   Usar sempre com <Image fill /> dentro de container `relative
+   overflow-hidden`. Scale 1.1 absorve o translate sem deixar borda
+   branca aparecer. GPU-accelerated (translate3d), zero invalidacao. */
+@supports (animation-timeline: view()) {
+  .emp-parallax-img {
+    animation: emp-parallax-translate linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+    will-change: transform;
   }
-  .emp-smart-nav a,
-  .emp-smart-nav .emp-smart-nav-link {
-    color: rgba(255, 255, 255, 0.9);
+}
+
+@keyframes emp-parallax-translate {
+  from { transform: translate3d(0, -7%, 0) scale(1.1); }
+  to   { transform: translate3d(0, 7%, 0) scale(1.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .emp-parallax-img {
+    animation: none !important;
+    transform: scale(1.05) !important;
   }
+}
+
+/* Slide-in lateral pra blocos editoriais (imagem + conteudo lado a lado).
+   Imagem entra da esquerda (-32px), conteudo da direita (+32px). Easing
+   luxury, range entry 0% cover 30% (sutil — entram conforme a section
+   aparece, nao antes, nao depois). */
+@supports (animation-timeline: view()) {
+  [data-reveal-slide-left] {
+    opacity: 0;
+    transform: translateX(-32px);
+    animation: emp-slide-left both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 25%;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  [data-reveal-slide-right] {
+    opacity: 0;
+    transform: translateX(32px);
+    animation: emp-slide-right both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 25%;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    /* Pequeno delay pra criar staggered duo (esquerda primeiro, direita depois) */
+    animation-delay: 120ms;
+  }
+}
+
+@keyframes emp-slide-left {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes emp-slide-right {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* D4.2 — Stagger refinado pra rows de tabela (até 12 linhas).
+   Reaproveita keyframe `emp-reveal`. Delay menor (50ms) pra adequar
+   ritmo de tabela vs cards (160ms). Easing luxury. */
+@supports (animation-timeline: view()) {
+  [data-reveal-rows] > * {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: emp-reveal both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 30%;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  [data-reveal-rows] > *:nth-child(1)  { animation-delay: 0ms; }
+  [data-reveal-rows] > *:nth-child(2)  { animation-delay: 50ms; }
+  [data-reveal-rows] > *:nth-child(3)  { animation-delay: 100ms; }
+  [data-reveal-rows] > *:nth-child(4)  { animation-delay: 150ms; }
+  [data-reveal-rows] > *:nth-child(5)  { animation-delay: 200ms; }
+  [data-reveal-rows] > *:nth-child(6)  { animation-delay: 250ms; }
+  [data-reveal-rows] > *:nth-child(7)  { animation-delay: 300ms; }
+  [data-reveal-rows] > *:nth-child(8)  { animation-delay: 350ms; }
+  [data-reveal-rows] > *:nth-child(9)  { animation-delay: 400ms; }
+  [data-reveal-rows] > *:nth-child(10) { animation-delay: 450ms; }
+  [data-reveal-rows] > *:nth-child(11) { animation-delay: 500ms; }
+  [data-reveal-rows] > *:nth-child(12) { animation-delay: 550ms; }
+}
+
+/* Smart Nav — Fix 06/05/2026 v4: PRETO SOLIDO sempre, sem transicao.
+   Versoes anteriores tentavam interpolar transparente -> dark via
+   animation-timeline: scroll(), mas sobre sky claro/sunset do hero
+   o estado "from" (mesmo a 55% preto) ficava CINZA — feio em luxury.
+   Solucao final: bg fixo `rgba(0, 0, 0, 0.92)` + blur(20px) o tempo
+   todo. Letras brancas legiveis em qualquer cenario, sem banda cinza,
+   sem box-shadow fantasma. */
+.emp-smart-nav {
+  background-color: rgba(0, 0, 0, 0.92);
+  color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.emp-smart-nav a,
+.emp-smart-nav .emp-smart-nav-link {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* Pull quote editorial — usado entre secoes pra criar respiro */

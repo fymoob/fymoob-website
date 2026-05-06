@@ -37,6 +37,44 @@ export interface EmpreendimentoAssets {
    * "Um endereço raro diante do Parque Barigui").
    */
   taglineHero?: string
+
+  /**
+   * Sprint design 06/05/2026 — Frente A: amenities-âncora com render
+   * dedicado. Substitui o grid flat de 42 ícones por showcase visual
+   * editorial. Lista completa do CRM ainda aparece num accordion abaixo
+   * (preserva SEO). Cada item: imagem AVIF/JPG do render Avantti +
+   * nome + descrição curta.
+   */
+  amenitiesShowcase?: {
+    image: string
+    name: string
+    description: string
+  }[]
+
+  /**
+   * Sprint design 06/05/2026 — Frente B: pinos curados pra "Tudo a 5
+   * minutos". Substitui iframe puro do Google Maps por foto aérea +
+   * lista de proximidades com tempo. Iframe Google fica em accordion.
+   */
+  aerialImage?: string
+  nearbyPlaces?: {
+    name: string
+    distance: string
+    category: "parque" | "shopping" | "transporte" | "saude" | "educacao" | "gastronomia"
+  }[]
+
+  /**
+   * Sprint design 06/05/2026 — Frente C: "Quem assina" — incorporadora
+   * + escritórios de arquitetura/design + parceiros técnicos. Cada um
+   * com logo, nome e 1 linha de credenciamento. Reforça autoridade do
+   * produto, alinha com padrão luxury (JHSF/Cyrela vendem branding).
+   */
+  partners?: {
+    role: string
+    name: string
+    logo?: string
+    credential?: string
+  }[]
 }
 
 const assetsMap: Record<string, EmpreendimentoAssets> = {
@@ -60,7 +98,7 @@ const assetsMap: Record<string, EmpreendimentoAssets> = {
       "/images/empreendimentos/reserva-barigui/localizacao.jpg",
     ],
     implantacaoImage: "/images/empreendimentos/reserva-barigui/implantacao.jpg",
-    lifestyleImage: "/images/empreendimentos/reserva-barigui/lifestyle.jpg",
+    lifestyleImage: "/images/empreendimentos/reserva-barigui/lifestyle-familia-vista-parque.webp",
     tagline: "CURITIBA | REGIÃO DO BARIGUI",
     subtitulo: "LANÇAMENTO",
     taglineHero: "Um endereço raro diante do Parque Barigui",
@@ -106,6 +144,84 @@ const assetsMap: Record<string, EmpreendimentoAssets> = {
     videoUrl: "https://www.youtube.com/embed/8F1lKx4xgEo",
     mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3603.0946163108147!2d-49.318648700000004!3d-25.4351001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94dce3d178de8429%3A0x9d7c4792a4141dc0!2sR.%20Clara%20Vendramin%2C%20445%20-%20Mossungu%C3%AA%2C%20Curitiba%20-%20PR%2C%2081200-170!5e0!3m2!1spt-BR!2sbr!4v1670858575948!5m2!1spt-BR!2sbr",
     descricaoMarketing: "Um empreendimento de alto padrão em uma das regiões mais desejadas de Curitiba, com a natureza do Parque Barigui como moldura.\n\nCom apenas 10 unidades, o Reserva Barigui combina privacidade, conveniência e arquitetura contemporânea no Mossunguê.",
+    aerialImage: "/images/empreendimentos/reserva-barigui/avantti-source/hub/aerea-complexo.jpeg",
+    amenitiesShowcase: [
+      {
+        image: "/images/empreendimentos/reserva-barigui/avantti-source/colina/amenity-centro-poliesportivo.jpg",
+        name: "Centro poliesportivo",
+        description: "Quadras, espaço fitness e estrutura completa pra atividade física dentro do condomínio.",
+      },
+      {
+        image: "/images/empreendimentos/reserva-barigui/avantti-source/colina/amenity-gourmet-sports-bar.jpg",
+        name: "Gourmet & sports bar",
+        description: "3 espaços gourmet temáticos integrados a um sports bar privativo.",
+      },
+      {
+        image: "/images/empreendimentos/reserva-barigui/avantti-source/lago/amenity-rooftop-torre-harmonia.jpg",
+        name: "Rooftop Torre Harmonia",
+        description: "Cobertura panorâmica com vista direta pro Parque Barigui e skyline.",
+      },
+      {
+        image: "/images/empreendimentos/reserva-barigui/avantti-source/lago/amenity-piscina-interna.jpg",
+        name: "Piscina interna aquecida",
+        description: "Piscina coberta climatizada complementando a piscina panorâmica externa.",
+      },
+      {
+        image: "/images/empreendimentos/reserva-barigui/avantti-source/lago/amenity-lounge-salao-festas.jpg",
+        name: "Lounge & salão de festas",
+        description: "Dois salões de eventos pra recepções privativas e celebrações.",
+      },
+      {
+        image: "/images/empreendimentos/reserva-barigui/avantti-source/colina/amenity-lounge-externo.jpg",
+        name: "Lounge externo",
+        description: "Áreas externas integradas ao bosque preservado de 8.000 m² de mata nativa.",
+      },
+      {
+        image: "/images/empreendimentos/reserva-barigui/avantti-source/lago/amenity-tikibar.jpg",
+        name: "Tiki bar & solário",
+        description: "Bar à beira da piscina com lounge ao ar livre e área de descanso.",
+      },
+      {
+        image: "/images/empreendimentos/reserva-barigui/avantti-source/colina/amenity-pe-in-ac-r03.jpg",
+        name: "Áreas comuns",
+        description: "Hall, lobby e circulações com acabamento alinhado ao padrão das unidades.",
+      },
+    ],
+    nearbyPlaces: [
+      { name: "Parque Barigui", distance: "em frente", category: "parque" },
+      { name: "ParkShoppingBarigui", distance: "ao lado", category: "shopping" },
+      { name: "BR-277 / Av. Cândido Hartmann", distance: "2 min de carro", category: "transporte" },
+      { name: "Cinemark Park Shopping Barigui", distance: "ao lado", category: "gastronomia" },
+      { name: "Coco Bambu Conceito Barigui", distance: "3 min de carro", category: "gastronomia" },
+      { name: "Decathlon Barigui", distance: "1 min de carro", category: "shopping" },
+      { name: "Hospital São Vicente Bigorrilho", distance: "8 min de carro", category: "saude" },
+      { name: "Colégio Santo Anjo", distance: "5 min de carro", category: "educacao" },
+    ],
+    partners: [
+      {
+        role: "Incorporação & construção",
+        name: "Avantti",
+        logo: "/images/empreendimentos/reserva-barigui/logo-avantti-full.png",
+        credential: "Sistema construtivo autoral AV Tec, primeiros do mundo a usar SmartJack em residencial.",
+      },
+      {
+        role: "Masterplan & arquitetura",
+        name: "Bacoccinni Arquitetura",
+        logo: "/images/empreendimentos/reserva-barigui/avantti-source/hub/logo-bacoccinni.png",
+        credential: "Escritório responsável pelo desenho urbano e fachada do complexo.",
+      },
+      {
+        role: "Paisagismo & design urbano",
+        name: "Takeda Design",
+        logo: "/images/empreendimentos/reserva-barigui/avantti-source/hub/logo-takeda.png",
+        credential: "Paisagismo e desenho urbano do complexo, incluindo o bosque preservado de 8.000 m² de mata nativa.",
+      },
+      {
+        role: "Engenharia estrutural",
+        name: "Evehx",
+        credential: "Parceria de mais de 20 anos com a Avantti em lajes planas protendidas.",
+      },
+    ],
   },
 }
 

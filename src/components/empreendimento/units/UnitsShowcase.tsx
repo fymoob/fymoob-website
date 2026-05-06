@@ -1,0 +1,219 @@
+import type { Property } from "@/types/property"
+import {
+  classifyTorreFor,
+  getTorreShortSlug,
+  type EmpreendimentoAssets,
+} from "@/data/empreendimento-assets"
+import { UnitFeaturedCard } from "./UnitFeaturedCard"
+import { UnitsTable } from "./UnitsTable"
+import { chooseListingBadge } from "./chooseListingBadge"
+import { getTorreAccent } from "./editorial"
+
+type Torre = NonNullable<EmpreendimentoAssets["torres"]>[number]
+
+interface UnitsShowcaseProps {
+  properties: Property[]
+  torres: Torre[]
+  hubSlug: string
+  empreendimentoNome: string
+}
+
+/**
+ * Sprint design 06/05/2026 — D2/D3.
+ *
+ * Orquestrador da seção #precos pra empreendimentos editoriais.
+ * Substitui o grid de PropertyCards generico por um layout magazine:
+ *
+ * Para cada torre do hub:
+ *   1. Mini-header editorial (caption torre + nome serif + entrega)
+ *   2. UnitFeaturedCard — unidade-destaque (cobertura > maior área > primeiro)
+ *   3. UnitsTable — demais unidades em tabela compacta
+ *
+ * Sem tabs/JS: cada torre vira sub-seção empilhada (zero JS, 100% SEO,
+ * mobile-friendly por rolagem natural). Cada bloco torre ganha animação
+ * `data-reveal` própria.
+ *
+ * Renderiza só quando temos `torres` configurado E classifier registrado
+ * pro hubSlug. Caso contrário, page.tsx faz fallback pro grid antigo.
+ *
+ * Server Component — zero JS no client.
+ */
+export function UnitsShowcase({
+  properties,
+  torres,
+  hubSlug,
+  empreendimentoNome,
+}: UnitsShowcaseProps) {
+  if (properties.length === 0 || torres.length === 0) return null
+
+  // Agrupa imoveis por torre via classifier
+  const propertiesByTorre = groupByTorre(properties, hubSlug)
+
+  // Calcula badge global (mesma regra aplicada a todo o catalogo)
+  const globalBadge = chooseListingBadge(properties)
+
+  // So renderiza torres com pelo menos 1 unidade
+  const torresWithUnits = torres.filter((t) => {
+    const slug = getTorreShortSlug(t.nome)
+    return (propertiesByTorre[slug]?.length ?? 0) > 0
+  })
+
+  if (torresWithUnits.length === 0) return null
+
+  const totalUnits = properties.length
+
+  return (
+    <section id="precos" className="bg-white py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Header da secao mestre */}
+        <div className="text-center">
+          <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876] sm:text-[11px]">
+            CATÁLOGO COMPLETO
+          </p>
+          <h2
+            data-reveal
+            className="mt-4 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl"
+          >
+            Unidades disponíveis
+          </h2>
+          <p data-reveal className="mx-auto mt-4 max-w-2xl text-sm text-neutral-500">
+            {totalUnits} {totalUnits === 1 ? "unidade" : "unidades"} pra morar
+            ou investir, distribuídas entre os {torresWithUnits.length}{" "}
+            {torresWithUnits.length === 1 ? "empreendimento" : "empreendimentos"} do
+            masterplan {empreendimentoNome}.
+          </p>
+        </div>
+
+        {/* Blocos editoriais por torre */}
+        <div className="mt-16 space-y-20 md:mt-20 md:space-y-28">
+          {torresWithUnits.map((torre) => {
+            const slug = getTorreShortSlug(torre.nome)
+            const torreProps = propertiesByTorre[slug] ?? []
+            const featured = pickFeatured(torreProps)
+            const remaining = torreProps.filter((p) => p.codigo !== featured?.codigo)
+            const entrega = extractEntregaPrazo(torre.descricao)
+            const accent = getTorreAccent(slug)
+
+            return (
+              <div
+                key={slug}
+                id={`unidades-${slug}`}
+                className="scroll-mt-20"
+                data-reveal="soft"
+              >
+                {/* Mini-header da torre — caption + linha decorativa em accent
+                    da torre (S5) cria identidade visual propria */}
+                <div className="mx-auto max-w-3xl text-center">
+                  <p
+                    className="text-[10px] uppercase tracking-[0.4em] sm:text-[11px]"
+                    style={{ color: accent.color, opacity: 0.85 }}
+                  >
+                    {torreProps.length}{" "}
+                    {torreProps.length === 1 ? "unidade" : "unidades"} disponíveis
+                  </p>
+                  <h3 className="mt-3 font-serif text-2xl font-light italic tracking-tight text-neutral-900 sm:text-3xl">
+                    {torre.nome}
+                  </h3>
+                  {/* Linha decorativa accent da torre */}
+                  <div
+                    className="mx-auto mt-4 h-px w-12"
+                    style={{ backgroundColor: accent.color, opacity: 0.6 }}
+                    aria-hidden="true"
+                  />
+                  {torre.descricao && (
+                    <p className="mt-5 text-sm leading-relaxed text-neutral-500">
+                      {torre.descricao}
+                    </p>
+                  )}
+                  {entrega && (
+                    <p className="mt-4 text-[11px] uppercase tracking-[0.25em] text-neutral-400">
+                      Entrega prevista · {entrega}
+                    </p>
+                  )}
+                </div>
+
+                {/* Featured card editorial split (60/40) */}
+                {featured && (
+                  <div className="mx-auto mt-12 max-w-6xl" data-reveal>
+                    <UnitFeaturedCard
+                      property={featured}
+                      badge={globalBadge}
+                      siblings={torreProps}
+                      torreNome={torre.nome}
+                      torreSlug={slug}
+                    />
+                  </div>
+                )}
+
+                {/* Lista editorial das demais unidades (menu degustacao) */}
+                {remaining.length > 0 && (
+                  <div className="mx-auto mt-12 max-w-6xl" data-reveal="soft">
+                    <UnitsTable
+                      properties={remaining}
+                      badge={globalBadge}
+                      torreSlug={slug}
+                      siblings={torreProps}
+                    />
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ────────────────────────── Helpers internos ──────────────────────────
+
+function groupByTorre(
+  properties: Property[],
+  hubSlug: string,
+): Record<string, Property[]> {
+  const result: Record<string, Property[]> = {}
+  for (const p of properties) {
+    const torreSlug = classifyTorreFor(hubSlug, p)
+    if (!torreSlug) continue
+    if (!result[torreSlug]) result[torreSlug] = []
+    result[torreSlug].push(p)
+  }
+  return result
+}
+
+/**
+ * Escolhe a unidade-destaque pra hero card. Prioridade:
+ * 1. Cobertura (raridade absoluta)
+ * 2. Maior area privativa (mais aspiracional / capa do empreendimento)
+ * 3. Primeira da lista (fallback)
+ *
+ * NUNCA escolhe imovel sem foto de destaque.
+ */
+function pickFeatured(properties: Property[]): Property | null {
+  const withPhoto = properties.filter((p) => Boolean(p.fotoDestaque))
+  if (withPhoto.length === 0) return null
+
+  // 1. Cobertura
+  const cobertura = withPhoto.find((p) =>
+    (p.tipo || "").toLowerCase().includes("cobertura"),
+  )
+  if (cobertura) return cobertura
+
+  // 2. Maior area
+  const sorted = [...withPhoto].sort((a, b) => {
+    const areaA = a.areaPrivativa ?? a.areaTotal ?? 0
+    const areaB = b.areaPrivativa ?? b.areaTotal ?? 0
+    return areaB - areaA
+  })
+  return sorted[0] ?? null
+}
+
+/**
+ * Extrai prazo de entrega da descricao editorial da torre. Padrao usado
+ * em empreendimento-assets.ts: "Entrega prevista para Agosto/26."
+ */
+function extractEntregaPrazo(descricao?: string): string | null {
+  if (!descricao) return null
+  const match = descricao.match(/entrega prevista para ([^.]+)/i)
+  return match ? match[1].trim() : null
+}

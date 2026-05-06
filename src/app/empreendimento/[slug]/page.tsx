@@ -9,7 +9,7 @@ import {
 } from "@/services/loft"
 import { slugify, formatPrice, formatArea } from "@/lib/utils"
 import { isVistaImage } from "@/lib/image-optimization"
-import { generateItemListSchema, generateLandingStats, generateDynamicFAQ, safeJsonLd } from "@/lib/seo"
+import { generateItemListSchema, generateLandingStats, generateDynamicFAQ, safeJsonLd, generateBreadcrumbSchema } from "@/lib/seo"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
 import { RelatedPages } from "@/components/seo/RelatedPages"
@@ -20,6 +20,11 @@ import { PlantasCarousel } from "@/components/empreendimento/PlantasCarousel"
 import { PlantasGallery } from "@/components/empreendimento/PlantasGallery"
 import { VideoLazyEmbed } from "@/components/empreendimento/VideoLazyEmbed"
 import { EmpreendimentoStandardSEOContent } from "@/components/empreendimento/EmpreendimentoStandardSEOContent"
+import { MasterplanPartners } from "@/components/empreendimento/MasterplanPartners"
+import { AmenitiesShowcase } from "@/components/empreendimento/AmenitiesShowcase"
+import { LocationStorytelling } from "@/components/empreendimento/LocationStorytelling"
+import { UnitsShowcase } from "@/components/empreendimento/units/UnitsShowcase"
+import { EmpreendimentoMobileMenu } from "@/components/empreendimento/EmpreendimentoMobileMenu"
 import type { Property } from "@/types/property"
 import { SITE_URL } from "@/lib/constants"
 
@@ -341,67 +346,93 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(combinedSchema) }} />
 
-      {/* Wrapper escuro envolvendo nav + hero (revisao v6.1 04/05/2026):
-          Body global tem `bg-background` (branco em light mode). O nav
-          sticky e transparente nos primeiros 60vh — sem wrapper escuro,
-          o branco do body vazava como faixa atras do nav. Wrapper aqui
-          garante que mesmo com nav transparente, o fundo e dark continuo. */}
-      <div className="bg-neutral-950">
-
-      {/* ========================================================
-          SMART NAV — Sprint design (03/05/2026)
-          Sticky desde o topo. CSS scroll-driven (animation-timeline:
-          scroll()) muda de transparente -> glass-dark conforme passa
-          do hero. Nao quebra layout do hero (sticky + transparent =
-          esta sobre o hero, nao tira altura). Fallback automatico
-          para browsers sem support: dark glass desde o inicio.
-          ======================================================== */}
+      {/* SMART NAV — sticky no body, FORA do wrapper dark (fix 06/05/2026).
+          ANTES: nav estava dentro de <div className="bg-neutral-950"> que
+          termina junto com o hero — sticky parava de funcionar ao rolar
+          alem do hero. AGORA: nav e o primeiro elemento, sticky no body,
+          acompanha o scroll inteiro. CSS scroll-driven com bg sutil sempre
+          presente (rgba 30% + blur 10px) e intensifica apos o hero. */}
       <nav
         aria-label="Navegação rápida"
         className="emp-smart-nav sticky top-0 z-40 border-b border-transparent text-[10px] font-light tracking-[0.2em] sm:text-[11px]"
       >
         <div className="mx-auto flex max-w-7xl items-center gap-3 overflow-x-auto px-4 py-2.5 sm:gap-5 sm:px-6 sm:py-3 lg:px-8">
-          {/* Logo-text editorial alinhado a esquerda — institucional pra
-              empreendimentos premium. Hover dourado. Revisao GPT 04/05/2026:
-              tamanho aumentado e opacity reforcada pra ganhar legibilidade
-              sem perder ar editorial. */}
-          <Link
-            href={`/empreendimento/${slug}`}
-            className="shrink-0 font-serif text-[13px] italic tracking-[0.15em] opacity-90 transition hover:text-[#c9a876] hover:opacity-100 sm:text-[14px]"
+          {/* Breadcrumb compacto integrado no nav (fix 06/05/2026):
+              Antes era logo cursivo "Reserva Barigui" + barra sticky separada
+              embaixo. Agora breadcrumb ocupa o espaco a esquerda em uma so
+              barra — UX mais limpa, alta semantica SEO preservada. Em mobile,
+              so o ultimo item (nome do empreend.) aparece pra economizar
+              espaco no scroll horizontal. */}
+          <nav
+            aria-label="Caminho de navegação"
+            className="shrink-0 flex items-center gap-1.5 text-[11px] tracking-[0.15em] sm:text-[12px]"
           >
-            {emp.nome}
-          </Link>
+            <Link
+              href="/"
+              className="hidden opacity-60 transition hover:text-[#c9a876] hover:opacity-100 md:inline-flex"
+            >
+              Home
+            </Link>
+            <span className="hidden opacity-30 md:inline-flex" aria-hidden="true">›</span>
+            <Link
+              href="/empreendimentos"
+              className="hidden opacity-60 transition hover:text-[#c9a876] hover:opacity-100 md:inline-flex"
+            >
+              Empreendimentos
+            </Link>
+            <span className="hidden opacity-30 md:inline-flex" aria-hidden="true">›</span>
+            <Link
+              href={`/empreendimento/${slug}`}
+              className="font-serif text-[13px] italic tracking-[0.1em] opacity-95 transition hover:text-[#c9a876] sm:text-[14px]"
+            >
+              {emp.nome}
+            </Link>
+          </nav>
 
           {/* Spacer flex pra empurrar links pro centro/direita */}
           <span className="hidden md:block flex-1" aria-hidden="true" />
 
-          {/* Links de navegacao — opacity 60% baseline, dourado on hover */}
-          <Link href="#plantas" className="shrink-0 px-1 uppercase opacity-75 transition hover:text-[#c9a876] hover:opacity-100">
+          {/* Links de navegacao — desktop only. Mobile usa hamburger menu. */}
+          <Link href="#plantas" className="hidden shrink-0 px-1 uppercase opacity-75 transition hover:text-[#c9a876] hover:opacity-100 md:inline-flex">
             Plantas
           </Link>
-          <Link href="#precos" className="shrink-0 px-1 uppercase opacity-75 transition hover:text-[#c9a876] hover:opacity-100">
+          <Link href="#precos" className="hidden shrink-0 px-1 uppercase opacity-75 transition hover:text-[#c9a876] hover:opacity-100 md:inline-flex">
             Preços
           </Link>
-          <Link href="#infraestrutura" className="shrink-0 px-1 uppercase opacity-75 transition hover:text-[#c9a876] hover:opacity-100">
+          <Link href="#infraestrutura" className="hidden shrink-0 px-1 uppercase opacity-75 transition hover:text-[#c9a876] hover:opacity-100 md:inline-flex">
             Lazer
           </Link>
-          <Link href="#localizacao" className="shrink-0 px-1 uppercase opacity-75 transition hover:text-[#c9a876] hover:opacity-100">
+          <Link href="#localizacao" className="hidden shrink-0 px-1 uppercase opacity-75 transition hover:text-[#c9a876] hover:opacity-100 md:inline-flex">
             Localização
           </Link>
 
-          {/* CTA — verde profundo (era #25D366 neon WhatsApp). "AGENDAR
-              VISITA" comunica luxo melhor que "WhatsApp" generico. Mantem
-              link wa.me — apenas estilo e copy mudam. */}
+          {/* CTA verde profundo — desktop only. Mobile tem hamburger + sticky
+              bar de preco no rodape com CTA proprio. */}
           <a
             href={whatsUrl}
             target="_blank"
             rel="noopener noreferrer"
             data-track="whatsapp_click"
             data-source="navbar"
-            className="ml-auto shrink-0 rounded-full bg-[#246B4E] px-4 py-1.5 uppercase text-[10px] font-medium tracking-[0.2em] text-white shadow-sm transition hover:bg-[#2B7D5A] sm:px-5 sm:text-[11px]"
+            className="ml-auto hidden shrink-0 rounded-full bg-[#246B4E] px-4 py-1.5 uppercase text-[10px] font-medium tracking-[0.2em] text-white shadow-sm transition hover:bg-[#2B7D5A] sm:px-5 sm:text-[11px] md:inline-flex"
           >
             Agendar visita
           </a>
+
+          {/* Mobile hamburger menu — substitui scroll horizontal do nav
+              que cortava letras dos links. Reutiliza Sheet shadcn. */}
+          <div className="ml-auto md:hidden">
+            <EmpreendimentoMobileMenu
+              empreendimentoNome={emp.nome}
+              whatsUrl={whatsUrl}
+              sections={[
+                { href: "#plantas", label: "Plantas" },
+                { href: "#precos", label: "Preços" },
+                { href: "#infraestrutura", label: "Lazer" },
+                { href: "#localizacao", label: "Localização" },
+              ]}
+            />
+          </div>
         </div>
       </nav>
 
@@ -589,19 +620,20 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         </div>
       </section>
 
-      </div>{/* /wrapper bg-neutral-950 */}
-
-      {/* Breadcrumb editorial utilitario — fora do hero, faixa fina compacta
-          (Revisao GPT 04/05/2026 v2: padding mais generoso pra dar respiro
-          e nao ficar "solto" na borda superior. Breadcrumb fica como elemento
-          tecnico secundario, dando lugar pro pull quote forte logo abaixo.) */}
-      <div className="bg-[#0a0d0c] py-5 sm:py-6">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-[10px] [&_nav]:text-white/35 [&_a]:text-white/35 [&_a:hover]:text-[#c9a876] [&_span]:text-white/55 sm:text-[11px]">
-            <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Empreendimentos", url: "/empreendimentos" }, { name: emp.nome, url: `/empreendimento/${slug}` }]} />
-          </div>
-        </div>
-      </div>
+      {/* Breadcrumb visual integrado no smart nav acima (fix 06/05/2026).
+          BreadcrumbList schema (SEO) continua emitido via JSON-LD. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: safeJsonLd(
+            generateBreadcrumbSchema([
+              { name: "Home", url: "/" },
+              { name: "Empreendimentos", url: "/empreendimentos" },
+              { name: emp.nome, url: `/empreendimento/${slug}` },
+            ]),
+          ),
+        }}
+      />
 
       {/* ========================================================
           PULL QUOTE — gradient bridge entre hero e a intro section.
@@ -711,15 +743,23 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         </div>
       </section>
 
-      {/* ===== PARALLAX 1 — Piscina/lake (imagem HD recriada 03/05/2026)
-            Imagem agora em qualidade premium (pool.webp 98KB), entao tiramos
-            a vinheta radial que mascarava baixa resolucao. So gradient
-            sutil bottom pra legibilidade da frase editorial. */}
+      {/* ===== PARALLAX 1 — Piscina/lake — refator perf 06/05/2026
+            ANTES: <div className="bg-fixed bg-center bg-cover"> com
+            background-image inline. `background-attachment: fixed` invalida
+            o composite layer a cada frame de scroll => jank monstruoso.
+            DEPOIS: <Image> nativo Next + .emp-parallax-img (CSS scroll-driven
+            via animation-timeline: view()). GPU-accelerated translate3d,
+            zero invalidacao de paint, scroll suave a 60fps. */}
       {assets.parallaxImages[0] && (
         <div className="relative h-[60vh] overflow-hidden md:h-[80vh]">
-          <div
-            className="absolute inset-0 bg-fixed bg-center bg-cover"
-            style={{ backgroundImage: `url(${assets.parallaxImages[0]})` }}
+          <Image
+            src={assets.parallaxImages[0]}
+            alt={`${emp.nome} — vista do Parque Barigui`}
+            fill
+            sizes="100vw"
+            className="emp-parallax-img object-cover"
+            loading="lazy"
+            quality={88}
           />
           {/* Gradient suave so na metade inferior pra legibilidade do texto
               sem comprometer a foto. */}
@@ -767,48 +807,88 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
           </div>
         </div>
 
-        {assets.implantacaoImage && (
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 md:py-20 lg:px-8">
-            <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-16">
-              <div data-reveal className="relative aspect-square overflow-hidden">
+        {(assets.lifestyleImage || assets.implantacaoImage) && (
+          <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-28 lg:px-8">
+            <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-[1fr_1.05fr] md:gap-16 lg:gap-20">
+              {/* IMAGEM — slide-in da esquerda + parallax sutil interno +
+                  border radius 24px + aspect 3/4 magazine. Imagem prioritaria
+                  e a lifestyle (familia + vista). Implantacao fica de fallback. */}
+              <div
+                data-reveal-slide-left
+                className="relative aspect-[3/4] overflow-hidden rounded-3xl shadow-xl ring-1 ring-neutral-900/5"
+              >
                 <Image
-                  src={assets.implantacaoImage}
-                  alt={`Implantação do ${emp.nome}${bairros[0] ? ` em ${bairros[0]}, Curitiba` : ""} — vista aérea com torres e áreas de lazer`}
+                  src={assets.lifestyleImage || assets.implantacaoImage!}
+                  alt={`${emp.nome}${bairros[0] ? ` em ${bairros[0]}, Curitiba` : ""} — vista do Parque Barigui`}
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 768px) 100vw, 45vw"
                   loading="lazy"
+                  data-image-parallax
+                />
+                {/* Vinheta sutil bottom — dá profundidade sem texto */}
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent"
                 />
               </div>
 
-              <div>
-                <h3 data-reveal className="font-serif text-3xl font-light tracking-[0.15em] text-neutral-900 sm:text-4xl">
+              {/* CONTEÚDO — slide-in da direita */}
+              <div data-reveal-slide-right>
+                {/* Caption editorial */}
+                <p className="text-[10px] uppercase tracking-[0.4em] text-[#c9a876] sm:text-[11px]">
+                  Residencial
+                </p>
+
+                {/* Headline — tracking apertado (luxury), tamanho maior */}
+                <h3 className="mt-4 font-serif text-4xl font-light leading-[1.05] tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
                   Um complexo
                   <br />
                   <span className="italic">imobiliário único.</span>
                 </h3>
 
-                <p className="mt-6 text-sm leading-relaxed text-neutral-600">
-                  A vista cinematográfica e a natureza se tornam luxo somente no {emp.nome}.
+                {/* Linha decorativa dourada */}
+                <div
+                  className="mt-7 h-px w-12 bg-[#c9a876]/60"
+                  aria-hidden="true"
+                />
+
+                {/* Texto editorial — 3 paragrafos curtos em vez de 4 */}
+                <p className="mt-7 text-[15px] leading-[1.65] text-neutral-700">
+                  A vista cinematográfica e a natureza se tornam luxo somente
+                  no <span className="text-neutral-900">{emp.nome}</span>.
                 </p>
 
-                <p className="mt-4 text-sm leading-relaxed text-neutral-600">
-                  Um complexo imobiliário de alto padrão, desenhado e planejado para você morar e trabalhar com a mais definitiva do Parque Barigui, ao lado do Shopping.
+                <p className="mt-4 text-[15px] leading-[1.65] text-neutral-600">
+                  Um complexo de alto padrão, em frente ao Parque Barigui e ao
+                  lado do ParkShopping. A localização transforma qualidade em
+                  excelência de vida.
                 </p>
 
-                <p className="mt-4 text-sm leading-relaxed text-neutral-600">
-                  Localizado em uma região que transforma qualidade em excelência de vida, em frente ao parque e ao lado do Parkshopping.
-                </p>
-
-                <p className="mt-4 text-sm leading-relaxed text-neutral-600">
-                  Conheça os 3 empreendimentos independentes para você morar, trabalhar ou ambos.
+                <p className="mt-4 text-[15px] leading-[1.65] text-neutral-600">
+                  Três empreendimentos independentes para você morar, trabalhar
+                  ou ambos.
                 </p>
 
                 <Link
                   href="#empreendimentos"
-                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#c9a876] px-6 py-3 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition hover:bg-[#b8966a]"
+                  className="mt-9 inline-flex items-center gap-2 rounded-full border border-[#c9a876] bg-transparent px-7 py-3.5 text-[11px] font-medium uppercase tracking-[0.25em] text-[#9c7d4f] transition hover:bg-[#c9a876] hover:text-white sm:text-xs"
                 >
-                  Saiba mais
+                  Conhecer as torres
+                  <svg
+                    className="h-3.5 w-3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.8}
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
+                  </svg>
                 </Link>
               </div>
             </div>
@@ -864,6 +944,17 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
             </div>
           </div>
         </section>
+      )}
+
+      {/* ===== Frente C — "Quem assina" (Sprint design 06/05/2026) =====
+          Reforça autoridade do produto antes de mostrar torres/plantas.
+          Padrão luxury (JHSF/Cyrela vendem branding). Renderiza só
+          quando assets.partners está configurado. */}
+      {assets.partners && assets.partners.length > 0 && (
+        <MasterplanPartners
+          partners={assets.partners}
+          empreendimentoNome={emp.nome}
+        />
       )}
 
       {/* ===== SECTION 3 — Torres + Plantas (Pacote 4 redesign) =====
@@ -1044,103 +1135,143 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         </section>
       )}
 
-      {/* ===== SECTION 4 — Unidades disponíveis (grid only) ===== */}
-      <section id="precos" className="bg-white py-20 md:py-28">
-        <span id="unidades" className="block -translate-y-20" aria-hidden="true" />
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876] sm:text-[11px]">
-              CATÁLOGO COMPLETO
-            </p>
-            <h2 data-reveal className="mt-4 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
-              Unidades disponíveis
-            </h2>
-            <p data-reveal className="mt-3 text-sm text-neutral-500">
-              {properties.length} {properties.length === 1 ? "unidade" : "unidades"} para morar ou investir
-            </p>
-          </div>
-
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
-            {properties.map((p) => (
-              <Link key={p.codigo} href={`/imovel/${p.slug}`} className="group overflow-hidden rounded-sm border border-neutral-200 bg-white transition hover:border-[#c9a876] hover:shadow-lg">
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image src={p.fotoDestaque || "/placeholder-property.jpg"} alt={p.titulo} fill className="object-cover transition duration-700 group-hover:scale-105" sizes="(max-width: 640px) 100vw, 33vw" loading="lazy" unoptimized={isVistaImage(p.fotoDestaque)} />
-                  {p.lancamento && <span className="absolute top-3 left-3 rounded-full bg-[#c9a876] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">Lançamento</span>}
-                </div>
-                <div className="p-5">
-                  <p className="text-[11px] font-medium uppercase tracking-wider text-neutral-400">{p.tipo} · {p.bairro}</p>
-                  <p className="mt-2 line-clamp-1 font-serif text-base font-medium text-neutral-900">{p.titulo}</p>
-                  <div className="mt-3 flex items-center gap-4 text-xs text-neutral-500">
-                    {p.areaPrivativa && <span>{formatArea(p.areaPrivativa)} m²</span>}
-                    {p.dormitorios && <span>{p.dormitorios} {p.dormitorios === 1 ? "quarto" : "quartos"}</span>}
-                    {p.vagas && <span>{p.vagas} {p.vagas === 1 ? "vaga" : "vagas"}</span>}
-                  </div>
-                  {(p.precoVenda || p.precoAluguel) && (
-                    <p className="mt-4 font-serif text-xl font-light text-neutral-900">{formatPrice(p.precoVenda || p.precoAluguel)}</p>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== SECTION 5 — Infrastructure ===== */}
-      {infraestrutura.length > 0 && (
-        <section id="infraestrutura" className="bg-neutral-50 py-20 md:py-28">
+      {/* ===== SECTION 4 — Unidades disponíveis (Sprint design 06/05/2026)
+            Quando o hub tem `torres` configuradas (caso Reserva Barigui),
+            usa <UnitsShowcase> editorial: hero card por torre + tabela
+            compacta. Caso contrário, fallback pro grid antigo de
+            PropertyCards simplificados — preserva retrocompat com outros
+            empreendimentos. */}
+      {assets.torres && assets.torres.length > 0 ? (
+        <UnitsShowcase
+          properties={properties}
+          torres={assets.torres}
+          hubSlug={slug}
+          empreendimentoNome={emp.nome}
+        />
+      ) : (
+        <section id="precos" className="bg-white py-20 md:py-28">
+          <span id="unidades" className="block -translate-y-20" aria-hidden="true" />
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876] sm:text-[11px]">
-                LAZER COMPLETO
+                CATÁLOGO COMPLETO
               </p>
               <h2 data-reveal className="mt-4 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
-                Infraestrutura do condomínio
+                Unidades disponíveis
               </h2>
               <p data-reveal className="mt-3 text-sm text-neutral-500">
-                {infraestrutura.length} itens de lazer e conveniência
+                {properties.length} {properties.length === 1 ? "unidade" : "unidades"} para morar ou investir
               </p>
             </div>
-            <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3" data-reveal-stagger>
-              {infraestrutura.map((item) => {
-                const Icon = getPropertyFeatureIcon(item)
-                return (
-                  <div key={item} className="flex items-center gap-3">
-                    <Icon className="h-5 w-5 shrink-0 text-[#c9a876]" strokeWidth={1.8} />
-                    <span className="text-sm text-neutral-700">{item}</span>
+
+            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" data-reveal-stagger>
+              {properties.map((p) => (
+                <Link key={p.codigo} href={`/imovel/${p.slug}`} className="group overflow-hidden rounded-sm border border-neutral-200 bg-white transition hover:border-[#c9a876] hover:shadow-lg">
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <Image src={p.fotoDestaque || "/placeholder-property.jpg"} alt={p.titulo} fill className="object-cover transition duration-700 group-hover:scale-105" sizes="(max-width: 640px) 100vw, 33vw" loading="lazy" unoptimized={isVistaImage(p.fotoDestaque)} />
+                    {p.lancamento && <span className="absolute top-3 left-3 rounded-full bg-[#c9a876] px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">Lançamento</span>}
                   </div>
-                )
-              })}
+                  <div className="p-5">
+                    <p className="text-[11px] font-medium uppercase tracking-wider text-neutral-400">{p.tipo} · {p.bairro}</p>
+                    <p className="mt-2 line-clamp-1 font-serif text-base font-medium text-neutral-900">{p.titulo}</p>
+                    <div className="mt-3 flex items-center gap-4 text-xs text-neutral-500">
+                      {p.areaPrivativa && <span>{formatArea(p.areaPrivativa)} m²</span>}
+                      {p.dormitorios && <span>{p.dormitorios} {p.dormitorios === 1 ? "quarto" : "quartos"}</span>}
+                      {p.vagas && <span>{p.vagas} {p.vagas === 1 ? "vaga" : "vagas"}</span>}
+                    </div>
+                    {(p.precoVenda || p.precoAluguel) && (
+                      <p className="mt-4 font-serif text-xl font-light text-neutral-900">{formatPrice(p.precoVenda || p.precoAluguel)}</p>
+                    )}
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* ===== SECTION 6 — Localização ===== */}
-      <section id="localizacao" className="bg-white py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876] sm:text-[11px]">
-              ENDEREÇO PRIVILEGIADO
-            </p>
-            <h2 data-reveal className="mt-4 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
-              Localização
-            </h2>
-            {endereco && (
-              <p data-reveal className="mt-4 flex items-center justify-center gap-1.5 text-sm text-neutral-500">
-                <MapPin className="h-3.5 w-3.5" /> {[endereco.endereco, endereco.numero, bairros[0]].filter(Boolean).join(", ")}, Curitiba - PR
-              </p>
-            )}
-          </div>
+      {/* ===== SECTION 5 — Infrastructure (Frente A — Sprint design 06/05/2026)
+            Quando o empreendimento tem amenitiesShowcase configurado, usa
+            o componente novo (cards visuais com renders dos amenities-âncora
+            + accordion com a lista completa). Caso contrário, fallback pro
+            grid flat de ícones igual ao padrão antigo. */}
+      {infraestrutura.length > 0 && (
+        assets.amenitiesShowcase && assets.amenitiesShowcase.length > 0 ? (
+          <AmenitiesShowcase
+            showcase={assets.amenitiesShowcase}
+            fullList={infraestrutura}
+            empreendimentoNome={emp.nome}
+          />
+        ) : (
+          <section id="infraestrutura" className="bg-neutral-50 py-20 md:py-28">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <div className="text-center">
+                <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876] sm:text-[11px]">
+                  LAZER COMPLETO
+                </p>
+                <h2 data-reveal className="mt-4 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
+                  Infraestrutura do condomínio
+                </h2>
+                <p data-reveal className="mt-3 text-sm text-neutral-500">
+                  {infraestrutura.length} itens de lazer e conveniência
+                </p>
+              </div>
+              <div className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-3" data-reveal-stagger>
+                {infraestrutura.map((item) => {
+                  const Icon = getPropertyFeatureIcon(item)
+                  return (
+                    <div key={item} className="flex items-center gap-3">
+                      <Icon className="h-5 w-5 shrink-0 text-[#c9a876]" strokeWidth={1.8} />
+                      <span className="text-sm text-neutral-700">{item}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </section>
+        )
+      )}
 
-          <div data-reveal className="mt-12 overflow-hidden rounded-2xl border border-neutral-200 shadow-sm">
-            {assets.mapEmbedUrl ? (
-              <iframe src={assets.mapEmbedUrl} title="Localização" className="h-[400px] w-full md:h-[500px]" loading="lazy" allowFullScreen />
-            ) : lat && lng ? (
-              <PropertyMap latitude={lat} longitude={lng} bairro={bairros[0] || ""} titulo={emp.nome} endereco={endereco?.endereco} numero={endereco?.numero} cidade="Curitiba" estado="PR" />
-            ) : null}
+      {/* ===== SECTION 6 — Localização (Frente B — Sprint design 06/05/2026)
+            Quando há nearbyPlaces + aerialImage, usa o componente novo
+            (foto aérea + lista "Tudo a 5 minutos" + iframe Google em
+            accordion). Caso contrário, fallback pro iframe puro. */}
+      {assets.nearbyPlaces && assets.nearbyPlaces.length > 0 ? (
+        <LocationStorytelling
+          empreendimentoNome={emp.nome}
+          nearbyPlaces={assets.nearbyPlaces}
+          aerialImage={assets.aerialImage}
+          endereco={endereco ? { ...endereco, bairro: bairros[0] } : undefined}
+          bairro={bairros[0]}
+          mapEmbedUrl={assets.mapEmbedUrl}
+        />
+      ) : (
+        <section id="localizacao" className="bg-white py-20 md:py-28">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <p data-reveal className="text-[10px] tracking-[0.4em] text-[#c9a876] sm:text-[11px]">
+                ENDEREÇO PRIVILEGIADO
+              </p>
+              <h2 data-reveal className="mt-4 font-serif text-3xl font-light italic tracking-tight text-neutral-900 sm:text-4xl lg:text-5xl">
+                Localização
+              </h2>
+              {endereco && (
+                <p data-reveal className="mt-4 flex items-center justify-center gap-1.5 text-sm text-neutral-500">
+                  <MapPin className="h-3.5 w-3.5" /> {[endereco.endereco, endereco.numero, bairros[0]].filter(Boolean).join(", ")}, Curitiba - PR
+                </p>
+              )}
+            </div>
+
+            <div data-reveal className="mt-12 overflow-hidden rounded-2xl border border-neutral-200 shadow-sm">
+              {assets.mapEmbedUrl ? (
+                <iframe src={assets.mapEmbedUrl} title="Localização" className="h-[400px] w-full md:h-[500px]" loading="lazy" allowFullScreen />
+              ) : lat && lng ? (
+                <PropertyMap latitude={lat} longitude={lng} bairro={bairros[0] || ""} titulo={emp.nome} endereco={endereco?.endereco} numero={endereco?.numero} cidade="Curitiba" estado="PR" />
+              ) : null}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ===== SECTION 6.5 — SEO content block (300+ palavras crawlable) =====
           Google indexa texto, nao imagens/parallax. Esse bloco carrega densidade
@@ -1375,10 +1506,15 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
         </div>
       </section>
 
-      {/* Float WhatsApp mobile — sempre visivel pra capturar lead a qualquer
-          momento. Desktop usa o final-CTA + sticky-nav. Mobile precisa de
-          atalho persistente porque scroll longo desconecta o usuario do CTA. */}
-      <div className="fixed bottom-14 left-0 z-[100] w-full border-t border-neutral-200 bg-white/95 px-4 py-3 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] backdrop-blur lg:hidden">
+      {/* Spacer mobile — buffer abaixo do conteudo pra sticky bar (h~72px)
+          nao cobrir o ultimo elemento. Hidden em desktop (lg:hidden). */}
+      <div className="h-[80px] lg:hidden" aria-hidden="true" />
+
+      {/* Sticky bar mobile com preço + CTA. bottom-0 (grudada no rodape).
+          z-30 (abaixo do smart nav z-40 e do Sheet z-50) — Sheet cobre a
+          barra quando o menu hamburger abre. Spacer acima absorve a
+          sobreposicao com o ultimo conteudo. */}
+      <div className="fixed bottom-0 left-0 z-30 w-full border-t border-neutral-200 bg-white/95 px-4 py-3 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] backdrop-blur lg:hidden">
         <div className="mx-auto flex max-w-lg items-center gap-3">
           <div className="min-w-0 flex-1">
             {precoMin ? (
@@ -1542,7 +1678,10 @@ function StandardContent(props: {
           </aside>
         </div>
       </div>
-      <div className="fixed bottom-14 left-0 z-[100] w-full border-t border-neutral-200 bg-white px-4 py-3 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] lg:hidden">
+      {/* Spacer mobile — buffer abaixo do conteudo pra sticky bar (h~72px)
+          nao cobrir o ultimo elemento. Layout standard. */}
+      <div className="h-[80px] lg:hidden" aria-hidden="true" />
+      <div className="fixed bottom-0 left-0 z-30 w-full border-t border-neutral-200 bg-white px-4 py-3 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] lg:hidden">
         <div className="mx-auto flex max-w-lg items-center gap-3">
           <div className="min-w-0 flex-1">
             {precoMin && <><p className="text-lg font-extrabold text-slate-900">{formatPrice(precoMin)}</p><p className="text-xs text-neutral-500">A partir de</p></>}
