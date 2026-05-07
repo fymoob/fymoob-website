@@ -70,25 +70,58 @@ const CLUSTER_MAP: Record<string, string> = {
 
 // ────────────────────────── Auth helpers ──────────────────────────
 
-function getServiceAccountCreds() {
-  const json = process.env.GOOGLE_SERVICE_ACCOUNT_JSON
-  if (!json) throw new Error("GOOGLE_SERVICE_ACCOUNT_JSON ausente")
-  return JSON.parse(json) as {
-    client_email: string
-    private_key: string
-    project_id: string
-  }
-}
+const GSC_SCOPE = "https://www.googleapis.com/auth/webmasters.readonly"
 
+/**
+ * Constroi cliente GSC autenticado. Tenta nessa ordem:
+ *
+ * 1. **OAuth refresh_token** (recomendado pro FYMOOB porque a organizacao
+ *    Google Cloud tem `iam.disableServiceAccountKeyCreation` policy
+ *    bloqueando criacao de Service Account JSON keys).
+ *    Vars: GA4_CLIENT_ID + GA4_CLIENT_SECRET + GA4_REFRESH_TOKEN.
+ *    O refresh_token precisa ter sido emitido com scope
+ *    `webmasters.readonly` — rodar `scripts/google-oauth-bootstrap.mjs`
+ *    pra gerar com os 2 scopes (GA4 + GSC) juntos.
+ *
+ * 2. **Service Account JSON** (legacy / orgs sem policy de bloqueio).
+ *    Var: GOOGLE_SERVICE_ACCOUNT_JSON.
+ *
+ * Lanca erro se nenhum estiver configurado.
+ */
 async function getGscClient() {
-  const creds = getServiceAccountCreds()
-  const auth = new google.auth.JWT({
-    email: creds.client_email,
-    key: creds.private_key.replace(/\\n/g, "\n"),
-    scopes: ["https://www.googleapis.com/auth/webmasters.readonly"],
-  })
-  await auth.authorize()
-  return google.searchconsole({ version: "v1", auth })
+  // Tenta OAuth refresh_token primeiro (compativel com policy
+  // iam.disableServiceAccountKeyCreation)
+  const refreshToken = process.env.GA4_REFRESH_TOKEN
+  const clientId = process.env.GA4_CLIENT_ID
+  const clientSecret = process.env.GA4_CLIENT_SECRET
+
+  if (refreshToken && clientId && clientSecret) {
+    const oauth2 = new google.auth.OAuth2(clientId, clientSecret)
+    oauth2.setCredentials({ refresh_token: refreshToken, scope: GSC_SCOPE })
+    return google.searchconsole({ version: "v1", auth: oauth2 })
+  }
+
+  // Fallback: Service Account JSON (orgs sem policy de bloqueio)
+  const json = process.env.GOOGLE_SERVICE_ACCOUNT_JSON
+  if (json) {
+    const creds = JSON.parse(json) as {
+      client_email: string
+      private_key: string
+    }
+    const jwt = new google.auth.JWT({
+      email: creds.client_email,
+      key: creds.private_key.replace(/\\n/g, "\n"),
+      scopes: [GSC_SCOPE],
+    })
+    await jwt.authorize()
+    return google.searchconsole({ version: "v1", auth: jwt })
+  }
+
+  throw new Error(
+    "Auth GSC ausente. Configure GA4_REFRESH_TOKEN (recomendado, " +
+      "rode scripts/google-oauth-bootstrap.mjs) ou " +
+      "GOOGLE_SERVICE_ACCOUNT_JSON (legacy).",
+  )
 }
 
 // ────────────────────────── GSC fetch ──────────────────────────
@@ -235,9 +268,19 @@ export async function GET(request: Request) {
     )
   }
 
-  if (!process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
+  // Auth check — aceita OAuth refresh_token OU Service Account
+  const hasOAuth = !!(
+    process.env.GA4_REFRESH_TOKEN &&
+    process.env.GA4_CLIENT_ID &&
+    process.env.GA4_CLIENT_SECRET
+  )
+  const hasServiceAccount = !!process.env.GOOGLE_SERVICE_ACCOUNT_JSON
+  if (!hasOAuth && !hasServiceAccount) {
     return NextResponse.json(
-      { error: "GOOGLE_SERVICE_ACCOUNT_JSON ausente" },
+      {
+        error:
+          "Auth GSC ausente. Configure GA4_REFRESH_TOKEN (rode scripts/google-oauth-bootstrap.mjs) ou GOOGLE_SERVICE_ACCOUNT_JSON.",
+      },
       { status: 503 },
     )
   }
