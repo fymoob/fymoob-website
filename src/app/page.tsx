@@ -11,10 +11,9 @@ import {
   getAllTypes,
   getPropertyStats,
 } from "@/services/loft"
-import { getRecentPosts } from "@/services/blog"
 import { BairroCard } from "@/components/search/BairroCard"
 import { HeroSection } from "@/components/home/HeroSection"
-import { BlogCard } from "@/components/blog/BlogCard"
+import { RecommendedPosts } from "@/components/blog/RecommendedPosts"
 import { AnimateOnScroll } from "@/components/shared/AnimateOnScroll"
 import { GoogleReviews } from "@/components/shared/GoogleReviews"
 import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
@@ -68,7 +67,7 @@ const tipoLinks = [
 ]
 
 export default async function Home() {
-  const [featured, allBairros, bairrosByCidade, caracteristicas, cities, types, stats, recentPosts] = await Promise.all([
+  const [featured, allBairros, bairrosByCidade, caracteristicas, cities, types, stats] = await Promise.all([
     // Pool maior (30) pra alimentar rotacao dos carrosseis na home.
     // HomeCarousel embaralha client-side a cada visita (prop shuffle),
     // entao visitantes recorrentes veem imoveis diferentes no topo.
@@ -79,7 +78,6 @@ export default async function Home() {
     getAllCities(),
     getAllTypes(),
     getPropertyStats(),
-    getRecentPosts(3),
   ])
 
   // Passamos todos os destaques (nao corta em 6) pro carrossel — o shuffle
@@ -260,33 +258,18 @@ export default async function Home() {
       {/* Vistos recentemente — só aparece se o usuário já visitou imóveis */}
       <RecentlyViewed />
 
-      {/* Do Blog */}
-      {recentPosts.length > 0 && (
-        <section className="py-10 md:py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <AnimateOnScroll>
-              <div className="flex items-center justify-between">
-                <h2 className="font-display text-xl font-semibold tracking-tight text-neutral-950 md:text-3xl md:font-bold">
-                  Do Blog
-                </h2>
-                <Link
-                  href="/blog"
-                  className="text-sm font-medium text-brand-primary transition-colors duration-200 hover:text-brand-primary-hover"
-                >
-                  Ver todos
-                </Link>
-              </div>
-            </AnimateOnScroll>
-            <AnimateOnScroll stagger className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-              {recentPosts.map((post) => (
-                <div key={post.slug} className="">
-                  <BlogCard post={post} />
-                </div>
-              ))}
-            </AnimateOnScroll>
-          </div>
-        </section>
-      )}
+      {/* Mais lidos do blog — sprint design 06/05/2026.
+          Substitui `getRecentPosts(3)` (sort por data) por ranking
+          algoritmico baseado em GSC 30d (cliques + CTR + recency +
+          evergreen) com MMR pra diversidade. Cron daily atualiza cache.
+          Fallback gracioso pra recents se cache vazio. */}
+      <RecommendedPosts
+        limit={3}
+        context="home"
+        title="Mais lidos do blog"
+        viewAllHref="/blog"
+        viewAllLabel="Ver todos"
+      />
 
       {/* FAQ rica home — Fase 19.P0.9 (gap detectado em audit pos-P0).
           Home tem priority 1.0 no sitemap e maior numero de backlinks

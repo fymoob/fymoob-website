@@ -5,7 +5,8 @@ import { Calendar, Clock, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { MDXRemote } from "next-mdx-remote/rsc"
 import remarkGfm from "remark-gfm"
-import { getPostBySlug, getAllSlugs, getRelatedPosts } from "@/services/blog"
+import { getPostBySlug, getAllSlugs } from "@/services/blog"
+import { SmartRelatedPosts } from "@/components/blog/SmartRelatedPosts"
 import {
   generateBlogPostingSchema,
   generateArticleSchema,
@@ -14,7 +15,6 @@ import {
 } from "@/lib/seo"
 import { mdxComponents } from "@/lib/mdx-components"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
-import { RelatedPosts } from "@/components/blog/RelatedPosts"
 import { TableOfContents } from "@/components/blog/TableOfContents"
 import { AuthorBio } from "@/components/blog/AuthorBio"
 import { DynamicFAQ } from "@/components/seo/DynamicFAQ"
@@ -73,8 +73,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params
   const post = await getPostBySlug(slug)
   if (!post) notFound()
-
-  const related = await getRelatedPosts(post.slug, post.tags)
 
   // Schema: article custom (Supabase) usa generateArticleSchema com autor
   // dinamico; legado (Sanity/MDX) mantem generateBlogPostingSchema (Bruno hardcoded).
@@ -283,8 +281,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           />
         </div>
 
-        {/* Related Posts */}
-        <RelatedPosts posts={related} />
+        {/* Related Posts — sprint design 06/05/2026.
+            ANTES: getRelatedPosts (tag overlap simples). AGORA:
+            <SmartRelatedPosts> com algoritmo hibrido (Jaccard 30 +
+            cluster 30 + popularidade GSC 25 + recency 15) + MMR
+            diversidade. Cache populado pelo cron daily. */}
+        <SmartRelatedPosts slug={post.slug} tags={post.tags} />
       </div>
     </>
   )

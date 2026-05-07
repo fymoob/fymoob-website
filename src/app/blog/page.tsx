@@ -6,6 +6,7 @@ import { getAllPosts } from "@/services/blog"
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs"
 import { BlogCard } from "@/components/blog/BlogCard"
 import { AnimateOnScroll } from "@/components/shared/AnimateOnScroll"
+import { RecommendedPosts } from "@/components/blog/RecommendedPosts"
 
 export async function generateMetadata(): Promise<Metadata> {
   const posts = await getAllPosts()
@@ -94,6 +95,22 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
             </AnimateOnScroll>
           </div>
         </section>
+      )}
+
+      {/* Mais lidos — sprint design 06/05/2026.
+          So aparece na pagina 1. Ranking algoritmico baseado em GSC 30d
+          (cliques + CTR + recency + evergreen) com MMR pra diversidade.
+          Separado do grid abaixo (que e listagem por data) — entrega
+          rotacao por demanda real sem perder ordenacao cronologica. */}
+      {isFirstPage && (
+        <RecommendedPosts
+          limit={3}
+          context="blog"
+          title="Mais lidos do blog"
+          viewAllHref="/blog"
+          viewAllLabel="Todos os artigos"
+          className="border-t border-neutral-100 bg-neutral-50/40"
+        />
       )}
 
       {/* Posts grid — paginas sem featured (page 2+) precisam de padding-top

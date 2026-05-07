@@ -1241,7 +1241,16 @@ export default async function EmpreendimentoPage({ params }: EmpreendimentoPageP
           empreendimentoNome={emp.nome}
           nearbyPlaces={assets.nearbyPlaces}
           aerialImage={assets.aerialImage}
-          endereco={endereco ? { ...endereco, bairro: bairros[0] } : undefined}
+          endereco={
+            endereco?.endereco
+              ? {
+                  endereco: endereco.endereco,
+                  numero: endereco.numero ?? "",
+                  cep: endereco.cep ?? undefined,
+                  bairro: bairros[0],
+                }
+              : undefined
+          }
           bairro={bairros[0]}
           mapEmbedUrl={assets.mapEmbedUrl}
         />
